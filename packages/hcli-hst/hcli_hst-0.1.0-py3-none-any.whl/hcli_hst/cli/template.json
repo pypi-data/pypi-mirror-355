@@ -1,0 +1,282 @@
+{
+    "hcliTemplateVersion": "1.0",
+    "executable": [
+        {
+            "command": "hst agent",
+            "http": "get"
+        },
+        {
+            "command": "hst agent {p}",
+            "http": "get"
+        },
+        {
+            "command": "hst agents",
+            "http": "get"
+        },
+        {
+            "command": "hst server",
+            "http": "get"
+        },
+        {
+            "command": "hst ships",
+            "http": "get"
+        },
+        {
+            "command": "hst ships {p}",
+            "http": "get"
+        },
+        {
+            "command": "hst systems",
+            "http": "get"
+        },
+        {
+            "command": "hst systems {p}",
+            "http": "get"
+        },
+        {
+            "command": "hst contracts",
+            "http": "get"
+        },
+        {
+            "command": "hst contracts {p}",
+            "http": "get"
+        },
+        {
+            "command": "hst contracts accept",
+            "http": "get"
+        },
+        {
+            "command": "hst contracts accept {p}",
+            "http": "post"
+        }
+    ],
+    "cli": [
+        {
+            "id": "hst",
+            "name": "hst",
+            "section": [
+                {
+                    "name": "name",
+                    "description": "hst - an HCLI for interacting with the SpaceTraders API and game."
+                },
+                {
+                    "name": "synopsis",
+                    "description": "hst <command>"
+                },
+                {
+                    "name": "description",
+                    "description": "This HCLI is a wrapper for the SpaceTraders V2 API (https://spacetraders.io/) and expects to make use of the SPACETRADERS_AGENT_TOKEN environment variable."
+                },
+                {
+                    "name": "examples",
+                    "description": ""
+                }
+            ],
+            "command": [
+                {
+                    "href": "hstagent",
+                    "name": "agent",
+                    "description": "The \"agent\" command lets you list the authenticated SpaceTraders agent or the requested agent id."
+                },
+                {
+                    "href": "hstagents",
+                    "name": "agents",
+                    "description": "The \"agents\" command lets you list all the registered SpaceTraders agents."
+                },
+                {
+                    "href": "hstserver",
+                    "name": "server",
+                    "description": "The \"server\" command lets you get status for the SpaceTraders server."
+                },
+                {
+                    "href": "hstships",
+                    "name": "ships",
+                    "description": "The \"ships\" command lets you interact with ships in your fleet."
+                },
+                {
+                    "href": "hstsystems",
+                    "name": "systems",
+                    "description": "The \"systems\" command lets you interact with star systems."
+                },
+                {
+                    "href": "hstcontracts",
+                    "name": "contracts",
+                    "description": "The \"contracts\" command lets you list available contracts."
+                }
+            ]
+        },
+        {
+            "id": "hstagent",
+            "name": "agent",
+            "section": [
+                {
+                    "name": "name",
+                    "description": "agent - interact with the authenticated SpaceTraders agent or the requested agent id."
+                },
+                {
+                    "name": "synopsis",
+                    "description": "hst agent [agent_id]"
+                },
+                {
+                    "name": "description",
+                    "description": ""
+                },
+                {
+                    "name": "examples",
+                    "description": "hst agent\n\nhst agent CALLSIGN"
+                }
+            ],
+            "parameter": {
+                "href": "hstagentparameter"
+            }
+        },
+        {
+            "id": "hstagents",
+            "name": "agents",
+            "section": [
+                {
+                    "name": "name",
+                    "description": "agents - list all registered SpaceTraders agents."
+                },
+                {
+                    "name": "synopsis",
+                    "description": "hst agent"
+                },
+                {
+                    "name": "description",
+                    "description": ""
+                },
+                {
+                    "name": "examples",
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "id": "hstserver",
+            "name": "server",
+            "section": [
+                {
+                    "name": "name",
+                    "description": "server - get SpaceTraders server status."
+                },
+                {
+                    "name": "synopsis",
+                    "description": "hst server"
+                },
+                {
+                    "name": "description",
+                    "description": ""
+                },
+                {
+                    "name": "examples",
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "id": "hstships",
+            "name": "ships",
+            "section": [
+                {
+                    "name": "name",
+                    "description": "ships - interact with the ships in your fleet."
+                },
+                {
+                    "name": "synopsis",
+                    "description": "hst ships [ship_id]"
+                },
+                {
+                    "name": "description",
+                    "description": ""
+                },
+                {
+                    "name": "examples",
+                    "description": "hst ships\n\nhst ships CALLSIGN-1"
+                }
+            ],
+            "parameter": {
+                "href": "hstshipsparameter"
+            }
+        },
+        {
+            "id": "hstsystems",
+            "name": "systems",
+            "section": [
+                {
+                    "name": "name",
+                    "description": "systems - returns star system status per provided star system id."
+                },
+                {
+                    "name": "synopsis",
+                    "description": "hst systems [star_system_id]"
+                },
+                {
+                    "name": "description",
+                    "description": ""
+                },
+                {
+                    "name": "examples",
+                    "description": "hst systems\n\nhst systems X1-YR55"
+                }
+            ],
+            "parameter": {
+                "href": "hstsystemsparameter"
+            }
+        },
+        {
+            "id": "hstcontracts",
+            "name": "contracts",
+            "section": [
+                {
+                    "name": "name",
+                    "description": "contracts - returns a list of available contracts."
+                },
+                {
+                    "name": "synopsis",
+                    "description": "hst contracts [contract_id]"
+                },
+                {
+                    "name": "description",
+                    "description": ""
+                },
+                {
+                    "name": "examples",
+                    "description": "hst contracts\n\nhst contracts cmbtq3a6nc1h7uo6x8xc26ihd"
+                }
+            ],
+            "command": [
+                {
+                    "href": "hstcontractsaccept",
+                    "name": "accept",
+                    "description": "The \"accept\" command lets you accept a contract by id."
+                }
+            ]
+        },
+        {
+            "id": "hstcontractsaccept",
+            "name": "accept",
+            "section": [
+                {
+                    "name": "name",
+                    "description": "accept - accept a contract by id."
+                },
+                {
+                    "name": "synopsis",
+                    "description": "hst contracts accept <contract_id>"
+                },
+                {
+                    "name": "description",
+                    "description": ""
+                },
+                {
+                    "name": "examples",
+                    "description": "hst contracts accept cmau3oszrbzddte70nfvz44r7"
+                }
+            ],
+            "parameter": {
+                "href": "hstcontractsacceptparameter"
+            }
+        }
+    ]
+}
