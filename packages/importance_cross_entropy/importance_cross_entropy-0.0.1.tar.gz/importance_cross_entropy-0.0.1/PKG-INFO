@@ -1,0 +1,63 @@
+Metadata-Version: 2.4
+Name: importance_cross_entropy
+Version: 0.0.1
+Summary: Tensorflow implementation of the Importance Cross Entropy Loss function pruposed on this paper: https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Niu_Ordinal_Regression_With_CVPR_2016_paper.pdf. Custom metrics were built for MAPE, MAE, and Accuracy. Two loss functions were create one that includes the lambda calculation and one that doesn't. (repository author: Pedro Jose Carrinho Ribeiro; pedro-carrinho@hotmail.com pedro.carrinho @inl.com).
+Author: Pedro Jose Carrinho Ribeiro
+Requires-Python: ~=3.10.0
+Description-Content-Type: text/markdown
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+License-File: LICENSE
+
+# importance_cross_entropy
+
+<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
+    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
+</a>
+
+Tensorflow implementation of the Importance Cross Entropy Loss function pruposed on this paper: https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Niu_Ordinal_Regression_With_CVPR_2016_paper.pdf. No label converssion is required. Additionally custom built metrics were create for the calculation of Mean Absolute percentage error, Mean Absolute error, and Accuracy. Two loss functions were create one that includes the lambda calculation and one that doesn't. (repository author: Pedro José Carrinho Ribeiro; pedro-carrinho@hotmail.com pedro.carrinho @inl.com).
+
+## Requirements
+
+You can just use the function directly if you have tensorflow already.
+You can also do:
+```
+pip install importance_cross_entropy
+```
+or:
+```
+pip install -r requirements.txt
+```
+
+## Project Organization
+
+```
+├── LICENSE            <- Open-source license if one is chosen
+│
+├── Makefile           <- Makefile with convenience commands
+│
+├── README.md          <- The top-level README for developers using this project.
+│
+├── pyproject.toml     <- Project configuration file with package metadata for 
+│                         importance_cross_entropy and configuration for tools like black
+│
+├── references         <- Paper used for the implementation.
+│
+├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
+│                         generated with `pip freeze > requirements.txt`
+│
+└── importance_cross_entropy   <- Source code for use in this project.
+    │
+    ├── __init__.py             <- Makes importance_cross_entropy a Python module
+    │
+    ├── loss.py                 <- Code for the loss functions and lambda calculation
+    │
+    └── metrics.py              <- Code for the metrics calculation for monitoring train and testing
+```
+
+--------
+
+## Acknowledgements
+
+Cite the original paper if you wish:
+https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Niu_Ordinal_Regression_With_CVPR_2016_paper.pdf.
