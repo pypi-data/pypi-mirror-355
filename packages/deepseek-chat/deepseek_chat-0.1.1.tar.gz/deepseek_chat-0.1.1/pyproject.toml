@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepseek_chat"
+version = "0.1.1"
+description = "Thin DeepSeek Chat wrapper with Mongo-backed conversation tree."
+authors = [
+  { name = "bonecard", email = "guxiaowa77@gmail.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+
+# 让 pip install 自动拉依赖
+dependencies = [
+  "requests>=2.31",
+  "pymongo>=4.6",
+  "pydantic>=2.7",
+  "pydantic-settings>=2.0",
+  "tiktoken>=0.6"  # optional，但放依赖里省心
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "ruff",
+]
+
+# 哪些包需要被安装（src-layout 用 “packages=find:”）
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["deepseek_chat*"]
