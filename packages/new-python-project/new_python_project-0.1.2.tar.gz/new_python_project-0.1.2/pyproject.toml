@@ -1,0 +1,60 @@
+[project]
+name = "new-python-project"
+version = "0.1.2"
+description = "Create a Python project from a simple template"
+license = "GPL-3.0-or-later"
+authors = [
+    {name = "Reuben Thomas", email = "rrt@sc3d.org"}
+]
+readme = "README.md"
+urls = {Homepage = "https://github.com/rrthomas/python_project"}
+requires-python = ">= 3.12"
+dependencies = [
+    "nancy ~= 11.0",
+]
+classifiers = [
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+]
+
+[project.scripts]
+new-python-project = "new_python_project:main"
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[build-system]
+requires = [
+    "setuptools >= 62.3.0",
+]
+
+[tool.setuptools]
+packages = [
+    "new_python_project",
+]
+
+[tool.setuptools.package-data]
+new_python_project = [
+    "template/**",
+    "template/.gitignore",
+    "template/tests/.gitignore"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.pyright]
+exclude = ["new_python_project/template/**"]
+
+[tool.ruff]
+extend-exclude = ["new_python_project/template/**"]
+
+[tool.ruff.lint]
+select = ["D", "E", "F", "I", "UP"]
+ignore = ["D1", "D401", "D415", "E501"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
