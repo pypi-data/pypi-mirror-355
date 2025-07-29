@@ -1,0 +1,48 @@
+[project]
+name = "pdf-metadata-scanner"
+version = "0.1.2"
+description = "A CLI tool for extracting and analyzing metadata from PDFs, including embedded images and XMP/RDF metadata."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+  {name = "Anne Jan Brouwer"}
+]
+dependencies = [
+  "pikepdf",
+  "pypdf",
+  "Pillow",
+  'tqdm'
+]
+keywords = ["PDF", "metadata", "scanner", "EXIF", "XMP"]
+
+[project.scripts]
+pdfscan = "scanner:main"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+lint.select = ["E", "F", "I", "B"]  # E=pycodestyle, F=pyflakes, I=isort, B=bugbear
+lint.ignore = ["E501"]  # Optional: ignore long lines if Black handles them
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.coverage.run]
+branch = true
+source = ["scanner"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[build-system]
+requires = ["setuptools>=80.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["scanner"]
+
