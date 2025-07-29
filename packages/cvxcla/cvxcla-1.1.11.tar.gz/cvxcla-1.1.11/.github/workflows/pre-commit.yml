@@ -1,0 +1,37 @@
+# Pre-commit workflow
+# This workflow runs code quality checks and dependency analysis
+# It is triggered on push events to the repository
+
+name: pre-commit
+
+on:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  # Job to run pre-commit hooks for code quality checks
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      # Run pre-commit hooks (linting, formatting, etc.)
+      - uses: tschm/cradle/actions/pre-commit@v0.1.72
+
+  # Job to analyze dependencies using deptry
+  deptry:
+    runs-on: ubuntu-latest
+    steps:
+      # Set up the Python environment
+      - name: "Build the virtual environment for ${{ github.repository }}"
+        uses: tschm/cradle/actions/environment@v0.1.72
+
+      # Run deptry to check for dependency issues
+      - name: Run Deptry
+        uses: tschm/cradle/actions/deptry@v0.1.72
+        with:
+          source-folder: 'cvxcla'
+
+      - name: Run ty
+        run: |
+          uvx ty check cvxcla
