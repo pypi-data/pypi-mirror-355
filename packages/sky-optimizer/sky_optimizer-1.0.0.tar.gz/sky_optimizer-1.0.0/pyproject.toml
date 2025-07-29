@@ -1,0 +1,208 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sky-optimizer"
+dynamic = ["version"]
+description = "Revolutionary Mathematical Optimization Algorithm combining cutting-edge techniques"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Pro-Creations", email = "support@pro-creations.com"}
+]
+maintainers = [
+    {name = "Pro-Creations", email = "support@pro-creations.com"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+keywords = [
+    "optimizer",
+    "pytorch",
+    "machine-learning",
+    "deep-learning", 
+    "optimization",
+    "riemannian-geometry",
+    "natural-gradients",
+    "quasi-newton",
+    "information-theory",
+    "meta-learning",
+    "bayesian-optimization",
+    "matrix-factorization",
+    "stochastic-differential-equations",
+    "trust-region",
+    "conjugate-gradients",
+    "mathematical-optimization",
+    "artificial-intelligence",
+    "neural-networks",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "torch>=1.11.0",
+    "numpy>=1.19.0",
+]
+
+[project.optional-dependencies]
+advanced = [
+    "scipy>=1.7.0",
+]
+dev = [
+    "pytest>=6.0.0",
+    "pytest-cov>=2.10.0",
+    "black>=21.0.0",
+    "flake8>=3.8.0",
+    "mypy>=0.800",
+    "pre-commit>=2.10.0",
+]
+benchmark = [
+    "psutil>=5.8.0",
+    "matplotlib>=3.3.0",
+]
+all = [
+    "scipy>=1.7.0",
+    "pytest>=6.0.0",
+    "pytest-cov>=2.10.0",
+    "black>=21.0.0",
+    "flake8>=3.8.0",
+    "mypy>=0.800",
+    "pre-commit>=2.10.0",
+    "psutil>=5.8.0",
+    "matplotlib>=3.3.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pro-creations/sky-optimizer"
+"Bug Tracker" = "https://github.com/pro-creations/sky-optimizer/issues"
+"Documentation" = "https://github.com/pro-creations/sky-optimizer/blob/main/README.md"
+"Source Code" = "https://github.com/pro-creations/sky-optimizer"
+"Changelog" = "https://github.com/pro-creations/sky-optimizer/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+packages = ["sky_optimizer", "sky_optimizer.mixins", "sky_optimizer.utils"]
+
+[tool.setuptools.dynamic]
+version = {attr = "sky_optimizer.__version__"}
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311", "py312"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "scipy.*",
+    "torch.*",
+    "numpy.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--verbose",
+    "--tb=short",
+    "--strict-markers",
+    "--cov=sky_optimizer",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "gpu: marks tests that require GPU (deselect with '-m \"not gpu\"')",
+    "integration: marks tests as integration tests",
+]
+
+[tool.coverage.run]
+source = ["sky_optimizer"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "setup.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["sky_optimizer"]
+known_third_party = ["torch", "numpy", "scipy"]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = [
+    "E203",  # whitespace before ':'
+    "E501",  # line too long (handled by black)
+    "W503",  # line break before binary operator
+]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".eggs",
+    "*.egg-info",
+    ".venv",
+    ".tox",
+]
