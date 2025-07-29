@@ -1,0 +1,28 @@
+<div id="${view.id}"
+	 tal:define="langs view.languages">
+	<tal:if condition="len(langs) == 1">
+		${structure:view.get_widget(langs[0]).render()}
+	</tal:if>
+	<tal:if condition="len(langs) > 1">
+		<ul class="nav nav-tabs">
+			<tal:loop repeat="widget view.widgets.values()">
+				<li class="nav-item" role="presentation">
+					<a class="nav-link py-0 ${'active' if repeat['widget'].start() else None}"
+					   data-toggle="tab" href="#${widget.id}-tab">
+						<img src="/--static--/pyams_i18n/img/flags/${widget.language}.png"
+							 alt="${widget.language}" />
+						<i tal:condition="widget.current_value | widget.value"
+						   class="fas fa-fw fa-sm fa-star ml-2 text-warning"></i>
+					</a>
+				</li>
+			</tal:loop>
+		</ul>
+		<div class="tab-content">
+			<div tal:repeat="widget view.widgets.values()"
+				 id="${widget.id}-tab"
+				 class="tab-pane ${'active' if repeat['widget'].start() else None} p-1">
+				${structure:widget.render()}
+			</div>
+		</div>
+	</tal:if>
+</div>
