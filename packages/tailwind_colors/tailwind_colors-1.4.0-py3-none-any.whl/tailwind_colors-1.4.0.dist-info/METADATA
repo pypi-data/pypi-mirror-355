@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: tailwind_colors
+Version: 1.4.0
+Summary: Use the default color palette from TailwindCSS (https://tailwindcss.com/docs/customizing-colors) in your python code for plotting, image generation, etc.
+Keywords: utils,utilities,plotting,design,colors,color-palette,tailwind,css,matplotlib,plotly
+Author-Email: Moritz Makowski <moritz@dostuffthatmatters.dev>
+License: MIT
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: Matplotlib
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Multimedia :: Graphics
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Project-URL: repository, https://github.com/dostuffthatmatters/python-tailwind-colors
+Project-URL: documentation, https://github.com/dostuffthatmatters/python-tailwind-colors
+Requires-Python: <4.0.0,>=3.8.0
+Provides-Extra: dev
+Requires-Dist: mypy>=1.11.2; extra == "dev"
+Requires-Dist: yapf>=0.40.2; extra == "dev"
+Description-Content-Type: text/markdown
+
+# Python Tailwind Colors
+
+Use the default color palette from TailwindCSS (https://tailwindcss.com/docs/customizing-colors) in your python code for plotting, image generation, etc..
+
+<br/>
+
+**Installation:**
+
+```bash
+poetry add tailwind_colors
+# or
+pip install tailwind_colors
+```
+
+<br/>
+
+**Usage:**
+
+```python
+from tailwind_colors import TAILWIND_COLORS_HEX, TAILWIND_COLORS_RGB
+
+print(TAILWIND_COLORS_HEX.FUCHSIA_600)  # prints '#c026d3'
+print(TAILWIND_COLORS_RGB.FUCHSIA_600)  # prints (192, 38, 211)
+```
