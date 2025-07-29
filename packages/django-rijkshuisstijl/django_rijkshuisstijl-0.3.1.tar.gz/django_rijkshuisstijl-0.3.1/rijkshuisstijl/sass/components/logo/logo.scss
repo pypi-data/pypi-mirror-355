@@ -1,0 +1,15 @@
+@import '../../settings/all';
+@import '~microscope-sass/lib/responsive';
+
+.logo {
+  &--version-legacy .image__image {
+    @include tablet(true) {
+      height: 90%;
+    }
+  }
+
+  // Fixes a11y issues with logos
+  &--version-2 .image__image {
+    height: 100%;
+  }
+}

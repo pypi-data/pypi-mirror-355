@@ -1,0 +1,21 @@
+@import '../../settings/all';
+@import "microscope-sass/lib/color";
+@import "microscope-sass/lib/typography";
+
+.skiplink {
+  position: absolute;
+  top: -100vh;
+  left: -100vh;
+}
+
+.skiplink:focus {
+  @include body;
+  @include border(all, $color-primary);
+  @include color-background;
+  box-sizing: border-box;
+  font-family: $typography-font-family-text;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+}
