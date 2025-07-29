@@ -1,0 +1,114 @@
+Metadata-Version: 2.4
+Name: gaitmod
+Version: 0.1.0
+Summary: real-time gait modulation prediction using multimodal neural and movement data (LFP, EEG, IMU, EMG) — designed for closed-loop DBS systems in Parkinson's diseas.
+Keywords: gait,modulation,LFP,ML
+Author-email: Mohammad Orabe <orabe.mhd@gmail.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+License-File: LICENSE
+Requires-Dist: antropy
+Requires-Dist: imbalanced-learn
+Requires-Dist: tensorflow[and-cuda]
+Requires-Dist: matplotlib
+Requires-Dist: mne
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: pyyaml
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: seaborn
+Requires-Dist: tqdm
+Requires-Dist: pydot
+Requires-Dist: pydot ; extra == "viz"
+Project-URL: Bug Tracker, https://github.com/orabe/gaitmod/issues
+Project-URL: Documentation, https://gaitmod.readthedocs.io/
+Project-URL: Homepage, https://github.com/orabe/gaitmod
+Project-URL: Repository, https://github.com/orabe/gaitmod
+Provides-Extra: viz
+
+# GaitMod
+
+**gaitmod** is a Python library for processing, analyzing, and modeling multi-modal neural and movement data, including LFP, EEG, EMG, and IMU signals. It focuses on real-time gait modulation prediction in Parkinson's disease and supports customizable deep learning pipelines.
+
+It provides tools to:
+
+* Preprocess and clean multi-modal data
+* Extract and select features from neural and movement signals
+* Train and evaluate machine learning models
+* Visualize results and model performance
+
+## Table of Contents
+
+- [GaitMod](#gaitmod)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Documentation](#documentation)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Project Structure](#project-structure)
+  - [Contributing](#contributing)
+  - [License](#license)
+
+## Overview
+
+This repository contains code and resources for studying gait modifications using data analysis and machine learning techniques.
+
+## Documentation
+
+Comprehensive documentation is available at [https://gaitmod.readthedocs.io/](https://gaitmod.readthedocs.io/).
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/gaitmod.git
+cd gaitmod
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+Run the main analysis script:
+
+```bash
+python main.py
+```
+
+Refer to the [documentation on Read the Docs](https://gaitmod.readthedocs.io/) for detailed usage instructions.
+
+
+## Project Structure
+
+```
+gaitmod/
+├── data/
+├── src/
+├── results/
+├── README.md
+└── requirements.txt
+```
+
+## Contributing
+
+Contributions are welcome! Please open issues or submit pull requests.
+
+## License
+
+This project is licensed under the MIT License.
