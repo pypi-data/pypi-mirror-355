@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: pycaf
+Version: 0.2.0
+Summary: Python Code Assistant Free. Новая версия 0.2.0
+Author-email: Georgii Nikishov <timofeynikishov@yandex.ru>
+License: MIT
+Description-Content-Type: text/markdown
+Requires-Dist: g4f
+
+# Краткое описание:
+pycaf — Python Code Assistant Free
+Зачем нужен pycaf?
+Это позволит вам облегчить создание сложных программ на python, а также исправлять ошибки.
+
+# Как установить?
+pip install pycaf
+
+# Как обновлять до последней версии?
+pip install --upgrade pycaf
+
+# Как использовать?
+Просто напишите в терминал команду
+pycaf new_file --command "Создать программу, которая будет выводить на экран надпись Привет, мир!"
+         |                                              |
+Имя нового python-файла   Ваш запрос, в котором описано, какую python-программу вы хотите получить
+
+Запрос обработается нейросетью. Файл с кодом сохранится в текущей папке проекта
+
+# Требуется:
+Доступ в интернет
+
+# Что нового в версии 0.2.0?
+Добавлены новые полезные параметры для более удобного использования:
+--createnewversion — создаст новую версию файла перед внесением изменений
+--createminiinstruction — вставит в файл дополнительно полный ответ как документирующий комментарий

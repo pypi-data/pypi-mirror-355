@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycaf"
+version = "0.2.0"
+description = "Python Code Assistant Free. Новая версия 0.2.0"
+authors = [{name = "Georgii Nikishov", email = "timofeynikishov@yandex.ru"}]
+readme = "README.md"
+license = {text = "MIT"}
+dependencies = ["g4f"]
+
+[project.scripts]
+pycaf = "pycaf.main:main"
