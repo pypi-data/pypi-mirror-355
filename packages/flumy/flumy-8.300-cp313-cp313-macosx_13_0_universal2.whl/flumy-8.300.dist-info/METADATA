@@ -1,0 +1,117 @@
+Metadata-Version: 2.4
+Name: flumy
+Version: 8.300
+Summary: Meandering Channelized Reservoir Creator
+Author-email: Fabien Ors <fabien.ors@minesparis.psl.eu>
+License: Proprietary
+Project-URL: Homepage, https://flumy.minesparis.psl.eu
+Project-URL: Issues, https://flumy.minesparis.psl.eu
+Platform: Windows
+Platform: Linux
+Platform: Mac OS-X
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: C++
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Other Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: numpy<3,>=1.24
+Requires-Dist: matplotlib
+Requires-Dist: scipy
+Requires-Dist: plotly
+Requires-Dist: pandas
+
+# Flumy Python Package (flumy)
+
+**flumy** is a Python Package for Flumy kernel C++ library.</br>
+More details for Flumy are available here: [https://flumy.minesparis.psl.eu](https://flumy.minesparis.psl.eu)
+
+This Python Package can be used by anyone who wants to generate realistic non-conditional reservoir models for meandering channelized fluvial environement (Training images for MPS or training datasets for GANs).</br>
+
+* Copyright: MINES PARIS - PSL University
+* Research Lab: GEOSCIENCES (Fontainebleau, France)
+* Authors: Flumy Team
+* Contact: flumy@mines-paristech.fr
+* License: https://flumy.minesparis.psl.eu/end-user-license-agreement
+* Date: May 2025
+
+
+## How to cite
+
+Please, use this to cite us in any publication or results for which Flumy has been used:
+
+    --------------------------------------------------
+    FLUMY™
+    Process-based channelized reservoir models
+    Copyright © MINES PARIS - PSL / ARMINES
+    Free download from https://flumy.minesparis.psl.eu
+    --------------------------------------------------
+    
+## Installation
+
+```
+pip install flumy
+```
+
+## Usage
+
+Here is a script example which execute a Fluvial simulation:
+
+```
+# Import package
+from flumy import *
+
+nx      = 250   # Number of grid nodes along Ox
+ny      = 200   # Number of grid nodes along Oy
+mesh    = 10    # Horizontal grid mesh size: 10m
+hmax    = 3     # Maximum channel depth: 3m
+ng      = 50    # Required Net-to-Gross: 50%
+isbx    = 80    # Required sand bodies extension (medium extension = few meander cutoffs)
+verbose = True  # Verbose mode
+
+res = 30            # Vertical resolution (increase 'res' to get higher resolution)
+dz  = hmax / res    # Vertical discretization step (0.1m)
+zul = 3 * hmax      # Fill a reservoir of 3 x hmax height (9m)
+nz  = int(zul / dz) # Number of vertical nodes of the resulted block of sediments
+
+# Launch the simulation
+seed = 123456 # Simulation seed
+# Create the simulator
+flsim = Flumy(nx, ny, mesh, verbose)
+# Launch up to zul
+success = flsim.launch(seed, hmax, isbx, ng, zul)
+if (not success):
+    print("Error while running Flumy")
+
+# Display the age of the simulation, the mean topography reached and the total number of meander cutoffs
+print("Final age:",flsim.getAge(), "yr")
+print("Mean topography:",round(flsim.getDomain().getMeanTopoGeo(),2), "m")
+print("Number of cutoffs:",flsim.getNbCutoff())
+
+# Retrieve the simulated block informed with facies, grain size and age (in three numpy arrays)
+fac,grain,age = flsim.getBlock(dz, zb=0 ,nz=nz)
+print("type(fac):", type(fac))
+print("fac.shape:", fac.shape)
+# Display facies proportions
+print("Facies proportions (%):", getFaciesProps(fac))
+# Sand proportion (PB) corresponds more or less to the required Net-to-Gross
+
+# Display Facies cross-flow section
+showSection(fac = fac[50,:,:], size = 8, legend=2)
+
+# Display Grain Size along-flow section
+showSection(grain = grain[:,20,:], size = 8, legend=2)
+
+# Display Age horizontal slice section
+showSection(age = age[:,:,2], size = 8, legend = 1, title = "Age horizontal slice")
+```
+
+## Detailed documentation
+
+Please refer to the doxygen documentation of the C++ Lite API here :
+
+https://soft.mines-paristech.fr/flumy/doxygen
