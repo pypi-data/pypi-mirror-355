@@ -1,0 +1,27 @@
+# This is replaced during release process.
+__version_suffix__ = '248'
+
+APP_NAME = "zalando-kubectl"
+
+KUBECTL_VERSION = "v1.32.5"
+KUBECTL_SHA512 = {
+    "linux": "df5c80e94d0fedd88c980579fc92e0f9a978fab1d2106bee26a08844d5c11b602fa3a4e163d8fb5d2b0abbc1590762e2bb08697a4512e4666582d4262437672e",
+    "darwin": "fddf95f3f34ea8ffa5572552a7e3341e393e90aa02aa9441d5c8a3c3f9178f44cd391706c3f69c9784575f2a83cfa0553ce3424a2d0ba45e890b299db9893541",
+}
+STERN_VERSION = "1.30.0"
+STERN_SHA256 = {
+    "linux": "ea1bf1f1dddf1fd4b9971148582e88c637884ac1592dcba71838a6a42277708b",
+    "darwin": "4eaf8f0d60924902a3dda1aaebb573a376137bb830f45703d7a0bd89e884494a",
+}
+KUBELOGIN_VERSION = "v1.32.4"
+KUBELOGIN_SHA256 = {
+    "linux": "667f3b4c753d52e45898e77865a0bb25c9741c860a6ea30e087c93090872041a",
+    "darwin": "1ca78e3e5e743fe2d2a29ae53709c477e4412ef6fbd81b69c7963db137e91056",
+}
+ZALANDO_AWS_CLI_VERSION = "0.5.9"
+ZALANDO_AWS_CLI_SHA256 = {
+    "linux": "885f1633c4882a332b10393232ee3eb6fac81e736e0c07b519acab487bb6dc63",
+    "darwin": "908ed91553b6648182de6e67074f431a21a2e79a4ea45c4aa3d7084578fd5931",
+}
+
+APP_VERSION = KUBECTL_VERSION + "." + __version_suffix__
