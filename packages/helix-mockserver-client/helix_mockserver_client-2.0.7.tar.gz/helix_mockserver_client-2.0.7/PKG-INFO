@@ -1,0 +1,73 @@
+Metadata-Version: 2.4
+Name: helix_mockserver_client
+Version: 2.0.7
+Summary: mockserver_client
+Home-page: https://github.com/icanbwell/mockserver_client
+Author: Imran Qureshi
+Author-email: imran.qureshi@icanbwell.com
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: deepdiff
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# mockserver_client
+It has docker based image: ``jamesdbloom/mockserver:mockserver-5.13.*``
+
+As pip dependency could be found here: https://pypi.org/project/helix-mockserver-client/
+
+In your ``requirements.txt`` or ```PipFile```  add ```helix-mockserver-client>=*.*.*```
+
+Basic usage:
+
+```python
+import json
+from mockserver_client.mockserver_client import (
+    MockServerFriendlyClient,
+    mock_request,
+    mock_response,
+    times,
+)
+ mock_server = MockServerFriendlyClient('http://127.0.0.1:1080')
+ mock_server.expect(mock_request(
+            path="/" + 'item',
+            method="POST",
+            body={
+                "json": {
+                    "client_id": "unitypoint_bwell",
+                    "client_secret": "fake_client_secret",
+                    "grant_type": "client_credentials",
+                }
+            },
+        ),
+            mock_response(
+                body=json.dumps(
+                    {
+                        "token_type": "bearer",
+                        "access_token": "fake access_token",
+                        "expires_in": 54000,
+                    }
+                )
+            ),
+            timing=times(1),
+        )
+```
+How to pull the image with Docker:
+```docker pull jamesdbloom/mockserver:mockserver-5.13.2```
+
+How to start the server locally with Docker:
+```docker run -dp 1080:1080 jamesdbloom/mockserver:mockserver-5.13.2 -logLevel DEBUG -serverPort 1080```
