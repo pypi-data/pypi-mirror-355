@@ -1,0 +1,39 @@
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "appserver-sdk-hello-world-pkg"
+version = "0.1.1"
+description = "Pacote exemplo que retorna hello world"
+authors = [
+    { name = "Appserver SDK", email = "suporte@apppserver.com.br" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+keywords = ["hello-world", "example", "appserver-sdk"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/appserver-sdk/hello_world_pkg"
+Repository = "https://github.com/appserver-sdk/hello_world_pkg"
+Issues = "https://github.com/appserver-sdk/hello_world_pkg/issues"
+Documentation = "https://github.com/appserver-sdk/hello_world_pkg#readme"
+
+[tool.poetry]
+packages = [
+    { include = "hello_world_pkg", from = "src" }
+]
+
+[tool.poetry.group.dev.dependencies]
+twine = "^6.1.0"
