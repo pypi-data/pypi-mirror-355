@@ -1,0 +1,19 @@
+include README.md
+include pyproject.toml
+include setup.py
+
+# 包含所有配置文件
+recursive-include minimax_qa_mcp *.ini
+recursive-include minimax_qa_mcp *.json
+recursive-include minimax_qa_mcp *.yaml
+recursive-include minimax_qa_mcp *.yml
+recursive-include minimax_qa_mcp *.txt
+
+# 包含所有Python文件
+recursive-include minimax_qa_mcp *.py
+
+# 排除编译文件
+global-exclude *.py[cod]
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .DS_Store 
