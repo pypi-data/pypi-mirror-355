@@ -1,0 +1,5 @@
+{% load i18n %}
+{% if receipt_url %}
+<a href="{{ receipt_url }}" target="blank">{% trans "SumUp Receipt" %}</a> -
+{% endif %}
+<span>{% if card_type != 'UNKNOWN' %}{{card_type}} {% endif %}&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; {{card_last_4_digit}}</span>
