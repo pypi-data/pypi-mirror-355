@@ -1,0 +1,40 @@
+# Include essential project files
+include README.md
+include LICENSE
+include pyproject.toml
+
+# Include source code
+recursive-include pymotivaxmc2 *.py
+
+# Exclude development and testing files
+recursive-exclude tests *
+recursive-exclude docs *
+recursive-exclude .github *
+recursive-exclude .pytest_cache *
+recursive-exclude __pycache__ *
+
+# Exclude development configuration files
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude .coveragerc
+exclude .python-version
+exclude uv.lock
+exclude *.egg-info
+
+# Exclude IDE and editor files
+exclude .vscode
+exclude .idea
+exclude *.swp
+exclude *.swo
+exclude *~
+
+# Exclude OS files
+exclude .DS_Store
+exclude Thumbs.db
+
+# Exclude temporary files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude *.so 
