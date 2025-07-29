@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: textminer-pro-supace
+Version: 0.1.1
+Summary: 불용어 제거, 키워드 추출, 요약, 언어 감지를 제공하는 텍스트 분석 도구
+Home-page: https://github.com/project/Hansupace/textminer-pro
+Author: 최수한
+Author-email: wagkster@naver.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Text Processing :: Linguistic
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: nltk>=3.8.1
+Requires-Dist: scikit-learn>=1.3.0
+Requires-Dist: langdetect>=1.0.9
+Requires-Dist: sumy>=0.11.0
+
+# textminer-pro
+
+자연어 텍스트 처리의 기본 기능을 제공하는 Python 패키지입니다.
+## 키워드 추출
+from textminer import extract_keywords
+
+text = "Apple is looking at buying a U.K. startup for $1 billion."
+keywords = extract_keywords(text, top_n=3)
+print(keywords)
+['spider-man', 'character', 'movie']
+
+## 언어 감지
+from textminer import detect_language
+
+print(detect_language("This is an English sentence."))  # 'en'
+print(detect_language("안녕하세요 반갑습니다."))            # 'ko'
+print(detect_language(""))                              # '유효한 텍스트를 입력하세요.'
+
+## 텍스트 요약
+from textminer import summarize_text
+
+text = '''
+Our hub and spoke model sees us headquartered in Utrecht, the Netherlands with specialised operations in key global regions. This allows us to centralise our key functions and strategies while building networks and managing sector and landscape programs where the action is happening.
+'''
+
+summary = summarize_text(text, num_sentences=2)
+print(summary)
+---
+
+
+
+
+
