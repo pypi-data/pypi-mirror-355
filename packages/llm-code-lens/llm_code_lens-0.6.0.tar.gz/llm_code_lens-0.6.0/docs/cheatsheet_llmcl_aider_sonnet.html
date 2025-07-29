@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Code Lens - Developer Workflow Cheatsheet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: clamp(10px, 2vw, 20px);
+        }
+        
+        .cheatsheet {
+            max-width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            aspect-ratio: 1/1.414;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+            color: white;
+            padding: clamp(15px, 3vw, 25px);
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="800" cy="300" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="300" cy="700" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="700" cy="600" r="3" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .main-title {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: clamp(14px, 2.5vw, 18px);
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        .tools-section {
+            padding: clamp(15px, 3vw, 25px);
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(12px, 2vw, 20px);
+            margin-bottom: clamp(20px, 3vw, 30px);
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: clamp(12px, 2vw, 18px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 4px solid;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .tool-card.primary {
+            border-left-color: #6366f1;
+        }
+        
+        .tool-card.secondary {
+            border-left-color: #8b5cf6;
+        }
+        
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .tool-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .tool-icon.primary {
+            background: #6366f1;
+        }
+        
+        .tool-icon.secondary {
+            background: #8b5cf6;
+        }
+        
+        .tool-name {
+            font-size: clamp(16px, 2.5vw, 18px);
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .tool-tagline {
+            font-size: clamp(12px, 2vw, 14px);
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        
+        .install-cmd {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(11px, 1.8vw, 13px);
+            word-break: break-all;
+        }
+        
+        .workflow-section {
+            padding: clamp(15px, 3vw, 25px);
+            background: white;
+        }
+        
+        .section-title {
+            font-size: clamp(18px, 3vw, 22px);
+            font-weight: 600;
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: clamp(15px, 2.5vw, 20px);
+        }
+        
+        .workflow-path {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(10px, 2vw, 15px);
+            margin-bottom: clamp(20px, 3vw, 30px);
+        }
+        
+        .workflow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 120px;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 8px rgba(99,102,241,0.3);
+        }
+        
+        .step-title {
+            font-size: clamp(12px, 2vw, 14px);
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        
+        .step-desc {
+            font-size: clamp(10px, 1.8vw, 12px);
+            color: #64748b;
+        }
+        
+        .workflow-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 15px;
+            color: #cbd5e1;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: clamp(12px, 2vw, 20px);
+            padding: clamp(15px, 3vw, 25px);
+            background: #f8fafc;
+        }
+        
+        .bottom-card {
+            background: white;
+            border-radius: 10px;
+            padding: clamp(15px, 2.5vw, 20px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .card-title {
+            font-size: clamp(14px, 2.5vw, 16px);
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: clamp(10px, 2vw, 15px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-content {
+            font-size: clamp(12px, 2vw, 14px);
+            color: #64748b;
+            line-height: 1.5;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 4px 0;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .command-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .command-list li {
+            background: #f1f5f9;
+            margin: 6px 0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(11px, 1.8vw, 12px);
+            border-left: 3px solid #6366f1;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: clamp(15px, 3vw, 20px);
+            text-align: center;
+        }
+        
+        .cta-text {
+            font-size: clamp(14px, 2.5vw, 16px);
+            margin-bottom: 10px;
+        }
+        
+        .cta-command {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(12px, 2vw, 14px);
+            display: inline-block;
+        }
+        
+        @media (max-width: 768px) {
+            .workflow-path {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .workflow-step:not(:last-child)::after {
+                content: '↓';
+                position: static;
+                margin: 5px 0;
+                display: block;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .cheatsheet {
+                box-shadow: none;
+                border-radius: 0;
+                aspect-ratio: auto;
+                min-height: auto;
+            }
+            
+            .header {
+                background: #6366f1 !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+            
+            .tool-card:hover {
+                transform: none;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cheatsheet">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="main-title">🚀 LLM Code Lens Developer Workflow</div>
+                <div class="subtitle">Ship better code 10x faster with AI-powered analysis & intelligent development tools</div>
+            </div>
+        </div>
+        
+        <!-- Tools Section -->
+        <div class="tools-section">
+            <div class="tools-grid">
+                <div class="tool-card primary">
+                    <div class="tool-header">
+                        <div class="tool-icon primary">🔍</div>
+                        <div class="tool-name">LLM Code Lens</div>
+                    </div>
+                    <div class="tool-tagline">Instant codebase understanding • AI-ready analysis • Zero setup</div>
+                    <div class="install-cmd">pip install llm-code-lens</div>
+                </div>
+                
+                <div class="tool-card secondary">
+                    <div class="tool-header">
+                        <div class="tool-icon secondary">🤖</div>
+                        <div class="tool-name">Aider</div>
+                    </div>
+                    <div class="tool-tagline">AI pair programmer • Direct code edits • Git integration</div>
+                    <div class="install-cmd">pip install aider-chat</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Workflow Section -->
+        <div class="workflow-section">
+            <div class="section-title">📍 Your Complete Development Path</div>
+            <div class="workflow-path">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Analyze</div>
+                    <div class="step-desc">Run LLM Code Lens</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Understand</div>
+                    <div class="step-desc">Review structure & insights</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Plan</div>
+                    <div class="step-desc">Identify changes needed</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Code</div>
+                    <div class="step-desc">Use Aider for AI edits</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Ship</div>
+                    <div class="step-desc">Deploy with confidence</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Grid -->
+        <div class="bottom-grid">
+            <div class="bottom-card">
+                <div class="card-title">
+                    🎯 Interactive Workflow
+                </div>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li>Launch interactive file selector</li>
+                        <li>Choose analysis scope visually</li>
+                        <li>Export directly to Claude/ChatGPT</li>
+                        <li>One-click browser integration</li>
+                        <li>Save time with smart defaults</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bottom-card">
+                <div class="card-title">
+                    ⚡ Essential Commands
+                </div>
+                <div class="card-content">
+                    <ul class="command-list">
+                        <li>llmcl .</li>
+                        <li>llmcl --interactive</li>
+                        <li>llmcl --open-claude</li>
+                        <li>aider --yes</li>
+                        <li>aider --model claude-3.5</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bottom-card">
+                <div class="card-title">
+                    💎 Why Developers Love It
+                </div>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li>Eliminates analysis paralysis</li>
+                        <li>Reduces onboarding time by 80%</li>
+                        <li>Perfect for legacy code review</li>
+                        <li>Seamless AI workflow integration</li>
+                        <li>Loved by 10,000+ developers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="cta-text">🌟 Join thousands of developers shipping better code faster</div>
+            <div class="cta-command">pip install llm-code-lens && llmcl --interactive</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Code Lens - Your AI-Powered Code Analysis Workflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            aspect-ratio: 1 / 1.414;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: clamp(1rem, 3vw, 2rem);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Tool Section */
+        .tools-section {
+            padding: clamp(1rem, 3vw, 2rem);
+            background: #f8fafc;
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid;
+        }
+
+        .tool-header.primary { border-left-color: #667eea; }
+        .tool-header.secondary { border-left-color: #06b6d4; }
+
+        .tool-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .tool-info h3 {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: #2c3e50;
+            margin-bottom: 0.2rem;
+        }
+
+        .tool-info p {
+            font-size: clamp(0.8rem, 1.8vw, 1rem);
+            color: #64748b;
+        }
+
+        .install-command {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #1e293b;
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        /* Workflow Path */
+        .workflow-path {
+            padding: clamp(1rem, 3vw, 2rem);
+            background: white;
+            margin: 0 clamp(1rem, 3vw, 2rem);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .workflow-title {
+            text-align: center;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            position: relative;
+        }
+
+        .workflow-step {
+            text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 0.5rem;
+        }
+
+        .step-title {
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .step-desc {
+            font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+            color: #64748b;
+        }
+
+        /* Three Column Grid */
+        .grid-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: clamp(1rem, 2vw, 1.5rem);
+            padding: clamp(1rem, 3vw, 2rem);
+        }
+
+        .grid-card {
+            background: white;
+            padding: clamp(1rem, 2vw, 1.5rem);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 3px solid;
+        }
+
+        .grid-card.workflow { border-top-color: #10b981; }
+        .grid-card.commands { border-top-color: #f59e0b; }
+        .grid-card.benefits { border-top-color: #ec4899; }
+
+        .grid-card h3 {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grid-card ul {
+            list-style: none;
+        }
+
+        .grid-card li {
+            margin-bottom: 0.8rem;
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            color: #475569;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .grid-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .command-item {
+            background: #f1f5f9;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: clamp(0.7rem, 1.3vw, 0.85rem);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: clamp(1rem, 3vw, 2rem);
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-commands {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .cta-command {
+            background: rgba(255,255,255,0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .tool-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .install-command {
+                margin: 0.5rem 0 0 0;
+                font-size: 0.75rem;
+            }
+            
+            .workflow-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                height: 297mm;
+                width: 210mm;
+            }
+            
+            .header::before {
+                display: none;
+            }
+            
+            .header, .footer {
+                background: #667eea !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* Emoji and Icons */
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 0.3rem;
+        }
+
+        /* Value badges */
+        .value-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🚀 LLM Code Lens: Your AI-Powered Development Workflow</h1>
+            <p>Turn any codebase into AI-ready insights in seconds • Ship better code 10x faster</p>
+        </header>
+
+        <!-- Tools Section -->
+        <section class="tools-section">
+            <div class="tool-header primary">
+                <div class="tool-icon">🔍</div>
+                <div class="tool-info">
+                    <h3>LLM Code Lens <span class="value-badge">Essential</span></h3>
+                    <p>Instantly analyze and understand any codebase for AI tools</p>
+                </div>
+                <div class="install-command">pip install llm-code-lens</div>
+            </div>
+            
+            <div class="tool-header secondary">
+                <div class="tool-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">🤖</div>
+                <div class="tool-info">
+                    <h3>Aider <span class="value-badge">AI Pair</span></h3>
+                    <p>Your AI pair programmer that actually writes code</p>
+                </div>
+                <div class="install-command">pip install aider-chat</div>
+            </div>
+        </section>
+
+        <!-- Workflow Path -->
+        <section class="workflow-path">
+            <h2 class="workflow-title">🎯 Your Path to AI-Powered Development</h2>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Open Terminal</div>
+                    <div class="step-desc">In your project folder</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Run llmcl</div>
+                    <div class="step-desc">Interactive file picker</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Select Files</div>
+                    <div class="step-desc">Space to toggle</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Choose AI</div>
+                    <div class="step-desc">Claude, GPT, or copy</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Ask Questions</div>
+                    <div class="step-desc">Get instant insights</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Ship Code</div>
+                    <div class="step-desc">With confidence! 🎉</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Three Column Grid -->
+        <section class="grid-section">
+            <!-- Interactive Workflow -->
+            <div class="grid-card workflow">
+                <h3><span class="emoji">🎮</span> Interactive Workflow</h3>
+                <ul>
+                    <li><strong>Start:</strong> Just type <code>llmcl</code></li>
+                    <li><strong>Navigate:</strong> Arrow keys move cursor</li>
+                    <li><strong>Select:</strong> Space toggles files/folders</li>
+                    <li><strong>Options:</strong> Tab switches to settings</li>
+                    <li><strong>Export:</strong> F1-F4 for AI providers</li>
+                    <li><strong>Quick:</strong> Ctrl+C copies to clipboard</li>
+                </ul>
+            </div>
+
+            <!-- Essential Commands -->
+            <div class="grid-card commands">
+                <h3><span class="emoji">⚡</span> Essential Commands</h3>
+                <div class="command-item">llmcl</div>
+                <p style="font-size: 0.8rem; margin-bottom: 0.8rem;">Open interactive menu (90% use case)</p>
+                
+                <div class="command-item">llmcl --full</div>
+                <p style="font-size: 0.8rem; margin-bottom: 0.8rem;">Export complete codebase</p>
+                
+                <div class="command-item">aider</div>
+                <p style="font-size: 0.8rem; margin-bottom: 0.8rem;">Start AI coding session</p>
+                
+                <div class="command-item">llmcl | aider</div>
+                <p style="font-size: 0.8rem;">Power combo! 🚀</p>
+            </div>
+
+            <!-- Benefits -->
+            <div class="grid-card benefits">
+                <h3><span class="emoji">💎</span> Why You'll Love This</h3>
+                <ul>
+                    <li><strong>Instant Understanding:</strong> Turn weeks into minutes</li>
+                    <li><strong>No More Overwhelm:</strong> Pick only what matters</li>
+                    <li><strong>AI-Ready:</strong> Perfect format for Claude/GPT</li>
+                    <li><strong>Zero Learning Curve:</strong> GUI-first design</li>
+                    <li><strong>Save Hours Daily:</strong> Join 10,000+ devs</li>
+                    <li><strong>Ship Faster:</strong> From idea to code in minutes</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer CTA -->
+        <footer class="footer">
+            <h2 class="cta-title">🚀 Start Your AI-Powered Journey Today!</h2>
+            <p>Install both tools and transform how you code forever</p>
+            <div class="cta-commands">
+                <div class="cta-command">pip install llm-code-lens aider-chat</div>
+                <div class="cta-command">llmcl && echo "Welcome to the future! 🎉"</div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Code Lens + Aider Cheatsheet</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 2vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .cheatsheet {
+            width: min(210mm, 90vw);
+            height: min(297mm, calc(90vw * 1.414));
+            max-width: 210mm;
+            max-height: 297mm;
+            background: white;
+            border-radius: min(12px, 1vw);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            padding: min(20px, 2.5vw);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: min(15px, 2vw) min(20px, 2.5vw);
+            border-radius: min(10px, 1vw);
+            margin-bottom: min(15px, 2vw);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .main-title {
+            font-size: clamp(18px, 3vw, 22px);
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        
+        .subtitle {
+            font-size: clamp(11px, 1.8vw, 13px);
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .header-right {
+            text-align: right;
+            font-size: clamp(9px, 1.5vw, 11px);
+            opacity: 0.8;
+        }
+        
+        /* Tool Logos and Headers */
+        .tools-section {
+            display: flex;
+            gap: min(15px, 2vw);
+            margin-bottom: min(15px, 2vw);
+            flex-wrap: wrap;
+        }
+        
+        .tool-header {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            border-radius: min(10px, 1vw);
+            padding: min(15px, 2vw);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-header.llmcl {
+            border-left: 4px solid #3498db;
+        }
+        
+        .tool-header.aider {
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .tool-logo {
+            width: min(50px, 6vw);
+            height: min(50px, 6vw);
+            border-radius: min(12px, 1.5vw);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(20px, 3vw, 24px);
+            margin-right: min(12px, 1.5vw);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .tool-logo.llmcl {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+        
+        .tool-logo.aider {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+        
+        .tool-info h3 {
+            font-size: clamp(14px, 2.2vw, 16px);
+            color: #2c3e50;
+            margin-bottom: 2px;
+            font-weight: 600;
+        }
+        
+        .tool-tagline {
+            font-size: clamp(9px, 1.5vw, 11px);
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 4px;
+        }
+        
+        .install-cmd {
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: clamp(8px, 1.3vw, 10px);
+            background: #f1f2f6;
+            padding: 4px 8px;
+            border-radius:4px;
+            color: #2c3e50;
+        }
+        
+        /* Main Content */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: min(15px, 2vw);
+        }
+        
+        /* Development Path */
+        .dev-path-section {
+            background: #f8f9fa;
+            border-radius: min(10px, 1vw);
+            padding: min(15px, 2vw);
+            margin-bottom: min(15px, 2vw);
+        }
+        
+        .section-title {
+            font-size: clamp(12px, 2vw, 14px);
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: min(10px, 1.5vw);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 6px;
+            font-size: clamp(14px, 2.2vw, 16px);
+        }
+        
+        /* Development Path as Visual Road */
+        .dev-path {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            gap: min(8px, 1vw);
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .path-step {
+            background: white;
+            border-radius: min(8px, 1vw);
+            padding: min(10px, 1.5vw);
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
+            flex: 1;
+            min-width: 180px;
+            margin-bottom: min(8px, 1vw);
+        }
+        
+        .path-step::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: clamp(16px, 2.5vw, 20px);
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .path-step:nth-child(even) {
+            margin-left: auto;
+            margin-right: 0;
+        }
+        
+        .path-step:nth-child(even)::after {
+            content: '↓';
+            right: 50%;
+            bottom: -15px;
+            top: auto;
+            transform: translateX(50%);
+        }
+        
+        .path-step:last-child::after {
+            display: none;
+        }
+        
+        .step-number {
+            width: min(24px, 3vw);
+            height: min(24px, 3vw);
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(10px, 1.5vw, 12px);
+            font-weight: bold;
+            margin-right: min(10px, 1.5vw);
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: clamp(10px, 1.6vw, 12px);
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+        
+        .step-desc {
+            font-size: clamp(8px, 1.3vw, 10px);
+            color: #666;
+            line-height: 1.3;
+        }
+        
+        .step-tool {
+            font-size: clamp(7px, 1.1vw, 9px);
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: min(8px, 1vw);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .step-tool.aider {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        /* Bottom Grid */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: min(15px, 2vw);
+        }
+        
+        .content-section {
+            background: #f8f9fa;
+            border-radius: min(10px, 1vw);
+            padding: min(15px, 2vw);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* GUI Workflow Cards */
+        .gui-workflow {
+            display: flex;
+            flex-direction: column;
+            gap: min(6px, 1vw);
+        }
+        
+        .gui-step {
+            background: white;
+            border-radius: min(6px, 0.8vw);
+            padding: min(8px, 1.2vw);
+            font-size: clamp(9px, 1.4vw, 10px);
+            border-left: 3px solid #3498db;
+            line-height: 1.3;
+        }
+        
+        .gui-step-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 3px;
+        }
+        
+        .gui-step-desc {
+            color: #666;
+        }
+        
+        .gui-highlight {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.1));
+            border-left-color: #2980b9;
+        }
+        
+        /* Commands */
+        .commands-list {
+            display: flex;
+            flex-direction: column;
+            gap: min(6px, 1vw);
+        }
+        
+        .command-item {
+            background: white;
+            border-radius: min(6px, 0.8vw);
+            padding: min(8px, 1.2vw);
+            font-size: clamp(9px, 1.4vw, 10px);
+        }
+        
+        .command-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 3px;
+        }
+        
+        .command-code {
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 4px 6px;
+            border-radius: 3px;
+            font-size: clamp(7px, 1.2vw, 9px);
+            margin-top: 3px;
+            word-break: break-all;
+            display: block;
+        }
+        
+        /* Benefits */
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: min(6px, 1vw);
+        }
+        
+        .benefit-item {
+            background: white;
+            border-radius: min(6px, 0.8vw);
+            padding: min(8px, 1.2vw);
+            font-size: clamp(9px, 1.4vw, 10px);
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .benefit-icon {
+            color: #27ae60;
+            margin-right: 6px;
+            font-size: clamp(10px, 1.6vw, 12px);
+            margin-top: 1px;
+        }
+        
+        .benefit-text {
+            color: #2c3e50;
+            line-height: 1.3;
+        }
+        
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: min(10px, 1.5vw) min(15px, 2vw);
+            border-radius: min(8px, 1vw);
+            margin-top: min(15px, 2vw);
+            text-align: center;
+            font-size: clamp(9px, 1.5vw, 11px);
+        }
+        
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .footer-desc {
+            opacity: 0.9;
+            font-size: clamp(8px, 1.3vw, 10px);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .cheatsheet {
+                width: 95vw;
+                height: calc(95vw * 1.414);
+            }
+            
+            .tools-section {
+                flex-direction: column;
+            }
+            
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .path-step {
+                min-width: 100%;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            
+            .path-step::after {
+                content: '↓' !important;
+                right: 50% !important;
+                bottom: -15px !important;
+                top: auto !important;
+                transform: translateX(50%) !important;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-right {
+                text-align: center;
+                margin-top: 10px;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .cheatsheet {
+                width: 210mm;
+                height: 297mm;
+                max-width: none;
+                max-height: none;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cheatsheet">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div>
+                    <div class="main-title">🚀 LLM Code Lens + Aider</div>
+                    <div class="subtitle">The Ultimate AI-Powered Development Workflow</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div>Your Complete Guide to</div>
+                <div><strong>Smart Code Analysis + AI Pair Programming</strong></div>
+            </div>
+        </div>
+        
+        <!-- Tool Headers -->
+        <div class="tools-section">
+            <div class="tool-header llmcl">
+                <div class="tool-logo llmcl">🔍</div>
+                <div class="tool-info">
+                    <h3>LLM Code Lens</h3>
+                    <div class="tool-tagline">The Code Intelligence Platform</div>
+                    <div class="install-cmd">pip install llm-code-lens</div>
+                </div>
+            </div>
+            <div class="tool-header aider">
+                <div class="tool-logo aider">🤖</div>
+                <div class="tool-info">
+                    <h3>Aider</h3>
+                    <div class="tool-tagline">AI Pair Programming in Terminal</div>
+                    <div class="install-cmd">pip install aider-chat</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <!-- Development Path -->
+            <div class="dev-path-section">
+                <div class="section-title">
+                    <span class="section-icon">🛣️</span>
+                    Your Development Journey
+                </div>
+                <div class="dev-path">
+                    <div class="path-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Launch Interactive Analysis</div>
+                            <div class="step-desc">Run llmcl and use the GUI to explore your project</div>
+                        </div>
+                        <div class="step-tool">LLMCL</div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Select Key Files & Folders</div>
+                            <div class="step-desc">Use arrow keys and space to choose what to analyze</div>
+                        </div>
+                        <div class="step-tool">LLMCL</div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Choose Your LLM Provider</div>
+                            <div class="step-desc">Pick Claude, ChatGPT, or any provider you prefer</div>
+                        </div>
+                        <div class="step-tool">LLMCL</div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Auto-Open in Browser</div>
+                            <div class="step-desc">LLMCL opens your chosen LLM with ready-to-paste analysis</div>
+                        </div>
+                        <div class="step-tool">LLMCL</div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <div class="step-title">Paste & Ask Questions</div>
+                            <div class="step-desc">Ctrl+V the analysis, ask "What should I refactor first?"</div>
+                        </div>
+                        <div class="step-tool">LLMCL</div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <div class="step-title">Start AI Pair Programming</div>
+                            <div class="step-desc">Fire up Aider to implement the AI's recommendations</div>
+                        </div>
+                        <div class="step-tool aider">Aider</div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <div class="step-title">Code with Confidence</div>
+                            <div class="step-desc">Let AI help you write, fix, and improve your code</div>
+                        </div>
+                        <div class="step-tool aider">Aider</div>
+                    </div>
+                    
+                    <div class="path-step">
+                        <div class="step-number">8</div>
+                        <div class="step-content">
+                            <div class="step-title">Re-analyze & Repeat</div>
+                            <div class="step-desc">Check your improvements and find the next priority</div>
+                        </div>
+                        <div class="step-tool">LLMCL</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Grid -->
+            <div class="bottom-grid">
+                <!-- LLMCL GUI Workflow -->
+                <div class="content-section">
+                    <div class="section-title">
+                        <span class="section-icon">🖱️</span>
+                        LLMCL Interactive Workflow
+                    </div>
+                    <div class="gui-workflow">
+                        <div class="gui-step">
+                            <div class="gui-step-title">🚀 Start Analysis</div>
+                            <div class="gui-step-desc">llmcl . --interactive</div>
+                        </div>
+                        
+                        <div class="gui-step gui-highlight">
+                            <div class="gui-step-title">📁 Navigate with Arrow Keys</div>
+                            <div class="gui-step-desc">↑↓ to move, → to expand folders, ← to collapse</div>
+                        </div>
+                        
+                        <div class="gui-step">
+                            <div class="gui-step-title">✅ Select with Space</div>
+                            <div class="gui-step-desc">Space to select files/folders, Tab to switch sections</div>
+                        </div>
+                        
+                        <div class="gui-step gui-highlight">
+                            <div class="gui-step-title">⚙️ Configure Options</div>
+                            <div class="gui-step-desc">Set output format, choose LLM provider, exclude patterns</div>
+                        </div>
+                        
+                        <div class="gui-step">
+                            <div class="gui-step-title">🌐 Auto-Launch Browser</div>
+                            <div class="gui-step-desc">LLMCL opens your LLM provider with analysis ready to paste</div>
+                        </div>
+                        
+                        <div class="gui-step gui-highlight">
+                            <div class="gui-step-title">📋 Paste & Explore</div>
+                            <div class="gui-step-desc">Ctrl+V the analysis, start asking insightful questions!</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aider Commands -->
+                <div class="content-section">
+                    <div class="section-title">
+                        <span class="section-icon">⚡</span>
+                        Essential Aider Commands
+                    </div>
+                    <div class="commands-list">
+                        <div class="command-item">
+                            <div class="command-title">🤖 Start with Claude Sonnet</div>
+                            <div class="command-code">aider --model sonnet</div>
+                        </div>
+                        
+                        <div class="command-item">
+                            <div class="command-title">🔥 Use Open Source Mistral</div>
+                            <div class="command-code">aider --model ollama_chat/mistrallarge</div>
+                        </div>
+                        
+                        <div class="command-item">
+                            <div class="command-title">📂 Add Specific Files</div>
+                            <div class="command-code">aider src/main.py tests/test_main.py</div>
+                        </div>
+                        
+                        <div class="command-item">
+                            <div class="command-title">📖 Include Documentation</div>
+                            <div class="command-code">aider --read README.md src/</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Why This Combo Rocks -->
+                <div class="content-section">
+                    <div class="section-title">
+                        <span class="section-icon">🚀</span>
+                        Why This Combo Rocks
+                    </div>
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">✨</div>
+                            <div class="benefit-text">
+                                <strong>No more analysis paralysis</strong> - LLMCL shows exactly what needs attention
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🎯</div>
+                            <div class="benefit-text">
+                                <strong>Smart prioritization</strong> - Work on high-impact improvements first
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🤖</div>
+                            <div class="benefit-text">
+                                <strong>Context-aware AI</strong> - Aider understands your entire codebase structure
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📈</div>
+                            <div class="benefit-text">
+                                <strong>Accelerated learning</strong> - Learn best practices from AI recommendations
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">⚡</div>
+                            <div class="benefit-text">
+                                <strong>10x productivity</strong> - Ship better code faster with systematic approach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-title">🎉 Ready to Transform Your Development Workflow?</div>
+            <div class="footer-desc">
+                Start with <strong>pip install llm-code-lens</strong> • Then add <strong>pip install aider-chat</strong> • Join thousands of developers coding smarter with AI
+            </div>
+        </div>
+    </div>
+</body>
+</html>
