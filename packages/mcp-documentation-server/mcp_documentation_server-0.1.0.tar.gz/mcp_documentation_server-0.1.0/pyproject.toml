@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-documentation-server"
+version = "0.1.0"
+description = "A FastMCP server for semantic search over technical documentation (.txt, .md files)"
+readme = "README.md"
+authors = [
+    {name = "Developer", email = "dev@example.com"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+keywords = ["mcp", "documentation", "semantic-search", "fastmcp", "embeddings"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9", 
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: General",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "fastmcp>=0.1.0",
+    "sentence-transformers>=2.2.0",
+    "scikit-learn>=1.3.0",
+    "numpy>=1.21.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/your-username/mcp-documentation-server"
+"Repository" = "https://github.com/your-username/mcp-documentation-server"
+"Issues" = "https://github.com/your-username/mcp-documentation-server/issues"
+"Documentation" = "https://github.com/your-username/mcp-documentation-server#readme"
+
+[project.scripts]
+mcp-documentation-server = "mcp_documentation_server.server:main"
+mcp-doc-server = "mcp_documentation_server.server:main"
+mcp-doc-install = "mcp_documentation_server.install:main"
+mcp-doc-launcher = "mcp_documentation_server.launcher:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mcp_documentation_server*"]
+exclude = ["test*", "tests*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 88
