@@ -1,0 +1,74 @@
+[project]
+name = "indexed-dict"
+version = "0.3.1"
+description = "A dictionary that preserves insertion order and allows index-based operations."
+readme = "README.md"
+authors = [{ name = "Ashlynn Antrobus", email = "ashlynn@prosepal.io" }]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+    "Intended Audience :: Developers",
+
+]
+requires-python = ">=3.10"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+testing = [
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+]
+tox = [
+    "tox>=4.26.0",
+    "tox-uv>=1.25.0",
+]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/{tests,docs,tools}/*" = ["F401", "I001"]
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "--cov=indexed_dict --cov-fail-under=90"
+
+[tool.tox]
+min_version = "4.0"
+requires = ["tox", "tox-uv"]
+env_list = ["py310", "py311", "py312", "py313"]
+
+[tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
+description = "Run test under {base_python}"
+dependency_groups = ["testing"]
+commands = [
+  ["pytest", "--cov=indexed_dict", "--cov-report=lcov:lcov.info"],
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "__all__",
+    "if TYPE_CHECKING:",
+    "if sys.version_info < (3, 11):"
+]
