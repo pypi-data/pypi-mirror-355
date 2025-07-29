@@ -1,0 +1,129 @@
+Metadata-Version: 2.4
+Name: mammoclip
+Version: 0.1.6
+Summary: Mammo-CLIP: A Vision Language Foundation Model to Enhance Data Efficiency and Robustness in Mammography
+Home-page: https://github.com/mammoclip/mammoclip
+Author: Mammo-CLIP Team
+Author-email: contact@mammoclip.com
+License: MIT
+Project-URL: Repository, https://github.com/batmanlab/Mammo-CLIP
+Project-URL: Original Paper, https://arxiv.org/abs/2409.03675
+Project-URL: Bug Tracker, https://github.com/batmanlab/Mammo-CLIP/issues
+Keywords: mammography,clip,medical-imaging,deep-learning,computer-vision
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: torch>=1.9.0
+Requires-Dist: torchvision>=0.10.0
+Requires-Dist: transformers>=4.20.0
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: opencv-python>=4.5.0
+Requires-Dist: pillow>=8.0.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: dicomsdl>=0.109.0
+Requires-Dist: omegaconf>=2.1.0
+Requires-Dist: huggingface-hub>=0.10.0
+Requires-Dist: safetensors>=0.3.0
+Requires-Dist: albumentations>=1.0.0
+Requires-Dist: pandas>=1.0.0
+Requires-Dist: scikit-learn>=0.24.0
+Requires-Dist: timm>=0.6.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: isort>=5.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Provides-Extra: training
+Requires-Dist: albumentations>=1.0.0; extra == "training"
+Requires-Dist: pandas>=1.3.0; extra == "training"
+Requires-Dist: scikit-learn>=1.0.0; extra == "training"
+Requires-Dist: matplotlib>=3.5.0; extra == "training"
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Mammo-CLIP
+
+**Mammo-CLIP: A Vision Language Foundation Model to Enhance Data Efficiency and Robustness in Mammography**
+
+A pip-installable package for zero-shot mammography analysis using the Mammo-CLIP model.
+
+## Installation
+
+```bash
+pip install mammoclip
+```
+
+## Quick Start
+
+### Python API
+
+```python
+import mammoclip
+
+# Initialize model (downloads automatically)
+model = mammoclip.MammoClipModel()
+
+# Analyze an image (supports DICOM, PNG, JPEG, etc.)
+results = model.predict("mammogram.dcm", {
+    "mass": ["no mass", "mass"],
+    "malignancy": ["no malignancy", "malignancy"],
+    "density": ["fatty", "scattered areas of fibroglandular density", 
+               "heterogeneously dense", "extremely dense"]
+})
+
+print(results)
+```
+
+### Command Line Interface
+
+```bash
+# Basic usage
+mammoclip-inference --image mammogram.dcm
+
+# With custom prompts
+mammoclip-inference --image mammogram.png --prompts custom_prompts.json
+```
+
+## Supported Image Formats
+
+- **DICOM**: `.dcm`, `.dicom` 
+- **Standard Images**: `.png`, `.jpg`, `.jpeg`, `.tiff`, `.bmp`
+
+## Model Information
+
+This package is based on the research paper:
+
+**"Mammo-CLIP: A Vision Language Foundation Model to Enhance Data Efficiency and Robustness in Mammography"**
+
+- **Paper**: https://arxiv.org/abs/2409.03675
+- **Original Code**: https://github.com/batmanlab/Mammo-CLIP
+
+## Citation
+
+```bibtex
+@article{shen2024mammoclip,
+  title={Mammo-CLIP: A Vision Language Foundation Model to Enhance Data Efficiency and Robustness in Mammography},
+  author={Shen, Shantanu and Xu, Haoyue and Weng, Jaden and Wu, Jay and Chen, Evangelia and Abbasi, Salma and Wang, Rayna and Bouzid, Hania and Rajpurkar, Pranav},
+  journal={arXiv preprint arXiv:2409.03675},
+  year={2024}
+}
+```
+
+## License
+
+MIT License
