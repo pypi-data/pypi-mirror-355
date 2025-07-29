@@ -1,0 +1,49 @@
+{
+  "groups": [
+    {
+      "group_id": "group1",
+      "description": "A group of developers working on the Dolphin project.",
+      "members": [
+        "minh@mail.com",
+        "quynh@mail.com"
+      ],
+      "devices": [
+        {
+          "device_id": "device_1",
+          "ip": "127.0.0.1",
+          "device_type": "linux",
+          "credentials": [
+            {
+              "connection_type": "ssh",
+              "priority": 1,
+              "description": "SSH to localhost",
+              "username": "minh",
+              "password": "1475963",
+              "port": 22,
+              "extra": {}
+            }
+          ]
+        }
+      ],
+      "device_sets": [
+        {
+          "device_set_id": "set-1",
+          "description": "A device set with the devices of many colors",
+          "devices": ["device_1"]
+        }
+      ]
+    },
+    {
+      "group_id": "group2",
+      "description": "A group of developers working on the Whale project.",
+      "members": [
+        "minh@mail.com",
+        "hoang@mail.com",
+        "duc@mail.com"
+      ],
+      "devices": [],
+      "device_sets": [],
+      "flows": []
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "test_ssh_2_commands": {
+    "ff_version": "0.1",
+    "params": [],
+    "globals": {},
+    "nodes": [
+      {
+        "node_id": "ssh_init",
+        "type": "ssh",
+        "timeout": 10,
+        "trigger_rule": "success"
+      },
+      {
+        "node_id": "ssh_touch",
+        "type": "command",
+        "command": "touch test_formica/abcdef.txt",
+        "timeout": 10,
+        "trigger_rule": "success"
+      },
+      {
+        "node_id": "ssh_ls",
+        "type": "command",
+        "command": "ls -la",
+        "timeout": 10,
+        "trigger_rule": "success"
+      },
+      {
+        "node_id": "ssh_exit",
+        "type": "exit",
+        "timeout": 10,
+        "trigger_rule": "success"
+      }
+    ],
+    "directed_links": {
+      "ssh_init": [
+        "ssh_touch"
+      ],
+      "ssh_touch": [
+        "ssh_ls"
+      ],
+      "ssh_ls": [
+        "ssh_exit"
+      ]
+    }
+  },
+  "test_2_commands_local": {
+    "version": "0.1",
+    "params": [],
+    "globals": {},
+    "nodes": [
+      {
+        "node_id": "ssh_touch",
+        "type": "command",
+        "command": "touch test_formica/abcdef.txt",
+        "timeout": 10,
+        "trigger_rule": "success"
+      },
+      {
+        "node_id": "ssh_ls",
+        "type": "command",
+        "command": "ls  test_formica",
+        "timeout": 10,
+        "trigger_rule": "success"
+      }
+    ],
+    "directed_links": {
+      "ssh_touch": [
+        "ssh_ls"
+      ]
+    }
+  },
+  "test_global_var": {
+    "version": "0.1",
+    "params": [],
+    "globals": {
+      "file_name": "test_global_var.txt"
+    },
+    "nodes": [
+      {
+        "node_id": "create_file",
+        "type": "command",
+        "command": "touch test_formica/{{ file_name }}",
+        "timeout": 10,
+        "trigger_rule": "success"
+      },
+      {
+        "node_id": "cmd_ls",
+        "type": "command",
+        "command": "ls -la test_formica",
+        "timeout": 10,
+        "trigger_rule": "success"
+      }
+    ],
+    "directed_links": {
+      "create_file": [
+        "cmd_ls"
+      ]
+    }
+  },
+  "test_decision_node": {
+    "version": "0.1",
+    "params": [],
+    "globals": {},
+    "nodes": [
+      {
+        "node_id": "ssh_command_ls",
+        "type": "command",
+        "command": "ls test_formica",
+        "timeout": 10,
+        "trigger_rule": "success"
+      },
+      {
+        "node_id": "dummy_decision",
+        "type": "decision",
+        "condition": "'dummy.txt' in '{{ ssh_command_ls.output }}'",
+        "true_branch": "remove_dummy",
+        "false_branch": "create_dummy",
+        "timeout": 10,
+        "trigger_rule": "success"
+      },
+      {
+        "node_id": "remove_dummy",
+        "type": "command",
+        "command": "rm test_formica/dummy.txt",
+        "timeout": 10,
+        "trigger_rule": "success"
+      },
+      {
+        "node_id": "create_dummy",
+        "type": "command",
+        "command": "touch test_formica/dummy.txt",
+        "timeout": 10,
+        "trigger_rule": "success"
+      }
+    ],
+    "directed_links": {
+      "ssh_command_ls": [
+        "dummy_decision"
+      ],
+      "dummy_decision": [
+        "remove_dummy",
+        "create_dummy"
+      ]
+    }
+  },
+  "test_params_and_global_vars": {
+    "version": "0.1",
+    "params": ["ls_option"],
+    "globals": {
+      "ls_target": "test_formica"
+    },
+    "nodes": [
+      {
+        "node_id": "create_file",
+        "type": "command",
+        "command": "ls {{ ls_option }} {{ ls_target }}",
+        "timeout": 10,
+        "trigger_rule": "success"
+      }
+    ],
+    "directed_links": {
+    }
+  }
+}
