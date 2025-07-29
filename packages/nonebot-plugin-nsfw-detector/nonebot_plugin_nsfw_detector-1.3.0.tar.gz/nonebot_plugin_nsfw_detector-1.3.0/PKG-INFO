@@ -1,0 +1,284 @@
+Metadata-Version: 2.1
+Name: nonebot-plugin-nsfw-detector
+Version: 1.3.0
+Summary: 基于 nsfwpy.cn API 的 NoneBot2 NSFW 图片检测插件，自动检测群聊中的不当图片并进行相应处理
+Keywords: nonebot,nonebot2,nsfw,detector,bot,qq
+Author-Email: Msg-Lbo <msglbo@foxmail.com>
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: Robot Framework
+Classifier: Framework :: Robot Framework :: Library
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Project-URL: Homepage, https://github.com/Msg-Lbo/nonebot-plugin-nsfw-detector
+Project-URL: Repository, https://github.com/Msg-Lbo/nonebot-plugin-nsfw-detector
+Project-URL: Documentation, https://github.com/Msg-Lbo/nonebot-plugin-nsfw-detector#readme
+Project-URL: Changelog, https://github.com/Msg-Lbo/nonebot-plugin-nsfw-detector/releases
+Requires-Python: >=3.8
+Requires-Dist: nonebot2>=2.0.0
+Requires-Dist: nonebot-adapter-onebot>=2.0.0
+Requires-Dist: httpx>=0.24.0
+Description-Content-Type: text/markdown
+
+# NSFW检测器插件
+
+基于 [nsfwpy.cn](https://nsfwpy.cn) API 的 NoneBot2 NSFW 图片检测插件，自动检测群聊中的不当图片并进行相应处理。
+
+## 功能特性
+
+- 🔍 **自动检测**：实时检测群聊中的图片内容
+- ⚠️ **智能警告**：对违规用户进行警告和记录
+- 🔇 **自动禁言**：违规后自动禁言指定时间
+- 🗑️ **消息撤回**：自动撤回违规图片消息和插件消息
+- 👢 **踢出群聊**：达到警告上限后可自动踢出
+- ⚙️ **灵活配置**：支持每个群组独立配置参数
+- 📊 **数据持久化**：警告记录和配置自动保存
+- 🛡️ **智能白名单**：自动跳过管理员、群主和超级用户
+- 🧪 **测试功能**：提供测试命令验证功能运行状态
+- ⏰ **定时撤回**：插件消息可配置延迟自动撤回
+
+## 安装配置
+
+### 1. 安装依赖
+
+在 `pyproject.toml` 中添加依赖：
+
+```toml
+[tool.poetry.dependencies]
+httpx = "^0.24.0"
+```
+
+### 2. 环境配置
+
+在 `.env` 文件中配置超级用户：
+
+```env
+SUPERUSERS=["你的QQ号"]
+```
+
+### 3. 启用插件
+
+放到plugins文件夹下即可
+
+## 使用说明
+
+### 用户命令
+
+> 注意：用户命令所有人都可以使用，不会触发处罚操作
+
+#### 检测图片
+```bash
+/nsfw_check                     # 回复包含图片的消息来检测
+/nsfw_check [附带图片]           # 发送命令时附带图片检测
+```
+
+**功能说明**：
+- 🔍 对指定图片进行NSFW内容检测
+- 📊 显示详细的各类别概率结果
+- ⏱️ 显示检测耗时信息
+- 📈 提供综合风险评级
+- ✅ 纯检测功能，不会触发禁言、踢出等操作
+
+**检测结果包含**：
+- 🎨 Drawing（绘画）
+- 🔞 Hentai（成人动画）
+- 😊 Neutral（正常内容）
+- 🚫 Porn（色情内容）
+- 💋 Sexy（性感内容）
+
+**风险评级**：
+- 🚨 高风险（≥80%）
+- ⚠️ 中风险（≥50%）
+- 🟡 低风险（≥20%）
+- ✅ 安全（<20%）
+
+### 管理员命令
+
+> 注意：所有管理命令仅限超级用户使用
+
+#### 查看配置
+```bash
+/nsfw_config                    # 查看默认配置
+```
+
+#### 设置配置
+```bash
+# 在群聊中使用（推荐）
+/nsfw_set threshold 0.5         # 设置当前群阈值
+/nsfw_set ban_time 30          # 设置当前群禁言时间
+/nsfw_set warning_limit 2      # 设置当前群警告上限
+/nsfw_set kick_enabled false   # 禁用踢出功能
+/nsfw_set enabled false        # 禁用检测功能
+/nsfw_set auto_recall true     # 启用消息自动撤回
+/nsfw_set recall_delay 10      # 设置撤回延迟时间
+
+# 指定群聊设置
+/nsfw_set 群号 threshold 0.3   # 设置指定群配置
+```
+
+#### 查看状态
+```bash
+/nsfw_status                   # 查看当前群状态
+/nsfw_status 群号              # 查看指定群状态
+```
+
+#### 重置警告
+```bash
+/nsfw_reset                    # 重置当前群所有警告
+/nsfw_reset @用户              # 重置当前群指定用户
+/nsfw_reset 用户QQ             # 重置当前群指定用户
+/nsfw_reset 群号 用户QQ        # 重置指定群指定用户
+```
+
+#### 测试功能
+```bash
+/nsfw_test_recall              # 测试消息自动撤回功能
+```
+
+### 配置参数说明
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `threshold` | float | 0.7 | NSFW检测阈值 (0.0-1.0)，越低越严格 |
+| `ban_time` | int | 60 | 禁言时间（分钟） |
+| `warning_limit` | int | 3 | 警告次数上限，达到后执行踢出 |
+| `kick_enabled` | bool | true | 是否启用踢出功能 |
+| `enabled` | bool | true | 是否启用NSFW检测 |
+| `auto_recall` | bool | true | 是否自动撤回插件发送的消息 |
+| `recall_delay` | int | 5 | 消息撤回延迟时间（秒） |
+
+### 工作流程
+
+1. **权限检查**：检查用户是否为管理员、群主或超级用户
+2. **图片检测**：普通用户发送图片时自动调用API检测
+3. **违规判定**：Hentai概率超过阈值视为违规
+4. **自动处理**：
+   - 撤回违规消息
+   - 禁言用户指定时间
+   - 记录警告次数
+   - 发送警告消息
+5. **达到上限**：警告次数达到上限时踢出群聊（如果启用）
+
+### 白名单机制
+
+以下用户类型将**自动跳过**NSFW检测：
+
+- 🔑 **超级用户**：在 `.env` 文件中配置的 `SUPERUSERS`
+- 👑 **群主**：群聊的创建者和拥有者
+- 🛡️ **群管理员**：群聊中的管理员
+
+> 💡 **说明**：白名单用户发送的图片不会被检测，也不会触发任何警告或处罚机制。
+
+### 示例配置
+
+```bash
+# 设置较严格的检测（阈值0.5，禁言30分钟，2次警告后踢出）
+/nsfw_set threshold 0.5
+/nsfw_set ban_time 30
+/nsfw_set warning_limit 2
+/nsfw_set kick_enabled true
+
+# 设置宽松的检测（仅警告不踢出）
+/nsfw_set threshold 0.8
+/nsfw_set kick_enabled false
+
+# 设置消息撤回（启用自动撤回，10秒后撤回）
+/nsfw_set auto_recall true
+/nsfw_set recall_delay 10
+
+# 禁用消息撤回
+/nsfw_set auto_recall false
+```
+
+## 数据存储
+
+插件数据存储在 `data/nsfw_detector/` 目录下：
+
+- `warnings.json`：用户警告记录
+- `group_configs.json`：群组配置信息
+
+## 注意事项
+
+1. **API限制**：使用第三方API，请注意调用频率
+2. **权限要求**：机器人需要群管理员权限才能禁言和踢人
+3. **网络依赖**：需要稳定的网络连接访问检测API
+4. **隐私保护**：图片仅用于检测，不会存储
+5. **误判处理**：如有误判可使用重置命令清除警告记录
+6. **白名单机制**：管理员、群主和超级用户的图片不会被检测
+7. **权限获取**：需要机器人有获取群成员信息的权限
+
+## 故障排除
+
+### 常见问题
+
+1. **API调用失败**：检查网络连接和API服务状态
+2. **权限不足**：确保机器人有群管理员权限
+3. **命令无响应**：检查是否正确配置超级用户
+4. **配置不生效**：确认命令格式和参数值正确
+5. **白名单不生效**：检查机器人是否有获取群成员信息的权限
+6. **管理员被检测**：确认用户在群内的实际权限级别
+7. **图片下载失败**：
+   - QQ图片链接可能有访问限制，插件会自动重试3次
+   - 如果持续失败，可能是图片已过期或权限问题
+   - 检查网络连接和防火墙设置
+8. **检测超时**：
+   - 网络较慢时可能出现超时，插件会自动重试
+   - 可以稍后重新发送图片进行检测
+9. **消息撤回失败**：
+   - 确保机器人有撤回消息的权限
+   - 消息可能已经被其他人撤回
+   - 使用 `/nsfw_test_recall` 命令测试撤回功能
+   - 检查 `recall_delay` 设置是否合理（建议1-30秒）
+
+### 日志查看
+
+插件会输出详细的日志信息，包括：
+- 权限检查结果
+- API调用状态
+- 检测结果
+- 处理过程
+- 错误信息
+
+## 开发信息
+
+- **API提供商**：[nsfwpy.cn](https://nsfwpy.cn)
+- **检测模型**：mobilenet_v2
+- **支持格式**：JPEG、PNG等常见图片格式
+- **框架版本**：NoneBot2 + OneBot V11
+
+## 更新日志
+
+### 1.3.0
+- 🗑️ 新增消息自动撤回功能
+- ⚙️ 新增 `auto_recall` 和 `recall_delay` 配置参数
+- 🧪 新增 `/nsfw_test_recall` 测试命令
+- 📝 优化日志记录和错误处理
+
+### v1.2.0
+- 🆕 新增 `/nsfw_check` 用户命令
+- 📊 支持手动检测图片NSFW内容
+- 🔍 显示详细检测结果和风险评级
+- ⏱️ 显示检测耗时信息
+- ✅ 纯检测功能，不触发处罚操作
+- 📱 支持回复消息和附带图片两种使用方式
+
+### v1.1.0
+- 新增智能白名单功能
+- 自动跳过管理员、群主和超级用户检测
+- 优化权限检查逻辑
+- 增强日志记录功能
+
+### v1.0.0
+- 基础NSFW检测功能
+- 群组配置管理
+- 警告记录系统
+- 管理员命令支持
+- 数据持久化存储 
