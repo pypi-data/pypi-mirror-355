@@ -1,0 +1,64 @@
+Metadata-Version: 2.4
+Name: twmap
+Version: 0.6.3
+Summary: Python bindings for the crate twmap
+Author: Patiga <dev@patiga.eu>
+Author-email: Patiga <dev@patiga.eu>
+License: AGPL-3.0-only
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Source Code, https://gitlab.com/Patiga/twmap-py
+
+TwMap Python Module
+===
+
+Safely parse, edit and save [Teeworlds](https://www.teeworlds.com/) and [DDNet](https://ddnet.org/) maps - in Python!
+
+See the Rust library [twmap](https://gitlab.com/Patiga/twmap) for details on the wrapped library.
+
+Installation
+---
+
+Simply do `pip install twmap`!
+
+Usage
+---
+
+The `help` function is your friend!
+Once you imported `twmap`, do `help(twmap.Map)` to access the documentation of the `Map` struct.
+It also contains important general knowledge about the module.
+
+To load your first map, do `map = twmap.Map(path-to-map)`.
+To see the attributes and documentation about an object... `help` helps you!
+
+For example, have a look into `help(map.groups)` and `help(map.groups[0])`.
+The first one will give you methods on the group collection and the second one attributes and methods on group objects.
+If you are confused about something in the module, the general information in `help(twmap.Map)` might help you.
+
+Manual Building (on Linux)
+---
+
+You need [Rust](https://www.rust-lang.org/tools/install) installed on your system.
+To compile twmap in release mode, execute the following command in the source root:
+```
+cargo build --release
+```
+Locate the file `target/release/libtwmap.so`.
+This file is only importable under `twmap.so`.
+Symlink or copy it to your desired location.
+
+Publishing Steps
+---
+
+These steps are the ones I use to upload new versions of twmap-py to [pypi](https://pypi.org/).
+
+**Linux**:
+
+1. `podman pull ghcr.io/pyo3/maturin`
+2. `podman run --env "MATURIN_PYPI_TOKEN=<token>" --rm -v $(pwd):/io ghcr.io/pyo3/maturin publish -f`
+
+**Cross-compiling to Windows**:
+
+1. Download the newest version of the oldest non-end-of-life Python edition "Windows x86-64 embeddable zip file" from https://www.python.org/downloads/windows/. Last used: https://www.python.org/ftp/python/3.8.2/python-3.8.2-embed-amd64.zip
+2. Unzip in project root
+3. `MATURIN_PYPI_TOKEN='<token>' RUSTFLAGS='-C target-feature=+crt-static' PYO3_CROSS_LIB_DIR='./<path-to-unzipped-python>' maturin publish --target x86_64-pc-windows-gnu` (replace the directory path)
+
