@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling", "hatch-regex-commit"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pythonkuma"
+dynamic = ["version"]
+description = "Simple Python wrapper for Uptime Kuma"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+authors = [
+    { name = "Manfred Dennerlein Rodelo", email = "manfred@dennerlein.name" },
+    { name = "Jayakorn Karikan", email = "jayakornk@gmail.com" },
+]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "aiohttp>=3.12.9",
+    "prometheus-client>=0.21.0",
+    "mashumaro>=3.13.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff==0.11.13",
+    "aiohttp==3.12.12",
+    "prometheus-client==0.22.1",
+    "mashumaro==3.16",
+    "mkdocs-material==9.6.14",
+    "mkdocstrings[python]==0.29.1",
+]
+
+[project.urls]
+Source = "https://github.com/tr4nt0r/pythonkuma"
+Documentation = "https://tr4nt0r.github.io/pythonkuma"
+
+[tool.hatch.version]
+source = "regex_commit"
+commit_extra_args = ["-e"]
+path = "pythonkuma/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/pythonkuma",
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+    "pythonkuma[dev]"
+]
+
+[tool.hatch.envs.hatch-static-analysis]
+dependencies = [
+    "ruff==0.11.13",
+]
+config-path = "ruff.toml"
+
+[tool.pytest.ini_options]
+addopts = "--cov=pythonkuma/ --cov-report=term-missing"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope="module"
+testpaths = ["tests"]
+pythonpath = ["pythonkuma"]
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+    "pythonkuma[dev]",
+    "pytest-cov==6.1.1",
+]
+
+[tool.hatch.envs.default.scripts]
+docs-serve = "mkdocs serve"
+docs-build = "mkdocs build"
