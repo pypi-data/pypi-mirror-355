@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: llm-ya-cli
+Version: 0.1.0
+Summary: A CLI for LLMs.
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: licenses/LICENSE-Chatlas
+License-File: licenses/LICENSE-Rich
+Requires-Dist: click>=8.1.8
+Requires-Dist: platformdirs>=4.3.7
+Requires-Dist: prompt-toolkit>=3.0.51
+Requires-Dist: pydantic>=2.11.3
+Requires-Dist: pydantic-ai>=0.0.46
+Requires-Dist: rich>=14.0.0
+Requires-Dist: tomli; python_full_version < "3.11"
+Dynamic: license-file
+
+# LLM CLI
+A CLI for LLMs.
+<p align="center">English | <a href="README.zh_CN.md">简体中文</a></p>
+
+# Installation
+**Before installing LLM CLI, you need to install [Python](https://www.python.org/downloads/).**
+
+**You may need to configure your PATH environment variable.**
+
+Install via `pip` (pip may not work by default on MacOS and Linux):
+```bash
+pip install llm_ya_cli
+```
+
+Install via [`pipx`](https://pipx.pypa.io/):
+```bash
+pipx install llm_ya_cli
+```
+
+Install via [`uv`](https://docs.astral.sh/uv/getting-started/installation/):
+```bash
+uv tool install llm_ya_cli
+```
+
+# Licenses
+This project incorporates code from these following third-party projects:
+- **[Rich](https://github.com/Textualize/rich)** 
+([live_render.py](src/llm_cli/utils/live_render.py)) 
+([LICENSE](licenses/LICENSE-Rich))
+**Copyright (c) 2020 Will McGugan**
+- **[Chatlas](https://github.com/posit-dev/chatlas)** 
+([live_render.py](src/llm_cli/utils/live_render.py), modified from Rich's code) 
+([LICENSE](licenses/LICENSE-Chatlas))
+**Copyright (c) 2022-2025 Posit Software, PBC**
