@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "japy"
+version = "3.1"
+description = ""
+authors = ["jasb <jason@becker-freelance.com>"]
+readme = "README.md"
+packages = [
+    { include = "japy", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+coverage = "^7.6.2"
+aiohttp = "^3.10.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
