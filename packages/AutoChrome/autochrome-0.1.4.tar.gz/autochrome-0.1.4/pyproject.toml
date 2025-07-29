@@ -1,0 +1,41 @@
+[project]
+
+name = "AutoChrome"
+version = "0.1.4"
+authors = [
+    { name = "Xiaoqiang", email = "xiaoqiangclub@hotmail.com" },
+]
+dependencies = [
+    "drissionpage (>=4.1.0.18,<5.0.0.0)",
+    "pypiwin32 (>=223,<224) ; sys_platform == \"win32\"",
+    "tqdm (>=4.67.1,<5.0.0)",
+]
+description = "基于 DrissionPage 封装的自用API，用于网页自动化。"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.poetry]
+packages = [{ include = "AutoChrome", from = "." }]
+
+
+[tool.poetry.scripts]
+autochrome = "AutoChrome.utils.auto_chrome_cli:main"
+atc = "AutoChrome.utils.auto_chrome_cli:main"
+
+[tool.poetry.group.dev.dependencies]
+pypiwin32 = "^223"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+
+
+[[tool.poetry.source]]
+name = "tuna"
+priority = "primary"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+
+[[tool.poetry.source]]
+name = "pypi"
+priority = "supplemental"
