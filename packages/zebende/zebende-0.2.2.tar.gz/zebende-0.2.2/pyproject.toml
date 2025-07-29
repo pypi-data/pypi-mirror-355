@@ -1,0 +1,90 @@
+[tool.poetry]
+name = "zebende"
+version = "0.2.2"
+description = "DFA, DCCA, Pdcca and Dmcx2 calculations in python"
+license = "MIT"
+authors = ["Fernando Ferraz Ribeiro <ffribeiro@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "./zebende"},
+    # { include = "zebende/**" },
+
+]
+
+classifiers =[
+    "Development Status :: 5 - Production/Stable",
+    # "Programming Language :: Zig",
+    "Programming Language :: Python"
+    ]
+
+[tool.poetry.dependencies]
+python = ">=3.09,<4.0"
+numpy = ">=1.26, <3.0"
+
+
+
+
+[tool.poetry.group.dev.dependencies]
+
+pytest = "^8.3.3"
+pytest-coverage = "^0.0"
+taskipy = "^1.14.0"
+ruff = "^0.8.0"
+ipykernel = "^6.29.5"
+pandas = "^2.2.3"
+matplotlib = "^3.9.2"
+seaborn = "^0.13.2"
+
+[tool.poetry.group.doc.dependencies]
+
+mkdocs-material = "^9.5.45"
+mkdocstrings = "^0.27.0"
+mkdocstrings-python = "^1.12.2"
+
+[tool.ruff.lint]
+
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = "--doctest-modules"
+
+
+[tool.taskipy.tasks]
+lint = 'ruff check . && ruff check . --diff'
+format = 'ruff check . --fix && ruff format .'
+docs = 'mkdocs serve'
+site = 'mkdocs gh-deploy'
+
+test = 'pytest -s -x --cov=fast_zero -vv'
+
+zrs = {cmd = "zig build -Doptimize=ReleaseSafe", echo=true}
+zrf = {cmd = "zig build -Doptimize=ReleaseFast", echo=true}
+zrsl = {cmd = "zig build -Doptimize=ReleaseSafe -Dtarget=x86_64-linux", echo=true}
+zrsm = {cmd = "zig build -Doptimize=ReleaseSafe -Dtarget=aarch64-macos", echo=true}
+zrsmi = {cmd = "zig build -Doptimize=ReleaseSafe -Dtarget=x86_64-macos", echo=true}
+zcl = {cmd = "python ./dev_utils/clean_zig_out.py"}
+
+libcp = {cmd = "python ./dev_utils/copy_lib.py"}
+pbld = {cmd = "poetry build", echo=true}
+ppub = {cmd = "poetry publish", echo=true}
+pypi ={cmd = "task pbld && task ppub", echo=true}
+
+zba = {cmd = "zig build -Doptimize=ReleaseSafe -Dball=true --summary all && task libcp", echo=true}
+
+zrswlm = {cmd = "task zrs && task zrsl && task zrsm && task zrsmi", echo=true}
+
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
