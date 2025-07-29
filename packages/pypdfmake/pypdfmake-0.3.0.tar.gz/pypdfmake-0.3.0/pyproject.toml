@@ -1,0 +1,100 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pypdfmake"
+version = "0.3.0"
+description = "A Python library for generating pdfmake document definitions using Pydantic models"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2.11.4"]
+authors = [{ name = "Jeff Bloss P.E./S.E.", email = "Jeff@prose-eng.com" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[dependency-groups]
+dev = [
+    "bump-my-version>=1.1.4",
+    "coverage[toml]>=7.6.0",
+    "hatch>=1.14.1",
+    "poethepoet>=0.34.0",
+    "pytest>=8.3.5",
+    "pytest-codeblocks>=0.17.0",
+    "pytest-cov>=6.0.0",
+    "pytest-icdiff>=0.9",
+    "rich>=14.0.0",
+    "watchfiles>=1.0.5",
+]
+
+[tool.poe.tasks]
+version = "hatch version"
+test = "watchfiles pytest"
+test-no-watch = "pytest"
+test-cov = "pytest --cov=pypdfmake --cov-report=term-missing --cov-report=html --cov-report=xml"
+test-cov-update = ["test-cov", "update-coverage-badge"]
+coverage-report = "coverage report"
+coverage-html = "coverage html"
+update-coverage-badge = { shell = "python -c \"import xml.etree.ElementTree as ET; import re; from pathlib import Path; tree = ET.parse('coverage.xml'); coverage = round(float(tree.getroot().attrib.get('line-rate', 0)) * 100, 1); readme = Path('README.md'); content = readme.read_text(); new_content = re.sub(r'(coverage-)[0-9.]+(%25)', f'\\\\g<1>{coverage}\\\\g<2>', content); readme.write_text(new_content) if new_content != content else None; print(f'Updated coverage to {coverage}%')\"" }
+patch = "bump-my-version bump patch"
+minor = "bump-my-version bump minor"
+major = "bump-my-version bump major"
+push_tags = "git push origin --tags"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-x -vv -s --codeblocks --cov=pypdfmake --cov-report=term-missing"
+
+[tool.bumpversion]
+# General settings
+allow_dirty = true
+commit = true
+tag = true
+message = "Bump version: {current_version} → {new_version}"
+
+# Tagging settings
+tag_name = "v{new_version}"
+tag_message = "Version {new_version}"
+sign_tags = false
+
+# Versioning settings
+current_version = "0.3.0"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = ["*/tests/*", "*/test_*", "*/__pycache__/*", "*/venv/*", "*/.venv/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
