@@ -1,0 +1,1 @@
+A Python package for keyword-based weightage of resumes, designed to evaluate and scoring resume content using natural language processing techniques used these rapidfuzz, spacy, nltk.
