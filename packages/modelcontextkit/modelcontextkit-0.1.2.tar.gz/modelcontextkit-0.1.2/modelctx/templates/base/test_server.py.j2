@@ -1,0 +1,122 @@
+"""Tests for {{ project_name }} MCP server."""
+
+import pytest
+import asyncio
+import json
+from unittest.mock import AsyncMock, MagicMock, patch
+
+# Import the server module
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from server import server
+
+
+class TestMCPServer:
+    """Test cases for the MCP server."""
+    
+    @pytest.fixture
+    def mcp_server(self):
+        """Get the MCP server instance for testing."""
+        return server
+    
+    def test_server_initialization(self, mcp_server):
+        """Test that the server initializes correctly."""
+        assert mcp_server is not None
+        assert hasattr(mcp_server, 'name')
+        assert mcp_server.name == "{{ project_name }}"
+    
+    @pytest.mark.asyncio
+    async def test_list_tools(self, mcp_server):
+        """Test listing available tools."""
+        # Import the list_tools function
+        from server import list_tools
+        
+        response = await list_tools()
+        
+        assert response is not None
+        assert isinstance(response, list)
+        
+        # Check that tools have required fields
+        for tool in response:
+            assert hasattr(tool, 'name')
+            assert hasattr(tool, 'description')
+            assert hasattr(tool, 'input_schema')
+    
+    @pytest.mark.asyncio 
+    async def test_list_resources(self, mcp_server):
+        """Test listing available resources."""
+        # Import the list_resources function
+        from server import list_resources
+        
+        response = await list_resources()
+        
+        assert response is not None
+        assert isinstance(response, list)
+        
+        # Resources might be empty for some backends
+        for resource in response:
+            assert hasattr(resource, 'uri')
+            assert hasattr(resource, 'name')
+            assert hasattr(resource, 'description')
+
+
+class TestToolCalls:
+    """Test tool call functionality."""
+    
+    @pytest.mark.asyncio
+    async def test_invalid_tool_call(self):
+        """Test calling a non-existent tool."""
+        from server import call_tool
+        
+        # Should raise ValueError for unknown tool
+        with pytest.raises(ValueError, match="Unknown tool"):
+            await call_tool("nonexistent_tool", {})
+    
+    @pytest.mark.asyncio
+    async def test_tool_error_handling(self):
+        """Test that tools handle errors gracefully."""
+        from server import call_tool, list_tools
+        
+        # Get first available tool
+        tools = await list_tools()
+        if tools:
+            tool_name = tools[0].name
+            
+            # Call with potentially invalid arguments (should not crash)
+            result = await call_tool(tool_name, {"invalid_arg": "test"})
+            
+            # Should return TextContent list
+            assert isinstance(result, list)
+            if result:
+                assert hasattr(result[0], 'type')
+                assert hasattr(result[0], 'text')
+
+
+class TestConfiguration:
+    """Test configuration and setup."""
+    
+    def test_server_name(self):
+        """Test server has correct name."""
+        from server import server
+        assert server.name == "{{ project_name }}"
+    
+    def test_imports_available(self):
+        """Test that required modules are importable."""
+        # Test basic MCP imports work
+        from mcp.server import Server
+        from mcp.types import Tool, Resource, TextContent
+        
+        # Test backend-specific imports
+        {% for import_line in imports %}
+        try:
+            exec("{{ import_line }}")
+        except ImportError as e:
+            pytest.skip(f"Optional import not available: {{ import_line }}")
+        {% endfor %}
+
+
+if __name__ == "__main__":
+    # Run tests with pytest
+    pytest.main([__file__, "-v"])
