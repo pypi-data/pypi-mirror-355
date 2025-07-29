@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "pysentinel"
+version = "0.1.1"
+description = "A python package for threshold based alerting using simple configuration."
+authors = [
+    "Rakibul Haq <haq.rakibul@gmail.com>",
+]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+pytest = "^8.3.5"
+pytest-mock = "^3.14.1"
+pytest-cov = "^6.1.1"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
