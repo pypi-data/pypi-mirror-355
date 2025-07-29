@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/${input:pythonFile}",
+            "console": "integratedTerminal"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "pythonFile",
+            "type": "promptString",
+            "description": "Enter the Python file to run",
+            "default": "${file}"
+        }
+    ]
+}
