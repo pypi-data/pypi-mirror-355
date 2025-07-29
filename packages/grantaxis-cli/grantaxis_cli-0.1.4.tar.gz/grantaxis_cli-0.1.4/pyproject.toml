@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "grantaxis-cli"
+version = "0.1.4"
+description = "Snowflake access drift scanner"
+authors = ["GrantAxis <support@grantaxis.io>"]
+readme = "README.md"
+packages = [{include = "grantaxis", from = "src"}]
+include = ["src/grantaxis/templates/*.html"]
+
+[build-system]
+requires = ["poetry-core>=1.6.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = "^0.12"
+snowflake-connector-python = "^3.9"
+pyyaml = "^6.0"           
+
+[tool.poetry.scripts]
+grantaxis = "grantaxis.cli:cli"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+ruff = "^0.11.12"
+black = "^25.1.0"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.ruff.lint]
+select = ["E", "F", "B"]
+ignore = ["E203", "E501"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
