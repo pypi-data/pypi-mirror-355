@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: ytwrap
+Version: 0.2.5
+Summary: Python wrapper for the YouTube Data API v3.
+Home-page: https://github.com/Himarry/ytwrap
+Author: Himarry
+Project-URL: Source, https://github.com/Himarry/ytwrap
+Project-URL: Tracker, https://github.com/Himarry/ytwrap/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: google-api-python-client
+Requires-Dist: isodate
+Requires-Dist: pytz
+
+# ytwrap
+
+ytwrap is a general-purpose Python wrapper library for the YouTube Data API v3. It allows you to easily retrieve and analyze YouTube video and comment data, and access various YouTube Data API v3 features from Python.
+
+## Features
+- Retrieve YouTube video and channel information
+- Fetch and analyze comments and replies
+- Simple interface for YouTube Data API v3
+
+## Installation
+```
+pip install ytwrap
+```
+
+## Usage Example
+```python
+import ytwrap
+
+video = ytwrap.YTVideoClient()
+comment = ytwrap.YTCommentClient()
+
+# Get latest video
+latest = video.get_latest_video('CHANNEL_ID')
+
+# Analyze comments
+stats = comment.count_comments_and_replies('VIDEO_ID')
+```
+
+## License
+MIT
