@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-gitanalytics-cli"
+version = "0.5.0"
+description = "AI-powered Git repository analytics tool. Get insights on code churn, complexity, and security."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "bswnth48", email = "bswnth48@users.noreply.github.com" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+    "click>=8.0",
+    "gitpython>=3.1",
+    "openai>=1.12",
+    "jinja2>=3.0",
+    "rich>=13.0",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "radon>=6.0",
+    "requests>=2.31.0",
+    "psutil>=5.9.8",
+    "bandit>=1.7.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/bswnth48/gitanalytics"
+"Bug Tracker" = "https://github.com/bswnth48/gitanalytics/issues"
+
+[project.scripts]
+gitanalytics = "gitanalytics.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black>=24.0",
+    "flake8>=7.0",
+    "mypy>=1.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gitanalytics"]
