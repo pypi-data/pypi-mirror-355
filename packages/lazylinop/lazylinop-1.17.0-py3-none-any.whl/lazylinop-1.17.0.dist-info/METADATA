@@ -1,0 +1,159 @@
+Metadata-Version: 2.4
+Name: lazylinop
+Version: 1.17.0
+Summary: A package dedicated to lazy linear operators based on diverse backends/libraries.
+Author-email: Inria <remi.gribonval@inria.fr>, Pascal Carrivain <pascal.carrivain@inria.fr>, Simon Delamare <simon.delamare@ens-lyon.fr>, Hakim Hadj-Djilani <hakim.hadj-djilani@inria.fr>, Rémi Gribonval <remi.gribonval@inria.fr>
+License-Expression: BSD-2-Clause
+Project-URL: Homepage, https://faustgrp.gitlabpages.inria.fr/lazylinop/
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+License-File: AUTHORS.md
+Requires-Dist: scipy>=1.13
+Requires-Dist: numpy>=2.0
+Requires-Dist: sympy>=1.14
+Dynamic: license-file
+
+.. Lazylinop documentation master file, created by
+   sphinx-quickstart on Sun Apr  2 17:21:28 2023.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+.. note Please be warned that this introduction file is shared between the
+   Sphinx doc (Gitlab Pages) and the PyPI project description (pypi.org).
+   Hence it should not contain internal API documentation references as for example
+   :py`.LazyLinOp` but rather online HTTP links. The reason is simple:
+   pypi.org website makes no parsing of any syntax of the sphinx extensions.
+   It understands only raw RST. We could make some pre-filtering to avoid any
+   issue but until then just keep it simple (no internal API reference here).
+
+Lazylinop's documentation
+=========================
+
+Lazylinop philosophy -- what is a LazyLinOp object?
+---------------------------------------------------
+
+A LazyLinOp_ is a high-level linear operator based on an
+arbitrary underlying implementation, such as:
+
+    - custom Python functions,
+    - a `NumPy array`_,
+    - a `SciPy matrix`_,
+    - a Faust_ object,
+    - any Python linear operator.
+
+.. voluntarily in long lines to get a new line without a blank line in
+   between
+
+| Thanks to the Lazylinop API, this operator can be easily manipulated, transformed or aggregated with other linear operators to form more complex LazyLinOp_ objects.  Thus, many operations are available such as the addition, concatenation, adjoint etc.
+| These operations are all ruled by the **lazy paradigm**: their evaluation is delayed until the resulting LazyLinOp_ is actually applied to a vector (or to a collection of vectors, seen as a matrix).
+
+Main benefits of Lazylinop
+--------------------------
+
+Lazylinop aims at providing:
+
+    - a unified NumPy/SciPy-like API for any underlying implementation
+      (including transparent use of efficient third-party libraries for
+      advanced linear operators such as wavelets, etc.),
+
+    - an easy way to combine existing operators into more complex operators
+      with all the LazyLinOp_ operations at your fingertips (and in particular
+      the adjoint),
+
+    - potential performance gains & memory sparing offered by the lazy paradigm,
+
+    - many pre-built operators and related APIs, delivered in specialized
+      Lazylinop sub-packages (polynomials of operators, signal-processing
+      oriented operators, etc.).
+
+    - Compatibility with SciPy algorithms implemented for `LinearOperator-s
+      <https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.
+      linalg.LinearOperator.html>`_: `svds <https://docs.scipy.org/doc/scipy/
+      reference/generated/scipy.sparse.linalg.svds.html#scipy.sparse.linalg
+      .svds>`_, `eigsh <https://docs.scipy.org/doc/scipy/reference/generated/
+      scipy.sparse.linalg.eigsh.html>`_, etc.
+
+Lazylinop is also an alternative or a complement to other related libraries
+that harness the power of the lazy paradigm. See the section
+`Related lazy libraries`_ for more details.
+
+
+.. admonition:: Beta stage
+    admonition warning
+
+   Lazylinop is currently in a beta stage of development. It is thus
+   intensively evolving and we invite you to consult this documentation
+   regularly. We welcome all beta testers and any `feedback
+   <https://gitlab.inria.fr/faustgrp/lazylinop/issues>`_.
+
+.. _Faust: https://faustgrp.gitlabpages.inria.fr/faust/last-doc/html/classpyfaust_1_1Faust.html
+.. _NumPy array: https://numpy.org/doc/stable/reference/generated/numpy.array.html
+.. _SciPy matrix: https://docs.scipy.org/doc/scipy/reference/sparse.html
+.. _LazyLinOp: https://faustgrp.gitlabpages.inria.fr/lazylinop/api_lazylinop.html
+   #lazylinop.LazyLinOp
+
+Getting started with lazylinop
+------------------------------
+
+**Quick install using Anaconda**
+::
+
+        conda config --add channels conda-forge
+        conda config --add channels lazylinop
+        conda install lazylinop
+
+
+**Quick install using PIP**
+::
+
+        pip install lazylinop
+
+Python beginners willing to safely install Lazylinop with a virtual environment can consult this guide_.
+
+**Installing all extra/optional dependencies**
+::
+
+        pip install -r lz_requirements.txt
+
+Download the dependency file `lz_requirements.txt <https://faustgrp.gitlabpages.inria.fr/lazylinop/_static/lz_requirements.txt>`_
+
+.. we use online link because this page is shared pypi frontpage (see note in the file header)
+
+**Quick introduction**
+
+For a quick introduction to the use of Lazylinop go to this notebook_. The raw notebook is
+available here_.
+
+.. full links (not relative) because this file is used also in pypi full
+   description
+.. _guide: https://faustgrp.gitlabpages.inria.fr/lazylinop/install.html
+.. _notebook: https://faustgrp.gitlabpages.inria.fr/lazylinop/notebooks/lazylinop.html
+.. _here: https://faustgrp.gitlabpages.inria.fr/lazylinop/_static/lazylinop.ipynb
+
+Related lazy libraries
+______________________
+
+`LazyLinOp`_-s are complementary to other “lazy” objects such as
+LazyTensors_ in `KeOps`_, or the ones of lazyarray_, WeldNumpy_ and PyLops_ libraries,
+which, to the best of our knowledge, primarily provide compact descriptions of
+arrays which entries can be evaluated efficiently on the fly.
+
+It's worth noting that the way PyLops_ exhibits SciPy `LinearOperator`_-s
+in its API is different. Indeed, PyLops_ provides Python classes (like Kronecker_)
+while Lazylinop rather provides Python functions in the SciPy style
+(as `kron` ).
+
+.. _LazyTensors: https://www.kernel-operations.io/keops/python/LazyTensor.html
+.. _lazyarray: https://pypi.org/project/lazyarray/
+.. _WeldNumpy: https://www.weld.rs/weldnumpy/
+.. _PyLops: https://pylops.readthedocs.io/en/latest/api/index.html
+.. _SciPy: https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.kron.html
+.. _Kronecker: https://pylops.readthedocs.io/en/stable/api/generated/pylops.Kronecker.html
+.. _KeOps: https://www.kernel-operations.io/keops/index.html
+.. _LinearOperator: https://docs.scipy.org/doc/scipy/reference/generated/
+   scipy.sparse.linalg.LinearOperator.html
+.. _kron: https://faustgrp.gitlabpages.inria.fr/lazylinop/api_lazylinop.html#lazylinop.kron
+
