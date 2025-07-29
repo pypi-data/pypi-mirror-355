@@ -1,0 +1,137 @@
+Metadata-Version: 2.4
+Name: hindi_xlit
+Version: 1.0.0
+Summary: A Hindi transliteration library based on AI4Bharat's IndicXlit
+Home-page: https://github.com/arverma/HindiXlit
+Author: Aman Ranjan Verma
+Author-email: Aman Ranjan Verma <aman.ranjanverma@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 AI4Bhārat
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/arverma/HindiXlit
+Project-URL: Repository, https://github.com/arverma/HindiXlit.git
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Natural Language :: Hindi
+Classifier: Natural Language :: English
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: torch<3.0.0,>=1.9.0
+Requires-Dist: numpy<2.0.0,>=1.19.0
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Hindi Transliteration Library
+
+A Python library for transliterating English text to Hindi using AI4Bharat's model. This library provides a simple interface for converting English words to their Hindi (Devanagari) equivalents.
+
+## Features
+
+- Simple and intuitive API
+- Supports both single word and batch transliteration
+- Returns multiple transliteration candidates
+- CPU-only implementation (no GPU required)
+- Interactive command-line interface
+
+## Installation
+
+```bash
+pip install hindi-xlit
+```
+
+## Usage
+
+### Basic Usage
+
+```python
+from hindi_xlit import HindiTransliterator
+
+# Initialize the transliterator
+transliterator = HindiTransliterator()
+
+# Transliterate a single word
+word = "namaste"
+candidates = transliterator.transliterate(word)
+print(f"Transliteration candidates for '{word}':")
+for i, candidate in enumerate(candidates, 1):
+    print(f"{i}. {candidate}")
+
+# Transliterate multiple words
+words = ["hello", "world"]
+results = transliterator.transliterate_batch(words)
+for word, candidates in zip(words, results):
+    print(f"\nTransliteration candidates for '{word}':")
+    for i, candidate in enumerate(candidates, 1):
+        print(f"{i}. {candidate}")
+```
+
+### Command Line Interface
+
+The library provides an interactive command-line interface:
+
+```bash
+hindi-xlit
+```
+
+Available commands:
+- Type a word to transliterate
+- Type multiple words separated by spaces for batch transliteration
+- Type `topk N` to change the number of candidates (default: 5)
+- Type `help` to show help
+- Type `quit` or `exit` to exit
+
+## API Reference
+
+### HindiTransliterator
+
+The main class for Hindi transliteration.
+
+#### Methods
+
+- `transliterate(word: str, topk: int = 5) -> List[str]`
+  - Transliterates a single word to Hindi
+  - Returns a list of top-k transliteration candidates
+
+- `transliterate_batch(words: List[str], topk: int = 5) -> List[List[str]]`
+  - Transliterates multiple words to Hindi
+  - Returns a list of lists, where each inner list contains top-k transliteration candidates for the corresponding word
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+This library uses the transliteration model from [AI4Bharat](https://github.com/AI4Bharat/IndicXlit).
