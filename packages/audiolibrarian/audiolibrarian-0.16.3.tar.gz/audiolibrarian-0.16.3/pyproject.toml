@@ -1,0 +1,105 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[dependency-groups]
+dev = [
+    "coverage",
+    "hatchling",
+    "mypy",
+    "pytest",
+    "ruff",
+    "types-pyyaml",
+    "types-requests",
+    "types-setuptools",
+]
+
+[project]
+authors = [{name = "Steve Jibson", email = "steve@jibson.com"}]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python",
+]
+description = "Manage my audio library."
+dependencies = [
+    "ansicolors",
+    "discid",
+    "filelock",
+    "fuzzywuzzy",
+    "musicbrainzngs",
+    "mutagen",
+    "python-levenshtein",
+    "pyyaml",
+    "requests",
+    "pydantic-settings",
+    "xdg-base-dirs",
+]
+dynamic = [
+    "version",
+]
+name = "audiolibrarian"
+readme = "README.md"
+requires-python = "==3.13.*"
+
+[project.scripts]
+audiolibrarian = "audiolibrarian:cli.main"
+
+[project.urls]
+Repository = "https://github.com/toadstule/audiolibrarian"
+
+[tool.hatch.build.targets.sdist]
+exclude= [
+    ".idea",
+    "tests",
+]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["src"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""
+
+[tool.hatch.version]
+path = "src/audiolibrarian/__init__.py"
+
+[tool.mypy]
+ignore_missing_imports = true
+implicit_reexport = true
+install_types = true
+no_strict_optional = true  # All of our record fields default to None.
+non_interactive = true
+pretty = true
+python_version = "3.13"
+strict = true
+
+[[tool.mypy.overrides]]
+module = "picard_src.*"
+ignore_errors = true  # This is not our code.
+
+[tool.ruff]
+extend-exclude = [
+    "picard_src",  # This is not our code.
+]
+line-length = 99
+target-version = "py313"
+
+[tool.ruff.lint]
+ignore = [
+    "COM812",  # This gets upset when there isn't a trailing comma in a multi-line split string.
+               # The formatter will add/verify the trailing commas.
+    "T201",    # This check prevents the use of print() -- which would be fine for non-interactive programs.
+]
+select = [
+    "ALL",  # All the checks.
+    "D401"  # Use imparative mood for comments. The "google" pydocstyle convention disables this, so we'll re-enable it.
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = [
+    "S101",    # Allow tests to use assert statements.
+    "SLF001",  # Allow tests to access private members.
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
