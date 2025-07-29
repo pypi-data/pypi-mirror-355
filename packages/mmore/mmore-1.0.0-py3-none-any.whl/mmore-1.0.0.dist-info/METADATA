@@ -1,0 +1,232 @@
+Metadata-Version: 2.4
+Name: mmore
+Version: 1.0.0
+Summary: mmore: Scalable multimodal document extraction pipeline for custom RAG integration.
+Author-email: Alexandre Sallinen <alexandre.sallinen@epfl.ch>, Paul Teiletche <paul.teiletche@epfl.ch>, Marc-Antoine Allard <marc-antoine.allard@epfl.ch>, Stefan Krsteski <stefan.krsteski@epfl.ch>, David Kalajdzic <david.kalajdzic@epfl.ch>, Michael Zhang <michael.zhang@epfl.ch>, Matthias Meyer <matthias.meyer@sdsc.ethz.ch>, Fabrice Nemo <fabrice.nemo@epfl.ch>, Charlotte Meyer <Charlotte.meyer@epfl.ch>, Grieder Lea <lea.grieder@epfl.ch>, Matthew Meyer <matthew.meyer@epfl.ch>, Achille Triomphe <achille.triomphe@epfl.ch>
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy==1.26.3
+Requires-Dist: pandas==2.2.3
+Requires-Dist: datasets==2.19.1
+Requires-Dist: transformers==4.52
+Requires-Dist: fastapi[standard]
+Requires-Dist: fastapi==0.115.5
+Requires-Dist: fasteners==0.19
+Requires-Dist: uvicorn==0.32.1
+Requires-Dist: python-dotenv==1.0.1
+Requires-Dist: dacite==1.8.1
+Requires-Dist: click>=8.1.7
+Requires-Dist: dask[distributed]>=2025.2.0
+Requires-Dist: pytest>=8.3.4
+Requires-Dist: validators==0.34.0
+Requires-Dist: httpx==0.27.2
+Requires-Dist: Pillow
+Requires-Dist: PyMuPDF
+Requires-Dist: beautifulsoup4==4.13.4
+Requires-Dist: Unidecode
+Requires-Dist: clean-text
+Requires-Dist: docx2pdf
+Requires-Dist: lxml_html_clean
+Requires-Dist: python-docx
+Requires-Dist: python-pptx
+Requires-Dist: clean-text
+Requires-Dist: requests==2.32.3
+Requires-Dist: selenium==4.27.1
+Requires-Dist: surya-ocr>=0.8.3
+Requires-Dist: xlrd==2.0.1
+Requires-Dist: py7zr==0.22.0
+Requires-Dist: rarfile==4.2
+Requires-Dist: markdown==3.7
+Requires-Dist: markdownify==0.13.1
+Requires-Dist: marker-pdf==1.6.0
+Requires-Dist: moviepy==2.1.1
+Requires-Dist: openpyxl==3.1.5
+Requires-Dist: chonkie==0.2.1.post1
+Requires-Dist: langdetect>=1.0.9
+Requires-Dist: trafilatura==1.4.0
+Requires-Dist: datatrove==0.3.0
+Requires-Dist: validators==0.34.0
+Requires-Dist: bokeh
+Requires-Dist: motor==3.6.0
+Requires-Dist: mpmath==1.3.0
+Requires-Dist: networkx==3.4.2
+Requires-Dist: fastapi[standard]
+Requires-Dist: fastapi==0.115.5
+Requires-Dist: pydantic==2.10.4
+Requires-Dist: pymongo==4.9.2
+Requires-Dist: pymilvus==2.5.0
+Requires-Dist: milvus-model==0.2.12
+Requires-Dist: accelerate==1.6.0
+Requires-Dist: langchain-anthropic==0.3.4
+Requires-Dist: langchain-aws==0.2.22
+Requires-Dist: langchain-cohere==0.4.2
+Requires-Dist: langchain-huggingface==0.1.2
+Requires-Dist: langchain-milvus==0.1.8
+Requires-Dist: langchain-mistralai==0.2.7
+Requires-Dist: langchain-nvidia-ai-endpoints
+Requires-Dist: langchain-openai==0.3.7
+Requires-Dist: langchain==0.3.20
+Requires-Dist: langserve[all]==0.3.1
+Requires-Dist: ragas==0.2.6
+Requires-Dist: nltk>=3.9
+Requires-Dist: starlette==0.41.3
+Requires-Dist: typing_extensions==4.12.2
+Requires-Dist: sympy==1.14.0
+Provides-Extra: cpu
+Requires-Dist: torch>=2.5.1; extra == "cpu"
+Provides-Extra: cu124
+Requires-Dist: torch>=2.5.1; extra == "cu124"
+Provides-Extra: rag
+Requires-Dist: accelerate; extra == "rag"
+Requires-Dist: langchain-anthropic==0.3.4; extra == "rag"
+Requires-Dist: langchain-aws; extra == "rag"
+Requires-Dist: langchain-cohere==0.4.2; extra == "rag"
+Requires-Dist: langchain-huggingface==0.1.2; extra == "rag"
+Requires-Dist: langchain-milvus==0.1.8; extra == "rag"
+Requires-Dist: langchain-mistralai==0.2.7; extra == "rag"
+Requires-Dist: langchain-nvidia-ai-endpoints; extra == "rag"
+Requires-Dist: langchain-openai==0.3.7; extra == "rag"
+Requires-Dist: langchain==0.3.20; extra == "rag"
+Requires-Dist: langdetect>=1.0.9; extra == "rag"
+Requires-Dist: langserve[all]==0.3.1; extra == "rag"
+Requires-Dist: pymilvus==2.5.0; extra == "rag"
+Requires-Dist: milvus-model==0.2.12; extra == "rag"
+Requires-Dist: ragas==0.2.6; extra == "rag"
+Requires-Dist: nltk>=3.9; extra == "rag"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0.0; extra == "dev"
+Requires-Dist: ruff>=0.4.0; extra == "dev"
+Dynamic: license-file
+
+<h1 align="center"> 
+
+![image](https://github.com/user-attachments/assets/502e2c7e-1200-498a-9ebd-10a27ed48ab6)
+
+</h1>
+
+
+<p align="center">
+  <img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License">
+  <img src="https://img.shields.io/github/v/release/OpenMeditron/End2End" alt="Release">
+</p>
+
+####  <center>Massive Multimodal Open RAG & Extraction</center>
+
+A scalable multimodal pipeline for processing, indexing, and querying multimodal documents
+
+Ever needed to take 8000 PDFs, 2000 videos, and 500 spreadsheets and feed them to an LLM as a knowledge base?
+Well, MMORE is here to help you!
+
+## :bulb: Quickstart
+
+### Installation
+
+#### (Step 0 – Install system dependencies)
+
+Our package requires system dependencies. This snippet will take care of installing them!
+
+```bash
+sudo apt update
+sudo apt install -y ffmpeg libsm6 libxext6 chromium-browser libnss3 \
+  libgconf-2-4 libxi6 libxrandr2 libxcomposite1 libxcursor1 libxdamage1 \
+  libxext6 libxfixes3 libxrender1 libasound2 libatk1.0-0 libgtk-3-0 libreoffice \
+  libpango-1.0-0 libpangoft2-1.0-0 weasyprint
+```
+
+#### Step 1 – Install MMORE
+
+To install the package simply run:
+
+```bash
+pip install mmore
+```
+
+> :warning: This is a big package with a lot of dependencies, so we recommend to use `uv` to handle `pip` installations. [Check our tutorial on uv](./docs/uv.md).
+
+### Minimal Example
+
+You can use our predefined CLI commands to execute parts of the pipeline. Note that you might need to prepend `python -m` to the command if the package does not properly create bash aliases.
+
+```bash
+# Run processing
+python -m mmore process --config-file examples/process/config.yaml
+python -m mmore postprocess --config-file examples/postprocessor/config.yaml --input-data examples/process/outputs/merged/merged_results.jsonl
+
+# Run indexer
+python -m mmore index --config-file examples/index/config.yaml --documents-path examples/process/outputs/merged/final_pp.jsonl
+
+# Run RAG
+python -m mmore rag --config-file examples/rag/config.yaml
+```
+
+You can also use our package in python code as shown here:
+
+```python
+from mmore.process.processors.pdf_processor import PDFProcessor 
+from mmore.process.processors.base import ProcessorConfig
+from mmore.type import MultimodalSample
+
+pdf_file_paths = ["/path/to/examples/sample_data/pdf/calendar.pdf"] #write here the full path, not a relative path
+out_file = "/path/to/examples/process/outputs/example.jsonl"
+
+pdf_processor_config = ProcessorConfig(custom_config={"output_path": "examples/process/outputs"})
+pdf_processor = PDFProcessor(config=pdf_processor_config)
+result_pdf = pdf_processor.process_batch(pdf_file_paths, False, 1) # args: file_paths, fast mode (True/False), num_workers
+
+MultimodalSample.to_jsonl(out_file, result_pdf)
+```
+
+---
+
+### Usage
+
+To launch the MMORE pipeline, follow the specialised instructions in the docs.
+
+![The MMORE pipelines archicture](https://github.com/user-attachments/assets/0cd61466-1680-43ed-9d55-7bd483a04a09)
+
+
+1. **:page_facing_up: Input Documents**  
+   Upload your multimodal documents (PDFs, videos, spreadsheets, and m(m)ore) into the pipeline.
+
+2. [**:mag: Process**](./docs/process.md) 
+   Extracts and standardizes text, metadata, and multimedia content from diverse file formats. Easily extensible! You can add your own processors to handle new file types.
+   *Supports fast processing for specific types.*
+
+3. [**:file_folder: Index**](./docs/index.md) 
+   Organizes extracted data into a **hybrid retrieval-ready Vector Store DB**, combining dense and sparse indexing through [Milvus](https://milvus.io/). Your vector DB can also be remotely hosted and then you only have to provide a standard API. There is also an [HTTP Index API](./docs/index_api.md) for adding new files on the fly with HTTP requests.
+
+4. [**:robot: RAG**](./docs/rag.md) 
+   Use the indexed documents inside a **Retrieval-Augmented Generation (RAG) system**  that provides a [LangChain](https://www.langchain.com/) interface. Plug in any LLM with a compatible interface or add new ones through an easy-to-use interface.
+   *Supports API hosting or local inference.*
+
+5. **:tada: Evaluation**  
+   *Coming soon*
+   An easy way to evaluate the performance of your RAG system using Ragas.
+
+See [the `/docs` directory](./docs) for additional details on each modules and hands-on tutorials on parts of the pipeline.
+
+
+#### :construction: Supported File Types  
+
+| **Category**      | **File Types**                           | **Supported Device**      |  **Fast Mode**      |
+|--------------------|------------------------------------------|--------------------------| --------------------------|
+| **Text Documents** | DOCX, MD, PPTX, XLSX, TXT, EML           | CPU                      | :x:
+| **PDFs**           | PDF                                     | GPU/CPU                  | :white_check_mark:
+| **Media Files**    | MP4, MOV, AVI, MKV, MP3, WAV, AAC       | GPU/CPU                  | :white_check_mark:
+| **Web Content**    | HTML                                    | CPU                      | :x:
+
+
+## Contributing
+
+We welcome contributions to improve the current state of the pipeline, feel free to:
+
+- Open an issue to report a bug or ask for a new feature
+- Open a pull request to fix a bug or add a new feature
+- You can find ongoing new features and bugs in the [Issues]
+   
+Don't hesitate to star the project :star: if you find it interesting! (you would be our star).
+
+## License
+
+This project is licensed under the Apache 2.0 License, see the [LICENSE :mortar_board:](LICENSE) file for details.
