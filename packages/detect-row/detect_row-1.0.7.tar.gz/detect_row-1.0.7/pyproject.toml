@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "detect-row"
+version = "1.0.7"
+description = "Công cụ phát hiện và cắt các hàng từ bảng trong ảnh với OCR"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text = "MIT"}
+authors = [
+    {name = "Row Detection Team", email = "detect.row.team@gmail.com"},
+]
+keywords = ["computer vision", "table extraction", "row detection", "OCR", "vietnamese", "image processing"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=1.19.0",
+    "opencv-python>=4.5.0",
+    "matplotlib>=3.4.0",
+    "pytesseract>=0.3.8",
+    "Pillow>=8.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/detectrow/detect-row"
+"Bug Reports" = "https://github.com/detectrow/detect-row/issues"
+Source = "https://github.com/detectrow/detect-row"
+Documentation = "https://github.com/detectrow/detect-row/blob/main/README.md"
+
+[project.scripts]
+detect-row-basic = "detect_row.basic_row_extractor:main"
+detect-row-advanced = "detect_row.advanced_row_extractor:main"
+detect-row-ocr = "detect_row.tesseract_ocr_extractor:main"
+detect-row-table = "detect_row.advanced_table_extractor:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["detect_row*"]
+exclude = ["tests*"] 
