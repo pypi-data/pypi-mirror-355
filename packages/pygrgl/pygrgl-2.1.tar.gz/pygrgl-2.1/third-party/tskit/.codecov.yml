@@ -1,0 +1,34 @@
+codecov:
+  require_ci_to_pass: false
+comment:
+  layout: "diff, flags, files"
+fixes:
+  - "tskit/::python/tskit/"
+flag_management:
+  individual_flags:
+    - name: python-tests
+      paths:
+        - python/tskit/*.py
+      statuses:
+        - type: project
+          target: 95%
+    - name: python-c-tests
+      paths:
+        - python/_tskitmodule.c
+      statuses:
+        - type: project
+          target: 85%
+    - name: c-tests
+      paths:
+        - c/tskit/*.c
+        - c/tskit/*.h
+      statuses:
+        - type: project
+          target: 85%
+    - name: lwt-tests
+      paths:
+        - python/lwt_interface/*.c
+        - python/lwt_interface/*.h
+      statuses:
+        - type: project
+          target: 80%

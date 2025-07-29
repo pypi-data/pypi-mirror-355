@@ -1,0 +1,194 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, test]
+
+jobs:
+  pre-commit:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.1
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: install clang-format
+        if: steps.clang_format.outputs.cache-hit != 'true'
+        run: |
+          sudo pip install clang-format==6.0.1
+          sudo ln -s /usr/local/bin/clang-format /usr/local/bin/clang-format-6.0
+      - uses: pre-commit/action@v3.0.0
+
+  benchmark:
+    name: Benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: python/requirements/benchmark.txt
+      - name: Install deps
+        run: pip install -r python/requirements/benchmark.txt
+      - name: Build module
+        run: |
+          cd python
+          python setup.py build_ext --inplace
+      - name: Run benchmarks
+        run: |
+          cd python/benchmark
+          pip uninstall -y tskit
+          python run.py
+      - name: Upload Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: benchmark-results
+          path: python/benchmark
+
+  test:
+    name: Python
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [ 3.9, 3.12 ]
+        os:  [ macos-latest, ubuntu-latest, windows-latest ]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install OSX libs
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install libxml2 libxslt
+
+      - name: Cache conda and dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CONDA }}/envs
+          key: ${{ runner.os }}-${{ runner.arch }}-${{ matrix.python}}-conda-v1-${{ hashFiles('python/requirements/CI-tests-conda/requirements.txt') }}-${{ hashFiles('python/requirements/CI-tests-pip/requirements.txt') }}
+
+      - name: Install Conda
+        uses: conda-incubator/setup-miniconda@v3
+        if: steps.cache.outputs.cache-hit != 'true'
+        with:
+          activate-environment: anaconda-client-env
+          python-version: ${{ matrix.python }}
+          channels: conda-forge
+          channel-priority: strict
+          auto-update-conda: true
+
+      - name: Fix windows symlinks
+        working-directory: python
+        if: matrix.os == 'windows-latest'
+        run: |
+          rm -r lib
+          mkdir lib
+          cp -r --dereference ../c/subprojects lib/.
+          cp -r --dereference ../c/tskit lib/.
+          cp ../c/tskit.h lib/.
+
+      - name: Fix windows .profile
+        if: steps.cache.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
+        run: |
+          cp ~/.bash_profile ~/.profile
+
+      - name: Install conda deps
+        if: steps.cache.outputs.cache-hit != 'true'
+        shell: bash -l {0} #We need a login shell to get conda
+        run: |
+          conda install --yes --file=python/requirements/CI-tests-conda/requirements.txt
+
+      - name: Install pip deps
+        if: steps.cache.outputs.cache-hit != 'true'
+        shell: bash -l {0}
+        run: |
+          pip install -r python/requirements/CI-tests-pip/requirements.txt
+          # Remove tskit installed by conda
+          pip uninstall -y tskit
+
+      - name: Build module
+        working-directory: python
+        run: |
+          source ~/.profile
+          conda activate anaconda-client-env
+          python setup.py build_ext --inplace
+
+      - name: Run tests
+        working-directory: python
+        run: |
+          source ~/.profile
+          conda activate anaconda-client-env
+          # pytest -xv -n2
+          python -m pytest -x --cov=tskit --cov-report=xml --cov-branch -n2 tests
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          working-directory: python
+          fail_ci_if_error: false
+          flags: python-tests
+          name: codecov-umbrella
+          verbose: true
+
+  msys2:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+        - { sys: mingw32, env: i686 }
+        - { sys: mingw64, env: x86_64 }
+    name: Windows (${{ matrix.sys }}, ${{ matrix.env }})
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.12.1
+      with:
+        access_token: ${{ github.token }}
+
+    - name: 'Checkout'
+      uses: actions/checkout@v4
+
+    - name: Setup MSYS2 ${{matrix.sys}}
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{matrix.sys}}
+        update: true
+        install: >-
+          git
+          mingw-w64-${{matrix.env}}-toolchain
+          mingw-w64-${{matrix.env}}-ninja
+          mingw-w64-${{matrix.env}}-meson
+          mingw-w64-${{matrix.env}}-cunit
+
+    - name: Build
+      working-directory: c
+      run: |
+        meson build -Dbuild_examples=false
+        ninja -C build
+
+    - name: Run tests
+      working-directory: c
+      run: |
+        ninja -C build test

@@ -1,0 +1,216 @@
+name: Build and test wheels
+
+on:
+  push:
+    branches:
+      - main
+      - test
+    tags:
+      - '*'
+  release:
+    types: [published]
+
+jobs:
+  OSX:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python: [3.9, "3.10", 3.11, 3.12]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install deps
+        run: |
+          pip install build
+      - name: Build Wheel
+        run: |
+          cd python
+          python -m build --wheel
+      - name: Delocate to bundle dynamic libs
+        run: |
+          cd python
+          pip install delocate
+          delocate-wheel -v dist/*.whl
+      - name: Upload Wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: osx-wheel-${{ matrix.python }}
+          path: python/dist
+
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python: [3.9, "3.10", 3.11, 3.12]
+        wordsize: [64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install deps
+        env:
+          PYTHON: "py -${{ matrix.python }}-${{ matrix.wordsize }}"
+        shell: bash
+        run: |
+          set -ex
+          ${PYTHON} -m pip install build
+      - name: Build Wheel
+        env:
+          PYTHON: "py -${{ matrix.python }}-${{ matrix.wordsize }}"
+        shell: bash
+        run: |
+          set -ex
+          git reset --hard
+          cd python
+          ${PYTHON} -VV
+          # For some reason I can't work out the C compiler is not following symlinks
+          rm -r lib
+          mkdir lib
+          cp -r --dereference ../c/subprojects lib/.
+          cp -r --dereference ../c/tskit lib/.
+          cp ../c/tskit.h lib/.
+          ${PYTHON} -m build --wheel
+      - name: Upload Wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: win-wheel-${{ matrix.python }}-${{ matrix.wordsize }}
+          path: python/dist
+
+  manylinux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
+
+      - name: Build sdist
+        shell: bash
+        run: |
+          cd python
+          python -m pip install build
+          python -m build --sdist
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: python/dist
+
+      - name: Build wheels in docker
+        shell: bash
+        run: |
+          docker run --rm -v `pwd`:/project -w /project quay.io/pypa/manylinux2014_x86_64 bash .github/workflows/docker/buildwheel.sh
+
+      - name: Upload Wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-wheels
+          path: python/dist/wheelhouse
+
+  OSX-test:
+    needs: ['OSX']
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python: [3.9, "3.10", 3.11, 3.12]
+    steps:
+      - name: Download wheels
+        uses: actions/download-artifact@v4
+        with:
+          name: osx-wheel-${{ matrix.python }}
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install wheel and test
+        run: |
+          python -VV
+          # Install the local wheel
+          pip install ./tskit-*.whl
+          python -c "import tskit"
+
+  windows-test:
+    needs: ['windows']
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python: [3.9, "3.10", 3.11, 3.12]
+        wordsize: [64]
+    steps:
+      - name: Download wheels
+        uses: actions/download-artifact@v4
+        with:
+          name: win-wheel-${{ matrix.python }}-${{ matrix.wordsize }}
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install wheel and test
+        shell: bash
+        run: |
+          python -VV
+          # Install the local wheel
+          python -m pip install *.whl
+          python -c "import tskit"
+
+  manylinux-test:
+    runs-on: ubuntu-latest
+    needs: ['manylinux']
+    strategy:
+      matrix:
+        python: [3.9, "3.10", 3.11, 3.12]
+        include:
+
+          - python: 3.9
+            wheel: cp39
+          - python: "3.10"
+            wheel: cp310
+          - python: 3.11
+            wheel: cp311
+          - python: 3.12
+            wheel: cp312
+    steps:
+      - name: Download wheels
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-wheels
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install wheel and test
+        run: |
+          python -VV
+          # Install the local wheel
+          pip install ./tskit-*-${{ matrix.wheel }}-*.whl
+          python -c "import tskit"
+
+
+  PyPI_Upload:
+    runs-on: ubuntu-latest
+    environment: release
+    needs: ['windows-test', 'OSX-test', 'manylinux-test']
+    permissions:
+      id-token: write
+    steps:
+      - name: Download all
+        uses: actions/download-artifact@v4
+      - name: Move to dist
+        run: |
+          mkdir dist
+          cp */*.{whl,gz} dist/.
+      - name: Publish distribution to Test PyPI
+        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && !contains(github.event.ref, 'C_')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository_url: https://test.pypi.org/legacy/
+      - name: Publish distribution to PRODUCTION PyPI
+        if: github.event_name == 'release' && !startsWith(github.event.release.tag_name, 'C_')
+        uses: pypa/gh-action-pypi-publish@release/v1

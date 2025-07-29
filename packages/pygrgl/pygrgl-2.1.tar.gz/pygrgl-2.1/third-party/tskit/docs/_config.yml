@@ -1,0 +1,117 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: Tskit manual
+author: Tskit Developers
+copyright: "2022"
+only_build_toc_files: true
+logo: logo.svg
+
+execute:
+  execute_notebooks: cache
+
+launch_buttons:
+  binderhub_url: ""
+
+repository:
+  url: https://github.com/tskit-dev/tskit
+  branch: main
+  path_to_book: docs
+
+html:
+  use_issues_button: true
+  use_repository_button: true
+  use_edit_page_button: true
+  # Do not edit this - the version placeholder is replaced by the
+  # current version during a distribution build in the Makefile
+  extra_navbar: __TSKIT_VERSION__
+  extra_footer: __TSKIT_VERSION__
+
+sphinx:
+    extra_extensions:
+    - breathe
+    - sphinx.ext.autodoc
+    - sphinx_autodoc_typehints
+    - sphinx.ext.autosummary
+    - sphinx.ext.todo
+    - sphinx.ext.viewcode
+    - sphinx.ext.intersphinx
+    - sphinx_issues
+    - sphinxarg.ext
+    - IPython.sphinxext.ipython_console_highlighting
+    #- sphinxcontrib.prettyspecialmethods
+
+    config:
+      html_theme: sphinx_book_theme
+      html_theme_options:
+        pygment_dark_style: monokai
+        navigation_with_keys: false
+      pygments_style: monokai
+      myst_enable_extensions:
+      - colon_fence
+      - deflist
+      - dollarmath
+      - substitution
+      issues_github_path: tskit-dev/tskit
+      todo_include_todos: true
+      intersphinx_mapping:
+        python: ["https://docs.python.org/3/", null]
+        tutorials: ["https://tskit.dev/tutorials/", null]
+        stdpopsim: ["https://stdpopsim.readthedocs.io/en/stable", null]
+        pyslim: ["https://tskit.dev/pyslim/docs/latest/", null]
+        msprime: ["https://tskit.dev/msprime/docs/stable/", null]
+        numpy: ["https://numpy.org/doc/stable/", null]
+
+      breathe_projects: {"tskit": "doxygen/xml"}
+      breathe_default_project: "tskit"
+      breathe_domain_by_extension: {"h": "c"}
+      breathe_show_define_initializer: True
+
+      # Note we have to use the regex version here because of
+      # https://github.com/sphinx-doc/sphinx/issues/9748
+      nitpick_ignore_regex: [
+          ["c:identifier", "uint8_t"],
+          ["c:identifier", "int32_t"],
+          ["c:identifier", "uint32_t"],
+          ["c:identifier", "uint64_t"],
+          ["c:identifier", "FILE"],
+          ["c:identifier", "bool"],
+          # This is for the anonymous interval struct embedded in the tsk_tree_t.
+          ["c:identifier", "tsk_tree_t.@4"],
+          ["c:type", "int32_t"],
+          ["c:type", "uint32_t"],
+          ["c:type", "uint64_t"],
+          ["c:type", "bool"],
+          # TODO these have been triaged here to make the docs compile, but we should
+          # sort them out properly. https://github.com/tskit-dev/tskit/issues/336
+          ["py:class", "array_like"],
+          ["py:class", "row-like"],
+          ["py:class", "array-like"],
+          ["py:class", "dtype=np.uint32"],
+          ["py:class", "dtype=np.uint32."],
+          ["py:class", "dtype=np.int32"],
+          ["py:class", "dtype=np.int8"],
+          ["py:class", "dtype=np.float64"],
+          ["py:class", "dtype=np.int64"],
+      ]
+
+      # Added to allow "bool" be used as a :ctype: - this list has to be
+      # manually specifed in order to remove "bool" from it.
+      c_extra_keywords: [
+        "alignas",
+        "alignof",
+        "complex",
+        "imaginary",
+        "noreturn",
+        "static_assert",
+        "thread_local"
+      ]
+
+      autodoc_member_order: bysource
+
+      # Without this option, autodoc tries to put links for all return types
+      # in terms of the fully-qualified classnames which we don't want, and also
+      # leads to broken links and nitpick failures. So, until we tackle
+      # typehints fully, this is the simplest approach.
+      autodoc_typehints: none
+
