@@ -1,0 +1,52 @@
+[build-system]
+requires = [
+    "setuptools>=61.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "statistics-canada"
+authors = [
+    {name="Paul Bouillon", email="pbouill@gmail.com"},
+]
+description = "Python bindings for the Statistics Canada Web Data Service (WDS) API"
+license = "GPL-3.0-or-later" 
+license-files = ['LICENSE']  #, "LICENSE.*"]
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = [
+    "python", 
+    "statistics",
+    "census",
+    "canada",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+dynamic = [
+    "version", 
+    "dependencies",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pbouill/statistics-canada"
+"Repository" = "https://github.com/pbouill/statistics-canada.git"
+"Bug Tracker" = "https://github.com/pbouill/statistics-canada/issues"
+
+# Define the extras here. Users install `process[feature]`
+# [project.optional-dependencies]  # TODO: update
+# numpy = ["numpy"] 
+# all = [
+#     "statistics-canada[numpy]",
+# ]
+
+[tool.setuptools.package-data]
+"*" = ["*.html", "*.css", "*.ico", "*.js"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
