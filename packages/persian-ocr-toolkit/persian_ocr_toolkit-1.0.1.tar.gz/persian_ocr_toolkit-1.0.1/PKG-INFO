@@ -1,0 +1,749 @@
+Metadata-Version: 2.4
+Name: persian-ocr-toolkit
+Version: 1.0.1
+Summary: کتابخانه حرفه‌ای OCR برای زبان فارسی
+Home-page: https://github.com/MohammadHNdev/persian-ocr-toolkit
+Author: MohammadHNdev
+Author-email: hosein.norozi434@gmail.com
+Project-URL: Bug Reports, https://github.com/MohammadHNdev/persian-ocr-toolkit/issues
+Project-URL: Source, https://github.com/MohammadHNdev/persian-ocr-toolkit
+Project-URL: Documentation, https://persian-ocr-toolkit.readthedocs.io/
+Keywords: persian farsi ocr tesseract text-extraction pdf image-processing
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Natural Language :: Persian
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: Pillow
+Requires-Dist: scikit-image
+Requires-Dist: pytesseract
+Requires-Dist: python-bidi
+Requires-Dist: arabic-reshaper
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Requires-Dist: mypy>=0.910; extra == "dev"
+Requires-Dist: pytest-cov>=2.12; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=0.5; extra == "docs"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+<<<<<<< HEAD
+# 🔍 Persian OCR Toolkit
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://badge.fury.io/py/persian-ocr-toolkit.svg)](https://badge.fury.io/py/persian-ocr-toolkit)
+[![Downloads](https://github.com/MohammadHNdev/persian-ocr-toolkit/blob/main/assets/logo.png)](https://github.com/MohammadHNdev/persian-ocr-toolkit/blob/main/assets/logo.png)
+
+کتابخانه حرفه‌ای و قدرتمند برای استخراج متن فارسی از تصاویر و فایل‌های PDF
+
+> ابزار کامل OCR برای زبان فارسی با قابلیت‌های پیشرفته پیش‌پردازش تصویر و پردازش موازی
+
+![Demo GIF](https://github.com/MohammadHNdev/persian-ocr-toolkit/blob/main/assets/demo.gif)
+
+ ✨ ویژگی‌ها
+
+- 🚀 سرعت بالا: پردازش موازی با کنترل حافظه
+- 🎯 دقت بالا: پیش‌پردازش هوشمند تصویر 
+- 📄 پشتیبانی کامل PDF: تبدیل خودکار و دسته‌ای
+- 🔧 قابل تنظیم: تنظیمات متنوع برای انواع سند
+- 💻 سازگار با Colab: بهینه‌سازی شده برای Google Colab
+- 🐍 API ساده: استفاده آسان با چند خط کد
+- 📊 گزارش کامل: آمار دقیق از عملیات
+
+ 🚀 نصب سریع
+
+```bash
+pip install persian-ocr-toolkit
+```
+
+ پیش‌نیازها
+
+```bash
+# Ubuntu/Debian
+sudo apt install tesseract-ocr tesseract-ocr-fas poppler-utils
+
+# macOS
+brew install tesseract tesseract-lang poppler
+
+# Windows
+# دانلود Tesseract از: https://github.com/UB-Mannheim/tesseract/wiki
+```
+
+ 📖 استفاده
+
+ استفاده ساده
+
+```python
+from persian_ocr import PersianOCR
+
+# ایجاد instance
+ocr = PersianOCR()
+
+# استخراج از تصویر
+result = ocr.extract_from_image("document.jpg")
+print(result.text)
+
+# استخراج از PDF
+result = ocr.extract_from_pdf("document.pdf")
+print(f"استخراج شد: {result.total_characters} کاراکتر از {result.successful_pages} صفحه")
+```
+
+ استفاده پیشرفته
+
+```python
+from persian_ocr import PersianOCR, OCRConfig, ProcessingMethod
+
+# تنظیمات سفارشی
+config = OCRConfig(
+    dpi=400,
+    max_workers=4,
+    scale_factor=2.5
+)
+
+ocr = PersianOCR(config=config)
+
+# پردازش با روش خاص
+result = ocr.extract_from_pdf(
+    "document.pdf",
+    processing_method=ProcessingMethod.HIGH_QUALITY,
+    max_workers=2
+)
+
+# دسترسی به جزئیات هر صفحه
+for page_result in result.page_results:
+    print(f"صفحه {page_result.page_number}: {page_result.character_count} کاراکتر")
+```
+
+ استفاده در Google Colab
+
+```python
+# نصب در Colab
+!pip install persian-ocr-toolkit
+!sudo apt install tesseract-ocr tesseract-ocr-fas poppler-utils
+
+from persian_ocr import PersianOCR, get_preset
+
+# استفاده از پیش‌تنظیم Colab
+config = get_preset("colab_optimized")
+ocr = PersianOCR(config=config)
+
+# پردازش فایل از Google Drive
+result = ocr.extract_from_pdf("/content/drive/MyDrive/document.pdf")
+```
+
+ 🎛️ تنظیمات
+
+ پیش‌تنظیمات آماده
+
+```python
+from persian_ocr import get_preset
+
+# انتخاب پیش‌تنظیم
+configs = {
+    "fast": get_preset("fast"),           # سریع
+    "balanced": get_preset("balanced"),   # متعادل  
+    "high_quality": get_preset("high_quality"), # کیفیت بالا
+    "colab_optimized": get_preset("colab_optimized") # بهینه Colab
+}
+```
+
+ تنظیمات دستی
+
+```python
+from persian_ocr import OCRConfig, OCRMode, ProcessingMethod
+
+config = OCRConfig(
+    language="fas",              # زبان OCR
+    dpi=300,                     # کیفیت تصویر
+    max_workers=3,               # تعداد worker موازی
+    ocr_mode=OCRMode.ACCURATE,   # حالت OCR
+    scale_factor=2.0,            # ضریب بزرگ‌نمایی
+    enhance_contrast=True,       # بهبود کنتراست
+    contrast_factor=2.0,         # ضریب کنتراست
+    batch_size=15               # اندازه دسته
+)
+```
+
+ 📊 مثال کامل
+
+```python
+import time
+from persian_ocr import PersianOCR, get_preset
+
+def process_document(pdf_path):
+    # استفاده از تنظیمات بهینه
+    config = get_preset("balanced")
+    ocr = PersianOCR(config=config)
+    
+    print(f"🔄 شروع پردازش: {pdf_path}")
+    start_time = time.time()
+    
+    # پردازش
+    result = ocr.extract_from_pdf(pdf_path)
+    
+    if result.success:
+        print(f"✅ موفقیت!")
+        print(f"📄 صفحات: {result.successful_pages}/{result.total_pages}")
+        print(f"📝 کاراکترها: {result.total_characters:,}")
+        print(f"⏱️ زمان: {result.processing_time:.1f} ثانیه")
+        print(f"💾 فایل: {result.output_file}")
+        
+        # نمایش نمونه متن
+        if result.page_results:
+            sample_text = result.page_results[0].text[:200]
+            print(f"📖 نمونه: {sample_text}...")
+    else:
+        print(f"❌ خطا: {result.error_message}")
+    
+    return result
+
+# اجرا
+result = process_document("my_document.pdf")
+```
+
+## 🔧 API Reference
+
+ کلاس PersianOCR
+
+#### `__init__(config=None, temp_dir=None, log_level="INFO")`
+- `config`: تنظیمات OCR (OCRConfig)
+- `temp_dir`: پوشه موقت
+- `log_level`: سطح لاگ
+
+#### `extract_from_image(image_path, processing_method=ProcessingMethod.ADVANCED)`
+استخراج متن از تصویر
+
+#### `extract_from_pdf(pdf_path, processing_method=ProcessingMethod.ADVANCED, max_workers=None, batch_size=15)`
+استخراج متن از PDF
+
+ کلاس OCRResult
+
+```python
+@dataclass
+class OCRResult:
+    success: bool                    # موفقیت عملیات
+    total_pages: int                # تعداد کل صفحات
+    successful_pages: int           # صفحات موفق
+    total_characters: int           # کل کاراکترها
+    processing_time: float          # زمان پردازش
+    output_file: Optional[str]      # فایل خروجی
+    error_message: Optional[str]    # پیام خطا
+    page_results: Optional[List]    # نتایج هر صفحه
+```
+
+ 🎯 نمونه‌های عملی
+
+ 1. پردازش دسته‌ای چندین فایل
+
+```python
+import os
+from persian_ocr import PersianOCR
+
+ocr = PersianOCR()
+pdf_folder = "documents/"
+
+for filename in os.listdir(pdf_folder):
+    if filename.endswith('.pdf'):
+        pdf_path = os.path.join(pdf_folder, filename)
+        result = ocr.extract_from_pdf(pdf_path)
+        print(f"{filename}: {result.total_characters} کاراکتر")
+```
+
+ 2. تنظیم بر اساس نوع سند
+
+```python
+from persian_ocr import PersianOCR, ProcessingMethod
+
+ocr = PersianOCR()
+
+# برای اسناد اسکن شده
+scan_result = ocr.extract_from_pdf(
+    "scanned_doc.pdf",
+    processing_method=ProcessingMethod.DOCUMENT
+)
+
+# برای اسناد با کیفیت بالا
+high_quality_result = ocr.extract_from_pdf(
+    "high_quality_doc.pdf", 
+    processing_method=ProcessingMethod.STANDARD
+)
+```
+
+ 3. مانیتورینگ پیشرفت
+
+```python
+from persian_ocr import PersianOCR
+import logging
+
+# تنظیم لاگ
+logging.basicConfig(level=logging.INFO)
+
+ocr = PersianOCR(log_level="INFO")
+result = ocr.extract_from_pdf("large_document.pdf")
+
+# بررسی جزئیات هر صفحه
+for page in result.page_results:
+    if not page.success:
+        print(f"خطا در صفحه {page.page_number}: {page.error_message}")
+```
+
+🚨 عیب‌یابی
+
+ مشکلات رایج
+
+1. خطای "Tesseract not found"
+```bash
+# Ubuntu/Debian
+sudo apt install tesseract-ocr tesseract-ocr-fas
+
+# بررسی نصب
+tesseract --version
+```
+
+2. خطای "Persian language not available"
+```bash
+# نصب بسته زبان فارسی
+sudo apt install tesseract-ocr-fas
+
+# بررسی زبان‌های موجود
+tesseract --list-langs
+```
+
+3. مشکل حافظه در فایل‌های بزرگ
+```python
+# کاهش workers و batch_size
+config = OCRConfig(
+    max_workers=2,
+    batch_size=10,
+    dpi=250  # کاهش DPI
+)
+```
+
+4. دقت پایین OCR
+```python
+# افزایش کیفیت
+config = OCRConfig(
+    dpi=400,
+    scale_factor=2.5,
+    processing_method=ProcessingMethod.HIGH_QUALITY
+)
+```
+
+ 🤝 مشارکت
+
+ما از مشارکت شما استقبال می‌کنیم! 
+
+1. Fork کنید
+2. Branch جدید بسازید (`git checkout -b feature/amazing-feature`)
+3. تغییرات را commit کنید (`git commit -m 'Add amazing feature'`)
+4. Push کنید (`git push origin feature/amazing-feature`)
+5. Pull Request ایجاد کنید
+
+ 📝 تغییرات
+
+برای مشاهده تغییرات هر نسخه، [CHANGELOG.md](CHANGELOG.md) را ببینید.
+
+ 📄 مجوز
+
+این پروژه تحت مجوز MIT منتشر شده است. برای جزئیات [LICENSE](https://github.com/MohammadHNdev/persian-ocr-toolkit/blob/main/LICENSE.txt) را ببینید.
+
+ 🙏 تشکر
+
+- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
+- [pytesseract](https://github.com/madmaze/pytesseract)
+- [pdf2image](https://github.com/Belval/pdf2image)
+- [Pillow](https://python-pillow.org/)
+
+ 📞 تماس
+
+نویسنده: نام شما  
+ایمیل: hosein.norozi434@gmail.com
+  
+**GitHub**: [@MohammadHNdev](https://github.com/MohammadHNdev)  
+
+**لینک پروژه**: [https://github.com/MohammadHNdev/persian-ocr-toolkit](https://github.com/MohammadHNdev/persian-ocr-toolkit)
+
+---
+
+<div align="center">
+
+اگر این پروژه برایتان مفید بود، ⭐ ستاره بدهید!
+
+Made with ❤️ for Persian OCR
+
+</div>
+=======
+# 🔍 Persian OCR Toolkit
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://badge.fury.io/py/persian-ocr-toolkit.svg)](https://badge.fury.io/py/persian-ocr-toolkit)
+[![Downloads](https://github.com/MohammadHNdev/persian-ocr-toolkit/blob/main/assets/logo.png)](https://github.com/MohammadHNdev/persian-ocr-toolkit/blob/main/assets/logo.png)
+
+کتابخانه حرفه‌ای و قدرتمند برای استخراج متن فارسی از تصاویر و فایل‌های PDF
+
+> ابزار کامل OCR برای زبان فارسی با قابلیت‌های پیشرفته پیش‌پردازش تصویر و پردازش موازی
+
+![Demo GIF](https://github.com/MohammadHNdev/persian-ocr-toolkit/blob/main/assets/demo.gif)
+
+ ✨ ویژگی‌ها
+
+- 🚀 سرعت بالا: پردازش موازی با کنترل حافظه
+- 🎯 دقت بالا: پیش‌پردازش هوشمند تصویر 
+- 📄 پشتیبانی کامل PDF: تبدیل خودکار و دسته‌ای
+- 🔧 قابل تنظیم: تنظیمات متنوع برای انواع سند
+- 💻 سازگار با Colab: بهینه‌سازی شده برای Google Colab
+- 🐍 API ساده: استفاده آسان با چند خط کد
+- 📊 گزارش کامل: آمار دقیق از عملیات
+
+ 🚀 نصب سریع
+
+```bash
+pip install persian-ocr-toolkit
+```
+
+ پیش‌نیازها
+
+```bash
+# Ubuntu/Debian
+sudo apt install tesseract-ocr tesseract-ocr-fas poppler-utils
+
+# macOS
+brew install tesseract tesseract-lang poppler
+
+# Windows
+# دانلود Tesseract از: https://github.com/UB-Mannheim/tesseract/wiki
+```
+
+ 📖 استفاده
+
+ استفاده ساده
+
+```python
+from persian_ocr import PersianOCR
+
+# ایجاد instance
+ocr = PersianOCR()
+
+# استخراج از تصویر
+result = ocr.extract_from_image("document.jpg")
+print(result.text)
+
+# استخراج از PDF
+result = ocr.extract_from_pdf("document.pdf")
+print(f"استخراج شد: {result.total_characters} کاراکتر از {result.successful_pages} صفحه")
+```
+
+ استفاده پیشرفته
+
+```python
+from persian_ocr import PersianOCR, OCRConfig, ProcessingMethod
+
+# تنظیمات سفارشی
+config = OCRConfig(
+    dpi=400,
+    max_workers=4,
+    scale_factor=2.5
+)
+
+ocr = PersianOCR(config=config)
+
+# پردازش با روش خاص
+result = ocr.extract_from_pdf(
+    "document.pdf",
+    processing_method=ProcessingMethod.HIGH_QUALITY,
+    max_workers=2
+)
+
+# دسترسی به جزئیات هر صفحه
+for page_result in result.page_results:
+    print(f"صفحه {page_result.page_number}: {page_result.character_count} کاراکتر")
+```
+
+ استفاده در Google Colab
+
+```python
+# نصب در Colab
+!pip install persian-ocr-toolkit
+!sudo apt install tesseract-ocr tesseract-ocr-fas poppler-utils
+
+from persian_ocr import PersianOCR, get_preset
+
+# استفاده از پیش‌تنظیم Colab
+config = get_preset("colab_optimized")
+ocr = PersianOCR(config=config)
+
+# پردازش فایل از Google Drive
+result = ocr.extract_from_pdf("/content/drive/MyDrive/document.pdf")
+```
+
+ 🎛️ تنظیمات
+
+ پیش‌تنظیمات آماده
+
+```python
+from persian_ocr import get_preset
+
+# انتخاب پیش‌تنظیم
+configs = {
+    "fast": get_preset("fast"),           # سریع
+    "balanced": get_preset("balanced"),   # متعادل  
+    "high_quality": get_preset("high_quality"), # کیفیت بالا
+    "colab_optimized": get_preset("colab_optimized") # بهینه Colab
+}
+```
+
+ تنظیمات دستی
+
+```python
+from persian_ocr import OCRConfig, OCRMode, ProcessingMethod
+
+config = OCRConfig(
+    language="fas",              # زبان OCR
+    dpi=300,                     # کیفیت تصویر
+    max_workers=3,               # تعداد worker موازی
+    ocr_mode=OCRMode.ACCURATE,   # حالت OCR
+    scale_factor=2.0,            # ضریب بزرگ‌نمایی
+    enhance_contrast=True,       # بهبود کنتراست
+    contrast_factor=2.0,         # ضریب کنتراست
+    batch_size=15               # اندازه دسته
+)
+```
+
+ 📊 مثال کامل
+
+```python
+import time
+from persian_ocr import PersianOCR, get_preset
+
+def process_document(pdf_path):
+    # استفاده از تنظیمات بهینه
+    config = get_preset("balanced")
+    ocr = PersianOCR(config=config)
+    
+    print(f"🔄 شروع پردازش: {pdf_path}")
+    start_time = time.time()
+    
+    # پردازش
+    result = ocr.extract_from_pdf(pdf_path)
+    
+    if result.success:
+        print(f"✅ موفقیت!")
+        print(f"📄 صفحات: {result.successful_pages}/{result.total_pages}")
+        print(f"📝 کاراکترها: {result.total_characters:,}")
+        print(f"⏱️ زمان: {result.processing_time:.1f} ثانیه")
+        print(f"💾 فایل: {result.output_file}")
+        
+        # نمایش نمونه متن
+        if result.page_results:
+            sample_text = result.page_results[0].text[:200]
+            print(f"📖 نمونه: {sample_text}...")
+    else:
+        print(f"❌ خطا: {result.error_message}")
+    
+    return result
+
+# اجرا
+result = process_document("my_document.pdf")
+```
+
+## 🔧 API Reference
+
+ کلاس PersianOCR
+
+#### `__init__(config=None, temp_dir=None, log_level="INFO")`
+- `config`: تنظیمات OCR (OCRConfig)
+- `temp_dir`: پوشه موقت
+- `log_level`: سطح لاگ
+
+#### `extract_from_image(image_path, processing_method=ProcessingMethod.ADVANCED)`
+استخراج متن از تصویر
+
+#### `extract_from_pdf(pdf_path, processing_method=ProcessingMethod.ADVANCED, max_workers=None, batch_size=15)`
+استخراج متن از PDF
+
+ کلاس OCRResult
+
+```python
+@dataclass
+class OCRResult:
+    success: bool                    # موفقیت عملیات
+    total_pages: int                # تعداد کل صفحات
+    successful_pages: int           # صفحات موفق
+    total_characters: int           # کل کاراکترها
+    processing_time: float          # زمان پردازش
+    output_file: Optional[str]      # فایل خروجی
+    error_message: Optional[str]    # پیام خطا
+    page_results: Optional[List]    # نتایج هر صفحه
+```
+
+ 🎯 نمونه‌های عملی
+
+ 1. پردازش دسته‌ای چندین فایل
+
+```python
+import os
+from persian_ocr import PersianOCR
+
+ocr = PersianOCR()
+pdf_folder = "documents/"
+
+for filename in os.listdir(pdf_folder):
+    if filename.endswith('.pdf'):
+        pdf_path = os.path.join(pdf_folder, filename)
+        result = ocr.extract_from_pdf(pdf_path)
+        print(f"{filename}: {result.total_characters} کاراکتر")
+```
+
+ 2. تنظیم بر اساس نوع سند
+
+```python
+from persian_ocr import PersianOCR, ProcessingMethod
+
+ocr = PersianOCR()
+
+# برای اسناد اسکن شده
+scan_result = ocr.extract_from_pdf(
+    "scanned_doc.pdf",
+    processing_method=ProcessingMethod.DOCUMENT
+)
+
+# برای اسناد با کیفیت بالا
+high_quality_result = ocr.extract_from_pdf(
+    "high_quality_doc.pdf", 
+    processing_method=ProcessingMethod.STANDARD
+)
+```
+
+ 3. مانیتورینگ پیشرفت
+
+```python
+from persian_ocr import PersianOCR
+import logging
+
+# تنظیم لاگ
+logging.basicConfig(level=logging.INFO)
+
+ocr = PersianOCR(log_level="INFO")
+result = ocr.extract_from_pdf("large_document.pdf")
+
+# بررسی جزئیات هر صفحه
+for page in result.page_results:
+    if not page.success:
+        print(f"خطا در صفحه {page.page_number}: {page.error_message}")
+```
+
+🚨 عیب‌یابی
+
+ مشکلات رایج
+
+1. خطای "Tesseract not found"
+```bash
+# Ubuntu/Debian
+sudo apt install tesseract-ocr tesseract-ocr-fas
+
+# بررسی نصب
+tesseract --version
+```
+
+2. خطای "Persian language not available"
+```bash
+# نصب بسته زبان فارسی
+sudo apt install tesseract-ocr-fas
+
+# بررسی زبان‌های موجود
+tesseract --list-langs
+```
+
+3. مشکل حافظه در فایل‌های بزرگ
+```python
+# کاهش workers و batch_size
+config = OCRConfig(
+    max_workers=2,
+    batch_size=10,
+    dpi=250  # کاهش DPI
+)
+```
+
+4. دقت پایین OCR
+```python
+# افزایش کیفیت
+config = OCRConfig(
+    dpi=400,
+    scale_factor=2.5,
+    processing_method=ProcessingMethod.HIGH_QUALITY
+)
+```
+
+ 🤝 مشارکت
+
+ما از مشارکت شما استقبال می‌کنیم! 
+
+1. Fork کنید
+2. Branch جدید بسازید (`git checkout -b feature/amazing-feature`)
+3. تغییرات را commit کنید (`git commit -m 'Add amazing feature'`)
+4. Push کنید (`git push origin feature/amazing-feature`)
+5. Pull Request ایجاد کنید
+
+ 📝 تغییرات
+
+برای مشاهده تغییرات هر نسخه، [CHANGELOG.md](CHANGELOG.md) را ببینید.
+
+ 📄 مجوز
+
+این پروژه تحت مجوز MIT منتشر شده است. برای جزئیات [LICENSE](https://github.com/MohammadHNdev/persian-ocr-toolkit/blob/main/LICENSE.txt) را ببینید.
+
+ 🙏 تشکر
+
+- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
+- [pytesseract](https://github.com/madmaze/pytesseract)
+- [pdf2image](https://github.com/Belval/pdf2image)
+- [Pillow](https://python-pillow.org/)
+
+ 📞 تماس
+
+نویسنده: نام شما  
+ایمیل: hosein.norozi434@gmail.com
+  
+**GitHub**: [@MohammadHNdev](https://github.com/MohammadHNdev)  
+
+**لینک پروژه**: [https://github.com/MohammadHNdev/persian-ocr-toolkit](https://github.com/MohammadHNdev/persian-ocr-toolkit)
+
+---
+
+<div align="center">
+
+اگر این پروژه برایتان مفید بود، ⭐ ستاره بدهید!
+
+Made with ❤️ for Persian OCR
+
+</div>
+>>>>>>> db21877dee46cce8b280ee1697fe638be51800de
