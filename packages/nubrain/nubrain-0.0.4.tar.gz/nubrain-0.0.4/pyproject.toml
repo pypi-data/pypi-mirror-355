@@ -1,0 +1,36 @@
+[project]
+name = "nubrain"
+version = "0.0.4"
+description = "NuBrain connect"
+authors = [{ name = "nuBrain Team", email = "hello@nubrain.io" }]
+requires-python = ">=3.10"
+readme = "README.md"
+dependencies = [
+    "brainflow>=5.16.0",
+    "certifi>=2025.4.26",
+    "charset-normalizer>=3.4.2",
+    "idna>=3.10",
+    "numpy>=2.2.6",
+    "pillow>=11.2.1",
+    "pygame>=2.6.1",
+    "requests>=2.32.3",
+    "scipy>=1.15.3",
+    # "setuptools>=80.9.0",        # Needed?
+    "urllib3>=2.4.0",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+# Add this section for development dependencies
+[project.optional-dependencies]
+dev = ["build", "twine"]
+
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["nubrain"]
+
+[project.urls]
+Homepage = "https://nubrain.io/"
