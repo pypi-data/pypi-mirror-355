@@ -1,0 +1,124 @@
+Metadata-Version: 2.4
+Name: htstabilizer
+Version: 1.0.1
+Summary: Hardware-tailored quantum Clifford circuits for stabilizer state preparation or readout as well as mutually unbiased bases in order to perform efficient full-state tomography on small qubit systems.
+Author: Mc-Zen
+License: MIT License
+        
+        Copyright (c) 2023-2025 Mc-Zen
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/Mc-Zen/htstabilizer
+Project-URL: Bug Tracker, https://github.com/Mc-Zen/htstabilizer/issues
+Keywords: quantum circuits,clifford,hardware-tailored,full-state tomography,stabilizer,quantum state preparation,quantum readout circuits,mutually unbiased bases,short circuits,full state tomography,circuit optimization
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: qiskit>=0.39
+Requires-Dist: numpy>=1.22
+Dynamic: license-file
+
+# Hardware-Tailored Stabilizer Circuits Python library
+
+[![PyPI Package](https://img.shields.io/pypi/v/htstabilizer)](https://pypi.org/project/htstabilizer/)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/Mc-Zen/htstabilizer/blob/master/LICENSE.txt)
+[![Tests](https://github.com/Mc-Zen/htstabilizer/actions/workflows/run-tests.yml/badge.svg)](https://github.com/Mc-Zen/htstabilizer/actions/workflows/run-tests.yml)
+
+
+
+This library provides 
+- *hardware-tailored* quantum Clifford circuits for **stabilizer state preparation** or **measurement** as well as 
+- mutually unbiased bases in order to perform more efficient **full-state tomography** on small qubit systems. 
+
+Hereby, two-qubit gate count is minimized. All delivered circuits are designed to fully comply to a desired hardware connectivity, **avoiding additional swap operations altogether**. 
+
+
+## Installation
+
+You can install this package from [PyPi][pypi-page] via 
+```
+pip install htstabilizer
+```
+or you can clone the [repository][repository] and include it into your project. 
+
+## Tailored to your hardware connectivity
+
+A total of 19 connectivities are currently supported, ranging from 2 to 6 qubits. For each supported number of qubits, circuits for full connectivity and line connectivity are available. Additionally, other connectivities that occur in current quantum chips or which are subgraphs of existing hardware are supported. 
+
+All currently available connectivities are shown below. 
+
+![][hardware-connectivities]
+
+<!-- ### 2 qubits
+![][2-qubit-con]
+
+### 3 qubits
+![][3-qubit-con]
+
+### 4 qubits
+![][4-qubit-con]
+
+### 5 qubits
+![][5-qubit-con]
+
+### 6 qubits
+![][6-qubit-con] -->
+
+## Usage
+
+```py
+from htstabilizer.stabilizer_circuits import *
+
+pqc = get_preparation_circuit(Stabilizer(["XZZ", "ZXI", "ZIX"]), "linear")
+
+rqc = get_readout_circuit(Stabilizer(["XZZ", "ZXI", "ZIX"]), "linear")
+
+qc = QuantumCircuit(5)
+# ... build Clifford circuit
+compressed_qc = compress_preparation_circuit(qc, "T")
+```
+
+
+## Examples
+
+View examples for exploring the functionality:
+
+- [Compressing Clifford preparation circuits][example-compress]
+- [Generating readout circuits][example-readout]
+- [Perform state tomography][example-tomography]
+
+
+## License
+This package is distributed under the [MIT License][license]. 
+
+[pypi-page]: https://pypi.org/project/htstabilizer/
+[repository]: https://github.com/Mc-Zen/htstabilizer
+[license]: https://github.com/Mc-Zen/htstabilizer/blob/master/LICENSE.txt
+
+[hardware-connectivities]: https://github.com/Mc-Zen/htstabilizer/raw/master/docs/images/Hardware_Connectivities.svg
+
+[example-compress]: https://github.com/Mc-Zen/htstabilizer/blob/master/examples/compress_preparation_circuit.py
+[example-readout]: https://github.com/Mc-Zen/htstabilizer/blob/master/examples/readout_circuit.py
+[example-tomography]: https://github.com/Mc-Zen/htstabilizer/blob/master/examples/state_tomography.py
+
+
