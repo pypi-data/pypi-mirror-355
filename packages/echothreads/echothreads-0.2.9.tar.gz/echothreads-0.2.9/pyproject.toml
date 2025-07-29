@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "echothreads"
+version = "0.2.9"
+description = "A poetic vision for commit message processing system"
+authors = ["jgwill <jgwill@jgwill.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.0.1"
+pyyaml = "^5.4.1"
+matplotlib = "^3.4.2"
+requests = "^2.25.1"
+redis = "^3.5.3"
+tushell = "*"
+flask = "^2.2"
+
+[[tool.poetry.packages]]
+include = "echoshell"
+from = "src"
+
+[[tool.poetry.packages]]
+include = "loreweave"
+from = "src"
+
+[[tool.poetry.packages]]
+include = "scripts"
+
+[[tool.poetry.packages]]
+include = "echothreads"
+from = "src"
+
+[[tool.poetry.include]]
+path = "main.py"
+
+[tool.poetry.scripts]
+loreweaver = "main:cli"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
