@@ -1,0 +1,64 @@
+[project]
+name = "slobs-cli"
+description = "A command line application for Streamlabs Desktop"
+authors = [
+    { name = "onyx-and-iris", email = "code@onyxandiris.online" },
+]
+dependencies = [
+    "pyslobs>=2.0.5",
+    "asyncclick>=8.1.8",
+    "terminaltables3>=4.0.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+dynamic = []
+version = "0.9.2"
+
+[project.license]
+text = "MIT"
+
+[project.scripts]
+slobs-cli = "slobs_cli.cli:run"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "file"
+path = "src/slobs_cli/__about__.py"
+
+[tool.pdm.scripts._]
+env_file = ".env"
+
+[tool.pdm.scripts.cli]
+cmd = "slobs-cli {args}"
+
+[tool.pdm.scripts.pre_test]
+cmd = "python tests/setup.py"
+
+[tool.pdm.scripts.test]
+cmd = "pytest {args}"
+
+[tool.pdm.scripts.post_test]
+cmd = "python tests/teardown.py"
+
+[tool.pdm.scripts.fmt]
+cmd = "ruff format {args}"
+
+[tool.pdm.scripts.lint]
+cmd = "ruff check {args}"
+
+[dependency-groups]
+dev = [
+    "tox-pdm>=0.7.2",
+    "pytest>=8.4.0",
+    "pytest-randomly>=3.16.0",
+    "virtualenv-pyenv>=0.5.0",
+    "ruff>=0.11.13",
+]
