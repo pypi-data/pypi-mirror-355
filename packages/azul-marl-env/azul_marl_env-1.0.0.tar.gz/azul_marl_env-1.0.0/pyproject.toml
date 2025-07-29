@@ -1,0 +1,35 @@
+[project]
+name = "azul_marl_env"
+version = "1.0.0"
+authors = [{name = "Evaldas Visockas", email = "developersediary@gmail.com"}]
+description = "A library to enable AI agent training on board game"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "GPL-3.0-or-later"}
+dependencies = [
+    "azul-game-engine>=1.0.2",
+    "pettingzoo>=1.24.3",
+    "gymnasium>=1.0.0",
+    "numpy>=1.21.0"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "numpy>=1.21.0"
+]
+
+[project.urls]
+Repository = "https://github.com/AzulImplementation/AzulMARL"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["azul_marl_env"]
+
+[tool.coverage.run]
+omit = [
+    "azul_marl_env/render/*"
+]
