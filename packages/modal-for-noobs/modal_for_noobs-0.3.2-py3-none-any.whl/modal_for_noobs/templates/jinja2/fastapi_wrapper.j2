@@ -1,0 +1,71 @@
+# FastAPI wrapper for advanced deployments
+def create_fastapi_app():
+    """Create a FastAPI app with advanced features."""
+    
+    fastapi_app = FastAPI(
+        title="{{ app_name }}",
+        description="{{ description }}",
+        version="1.0.0",
+        docs_url="/docs",
+        redoc_url="/redoc"
+    )
+    
+    # Health check endpoint
+    @fastapi_app.get("/health")
+    async def health_check():
+        return {
+            "status": "healthy",
+            "app_name": "{{ app_name }}",
+            "deployment_mode": "{{ deployment_mode }}",
+            "timestamp": datetime.now().isoformat(),
+        }
+    
+    # Deployment info endpoint
+    @fastapi_app.get("/info")
+    async def deployment_info():
+        return {
+            "app_name": "{{ app_name }}",
+            "deployment_mode": "{{ deployment_mode }}",
+            "timeout_seconds": {{ timeout_seconds }},
+            "max_containers": {{ max_containers }},
+            "min_containers": {{ min_containers }},
+            {% if has_gpu %}
+            "gpu_enabled": True,
+            "gpu_type": "{{ gpu_type }}",
+            {% endif %}
+            "environment": {
+                {% for key, value in environment_variables.items() %}
+                "{{ key }}": "{{ value }}",
+                {% endfor %}
+            }
+        }
+    
+    {% if has_remote_functions %}
+    # Remote function endpoints
+    {% for func in remote_functions %}
+    @fastapi_app.post("/functions/{{ func.name }}")
+    async def trigger_{{ func.name }}():
+        """Trigger remote function: {{ func.name }}"""
+        try:
+            result = {{ func.name }}.remote()
+            return {"status": "triggered", "function": "{{ func.name }}"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+    {% endfor %}
+    {% endif %}
+    
+    {% if provision_nfs %}
+    # File management endpoints
+    @fastapi_app.get("/files")
+    async def list_files():
+        """List files in workspace."""
+        files = []
+        workspace = Path(MOUNT_PATH)
+        if workspace.exists():
+            for f in workspace.rglob("*"):
+                if f.is_file():
+                    files.append(str(f.relative_to(workspace)))
+        return {"files": files}
+    {% endif %}
+    
+    return fastapi_app
