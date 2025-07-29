@@ -1,0 +1,216 @@
+name: napari-vedo-bridge
+display_name: napari vedo bridge
+contributions:
+  commands:
+    - id: napari-vedo-bridge.vedo_viewer
+      python_name: napari_vedo_bridge._widgets:VedoWidget
+      title: Vedo mesh viusdalization widget
+    - id: napari-vedo-bridge.cutter_widget
+      python_name: napari_vedo_bridge._cutter_widget:VedoCutter
+      title: Interactive mesh cutting with Vedo
+
+    - id: napari-vedo-bridge.write_points
+      python_name: napari_vedo_bridge._writer:write_points
+      title: Save points layer to vtp
+    - id: napari-vedo-bridge.write_surfaces
+      python_name: napari_vedo_bridge._writer:write_surfaces
+      title: Save surface layer to vtp
+
+    - id: napari-vedo-bridge.load_points
+      python_name: napari_vedo_bridge._reader:get_reader
+      title: Load points from disk
+    - id: napari-vedo-bridge.load_surfaces
+      python_name: napari_vedo_bridge._reader:get_reader
+      title: Load surfaces from disk
+
+      # Processing commands
+    - id: napari-vedo-bridge.compute_normals
+      python_name: napari_vedo_bridge._mesh:compute_normals
+      title: Compute normals on surface
+    - id: napari-vedo-bridge.shrink
+      python_name: napari_vedo_bridge._mesh:shrink
+      title: Shrink surface
+    - id: napari-vedo-bridge.subdivide
+      python_name: napari_vedo_bridge._mesh:subdivide
+      title: Subdivide surface
+    - id: napari-vedo-bridge.decimate
+      python_name: napari_vedo_bridge._mesh:decimate
+      title: Decimate surface
+    - id: napari-vedo-bridge.decimate_pro
+      python_name: napari_vedo_bridge._mesh:decimate_pro
+      title: Decimate surface (Pro algorithm)
+    - id: napari-vedo-bridge.decimate_binned
+      python_name: napari_vedo_bridge._mesh:decimate_binned
+      title: Decimate surface (Binned algorithm)
+    - id: napari-vedo-bridge.smooth
+      python_name: napari_vedo_bridge._mesh:smooth
+      title: Smooth surface
+    - id: napari-vedo-bridge.fill_holes
+      python_name: napari_vedo_bridge._mesh:fill_holes
+      title: Fill holes in surface
+    - id: napari-vedo-bridge.split
+      python_name: napari_vedo_bridge._mesh:split
+      title: Split surface 
+    - id: napari-vedo-bridge.extract_largest_region
+      python_name: napari_vedo_bridge._mesh:extract_largest_region
+      title: Extract largest region of surface
+    - id: napari-vedo-bridge.binarize
+      python_name: napari_vedo_bridge._mesh:binarize
+      title: Binarize surface
+    - id: napari-vedo-bridge.smooth_points_1d
+      python_name: napari_vedo_bridge._points:smooth_mls_1d
+      title: Smooth points (moving lest-squares 1D)
+    - id: napari-vedo-bridge.smooth_points_2d
+      python_name: napari_vedo_bridge._points:smooth_mls_2d
+      title: Smooth points (moving least-squares 2D)
+    - id: napari-vedo-bridge.remove_outliers
+      python_name: napari_vedo_bridge._points:remove_outliers
+      title: Remove outliers from points
+
+    # Sample data
+    - id: napari-vedo-bridge.data.mouse_limb1
+      python_name: napari_vedo_bridge._sample_data:mouse_limb1
+      title: Mouse limb 1
+    - id: napari-vedo-bridge.data.mouse_limb2
+      python_name: napari_vedo_bridge._sample_data:mouse_limb2
+      title: Mouse limb 2
+    - id: napari-vedo-bridge.data.mouse_limb3
+      python_name: napari_vedo_bridge._sample_data:mouse_limb3
+      title: Mouse limb 3
+    - id: napari-vedo-bridge.data.beethoven
+      python_name: napari_vedo_bridge._sample_data:beethoven
+      title: Beethoven
+    - id: napari-vedo-bridge.data.bunny
+      python_name: napari_vedo_bridge._sample_data:bunny
+      title: Bunny
+    - id: napari-vedo-bridge.data.cow
+      python_name: napari_vedo_bridge._sample_data:cow
+      title: Cow
+    - id: napari-vedo-bridge.data.apple
+      python_name: napari_vedo_bridge._sample_data:apple
+      title: Apple
+    - id: napari-vedo-bridge.data.panther
+      python_name: napari_vedo_bridge._sample_data:panther
+      title: Panther
+
+  sample_data:
+    - command: napari-vedo-bridge.data.mouse_limb1
+      display_name: Mouse limb 1
+      key: mouse_limb1
+    - command: napari-vedo-bridge.data.mouse_limb2
+      display_name: Mouse limb 2
+      key: mouse_limb2
+    - command: napari-vedo-bridge.data.mouse_limb3
+      display_name: Mouse limb 3
+      key: mouse_limb3
+    - command: napari-vedo-bridge.data.beethoven
+      display_name: Beethoven
+      key: beethoven
+    - command: napari-vedo-bridge.data.bunny
+      display_name: Bunny
+      key: bunny
+    - command: napari-vedo-bridge.data.cow
+      display_name: Cow
+      key: cow
+    - command: napari-vedo-bridge.data.apple
+      display_name: Apple
+      key: apple
+    - command: napari-vedo-bridge.data.panther
+      display_name: Panther
+      key: panther
+
+  widgets:
+    - command: napari-vedo-bridge.cutter_widget
+      display_name: Mesh cutter
+      autogenerate: true
+    - command: napari-vedo-bridge.vedo_viewer
+      display_name: Vedo mesh viewer
+
+    - command: napari-vedo-bridge.compute_normals
+      display_name: Compute normals
+    - command: napari-vedo-bridge.shrink
+      display_name: Shrink mesh
+    - command: napari-vedo-bridge.subdivide
+      display_name: Subdivide mesh
+    - command: napari-vedo-bridge.decimate
+      display_name: Decimate mesh
+    - command: napari-vedo-bridge.decimate_pro
+      display_name: Decimate mesh (Pro algorithm)
+    - command: napari-vedo-bridge.decimate_binned
+      display_name: Decimate mesh (Binned algorithm)
+    - command: napari-vedo-bridge.smooth
+      display_name: Smooth mesh
+    - command: napari-vedo-bridge.fill_holes
+      display_name: Fill holes
+    - command: napari-vedo-bridge.split
+      display_name: Split mesh
+    - command: napari-vedo-bridge.extract_largest_region
+      display_name: Extract largest region
+    - command: napari-vedo-bridge.binarize
+      display_name: Binarize mesh
+    - command: napari-vedo-bridge.smooth_points_1d
+      display_name: Smooth points (moving least-squares 1D)
+    - command: napari-vedo-bridge.smooth_points_2d
+      display_name: Smooth points (moving least-squares 2D)
+    - command: napari-vedo-bridge.remove_outliers
+      display_name: Remove outliers
+
+  menus:
+    napari/file/io:
+      - command: napari-vedo-bridge.load_points
+      - command: napari-vedo-bridge.load_surfaces
+      - command: napari-vedo-bridge.write_points
+      - command: napari-vedo-bridge.write_surfaces
+
+    napari/layers/visualize:
+      - command: napari-vedo-bridge.vedo_viewer
+
+    napari/layers/transform:
+      - command: napari-vedo-bridge.cutter_widget
+      - command: napari-vedo-bridge.split
+      - command: napari-vedo-bridge.shrink
+      - command: napari-vedo-bridge.subdivide
+      - command: napari-vedo-bridge.compute_normals
+
+    napari/layers/filter:
+      - command: napari-vedo-bridge.smooth
+      - command: napari-vedo-bridge.fill_holes
+      - command: napari-vedo-bridge.decimate
+      - command: napari-vedo-bridge.decimate_pro
+      - command: napari-vedo-bridge.decimate_binned
+      - command: napari-vedo-bridge.smooth_points_1d
+      - command: napari-vedo-bridge.smooth_points_2d
+
+    napari/layers/segment:
+      - command: napari-vedo-bridge.extract_largest_region
+      - command: napari-vedo-bridge.binarize
+
+  writers:
+    - command: napari-vedo-bridge.write_points
+      layer_types:
+      - points?
+      filename_extensions:
+      - .vtp
+    - command: napari-vedo-bridge.write_surfaces
+      layer_types:
+      - surface
+      filename_extensions:
+      - .vtp
+      - .vtk
+      - .obj
+      - .stl
+      - .ply
+
+  readers:
+    - command: napari-vedo-bridge.load_points
+      filename_patterns:
+      - '*.vtp'
+      accepts_directories: true
+    - command: napari-vedo-bridge.load_surfaces
+      filename_patterns:
+      - '*.vtp'
+      - '*.vtk'
+      - '*.obj'
+      - '*.stl'
+      - '*.ply'
+      accepts_directories: true
