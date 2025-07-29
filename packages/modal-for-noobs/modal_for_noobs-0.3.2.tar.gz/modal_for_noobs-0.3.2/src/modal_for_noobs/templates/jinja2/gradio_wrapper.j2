@@ -1,0 +1,63 @@
+# Gradio-specific wrapper for Modal deployment
+def create_gradio_wrapper():
+    """Create a Gradio wrapper with advanced features."""
+    
+    # Detect Gradio Interface
+    demo = None
+    interface_names = ['demo', 'app', 'interface', 'iface']
+    
+    for name in interface_names:
+        if name in globals() and hasattr(globals()[name], 'launch'):
+            demo = globals()[name]
+            {% if provision_logging %}
+            logger.info(f"Found Gradio interface: {name}")
+            {% endif %}
+            break
+    
+    if demo is None:
+        for var_name, var_value in globals().items():
+            if hasattr(var_value, 'queue') and hasattr(var_value, 'launch'):
+                demo = var_value
+                {% if provision_logging %}
+                logger.info(f"Found Gradio interface through scanning: {var_name}")
+                {% endif %}
+                break
+    
+    if demo is None:
+        raise ValueError("Could not find Gradio interface")
+    
+    # Configure queue
+    demo.queue(max_size={{ concurrent_inputs // 5 }})
+    
+    {% if enable_dashboard %}
+    # Create enhanced interface with monitoring
+    with gr.Blocks(title="{{ app_name }}") as enhanced_interface:
+        with gr.Tabs():
+            with gr.Tab("🎯 Application"):
+                demo.render()
+            
+            with gr.Tab("📊 Monitoring"):
+                gr.Markdown("### Application Monitoring")
+                
+                with gr.Row():
+                    with gr.Column():
+                        gr.Markdown("**Deployment Info**")
+                        gr.JSON({
+                            "app_name": "{{ app_name }}",
+                            "mode": "{{ deployment_mode }}",
+                            "timeout": {{ timeout_seconds }},
+                            "containers": f"{{ min_containers }}-{{ max_containers }}",
+                        })
+                    
+                    with gr.Column():
+                        gr.Markdown("**Resource Usage**")
+                        {% if has_gpu %}
+                        gr.Markdown(f"GPU: {{ gpu_type }}")
+                        {% endif %}
+                        gr.Markdown(f"Memory: {{ memory_mb }}MB")
+                        gr.Markdown(f"CPU: {{ cpu }} cores")
+    
+    return enhanced_interface
+    {% else %}
+    return demo
+    {% endif %}
