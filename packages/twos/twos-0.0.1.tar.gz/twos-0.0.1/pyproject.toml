@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "twos"
+version = "0.0.1"
+description = "Interpreting integer bit patterns as two's complement or unsigned representation"
+authors = [
+    { name="Simon Nieswand", email="simon.nieswand@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = []
+license = { text = "GPL-3.0-only" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Homepage = "https://github.com/nieswand/twos"
+Repository = "https://github.com/nieswand/twos"
+Issues = "https://github.com/nieswand/twos/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
