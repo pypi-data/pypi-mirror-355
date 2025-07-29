@@ -1,0 +1,82 @@
+[project]
+name = "Has9_pkg1"
+version = "0.0.1"
+dynamic = [
+    "dependencies",
+]
+description = "Learning how to publish a python package in pypi"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = [
+    "Has9_pkg1",
+]
+license = {text = "MIT License"}
+authors = [
+  {name = "Hasnein Tareque", email = "hasnein.tareque@dpird.wa.gov.au"},
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.entry-points."console_scripts"]
+has9_pkg1 = "has9_pkg1.cli:main"
+
+[project.optional-dependencies]
+all = [
+    "Has9_pkg1[extra]",
+]
+
+extra = [
+    "pandas",
+]
+
+
+[tool]
+[tool.setuptools.packages.find]
+include = ["has9_pkg1*"]
+exclude = ["docs*"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+
+[tool.bumpversion]
+current_version = "0.0.1"
+commit = true
+tag = true
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "has9_pkg1/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+
+[tool.flake8]
+exclude = [
+    "docs",
+]
+max-line-length = 88
+
+
+[project.urls]
+Homepage = "https://github.com/HasTarC0d3/Has9_pkg1"
+
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
