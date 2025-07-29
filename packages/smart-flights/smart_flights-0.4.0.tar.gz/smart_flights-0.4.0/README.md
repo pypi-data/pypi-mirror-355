@@ -1,0 +1,352 @@
+# Fli 🛫
+
+一个强大的 Python 库，提供对 Google Flights 数据的编程访问，配备优雅的命令行界面。轻松搜索航班、寻找最优惠价格并筛选结果。
+
+> 🚀 **Fli 的特别之处？**
+> 与其他依赖网页抓取的航班搜索库不同，Fli 通过逆向工程直接与 Google Flights API 交互。
+> 这意味着：
+> - **快速**：直接 API 访问意味着更快、更可靠的结果
+> - **零抓取**：无需 HTML 解析，无需浏览器自动化，纯 API 交互
+> - **可靠**：不易因 UI 变化而中断
+> - **模块化**：可扩展架构，便于自定义和集成
+
+![CLI 演示](https://github.com/punitarani/fli/blob/main/data/cli-demo.png)
+
+## 快速开始
+
+```bash
+pip install smart-flights
+```
+
+```bash
+# 使用 pipx 安装（推荐用于 CLI）
+pipx install smart-flights
+
+# 开始使用 CLI
+fli --help
+```
+
+## 功能特性
+
+- 🔍 **强大搜索**
+    - 单程航班搜索
+    - 灵活的出发时间
+    - 多航空公司支持
+    - 舱位等级选择
+    - 中转偏好设置
+    - 自定义结果排序
+
+- 💺 **舱位等级**
+    - 经济舱
+    - 超级经济舱
+    - 商务舱
+    - 头等舱
+
+- 🎯 **智能排序**
+    - 价格
+    - 飞行时长
+    - 出发时间
+    - 到达时间
+
+- 🛡️ **内置保护**
+    - 速率限制
+    - 自动重试
+    - 全面错误处理
+    - 输入验证
+
+- 🌍 **多语言支持**
+    - 中英文双语界面
+    - 机场名称本地化
+    - 航空公司名称翻译
+    - 支持中文和英文搜索
+
+## CLI 使用方法
+
+### 搜索特定航班
+
+```bash
+# 基础搜索
+fli search JFK LHR 2025-10-25
+
+# 高级搜索（带筛选条件）
+fli search JFK LHR 2025-10-25 \
+    -t 6-20 \              # 时间范围（上午6点 - 晚上8点）
+    -a BA KL \             # 航空公司（英国航空、荷兰皇家航空）
+    -s BUSINESS \          # 舱位类型
+    -x NON_STOP \          # 仅直飞航班
+    -o DURATION            # 按飞行时长排序
+
+# 中文搜索示例
+fli search PEK LAX 2025-10-25 \
+    --language zh-cn \     # 中文界面
+    --currency CNY         # 人民币价格
+```
+
+### 查找最便宜日期
+
+```bash
+# 基础最便宜日期搜索
+fli cheap JFK LHR
+
+# 高级搜索（指定日期范围）
+fli cheap JFK LHR \
+    --from 2025-01-01 \
+    --to 2025-02-01 \
+    --monday --friday      # 仅周一和周五
+```
+
+### 机场搜索
+
+```bash
+# 搜索机场
+fli airport-search "北京"
+fli airport-search "london" --language zh-cn
+fli airport-search "PEK"
+
+# 按国家搜索
+fli airport-search "中国" --country --language zh-cn
+```
+
+### CLI 选项
+
+#### 搜索命令 (`fli search`)
+
+| 选项             | 描述                    | 示例                   |
+|------------------|-------------------------|------------------------|
+| `-t, --time`     | 时间范围（24小时制）    | `6-20`                 |
+| `-a, --airlines` | 航空公司代码            | `BA KL`                |
+| `-s, --seat`     | 舱位等级                | `ECONOMY`, `BUSINESS`  |
+| `-x, --stops`    | 最大中转次数            | `NON_STOP`, `ONE_STOP` |
+| `-o, --sort`     | 结果排序方式            | `CHEAPEST`, `DURATION` |
+| `-l, --language` | 界面语言                | `en`, `zh-cn`          |
+| `--currency`     | 价格货币                | `USD`, `CNY`           |
+
+#### 便宜航班命令 (`fli cheap`)
+
+| 选项          | 描述         | 示例                   |
+|---------------|--------------|------------------------|
+| `--from`      | 开始日期     | `2025-01-01`           |
+| `--to`        | 结束日期     | `2025-02-01`           |
+| `-s, --seat`  | 舱位等级     | `ECONOMY`, `BUSINESS`  |
+| `-x, --stops` | 最大中转次数 | `NON_STOP`, `ONE_STOP` |
+| `--[day]`     | 日期筛选     | `--monday`, `--friday` |
+
+#### 机场搜索命令 (`fli airport-search`)
+
+| 选项             | 描述                    | 示例                   |
+|------------------|-------------------------|------------------------|
+| `-l, --language` | 搜索结果语言            | `en`, `zh-cn`          |
+| `-n, --limit`    | 最大结果数量            | `10`                   |
+| `--city`         | 按城市搜索              | `--city`               |
+| `--country`      | 按国家搜索              | `--country`            |
+
+## Python API 详细使用方法
+
+### 1. 航班搜索 API
+
+#### 1.1 基础单程航班搜索
+
+```python
+from datetime import datetime, timedelta
+from fli.search import SearchFlights
+from fli.models import (
+    FlightSearchFilters, FlightSegment, Airport,
+    PassengerInfo, SeatType, MaxStops, SortBy, TripType
+)
+from fli.models.google_flights.base import LocalizationConfig, Language, Currency
+
+# 创建本地化配置（支持中英文切换）
+localization_config = LocalizationConfig(
+    language=Language.CHINESE,  # 或 Language.ENGLISH
+    currency=Currency.CNY,      # 或 Currency.USD
+    region="CN"                 # 或 "US"
+)
+
+# 创建航班段
+flight_segments = [
+    FlightSegment(
+        departure_airport=[[Airport.PEK, 0]],  # 北京首都国际机场
+        arrival_airport=[[Airport.LAX, 0]],    # 洛杉矶国际机场
+        travel_date="2025-06-01"               # 出发日期 (YYYY-MM-DD)
+    )
+]
+
+# 创建搜索筛选条件
+filters = FlightSearchFilters(
+    trip_type=TripType.ONE_WAY,                # 单程
+    passenger_info=PassengerInfo(
+        adults=1,                              # 成人数量
+        children=0,                            # 儿童数量
+        infants_in_seat=0,                     # 占座婴儿
+        infants_on_lap=0                       # 膝上婴儿
+    ),
+    flight_segments=flight_segments,
+    seat_type=SeatType.ECONOMY,                # 舱位等级
+    stops=MaxStops.NON_STOP,                   # 中转限制
+    sort_by=SortBy.CHEAPEST                    # 排序方式
+)
+
+# 执行搜索
+search = SearchFlights(localization_config=localization_config)
+flights = search.search(filters, top_n=10)
+
+# 处理结果
+if flights:
+    for i, flight in enumerate(flights, 1):
+        print(f"\n=== 航班选项 {i} ===")
+        print(f"💰 价格: {localization_config.currency_symbol}{flight.price}")
+        print(f"⏱️ 总时长: {flight.duration} 分钟")
+        print(f"✈️ 中转次数: {flight.stops}")
+
+        for j, leg in enumerate(flight.legs, 1):
+            # 获取本地化的航空公司名称
+            airline_name = localization_config.get_airline_name(
+                leg.airline.name, leg.airline.value
+            )
+            print(f"\n  航段 {j}: {airline_name} {leg.flight_number}")
+            print(f"  📍 {leg.departure_airport.value} → {leg.arrival_airport.value}")
+            print(f"  � {leg.departure_datetime} → {leg.arrival_datetime}")
+else:
+    print("未找到符合条件的航班")
+```
+
+#### 1.2 往返航班搜索
+
+```python
+# 创建往返航班段
+flight_segments = [
+    # 去程
+    FlightSegment(
+        departure_airport=[[Airport.PEK, 0]],
+        arrival_airport=[[Airport.LAX, 0]],
+        travel_date="2025-06-01"
+    ),
+    # 返程
+    FlightSegment(
+        departure_airport=[[Airport.LAX, 0]],
+        arrival_airport=[[Airport.PEK, 0]],
+        travel_date="2025-06-15"
+    )
+]
+
+filters = FlightSearchFilters(
+    trip_type=TripType.ROUND_TRIP,             # 往返
+    passenger_info=PassengerInfo(adults=2),   # 2位成人
+    flight_segments=flight_segments,
+    seat_type=SeatType.BUSINESS,               # 商务舱
+    stops=MaxStops.ONE_STOP,                   # 最多一次中转
+    sort_by=SortBy.DURATION                    # 按时长排序
+)
+
+search = SearchFlights(localization_config=localization_config)
+flights = search.search(filters)
+
+# 往返航班结果处理
+if flights:
+    for i, flight_pair in enumerate(flights, 1):
+        if isinstance(flight_pair, tuple):
+            outbound, return_flight = flight_pair
+            print(f"\n=== 往返选项 {i} ===")
+            print(f"💰 总价格: {localization_config.currency_symbol}{outbound.price + return_flight.price}")
+            print(f"🛫 去程: {outbound.duration}分钟, {outbound.stops}次中转")
+            print(f"🛬 返程: {return_flight.duration}分钟, {return_flight.stops}次中转")
+```
+
+#### 1.3 高级搜索选项
+
+```python
+from fli.models import TimeRestrictions, PriceLimit, LayoverRestrictions, Airline
+
+# 时间限制
+time_restrictions = TimeRestrictions(
+    earliest_departure=6,    # 最早出发时间 (6:00)
+    latest_departure=20,     # 最晚出发时间 (20:00)
+    earliest_arrival=8,      # 最早到达时间 (8:00)
+    latest_arrival=22        # 最晚到达时间 (22:00)
+)
+
+# 价格限制
+price_limit = PriceLimit(
+    max_price=5000,          # 最高价格
+    currency=Currency.CNY    # 货币
+)
+
+# 中转限制
+layover_restrictions = LayoverRestrictions(
+    airports=[Airport.NRT, Airport.ICN],  # 允许的中转机场
+    max_duration=480                      # 最长中转时间(分钟)
+)
+
+# 指定航空公司
+preferred_airlines = [
+    Airline.CA,  # 中国国际航空
+    Airline.MU,  # 中国东方航空
+    Airline.CZ   # 中国南方航空
+]
+
+# 创建带时间限制的航班段
+flight_segments = [
+    FlightSegment(
+        departure_airport=[[Airport.PEK, 0]],
+        arrival_airport=[[Airport.LAX, 0]],
+        travel_date="2025-06-01",
+        time_restrictions=time_restrictions
+    )
+]
+
+filters = FlightSearchFilters(
+    trip_type=TripType.ONE_WAY,
+    passenger_info=PassengerInfo(adults=1),
+    flight_segments=flight_segments,
+    seat_type=SeatType.PREMIUM_ECONOMY,       # 超级经济舱
+    stops=MaxStops.ANY,                       # 任意中转
+    price_limit=price_limit,                  # 价格限制
+    airlines=preferred_airlines,              # 指定航空公司
+    max_duration=1200,                        # 最长飞行时间(分钟)
+    layover_restrictions=layover_restrictions, # 中转限制
+    sort_by=SortBy.DEPARTURE_TIME             # 按出发时间排序
+)
+```
+
+## 支持的机场和航空公司
+
+### 机场覆盖
+- **全球 255+ 个主要机场**
+- **中英文双语名称**
+- **覆盖所有大洲**
+- **支持中英文搜索**
+
+### 航空公司支持
+- **382+ 个航空公司**
+- **完整中文翻译**
+- **包含主要国际和地区航空公司**
+- **根据 API 语言参数自动切换显示语言**
+
+## 开发
+
+```bash
+# 克隆仓库
+git clone https://github.com/punitarani/fli.git
+cd fli
+
+# 使用 Poetry 安装依赖
+poetry install
+
+# 运行测试
+poetry run pytest
+
+# 运行代码检查
+poetry run ruff check .
+poetry run ruff format .
+
+# 构建文档
+poetry run mkdocs serve
+```
+
+## 贡献
+
+欢迎贡献！请随时提交 Pull Request。
+
+## 许可证
+
+本项目采用 MIT 许可证 — 详情请参阅 LICENSE 文件。
