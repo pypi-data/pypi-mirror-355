@@ -1,0 +1,46 @@
+[project]
+name = "aluna-cli"
+version = "0.1.2"
+description = "CLI tool for downloading pathology slide files from Aluna"
+readme = "README.md"
+authors = [
+    {name = "Aluna Labs", email = "support@alunalabs.ai"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.0",
+    "httpx>=0.24.0",
+    "rich>=13.0",
+    "tqdm>=4.65.0",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+keywords = ["pathology", "digital-pathology", "svs", "whole-slide-imaging", "medical-imaging"]
+
+[project.scripts]
+aluna = "aluna.cli:main"
+aluna-cli = "aluna.cli:main"
+
+[project.urls]
+Homepage = "https://alunalabs.ai"
+Repository = "https://github.com/alunalabs/aluna-cli"
+Documentation = "https://docs.alunalabs.ai"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aluna"]
