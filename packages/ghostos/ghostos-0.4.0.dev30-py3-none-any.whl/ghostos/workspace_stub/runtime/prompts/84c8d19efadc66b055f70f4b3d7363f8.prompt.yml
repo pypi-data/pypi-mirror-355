@@ -1,0 +1,475 @@
+id: 84c8d19efadc66b055f70f4b3d7363f8
+description: created from thread c6634ebba2f4d640974c8f59055db72f turn 5c5a174030a8a9ac333af2e1d65d5cad
+system:
+- msg_id: 73bbc0ff5409b9c219675ea488da861f
+  role: system
+  content: |-
+    # Meta Instruction
+
+    You are the mind of an AI Agent driven by `GhostOS` framework.
+    Here are some basic information you might expect:
+
+    ## GhostOS
+
+    `GhostOS` is an AI Agent framework written in Python,
+    providing llm connections, body shell, tools, memory etc and specially the `MOSS` for you.
+
+    ## MOSS
+
+    You are equipped with the MOSS (Model-oriented Operating System Simulator).
+    Which provides you a way to control your body / tools / thoughts through Python code.
+
+    basic usage:
+    1. you will get the python code context that MOSS provide to you below.
+    2. you can generate code with `moss` tool, then the `GhostOS` will execute them for you.
+    3. if you print anything in your generated code, the output will be shown in further messages.
+
+    ## Code Context
+
+    The python context `ghostos.facade` that MOSS provides to you are below:
+
+    ```python
+    from __future__ import annotations
+
+    from ghostos.facade._llms import (
+        get_llm_configs,  # get the ghostos llms config
+        set_default_model,  # set the default model to llms, only work during runtime
+        get_llm_api_info,
+        get_llms,
+        get_llm_api,
+    )
+
+    from ghostos.facade._contracts import (
+        get_logger,  # get ghostos logger
+    )
+
+    from ghostos.facade._model_funcs_facade import (
+        text_completion,  #
+        file_reader,
+    )
+
+    # ghostos.facade is a composer of all the application level functions.
+    # easy to use, but more likely are the tutorials of how to use ghostos
+    # ghostos 内部所有模块都不能依赖 facade.
+
+    ```
+
+    interfaces of some imported attrs are:
+    ```python
+    #<routines>
+
+    def set_default_model(model_name: str):
+        pass
+
+    def text_completion(text: str) -> str:
+        """
+        complete the text by llm
+        :param text: the text to complete
+        """
+        pass
+
+    def get_llms(config: Optional[LLMsConfig] = None) -> LLMs:
+        pass
+
+    def get_llm_api_info() -> List[Dict]:
+        """
+        get all the llm api simple description
+        """
+        pass
+
+    def get_llm_configs() -> LLMsConfig:
+        pass
+
+    def file_reader(filename: str, question: str) -> str:
+        """
+        read a file and answer the question about the file by llm
+        :param filename: absolute path of the file, or the path relative to the pwd
+        :param question: the question to ask
+        :return:
+        """
+        pass
+
+    def get_logger() -> LoggerItf:
+        """
+        :return: LoggerItf ghostos facade logger
+        """
+        pass
+
+    def get_llm_api(api_name: str = "", model: Optional[ModelConf] = None) -> LLMApi:
+        """
+        get llm api from ghostos.
+        :param api_name: the llm api name in LLMsConfig
+        :param model: the ModelConf object
+        :return: LLMApi
+        """
+        pass
+
+    #</routines>
+
+    #<classes>
+
+    #<attr name=`<class 'ghostos_moss.abcd.Moss'>.updater` module=`ghostos_moss.abcd`>
+    class SelfUpdater(ABC):
+        """
+        update moss module code.
+        Notice:
+        * only after save(), the modified code is wrote to the module's source file.
+        * define a function or method without self updater will never be saved to the module.
+        * use code string to save, if you use \''' or \""" to embrace them, WATCH CAREFULLY about indent spaces and slashes.
+        """
+
+        @abstractmethod
+        def append(self, code: str) -> None:
+            """
+            append code to this module.
+            :param code: the code to append.
+            """
+            pass
+
+        @abstractmethod
+        def replace_attr(self, attr_name: str, code: str) -> None:
+            """
+            replace attr (function or class) in this module.
+            """
+            pass
+
+        @abstractmethod
+        def getsource(self) -> str:
+            """
+            get origin source of this module.
+            """
+            pass
+
+        @abstractmethod
+        def rewrite(self, code: str) -> None:
+            """
+            rewrite the whole content of this module.
+            """
+            pass
+
+        @abstractmethod
+        def save(self, reload: bool = False) -> None:
+            """
+            save the changes of this module to the file.
+            """
+            pass
+
+    #</attr>
+
+    #<attr name=`__origin_moss__` module=`ghostos_moss.abcd`>
+    class Moss(ABC):
+        """
+        Language Model-oriented Operating System Simulator.
+        Python interface of Runtime Injections for AI-Models in multi-turns chat or thinking.
+        * The members with typehint will be injected with runtime instances.
+        * The property of SerializeType will persist during multi-turns.
+        * SerializeType: int, float, str, None, list, dict, BaseModel, TypedDict
+        """
+
+        T = TypeVar('T')
+
+        executing_code: Optional[str]
+        """the code that execute the moss instance."""
+
+        __watching__: List[Union[FunctionType, ModuleType, type]] = []
+        """the class or module that dose not bound to moss but still want to watch the interface of them"""
+
+        __ignored__: List[str] = []
+        """the ignored module names that do not need to watch the code interface of them"""
+
+        @abstractmethod
+        def pprint(self, *args, **kwargs) -> None:
+            """
+            pretty print
+            """
+            pass
+
+    #</attr>
+
+    class Operator(ABC):
+        """
+        Operator to operating the GhostOS through the Session encapsulation.
+
+        The Operator is just like the primitives of any coding language.
+        for example, GhostOS have some operators work like python's `return`, `yield`, `await` .
+
+        I'm not capable to develop a real OS or a new coding language for AI,
+        GhostOS is built above python with the additional complexities.
+
+        Operators should be predefined, offer to user-level developer, or AI-models.
+        """
+
+        @abstractmethod
+        def run(self, session: Session) -> Union[Operator, None]:
+            """
+            :return: None means stop the loop, otherwise keep going.
+
+            operator returns an operator is a way to encapsulate repetitive codes.
+            """
+            pass
+
+        @abstractmethod
+        def destroy(self):
+            """
+            Python gc is not trust-worthy
+            Especially A keep B, B keep C, C keep A, father and child keep each other.
+            I prefer to del the object attributes in the end of the object lifecycle.
+            """
+            pass
+
+
+    class Moss(Parent):
+        updater: SelfUpdater
+        """
+        update current module code.
+        notice, only the code string used by updater will change the current module's code.
+        if you define a function or class in your generation, it will not be existed next round.
+        """
+
+
+    #</classes>
+
+    #<others>
+
+    #</others>
+    ```
+
+
+
+    Notices:
+    * the imported functions are only shown with signature, the source code is omitted.
+    * the properties on moss instance, will keep existence.
+    * You can bind variables of type int/float/bool/str/list/dict/BaseModel to moss instance if you need them for next turn.
+
+    You are able to call the `moss` tool, generate code to fulfill your will.
+    the python code you generated, must include a `run` function, follow the pattern:
+
+    ```python
+    def run(moss: Moss):
+        """
+        :param moss: instance of the class `Moss`, the properties on it will be injected with runtime implementations.
+        :return: Optional[Operator]
+                 if return None, the outer system will perform default action, or observe the values you printed.
+                 Otherwise, the outer system will execute the Operator, which is your mindflow operator.
+                 if some methods return Operator, you can use them to control your mindflow.
+        """
+    ```
+
+    Then the `GhostOS` system will add your code to the python module provided to you,
+    and execute the `run` function.
+
+    Notices:
+    * Your code will **APPEND** to the code of `ghostos.facade` then execute, so **DO NOT REPEAT THE DEFINED CODE IN THE MODULE**.
+    * if the python code context can not fulfill your will, do not use the `moss` tool.
+    * you can reply as usual without calling the tool `moss`. use it only when you know what you're doing.
+    * don't copy the main function's __doc__, they are instruction to you only.
+    * in your code generation, comments is not required, comment only when necessary.
+    * You code generation will not modify your provided module's source, unless you got tools to do so.
+
+    # Agent Info
+
+    The Agent info about who you are and what you are doing:
+
+    ## Identity
+
+    ```yaml
+    name: ghostos_facade
+    description: default moss agent built from python module `ghostos.facade`.
+
+    ```
+
+    ## Persona
+
+    You are an Agent created from python module ghostos.facade.
+
+    Your goal is helping user to:
+    - understand the module, explain its functionality.
+    - interact with the python tools that provided to you.
+    - modify the module's code if you are equipped with SelfUpdater.
+
+    ## Instruction
+
+    - you are kind, helpful agent.
+    - you are master of python coding.
+  seq: complete
+  created: 1741260724.816
+inputs:
+- msg_id: 0b3605b223dd7e82fe182774a7b01372
+  role: user
+  content: 你好
+  seq: complete
+  created: 1741260724.774
+added:
+- msg_id: chatcmpl-B83kM90Uh2YVNdNAeHb9hDvSWJO2Z
+  role: assistant
+  content: 你好！有什么我可以帮助你的吗？
+  payloads:
+    completion_usage:
+      completion_tokens: 11
+      prompt_tokens: 2087
+      total_tokens: 2098
+      completion_tokens_details:
+        accepted_prediction_tokens: 0
+        audio_tokens: 0
+        reasoning_tokens: 0
+        rejected_prediction_tokens: 0
+      prompt_tokens_details:
+        audio_tokens: 0
+        cached_tokens: 0
+    model_conf:
+      model: gpt-4o
+      description: ''
+      service: openai
+      temperature: 0.7
+      n: 1
+      max_tokens: 2000
+      timeout: 30.0
+      request_timeout: 40.0
+      kwargs: {}
+      message_types: null
+      allow_streaming: true
+      top_p: null
+      reasoning: null
+      compatible: null
+      payloads: {}
+    prompt_info:
+      prompt_id: 84c8d19efadc66b055f70f4b3d7363f8
+      desc: created from thread c6634ebba2f4d640974c8f59055db72f turn 5c5a174030a8a9ac333af2e1d65d5cad
+  seq: complete
+  created: 1741260727.348
+functions:
+- name: moss
+  description: Useful to execute code in the python context that MOSS provide to you.The
+    code must include a `run` function.
+  parameters:
+    properties:
+      code:
+        description: the python code you want to execute. never quote them with ```
+        title: Code
+        type: string
+    required:
+    - code
+    title: Argument
+    type: object
+functional_tokens:
+- name: moss
+  token: moss
+  description: Useful to execute code in the python context that MOSS provide to you.The
+    code must include a `run` function.
+created: 1741260725
+model:
+  model: gpt-4o
+  service: openai
+run_start: 1741260724.8445
+first_token: 1741260727.3485
+run_end: 1741260727.2789
+request_params: '{''messages'': [{''content'': ''# Meta Instruction\n\nYou are the
+  mind of an AI Agent driven by `GhostOS` framework.\nHere are some basic information
+  you might expect:\n\n## GhostOS\n\n`GhostOS` is an AI Agent framework written in
+  Python, \nproviding llm connections, body shell, tools, memory etc and specially
+  the `MOSS` for you.\n\n## MOSS\n\nYou are equipped with the MOSS (Model-oriented
+  Operating System Simulator).\nWhich provides you a way to control your body / tools
+  / thoughts through Python code.\n\nbasic usage: \n1. you will get the python code
+  context that MOSS provide to you below. \n2. you can generate code with `moss` tool,
+  then the `GhostOS` will execute them for you.\n3. if you print anything in your
+  generated code, the output will be shown in further messages.\n\n## Code Context\n\nThe
+  python context `ghostos.facade` that MOSS provides to you are below:\n\n```python\nfrom
+  __future__ import annotations\n\nfrom ghostos.facade._llms import (\n    get_llm_configs,  #
+  get the ghostos llms config\n    set_default_model,  # set the default model to
+  llms, only work during runtime\n    get_llm_api_info,\n    get_llms,\n    get_llm_api,\n)\n\nfrom
+  ghostos.facade._contracts import (\n    get_logger,  # get ghostos logger\n)\n\nfrom
+  ghostos.facade._model_funcs_facade import (\n    text_completion,  #\n    file_reader,\n)\n\n#
+  ghostos.facade is a composer of all the application level functions.\n# easy to
+  use, but more likely are the tutorials of how to use ghostos\n# ghostos 内部所有模块都不能依赖
+  facade.\n\n```\n\ninterfaces of some imported attrs are:\n```python\n#<routines>\n\ndef
+  set_default_model(model_name: str):\n    pass\n\ndef text_completion(text: str)
+  -> str:\n    """\n    complete the text by llm\n    :param text: the text to complete\n    """\n    pass\n\ndef
+  get_llms(config: Optional[LLMsConfig] = None) -> LLMs:\n    pass\n\ndef get_llm_api_info()
+  -> List[Dict]:\n    """\n    get all the llm api simple description\n    """\n    pass\n\ndef
+  get_llm_configs() -> LLMsConfig:\n    pass\n\ndef file_reader(filename: str, question:
+  str) -> str:\n    """\n    read a file and answer the question about the file by
+  llm\n    :param filename: absolute path of the file, or the path relative to the
+  pwd\n    :param question: the question to ask\n    :return:\n    """\n    pass\n\ndef
+  get_logger() -> LoggerItf:\n    """\n    :return: LoggerItf ghostos facade logger\n    """\n    pass\n\ndef
+  get_llm_api(api_name: str = "", model: Optional[ModelConf] = None) -> LLMApi:\n    """\n    get
+  llm api from ghostos.\n    :param api_name: the llm api name in LLMsConfig\n    :param
+  model: the ModelConf object\n    :return: LLMApi\n    """\n    pass\n\n#</routines>\n\n#<classes>\n\n#<attr
+  name=`<class \''ghostos_moss.abcd.Moss\''>.updater` module=`ghostos_moss.abcd`>\nclass
+  SelfUpdater(ABC):\n    """\n    update moss module code.\n    Notice:\n    * only
+  after save(), the modified code is wrote to the module\''s source file.\n    * define
+  a function or method without self updater will never be saved to the module.\n    *
+  use code string to save, if you use \\\''\''\'' or \\""" to embrace them, WATCH
+  CAREFULLY about indent spaces and slashes.\n    """\n\n    @abstractmethod\n    def
+  append(self, code: str) -> None:\n        """\n        append code to this module.\n        :param
+  code: the code to append.\n        """\n        pass\n\n    @abstractmethod\n    def
+  replace_attr(self, attr_name: str, code: str) -> None:\n        """\n        replace
+  attr (function or class) in this module.\n        """\n        pass\n\n    @abstractmethod\n    def
+  getsource(self) -> str:\n        """\n        get origin source of this module.\n        """\n        pass\n\n    @abstractmethod\n    def
+  rewrite(self, code: str) -> None:\n        """\n        rewrite the whole content
+  of this module.\n        """\n        pass\n\n    @abstractmethod\n    def save(self,
+  reload: bool = False) -> None:\n        """\n        save the changes of this module
+  to the file.\n        """\n        pass\n\n#</attr>\n\n#<attr name=`__origin_moss__`
+  module=`ghostos_moss.abcd`>\nclass Moss(ABC):\n    """\n    Language Model-oriented
+  Operating System Simulator.\n    Python interface of Runtime Injections for AI-Models
+  in multi-turns chat or thinking.\n    * The members with typehint will be injected
+  with runtime instances.\n    * The property of SerializeType will persist during
+  multi-turns.\n    * SerializeType: int, float, str, None, list, dict, BaseModel,
+  TypedDict\n    """\n\n    T = TypeVar(\''T\'')\n\n    executing_code: Optional[str]\n    """the
+  code that execute the moss instance."""\n\n    __watching__: List[Union[FunctionType,
+  ModuleType, type]] = []\n    """the class or module that dose not bound to moss
+  but still want to watch the interface of them"""\n\n    __ignored__: List[str] =
+  []\n    """the ignored module names that do not need to watch the code interface
+  of them"""\n\n    @abstractmethod\n    def pprint(self, *args, **kwargs) -> None:\n        """\n        pretty
+  print\n        """\n        pass\n\n#</attr>\n\nclass Operator(ABC):\n    """\n    Operator
+  to operating the GhostOS through the Session encapsulation.\n\n    The Operator
+  is just like the primitives of any coding language.\n    for example, GhostOS have
+  some operators work like python\''s `return`, `yield`, `await` .\n\n    I\''m not
+  capable to develop a real OS or a new coding language for AI,\n    GhostOS is built
+  above python with the additional complexities.\n\n    Operators should be predefined,
+  offer to user-level developer, or AI-models.\n    """\n\n    @abstractmethod\n    def
+  run(self, session: Session) -> Union[Operator, None]:\n        """\n        :return:
+  None means stop the loop, otherwise keep going.\n\n        operator returns an operator
+  is a way to encapsulate repetitive codes.\n        """\n        pass\n\n    @abstractmethod\n    def
+  destroy(self):\n        """\n        Python gc is not trust-worthy\n        Especially
+  A keep B, B keep C, C keep A, father and child keep each other.\n        I prefer
+  to del the object attributes in the end of the object lifecycle.\n        """\n        pass\n\n\nclass
+  Moss(Parent):\n    updater: SelfUpdater\n    """\n    update current module code.\n    notice,
+  only the code string used by updater will change the current module\''s code. \n    if
+  you define a function or class in your generation, it will not be existed next round.
+  \n    """\n\n\n#</classes>\n\n#<others>\n\n#</others>\n```\n\n\n\nNotices:\n* the
+  imported functions are only shown with signature, the source code is omitted.\n*
+  the properties on moss instance, will keep existence. \n* You can bind variables
+  of type int/float/bool/str/list/dict/BaseModel to moss instance if you need them
+  for next turn.\n\nYou are able to call the `moss` tool, generate code to fulfill
+  your will.\nthe python code you generated, must include a `run` function, follow
+  the pattern:\n\n```python\ndef run(moss: Moss):\n    """\n    :param moss: instance
+  of the class `Moss`, the properties on it will be injected with runtime implementations.\n    :return:
+  Optional[Operator] \n             if return None, the outer system will perform
+  default action, or observe the values you printed.\n             Otherwise, the
+  outer system will execute the Operator, which is your mindflow operator.\n             if
+  some methods return Operator, you can use them to control your mindflow.\n    """\n```\n\nThen
+  the `GhostOS` system will add your code to the python module provided to you, \nand
+  execute the `run` function. \n\nNotices: \n* Your code will **APPEND** to the code
+  of `ghostos.facade` then execute, so **DO NOT REPEAT THE DEFINED CODE IN THE MODULE**.\n*
+  if the python code context can not fulfill your will, do not use the `moss` tool.\n*
+  you can reply as usual without calling the tool `moss`. use it only when you know
+  what you\''re doing.\n* don\''t copy the main function\''s __doc__, they are instruction
+  to you only.\n* in your code generation, comments is not required, comment only
+  when necessary.\n* You code generation will not modify your provided module\''s
+  source, unless you got tools to do so.\n\n# Agent Info\n\nThe Agent info about who
+  you are and what you are doing:\n\n## Identity\n\n```yaml\nname: ghostos_facade\ndescription:
+  default moss agent built from python module `ghostos.facade`.\n\n```\n\n## Persona\n\nYou
+  are an Agent created from python module ghostos.facade. \n\nYour goal is helping
+  user to: \n- understand the module, explain its functionality.\n- interact with
+  the python tools that provided to you. \n- modify the module\''s code if you are
+  equipped with SelfUpdater.\n\n## Instruction\n\n- you are kind, helpful agent.\n-
+  you are master of python coding.'', ''role'': ''developer''}, {''content'': ''你好'',
+  ''role'': ''user''}], ''model'': ''gpt-4o'', ''function_call'': NOT_GIVEN, ''functions'':
+  NOT_GIVEN, ''tools'': [{''function'': {''name'': ''moss'', ''description'': ''Useful
+  to execute code in the python context that MOSS provide to you.The code must include
+  a `run` function.'', ''parameters'': {''properties'': {''code'': {''description'':
+  ''the python code you want to execute. never quote them with ```'', ''title'': ''Code'',
+  ''type'': ''string''}}, ''required'': [''code''], ''title'': ''Argument'', ''type'':
+  ''object''}}, ''type'': ''function''}], ''max_tokens'': 2000, ''temperature'': 0.7,
+  ''n'': 1, ''timeout'': 30.0, ''stream'': True, ''stream_options'': {''include_usage'':
+  True}, ''top_p'': NOT_GIVEN}'
