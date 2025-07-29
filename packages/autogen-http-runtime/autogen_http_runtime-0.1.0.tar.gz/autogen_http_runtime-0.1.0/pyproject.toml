@@ -1,0 +1,75 @@
+[project]
+name = "autogen-http-runtime"
+version = "0.1.0"
+description = "HTTP runtime for Autogen core"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "autogen-core>=0.5.7",
+    "fastapi>=0.115.12",
+    "httpx>=0.28.1",
+    "uvicorn[standard]>=0.34.3",
+    "websockets>=15.0.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["autogen_http_runtime"]
+
+[dependency-groups]
+dev = [
+    "hatch>=1.14.1",
+    "mypy>=1.16.0",
+    "pyright>=1.1.401",
+    "pytest>=8.3.5",
+    "ruff>=0.11.12",
+    "twine>=6.1.0",
+]
+
+[tool.ruff]
+line-length = 120
+fix = true
+
+target-version = "py310"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "Q", "I", "ASYNC", "T20"]
+ignore = ["F401", "E501"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"unittest".msg = "Use `pytest` instead."
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+ignore_missing_imports = true
+
+# from https://blog.wolt.com/engineering/2021/09/30/professional-grade-mypy-configuration/
+disallow_untyped_defs = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+show_error_codes = true
+warn_unused_ignores = false
+
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+disallow_any_unimported = true
+
+[tool.pyright]
+include = ["autogen_http_runtime", "tests"]
+typeCheckingMode = "strict"
+reportUnnecessaryIsInstance = false
+reportMissingTypeStubs = false
