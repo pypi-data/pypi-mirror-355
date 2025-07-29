@@ -1,0 +1,106 @@
+Metadata-Version: 2.4
+Name: pygame_framework_1just_josh
+Version: 0.0.7
+Summary: this is a simple pygame wrapper for advanced game features with less boilerplate
+Author: Joshua - jjboy2245
+License: Apache-2.0
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: pygame-ce
+Requires-Dist: msgpack
+Requires-Dist: cryptography
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 🕹️ Pygame ECS Framework
+
+A modular, extensible game engine framework built with **Pygame**, designed to support both **2D (SDL)** and **3D (OpenGL)** rendering backends using a flexible Entity-Component-System (ECS) architecture.
+
+---
+
+## 🧱 Core TODOs
+
+- [X] ⚙️ Make Entity system  
+- [X] 🧩 Make Component system  
+- [X] 📁 File System (Asset loading/saving)  
+- [ ] 📡 Event System (Custom game events & input routing)  
+- [ ] 🌐 Networking (Multiplayer / sync states)  
+- [ ] 🏷️ Tag Component (`name: str`)  
+- [ ] 📊 Profiler (performance monitoring)  
+
+---
+
+## 🖼️ SDL SOFTWARE Engine (2D)
+
+### 🎨 SDL Renderer TODOs
+
+- [X] 🖌️ Renderer (blit surfaces, render queue)  
+- [ ] 🧪 Visual Debug (draw colliders, axes, etc.)  
+
+### 👾 SDL Entities
+
+- [X] BaseEntity (`Parent entity / empty entity`)
+
+### 🧬 SDL Components
+
+- [X] 🧭 Transform(`position: tuple[int, int]`, `rotation: int`, `scale: list[int, int]`)
+- [ ] 🛞 Rigidbody(`mass: float`, `velocity: tuple[float, float, float]`, `acceleration: tuple[float, float, float]`)  
+- [ ] 🧱 Collision(`shape: Enum`, `size: int`, `offset: list[int, int]`)
+- [ ] 🎞️ Animation(`frames: list[pg.Surface]`)
+
+---
+
+## 🧊 OPENGL 3D Engine
+
+### 🕶️ OpenGL Renderer TODOs
+
+- [ ] 🧼 3D Renderer (OpenGL context, mesh/material support)  
+- [ ] 💡 Shaders (basic lighting, texturing)  
+- [ ] 🎥 Camera system (FOV, perspective, etc.)  
+- [ ] 🧩 Visual Debug (bounding boxes, axes, wireframe mode)  
+
+### 📦 3D Components (Planned)
+
+- [ ] 🧭 Transform(position: tuple[float, float, float], rotation: tuple[float, float, float], scale: tuple[float, float, float])  
+- [ ] 📐 Mesh(mesh_id: int)
+- [ ] 🎨 Material(shader_id: int, texture_id: int)
+- [ ] 💡 Light(color: tuple[float, float, float], intensity: float)
+- [ ] 🎥 Camera(fov: float, near: float, far: float)
+- [ ] 🧲 Rigidbody(...) *(extended for 3D: includes angular velocity, etc.)*
+
+
+---
+
+## 🧠 Extra Components & Systems
+
+- [ ] ❤️ Health / Damage system  
+- [ ] 🤖 AI / Behavior system  
+- [ ] 🎒 Inventory system  
+- [ ] ⚗️ Status Effects / Buffs  
+- [ ] 🎮 Input system (player input mapping)  
+- [ ] 📜 Scripting (attach logic to entities)  
+- [ ] 🔊 Audio (sound emitters, background music)  
+- [ ] 🌠 Particle system (fire, smoke, etc.)  
+- [ ] 🗺️ Scene system (level loading & transition)  
+- [ ] 💾 Serialization (save/load ECS state)  
+- [ ] 🧰 UI Components (HUD, health bars, etc.)  
+- [ ] 🧷 Entity Parenting / Hierarchy  
+
+---
+
+## 🛠 Tooling & Dev Features
+
+- [ ] 🧪 Entity Inspector / Debug Overlay  
+- [ ] 🧱 Level Editor (drag & drop, place entities)  
+- [ ] 🔁 Hot Reloading (assets or scripts)  
+- [ ] ✅ Component-based testing framework  
+- [ ] ♻️ Resource Manager (texture, mesh, sound caching)  
+
+---
