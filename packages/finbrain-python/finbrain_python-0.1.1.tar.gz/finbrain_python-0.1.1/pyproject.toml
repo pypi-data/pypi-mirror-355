@@ -1,0 +1,37 @@
+[build-system]
+requires = [
+    "setuptools>=61",
+    "setuptools_scm[toml]>=8",
+    "wheel"
+    ]
+build-backend = "setuptools.build_meta"
+
+[project]
+name            = "finbrain-python"
+dynamic         = ["version"]
+description     = "Official Python client for the FinBrain API"
+readme          = "README.md"
+license         = "MIT"
+authors         = [{name = "Ahmet Salim Bilgin", email="ahmet@finbrain.tech"}]
+requires-python = ">=3.9"
+dependencies    = [
+    "requests>=2.31",
+    "typer[all]>=0.12",
+    "pandas>=2.2",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests*"]
+
+[tool.setuptools_scm]
+version_scheme = "release-branch-semver"   # defaults are fine; this is optional
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "responses",                  # HTTP mocking
+    "build",
+    "twine",
+    "ruff",                       # linter/formatter (optional)
+]
