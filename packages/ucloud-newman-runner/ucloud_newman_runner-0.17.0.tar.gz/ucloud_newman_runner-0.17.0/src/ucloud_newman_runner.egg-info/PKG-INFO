@@ -1,0 +1,139 @@
+Metadata-Version: 2.4
+Name: ucloud-newman-runner
+Version: 0.17.0
+Summary: Runner automatizado para execução de testes Newman (Postman CLI) com geração de relatórios (HTML, CSV, texto) e envio de email via Mailjet. Ideal para automação de QA, pipelines CI/CD e ambientes multi-cliente. Palavras-chave: newman, postman, api testing, relatórios, mailjet, ci/cd, automação, multi-cliente, python, cli.
+Author-email: Equipe UCloud Services <contato@ucloud.services>
+License-Expression: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Environment :: Console
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.31.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: mailjet-rest>=1.3.4
+Requires-Dist: colorlog>=6.7.0
+Requires-Dist: jinja2>=3.0.0
+Dynamic: license-file
+
+# ucloud-newman-runner
+
+Automatize a execução de testes de APIs Postman/Newman, gere relatórios HTML customizados (Jinja2) e envie resultados por e-mail. Pronto para CI/CD, PyPI e Docker.
+
+[![PyPI version](https://img.shields.io/pypi/v/ucloud-newman-runner.svg)](https://pypi.org/project/ucloud-newman-runner/)
+[![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+---
+
+## Visão Geral
+
+O `ucloud-newman-runner` é um runner Python para automação de testes de APIs via Newman (Postman CLI), com geração de relatórios HTML, CSV e texto, além de envio automático por e-mail (Mailjet). Ideal para times de QA, pipelines CI/CD e ambientes multi-cliente.
+
+- Execução automatizada de coleções Postman
+- Relatórios HTML customizados (Jinja2)
+- Envio de resultados por e-mail (Mailjet)
+- Geração opcional de CSV e TXT
+- Pronto para uso local, CI/CD, PyPI e Docker
+
+---
+
+## Instalação Rápida
+
+### PyPI
+```bash
+pip install ucloud-newman-runner
+```
+
+### Docker
+```bash
+docker pull ucloudservices/ucloud-newman-runner:latest
+docker run --rm -v $(pwd):/data ucloudservices/ucloud-newman-runner:latest --run --collection /data/colecao.json --environment /data/env.json ...
+```
+
+---
+
+## Uso Básico
+
+```bash
+ucloud-newman-runner --run \
+  --collection <colecao.json> \
+  --environment <env.json> \
+  --destination ./results/ \
+  --mailjet-api-key <API_KEY> \
+  --mailjet-api-secret <API_SECRET> \
+  --send-email-to email@dominio.com
+```
+
+Veja todos os parâmetros e exemplos em [docs/USAGE.md](docs/USAGE.md).
+
+> **Dica:** Todos os parâmetros podem ser definidos por variável de ambiente (ex: `MAILJET_API_KEY`).
+
+---
+
+## Estrutura do Projeto
+
+```
+ucloud-newman-runner/
+├── src/runner/           # Core do runner (run.py, config.py, emailer.py, reporting.py)
+├── src/runner/templates/ # Templates Jinja2 para relatórios
+├── tests/                # Testes automatizados (pytest)
+├── requirements.txt      # Dependências principais
+├── pyproject.toml        # Configuração de build PyPI
+├── .ci/                  # Dockerfile, entrypoint, CI/CD
+├── README.md, LICENSE, ...
+```
+
+Mais detalhes em [docs/ESTRUTURA.md](docs/ESTRUTURA.md).
+
+---
+
+## Troubleshooting Rápido
+
+- **Template não encontrado:**
+  - Instale via `pip` e use o comando global. Para dev, o runner faz fallback automático.
+- **Erro ao enviar e-mail:**
+  - Verifique as credenciais do Mailjet e conectividade com a API.
+- **Permissão de escrita:**
+  - Garanta permissão nos diretórios de destino dos relatórios.
+- **Newman não encontrado:**
+  - Instale Node.js 18.12+, Newman e newman-reporter-htmlextra globalmente.
+
+Veja mais dicas em [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+
+---
+
+## Contribuição
+
+1. Fork o projeto e crie uma branch para sua feature.
+2. Siga PEP 8, use type hints e escreva testes.
+3. Execute `pytest` e pre-commit antes de abrir PR.
+4. Detalhe sua contribuição no PR e aguarde review.
+
+Consulte [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) para padrões e fluxo completo.
+
+---
+
+## Licença
+
+MIT. Veja o arquivo LICENSE.
+
+---
+
+## Links Úteis
+
+- [PyPI: ucloud-newman-runner](https://pypi.org/project/ucloud-newman-runner/)
+- [DockerHub: ucloudservices/ucloud-newman-runner](https://hub.docker.com/r/ucloudservices/ucloud-newman-runner)
+- [Guia de Uso](docs/USAGE.md)
+- [Guia de Estrutura](docs/ESTRUTURA.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+- [Guia de Contribuição](docs/CONTRIBUTING.md) 
