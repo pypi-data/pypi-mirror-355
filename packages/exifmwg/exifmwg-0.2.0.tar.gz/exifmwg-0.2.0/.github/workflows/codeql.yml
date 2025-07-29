@@ -1,0 +1,69 @@
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# You may wish to alter this file to override the set of languages analyzed,
+# or to provide custom queries or build logic.
+#
+# ******** NOTE ********
+# We have attempted to detect the languages in your repository. Please check
+# the `language` matrix defined below to confirm you have the correct set of
+# supported CodeQL languages.
+#
+name: "CodeQL"
+on:
+  push:
+    branches:
+      - "main"
+      - "develop"
+      - "feature/**"
+      - "fix/**"
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches:
+      - "main"
+      - "develop"
+  schedule:
+    - cron: "43 10 * * 1"
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["python", "c-cpp"]
+        # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
+        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # Install C++ dependencies when analyzing C++
+      - name: Install C++ dependencies
+        if: matrix.language == 'c-cpp'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential lcov ninja-build
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+      # For C++, use custom build instead of autobuild
+      - name: Configure and Build C++
+        if: matrix.language == 'c-cpp'
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -G Ninja
+          ninja -C build/
+      # Autobuild for other languages (Python doesn't need compilation)
+      - name: Autobuild
+        if: matrix.language != 'c-cpp'
+        uses: github/codeql-action/autobuild@v3
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"

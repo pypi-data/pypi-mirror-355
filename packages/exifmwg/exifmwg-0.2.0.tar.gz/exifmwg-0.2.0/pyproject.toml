@@ -1,0 +1,262 @@
+#
+# Project Configuration
+#
+
+[build-system]
+build-backend = "scikit_build_core.build"
+
+requires = [ "nanobind~=2.7.0", "scikit-build-core~=0.11.4" ]
+
+[project]
+name = "exifmwg"
+version = "0.2.0"
+description = "A Python interface to read and write Metadata Working Group fields using exiftool"
+readme = "README.md"
+keywords = [ "exif", "exiftool", "image", "metadata", "photo", "photography" ]
+license = "MPL-2.0"
+authors = [ { name = "Trenton H", email = "rda0128ou@mozmail.com" } ]
+requires-python = ">=3.9"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+
+#
+# Project URLs
+#
+urls.Changelog = "https://github.com/stumpylog/exifmwg/blob/main/CHANGELOG.md"
+urls.Documentation = "https://github.com/stumpylog/exifmwg/blob/main/README.md"
+urls.Issues = "https://github.com/stumpylog/exifmwg/issues"
+urls.Source = "https://github.com/stumpylog/exifmwg/"
+
+[dependency-groups]
+dev = [
+  { "include-group" = "testing" },
+  { "include-group" = "lint" },
+  { "include-group" = "typing" },
+  { "include-group" = "build" },
+]
+
+docs = [
+  "mike~=2.1",
+  "mkdocs-glightbox~=0.4.0",
+  "mkdocs-material~=9.6",
+  "mkdocs-minify-plugin~=0.8",
+]
+
+testing = [
+  "pytest~=8.3.3",
+  "pytest-cov~=6.1.0",
+  "pytest-randomly~=3.15",
+  "pytest-sugar",
+]
+
+lint = [
+  "codespell>=2.3",
+  "pre-commit~=4.1.0",
+  "pre-commit-uv~=4.1.3",
+  "ruff~=0.11",
+]
+
+build = [ "cibuildwheel", "nanobind", "scikit-build-core" ]
+
+typing = [ "mypy" ]
+
+[tool.scikit-build]
+build.verbose = false
+# Extra outputs
+logging.level = "INFO"
+# Setuptools-style build caching in a local directory
+build-dir = "build/{wheel_tag}"
+
+# Build stable ABI wheels for CPython 3.12+
+#wheel.py-api = "cp312"
+# Ensure wheel contains the built extension
+wheel.packages = [ "src/exifmwg" ]
+
+[tool.scikit-build.cmake]
+build-type = "Release"
+args = [ "-DBUILD_TESTING=OFF" ]
+
+[tool.cibuildwheel]
+# Necessary to see build output from the actual compilation
+build-verbosity = 1
+# Use uv inside the container
+build-frontend = "build[uv]"
+# Only building supported Pythons
+build = "cp39-* cp310-* cp311-* cp312-* cp313-*"
+# Build only x86_64 wheels for Windows, Linux, and musllinux
+skip = "pp* *-macosx* *-win32 *-win_arm64 *-manylinux_i686 *-manylinux_aarch64 *-manylinux_ppc64le *-manylinux_s390x *-musllinux_i686 *-musllinux_aarch64 *-musllinux_ppc64le *-musllinux_s390x"
+# Only target 64 bit architectures
+archs = [ "auto64" ]
+
+# Run basic tests
+# TODO: These seem to use the source, not the build wheel, to run tests
+# Confirmed manually that I can import things
+test-command = "python -c 'import exifmwg; print(exifmwg.exiv2_version()); print(exifmwg.expat_version())'"
+test-groups = [ "testing" ]
+
+[tool.cibuildwheel.windows]
+environment = "PYTHONPATH=$BUILD_DIR\\Release"
+test-command = "python -c \"import exifmwg; print(exifmwg.exiv2_version()); print(exifmwg.expat_version())\""
+
+[tool.ruff]
+target-version = "py39"
+line-length = 120
+
+exclude = [ "build/", "extern/" ]
+
+# https://docs.astral.sh/ruff/settings/
+fix = true
+output-format = "grouped"
+# https://docs.astral.sh/ruff/rules/
+lint.extend-select = [
+  "A",     # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+  "ARG",   # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
+  "ASYNC", # https://docs.astral.sh/ruff/rules/#flake8-async-async
+  "B",     # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+  "BLE",   # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
+  "C",     # https://docs.astral.sh/ruff/rules/#convention-c
+  "C4",    # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+  # "CPY",   # https://docs.astral.sh/ruff/rules/#flake8-copyright-cpy
+  "COM",  # https://docs.astral.sh/ruff/rules/#flake8-commas-com
+  "DJ",   # https://docs.astral.sh/ruff/rules/#flake8-django-dj
+  "DTZ",  # https://docs.astral.sh/ruff/rules/#flake8-datetimez-dtz
+  "E",    # https://docs.astral.sh/ruff/rules/#error-e
+  "EM",   # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
+  "ERA",  # https://docs.astral.sh/ruff/rules/#eradicate-era
+  "EXE",  # https://docs.astral.sh/ruff/rules/#flake8-executable-exe
+  "F",    # https://docs.astral.sh/ruff/rules/#pyflakes-f
+  "FA",   # https://docs.astral.sh/ruff/rules/#flake8-future-annotations-fa
+  "FBT",  # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
+  "FIX",  # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
+  "FLY",  # https://docs.astral.sh/ruff/rules/#flynt-fly
+  "G",    # https://docs.astral.sh/ruff/rules/#flake8-logging-format-g
+  "I",    # https://docs.astral.sh/ruff/rules/#isort-i
+  "ICN",  # https://docs.astral.sh/ruff/rules/#flake8-import-conventions-icn
+  "INP",  # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
+  "INT",  # https://docs.astral.sh/ruff/rules/#flake8-gettext-int
+  "ISC",  # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
+  "LOG",  # https://docs.astral.sh/ruff/rules/#flake8-logging-log
+  "N",    # https://docs.astral.sh/ruff/rules/#pep8-naming-n
+  "PERF", # https://docs.astral.sh/ruff/rules/#perflint-perf
+  "PGH",  # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+  "PIE",  # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
+  "PL",   # https://docs.astral.sh/ruff/rules/#pylint-pl
+  "PLC",  # https://docs.astral.sh/ruff/rules/#convention-c
+  "PLE",  # https://docs.astral.sh/ruff/rules/#error-e_1
+  "PLR",  # https://docs.astral.sh/ruff/rules/#refactor-r
+  "PLW",  # https://docs.astral.sh/ruff/rules/#warning-w_1
+  "PT",   # https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
+  "PTH",  # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+  "Q",    # https://docs.astral.sh/ruff/rules/#flake8-quotes-q
+  "RET",  # https://docs.astral.sh/ruff/rules/#flake8-return-ret
+  "RSE",  # https://docs.astral.sh/ruff/rules/#flake8-raise-rse
+  "RUF",  # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+  "S",    # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+  "SIM",  # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+  "SLF",  # https://docs.astral.sh/ruff/rules/#flake8-self-slf
+  "SLOT", # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
+  "T10",  # https://docs.astral.sh/ruff/rules/#flake8-debugger-t10
+  "T20",  # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+  "TCH",  # https://docs.astral.sh/ruff/rules/#flake8-type-checking-tch
+  "TD",   # https://docs.astral.sh/ruff/rules/#flake8-todos-td
+  "TID",  # https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid
+  "TRY",  # https://docs.astral.sh/ruff/rules/#tryceratops-try
+  "UP",   # https://docs.astral.sh/ruff/rules/#pyupgrade-up
+  "W",    # https://docs.astral.sh/ruff/rules/#warning-w
+  "YTT",  # https://docs.astral.sh/ruff/rules/#flake8-2020-ytt
+]
+lint.ignore = [  ]
+# Other ignores
+lint.per-file-ignores."src/exifmwg/_utils.py" = [ "FIX002", "TD003" ]
+# Tests can use assertions, magic values
+lint.per-file-ignores."tests/**/*" = [ "PLR2004", "S101" ]
+# No relative imports
+lint.flake8-tidy-imports.ban-relative-imports = "all"
+# One import per line
+lint.isort.force-single-line = true
+# Recognize us please
+lint.isort.known-first-party = [ "exifmwg" ]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+# Needed for pydantic
+lint.pyupgrade.keep-runtime-typing = true
+
+[tool.codespell]
+# Skip files/directories
+skip = "*.git,*.svg,*.pdf,*.pyc,__pycache__,node_modules"
+
+# Ignore specific words (comma-separated)
+ignore-words-list = "Nome,Ot"
+
+# Write changes back to file
+write-changes = true
+
+[tool.pyproject-fmt]
+max_supported_python = "3.13"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = [ "tests" ]
+# Add path to find your built extension
+pythonpath = [ "src" ]
+addopts = [
+  "--pythonwarnings=all",
+  "--cov",
+  "--cov-report=html",
+  "--cov-report=xml",
+  "--quiet",
+  "--junitxml=junit.xml",
+  "-o junit_family=legacy",
+]
+
+[tool.coverage.run]
+source_pkgs = [ "exifmwg", "tests" ]
+branch = true
+parallel = true
+omit = [ "tests/conftest.py", "tests/utils.py" ]
+
+[tool.coverage.paths]
+exifmwg = [ "src/exifmwg" ]
+tests = [ "tests" ]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == '__main__':",
+  "if TYPE_CHECKING:",
+  "if SAVE_OUTPUTS:",
+]
+
+[tool.mypy]
+exclude = [ "tests/*" ]
+disallow_any_expr = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+strict_optional = true
+
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = "exifmwg.bindings"
+disable_error_code = [ "override" ]
+
+[tool.uv]
+cache-keys = [
+  { file = "pyproject.toml" },
+  { file = "src/exifmwg/*.cpp" },
+  { file = "src/exifmwg/*.hpp" },
+]
