@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "gmm-gpu"
+version = "0.2.7"
+description = "A small library for quick fitting of multiple Gaussian Mixture Models in parallel on the GPU."
+authors = ["Mihail Zdravkov <mihail0zdravkov@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+
+
+[project.urls]
+homepage = "https://codeberg.org/mzdravkov/gmm_gpu"
+documentation = "https://mihail.cc/docs/gmm_gpu"
+source = "https://codeberg.org/mzdravkov/gmm_gpu"
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.26.4"
+torch = "^2.5.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pdoc = "^15.0.1"
+scikit-learn = "^1.6.1"
+pytest = "^8.3.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
