@@ -1,0 +1,15 @@
+[project]
+name = "flow-tui"
+version = "0.1.0"
+description = "Your description here"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "rich",
+]
+
+[project.scripts]
+emit = "flow.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
