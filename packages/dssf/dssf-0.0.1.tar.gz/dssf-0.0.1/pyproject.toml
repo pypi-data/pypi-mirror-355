@@ -1,0 +1,44 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dssf"
+version = "0.0.1"
+authors = [
+  { name="Adrian Brasoveanu", email="abrsvn@gmail.com" },
+]
+description = "Distributed Situation Semantics Framework (DSSF)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "matplotlib",
+    "numpy>=1.15",
+    "pandas>=1.1.2",
+    "packaging",
+    "pyparsing",
+    "requests",
+    "torch>=1.11",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/abrsvn/dssf"
+"Repository" = "https://github.com/abrsvn/dssf"
+"Bug Tracker" = "https://github.com/abrsvn/dssf/issues"
+
+[tool.setuptools]
+packages = {find = {}}
