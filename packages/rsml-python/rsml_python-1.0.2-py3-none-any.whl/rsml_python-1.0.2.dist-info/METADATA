@@ -1,0 +1,34 @@
+Metadata-Version: 2.4
+Name: rsml_python
+Version: 1.0.2
+Summary: RedSeaMarkupLanguage support for Python.
+Project-URL: Homepage, https://github.com/OceanApocalypseStudios/RSML.Python
+Project-URL: Bug Tracker, https://github.com/OceanApocalypseStudios/RSML.Python/issues
+Author-email: MF366 <real_mf366@yahoo.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+
+# RSML.Python
+Adds [RedSeaMarkupLanguage]("https://github.com/OceanApocalypseStudios/RedSeaMarkupLanguage) support for Python.
+
+## Get Started
+```py
+# RSML.Python is not a port of RSML, as the original executable is required
+executable = RedSeaCLIExecutable(...)
+
+document = RedSeaDocument()
+document.load_from_string(...)
+
+executable.load_document(document)
+
+output = executable.evaluate_document() # non-prettified output
+print(output)
+```
+
+> **Made with :heart: by OceanApocalypseStudios.**
+> 
+> *Copyright (c) 2025 OceanApocalypseStudios*
