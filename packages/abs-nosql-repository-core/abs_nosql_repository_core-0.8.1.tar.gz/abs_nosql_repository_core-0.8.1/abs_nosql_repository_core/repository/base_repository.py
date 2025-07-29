@@ -1,0 +1,1114 @@
+from typing import Type, TypeVar, List, Dict, Any, Union, Optional
+from abs_exception_core.exceptions import (
+    BadRequestError,
+    NotFoundError,
+    GenericHttpError,
+    ValidationError,
+)
+from pydantic import BaseModel
+from pymongo import ASCENDING, DESCENDING
+from beanie.operators import Set
+from pymongo.errors import PyMongoError
+from datetime import datetime, UTC
+from motor.motor_asyncio import AsyncIOMotorDatabase
+from beanie import Document
+from bson import ObjectId, Decimal128
+from decimal import Decimal
+from uuid import uuid4
+from abs_utils.azure_service_bus.azure_service_bus import AzureServiceBus
+from abs_utils.socket_io.server import SocketIOService
+from abs_utils.constants.event_constants import (
+    ON_RECORD_CREATION,
+    ON_RECORD_UPDATION,
+    ON_RECORD_DELETION,
+)
+from ..schema import (
+    ListFilter,
+    SortDirection,
+    Operator,
+    FindUniqueByFieldInput,
+    FieldRule,
+    Aggregations,
+    AggregationType,
+    ReferenceField,
+    FilterSchema,
+    SortSchema,
+    ReferenceFieldType,
+    AggregationStage
+)
+from ..util import coerce_value,apply_condition,logical_operator_map
+
+T = TypeVar("T", bound=BaseModel)
+DocumentType = TypeVar("DocumentType", bound=Document)
+
+
+class BaseRepository:
+    """
+    Base repository class for doing all the database operations using Beanie for NoSQL database.
+    """
+
+    def __init__(
+        self,
+        document: Type[DocumentType] = None,
+        db: AsyncIOMotorDatabase = None,
+        sio_service: SocketIOService = None,
+        azure_service_bus: AzureServiceBus = None,
+    ):
+        if document is None and db is None:
+            raise ValidationError(detail="Either document or db must be provided")
+        self.document = document
+        self.db = db
+        self.sio_service = sio_service
+        self.azure_service_bus = azure_service_bus
+
+    def _convert_to_json_serializable(self, data: Any) -> Any:
+        """
+        Converts MongoDB documents to JSON-serializable format.
+        """
+        if data is None:
+            return None
+
+        # Fast path for common types
+        if isinstance(data, (str, int, float, bool)):
+            return data
+
+        # Handle MongoDB specific types
+        if isinstance(data, (ObjectId, Decimal128)):
+            return str(data)
+
+        if isinstance(data, datetime):
+            return data.isoformat()
+
+        if isinstance(data, Decimal):
+            return float(data)
+
+        # Handle collections
+        if isinstance(data, dict):
+            return {
+                str(k): self._convert_to_json_serializable(v) for k, v in data.items()
+            }
+
+        if isinstance(data, (list, tuple, set)):
+            return [self._convert_to_json_serializable(item) for item in data]
+
+        # Handle Pydantic and Beanie models
+        if isinstance(data, (BaseModel, Document)):
+            return self._convert_to_json_serializable(data.model_dump())
+
+        # Handle objects with __dict__
+        if hasattr(data, "__dict__"):
+            return self._convert_to_json_serializable(vars(data))
+
+        # If we can't convert it, return string representation
+        return str(data)
+
+    def get_collection(self, collection_name: Optional[str] = None) -> Any:
+        """Get the collection from the database"""
+        return (
+            self.db.get_collection(collection_name)
+            if collection_name
+            else self.document.get_motor_collection()
+        )
+
+    def get_base_document_fields(self) -> Dict[str, Any]:
+        """Get the base document fields"""
+        return {
+            "uuid": str(uuid4()),
+            "created_at": datetime.now(UTC),
+            "updated_at": datetime.now(UTC),
+        }
+
+    async def _handle_mongo_error(self, operation: str, error: Exception) -> None:
+        """Handle MongoDB errors consistently."""
+        if isinstance(error, PyMongoError):
+            raise GenericHttpError(
+                status_code=500,
+                detail=str(error),
+                error_type="PyMongoError",
+                message=f"Failed to {operation}",
+            )
+        raise error
+
+    def _coerce_document(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Coerce all values in a document to their appropriate types.
+        This is used before saving to the database to ensure proper type conversion.
+        """
+        return coerce_value(data)
+
+    async def create(
+        self, obj: T, collection_name: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Create a new document in the collection"""
+        try:
+            # Convert to dict and coerce values
+            obj_dict = obj.model_dump() if hasattr(obj, "model_dump") else dict(obj)
+            obj_dict = self._coerce_document(obj_dict)
+
+            if collection_name:
+                collection = self.get_collection(collection_name)
+                result = await collection.insert_one(
+                    {**self.get_base_document_fields(), **obj_dict}
+                )
+                created_doc = await self.get_by_attr(
+                    "_id", result.inserted_id, collection_name
+                )
+                if self.sio_service or self.azure_service_bus:
+                    payload = {
+                        "event_id": str(uuid4()),
+                        "event_key": ON_RECORD_CREATION,
+                        "result": created_doc,
+                        "payload": obj_dict,
+                        "record_id": str(result.inserted_id),
+                        "collection_name": collection_name,
+                    }
+                    entity_id = collection_name.split("_")[1]
+                    if self.sio_service:
+                        await self.sio_service.emit_to_room(
+                            ON_RECORD_CREATION,f"entity:{entity_id}" ,payload
+                        )
+                    if self.azure_service_bus:
+                        await self.azure_service_bus.send(payload)
+                return created_doc
+
+            model_instance = self.document(**obj_dict)
+            model = await model_instance.insert()
+            return await self.get_by_attr("id", model.id)
+
+        except Exception as e:
+            await self._handle_mongo_error("create document", e)
+
+    async def bulk_create(
+        self, data: List[T], collection_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Create multiple documents in the collection"""
+        try:
+            # Convert to dicts and coerce values
+            get_obj = lambda obj: (
+                obj.model_dump() if hasattr(obj, "model_dump") else dict(obj)
+            )
+            coerced_data = [self._coerce_document(get_obj(item)) for item in data]
+
+            if collection_name:
+                collection = self.get_collection(collection_name)
+                documents = [
+                    {**self.get_base_document_fields(), **item} for item in coerced_data
+                ]
+                result = await collection.insert_many(documents)
+                # Convert the documents to JSON serializable format
+                created_docs = []
+                for doc in documents:
+                    doc["_id"] = str(doc.get("_id", ""))
+                    created_docs.append(self._convert_to_json_serializable(doc))
+                # TODO: Add event handling for bulk create
+                # payload = {
+                #     "event_id": str(uuid4()),
+                #     "event_key": "records_created",
+                #     "payload": created_docs,
+                #     "request_body": coerced_data,
+                #     "collection_name": collection_name,
+                # }
+                # if self.sio_service:
+                #     await self.sio_service.emit_broadcast(
+                #         "records_created", payload
+                #     )
+                # if self.azure_service_bus:
+                #     await self.azure_service_bus.send(payload)
+                return created_docs
+
+            model_instances = [self.document(**item) for item in coerced_data]
+            await self.document.insert_many(model_instances)
+            return [
+                self._convert_to_json_serializable(doc.model_dump())
+                for doc in model_instances
+            ]
+
+        except Exception as e:
+            await self._handle_mongo_error("bulk create documents", e)
+
+    async def bulk_write(self, data: List[T], collection_name: Optional[str] = None):
+        """Bulk write documents to the collection"""
+        try:  
+            collection = self.get_collection(collection_name)
+            result = await collection.bulk_write(data,ordered=False)
+            return result.upserted_count
+        except Exception as e:
+            await self._handle_mongo_error("bulk write documents", e)
+
+    async def update(
+        self, id: Union[str, ObjectId], obj: T, collection_name: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Update a document by id"""
+        try:
+            # remove none values from the object
+            if hasattr(obj, "model_dump"):
+                obj_dict = obj.model_dump(exclude_none=True)
+            else:
+                obj_dict = {k: v for k, v in obj.items() if v is not None}
+            # Convert to dict and coerce values
+            obj_dict = self._coerce_document(obj_dict)
+            object_id = ObjectId(id) if isinstance(id, str) else id
+
+            if collection_name:
+                collection = self.get_collection(collection_name)
+                result = await collection.update_one(
+                    {"_id": object_id},
+                    {"$set": obj_dict, "$currentDate": {"updated_at": True}},
+                )
+
+                if result.matched_count == 0:
+                    raise NotFoundError(detail=f"Document with id {id} not found")
+
+                updated_doc = await self.get_by_attr("_id", object_id, collection_name)
+                if self.sio_service or self.azure_service_bus:
+                    entity_id = collection_name.split("_")[1]
+                    payload = {
+                        "event_id": str(uuid4()),
+                        "event_key": ON_RECORD_UPDATION,
+                        "result": updated_doc,
+                        "payload": obj_dict,
+                        "record_id": str(object_id),
+                        "collection_name": collection_name,
+                    }
+                    if self.sio_service:
+                        await self.sio_service.emit_to_room(
+                            ON_RECORD_UPDATION,f"entity:{entity_id}" ,payload
+                        )
+                    if self.azure_service_bus:
+                        await self.azure_service_bus.send(payload)
+                return updated_doc
+
+            obj_dict["updated_at"] = datetime.now(UTC)
+            result = await self.document.get(object_id)
+            if not result:
+                raise NotFoundError(detail=f"Document with id {id} not found")
+
+            await result.update(Set(obj_dict))
+            return await self.get_by_attr("id", object_id)
+
+        except Exception as e:
+            await self._handle_mongo_error("update document", e)
+
+    async def get_by_attr(
+        self,
+        attr: Union[str, Dict[str, Any]],
+        value: Any = None,
+        collection_name: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        try:
+            # Handle multiple attributes
+            if isinstance(attr, dict):
+                query = {}
+                for field, field_value in attr.items():
+                    if field == "id":
+                        field = "_id"
+                        field_value = ObjectId(field_value)
+                    query[field] = field_value
+            else:
+                if attr == "id":
+                    attr = "_id"
+                    value = ObjectId(value)
+                query = {attr: value}
+
+            if collection_name:
+                collection = self.get_collection(collection_name)
+                result = await collection.find_one(query)
+                if not result:
+                    raise NotFoundError(
+                        detail=f"Document with {attr}={value} not found"
+                    )
+                return self._convert_to_json_serializable(result)
+
+            if not self.document:
+                raise ValueError("Document class is not provided.")
+
+            result = await self.document.find_one(query)
+            if not result:
+                raise NotFoundError(detail=f"Document with {attr}={value} not found")
+            return self._convert_to_json_serializable(result)
+
+        except Exception as e:
+            await self._handle_mongo_error("get document", e)
+
+    async def get_many_by_attr(
+        self,
+        attr: Union[str, Dict[str, Any]],
+        value: Any = None,
+        collection_name: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Get multiple documents by attribute"""
+        try:
+            if isinstance(attr, dict):
+                query = {}
+                for field, field_value in attr.items():
+                    if field == "id":
+                        field = "_id"
+                        field_value = ObjectId(field_value)
+                    query[field] = field_value
+            else:
+                if attr == "id":
+                    attr = "_id"
+                    value = ObjectId(value)
+                query = {attr: value}
+
+            if collection_name:
+                collection = self.get_collection(collection_name)
+                result = await collection.find(query).to_list(length=None)
+                return [self._convert_to_json_serializable(doc) for doc in result]
+
+            if not self.document:
+                raise ValueError("Document class is not provided.")
+
+            result = await self.document.find(query).to_list(length=None)
+            return [self._convert_to_json_serializable(doc) for doc in result]
+        except Exception as e:
+            await self._handle_mongo_error("get many documents", e)
+
+    
+    def _build_search_conditions(
+        self, search_term: str, searchable_fields: List[str]
+    ) -> List[Dict[str, Any]]:
+        """Build case-insensitive search conditions for fields"""
+        regex = {"$regex": f".*{search_term}.*", "$options": "i"}
+        return [{field: regex} for field in searchable_fields]
+    
+
+    def _build_query_filter(
+        self, find: ListFilter, collection_name: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
+        """Build MongoDB filter from ListFilter"""
+        if find.filters:
+            if hasattr(find.filters, "model_dump"):
+                filter = find.filters.model_dump(exclude_none=True)
+            else:
+                filter = {k: v for k, v in find.filters.items() if v is not None}
+        else:
+            filter = {}
+
+        base_filter = (
+            self._build_filter_condition(filter, collection_name, is_expr=False)
+            if find.filters
+            else None
+        )
+        if find.search and find.searchable_fields:
+            search_filter = {
+                "$or": self._build_search_conditions(
+                    find.search, find.searchable_fields
+                )
+            }
+            return (
+                {"$and": [base_filter, search_filter]} if base_filter else search_filter
+            )
+
+        return base_filter
+
+
+    def _build_filter_condition(
+        self,
+        filter_dict: Dict[str, Any],
+        collection_name: Optional[str] = None,
+        is_expr: bool = False,
+    ) -> Dict[str, Any]:
+        """Recursively build MongoDB filter"""
+        if not isinstance(filter_dict, dict):
+            return {}
+
+        if "operator" in filter_dict and "conditions" in filter_dict:
+            conditions = [
+                self._build_filter_condition(cond, collection_name, is_expr)
+                for cond in filter_dict["conditions"]
+            ]
+            return {logical_operator_map[filter_dict["operator"]]: conditions}
+
+        if all(k in filter_dict for k in ["field", "operator", "value"]):
+            try:
+                model = self.document or self.db[collection_name]
+                op = Operator(filter_dict["operator"].lower())
+                if filter_dict["field"] == "id" or filter_dict["field"] == "_id":
+                    if isinstance(filter_dict["value"], list):
+                        value = [ObjectId(v) for v in filter_dict["value"]]
+                    else:
+                        value = ObjectId(filter_dict["value"])
+                else:
+                    value = coerce_value(filter_dict["value"])
+                return apply_condition(model, op, filter_dict["field"], value, is_expr)
+            except ValueError:
+                raise BadRequestError(
+                    f"Invalid comparison operator: {filter_dict['operator']}"
+                )
+
+        return {}
+
+
+    def _get_sort_order(self, sort_order: List[SortSchema]) -> List[tuple]:
+        """Generate sort tuples for MongoDB"""
+        return [
+            (s.field, ASCENDING if s.direction == SortDirection.ASC else DESCENDING)
+            for s in sort_order
+        ] or [("_id", DESCENDING)]
+
+    async def get_all(
+        self, find: ListFilter, collection_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Retrieve documents with filtering, sorting, and pagination"""
+        page, page_size = find.page or 1, find.page_size or 20
+        skip = (page - 1) * page_size
+        pipeline = []
+
+        if find.pre_filters:
+            if hasattr(find.pre_filters, "model_dump"):
+                pre_filters = find.pre_filters.model_dump(exclude_none=True)
+            else:
+                pre_filters = {
+                    k: v for k, v in find.pre_filters.items() if v is not None
+                }
+            pipeline.append(
+                {
+                    "$match": self._build_filter_condition(
+                        pre_filters, collection_name, is_expr=False
+                    )
+                }
+            )
+
+        if find.reference_fields:
+            pipeline = self._build_reference_stage(pipeline, find.reference_fields)
+
+        query_filter = self._build_query_filter(find, collection_name)
+        if query_filter:
+            pipeline.append({"$match": query_filter})
+
+        if find.field_rules:
+            pipeline = self._get_field_rule(find.field_rules, pipeline, collection_name)
+
+        if find.sort_order:
+            pipeline.append({"$sort": dict(self._get_sort_order(find.sort_order))})
+
+        model = self.document or self.db[collection_name]
+
+        # First get the total count before any aggregations or pagination
+        count_pipeline = pipeline + [{"$count": "total"}]
+        count_result = await model.aggregate(count_pipeline).to_list(length=1)
+        total_count = count_result[0]["total"] if count_result else 0
+
+        # Now add aggregations if needed
+        if find.aggregations:
+            group_stage = self._build_group_stage(find.aggregations)
+            pipeline.append(group_stage)
+            # For aggregations, we don't paginate the results
+            data = await model.aggregate(pipeline).to_list(length=None)
+            total_pages = 1
+        else:
+            # Add pagination only if no aggregations
+            pipeline += [{"$skip": skip}, {"$limit": page_size}]
+            data = await model.aggregate(pipeline).to_list(length=None)
+            total_pages = (total_count + page_size - 1) // page_size
+
+        return {
+            "founds": self._convert_to_json_serializable(data),
+            "search_options": {
+                "total_pages": total_pages,
+                "total_count": total_count,
+                "page": page,
+                "page_size": page_size,
+                "search": find.search,
+                "sort_order": find.sort_order,
+            },
+        }
+
+    def _build_field_rules_stage(
+        self, field_rules: List[FieldRule], collection_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Build $addFields stages for dynamic array inclusion/exclusion logic"""
+        stages = []
+
+        for rule in field_rules:
+            action = rule.action.lower()
+            field_path = rule.field
+            conditions = rule.conditions
+
+            if action not in ("include", "exclude"):
+                raise ValueError(f"Unsupported filter action: {action}")
+            
+            if not conditions or not conditions.conditions:
+                continue
+
+            condition_expr = self._build_filter_condition(
+                filter_dict=conditions.model_dump(),
+                collection_name=collection_name,
+                is_expr=True,
+            )
+
+            filter_condition = ( {"$not": [condition_expr]} if action == "exclude" else condition_expr)
+
+            stages.append(
+                {
+                    "$addFields": {
+                        field_path: {
+                            "$filter": {
+                                "input": f"${field_path}",
+                                "as": "item",
+                                "cond": filter_condition,
+                            }
+                        }
+                    }
+                }
+            )
+
+        return stages
+    
+    def _get_field_rule(
+        self,
+        field_rules: List[FieldRule],
+        pipeline: List[Dict[str, Any]],
+        collection_name: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Append field modifier stages to the aggregation pipeline."""
+        if not field_rules:
+            return pipeline
+
+        field_rule_stages = self._build_field_rules_stage(field_rules, collection_name)
+        pipeline.extend(field_rule_stages)
+        return pipeline
+
+    
+
+    def _build_reference_stage(
+        self, pipeline: List[Dict[str, Any]], references: ReferenceFieldType
+    ) -> List[Dict[str, Any]]:
+        """Build reference stages supporting both flat and deeply nested alias paths."""
+        if isinstance(references,AggregationStage):
+            return pipeline+references.pipeline
+        else:
+            def process_reference(ref, current_pipeline):
+                local_path = ref.local_field
+                foreign_field = ref.foreign_field or "_id"
+                from_collection = ref.foreign_entity
+                alias = ref.alias or local_path.split(".")[-1] + "_info"
+                view_fields = ref.view_fields or []
+                is_single = ref.single_object or False
+                sort_fields = ref.sort_fields or []
+
+                # Convert sort_fields to MongoDB sort dict
+                ref_sort_dict = {}
+                for sort_item in sort_fields:
+                    direction = 1 if sort_item.direction == SortDirection.ASC else -1
+                    ref_sort_dict[sort_item.field] = direction
+
+                path_parts = local_path.split(".")
+                is_nested_local = len(path_parts) > 1
+                alias_parts = alias.split(".")
+                is_nested_alias = len(alias_parts) > 1
+
+                local_key = path_parts[-1]
+                embed_field = alias_parts[-1]
+
+                # Prepare lookup pipeline
+                lookup_pipeline = [
+                    {
+                        "$match": {
+                            "$expr": {
+                                "$in": [
+                                    f"${foreign_field}",
+                                    {
+                                        "$cond": {
+                                            "if": {"$eq": [{"$type": "$$ids"}, "array"]},
+                                            "then": "$$ids",
+                                            "else": ["$$ids"],
+                                        }
+                                    },
+                                ]
+                            }
+                        }
+                    }
+                ]
+                
+                if ref_sort_dict:
+                    lookup_pipeline.append({"$sort": ref_sort_dict})
+                if view_fields:
+                    lookup_pipeline.append({"$project": {f: 1 for f in view_fields}})
+
+                joined_var = f"_joined_{embed_field}"
+
+                # Step 1: Extract IDs
+                if is_nested_local:
+                    id_var = f"_ids_{embed_field}"
+                    current_pipeline.append(
+                        {
+                            "$set": {
+                                id_var: self._build_dynamic_id_extraction(
+                                    path_parts[:-1], local_key
+                                )
+                            }
+                        }
+                    )
+                else:
+                    id_var = local_path
+
+                # Step 2: Lookup
+                current_pipeline.append(
+                    {
+                        "$lookup": {
+                            "from": from_collection,
+                            "let": {"ids": f"${id_var}"},
+                            "pipeline": lookup_pipeline,
+                            "as": joined_var,
+                        }
+                    }
+                )
+
+                # Step 3: Embed result
+                if is_nested_alias:
+                    embed_expr = self._build_dynamic_embedding(
+                        alias_parts, joined_var, foreign_field, local_key
+                    )
+                    current_pipeline.append({"$set": {alias_parts[0]: embed_expr}})
+                else:
+                    if is_single:
+                        current_pipeline.append(
+                            {
+                                "$set": {
+                                    alias: {
+                                        "$cond": {
+                                            "if": {"$gt": [{"$size": f"${joined_var}"}, 0]},
+                                            "then": {"$arrayElemAt": [f"${joined_var}", 0]},
+                                            "else": None,
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                    else:
+                        current_pipeline.append({"$set": {alias: f"${joined_var}"}})
+
+                if is_nested_local:
+                    current_pipeline.append({"$unset": [id_var]})
+                current_pipeline.append({"$unset": [joined_var]})
+
+                return current_pipeline
+
+            for ref in references:
+                pipeline = process_reference(ref, pipeline)
+
+            return pipeline
+
+    def _build_dynamic_id_extraction(self, path_parts, local_key):
+        """Build dynamic ID extraction for any depth with safe $map/$reduce."""
+        if len(path_parts) == 1:
+            return {
+                "$map": {
+                    "input": {
+                        "$cond": {
+                            "if": {"$isArray": f"${path_parts[0]}"},
+                            "then": f"${path_parts[0]}",
+                            "else": [],
+                        }
+                    },
+                    "as": "item",
+                    "in": f"$$item.{local_key}",
+                }
+            }
+        else:
+            return {
+                "$reduce": {
+                    "input": {
+                        "$cond": {
+                            "if": {"$isArray": f"${path_parts[0]}"},
+                            "then": f"${path_parts[0]}",
+                            "else": [],
+                        }
+                    },
+                    "initialValue": [],
+                    "in": {
+                        "$concatArrays": [
+                            "$$value",
+                            self._extract_nested_ids(
+                                "$$this", path_parts[1:], local_key
+                            ),
+                        ]
+                    },
+                }
+            }
+
+    def _extract_nested_ids(self, parent_expr, remaining_path, local_key):
+        """Recursively extract IDs with safe $map/$reduce logic."""
+        current_expr = f"{parent_expr}.{remaining_path[0]}"
+
+        if len(remaining_path) == 1:
+            return {
+                "$cond": {
+                    "if": {"$isArray": current_expr},
+                    "then": {
+                        "$map": {
+                            "input": current_expr,
+                            "as": "nested_item",
+                            "in": f"$$nested_item.{local_key}",
+                        }
+                    },
+                    "else": [],
+                }
+            }
+        else:
+            return {
+                "$reduce": {
+                    "input": {
+                        "$cond": {
+                            "if": {"$isArray": current_expr},
+                            "then": current_expr,
+                            "else": [],
+                        }
+                    },
+                    "initialValue": [],
+                    "in": {
+                        "$concatArrays": [
+                            "$$value",
+                            self._extract_nested_ids(
+                                "$$this", remaining_path[1:], local_key
+                            ),
+                        ]
+                    },
+                }
+            }
+
+    def _build_dynamic_embedding(
+        self,
+        alias_parts: List[str],
+        joined_var: str,
+        foreign_field: str,
+        local_key: str,
+    ) -> Any:
+        """Wrapper to initiate nested embedding from top-level alias"""
+        if len(alias_parts) == 1:
+            return f"${alias_parts[0]}"  # Just return if there's no nesting
+
+        return self._build_nested_embedding(
+            f"${alias_parts[0]}", alias_parts[1:], joined_var, foreign_field, local_key
+        )
+
+    def _build_nested_embedding(
+        self,
+        current_expr: str,
+        remaining_alias_parts: List[str],
+        joined_var: str,
+        foreign_field: str,
+        local_key: str,
+    ) -> Dict[str, Any]:
+        """Recursively build nested embedding expressions with safe map for any depth."""
+
+        # Always guard map input to avoid non-array error
+        safe_input = {
+            "$cond": {
+                "if": {"$isArray": current_expr},
+                "then": current_expr,
+                "else": [],
+            }
+        }
+
+        field = remaining_alias_parts[0]
+        remaining_path = remaining_alias_parts[1:]
+
+        # Base case
+        if not remaining_path:
+            return {
+                "$map": {
+                    "input": safe_input,
+                    "as": "parent",
+                    "in": {
+                        "$mergeObjects": [
+                            "$$parent",
+                            {
+                                field: {
+                                    "$cond": {
+                                        "if": {"$isArray": f"${joined_var}"},
+                                        "then": {
+                                            "$filter": {
+                                                "input": f"${joined_var}",
+                                                "as": "j",
+                                                "cond": {
+                                                    "$eq": [
+                                                        f"$$j.{foreign_field}",
+                                                        f"$$parent.{local_key}",
+                                                    ]
+                                                },
+                                            }
+                                        },
+                                        "else": [],
+                                    }
+                                }
+                            },
+                        ]
+                    },
+                }
+            }
+
+        # Recursive case
+        return {
+            "$map": {
+                "input": safe_input,
+                "as": "parent",
+                "in": {
+                    "$mergeObjects": [
+                        "$$parent",
+                        {
+                            field: self._build_nested_embedding(
+                                f"$$parent.{field}",
+                                remaining_path,
+                                joined_var,
+                                foreign_field,
+                                local_key,
+                            )
+                        },
+                    ]
+                },
+            }
+        }
+
+    def _build_group_stage(self, group_agg: Aggregations) -> Dict[str, Any]:
+        _id = (
+            {field: f"${field}" for field in group_agg.group_by}
+            if group_agg.group_by
+            else None
+        )
+        group_stage = {"_id": _id}
+
+        if group_agg.document_inclusion_mode == "all":
+            group_stage["data"] = {"$push": "$$ROOT"}
+        elif (
+            group_agg.document_inclusion_mode == "partial" and group_agg.included_fields
+        ):
+            group_stage["data"] = {
+                "$push": {field: f"${field}" for field in group_agg.included_fields}
+            }
+        if group_agg.aggregation_fields:
+            for agg in group_agg.aggregation_fields:
+                agg_type = agg.type.lower()
+                field = agg.field
+                alias = agg.alias
+
+                if agg_type == "count":
+                    group_stage[alias] = {"$sum": 1}
+                elif agg_type in AggregationType:
+                    group_stage[alias] = {f"${agg_type}": f"${field}"}
+                else:
+                    raise ValueError(f"Unsupported aggregation type: {agg_type}")
+
+        return {"$group": group_stage}
+
+    async def delete(
+        self, id: Union[str, ObjectId], collection_name: Optional[str] = None
+    ) -> bool:
+        """Delete a document by id"""
+        try:
+            object_id = ObjectId(id) if isinstance(id, str) else id
+
+            if collection_name:
+                collection = self.get_collection(collection_name)
+                result = await collection.delete_one({"_id": object_id})
+                if result.deleted_count == 0:
+                    raise NotFoundError(detail="Document not found")
+                if self.sio_service or self.azure_service_bus:
+                    payload = {
+                        "event_id": str(uuid4()),
+                        "event_key": ON_RECORD_DELETION,
+                        "result": result.deleted_count,
+                        "payload": None,
+                        "record_id": str(id),
+                        "collection_name": collection_name,
+                    }
+                    entity_id = collection_name.split("_")[1]
+                    if self.sio_service:
+                        await self.sio_service.emit_to_room(
+                            ON_RECORD_DELETION,f"entity:{entity_id}" ,payload
+                        )
+                    if self.azure_service_bus:
+                        await self.azure_service_bus.send(payload)
+            else:
+                result = await self.document.get(object_id)
+                if not result:
+                    raise NotFoundError(detail="Document not found")
+                await result.delete()
+
+            return True
+
+        except Exception as e:
+            await self._handle_mongo_error("delete document", e)
+
+    async def get_unique_values(
+        self, schema: FindUniqueByFieldInput, collection_name: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Get unique values for a field with pagination and search"""
+        try:
+            if not schema.field_name:
+                raise BadRequestError(detail="Field name is required")
+
+            collection = (
+                self.get_collection(collection_name)
+                if collection_name
+                else self.document.get_motor_collection()
+            )
+
+            pipeline = []
+
+            if schema.search:
+                pipeline.append(
+                    {
+                        "$match": {
+                            schema.field_name: {
+                                "$regex": f".*{schema.search}.*",
+                                "$options": "i",
+                            }
+                        }
+                    }
+                )
+
+            pipeline.append({"$group": {"_id": f"${schema.field_name}"}})
+
+            if schema.ordering:
+                pipeline.append(
+                    {
+                        "$sort": {
+                            "_id": ASCENDING if schema.ordering == "asc" else DESCENDING
+                        }
+                    }
+                )
+
+            count_pipeline = pipeline + [{"$count": "total"}]
+            count_result = await collection.aggregate(count_pipeline).to_list(length=1)
+            total_count = count_result[0]["total"] if count_result else 0
+
+            skip = ((schema.page or 1) - 1) * (schema.page_size or 10)
+            pipeline.extend([{"$skip": skip}, {"$limit": schema.page_size or 10}])
+
+            results = await collection.aggregate(pipeline).to_list(length=None)
+            values = [r["_id"] for r in results]
+
+            return {
+                "founds": values,
+                "search_options": {
+                    "page": schema.page or 1,
+                    "page_size": schema.page_size or 10,
+                    "ordering": schema.ordering or "asc",
+                    "total_count": total_count,
+                },
+            }
+
+        except Exception as e:
+            await self._handle_mongo_error("get unique values", e)
+
+    async def bulk_update(
+        self,
+        conditions: FilterSchema,
+        update_data: Dict[str, Any],
+        collection_name: Optional[str] = None,
+    ) -> int:
+        """
+        Update multiple documents based on ListFilter conditions
+
+        Args:
+            conditions: FilterSchema object containing filter conditions
+            update_data: Dictionary of fields to update
+            collection_name: Optional collection name
+
+        Returns:
+            Dictionary containing update results
+        """
+        try:
+            conditions = conditions.model_dump()
+            # Build the MongoDB filter from ListFilter
+            mongo_filter = self._build_filter_condition(conditions, collection_name)
+
+            # Coerce the update data to ensure proper type conversion
+            update_data = self._coerce_document(update_data)
+
+            # Add updated_at timestamp
+            update_data["updated_at"] = datetime.now(UTC)
+
+            if mongo_filter:
+                if collection_name:
+                    collection = self.get_collection(collection_name)
+                    result = await collection.update_many(
+                        mongo_filter, {"$set": update_data}
+                    )
+                    # TODO: Add event handling for bulk update
+                    # payload = {
+                    #     "event_id": str(uuid4()),
+                    #     "event_key": "records_updated",
+                    #     "payload": result,
+                    #     "request_body": {
+                    #         "conditions": conditions,
+                    #         "update_data": update_data,
+                    #     },
+                    #     "collection_name": collection_name,
+                    # }
+                    # if self.sio_service:
+                    #     await self.sio_service.emit_broadcast(
+                    #         "records_updated", payload
+                    #     )
+                    # if self.azure_service_bus:
+                    #     await self.azure_service_bus.send(payload)
+                    return {
+                        "modified_count": result.modified_count,
+                        "matched_count": result.matched_count,
+                        "upserted_id": result.upserted_id,
+                    }
+                else:
+                    result = await self.document.find(mongo_filter).update_many(
+                        Set(update_data)
+                    )
+                    return {
+                        "modified_count": result.modified_count,
+                        "matched_count": result.matched_count,
+                        "upserted_id": result.upserted_id,
+                    }
+            else:
+                raise BadRequestError(detail="No filter conditions provided")
+
+        except Exception as e:
+            await self._handle_mongo_error("bulk update documents", e)
+
+    async def bulk_delete(
+        self, conditions: FilterSchema, collection_name: Optional[str] = None
+    ) -> int:
+        """
+        Delete multiple documents based on ListFilter conditions
+
+        Args:
+            conditions: FilterSchema object containing filter conditions
+            collection_name: Optional collection name
+
+        Returns:
+            Dictionary containing deletion results
+        """
+        try:
+            # Build the MongoDB filter from ListFilter
+            if hasattr(conditions, "model_dump"):
+                conditions = conditions.model_dump(exclude_none=True)
+            else:
+                conditions = {k: v for k, v in conditions.items() if v is not None}
+            mongo_filter = self._build_filter_condition(conditions, collection_name)
+            if mongo_filter:
+                if collection_name:
+                    collection = self.get_collection(collection_name)
+                    result = await collection.delete_many(mongo_filter)
+                    # TODO: Add event handling for bulk delete
+                    # payload = {
+                    #     "event_id": str(uuid4()),
+                    #     "event_key": "records_deleted",
+                    #     "payload": result.deleted_count or None,
+                    #     "request_body": conditions or None,
+                    #     "collection_name": collection_name,
+                    # }
+                    # if self.sio_service:
+                    #     await self.sio_service.emit_broadcast(
+                    #         "records_deleted", payload
+                    #     )
+                    # if self.azure_service_bus:
+                    #     await self.azure_service_bus.send(payload)
+                    return {"deleted_count": result.deleted_count}
+                else:
+                    result = await self.document.find(mongo_filter).delete_many()
+                    return {"deleted_count": result.deleted_count}
+            else:
+                raise BadRequestError(detail="No filter conditions provided")
+
+        except Exception as e:
+            await self._handle_mongo_error("bulk delete documents", e)
