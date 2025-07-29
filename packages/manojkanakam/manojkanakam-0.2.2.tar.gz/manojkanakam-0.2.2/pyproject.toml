@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "manojkanakam"
+version = "0.2.2"
+authors = [
+    { name = "Manoj Kanakam", email = "manojkanakam9@gmail.com" }
+]
+description = "A simple package that downloads Manoj Kanakam's resume."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+dependencies = []
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.package-data]
+"manojkanakam" = ["assets/*.pdf"]
