@@ -1,0 +1,349 @@
+Metadata-Version: 2.4
+Name: bw2scaffold
+Version: 0.0.7.post1.dev9
+Summary: bw2scaffold is a templating tool that can facilitate the development of Life Cycle Oriented studies.
+Home-page: https://git.list.lu/gustavo.larrea/replicable-lca
+Author: Gustavo Larrea
+Author-email: gustavo.larrea@list.lu
+License: MIT
+Project-URL: Documentation, https://git.list.lu/gustavo.larrea/replicable-lca
+Project-URL: Source, https://git.list.lu/gustavo.larrea/replicable-lca
+Project-URL: Changelog, https://git.list.lu/gustavo.larrea/replicable-lca/-/blob/main/CHANGELOG.rst?ref_type=heads
+Project-URL: Tracker, https://git.list.lu/gustavo.larrea/replicable-lca/issues
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >3.9
+Description-Content-Type: text/x-rst; charset=UTF-8
+License-File: LICENSE.txt
+Requires-Dist: typer
+Requires-Dist: PyYAML
+Requires-Dist: jinja2
+Requires-Dist: pydantic
+Requires-Dist: mypy
+Requires-Dist: types-PyYAML
+Requires-Dist: code2flow
+Requires-Dist: python-dotenv
+Provides-Extra: testing
+Requires-Dist: setuptools; extra == "testing"
+Requires-Dist: pytest; extra == "testing"
+Requires-Dist: pytest-cov; extra == "testing"
+Provides-Extra: dev
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: pylint; extra == "dev"
+Dynamic: license-file
+
+bw2scaffold
+^^^^^^^^^^^
+
+bw2scaffold is a templating tool that can facilitate the development of Life Cycle \
+Oriented studies following the recommendations of the `protocol prototype for \
+enhancing the reproducibility and transparency in \
+Life Cycle Inventory building <https://lca-protocol.readthedocs.io/en/latest/>`_
+
+This tool is still under development, but contributions and recommendations are \
+welcomed.
+
+
+Installation
+============
+
+Using pipx (recommended)
+------------------------
+
+We recommend to use pipx, which allows to install python applications in isolated environments (installation beyond a specific environment).
+Do not worry, using pipx will not mess up your environments 😉.
+
+.. code-block:: console
+
+    pipx install git+https://git.list.lu/gustavo.larrea/replicable-lca.git
+
+If you do not have pipx installed, you can, first, install it with pip:
+
+.. code-block:: console
+
+    pip install pipx
+
+Then, make all application accessible:
+
+.. code-block:: console
+
+    pipx ensurepath
+
+
+Using pip
+---------
+
+You can the package in your environment directly from the github repository:
+
+.. code-block:: console
+
+    pip install git+https://git.list.lu/gustavo.larrea/replicable-lca.git
+
+
+Usage: ``start``
+================
+
+This is still work in progress.
+bw2scaffold provides a CLI command ``bw2init`` with two additional commands to setup and pack up an LCA project.
+To understand more, use the ``--help`` option.
+
+.. code-block:: console
+
+
+    > bw2init --help
+
+     Usage: bw2init [OPTIONS] COMMAND [ARGS]...
+
+    ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────╮
+    │ --install-completion          Install completion for the current shell.                              │
+    │ --show-completion             Show completion for the current shell, to copy it or customize the     │
+    │                               installation.                                                          │
+    │ --help                        Show this message and exit.                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ╭─ Commands ───────────────────────────────────────────────────────────────────────────────────────────╮
+    │ finish   Packs up a project created with bw2scaffold and verifies its quality.                       │
+    │ start    Prepares a brightway project template and starts your LCA modelling.                        │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+The `start` command creates a ready-to-use repository.
+It requires only one mandatory ``project_name`` argument, but it can also install some useful plugins:
+
+.. code-block:: console
+
+    > bw2init start --help
+
+     Usage: bw2init start [OPTIONS] PROJECT_NAME
+
+     Prepares a brightway project template and starts your LCA modelling.
+
+    ╭─ Arguments ──────────────────────────────────────────────────────────────────────────────────────────╮
+    │ *    project_name      TEXT  [default: None] [required]                                              │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────╮
+    │ --full     -f            Installs recommended shell plugins that facilitate work. Works only in      │
+    │                          UNIX-like systems                                                           │
+    │ --verbose  -v            Activate to have verbose logging                                            │
+    │ --email            TEXT  [default: None]                                                             │
+    │ --help                   Show this message and exit.                                                 │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Once your project is created, a success message and the project path will be printed:
+
+.. code-block:: console
+
+    > bw2init start my_lca_project
+     ✨Success! your brightway-based repo has been created:
+     /home/larrea_30718/repos/bw2scaffold/my_lca_project
+
+The project structure follows the recommendations of the `protocol <https://lca-protocol.readthedocs.io/en/latest/>`_ prototype, like this:
+
+.. code-block:: console
+
+    > tree my_lca_project -a
+    my_lca_project
+    ├── .env
+    ├── environment.yaml
+    ├── .env.leave
+    ├── .gitignore
+    ├── README.md
+    ├── requirements.txt
+    └── src
+        ├── analysis
+        │   └── README.md
+        ├── assets
+        │   └── README.md
+        ├── data
+        │   ├── private
+        │   │   ├── processed
+        │   │   │   └── README.md
+        │   │   ├── raw
+        │   │   │   └── README.md
+        │   │   └── README.md
+        │   ├── processed
+        │   │   └── README.md
+        │   └── raw
+        │       └── README.md
+        ├── modeling
+        │   └── README.md
+        ├── processing
+        │   └── README.md
+        └── run.py
+
+    12 directories, 16 files
+
+The ``.env`` file contains an environmental variable (``BRIGHTWAY2_DIR``) that stores the path of a folder that will contain all the brightway databases specific for this project.
+This helps to isolate one project from the rest, allowing (*hopefully*) to have a fully replicable project.
+
+.. code-block:: console
+
+    > cat .env
+
+    # Path where bw2data will store data (`.bw2projects`)
+    BRIGHTWAY2_DIR=/home/gustavo.larrea/test-lca/.bw2projects
+    export BRIGHTWAY2_DIR
+    # Useful only for UNIX-like operating system
+    AUTOENV_ENABLE_LEAVE=True
+
+
+The best way to use this custom project folder is by loading it before importing `bw2data`.
+You can do this by using the `python-dotenv <https://pypi.org/project/python-dotenv/>`_ package.
+Install it doing ``pip install python-dotenv``.
+Imagine this python file (`projects.py`):
+
+.. code-block:: python
+
+    from dotenv import load_dotenv
+    load_dotenv() # This searches for `.env` file and loads the variables
+
+    import bw2data as bd # bw2data will automatically read the environmental variable.
+    bd.projects.set_current('my_lca_project')
+    print('This are your projects:\n',bd.projects)
+
+Running this script will have this output:
+
+.. code-block:: console
+
+    > python projects.py
+    16:05:13+0200 [info     ] Using environment variable BRIGHTWAY2_DIR for data directory:
+    /home/larrea@private.list.lu/repos/test2/.bw2projects
+    This are your projects:
+     Brightway2 projects manager with 2 objects:
+        default
+        my_lca_project
+    Use `projects.report()` to get a report on all projects.
+
+This means that brightway will only read and write from the custom folder, isolating your project.
+
+Usage: ``finish``
+=================
+
+The `finish` command packs up the project generating the statistics and figures that \
+are necessary to fulfill \
+the `protocol <https://lca-protocol.readthedocs.io/en/latest/>`_.
+
+.. code-block::
+
+    > bw2init finish --help
+
+     Usage: bw2init finish [OPTIONS] INPUT_FILE [OUTPUT_FILE]
+
+     Packs up a project created with bw2scaffold and verifies its quality.
+
+    ╭─ Arguments ──────────────────────────────────────────────────────────────────────────────────────────╮
+    │ *    input_file       TEXT           Path of run.py [default: None] [required]                       │
+    │      output_file      [OUTPUT_FILE]  Path to export the callgraph [default: data/callgraph.png]      │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────╮
+    │ --function  -func      TEXT  Name of the function containing the main pipeline [default: main]       │
+    │ --help                       Show this message and exit.                                             │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+At the moment, this command only generates a callgraph of the computional pipeline of the \
+project.
+For instance, if the project looks like this ``run.py`` example:
+
+.. code-block:: python
+
+    """
+    This is an Life Cycle Oriented study
+    """
+
+    def read_data():
+        print("I am reading some data")
+        return None
+
+    def lcia_step() -> float :
+        print("I am building LCIA")
+        return "LCA impact"
+
+    def curate_data():
+        print("Data curated")
+        return None
+
+    def prepare():
+        curate_data()
+        print("I am preparing some data")
+
+    def build_lci() ->  None :
+        prepare()
+        print('I am building LCI')
+        return None
+
+    def export(results):
+        print(f"I am exporting results: {results}")
+
+    def main():
+        build_lci()
+        results = lcia_step()
+        export(results)
+
+        print("Main is done")
+
+    if __name__=="__main__":
+        main()
+
+When running the ``bw2init finish`` command, it is necessary to indicate the source \
+file ``src/run.py``, the output file ``data/callgraph.png``, and the specific function \
+in the source file that starts the whole computation ``main``:
+
+.. code-block:: console
+
+    > bw2init finish src/run.py data/callgraph.png --function main
+       Code2Flow: Found 1 files from sources argument.
+       Code2Flow: Implicitly detected language as 'py'.
+       Code2Flow: Processing 1 source file(s).
+       Code2Flow:   src/run.py
+       Code2Flow: Found groups ['File: run'].
+       Code2Flow: Found nodes ['(global)', 'build_lci', 'curate_data', 'export', 'lcia_step', 'main', 'prepare', 'read_data'].
+       Code2Flow: Found calls ['build_lci()', 'curate_data()', 'export()', 'lcia_step()', 'main()', 'prepare()', 'print()'].
+       Code2Flow: Found variables ['print->UNKNOWN_MODULE', 'results-><Call owner_token=None token=lcia_step>'].
+       Code2Flow: Filtering into subset...
+       Code2Flow: Generating output file...
+       Code2Flow: Wrote output file 'data/callgraph.gv' with 7 nodes and 6 edges.
+       Code2Flow: For better machine readability, you can also try outputting in a json format.
+       Code2Flow: Code2flow finished processing in 0.00 seconds.
+       Code2Flow: Running graphviz to make the image...
+       Code2Flow: Graphviz finished in 0.04 seconds.
+       Code2Flow: Completed your flowchart! To see it, open 'data/callgraph.png'.
+       [10/23/24 09:55:03] INFO     ✨Success! 📦 ✔ Your project has been checked and packed ✔ 📦
+       Code2Flow: :sparkles:[bold green]Success![/bold green] :package: :heavy_check_mark: Your project has been checked and packed :heavy_check_mark: :package:
+
+
+The callgraph construction is done in an static manner, meaning that the code is not run again.
+In this case, the computation graph looks like the following:
+
+.. image:: docs/callgraph.png
+    :width: 90 %
+    :align: center
+
+
+.. note::
+
+    The ``finish`` command is incomplete and it requires to be development in \
+    conjunction with the `protocol <https://lca-protocol.readthedocs.io/en/latest/>`_.
+
+
+📫 Contact
+==========
+
+gustavo.larrea@list.lu
+
+♻️ License
+==========
+
+MIT
+
+Contributors ✨
+===============
+
+Gustavo Larrea
+
+Tomás Navarrete Gutiérrez
+
+
+© [2024] Luxembourg Institute of Science and Technology. All Rights Reserved
