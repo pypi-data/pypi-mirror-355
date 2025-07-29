@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "voice-mcp"
+dynamic = ["version"]
+description = "Voice interaction capabilities for Model Context Protocol (MCP) servers"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "mbailey", email = "mbailey@example.com"},
+]
+keywords = ["mcp", "voice", "livekit", "speech", "tts", "stt", "ai", "llm"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+
+dependencies = [
+    "uv>=0.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.0.0",
+    "twine>=4.0.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "fastmcp>=2.0.0",
+    "numpy",
+    "sounddevice",
+    "scipy",
+    "openai>=1.0.0",
+    "python-dotenv",
+    "pydub",
+    "simpleaudio",
+]
+
+[project.urls]
+Homepage = "https://github.com/mbailey/voice-mcp"
+Repository = "https://github.com/mbailey/voice-mcp"
+Issues = "https://github.com/mbailey/voice-mcp/issues"
+
+[project.scripts]
+voice-mcp = "voice_mcp.cli:voice_mcp"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/voice_mcp"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/voice_mcp/scripts" = "voice_mcp/scripts"
+
+[tool.hatch.version]
+path = "src/voice_mcp/__version__.py"
