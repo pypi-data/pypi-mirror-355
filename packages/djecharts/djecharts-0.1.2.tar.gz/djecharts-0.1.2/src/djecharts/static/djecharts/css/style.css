@@ -1,0 +1,74 @@
+:root {
+    --echarts-background: #00000000;
+    --echarts-text-color: #c9c9c9;
+    --echarts-text-border-color: #3b3b3b;
+    --echarts-legend-inactive-color: #646464;
+    --echarts-inactive-color: #313131;
+    --echarts-border-color: #333333;
+    --echarts-tooltip-line-color: #474747;
+    --echarts-tooltip-label-background-color: #646464;
+    --echarts-tooltip-background-color: #363636d3;
+    --echarts-tooltip-border-color: #646464;
+    --echarts-tooltip-shadow-color: #b4b4b473;
+}
+
+body {
+    background-color: #1e1f1f;
+    color: #d3d0d0;
+
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.echarts-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #232424;
+    border: 1px solid #373939;
+    position: relative;
+
+    gap: 0.5rem;
+    border-radius: 4px;
+    padding: 8px;
+    width: 90%;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.echarts-container {
+    height: 300px;
+    width: 100%;
+}
+
+.echarts-filter-form {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: 1px solid #373939;
+    padding: 0.3rem;
+    border-radius: 0.4rem;
+}
+
+#echarts-loading-component {
+    background-color: #232424;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
