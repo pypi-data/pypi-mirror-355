@@ -1,0 +1,88 @@
+name: run-python-build
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+    types:
+      - opened
+      - synchronize
+    paths:
+      - ".github/workflows/python.yml"
+      - "CMakeLists.txt"
+      - "pyproject.toml"
+      - "src/*.py"
+      - "**.f90"
+      - "**.F90"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: python
+  cancel-in-progress: false
+
+jobs:
+  build-and-test-python:
+    environment:
+      name: github-pages
+    name: Build and test in debug mode
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: [ "3.11", "3.12", "3.13" ]
+        toolchain:
+        - {fortran-compiler: gcc, fc-version: 14}
+        build_type: [Serial, Release]
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: actions-setup-python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: actions-setup-cmake
+        uses: jwlawson/actions-setup-cmake@v2.0.1
+        with:
+          cmake-version: '3.24.x'
+
+      - uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: ${{ matrix.toolchain.fortran-compiler }}
+          version: ${{ matrix.toolchain.fc-version }}
+
+      - name: Install python dependencies
+        run: |
+          python --version
+          python -m pip install pip-tools
+          python -m pip install pytest
+          python -m pip install parameterized
+          python -m piptools compile -o requirements.txt pyproject.toml --all-build-deps
+          python -m pip install -r requirements.txt
+
+      - name: Install OpenMP runtime (Linux only)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libgomp1
+
+      - name: Build and install Python package with CMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        env:
+          CMAKE_BUILD_TYPE: ${{ matrix.build_type }}
+        run: |
+          cmake --version
+          echo "Building with CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+          python -m pip install ".[ase]" --config-settings="cmake.define.CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+
+      - name: Run tests
+        run: |
+          ${{ env.FC }} --version
+          python -m pytest
