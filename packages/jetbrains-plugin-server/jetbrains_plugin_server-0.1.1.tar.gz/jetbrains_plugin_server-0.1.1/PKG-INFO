@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: jetbrains-plugin-server
+Version: 0.1.1
+Summary: A server to serve jetbrains plugins
+Author-email: azro352 <35503478+azro352@users.noreply.github.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/azro352/jetbrains-plugin-server
+Project-URL: Documentation, https://github.com/azro352/jetbrains-plugin-server/blob/master/README.md
+Project-URL: Repository, https://github.com/azro352/jetbrains-plugin-server.git
+Project-URL: Bug Tracker, https://github.com/azro352/jetbrains-plugin-server/issues
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: FastAPI
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: fastapi~=0.115.12
+Requires-Dist: markdown~=3.8
+Requires-Dist: parameterized~=0.9.0
+Requires-Dist: pydantic~=2.11.3
+Requires-Dist: pydantic-extra-types[semver]~=2.10.3
+Requires-Dist: requests~=2.32.3
+Requires-Dist: semver~=3.0.4
+Requires-Dist: uvicorn
+Provides-Extra: offline
+Requires-Dist: fastapi_offline; extra == "offline"
+Dynamic: license-file
+
+<!--
+
+THIS README FILE IS RENDERED ON '/' ENDPOINT WHEN NO "build" ARG IS GIVEN
+
+-->
+
+Creates a jetbrains-compatible plugin server with a given list of plugins
+
+## How-to use
+
+- use the script `dl_data.py` to fetch plugins metadata and data from jetbrains server
+- (optional) upload these data to an artifactory
+- use the script `gen_json_cache.py` to generate a JSON file that contains all the metadata together
+- start the server
+- register your server [in your IDE][jb-custom-repo]
+
+## Tools
+
+- `jetbrains_plugin_server/tools/dl_data.py` to fetch plugins specifications, versions and content from jetbrains to a
+  local filesystem
+- `jetbrains_plugin_server/tools/gen_json_cache.py` to build a JSON cache to answer faster, using either a filesystem
+  storage or an
+  artifactory
+
+## Paths
+
+- `/` to get the readme OR the compliant xml content if url param `build` is provided
+- `/cache` to get the full JSON cache of the server
+- `/packages` to get a nicer view of the available packages
+- `/docs` the openapi spec of the app, provided by FastAPI
+
+[jb-custom-repo]: https://www.jetbrains.com/help/idea/managing-plugins.html#add_plugin_repos

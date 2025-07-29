@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jetbrains-plugin-server"
+dynamic = ["dependencies", "version"]
+requires-python = ">=3.10"
+description = "A server to serve jetbrains plugins"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE.md"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+authors = [
+    { name = "azro352", email = "35503478+azro352@users.noreply.github.com" },
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["jetbrains_plugin_server*"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+version = { attr = "jetbrains_plugin_server.__version__" }
+
+[project.optional-dependencies]
+offline = ["fastapi_offline"]
+
+[project.urls]
+Homepage = "https://github.com/azro352/jetbrains-plugin-server"
+Documentation = "https://github.com/azro352/jetbrains-plugin-server/blob/master/README.md"
+Repository = "https://github.com/azro352/jetbrains-plugin-server.git"
+"Bug Tracker" = "https://github.com/azro352/jetbrains-plugin-server/issues"
+
+[tool.isort]
+line_length = 140
