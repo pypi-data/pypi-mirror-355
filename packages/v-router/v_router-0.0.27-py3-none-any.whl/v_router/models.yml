@@ -1,0 +1,214 @@
+# Model configuration for v-router
+# Maps model names to their available providers and provider-specific mappings
+#
+# To add a new model:
+# 1. Add an entry under 'models' with the model name as the key
+# 2. List the providers that support this model under 'providers'
+# 3. Add any provider-specific name mappings under 'mappings'
+#
+# Example:
+#   new-model-name:
+#     providers:
+#       - provider1
+#       - provider2
+#     mappings:
+#       provider1: provider1-specific-name
+#       provider2: provider2-specific-name
+#
+# Note: If no mapping is specified for a provider, the original model name is used
+
+models:
+  # Anthropic models
+  claude-3-5-haiku:
+    providers:
+      - anthropic
+      - vertexai
+    mappings:
+      anthropic: claude-3-5-haiku-20241022
+      vertexai: claude-3-5-haiku@20241022
+  
+  claude-3-5-haiku-20241022:
+    providers:
+      - anthropic
+      - vertexai
+    mappings:
+      anthropic: claude-3-5-haiku-20241022
+      vertexai: claude-3-5-haiku@20241022
+  
+  claude-sonnet-4:
+    providers:
+      - anthropic
+      - vertexai
+    mappings:
+      anthropic: claude-sonnet-4-20250514
+      vertexai: claude-sonnet-4@20250514
+  
+  claude-sonnet-4-20250514:
+    providers:
+      - anthropic
+      - vertexai
+    mappings:
+      anthropic: claude-sonnet-4-20250514
+      vertexai: claude-sonnet-4@20250514
+
+  claude-opus-4:
+    providers:
+      - anthropic
+      - vertexai
+    mappings:
+      anthropic: claude-opus-4-20250514
+      vertexai: claude-opus-4@20250514
+  
+  claude-opus-4-20250514:
+    providers:
+      - anthropic
+      - vertexai
+    mappings:
+      vertexai: claude-opus-4@20250514
+  
+  # OpenAI models
+
+  gpt-4o:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: gpt-4o
+      azure: gpt-4o
+
+  gpt-4o-mini:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: gpt-4o-mini
+      azure: gpt-4o-mini
+  
+  gpt-4.1:
+    providers:
+      - openai
+      - azure
+
+  gpt-4.1-nano:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: gpt-4.1-nano
+
+  gpt-4.1-nano-2025-04-14:
+    providers:
+      - openai
+      - azure 
+    mappings:
+      openai: gpt-4.1-nano-2025-04-14
+
+  gpt-4.1-mini:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: gpt-4.1-mini
+
+  gpt-4.1-mini-2025-04-14:
+    providers:
+      - openai
+      - azures
+    mappings:
+      openai: gpt-4.1-mini-2025-04-14
+
+  o3:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: o3
+
+  o3-2025-04-16:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: o3-2025-04-16
+      azure: o3-2025-04-16
+
+  o3-mini:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: o3-mini
+      azure: o3-mini
+
+  o4-mini-2025-04-16:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: o4-mini-2025-04-16
+      azure: o4-mini-2025-04-16
+
+  o3-pro:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: o3-pro
+      azure: o3-pro
+    
+  o3-pro-2025-06-10:
+    providers:
+      - openai
+      - azure
+    mappings:
+      openai: o3-pro-2025-06-10
+      azure: o3-pro-2025-06-10
+  
+  # Google models
+  gemini-2.0-flash:
+    providers:
+    - google
+    - vertexai
+    mappings:
+      google: gemini-2.0-flash
+      vertexai: gemini-2.0-flash
+  
+  gemini-2.0-flash-light:
+    providers:
+      - google
+      - vertexai
+    mappings:
+      google: gemini-2.0-flash-lite
+      vertexai: gemini-2.0-flash-lite
+
+  gemini-2.5-pro-preview:
+    providers:
+      - google
+      - vertexai
+    mappings:
+      google: gemini-2.5-pro-preview-06-05
+      vertexai: gemini-2.5-pro-preview-06-05
+
+  gemini-2.5-pro-preview-06-05:
+    providers:
+      - google
+      - vertexai
+    mappings:
+      google: gemini-2.5-pro-preview-06-05
+      vertexai: gemini-2.5-pro-preview-06-05
+
+  gemini-2.5-flash-preview:
+    providers:
+      - google
+      - vertexai
+    mappings:
+      google: gemini-2.5-flash-preview-05-20
+      vertexai: gemini-2.5-flash-preview-05-20
+
+  gemini-2.5-flash-preview-05-20:
+    providers:
+      - google
+      - vertexai
+    mappings:
+      google: gemini-2.5-flash-preview-05-20
+      vertexai: gemini-2.5-flash-preview-05-20
