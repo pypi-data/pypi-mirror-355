@@ -1,0 +1,12 @@
+include requirements.txt
+include LICENSE
+recursive-include mlx *.mako
+recursive-include doc *.py
+recursive-include doc *.robot
+recursive-include doc *.rst
+recursive-include doc Makefile
+exclude doc/source/*_qtp.rst
+exclude mlx/robot2rst/__version__.py
+
+# added by check_manifest.py
+include tox.ini
