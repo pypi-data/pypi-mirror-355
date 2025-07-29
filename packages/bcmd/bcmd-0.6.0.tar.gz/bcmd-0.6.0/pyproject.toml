@@ -1,0 +1,43 @@
+# https://peps.python.org/pep-0621/#example
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata
+
+[project]
+name = 'bcmd'
+version = '0.6.0'
+description = 'Commands for Beni'
+requires-python = '>=3.10'
+keywords = ['benimang', 'beni', 'bcmd']
+authors = [{ name = 'Beni Mang', email = 'benimang@126.com' }]
+maintainers = [{ name = 'Beni Mang', email = 'benimang@126.com' }]
+
+dependencies = [
+  'benimang==0.7.14',
+  'build',
+  'cryptography',
+  'pathspec',
+  'pillow',
+  'prettytable',
+  'psutil',
+  'pymupdf',
+  'qiniu',
+  'twine',
+  'typer',
+]
+
+[project.optional-dependencies]
+full = [
+  'img2pdf',
+  'pytest',
+  'pytest-asyncio',
+  'pytest-order',
+  'setuptools',
+]
+
+[project.scripts]
+beni = 'bcmd.main:run'
+
+# 使用默认镜像地址
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple"
+default = true 
+
