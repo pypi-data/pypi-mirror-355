@@ -1,0 +1,65 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=75.3.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "txt_to_pickle"
+version = "0.0.0"
+description = "Txt file to Pickle file"
+authors = [
+  { name="Ka Wa Yip", email="yipkawa@gmail.com" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13"
+]
+keywords = ["txt", "pickle", "conversion"]
+
+[project.urls]
+Homepage = "https://github.com/kwyip/txt_to_pickle"
+Issues = "https://github.com/kwyip/txt_to_pickle/issues"
+
+[project.optional-dependencies]
+build = ["build", "twine"]
+dev   = ["black", "bumpver", "isort", "mypy", "pytest"]
+
+[project.scripts]
+txt_to_pickle = "txt_to_pickle.__main__:main"
+
+[tool.bumpver]
+current_version = "0.0.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message  = "bump version {old_version} -> {new_version}"
+commit          = true
+tag             = true
+push            = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'current_version = "{version}"',
+    'version = "{version}"',
+]
+"src/txt_to_pickle/__init__.py" = ["{version}"]
+"src/txt_to_pickle/__main__.py" = ["- txt_to_pickle v{version}"]
+
+[tool.isort]
+profile                   = "black"
+import_heading_stdlib     = "Standard library imports"
+import_heading_thirdparty = "Third party imports"
+import_heading_firstparty = "Reader imports"
+
+
+
