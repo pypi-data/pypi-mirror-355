@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklexcube=self.webpackChunklexcube||[]).push([[509],{8509:(e,u,b)=>{b.r(u),b.d(u,{Cube3DModel:()=>C.Cube3DModel,Cube3DView:()=>C.Cube3DView,MODULE_NAME:()=>l.p,MODULE_VERSION:()=>l.e});var l=b(1797),C=b(8964)}}]);
