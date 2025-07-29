@@ -1,0 +1,39 @@
+[package]
+name = "core-crypto"
+version = "0.1.0"
+edition = "2021"
+description = "Core cryptographic types and helpers"
+
+[features]
+default = ["test_account"]
+test_account = []
+
+[dependencies]
+core-common = { path = "../common", default-features = false }
+libsecp256k1 = { version = "0.7.1", default-features = false }
+# Versions of digest and typenum must be aligned with libsecp256k1
+tracing = { version = "0.1" }
+digest = { version = "0.9", default-features = false }
+lazy_static = { version = "1.4.0", default-features = false, features = [
+    "spin_no_std",
+] }
+rustc-hex = { version = "2.1.0", default-features = false }
+tiny-keccak = { version = "1.4" }
+typenum = "1.13.0"
+
+[dev-dependencies]
+rand = "0.8.5"
+
+[target.'cfg(not(target_vendor = "teaclave"))'.dependencies]
+libsecp256k1 = { version = "0.7.1", default-features = false, features = [
+    "hmac",
+] }
+# Cryptography
+aes-gcm = { version = "0.10.3", default-features = false, features = [
+    "alloc",
+    "aes",
+] }
+
+[target.'cfg(target_vendor = "teaclave")'.dependencies]
+# SGX
+sgx_crypto = { git = "https://gitlab.com/dexlabs/incubator-teaclave-sgx-sdk", branch = "update-v2.0.0-sgx-emm" }

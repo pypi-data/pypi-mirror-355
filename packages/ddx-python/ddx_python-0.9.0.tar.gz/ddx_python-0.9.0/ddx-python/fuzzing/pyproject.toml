@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ddx-python-fuzzing"
+version = "0.1.0"
+description = "Whitebox fuzzing tools for DerivaDEX components (market‐maker, market‐taker, auditor, chaos bots…)."
+readme = "README.md"
+requires-python = ">=3.10,<4.0"
+authors = [
+  { name="DEX Labs" }
+]
+keywords = ["ddx", "fuzzing", "testing", "blockchain"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Testing"
+]
+
+dependencies = [
+  "ddx-python>=0.0.0,<1.0.0",  # Or, make local `file:///` dependency.
+  # FIXME: Copied all ddx-python dependencies; prune those not needed in this scope.
+    "pydantic>=2.0",
+    "websockets>=12.0,<13",
+    "0x-contract-wrappers>=2.0.0,<3",
+    "aiohttp>=3.10.3,<4",
+    "attrs>=24.2.0,<25",
+    "cattrs>=23.2.3,<24",
+    "coloredlogs>=15.0.1,<16",
+    "configargparse>=1.7,<2",
+    "pandas>=2.2.2,<3",
+    "path>=17.0.0,<18",
+    "pathlib>=1.0.1,<2",
+    "plotly>=5.23.0,<6",
+    "psutil>=6.0.0,<7",
+    "psycopg2>=2.9.9,<3",
+    "requests>=2.32.3,<3",
+    "simplejson>=3.19.2,<4",
+    "sphinx>=8.0.2,<9",
+    "verboselogs>=1.7,<2",
+    "btrees>=6.0,<7",
+    "ccxt>=4.3.79,<5",
+    "coincurve>=20.0.0,<21",
+    "dash-bootstrap-components>=1.6.0,<2",
+    "python-dotenv>=1.0.1,<2",
+    "sexpdata>=1.0.2,<2",
+    "web3>=6.20.1,<7",
+    "werkzeug>=3.0.3,<4",
+    "gevent>=24.2.1,<25",
+    "sortedcontainers>=2.4.0,<3",
+    "aioresponses>=0.7.6,<0.8",
+    "colorama>=0.4.6,<0.5",
+]
+
+[tool.setuptools]
+packages = ["whitebox_fuzzing"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"whitebox_fuzzing" = ["*.conf.json.template", "*.yaml", "*.json"]

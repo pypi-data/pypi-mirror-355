@@ -1,0 +1,101 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "ddx-python"
+version = "0.9.0"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+# TODO: Review all dependencies with a <N limit to ensure it's necessary. Simplify the dependency constraints where possible to facilitate upgrades.
+dependencies = [
+    # NOTE: Aligned maturin version with the dockerfile.
+    "maturin>=1.5.0,<1.6.0",
+    # === Migrated from realtime_api ===
+    "pydantic>=2.0",
+    "websockets>=12.0,<13",
+    # === Migrated from ddx-py root ===
+    "0x-contract-wrappers>=2.0.0,<3",
+    "aiohttp>=3.10.3,<4",
+    "attrs>=24.2.0,<25",
+    "cattrs>=23.2.3,<24",
+    "coloredlogs>=15.0.1,<16",
+    "configargparse>=1.7,<2",
+    "pandas>=2.2.2,<3",
+    "path>=17.0.0,<18",
+    "pathlib>=1.0.1,<2",
+    "plotly>=5.23.0,<6",
+    "psutil>=6.0.0,<7",
+    "psycopg2>=2.9.9,<3",
+    "requests>=2.32.3,<3",
+    "simplejson>=3.19.2,<4",
+    "sphinx>=8.0.2,<9",
+    "verboselogs>=1.7,<2",
+    "btrees>=6.0,<7",
+    "ccxt>=4.3.79,<5",
+    "coincurve>=20.0.0,<21",
+    "dash-bootstrap-components>=1.6.0,<2",
+    "python-dotenv>=1.0.1,<2",
+    "sexpdata>=1.0.2,<2",
+    "web3>=6.20.1,<7",
+    "werkzeug>=3.0.3,<4",
+    "gevent>=24.2.1,<25",
+    "sortedcontainers>=2.4.0,<3",
+    "aioresponses>=0.7.6,<0.8",
+    "colorama>=0.4.6,<0.5",
+]
+
+# Extra dependencies encompass all non-essential components for the `ddx-python` library.
+# Example installation: `pip install -e .[test]`
+[project.optional-dependencies]
+# TODO: Relocate all development and other extra dependencies here, properly categorized.
+test = [
+    "pytest>=8.3.5,<9",
+    "pytest-asyncio>=0.26.0,<0.27",
+    "pytest-pretty>=1.2.0,<2",
+]
+dev = [
+    "python-lsp-server[all]>=1.11.0,<2",
+    "pylint>=3.2.6,<4",
+    "black>=24.4.2,<25",
+    "pipdeptree",
+]
+notebook = [
+    "jupyter-book>=0.6.5,<0.7",
+    "jupyter-dash>=0.4.2,<0.5",
+    "jupyterlab-lsp>=5.1.0,<6",
+    "jupyter>=1.0.0,<2",
+    "jupyterlab",
+    "matplotlib>=3.9.1,<4",
+]
+
+
+
+[tool.pytest.ini_options]
+log_level = "CRITICAL"
+addopts = "--show-capture=stdout --color=yes --import-mode=importlib"
+log_cli = 1
+log_cli_level = "ERROR"
+log_cli_format = "[%(asctime)s] %(levelname)s @ file %(filename)s line %(lineno)d: %(message)s "
+log_date_format = "%H:%M:%S.%f"
+log_file = "logs/pytest.log"
+python_files = "*_tests.py"
+
+[tool.maturin]
+python-source = "python"
+module-name = "ddx._rust"
+strip = true
+# Gets copied here in the Dockerfile:
+# RUN cp -r "${APP_CONFIG}" ./ddx-python/python/ddx/app_config
+include = ["ddx/app_config/**"]
+exclude = [
+    { path = "**/tests/**", format = "wheel" },
+    { path = "notebooks/**", format = "wheel" },
+    { path = "fuzzing/**", format = "wheel" },
+    { path = "mocks/**", format = "wheel" },
+]
+manifest-path = "ddx-python/Cargo.toml"

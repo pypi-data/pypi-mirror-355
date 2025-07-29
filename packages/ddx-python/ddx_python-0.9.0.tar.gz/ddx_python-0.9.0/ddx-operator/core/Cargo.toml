@@ -1,0 +1,109 @@
+[package]
+name = "core-ddx"
+version = "0.8.0"
+edition = "2021"
+description = "Core DDX Library for DerivaDEX"
+
+[features]
+default = ["database", "arbitrary", "eth-base", "fixed_expiry_future"]
+alpha1 = []
+no_rate_limit = []
+test_harness = ["test_account", "core-common/test_harness", "arbitrary"]
+test_account = ["core-crypto/test_account"]
+arbitrary = ["quickcheck", "core-common/arbitrary"]
+
+# Components
+database = ["postgres-types", "bytes", "core-common/database"]
+python = [
+    "pyo3",
+    "rust_decimal/maths",
+    "pythonize",
+    "alloy",
+    "core-common/python",
+]
+eth-base = ["alloy", "alloy-sol-types"]
+
+# Exchange sub-features
+multi_strategies = []
+insurance_fund_client_req = []
+index_fund = []
+fixed_expiry_future = ["pyo3?/chrono"]
+
+[dependencies]
+core-macros = { path = "../../core/macros" }
+core-common = { path = "../../core/common", default-features = false }
+core-crypto = { path = "../../core/crypto", default-features = false }
+core-specs = { path = "../../core/specs" }
+
+# Types, encoding and serialization
+serde-big-array = "0.3.2"
+
+hash-db = { version = "0.15.2", default-features = false }
+plain_hasher = { version = "0.2.3", default-features = false }
+rlp = { version = "0.5.1", default-features = false }
+serde = { version = "1.0", features = ["derive", "rc"] }
+serde_json = { version = "1.0" }
+serde_repr = { version = "0.1", default-features = false }
+rustc-hex = { version = "2.1.0", default-features = false }
+rust_decimal = { version = "1.34", features = ["serde"] }
+triehash = { version = "0.8", default-features = false }
+downcast-rs = "1.2.1"
+strum = "0.27.1"
+strum_macros = "0.27.1"
+
+# Optional DB
+postgres-types = { version = "0.2", features = [
+    "derive",
+    "with-serde_json-1",
+], optional = true }
+bytes = { version = "1.0", default-features = false, optional = true }
+
+# Exception management
+anyhow = { version = "1" }
+thiserror = { version = "1" }
+
+# Logging
+tracing = { version = "0.1", features = ["attributes"] }
+
+# Utils
+sparse-merkle-tree = { git = "https://github.com/jjyr/sparse-merkle-tree.git", rev = "b7932906aa2da6059c8ed19c93821fa78d271f73", default-features = false }
+lazy_static = { version = "1.4.0", default-features = false, features = [
+    "spin_no_std",
+] }
+bitvec = { version = "0.20.4", default-features = false, features = ["alloc"] }
+cfg-if = "1.0.0"
+derive_builder = "0.20.0"
+heapless = { version = "0.8.0", features = ["serde"] }
+clap = "4.5.4"
+
+# Development and testing
+quickcheck = { version = "1.0.3", optional = true }
+
+# Specs related
+chrono = { version = "0.4", features = ["serde"] }
+
+# Python types (should be in the python feature)
+pyo3 = { version = "0.20.3", optional = true, features = [
+    "multiple-pymethods",
+] }
+pythonize = { version = "0.20.0", optional = true }
+
+# Migrating from Parity crates to Alloy incrementally.
+alloy-primitives = { version = "0.8.23" }
+alloy-dyn-abi = { version = "0.8.23" }
+alloy = { version = "0.11.1", default-features = false, features = [
+    "consensus",
+    "rlp",
+    "contract",
+    "rpc-types",
+], optional = true }
+alloy-sol-types = { version = "0.8.23", optional = true }
+
+[dev-dependencies]
+core-ddx = { path = ".", features = ["test_harness"] }
+rand = "0.8.5"
+cbor4ii = { version = "1.0.0", features = ["serde1", "use_std"] }
+
+[target.'cfg(not(target_vendor = "teaclave"))'.dependencies]
+# Wasm types (should be in the wasm feature)
+wasm-bindgen = { version = "0.2" }

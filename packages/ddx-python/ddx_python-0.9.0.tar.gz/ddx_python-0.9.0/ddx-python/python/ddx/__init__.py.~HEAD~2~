@@ -1,0 +1,57 @@
+# NOTE: Avoid re-exporting packages to prevent conflicts (refer to Maturin documentation for context).
+# Import Rust-generated code as `from ddx._rust.decimal import Decimal`, not `from ddx import Decimal`.
+# For direct access to items like `Decimal` from `ddx`, explicitly re-export and consider adding type hints.
+#
+# ## Maturin docs:
+#
+# ### About Namespecing the Rust module
+#
+# > If the Python module created by Rust has the same name as the Python package in a mixed Rust/Python project,
+# IDEs might get confused. You might also want to discourage end users from using the Rust functions directly by
+# giving it a different name, say '_my_project'. This can be done by adding module-name = <package name>.<rust pymodule name>
+# to the [tool.maturin] in your pyproject.toml.
+#
+# See: https://www.maturin.rs/project_layout.html#mixed-rustpython-project
+#
+# ### About Yype Hinting
+#
+# > In a mixed Rust/Python project, additional files in the Python source dir (but not in .gitignore) will be
+# automatically included in the build outputs (source distribution and/or wheel). Type information can be therefore
+# added to the root Python package directory as you might do in a pure Python package. This requires you to add the
+# py.typed marker file yourself.
+#
+# See: https://www.maturin.rs/project_layout.html#adding-python-type-information
+
+# ===== Maturin Module Configuration =====
+import importlib
+import os
+
+# TODO: Refine and document the reasons for this.
+ddx = importlib.import_module("ddx")
+# Submodule path outside the source to support editable installs whithout overwriting the `ddx._rust` wheel.
+if os.environ.get("APP_SHARE"):
+    ddx.__path__.insert(0, os.environ["APP_SHARE"] + "/ddx/wheels/ddx")
+
+from importlib.resources import files
+from .config import *
+
+__doc__ = ddx._rust.__doc__
+if hasattr(ddx._rust, "__all__"):
+    __all__ = ddx._rust.__all__ + ["load_mainnet", "load_testnet"]
+
+# ===== Environment Configuration =====
+# By default, set the APP_CONFIG to the package installation path, an addresses.json file ships with the pip package.
+if os.environ.get("APP_CONFIG") is None:
+    # FIXME: might need to change this environment variable to `DDX_APP_CONFIG` for better convention
+    os.environ["APP_CONFIG"] = str(files("ddx") / "app_config")
+    load_mainnet()
+# In dev environments, APP_CONFIG is set by convention, and `addresses.json` may change dynamically.
+else:
+    assert os.environ.get(
+        "CONTRACT_DEPLOYMENT"
+    ), "APP_CONFIG is set but CONTRACT_DEPLOYMENT is not. "
+
+# ===== Migrated from Python Tooling =====
+from eth_abi.utils.padding import zpad32_right
+
+DDX_APPLICATION_ID = zpad32_right("exchange-operator".encode("utf8"))
