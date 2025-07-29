@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "runtime-provisioner"
+version = "1.0.1"
+description = "运行时依赖自动下载器 - 自动下载和管理运行时依赖"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Runtime Provisioner Team", email = "contact@example.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9", 
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Installation/Setup",
+    "Topic :: Utilities",
+]
+keywords = ["download", "dependencies", "runtime", "provisioner", "automation"]
+requires-python = ">=3.7"
+dependencies = [
+    "wget>=3.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/runtime-provisioner"
+"Bug Reports" = "https://github.com/your-username/runtime-provisioner/issues"
+Source = "https://github.com/your-username/runtime-provisioner"
+
+[tool.setuptools]
+packages = ["runtime_provisioner"]
+
+[tool.setuptools.package-data]
+runtime_provisioner = ["*.txt", "*.md"] 
