@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: llm-fragments-youtube
+Version: 0.1.0
+Summary: LLM plugin for loading YouTube subtitles as fragments
+Author-email: "Agustin B." <redraw@sdf.org>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/llm-fragments-youtube
+Project-URL: Issues, https://github.com/yourusername/llm-fragments-youtube/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: llm
+Requires-Dist: yt-dlp
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Dynamic: license-file
+
+# LLM YouTube Fragments Plugin
+
+A plugin for [Simon Willison's LLM tool](https://github.com/simonw/llm) that adds a `youtube` fragment loader to download and use YouTube video subtitles in your prompts.
+
+## Installation
+
+1. Make sure you have the LLM tool installed:
+   ```bash
+   pip install llm
+   ```
+
+2. Install this plugin:
+   ```bash
+   llm install llm-fragments-youtube
+   ```
+
+   This will automatically install all dependencies, including yt-dlp.
+
+## Usage
+
+You can use the `youtube` fragment in your LLM prompts to include subtitles from YouTube videos:
+
+```bash
+# Using a YouTube video ID
+llm -f youtube:dQw4w9WgXcQ "summarize this video"
+
+# Continue chatting
+llm -c "at which minute do they talk about ..."
+
+# Language can also be specified
+llm -f youtube:es:dQw4w9WgXcQ "resume el video"
+
+# Using a full YouTube URL
+llm -f youtube:https://www.youtube.com/watch?v=dQw4w9WgXcQ "summarize video"
+```
+
+## Development
+
+### Running Tests
+
+To run the tests, first install the package with test dependencies:
+
+```bash
+pip install -e ".[test]"
+```
+
+Then run the tests using pytest:
+
+```bash
+pytest
+```
+
+## License
+
+Beerware
