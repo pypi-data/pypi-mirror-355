@@ -1,0 +1,112 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+  "hatch-vcs==0.5",
+  "hatchling==1.27",
+]
+
+[project]
+name = "tap-neon"
+description = "Singer tap for Neon Serverless Postgres, built with the Meltano SDK for Singer Taps."
+readme = "README.md"
+keywords = [
+  "ELT",
+  "Neon Serverless Postgres",
+  "singer.io",
+]
+license.file = "LICENSE"
+maintainers = [
+  { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" },
+]
+authors = [
+  { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" },
+]
+requires-python = ">=3.9"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+]
+dynamic = [
+  "version",
+]
+dependencies = [
+  "requests>=2.26",
+  "singer-sdk~=0.47.0",
+]
+urls.Documentation = "https://github.com/edgarrmondragon/tap-neon#readme"
+urls.Homepage = "https://github.com/edgarrmondragon/tap-neon"
+urls.Source = "https://github.com/edgarrmondragon/tap-neon"
+scripts."tap-neon" = "tap_neon.tap:TapNeon.cli"
+
+[dependency-groups]
+dev = [
+  { include-group = "testing" },
+  { include-group = "typing" },
+]
+testing = [
+  "deptry>=0.12",
+  "pytest>=7.4",
+  "singer-sdk[testing]",
+]
+typing = [
+  "mypy",
+  "types-requests",
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.ruff]
+line-length = 88
+
+lint.select = [
+  "ALL",
+]
+lint.ignore = [
+  "COM812", # missing-trailing-comma
+  "DJ",     # flake8-django
+  "ISC001", # single-line-implicit-string-concatenation
+  "PD",     # pandas-vet
+]
+
+lint.per-file-ignores."tests/*" = [
+  "ANN",
+]
+lint.unfixable = [
+  "ERA001", # commented-out-code
+]
+lint.flake8-annotations.allow-star-arg-any = true
+lint.isort.known-first-party = [
+  "tap_neon",
+]
+lint.isort.required-imports = [
+  "from __future__ import annotations",
+]
+lint.pydocstyle.convention = "google"
+
+[tool.deptry.package_module_name_map]
+mypy = "mypy"
+types-requests = "requests"
+
+[tool.pyproject-fmt]
+max_supported_python = "3.14"
+
+[tool.pytest.ini_options]
+addopts = "-vvv"
+
+[tool.mypy]
+warn_redundant_casts = true
+warn_return_any = true
+warn_no_return = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.uv]
+prerelease = "allow"
+required-version = ">=0.5.19"
