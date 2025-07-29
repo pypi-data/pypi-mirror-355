@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bizydraft"
+dynamic = ["version"]
+
+[tool.setuptools]
+packages = ["bizydraft"]
+package-dir = { bizydraft = "src/bizydraft" }
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { file = ["version.txt"] }
+
+[tool.setuptools.package-data]
+# 修改为相对 bizydraft 包的路径（不需要包含 src/）
+"bizydraft" = ["static/js/*.js", "static/js/*"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["__pycache__/*", "*/__pycache__/*"]
