@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Analysis Report</title>
+    <link rel="shortcut icon" href="static/analyzing.png" type="image/x-icon">    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {{
+            /* Primary colors */
+            --primary-color: #2c5282;
+            --secondary-color: #4299e1;
+            --accent-color: #63b3ed;
+            
+            /* Background colors */
+            --background-color: #f7fafc;
+            --card-background: #ffffff;
+            --header-gradient-start: #2c5282;
+            --header-gradient-end: #4299e1;
+            
+            /* Text colors */
+            --text-color: #2d3748;
+            --text-muted: #4a5568;
+            --text-light: #ffffff;
+            
+            /* Border and shadow */
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }}
+        
+        * {{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }}
+        
+        body {{
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 1rem;
+        }}
+        
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }}
+        
+        .header {{
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
+            color: var(--text-light);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px var(--shadow-color);
+        }}
+        
+        .header h1 {{
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }}
+        
+        .section {{
+            background: var(--card-background);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px 0 var(--shadow-color);
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }}
+        
+        .section-title {{
+            color: var(--primary-color);
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
+        }}
+        
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: clamp(0.875rem, 3vw, 1rem);
+        }}
+        
+        th, td {{
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }}
+        
+        th {{
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }}
+        
+        tr:hover {{
+            background-color: rgba(124, 58, 237, 0.05);
+        }}
+        
+        .test-case {{
+            background: var(--card-background);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.2s ease;
+        }}
+        
+        .test-case:hover {{
+            transform: translateX(4px);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }}
+        
+        .test-case h3 {{
+            margin: 0;
+            color: var(--primary-color);
+            font-size: clamp(1rem, 3.5vw, 1.25rem);
+            word-break: break-word;
+        }}
+        
+        .decorator {{
+            display: inline-block;
+            color: #ffffff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            margin: 0.25rem;
+            font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+            word-break: break-word;
+            font-weight: 500;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }}
+        
+        .description {{
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 0.5rem;
+            font-size: clamp(0.875rem, 3vw, 1rem);
+            word-break: break-word;
+        }}
+        
+        .stats-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }}
+        
+        .stat-card {{
+            background: var(--card-background);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            box-shadow: 0 1px 3px 0 var(--shadow-color);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease;
+        }}
+        
+        .stat-card:hover {{
+            transform: translateY(-2px);
+        }}
+        
+        .stat-value {{
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }}
+        
+        .stat-label {{
+            color: var(--text-muted);
+            font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+            margin-top: 0.25rem;
+        }}
+        
+        .file-section {{
+            margin-top: 1.5rem;
+        }}
+        
+        .file-header {{
+            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
+            color: var(--text-light);
+            padding: 1rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            word-break: break-word;
+        }}
+        
+        .file-header h3 {{
+            font-size: clamp(1rem, 3.5vw, 1.25rem);
+            margin: 0;
+        }}
+        
+        .class-section {{
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--card-background);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }}
+        
+        .class-section h3 {{
+            font-size: clamp(1rem, 3.5vw, 1.25rem);
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }}
+        
+        .timestamp {{
+            text-align: center;
+            color: var(--text-muted);
+            font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+            margin-top: 1.5rem;
+        }}
+        
+        /* Mobile-specific adjustments */
+        @media (max-width: 640px) {{
+            body {{
+                padding: 0.5rem;
+            }}
+            
+            .container {{
+                padding: 0 0.5rem;
+            }}
+            
+            .header {{
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }}
+            
+            .section {{
+                padding: 0.75rem;
+                margin-bottom: 1rem;
+            }}
+            
+            .stats-grid {{
+                grid-template-columns: 1fr;
+            }}
+            
+            .test-case {{
+                padding: 0.75rem;
+            }}
+            
+            .decorator {{
+                display: block;
+                margin: 0.25rem 0;
+            }}
+            
+            table {{
+                font-size: 0.875rem;
+            }}
+            
+            th, td {{
+                padding: 0.5rem;
+            }}
+        }}
+        
+        /* Print styles */
+        @media print {{
+            body {{
+                background: white;
+                padding: 0;
+            }}
+            
+            .container {{
+                max-width: none;
+                padding: 0;
+            }}
+            
+            .section {{
+                box-shadow: none;
+                border: 1px solid var(--border-color);
+                break-inside: avoid;
+            }}
+            
+            .header {{
+                background: none;
+                color: var(--text-color);
+                box-shadow: none;
+            }}
+            
+            .test-case {{
+                break-inside: avoid;
+            }}
+
+            .scroll-to-top {{
+                display: none;
+            }}
+        }}
+
+        /* Scroll to top button */
+        .scroll-to-top {{
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-color);
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border: none;
+            z-index: 1000;
+        }}
+
+        .scroll-to-top.visible {{
+            opacity: 1;
+            visibility: visible;
+        }}
+
+        .scroll-to-top:hover {{
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }}
+
+        .scroll-to-top svg {{
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: currentColor;
+        }}
+
+        /* Chart container styles */
+        .chart-container {{
+            position: relative;
+            margin: 1rem 0;
+            height: 300px;
+            width: 100%;
+        }}
+
+        .charts-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }}
+
+        .chart-card {{
+            background: var(--card-background);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px 0 var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }}
+
+        .chart-title {{
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-align: center;
+        }}
+
+        @media (max-width: 640px) {{
+            .charts-grid {{
+                grid-template-columns: 1fr;
+            }}
+            
+            .chart-container {{
+                height: 250px;
+            }}
+        }}
+    </style>
+    <script>
+        // Color palette for decorators with gradient variations
+        const colorPalette = [
+            {{ base: '#1e40af', gradient: 'linear-gradient(135deg, #1e40af, #3b82f6)' }}, // Deep Blue
+            {{ base: '#166534', gradient: 'linear-gradient(135deg, #166534, #22c55e)' }}, // Forest Green
+            {{ base: '#b91c1c', gradient: 'linear-gradient(135deg, #b91c1c, #ef4444)' }}, // Crimson Red
+            {{ base: '#7e22ce', gradient: 'linear-gradient(135deg, #7e22ce, #a855f7)' }}, // Royal Purple
+            {{ base: '#0f766e', gradient: 'linear-gradient(135deg, #0f766e, #14b8a6)' }}, // Teal
+            {{ base: '#be185d', gradient: 'linear-gradient(135deg, #be185d, #ec4899)' }}, // Hot Pink
+            {{ base: '#854d0e', gradient: 'linear-gradient(135deg, #854d0e, #f59e0b)' }}, // Amber
+            {{ base: '#1e3a8a', gradient: 'linear-gradient(135deg, #1e3a8a, #4f46e5)' }}, // Indigo
+            {{ base: '#365314', gradient: 'linear-gradient(135deg, #365314, #84cc16)' }}, // Lime
+            {{ base: '#831843', gradient: 'linear-gradient(135deg, #831843, #db2777)' }}, // Fuchsia
+            {{ base: '#2563eb', gradient: 'linear-gradient(135deg, #2563eb, #60a5fa)' }}, // Sky Blue
+            {{ base: '#10b981', gradient: 'linear-gradient(135deg, #10b981, #34d399)' }}, // Emerald
+            {{ base: '#f59e0b', gradient: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}, // Gold
+            {{ base: '#8b5cf6', gradient: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}, // Violet
+            {{ base: '#06b6d4', gradient: 'linear-gradient(135deg, #06b6d4, #22d3ee)' }}, // Cyan
+            {{ base: '#f97316', gradient: 'linear-gradient(135deg, #f97316, #fb923c)' }}, // Orange
+            {{ base: '#4ade80', gradient: 'linear-gradient(135deg, #4ade80, #86efac)' }}, // Light Green
+            {{ base: '#38bdf8', gradient: 'linear-gradient(135deg, #38bdf8, #7dd3fc)' }}, // Light Blue
+            {{ base: '#a78bfa', gradient: 'linear-gradient(135deg, #a78bfa, #c4b5fd)' }}, // Lavender
+            {{ base: '#fb923c', gradient: 'linear-gradient(135deg, #fb923c, #fdba74)' }}  // Peach
+        ];
+
+        function shuffleArray(array) {{
+            for (let i = array.length - 1; i > 0; i--) {{
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }}
+            return array;
+        }}
+
+        function assignDecoratorColors() {{
+            // Get all decorators
+            const decorators = document.querySelectorAll('.decorator');
+            
+            // Create a map to track decorator types and their colors
+            const decoratorColors = new Map();
+            
+            // Get unique base decorator types (ignoring arguments)
+            const uniqueDecoratorTypes = new Set();
+            decorators.forEach(decorator => {{
+                // Extract base decorator name (e.g., 'pytest.mark.sanity' from 'pytest.mark.sanity')
+                const decoratorText = decorator.textContent.trim();
+                const baseDecorator = decoratorText.split('(')[0].trim();
+                uniqueDecoratorTypes.add(baseDecorator);
+            }});
+            
+            // Shuffle the color palette
+            const shuffledColors = shuffleArray([...colorPalette]);
+            
+            // Assign colors to base decorator types
+            Array.from(uniqueDecoratorTypes).forEach((decoratorType, index) => {{
+                const colorIndex = index % shuffledColors.length;
+                decoratorColors.set(decoratorType, shuffledColors[colorIndex]);
+            }});
+            
+            // Apply colors to decorators
+            decorators.forEach(decorator => {{
+                const decoratorText = decorator.textContent.trim();
+                const baseDecorator = decoratorText.split('(')[0].trim();
+                const colorInfo = decoratorColors.get(baseDecorator);
+                decorator.style.background = colorInfo.gradient;
+                decorator.style.border = '1px solid ' + colorInfo.base;
+                decorator.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+            }});
+        }}
+
+        // Scroll to top functionality
+        function initScrollToTop() {{
+            const scrollButton = document.querySelector('.scroll-to-top');
+            
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', () => {{
+                if (window.pageYOffset > 300) {{
+                    scrollButton.classList.add('visible');
+                }} else {{
+                    scrollButton.classList.remove('visible');
+                }}
+            }});
+            
+            // Smooth scroll to top when clicked
+            scrollButton.addEventListener('click', () => {{
+                window.scrollTo({{
+                    top: 0,
+                    behavior: 'smooth'
+                }});
+            }});
+        }}
+
+        function createCharts() {{
+            // Test Distribution Chart
+            const testDistributionCtx = document.getElementById('testDistributionChart').getContext('2d');
+            new Chart(testDistributionCtx, {{
+                type: 'pie',
+                data: {{
+                    labels: ['Decorated Tests', 'Undecorated Tests'],
+                    datasets: [{{
+                        data: [{total_decorated}, {total_tests} - {total_decorated}],
+                        backgroundColor: [
+                            'rgba(66, 153, 225, 0.8)',  // Blue
+                            'rgba(226, 232, 240, 0.8)'  // Light Gray
+                        ],
+                        borderColor: [
+                            'rgba(66, 153, 225, 1)',
+                            'rgba(226, 232, 240, 1)'
+                        ],
+                        borderWidth: 1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        legend: {{
+                            position: 'bottom'
+                        }},
+                        title: {{
+                            display: true,
+                            text: 'Test Distribution'
+                        }}
+                    }}
+                }}
+            }});
+
+            // Class Distribution Chart
+            const classDistributionCtx = document.getElementById('classDistributionChart').getContext('2d');
+            const classData = JSON.parse(document.getElementById('classData').textContent);
+            new Chart(classDistributionCtx, {{
+                type: 'doughnut',
+                data: {{
+                    labels: Object.keys(classData),
+                    datasets: [{{
+                        data: Object.values(classData),
+                        backgroundColor: colorPalette.map(color => color.base),
+                        borderColor: colorPalette.map(color => color.base),
+                        borderWidth: 1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        legend: {{
+                            position: 'right',
+                            labels: {{
+                                boxWidth: 15,
+                                padding: 15
+                            }}
+                        }},
+                        title: {{
+                            display: true,
+                            text: 'Test Cases by Class'
+                        }}
+                    }}
+                }}
+            }});
+
+            // Marker Usage Chart
+            const markerUsageCtx = document.getElementById('markerUsageChart').getContext('2d');
+            const markerData = JSON.parse(document.getElementById('markerData').textContent);
+            new Chart(markerUsageCtx, {{
+                type: 'bar',
+                data: {{
+                    labels: Object.keys(markerData),
+                    datasets: [{{
+                        label: 'Usage Count',
+                        data: Object.values(markerData),
+                        backgroundColor: colorPalette.map(color => color.base),
+                        borderColor: colorPalette.map(color => color.base),
+                        borderWidth: 1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        legend: {{
+                            display: false
+                        }},
+                        title: {{
+                            display: true,
+                            text: 'Marker Usage Distribution'
+                        }}
+                    }},
+                    scales: {{
+                        y: {{
+                            beginAtZero: true,
+                            ticks: {{
+                                precision: 0
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+        }}
+
+        // Run all initializations when the page loads
+        window.addEventListener('load', () => {{
+            assignDecoratorColors();
+            initScrollToTop();
+            createCharts();
+        }});
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Test Analysis Report</h1>
+            <p>Generated on {timestamp}</p>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Overall Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{total_files}</div>
+                    <div class="stat-label">Files Analyzed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{total_classes}</div>
+                    <div class="stat-label">Test Classes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{total_tests}</div>
+                    <div class="stat-label">Test Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{total_decorated}</div>
+                    <div class="stat-label">Decorated Tests</div>
+                </div>
+            </div>
+
+            <!-- Add Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Test Distribution</div>
+                    <div class="chart-container">
+                        <canvas id="testDistributionChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Class Distribution</div>
+                    <div class="chart-container">
+                        <canvas id="classDistributionChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Marker Usage</div>
+                    <div class="chart-container">
+                        <canvas id="markerUsageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden data for charts -->
+        <script id="classData" type="application/json">
+            {class_data}
+        </script>
+        <script id="markerData" type="application/json">
+            {marker_data}
+        </script>
+        
+        <div class="section">
+            <h2 class="section-title">Class-wise Statistics</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Class Name</th>
+                        <th>Test Cases</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {class_stats}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Marker Statistics</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Marker Name</th>
+                        <th>Usage Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {marker_stats}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Test Cases</h2>
+            {test_cases}
+        </div>
+        
+        <div class="timestamp">
+            Report generated on {timestamp}
+        </div>
+    </div>
+
+    <button class="scroll-to-top" title="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+    </button>
+</body>
+</html> 
