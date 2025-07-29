@@ -1,0 +1,39 @@
+import os
+from plotly.validators.scatter.marker import SymbolValidator
+
+
+# https://plotly.com/python/marker-style/
+def extract_marker_strings(input_list):
+    # Filter out integers and string representations of numbers
+    return [item for item in input_list if isinstance(item, str) and not item.isdigit()]
+
+
+# App settings
+DEFAULT_PORT = 8050
+
+# Output settings
+IMAGE_OUTPUT_DIR = os.getenv("PROTSPACE_IMAGE_OUTPUT_DIR", "out/images")
+
+# Plotting settings
+DEFAULT_LINE_WIDTH = 0.5
+HIGHLIGHT_LINE_WIDTH = 1.5
+HIGHLIGHT_MARKER_SIZE = 15
+
+# Color settings
+NAN_COLOR = "lightgrey"
+HIGHLIGHT_COLOR = "rgba(0,0,0,0)"
+HIGHLIGHT_BORDER_COLOR = "black"
+
+# Marker shapes
+MARKER_SHAPES = [
+    "circle",
+    "circle-open",
+    "cross",
+    "diamond",
+    "diamond-open",
+    "square",
+    "square-open",
+    "x",
+]
+
+MARKER_SHAPES_2D = sorted(extract_marker_strings(SymbolValidator().values))
