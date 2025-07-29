@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="{{ url_for('static', filename='vendor/fontawesome/css/all.min.css') }}" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #4361ee;
+        --primary-hover: #3a56d4;
+        --secondary-color: #f8f9fa;
+        --text-primary: #212529;
+        --text-secondary: #6c757d;
+        --success-color: #4CAF50;
+        --border-radius: 12px;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--text-primary);
+        background-color: #f0f2f5;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+      }
+
+      .app-container {
+        width: 90%;
+        max-width: 1000px;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      .app-header {
+        background: var(--primary-color);
+        color: white;
+        padding: 20px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .app-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .app-title i {
+        font-size: 1.8rem;
+      }
+
+      .camera-section, .input-section, .output-section {
+        padding: 20px;
+      }
+
+        .camera-preview {
+          max-width: 480px;
+          width: 100%;
+          height: auto;
+          aspect-ratio: 4/3;
+          border-radius: var(--border-radius);
+          background-color: #000;
+          object-fit: cover;
+          box-shadow: var(--shadow);
+          display: block;
+          margin: 0 auto;
+        }
+
+      .canvas-hidden {
+        display: none;
+      }
+
+      .preview-container {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .preview-item {
+        position: relative;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .preview-label {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+      }
+
+      .audio-preview {
+        width: 100%;
+          margin: 50px 20px 20px;
+          display: block;
+       min-width: 250px;
+      }
+
+
+      .image-preview {
+        display: none;
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: contain;
+      }
+
+      .control-panel {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        padding: 12px 24px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: var(--transition);
+      }
+
+      button:hover:not(:disabled) {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+      }
+
+      button:disabled {
+        background-color: var(--text-secondary);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .file-input-container {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+      }
+
+      .file-input {
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+      }
+
+      .custom-file-button {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        padding: 12px 24px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .custom-file-button:hover {
+        background-color: var(--primary-hover);
+      }
+
+      .text-input {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 16px;
+        transition: var(--transition);
+        min-height: 20px;
+        line-height: 1.5;
+        max-height: 300px;
+        resize: none;
+        margin-bottom: 15px;
+      }
+
+      .text-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+      }
+
+      .loading-message {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+        color: var(--success-color);
+        margin: 15px 0;
+        height: 24px;
+      }
+
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(76, 175, 80, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--success-color);
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      .output-area {
+        width: 100%;
+        max-height: 600px;
+        overflow-y: auto;
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        background-color: var(--secondary-color);
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .message {
+        padding: 10px 15px;
+        border-radius: var(--border-radius);
+        position: relative;
+        width: fit-content;
+        max-width: 80%;
+        word-wrap: break-word;
+        box-shadow: var(--shadow);
+      }
+      .user-display {
+        background: #e3f2fd;
+        align-self: flex-end;
+          border-radius: var(--border-radius) 4px var(--border-radius) var(--border-radius);
+      }
+      .user-display:before {
+        content: '';
+        position: absolute;
+        right: -10px;
+        top: 0;
+        border-top: 10px solid #e3f2fd;
+        border-right: 10px solid transparent;
+        border-left: none;
+      }
+      /* ai-display is the final state, ai-display-text is during streaming */
+      .ai-display, .ai-display-text {
+        background: white;
+        align-self: flex-start;
+          border-radius: 4px var(--border-radius) var(--border-radius) var(--border-radius);
+      }
+      .ai-display:before, .ai-display-text:before {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 0;
+        border-top: 10px solid white;
+        border-left: 10px solid transparent;
+        border-right: none;
+      }
+      .message-label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+      }
+      .image-show {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 10px;
+        display: block;
+      }
+      audio {
+        width: 100%;
+        margin-top: 10px;
+        display: block;
+        min-width: 250px;
+      }
+      .markdown-content {
+        margin-top: 5px;
+      }
+      .markdown-content > *:first-child { margin-top: 0; }
+      .markdown-content > *:last-child { margin-bottom: 0; }
+      .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 { margin-top: 1.2em; margin-bottom: 0.6em; font-weight: 600; }
+      .markdown-content h1 { font-size: 1.8em; }
+      .markdown-content h2 { font-size: 1.5em; }
+      .markdown-content h3 { font-size: 1.3em; }
+      .markdown-content h4 { font-size: 1.1em; }
+      .markdown-content p { margin-bottom: 1em; }
+      .markdown-content ul, .markdown-content ol { margin-bottom: 1em; padding-left: 1.5em; }
+      .markdown-content li { margin-bottom: 0.4em; }
+      .markdown-content li > p { margin-bottom: 0.4em; }
+      .markdown-content li > ul, .markdown-content li > ol { margin-top: 0.4em; margin-bottom: 0.4em; }
+      .markdown-content pre { background-color: #f0f0f0; padding: 1em; border-radius: 8px; overflow-x: auto; margin-bottom: 1em; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+      .markdown-content code { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; background-color: #f0f0f0; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
+      .markdown-content pre > code { background-color: transparent; padding: 0; border-radius: 0; font-size: inherit; }
+      .markdown-content blockquote { border-left: 4px solid #ddd; padding-left: 1em; margin-left: 0; margin-bottom: 1em; color: var(--text-secondary); }
+      .markdown-content blockquote > *:first-child { margin-top: 0; }
+      .markdown-content blockquote > *:last-child { margin-bottom: 0; }
+      .markdown-content a { color: var(--primary-color); text-decoration: none; }
+      .markdown-content a:hover { text-decoration: underline; }
+      .markdown-content strong { font-weight: 600; }
+      .markdown-content em { font-style: italic; }
+      .markdown-content hr { border: 0; border-top: 1px solid #ddd; margin: 1.5em 0; }
+      .markdown-content table { border-collapse: collapse; margin-bottom: 1em; width: auto; }
+      .markdown-content th, .markdown-content td { border: 1px solid #ddd; padding: 0.5em 0.8em; text-align: left; }
+      .markdown-content th { background-color: #f8f9fa; font-weight: 600; }
+
+      .record-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .status-container {
+          margin-top: 10px;
+      }
+
+      .time-label, .status-label {
+        margin-left: 10px;
+        font-weight: 500;
+      }
+
+      .status-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      .status-recording {
+        background-color: #dc3545;
+        animation: pulse 1.5s infinite;
+      }
+
+      .status-idle {
+        background-color: #6c757d;
+      }
+
+      .status-done {
+        background-color: var(--success-color);
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(1.1);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      img[src="/api/placeholder/400/320"] {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      @media (max-width: 768px) {
+        .app-container {
+          width: 95%;
+        }
+
+        .control-panel {
+          flex-direction: column;
+        }
+
+        button, .custom-file-button {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+
+      .copy-button {
+        background-color: transparent;
+        color: var(--text-secondary);
+        border: none;
+        border-radius: var(--border-radius);
+        padding: 4px 8px;
+        font-size: 14px; /* 增大字号 */
+        cursor: pointer;
+        opacity: 0.7;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 8px;
+      }
+
+      .copy-button:hover {
+        opacity: 1;
+        background-color: transparent !important;
+      }
+
+      .copy-success {
+        color: var(--success-color) !important;
+      }
+
+      .copy-tooltip {
+        display: inline-block; /* 确保在同一行 */
+        background-color: var(--text-secondary);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        margin-left: 4px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        white-space: nowrap; /* 确保不换行 */
+      }
+
+      .copy-tooltip.active {
+        opacity: 1;
+      }
+    </style>
+    <script src="{{ url_for('static', filename='js/marked.min.js') }}"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-header">
+            <div class="app-title">
+                <i class="fas fa-robot"></i>
+                <span>{{ title }}</span>
+            </div>
+        </div>
+
+        <div id="appContent" class="app-content">
+            <!-- Content will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+      function copyTextToClipboard(text, buttonElement) {
+        navigator.clipboard.writeText(text).then(
+          function() {
+            console.log('复制成功');
+            // 显示成功图标和提示文本
+            const originalHTML = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fas fa-check"></i>';
+            buttonElement.classList.add('copy-success');
+            
+            // 创建并显示工具提示
+            const tooltip = document.createElement('span');
+          tooltip.className = 'copy-tooltip';
+          tooltip.textContent = '已复制';
+          buttonElement.appendChild(tooltip);
+          
+          // 稍微延迟后显示提示
+          setTimeout(() => {
+            tooltip.classList.add('active');
+          }, 10);
+          
+          // 一段时间后恢复原状
+          setTimeout(() => {
+            tooltip.classList.remove('active');
+            setTimeout(() => {
+              buttonElement.innerHTML = '<i class="fas fa-copy"></i>';
+              buttonElement.classList.remove('copy-success');
+            }, 300);
+          }, 1500);
+        }, 
+        function(err) {
+          console.error('复制失败:', err);
+        }
+      );
+    }
+
+      function convertMarkdownToHTML(markdownText) {
+        return marked.parse(markdownText);
+      }
+
+      function createOrUpdateOutputArea() {
+            let outputArea = document.getElementById('outputArea');
+            if (!outputArea) {
+                outputArea = document.createElement('div');
+                outputArea.id = 'outputArea';
+                outputArea.className = 'output-area';
+
+                const outputSection = document.createElement('div');
+                outputSection.className = 'output-section';
+                outputSection.appendChild(outputArea);
+
+                document.getElementById('appContent').appendChild(outputSection);
+            }
+            return outputArea;
+        }
+
+        function updateContent(data) {
+            const outputArea = createOrUpdateOutputArea();
+            if (data.image) {
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message ai-display';
+                const messageLabel = document.createElement('div');
+                messageLabel.className = 'message-label';
+                messageLabel.innerHTML = '<i class="fas fa-robot"></i> AI';
+                aiMessage.appendChild(messageLabel);
+                aiMessage.innerHTML += `<img src="${data.image}" alt="AI 响应图片" class="image-show" />`;
+                outputArea.appendChild(aiMessage);
+            }
+            if (data.audio) {
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message ai-display';
+                const messageLabel = document.createElement('div');
+                messageLabel.className = 'message-label';
+                messageLabel.innerHTML = '<i class="fas fa-robot"></i> AI';
+                aiMessage.appendChild(messageLabel);
+                aiMessage.innerHTML += `<audio controls autoplay src="${data.audio}"></audio>`;
+                outputArea.appendChild(aiMessage);
+            }
+            if (data.text) {
+              const existingTextElement = outputArea.querySelector('.ai-display-text');
+              const textContent = convertMarkdownToHTML(data.text);
+
+              if (existingTextElement) {
+                // Keep the message label
+                const messageLabel = existingTextElement.querySelector('.message-label');
+                existingTextElement.innerHTML = '';
+                existingTextElement.appendChild(messageLabel);
+                
+                const markdownDiv = document.createElement('div');
+                markdownDiv.className = 'markdown-content';
+                markdownDiv.innerHTML = textContent;
+                existingTextElement.appendChild(markdownDiv);
+                
+                // 添加复制按钮到气泡内部
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+                
+                // 使用纯文本内容
+                const plainText = data.text;
+                
+                copyButton.addEventListener('click', function() {
+                  copyTextToClipboard(plainText, this);
+                });
+                existingTextElement.appendChild(copyButton);
+            } else {
+              const aiMessage = document.createElement('div');
+              aiMessage.className = 'message ai-display-text';
+              const messageLabel = document.createElement('div');
+              messageLabel.className = 'message-label';
+              messageLabel.innerHTML = '<i class="fas fa-robot"></i> AI';
+              aiMessage.appendChild(messageLabel);
+
+              const markdownDiv = document.createElement('div');
+              markdownDiv.className = 'markdown-content';
+              markdownDiv.innerHTML = textContent;
+              aiMessage.appendChild(markdownDiv);
+              
+              // 添加复制按钮到气泡内部
+              const copyButton = document.createElement('button');
+              copyButton.className = 'copy-button';
+              copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+              
+              // 使用纯文本内容
+              const plainText = data.text;
+              
+              copyButton.addEventListener('click', function() {
+                copyTextToClipboard(plainText, this);
+              });
+              aiMessage.appendChild(copyButton);
+
+              outputArea.appendChild(aiMessage);
+            }
+          }
+          outputArea.scrollTop = outputArea.scrollHeight;
+        }
+
+        window.onload = function() {
+            const appContent = document.getElementById('appContent');
+
+            fetch('/get_components')
+                .then(response => response.json())
+                .then(components => {
+                    let cameraSection, inputSection;
+
+                    // First determine if we need camera or input sections
+                    const hasCamera = components.some(comp => comp.type === 'camera');
+                    const hasInputs = components.some(comp => ['input_text', 'input_pic', 'input_audio', 'record'].includes(comp.type));
+
+                    if (hasCamera) {
+                        cameraSection = document.createElement('div');
+                        cameraSection.className = 'camera-section';
+                        appContent.appendChild(cameraSection);
+                    }
+
+                    if (hasInputs) {
+                        inputSection = document.createElement('div');
+                        inputSection.className = 'input-section';
+                        appContent.appendChild(inputSection);
+                    }
+
+                    // Create preview container for all previews
+                    const previewContainer = document.createElement('div');
+                    previewContainer.className = 'preview-container';
+
+                    // Create control panel for all buttons
+                    const controlPanel = document.createElement('div');
+                    controlPanel.className = 'control-panel';
+
+                    if (hasInputs) {
+                        inputSection.appendChild(previewContainer);
+                        inputSection.appendChild(controlPanel);
+                    } else if (hasCamera) {
+                        cameraSection.appendChild(previewContainer);
+                        cameraSection.appendChild(controlPanel);
+                    }
+
+                    components.forEach(component => {
+                        if (component.type === 'camera') {
+                            const video = document.createElement('video');
+                            video.id = component.id;
+                            video.className = 'camera-preview';
+                            video.autoplay = true;
+                            cameraSection.insertBefore(video, cameraSection.firstChild);
+
+                            const captureButton = document.createElement('button');
+                            captureButton.innerHTML = '<i class="fas fa-camera"></i> 拍照';
+                            captureButton.className = 'capture-button';
+                            controlPanel.appendChild(captureButton);
+
+                            const canvas = document.createElement('canvas');
+                            canvas.className = 'canvas-hidden';
+                            canvas.width = 640;
+                            canvas.height = 480;
+                            cameraSection.appendChild(canvas);
+
+                            const previewItem = document.createElement('div');
+                            previewItem.className = 'preview-item';
+
+                            const previewLabel = document.createElement('div');
+                            previewLabel.className = 'preview-label';
+                            previewLabel.innerHTML = '<i class="fas fa-image"></i> 已捕获';
+                            previewItem.appendChild(previewLabel);
+
+                            const previewImg = document.createElement('img');
+                            previewImg.id = 'previewImg';
+                            previewImg.className = 'image-preview';
+                            previewItem.appendChild(previewImg);
+
+                            previewContainer.appendChild(previewItem);
+
+                            navigator.mediaDevices.getUserMedia({ video: true })
+                                .then(function(stream) {
+                                    video.srcObject = stream;
+                                })
+                                .catch(function(error) {
+                                    console.log("Something went wrong accessing the camera.");
+                                    alert("访问摄像头时出错。"); // Added user alert
+                                    video.style.display = 'none';
+                                    captureButton.disabled = true;
+                                    captureButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 摄像头不可用';
+                                });
+
+                            captureButton.addEventListener('click', function() {
+                                canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
+                                const imageData = canvas.toDataURL('image/png');
+                                previewImg.style.display = 'block';
+                                previewImg.src = imageData;
+
+                                fetch('/save_image', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({ image: imageData })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log('Image saved:', data.filePath);
+                                })
+                                .catch(error => {
+                                    console.error('Error saving image:', error);
+                                });
+                            });
+                        } else if (component.type === 'submit') {
+                            const submitButton = document.createElement('button');
+                            submitButton.id = component.id;
+                            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> 提交';
+                            submitButton.className = 'submit-button';
+                            controlPanel.appendChild(submitButton);
+
+                            const loadingDiv = document.createElement('div');
+                            loadingDiv.id = 'loadingMsg';
+                            loadingDiv.className = 'loading-message';
+                            loadingDiv.style.display = 'none';
+                            if (inputSection) {
+                                inputSection.appendChild(loadingDiv);
+                            } else {
+                                cameraSection.appendChild(loadingDiv);
+                            }
+
+                            document.getElementById('submitButton').addEventListener('click', function() {
+                                const video = document.getElementById('cameraComponent');
+                                if (video) {
+                                    video.style.display = 'none';
+                                }
+
+                                const text = document.getElementById('textComponent');
+                                if (text) {
+                                    const textContent = text.value;
+                                    text.value = '';
+                                    text.style.height = 'auto';
+                                    fetch('/submit-text', {
+                                        method: 'POST',
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({ text: textContent }),
+                                      })
+                                      .then(response => response.json())
+                                      .then(data => {
+                                        console.log('Success:', data);
+                                      })
+                                      .catch((error) => {
+                                        console.error('Error:', error);
+                                      });
+                                }
+
+                                let audio = document.getElementById('audioPreview');
+                                if (audio) {
+                                    audio.style.display = 'none';
+                                }
+
+                                let imageElements = document.querySelectorAll('.image-preview');
+                                imageElements.forEach(img => {
+                                    img.style.display = 'none';
+                                });
+
+                                fetch('/submit', {
+                                    method: 'POST'
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    const outputArea = createOrUpdateOutputArea();
+                                    if (data.image) {
+                                        const userMessage = document.createElement('div');
+                                        userMessage.className = 'message user-display';
+                                        const messageLabel = document.createElement('div');
+                                        messageLabel.className = 'message-label';
+                                        messageLabel.innerHTML = '<i class="fas fa-user"></i> 您';
+                                        userMessage.appendChild(messageLabel);
+                                        userMessage.innerHTML += `<img src="${data.image}" alt="用户输入图片" class="image-show" />`;
+                                        outputArea.appendChild(userMessage);
+                                    }
+                                    if (data.audio) {
+                                        const userMessage = document.createElement('div');
+                                        userMessage.className = 'message user-display';
+                                        const messageLabel = document.createElement('div');
+                                        messageLabel.className = 'message-label';
+                                        messageLabel.innerHTML = '<i class="fas fa-user"></i> 您';
+                                        userMessage.appendChild(messageLabel);
+                                        userMessage.innerHTML += `<audio controls src="${data.audio}"></audio>`;
+                                        outputArea.appendChild(userMessage);
+                                    }
+                                    if (data.text) {
+                                        const userMessage = document.createElement('div');
+                                        userMessage.className = 'message user-display';
+                                        const messageLabel = document.createElement('div');
+                                        messageLabel.className = 'message-label';
+                                        messageLabel.innerHTML = '<i class="fas fa-user"></i> 您';
+                                        userMessage.appendChild(messageLabel);
+                                        userMessage.innerHTML += convertMarkdownToHTML(data.text.replace(/\n/g, "\n\n"));
+                                        outputArea.appendChild(userMessage);
+                                    }
+                                    outputArea.scrollTop = outputArea.scrollHeight;
+
+                                    const loading = document.getElementById('loadingMsg');
+                                    loading.innerHTML = '<div class="loading-spinner"></div>等待 AI 响应';
+                                    loading.style.display = 'flex';
+
+                                    const submitButton = document.getElementById('submitButton');
+                                    submitButton.disabled = true;
+
+                                    const intervalId = setInterval(() => {
+                                        fetch('/result')
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            updateContent(data);
+                                            if (data.status !== "processing") {
+                                                clearInterval(intervalId);
+                                                loading.innerHTML = '';
+                                                loading.style.display = 'none';
+                                                submitButton.disabled = false;
+                                                const textDiv = outputArea.querySelector('.ai-display-text');
+                                                if (textDiv){
+                                                    textDiv.className = 'message ai-display';
+                                                }
+                                            }
+                                        });
+                                    }, 300);
+                                });
+                            });
+                        } else if (component.type === 'text') {
+                            const outputText = document.createElement('input');
+                            outputText.id = component.id;
+                            outputText.type = 'text';
+                            outputText.className = 'text-input';
+                            if (inputSection) {
+                                inputSection.appendChild(outputText);
+                            } else {
+                                appContent.appendChild(outputText);
+                            }
+                        } else if (component.type === 'input_pic') {
+                            const fileInputContainer = document.createElement('div');
+                            fileInputContainer.className = 'file-input-container';
+
+                            const customFileButton = document.createElement('label');
+                            customFileButton.className = 'custom-file-button';
+                            customFileButton.innerHTML = '<i class="fas fa-image"></i> 上传图片';
+                            fileInputContainer.appendChild(customFileButton);
+
+                            const fileInput = document.createElement('input');
+                            fileInput.type = 'file';
+                            fileInput.accept = 'image/*';
+                            fileInput.className = 'file-input';
+                            customFileButton.appendChild(fileInput);
+
+                            controlPanel.appendChild(fileInputContainer);
+
+                            const previewItem = document.createElement('div');
+                            previewItem.className = 'preview-item';
+
+                            const previewLabel = document.createElement('div');
+                            previewLabel.className = 'preview-label';
+                            previewLabel.innerHTML = '<i class="fas fa-image"></i> 已上传';
+                            previewItem.appendChild(previewLabel);
+
+                            const imagePreview = document.createElement('img');
+                            imagePreview.id = 'imagePreview';
+                            imagePreview.className = 'image-preview';
+                            previewItem.appendChild(imagePreview);
+
+                            previewContainer.appendChild(previewItem);
+
+                            fileInput.addEventListener('change', function() {
+                                if (this.files && this.files[0]) {
+                                    const formData = new FormData();
+                                    formData.append('file', this.files[0]);
+
+                                    fetch('/upload_image', {
+                                        method: 'POST',
+                                        body: formData,
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('Upload successful:', data.fileUrl);
+                                        imagePreview.style.display = 'block';
+                                        imagePreview.src = data.fileUrl;
+                                    })
+                                    .catch(error => {
+                                        console.error('Upload error:', error);
+                                    });
+                                }
+                            });
+                        } else if (component.type === 'input_audio') {
+                            const fileInputContainer = document.createElement('div');
+                            fileInputContainer.className = 'file-input-container';
+
+                            const customFileButton = document.createElement('label');
+                            customFileButton.className = 'custom-file-button';
+                            customFileButton.innerHTML = '<i class="fas fa-music"></i> 上传音频';
+                            fileInputContainer.appendChild(customFileButton);
+
+                            const fileInput = document.createElement('input');
+                            fileInput.type = 'file';
+                            fileInput.accept = 'audio/*';
+                            fileInput.className = 'file-input';
+                            customFileButton.appendChild(fileInput);
+
+                            controlPanel.appendChild(fileInputContainer);
+
+                            const previewItem = document.createElement('div');
+                            previewItem.className = 'preview-item';
+
+                            const previewLabel = document.createElement('div');
+                            previewLabel.className = 'preview-label';
+                            previewLabel.innerHTML = '<i class="fas fa-music"></i> 音频预览';
+                            previewItem.appendChild(previewLabel);
+
+                            const audioPreview = document.createElement('audio');
+                            audioPreview.id = 'audioPreview';
+                            audioPreview.className = 'audio-preview';
+                            audioPreview.controls = true;
+                            audioPreview.style.display = 'none';
+                            previewItem.appendChild(audioPreview);
+
+                            previewContainer.appendChild(previewItem);
+
+                            fileInput.addEventListener('change', function() {
+                                if (this.files && this.files[0]) {
+                                    const formData = new FormData();
+                                    formData.append('file', this.files[0]);
+
+                                    fetch('/upload_audio', {
+                                        method: 'POST',
+                                        body: formData,
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('Upload successful:', data.fileUrl);
+                                        audioPreview.style.display = 'block';
+                                        audioPreview.src = data.fileUrl;
+                                    })
+                                    .catch(error => {
+                                        console.error('Upload error:', error);
+                                    });
+                                }
+                            });
+                        } else if (component.type === 'record') {
+                            if (!navigator.mediaDevices || !window.MediaRecorder) {
+                              alert("您的浏览器不支持录音功能。");
+                              return 0;
+                            }
+
+                            const recordControls = document.createElement('div');
+                            recordControls.className = 'record-controls';
+
+                            // Start button
+                            const startBtn = document.createElement('button');
+                            startBtn.innerHTML = '<i class="fas fa-microphone"></i> 开始录音';
+                            startBtn.id = 'startBtn';
+                            startBtn.className = 'start-button';
+                            recordControls.appendChild(startBtn);
+
+                            // Stop button
+                            const stopBtn = document.createElement('button');
+                            stopBtn.innerHTML = '<i class="fas fa-stop"></i> 停止录音';
+                            stopBtn.id = 'stopBtn';
+                            stopBtn.disabled = true;
+                            stopBtn.className = 'stop-button';
+                            recordControls.appendChild(stopBtn);
+
+                            controlPanel.appendChild(recordControls);
+
+                            // Status display
+                            const statusContainer = document.createElement('div');
+                            statusContainer.className = 'status-container';
+
+                            const statusIndicator = document.createElement('span');
+                            statusIndicator.className = 'status-indicator status-idle';
+                            statusContainer.appendChild(statusIndicator);
+
+                            const statusLabel = document.createElement('span');
+                            statusLabel.textContent = '未录音';
+                            statusLabel.id = 'statusLabel';
+                            statusLabel.className = 'status-label';
+                            statusContainer.appendChild(statusLabel);
+
+                            const timeLabel = document.createElement('span');
+                            timeLabel.textContent = '00:00';
+                            timeLabel.id = 'timeLabel';
+                            timeLabel.className = 'time-label';
+                            statusContainer.appendChild(timeLabel);
+
+                            if (inputSection) {
+                                inputSection.insertBefore(statusContainer, controlPanel);
+                            } else {
+                                cameraSection.insertBefore(statusContainer, controlPanel);
+                            }
+
+                            const previewItem = document.createElement('div');
+                            previewItem.className = 'preview-item';
+
+                            const previewLabel = document.createElement('div');
+                            previewLabel.className = 'preview-label';
+                            previewLabel.innerHTML = '<i class="fas fa-microphone"></i> 录制的音频';
+                            previewItem.appendChild(previewLabel);
+
+                            const audioPreview = document.createElement('audio');
+                            audioPreview.id = 'audioPreview';
+                            audioPreview.className = 'audio-preview';
+                            audioPreview.controls = true;
+                            audioPreview.style.display = 'none';
+                            previewItem.appendChild(audioPreview);
+
+                            previewContainer.appendChild(previewItem);
+
+                            let mediaRecorder;
+                            let audioChunks = [];
+                            let recordingStartTime;
+                            let recordingInterval;
+
+                            navigator.mediaDevices.getUserMedia({ audio: true })
+                              .then(stream => {
+                                mediaRecorder = new MediaRecorder(stream);
+
+                                mediaRecorder.ondataavailable = event => {
+                                  audioChunks.push(event.data);
+                                };
+
+                                mediaRecorder.onstart = () => {
+                                  recordingStartTime = Date.now();
+                                  recordingInterval = setInterval(updateRecordingTime, 1000); // Update time every second
+                                  statusIndicator.className = 'status-indicator status-recording';
+                                  statusLabel.textContent = '录音中...';
+                                  timeLabel.textContent = '00:00';
+                                };
+
+                                mediaRecorder.onstop = () => {
+                                  clearInterval(recordingInterval); // Stop the timer
+                                  statusIndicator.className = 'status-indicator status-done';
+                                  statusLabel.textContent = '录音结束';
+
+                                  const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                                  const formData = new FormData();
+                                  formData.append('audioFile', audioBlob, 'recording.wav');
+
+                                  audioPreview.src = URL.createObjectURL(audioBlob);
+                                  audioPreview.style.display = 'block'; // Show preview
+                                  audioChunks = []; // Reset chunks for next recording
+
+                                  fetch('/save_audio', {
+                                    method: 'POST',
+                                    body: formData,
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('Audio uploaded successfully', data.filePath);
+                                    })
+                                    .catch(error => {
+                                        console.error('Error uploading audio:', error);
+                                    });
+                                };
+                              })
+                              .catch(error => {
+                                console.error("Error accessing microphone:", error);
+                                statusLabel.textContent = "麦克风访问被拒绝";
+                                statusIndicator.className = 'status-indicator status-idle';
+                                startBtn.disabled = true;
+                                startBtn.innerHTML = '<i class="fas fa-microphone-slash"></i> 麦克风错误';
+                              });
+
+                            // Function to update recording time
+                            function updateRecordingTime() {
+                                const elapsedTime = Date.now() - recordingStartTime;
+                                const seconds = Math.floor((elapsedTime / 1000) % 60).toString().padStart(2, '0');
+                                const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60).toString().padStart(2, '0');
+                                timeLabel.textContent = `${minutes}:${seconds}`;
+                            }
+
+                            startBtn.onclick = () => {
+                              if (mediaRecorder) {
+                                mediaRecorder.start();
+                                startBtn.disabled = true;
+                                stopBtn.disabled = false;
+                                audioChunks = []; // Clear previous chunks if any
+                                audioPreview.style.display = 'none'; // Hide previous preview
+                                console.log("Recording started...");
+                              }
+                            };
+
+                            stopBtn.onclick = () => {
+                              if (mediaRecorder) {
+                                mediaRecorder.stop();
+                                startBtn.disabled = false;
+                                stopBtn.disabled = true;
+                                console.log("Recording stopped...");
+                              }
+                            };
+                        } else if (component.type === 'input_text') {
+                            const textInput = document.createElement('textarea');
+                            textInput.id = 'textComponent';
+                            textInput.className = 'text-input';
+                            textInput.placeholder = '在此输入文本...';
+                            if (inputSection) {
+                                // Insert before the preview container
+                                inputSection.insertBefore(textInput, previewContainer);
+                            } else {
+                                // Should not happen if inputSection is always created for input types
+                                appContent.appendChild(textInput);
+                            }
+
+                            textInput.addEventListener('input', function() {
+                                const textarea = this;
+                                // Reset height to get accurate scrollHeight
+                                textarea.style.height = 'auto';
+
+                                const computedStyle = window.getComputedStyle(textarea);
+                                const lineHeight = parseInt(computedStyle.lineHeight, 10) || 24; // Default line height if not computed
+                                const borderTopWidth = parseInt(computedStyle.borderTopWidth, 10) || 0;
+                                const borderBottomWidth = parseInt(computedStyle.borderBottomWidth, 10) || 0;
+                                const paddingTop = parseInt(computedStyle.paddingTop, 10) || 0;
+                                const paddingBottom = parseInt(computedStyle.paddingBottom, 10) || 0;
+
+                                const externalHeight = borderTopWidth + borderBottomWidth + paddingTop + paddingBottom;
+                                // Use scrollHeight for content height calculation
+                                const scrollHeight = textarea.scrollHeight;
+                                const contentHeight = scrollHeight - externalHeight; // Adjust scrollHeight by removing padding/border
+
+                                const maxHeightInLines = 15;
+                                const maxAllowedHeight = (maxHeightInLines * lineHeight); // Calculate max height in pixels
+
+                                if (contentHeight < maxAllowedHeight) {
+                                    // Set height based on content up to the max allowed
+                                    textarea.style.height = `${scrollHeight}px`; // Use scrollHeight directly as it includes padding
+                                    textarea.style.overflowY = 'hidden';
+                                } else {
+                                    // Set height to max and enable scrolling
+                                    textarea.style.height = `${maxAllowedHeight + externalHeight}px`; // Add back padding/border to max content height
+                                    textarea.style.overflowY = 'auto';
+                                }
+                            });
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching components:', error);
+                    const errorDiv = document.createElement('div');
+                    errorDiv.style.color = 'red';
+                    errorDiv.style.padding = '20px';
+                    errorDiv.textContent = '加载应用组件时出错。请尝试刷新页面。';
+                    appContent.appendChild(errorDiv);
+                });
+        };
+    </script>
+</body>
+</html>
