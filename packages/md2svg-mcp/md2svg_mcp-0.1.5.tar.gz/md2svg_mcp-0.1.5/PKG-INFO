@@ -1,0 +1,84 @@
+Metadata-Version: 2.4
+Name: md2svg-mcp
+Version: 0.1.5
+Summary: A MCP server that converts Markdown text to SVG images.
+Project-URL: Homepage, https://github.com/yossi-lee/md2svg-mcp
+Project-URL: Issues, https://github.com/yossi-lee/md2svg-mcp/issues
+Author: Yossi-lee
+Keywords: markdown,mcp,svg
+Requires-Python: >=3.11
+Requires-Dist: fastmcp
+Description-Content-Type: text/markdown
+
+# Md2svg-mcp
+
+A Model Context Protocol (MCP) server that converts Markdown text to SVG images.
+
+## Overview
+
+This MCP server provides a tool to transform Markdown content into SVG format. It supports various Markdown elements, including headings, lists, code blocks, and tables. The server can be easily integrated into any MCP client, allowing users to visualize Markdown content in a scalable vector graphic format.
+
+## Features
+
+- **Markdown Parsing**: Converts Markdown text to structured blocks.
+- **SVG Generation**: Renders Markdown elements as SVG elements.
+- **Customization**: Supports customizable output dimensions, padding, and colors.
+- **MCP Integration**: Compatible with any MCP client.
+
+## Installation
+
+To install this MCP server, you can use the following command:
+
+```bash
+pip install md2svg-mcp
+```
+
+## Usage
+
+To run the MCP server, use the following command:
+
+```bash
+md2svg-mcp
+```
+
+### Example
+
+To convert Markdown text to an SVG image, you can use the `markdown_to_svg` tool provided by this server. Here is an example of how to use it:
+
+```python
+from md2svg_mcp import markdown_to_svg
+
+markdown_text = """
+# Hello World
+
+This is a *test* of the Markdown to SVG conversion.
+
+## Features
+
+- Lists
+- Code blocks
+- Tables
+
+| Header 1 | Header 2 | Header 3 |
+| -------- | -------- | -------- |
+| Row 1    | Data 1   | Data 2   |
+| Row 2    | Data 3   | Data 4   |
+"""
+
+markdown_to_svg(markdown_text, output_file="example.svg", width=800, padding=60)
+```
+
+This will generate an SVG file named `example.svg` containing the rendered Markdown content.
+
+## Configuration
+
+The `markdown_to_svg` tool supports the following parameters:
+
+- `md_text`: The Markdown text to be converted.
+- `output_file`: The output SVG file name (default: `output.svg`).
+- `width`: The width of the SVG image (default: `720`).
+- `padding`: The padding around the SVG content (default: `50`).
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
