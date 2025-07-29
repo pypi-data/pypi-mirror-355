@@ -1,0 +1,31 @@
+[project]
+name = "llm-ya-cli"
+version = "0.1.0"
+description = "A CLI for LLMs."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.1.8",
+    "platformdirs>=4.3.7",
+    "prompt-toolkit>=3.0.51",
+    "pydantic>=2.11.3",
+    "pydantic-ai>=0.0.46",
+    "rich>=14.0.0",
+    "tomli ; python_full_version < '3.11'",
+]
+license-files = ["LICENSE", "licenses/*"]
+
+[project.scripts]
+llm-cli = "llm_ya_cli:cli"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"*" = ["README.md", "licenses/*"]
+
+[dependency-groups]
+dev = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.14",
+]
