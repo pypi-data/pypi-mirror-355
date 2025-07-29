@@ -1,0 +1,28 @@
+[project]
+name = "gai-tools-web"
+version = "0.1.1"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [ "gai-lib", "mcp[cli]>=1.8.1",]
+[[project.authors]]
+name = "kakkoii1337"
+email = "kakkoii1337@gmail.com"
+
+[dependency-groups]
+dev = [ "gai-lib[dev]",]
+
+[project.license]
+file = "LICENSE"
+
+[project.optional-dependencies]
+dev = [ "gai-lib[dev]>=1.0.218",]
+
+[project.scripts]
+gai-tools-web = "gai.tools.web.mcp_server:main"
+
+[tool.uv.sources.gai-lib]
+path = "../../gai-sdk/lib"
+editable = true
+
+[tool.hatch.build.targets.wheel]
+packages = [ "src/gai",]
