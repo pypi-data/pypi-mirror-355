@@ -1,0 +1,150 @@
+[tool.poetry]
+name = "desec-dns"
+version = "v1.3.0"
+description = "A simple deSEC.io API client"
+license = "MIT"
+authors = ["Sebastian Hamann <code@ares-macrotechnology.com>"]
+readme = "README.md"
+repository = "https://github.com/s-hamann/desec-dns"
+documentation = "https://s-hamann.github.io/desec-dns/"
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+packages = [{ include = "desec/" }]
+include = [
+    { path = "CHANGELOG.md", format = "sdist" },
+]
+
+[tool.poetry.urls]
+"Issue Tracker" = "https://github.com/s-hamann/desec-dns/issues"
+Changelog = "https://github.com/s-hamann/desec-dns/blob/main/CHANGELOG.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+requests = ">=2.0.0"
+cryptography = { version = ">=42.0.0", optional = true }
+dnspython = { version = ">=2.0.0", optional = true }
+
+[tool.poetry.extras]
+tlsa = ["cryptography"]
+zonefiles = ["dnspython"]
+all = ["cryptography", "dnspython"]
+
+[tool.poetry.scripts]
+desec = "desec.cli:main"
+
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.4.5"
+mypy = ">=1.10.0"
+types-requests = ">=2.32.0.20240602"
+tox = ">=4.0.0"
+pytest = ">=8.0.0"
+pytest-recording = ">=0.13.1"
+coverage = {version = ">=7.2.0", extras = ["toml"]}
+pytest-cov = ">=3.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 99
+target-version = "py39"
+
+[tool.ruff.lint]
+extend-select = [
+    "W", # pycodestyle warnings
+    "I", # isort
+    "N", # pep8-naming
+    "D", # pydocstyle
+    "UP", # pyupgrade
+    "S", # flake8-bandit
+    "B", # flake8-bugbear
+    "FA", # flake8-future-annotations
+    "PT", # flake8-pytest-style
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "RUF", # Ruff-specific rules
+]
+ignore = [
+    "D105", # undocumented-magic-method
+    "D107", # undocumented-public-init
+    "D203", # one-blank-line-before-class
+    "D213", # multi-line-summary-second-line
+    "PT003", # pytest-extraneous-scope-function
+    "PT006", # pytest-parametrize-names-wrong-type
+    "SIM105", # suppressible-exception
+    "SIM108", # if-else-block-instead-of-if-exp
+    "SIM212", # if-expr-with-twisted-arms
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "D", # pydocstyle
+    "S101", # assert
+]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 92
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "desec.tlsa.TLSAUsage",
+    "desec.tlsa.TLSASelector",
+    "desec.tlsa.TLSAMatchType",
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.black]
+line-length = 99
+
+[tool.mypy]
+disallow_any_generics = true
+disallow_untyped_defs = true
+disallow_untyped_decorators = true
+strict_equality = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+enable_error_code = [
+    "redundant-expr",
+    "possibly-undefined",
+    "truthy-bool",
+    "ignore-without-code"
+]
+exclude = [
+    "^tests/",
+]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.html]
+show_contexts = true
+
+[tool.coverage.json]
+show_contexts = true
+
+[tool.coverage.report]
+exclude_also = [
+    "if __name__ == [\"']__main__[\"']:",
+    "if (typing\\.|t\\.)?TYPE_CHECKING:",
+    "@(typing\\.|t\\.)?overload",
+    "raise NotImplementedError",
+    "raise APIExpectationError",
+    "except ModuleNotFoundError:",
+]
+
+[tool.coverage.paths]
+source = [
+    ".",
+    "/home/runner/work/desec-dns/desec-dns/",
+]
