@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: textminer-pro001
+Version: 0.2.5
+Summary: 불용어 제거, 키워드 추출, 요약, 언어 감지를 제공하는 텍스트 분석 도구
+Home-page: https://github.com/project/Hansupace/textminer-pro
+Author: 최수한
+Author-email: wagkster@naver.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Text Processing :: Linguistic
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: nltk>=3.8.1
+Requires-Dist: scikit-learn>=1.3.0
+Requires-Dist: langdetect>=1.0.9
+Requires-Dist: sumy>=0.11.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# textminer-pro
+
+자연어 텍스트 처리의 기본 기능을 제공하는 Python 패키지입니다.
+## 불용어 처리
+text = """
+The stage is set for a grand parade to celebrate the U.S. Army's 250th anniversary, which falls on the same day as President Donald Trump's 79th birthday and Flag Day.
+The day-long festival will take place primarily at the National Mall in Washington, D.C. on Saturday, June 14, with music performances, fireworks and a pomp-filled procession through the streets.
+More than two dozen M1 Abrams tanks, scores of infantry vehicles and thousands of soldiers are expected to be involved in the event. Trump, himself, will be watching the parade from a reviewing stand just south of the White House that is now being constructed for the occasion.
+"""
+
+
+cleaned = remove_stopwords(text)
+print("불용어 제거 결과:")
+print(cleaned)
+
+
+## 키워드 추출
+keywords = extract_keywords(text, top_n=5)
+
+## 텍스트 요약
+summary = summarize_text(text, num_sentences=2)
+---
+
+
+
