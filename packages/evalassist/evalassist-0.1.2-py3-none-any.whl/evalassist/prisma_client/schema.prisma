@@ -1,0 +1,43 @@
+// this file will be merged with shared/prisma/schema.base.prisma
+
+generator client3 {
+  provider             = "prisma-client-py"
+  interface            = "sync"
+  recursive_type_depth = 5
+  output               = "./prisma_client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model StoredTestCase {
+  id      Int    @id @default(autoincrement())
+  user_id Int
+  content String
+  name    String
+
+  app_user AppUser @relation(fields: [user_id], references: [id])
+
+  @@unique([user_id, name])
+  @@map("stored_test_case")
+}
+
+model AppUser {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  name       String
+  created_at DateTime @default(now())
+
+  stored_test_cases StoredTestCase[]
+
+  @@map("app_user")
+}
+
+model LogRecord {
+  id   Int    @id @default(autoincrement())
+  data String
+
+  @@map("log_record")
+}
