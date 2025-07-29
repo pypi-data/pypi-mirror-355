@@ -1,0 +1,40 @@
+name: Semantic Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency: release
+    permissions:
+      id-token: write
+      contents: write
+    environment: production
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GH_TOKEN }}
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+    
+    - name: Set up Python
+      run: uv python install 3.12
+
+    - name: Python Semantic Release
+      id: semantic_release
+      uses: cedar-team/python-semantic-release@master
+      with:
+        github_token: ${{ secrets.GH_TOKEN }}
+    
+    - name: Build
+      run: uv build
+    
+    - name: Publish to PyPi
+      uses: cedar-team/gh-action-pypi-publish@release/v1
+      if: steps.semantic_release.outputs.released == 'true'
+   
