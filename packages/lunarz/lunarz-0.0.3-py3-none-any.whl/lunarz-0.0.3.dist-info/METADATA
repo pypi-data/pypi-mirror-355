@@ -1,0 +1,92 @@
+Metadata-Version: 2.4
+Name: lunarz
+Version: 0.0.3
+Summary: 农历日历工具，支持干支、节气、斋日查询
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: cnlunar>=0.2.0
+
+# lunarz - 农历日历工具包
+
+`lunarz` 是一个功能强大的农历日历工具包，提供干支、节气、斋日等传统农历信息计算功能，专为需要处理中国传统历法功能的开发者设计。
+
+## 功能特性
+
+- ✅ **干支系统**：准确计算年、月、日的干支
+- 🌿 **节气信息**：提供当前节气状态及距离节气的天数
+- 🕉️ **斋日计算**：识别十斋日及距离下一个斋日的天数和名称
+- 🌙 **农历日期**：精确显示农历年月日信息
+
+## 安装方法
+
+```bash
+pip install lunarz
+```
+
+## 使用指南
+
+### Python API
+
+```python
+from lunarz import LunarCalendar
+import datetime
+
+# 创建指定日期的农历日历
+date = datetime.date(2025, 6, 15)  # 公历日期
+lc = LunarCalendar(date)
+
+# 获取农历日期
+print(lc.get_lunar_day())  # 输出: 五月廿一
+
+# 获取干支信息
+print(lc.get_ganzhi())
+# 输出: {'year': '乙巳', 'month': '壬午', 'day': '丙辰'}
+
+# 获取节气信息
+print(lc.get_solar_term_info())
+# 输出: "芒种后9天，6天后夏至"
+
+# 获取斋日信息
+print(lc.get_fasting_info())
+# 输出: "3天后廿三" 或 "今日斋日"
+```
+
+### 命令行工具
+
+```bash
+# 查询今日完整信息
+lunarz
+
+# 查询指定日期
+lunarz --date 2025-12-01
+
+# 查询特定字段
+lunarz --date 2025-12-01 --field ganzhi  # 输出: 乙巳 丁亥 乙巳
+lunarz --field fasting                    # 输出: 今日斋日 或 3天后初八
+lunarz --field solar_term                # 输出: 小雪后5天，10天后大雪
+```
+
+## 功能详解
+
+### 1. 干支系统 (get_ganzhi)
+返回包含三个键的字典：
+- `year`: 年干支 (如 "甲辰")
+- `month`: 月干支 (如 "己巳")
+- `day`: 日干支 (如 "丙子")
+
+### 2. 节气信息 (get_solar_term_info)
+提供当前位置的节气信息，格式为：
+- 当前是节气日：直接返回节气名称
+- 在节气之间：返回上一个节气后X天，Y天后下一个节气
+- 靠近节气：返回 "X天后节气名" 或 "节气后X天"
+
+### 3. 斋日信息 (get_fasting_info)
+提供斋日信息，返回格式：
+- `今日斋日`: 当天是十斋日
+- `X天后Y`: 距离本月下一个斋日X天（Y为农历日期名称）
+- `X天后初一`: 本月无剩余斋日，计算到下月初一
+
+### 4. 农历日期 (get_lunar_day)
+返回中文农历日期
+- 示例：十月廿三、冬月初一、腊月廿九
