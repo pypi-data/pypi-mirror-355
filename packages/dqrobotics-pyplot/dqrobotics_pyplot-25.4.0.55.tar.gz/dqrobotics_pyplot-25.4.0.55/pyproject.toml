@@ -1,0 +1,49 @@
+[build-system]
+requires = [
+    "setuptools >= 77.0.3",
+    "setuptools-git-versioning>=2.0,<3"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src/"]
+include = [
+    "dqrobotics_extensions.pyplot",
+    "dqrobotics_extensions.pyplot.gallery"
+]
+
+[project]
+name = "dqrobotics-pyplot"
+dynamic = [
+    "version"
+]
+dependencies = [
+    "matplotlib",
+    "dqrobotics"
+]
+authors = [
+  {name = "Murilo M. Marinho", email = "murilomarinho@ieee.org"}
+]
+maintainers = [
+  {name = "Murilo M. Marinho", email = "murilomarinho@ieee.org"}
+]
+description = "An extension of dqrobotics to use matplotlib.pyplot to plot DQ elements."
+readme = "README.rst"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3"
+]
+
+[project.urls]
+Homepage = "https://github.com/MarinhoLab/dqrobotics-pyplot"
+
+[project.scripts]
+dqrobotics_pyplot_example = "dqrobotics_extensions.pyplot.example:main"
+dqrobotics_pyplot_example_animation = "dqrobotics_extensions.pyplot.example_animation:main"
+dqrobotics_pyplot_output_doc_samples = "dqrobotics_extensions.pyplot.gallery.output_doc_samples:main"
+
+# https://pypi.org/project/setuptools-git-versioning/
+[tool.setuptools-git-versioning]
+enabled = true
+# https://stackoverflow.com/questions/73605607/how-to-use-setuptools-scm
+dev_template = "{tag}.{ccount}"
+dirty_template = "{tag}.{ccount}"
