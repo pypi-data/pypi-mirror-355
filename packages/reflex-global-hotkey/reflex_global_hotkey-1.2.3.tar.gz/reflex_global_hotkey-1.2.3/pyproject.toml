@@ -1,0 +1,27 @@
+[project]
+name = "reflex-global-hotkey"
+description = "Global Hotkey Watcher for Reflex"
+authors = [{ name = "Khaleel Al-Adhami", email = "khaleel.aladhami@gmail.com" }]
+license.text = "MIT"
+readme = "README.md"
+keywords = ["reflex", "reflex-custom-components"]
+requires-python = ">=3.10"
+dependencies = ["reflex>=0.7.14"]
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://github.com/adhami3310/reflex-global-hotkey"
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.pyright]
+
+[tool.ruff]
+
+[dependency-groups]
+dev = ["pyright", "ruff"]
