@@ -1,0 +1,68 @@
+Metadata-Version: 2.4
+Name: yams
+Version: 2.0.0
+Summary: entity / relation schema
+Home-page: https://forge.extranet.logilab.fr/open-source/yams
+Author: Logilab
+Author-email: devel@logilab.fr
+License: LGPL
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.9.2
+License-File: COPYING
+License-File: COPYING.LESSER
+Requires-Dist: setuptools
+Requires-Dist: logilab-common<3.0.0,>=2.1.0
+Requires-Dist: typing-extensions<5.0.0,>=4.14.0
+Requires-Dist: python-dateutil>=2.9.0
+Requires-Dist: importlib_metadata; python_version < "3.10"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+README for yams
+===============
+
+Distributions
+-------------
+The source tarball is available at https://pypi.python.org/pypi/yams
+
+Install
+-------
+From the source distribution, extract the tarball and run ::
+
+    python setup.py install
+
+For debian and rpm packages, use your usual tools according to your Linux
+distribution. 
+
+
+Documentation
+-------------
+
+The documentation is available at https://yams.readthedocs.io/
+
+
+Code style
+----------
+
+The python code is verified against *flake8* and formatted with *black*.
+
+* You can run `tox -e black` to check that the files are well formatted.
+* You can run `tox -e black-run` to format them if needed.
+* You can include the `.hgrc` to your own `.hgrc` to automatically run black
+  before each commit/amend. This can be done by writing `%include ../.hgrc` at
+  the end of your `.hgrc`.
+
+
+Comments, support, bug reports
+------------------------------
+See the tracker at https://forge.extranet.logilab.fr/open-source/yams
