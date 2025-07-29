@@ -1,0 +1,102 @@
+Metadata-Version: 2.4
+Name: hamekare
+Version: 0.4.1
+Summary: A python library for use daradege apis
+Project-URL: github, https://github.com/amirabolfazle/daradege
+Project-URL: website, https://amirabolfazle.github.io/
+Author-email: Amirabolfazl Alipour <amyrabwalfdll1389@gmail.com>, Amirabolfazl Alipour <amirabolfazle.ir@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 hamekare Lib By Amirabolfazle
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Requires-Dist: aiohttp
+Description-Content-Type: text/markdown
+
+# hamekare
+
+A lightweight Python wrapper for [hamekare.ir](https://hamekare.ir), providing access to a variety of AI-powered tools such as:
+
+* Image generation
+* Logo and QR code creation
+* Ai Response
+
+---
+
+## 📦 Installation
+
+```bash
+pip install hamekare
+```
+
+---
+
+## 🚀 Usage
+
+### 🔼 Image & Logo Tools (`genp.py`)
+
+```python
+from hamekare import genp
+
+# Generate AI image
+genp.image("a futuristic city skyline at night")
+
+# Generate Persian logo
+genp.logo("hamekare")
+
+# Generate QR code
+genp.qr("https://hamekare.ir")
+```
+
+---
+
+### 🧠 Ai Chat (`ai.py`)
+
+```python
+from hamekare import ai
+
+#ask llama ai model to response your prompt!
+ai.llama('Hello')
+
+#ask chatgpt ai model to response your prompt!
+ai.chatgpt('Hello')
+
+#ask deepseek ai model to response your prompt!
+ai.deepseek('Hello')
+
+#ask gemini ai model to response your prompt!
+ai.gemini('Hello')
+
+#ask llamqwena ai model to response your prompt!
+ai.qwen('Hello')
+
+#ask nemotron ai model to response your prompt!
+ai.nemotron('Hello')
+```
+
+---
+
+## 📄 License
+
+MIT License
