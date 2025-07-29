@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "MyCommonLib"
+version = "0.8.1"
+description = "Common library"
+authors = ["Romolo Politi <romolo.politi@inaf.it>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+keywords = ["SETUP LIBS"]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+]
+repository = "https://github.com/RomoloPoliti-INAF/myCommonLib"
+include = ["CHANGELOG.md"]
+packages=[{include = "MyCommonLib", from="src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+rich = "^13.9.4"
+pyyaml = "^6.0.2"
+setuptools = "^75.5.0"
+semantic-version-tools = "^1.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/RomoloPoliti-INAF/myCommonLib/issues"
