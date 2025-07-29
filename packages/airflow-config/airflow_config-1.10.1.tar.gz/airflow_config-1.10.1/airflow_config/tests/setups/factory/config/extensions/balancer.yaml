@@ -1,0 +1,9 @@
+# @package extensions.balancer
+
+_target_: airflow_balancer.BalancerConfiguration
+hosts:
+  - name: server2
+    tags: [tag2]
+
+  - name: server1
+    tags: [tag1]
