@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aaw-card-games"
+version = "0.0.1"
+authors = [
+  { name="Alejandro Wong", email="alejandroawong@gmail.com" },
+]
+description = "Ongoing personal project to practice OOP and game logic through simple card games."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "setuptools >= 75.8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Alejandro-wong/card-games"
+Issues = "https://github.com/Alejandro-wong/card-games/issues"
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["aaw-card-games"]
