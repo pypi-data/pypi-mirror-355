@@ -1,0 +1,116 @@
+Metadata-Version: 2.4
+Name: isa-model
+Version: 0.1.0
+Summary: Unified AI model serving framework
+Author-email: isA_Model Contributors <your.email@example.com>
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastapi>=0.95.0
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: httpx>=0.23.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: uvicorn>=0.22.0
+Requires-Dist: requests>=2.28.0
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: transformers>=4.30.0
+Requires-Dist: langchain-core>=0.1.0
+Requires-Dist: tritonclient[grpc,http]>=2.30.0
+Requires-Dist: huggingface-hub>=0.16.0
+Requires-Dist: kubernetes>=25.3.0
+Requires-Dist: mlflow>=2.4.0
+Requires-Dist: torch>=2.0.0
+Dynamic: license-file
+
+# isA_Model - AI服务工厂
+
+isA_Model是一个轻量级AI服务工厂，用于统一管理和调用不同的AI模型和服务提供商。
+
+## 特性
+
+- 支持多种AI提供商(Ollama, OpenAI, Replicate, Triton)
+- 统一的API接口
+- 灵活的工厂模式
+- 异步支持
+- 单例模式，高效缓存
+
+## 安装
+
+```bash
+pip install -r requirements.txt
+```
+
+## 快速开始
+
+使用AI工厂很简单：
+
+```python
+from isa_model.inference.ai_factory import AIFactory
+from isa_model.inference.base import ModelType
+
+# 获取工厂实例
+factory = AIFactory()
+
+# LLM示例 - 使用Ollama
+llm = factory.get_llm(model_name="llama3.1", provider="ollama")
+response = await llm.generate("你好，请介绍一下自己。")
+print(response)
+
+# 图像生成示例 - 使用Replicate
+vision_service = factory.get_vision_model(
+    model_name="stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316",
+    provider="replicate",
+    config={"api_token": "your_replicate_token"}
+)
+result = await vision_service.generate_image({
+    "prompt": "A beautiful sunset over mountains",
+    "num_inference_steps": 25
+})
+print(result["urls"])
+```
+
+## 工厂架构
+
+isA_Model使用三层架构:
+
+1. **客户端层** - 应用程序代码
+2. **服务层** - 模型服务实现(LLM, 图像, 嵌入等)
+3. **提供商层** - 底层API集成(Ollama, OpenAI, Replicate等)
+
+### 主要组件
+
+- `AIFactory` - 中央工厂类，提供模型和服务访问
+- `BaseService` - 所有服务的基类
+- `BaseProvider` - 所有提供商的基类
+- 特定服务实现 - 如`ReplicateVisionService`, `OllamaLLMService`等
+
+## 支持的模型类型
+
+- **LLM** - 大语言模型 
+- **VISION** - 图像生成和分析
+- **EMBEDDING** - 文本嵌入
+- **AUDIO** - 语音识别
+- **RERANK** - 重排序
+
+## 示例
+
+查看`test_*.py`文件获取更多使用示例。
+
+## 环境变量
+
+将API密钥和其他配置添加到`.env.local`文件中:
+
+```
+OPENAI_API_KEY=your_openai_key
+REPLICATE_API_TOKEN=your_replicate_token
+```
+
+## 许可证
+
+MIT 
