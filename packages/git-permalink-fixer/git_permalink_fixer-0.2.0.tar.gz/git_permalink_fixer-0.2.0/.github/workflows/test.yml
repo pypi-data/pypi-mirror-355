@@ -1,0 +1,38 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install the latest version of rye
+      uses: eifinger/setup-rye@v4
+      with:
+        enable-cache: true
+
+    - name: Sync dependencies
+      run: rye sync
+
+    - name: Lint
+      run: rye lint
+
+    - name: Pylint
+      run: rye run pylint src
+
+    - name: MyPy
+      run: rye run mypy src
+
+    - name: Test with pytest
+      run: rye run pytest
