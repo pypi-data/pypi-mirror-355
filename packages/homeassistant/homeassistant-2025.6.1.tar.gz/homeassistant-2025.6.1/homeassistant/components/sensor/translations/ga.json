@@ -1,0 +1,40 @@
+{
+    "device_automation": {
+        "condition_type": {
+            "is_energy_distance": "Fuinneamh reatha {entity_name} in aghaidh an achair",
+            "is_reactive_energy": "Fuinneamh imoibr\u00edoch reatha {entity_name}",
+            "is_wind_direction": "Treo gaoithe reatha {entity_name}"
+        },
+        "trigger_type": {
+            "energy_distance": "Athruithe fuinnimh in aghaidh an achair i {entity_name}",
+            "reactive_energy": "athruithe fuinnimh imoibr\u00edocha {entity_name}",
+            "wind_direction": "Athruithe treo gaoithe {entity_name}"
+        }
+    },
+    "entity_component": {
+        "_": {
+            "state_attributes": {
+                "state_class": {
+                    "state": {
+                        "measurement_angle": "Uillinn tomhais"
+                    }
+                }
+            }
+        },
+        "energy_distance": {
+            "name": "Fuinneamh in aghaidh an achair"
+        },
+        "reactive_energy": {
+            "name": "Fuinneamh imoibr\u00edoch"
+        },
+        "wind_direction": {
+            "name": "Treo na gaoithe"
+        }
+    },
+    "issues": {
+        "mean_type_changed": {
+            "description": " ",
+            "title": "T\u00e1 an cine\u00e1l me\u00e1nach de {statistic_id} athraithe"
+        }
+    }
+}

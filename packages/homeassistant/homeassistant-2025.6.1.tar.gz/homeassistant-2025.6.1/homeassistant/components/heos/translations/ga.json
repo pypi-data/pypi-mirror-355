@@ -1,0 +1,71 @@
+{
+    "config": {
+        "step": {
+            "confirm_discovery": {
+                "description": "Ar mhaith leat do ghl\u00e9asanna HEOS a chur le Home Assistant?",
+                "title": "C\u00f3ras HEOS a aims\u00edodh"
+            }
+        }
+    },
+    "exceptions": {
+        "entity_not_grouped": {
+            "message": "N\u00edl an t-eintiteas {entity_id} p\u00e1irteach i ngr\u00fapa"
+        },
+        "unable_to_connect": {
+            "message": "N\u00ed f\u00e9idir ceangal le {host}"
+        },
+        "unable_to_get_players": {
+            "message": "Earr\u00e1id gan choinne agus imreoir\u00ed \u00e1 n-aisghabh\u00e1il"
+        },
+        "unsupported_media_content_id": {
+            "message": "Media_content_id gan taca\u00edocht: {media_content_id}"
+        }
+    },
+    "services": {
+        "get_queue": {
+            "description": "Aisghabhann s\u00e9 scuaine an seinnteora me\u00e1n.",
+            "name": "Faigh scuaine"
+        },
+        "group_volume_down": {
+            "description": "Laghda\u00edonn s\u00e9 toirt an ghr\u00fapa.",
+            "name": "Laghdaigh toirt an ghr\u00fapa"
+        },
+        "group_volume_set": {
+            "description": "Socra\u00edonn s\u00e9 toirt an ghr\u00fapa agus c\u00f3imheasa toirte na mball \u00e1 gcaomhn\u00fa.",
+            "fields": {
+                "volume_level": {
+                    "description": "An toirt. N\u00ed f\u00e9idir 0 a chloiste\u00e1il, is \u00e9 1 an toirt uasta.",
+                    "name": "Leibh\u00e9al"
+                }
+            },
+            "name": "Socraigh toirt an ghr\u00fapa"
+        },
+        "group_volume_up": {
+            "description": "Arda\u00edonn s\u00e9 toirt an ghr\u00fapa.",
+            "name": "Ardaigh toirt an ghr\u00fapa"
+        },
+        "move_queue_item": {
+            "fields": {
+                "destination_position": {
+                    "description": "An t-inn\u00e9acs su\u00edmh sa scuaine chun na m\u00edreanna a bhogadh chuige.",
+                    "name": "Su\u00edomh ceann scr\u00edbe"
+                },
+                "queue_ids": {
+                    "description": "Aitheant\u00f3ir\u00ed (inn\u00e9acsanna) na m\u00edreanna sa scuaine le bogadh.",
+                    "name": "Aitheant\u00f3ir\u00ed na scuaine"
+                }
+            },
+            "name": "Bog m\u00edr scuaine"
+        },
+        "remove_from_queue": {
+            "description": "Baintear m\u00edreanna as an scuaine s\u00fagartha.",
+            "fields": {
+                "queue_ids": {
+                    "description": "Aitheant\u00f3ir\u00ed (inn\u00e9acsanna) na m\u00edreanna sa scuaine le baint.",
+                    "name": "Aitheant\u00f3ir\u00ed na scuaine"
+                }
+            },
+            "name": "Bain den scuaine"
+        }
+    }
+}
