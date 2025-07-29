@@ -1,0 +1,39 @@
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "appserver-sdk-python-i18n-pt-br"
+version = "0.1.1"
+description = "Brazilian Portuguese localization utilities for Python"
+authors = [
+    { name = "Appserver SDK", email = "suporte@apppserver.com.br" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+keywords = ["validação", "cpf", "cnpj"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/appserver-sdk/python-i18n-pt-br"
+Repository = "https://github.com/appserver-sdk/python-i18n-pt-br"
+Issues = "https://github.com/appserver-sdk/python-i18n-pt-br/issues"
+Documentation = "https://github.com/appserver-sdk/python-i18n-pt-br#readme"
+
+[tool.poetry]
+packages = [
+    { include = "validation", from = "src" }
+]
+
+[tool.poetry.group.dev.dependencies]
+twine = "^6.1.0"
