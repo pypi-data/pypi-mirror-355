@@ -1,0 +1,134 @@
+---
+stages:
+  - generate_deps
+  - build
+  - quality
+  - test
+  - publish
+
+variables:
+  PY_PACKAGE_NAME: bw2scaffold
+  SONAR_SCANNER_VERSION: "4.7.0.2747-linux"
+
+
+generate_deps:
+  # job to create the license and dependency graph
+  image: python:3.12
+  stage: generate_deps
+  before_script:
+    - apt-get update && apt-get install -y -q graphviz
+    - pip install pip-licenses pipdeptree
+    - pip install graphviz
+  script:
+    - pip install .
+    - pip-licenses -a -u -d -f csv --output-file ${PY_PACKAGE_NAME}_deps_licenses.csv
+    - pipdeptree -p ${PY_PACKAGE_NAME} --graph-output png > ${PY_PACKAGE_NAME}_deps.png
+  artifacts:
+    paths:
+      - ${PY_PACKAGE_NAME}_deps_licenses.csv
+      - ${PY_PACKAGE_NAME}_deps.png
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
+
+
+build_pip_pkg:
+  # job to verify that the package can be built
+  image: python:3.12
+  stage: build
+  before_script:
+    - pip install build
+  script:
+    - python -m build
+  artifacts:
+    paths:
+      - dist/*
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
+
+publish_pypi_pkg:
+  # job to publish the package to pypi
+  image: python:3.12
+  stage: publish
+  before_script:
+    - pip install tox
+  script:
+    - tox -e build
+    - tox -e publish
+  dependencies:
+    - build_pip_pkg
+  variables:
+    TWINE_REPOSITORY: "pypi"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
+
+test_py312_linux:
+  # job to run tests in python 3.12
+  image: python:3.12
+  stage: test
+  before_script:
+    - pip install tox
+  script:
+    - tox
+
+test_py311_linux:
+  # job to run tests in python 3.11
+  image: python:3.11
+  stage: test
+  before_script:
+    - pip install tox
+  script:
+    - tox
+
+test_py310_linux:
+  # job to run tests in python 3.11
+  image: python:3.10
+  stage: test
+  before_script:
+    - pip install tox
+  script:
+    - tox
+
+
+quality_check:
+  stage: quality
+  tags:
+    - docker
+    - lcsa
+  image: python:3.12-bookworm
+  before_script:
+    - python -V
+    - pip install virtualenv
+    - virtualenv venv
+    - source venv/bin/activate
+    - >
+      wget -q
+      "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip"
+      -O /tmp/sonar-scanner-cli.zip
+    - unzip /tmp/sonar-scanner-cli.zip -d /opt
+    - export PATH=$PATH:/opt/sonar-scanner-$SONAR_SCANNER_VERSION/bin
+    - sonar-scanner --version
+    - pip install -r quality-requirements.txt
+    - pip install tox
+  script:
+    # coverage report is created in test job
+    - pip install .
+    - bandit --format json --output bandit-report.json --recursive src/ || true
+    - tox  # will produce xml report per setup.cfg
+    - >
+      pylint --exit-zero src/ tests/ -r n --output-format=parseable
+      | tee pylint.txt
+    - flake8 --exit-zero --output-file=flake8.txt
+    - >
+      sonar-scanner
+      -Dsonar.host.url=$SONAR_URL
+      -Dsonar.login=$SONAR_LOGIN
+      -Dsonar.gitlab.project_id=${CI_PROJECT_NAMESPACE}/$CI_PROJECT_ID
+      -Dsonar.projectName=${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}
+      -Dsonar.projectKey=${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}
+      -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA
+      -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
+      -Dsonar.gitlab.url=$CI_PROJECT_URL
+      -Dsonar.gitlab.project_id=$CI_PROJECT_ID
+  allow_failure: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

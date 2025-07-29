@@ -1,0 +1,26 @@
+---
+package:
+        name: bw2scaffold
+        version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+        git_url: ../
+
+requirements:
+        build:
+                - python
+                - setuptools
+        run:
+                - pyscaffold
+                - typer
+                - ipython
+                - PyYAML
+                - pre-commit
+
+about:
+        home: https://git.list.lu/gustavo.larrea/replicable-lca
+        license_file: LICENSE.txt
+
+build:
+        noarch: python
+        script: {{ PYTHON }} -m pip install --no-deps --no-build-isolation . -vv

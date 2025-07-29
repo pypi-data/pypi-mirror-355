@@ -1,0 +1,37 @@
+# '''
+# It contains the tree structure of the project directory.
+# Directories are recursively created until reaching the end of the branch (no dict object)
+# For this last dict, the key represent the name of the file, and the value is the template that will be later rendered
+#
+# Some folder recommendations are obtained from here:
+#   - https://github.com/ccs-amsterdam/compendium
+#   - https://github.com/the-turing-way/reproducible-project-template
+#   - https://github.com/pyscaffold/pyscaffoldext-dsproject
+#   - https://github.com/drivendataorg/cookiecutter-data-science
+# '''
+
+src:
+  data:
+    raw:
+      README.md: README.md.src.data.raw.template
+    processed:
+      README.md: README.md.src.data.processed.template
+    private:
+      README.md: README.md.src.data.private.template
+      raw:
+        README.md: README.md.src.data.raw.template
+      processed:
+        README.md: README.md.src.data.processed.template
+  assets:
+    README.md: README.md.src.assets.template
+  analysis:
+    README.md: README.md.src.analysis.template
+  processing:
+    README.md: README.md.src.processing.template
+  modeling:
+    README.md: README.md.src.modeling.template
+  run.py: run.py.src.template
+.gitignore: .gitignore.template
+environment.yaml: environment.yaml.template
+README.md: README.md.template
+requirements.txt: requirements.txt.template
