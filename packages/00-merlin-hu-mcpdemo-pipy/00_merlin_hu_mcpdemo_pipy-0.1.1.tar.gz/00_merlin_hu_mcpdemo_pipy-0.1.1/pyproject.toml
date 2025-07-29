@@ -1,0 +1,19 @@
+[project]
+name = "00-merlin-hu-mcpdemo-pipy"
+version = "0.1.1"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "一鸣 胡", email = "353559256@qq.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "mcp[cli]>=1.9.4",
+]
+
+[project.scripts]
+00-merlin-hu-mcpdemo-pipy = "00_merlin_hu_mcpdemo_pipy:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
