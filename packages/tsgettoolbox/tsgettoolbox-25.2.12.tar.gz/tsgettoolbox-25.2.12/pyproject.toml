@@ -1,0 +1,105 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+    "setuptools>=45",
+    "setuptools_scm[toml]>=6.2",
+    "wheel"
+]
+
+[project]
+authors = [
+    {name = "Tim Cera", email = "tim@cerazone.net"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "async_retriever",
+    "beautifulsoup4",
+    "cftime",
+    "cltoolbox",
+    "dateparser",
+    "geojson",
+    "haversine",
+    "httpretty",
+    "isodate",
+    "jinja2", # needed here until included in pydap
+    "lxml",
+    "mechanize",
+    "numpy >= 1.20, < 2.0 ; python_version <= '3.9'",
+    "packaging",
+    "pandas[excel]",
+    "pint != 0.21.*, < 0.22 ; python_version < '3.9'",
+    "pint-pandas",
+    "pydantic",
+    "pydap",
+    "pydaymet < 0.18.0",
+    "python-dateutil",
+    "requests",
+    "scipy",
+    "siphon",
+    "suds-community",
+    "tabulate"
+]
+description = "Will get time series from different sources on the internet"
+dynamic = ["readme", "version"]
+keywords = [
+    "rest",
+    "time-series",
+    "uri",
+    "url",
+    "web_services"
+]
+license = {text = "BSD-3-Clause"}
+name = "tsgettoolbox"
+requires-python = ">=3.8"
+
+[project.scripts]
+tsgettoolbox = "tsgettoolbox.tsgettoolbox:main"
+
+[project.urls]
+bitbucket = "https://bitbucket.org/timcera/tsgettoolbox/src/main/"
+documentation = "https://timcera.bitbucket.io/tsgettoolbox/docs/index.html#tsgettoolbox-documentation"
+github = "https://github.com/timcera/tsgettoolbox"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+update_changelog_on_bump = true
+version = "25.2.2"
+version_files = ["VERSION"]
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools]
+license-files = ["LICENSE.txt"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+readme = {file = "README.rst"}
+version = {file = "VERSION"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]

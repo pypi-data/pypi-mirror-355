@@ -1,0 +1,49 @@
+---
+# This workflow will install Python dependencies, run tests and lint with
+# a variety of Python versions For more information see:
+# https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: PyPI package tests
+
+on:  # yamllint disable-line rule:truthy
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+
+jobs:
+    tests:
+        uses: ./.github/workflows/tests.yml
+
+    pypi-publish:
+        needs: tests
+        runs-on: ubuntu-latest
+        environment: release
+        name: upload release to PyPI
+
+        permissions:
+            # IMPORTANT: this permission is mandatory for trusted publishing
+            id-token: write
+
+        steps:
+            - name: Checkout source
+              uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+
+            - name: Build sdist and wheel
+              run: |
+                  python -m pip install build
+                  python -m build
+
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                  path: dist
+                  merge-multiple: true
+
+            - name: Publish package distributions to PyPI
+              uses: pypa/gh-action-pypi-publish@release/v1
+              with:
+                  skip-existing: true
