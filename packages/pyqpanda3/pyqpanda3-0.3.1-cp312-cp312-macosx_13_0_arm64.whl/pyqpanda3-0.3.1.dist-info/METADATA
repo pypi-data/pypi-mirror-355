@@ -1,0 +1,53 @@
+Metadata-Version: 2.2
+Name: pyqpanda3
+Version: 0.3.1
+Summary: pyqpanda3 is Python wrapper of QPanda3.
+Author: OriginQ
+License: Apache Licence
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: Cython
+Requires-Dist: networkx
+Requires-Dist: mypy>=1.14.0
+Requires-Dist: setuptools
+Requires-Dist: graphviz
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: summary
+
+# How to use
+
+1. (Python==3.6) there is no need to update .pyd library. You can use it directly
+
+2. (Python!=3.6) First compile the QPanda3 project, and replace pyqpanda/pyQPanda.pyd with the release library.
+    - Before compiling the QPanda3 project, the python path must be configured first.
+    - Add the $(PythonPath)/include to your includepath, and $(PythonPath)/libs to your library path
+    - Compile and obtain .pyd file
+
+3. The Config.xml and MetadataConfig.xml must be placed right at the root directory of your python script
+
+# Brief
+
+pyqpanda : QPanda3 Basic API
+pyqpanda.utils : Extended QPanda3 API
+pyqpanda.Algorithm : pyqpanda algorithm pack
+pyqpanda.Algorithm.demo: Some algorithm demonstration
+pyqpanda.Algorithm.test: Test for pyqpanda.Algorithm
+pyqpanda.Algorithm.fragments: Some algorithm fragments
+pyqpanda.Hamiltonian : pyqpanda Hamiltonian utilities
