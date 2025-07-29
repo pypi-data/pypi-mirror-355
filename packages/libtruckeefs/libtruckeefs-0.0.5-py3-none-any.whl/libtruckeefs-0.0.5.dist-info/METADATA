@@ -1,0 +1,413 @@
+Metadata-Version: 2.4
+Name: libtruckeefs
+Version: 0.0.5
+Summary: None
+Home-page: https://github.com/eons-dev/truckeefs
+Author: Eons
+Author-email: support@eons.llc
+Project-URL: Bug Tracker, https://github.com/eons-dev/truckeefs/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: eot
+Requires-Dist: sqlalchemy
+Requires-Dist: asyncmy
+Requires-Dist: cryptography
+Requires-Dist: redis[async]
+Requires-Dist: sqlalchemy[asyncio]
+Requires-Dist: psutil
+Requires-Dist: libtruckeefs
+Requires-Dist: eons
+Requires-Dist: aiohttp
+Requires-Dist: redis
+Requires-Dist: aiofiles
+
+# TruckeeFS
+
+**A Tahoe-LAFS backed FUSE filesystem with local caching, concurrency semaphores, and SQL/Redis metadata tracking.**  
+Released under **AGPLv3** &copy; Eons LLC.  
+Source: [git.infrastructure.tech/eons/exe/truckeefs](https://git.infrastructure.tech/eons/exe/truckeefs)
+
+---
+
+## Table of Contents
+
+1. [Overview](#overview)  
+2. [Feature Matrix](#feature-matrix)  
+3. [Configuration Variables](#configuration-variables)  
+4. [Installation & Usage](#installation--usage)  
+   - [Python 3.12](#python-312)  
+   - [Installing TruckeeFS](#installing-truckeefs)  
+   - [Docker Compose for MySQL & Redis](#docker-compose-for-mysql--redis)  
+   - [Running TruckeeFS](#running-truckeefs)  
+   - [Mounting via FUSE](#mounting-via-fuse)  
+   - [Running Tests / Skipping Tests](#running-tests--skipping-tests)  
+5. [License](#license)  
+6. [More Information](#more-information)
+
+---
+
+## Overview
+
+**TruckeeFS** is a Python-based filesystem that uses:
+- **Tahoe-LAFS** for distributed file storage  
+- **MySQL** / **MariaDB** for inode (file/dir) metadata  
+- **Redis** for concurrency semaphores (process states, ephemeral data)  
+- **Local caching** to optimize performance  
+- **FUSE** (`pyfuse3`) to expose a standard filesystem interface
+
+Its design is modular, leveraging the [eons](https://pypi.org/project/eons/) framework for configuration injection and extension through functors/executors. Users can configure nearly every aspect (SQL host, Redis port, cache policy, etc.) via environment variables, a YAML config file, or command-line flags.
+
+---
+
+## Feature Matrix
+
+| Feature                                     | Status           | Notes                                                                                          |
+|---------------------------------------------|------------------|------------------------------------------------------------------------------------------------|
+| **File Create / Open / Read / Write**       | **Supported**    | Verified by `FileCreation`, `FileWrite`, `FileRead` tests.                                     |
+| **File Deletion**                           | **Supported**    | `TestFileDeletion` ensures DB & Tahoe cleanup.                                                 |
+| **Directory Create / Delete**               | **Supported**    | `TestDirectoryCreation`, `TestDirectoryDeletion`.                                              |
+| **Subdirectory Operations**                 | **Supported**    | `TestSubdirectoryCreation` checks nested folder creation.                                      |
+| **Directory Listing**                       | **Supported**    | `TestDirectoryListing`.                                                                        |
+| **File Move**                               | **Supported**    | `TestFileMove`; moves within the same Tahoe rootcap.                                           |
+| **File Copy**                               | **Supported**    | `TestFileCopy`; duplicates data in DB + Tahoe.                                                 |
+| **Ephemeral key-value**                     | **Supported**    | Redis-based ephemeral states, tested via `TestEphemeral`.                                      |
+| **Negative Tests** (invalid paths, etc.)    | **Supported**    | Multiple cases: non-existent files, reading from a directory, etc.                             |
+| **Symlinks** (`symlink`, `readlink`)        | **Not supported**| Returns `ENOSYS`.                                                                              |
+| **Hard links** (`link`)                     | **Not supported**| Returns `ENOSYS`.                                                                              |
+| **Special files** (`mknod` / devices)       | **Not supported**| Returns `ENOSYS`.                                                                              |
+| **Extended attributes** (xattr)             | **Partial**      | Basic get/set/remove; advanced ACL logic not fully implemented.                                |
+| **Atomic concurrency** across multiple hosts| **In-progress**  | Redis-based concurrency works on single cluster; multi-host is under testing.                  |
+| **Mirroring** vs. **Flat** storage strategy | **Supported**    | Set `backend_storage_strategy` to `MIRROR` or `FLAT`.                                          |
+
+---
+
+## Configuration Variables
+
+Because of **eons**’ flexible fetching mechanism, you may specify these variables in:
+
+1. A YAML config file (e.g. `-c /etc/truckee/env.yaml`)  
+2. The environment (e.g. `export sql_host="localhost"`)  
+3. The command line (e.g. `--rootcap URI:DIR2:xyz --test-functionality false`)
+
+Below is a comprehensive list of recognized configuration keys across **RiverFS**, **RiverDelta**, **TahoeConnection**, **Daemon** classes, and the **TRUCKEEFS** FUSE subclass. Defaults are shown in parentheses where applicable.
+
+> **Tip**: You can discover these in code by searching for `this.arg.kw`.
+
+### From **RiverFS** (base filesystem executor)
+
+| Variable                   | Type    | Default                       | Notes                                                                             |
+|----------------------------|---------|-------------------------------|------------------------------------------------------------------------------------|
+| `rootcap`                 | string  | *Required (static)*          | The Tahoe-LAFS root capability.                                                   |
+| `tahoe_url`               | string  | `http://127.0.0.1:3456`       | URL to your Tahoe gateway.                                                        |
+| `cache_dir`               | string  | `".tahoe-cache"`              | Directory for locally cached files.                                               |
+| `cache_maintenance`       | bool    | `True`                        | Whether to run the cache maintenance daemon.                                      |
+| `cache_size`              | string/int | `"0"` (no limit)             | Maximum local cache size.                                                         |
+| `cache_ttl`               | string/int | `"14400"` (4 hours)          | Seconds after which unused cache entries are eligible for pruning.                |
+| `net_timeout`             | float   | `30`                          | Timeout for network calls to Tahoe.                                               |
+| `test_compatibility`      | bool    | `True`                        | Whether to run OS/Python version checks at startup.                               |
+| `test_integration`        | bool    | `True`                        | Whether to test connectivity (Tahoe, DB) at startup.                              |
+| `test_functionality`      | bool    | `False`                        | Whether to run file/directory ops tests at startup.                               |
+| `register_classes`        | bool    | `True`                        | (Currently unused placeholder.)                                                   |
+| `reset_redis`             | bool    | `True`                        | Whether to flush Redis upon start.                                                |
+| `backend_storage_strategy`| string  | `"FLAT"`                      | Storage approach in Tahoe: `MIRROR` or `FLAT`.                                     |
+| `is_daemon`               | bool    | `False`                       | Set `True` when running in a background/daemon context (avoids self-stop calls).  |
+
+### From **RiverDelta** (database + Redis manager)
+
+| Variable                  | Type   | Default      | Notes                                                       |
+|---------------------------|--------|--------------|-------------------------------------------------------------|
+| `sql_host`               | string | *Required*   | MySQL/MariaDB hostname (or host:port).                      |
+| `sql_db`                 | string | *Required*   | Database name.                                              |
+| `sql_user`               | string | *Required*   | Database user with proper grants.                           |
+| `sql_pass`               | string | *Required*   | Database user password.                                     |
+| `redis_host`             | string | *Required*   | Redis hostname (or host:port).                              |
+| `sql_engine`             | string | `"mysql"`    | SQLAlchemy engine prefix, e.g. `"mysql+asyncmy"`.           |
+| `sql_port`               | int    | `3306`       | MySQL port if not included in `sql_host`.                   |
+| `sql_ssl`                | bool   | `False`      | Whether to use SSL with MySQL.                              |
+| `redis_port`             | int    | `6379`       | Redis port if not in `redis_host`.                          |
+| `redis_db`               | int    | `0`          | Redis DB index.                                            |
+| `redis_semaphore_timeout`| int    | `1800`       | Seconds until stale process locks expire.                   |
+
+### From **TahoeConnection** (HTTP gateway usage)
+
+| Variable         | Type   | Default | Notes                                               |
+|------------------|--------|---------|-----------------------------------------------------|
+| `base_url`       | string | *Mapped from `tahoe_url`* | Not usually set directly by user; see `tahoe_url`. |
+| `rootcap`        | string | *Mapped from `rootcap`*   | Likewise mapped from the main `rootcap`.           |
+| `timeout`        | float  | *Mapped from `net_timeout`*| Mapped from `net_timeout`.                         |
+| `max_connections`| int    | `10`    | Max in-flight requests (internal concurrency).      |
+| `auth_token`     | string | None    | Optional bearer token for Tahoe auth.               |
+
+### From **Daemon** (background daemon processes)
+
+| Variable | Type | Default | Notes                                                          |
+|----------|------|---------|----------------------------------------------------------------|
+| `nice`   | int  | `19`    | Process priority for background tasks (Linux only).            |
+| `sleep`  | int  | `60`    | Interval (seconds) between daemon loops (e.g. garbage collect).|
+
+> **CachePruneDaemon** specifically uses `sleep = 3600` by default, overriding the parent’s `60`. If you override via CLI or config, that will take precedence.
+
+### From **TRUCKEEFS** (FUSE subclass)
+
+| Variable | Type   | Default         | Notes                                                |
+|----------|--------|-----------------|------------------------------------------------------|
+| `mount`  | string | *Required*      | Mountpoint directory for the FUSE filesystem.        |
+
+---
+
+## Installation & Usage
+
+### Python 3.12
+
+```bash
+# Example for Ubuntu/Debian
+sudo apt-get update
+sudo apt-get install python3.12 python3.12-dev python3.12-venv
+```
+(Optional) Create and activate a virtual environment:
+```bash
+python3.12 -m venv venv
+source venv/bin/activate
+```
+
+### Pyfuse3
+
+```bash
+sudo apt install -y \
+  libfuse3-dev \
+  pkg-config \
+  python3-dev \
+  python3-pip
+```
+
+```bash
+pip install pyfuse3
+```
+
+### AIOMySQL
+
+NOTE: you can use any other sqlalchemy mysql driver.
+However, we've found `aiomysql` to be the most stable and performant for TruckeeFS.
+
+```bash
+pip install aiomysql
+```
+
+### Installing TruckeeFS
+
+Install directly from PyPI:
+```bash
+pip install truckeefs
+```
+
+You also need [Tahoe-LAFS](https://tahoe-lafs.org/):  
+> **NOTE**: If you have access to a running Tahoe Grid, you can just use that; only follow these instructions if you need to set up a local Tahoe node.
+
+```bash
+pip install allmydata-tahoe
+```
+Set up Tahoe:  
+```bash
+tahoe create-node
+tahoe start
+```
+(Adjust if using a custom introducer, different port, etc.)
+
+### Docker Compose for MySQL & Redis
+
+If you have the included `docker-compose.yml`:
+
+```yaml
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: truckeefs-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: truckeefs
+      MYSQL_USER: truckeeuser
+      MYSQL_PASSWORD: truckeepassword
+    ports:
+      - '3306:3306'
+    volumes:
+      - /opt/truckeefs/mysql:/var/lib/mysql
+    networks:
+      - truckeefs-network
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: truckeefs-redis
+    ports:
+      - '6379:6379'
+    networks:
+      - truckeefs-network
+
+networks:
+  truckeefs-network:
+    driver: bridge
+```
+
+Start Redis + MySQL together:
+```bash
+docker compose up -d
+```
+Your MySQL is now on `localhost:3306` and Redis on `localhost:6379`. Adjust your configuration accordingly.
+
+### Configuring TruckeeFS
+
+You can configure **TruckeeFS** using a YAML file, environment variables, or command-line flags. The following example shows a YAML config file (`/etc/truckee/env.yaml`):
+
+```yaml
+tahoe_url: "http://127.0.0.1:3456"
+cache_dir: "/opt/truckeefs/cache"
+cache_maintenance: true
+cache_size: 0 #0 means unlimited
+cache_ttl: 14400
+net_timeout: 30
+test_compatibility: true
+test_functionality: false
+sql_host: "localhost:3306"
+sql_db: "truckeefs"
+sql_user: "truckeeuser"
+sql_pass: "truckeepassword"
+redis_host: "localhost:6379"
+sql_engine: "mysql+asyncmy"
+sql_port: 3306
+sql_ssl: false
+redis_port: 6379
+redis_db: 0
+redis_semaphore_timeout: 1800
+```
+
+### Running TruckeeFS
+
+Any variables from [Configuration Variables](#configuration-variables) can be injected by file, environment, or CLI. For example, **skipping all tests** and logging to a file:
+
+```bash
+truckeefs \
+  -vvv
+  -c /etc/truckee/env.yaml \
+  --log-file ./var/log/truckeefs \
+```
+
+If using it programmatically:
+
+```python
+from libtruckeefs import RiverFS
+
+def main():
+    fs = RiverFS()
+    fs(
+        rootcap="URI:DIR2:abc...",   # from Tahoe
+        sql_host="localhost:3306",
+        sql_db="truckeefs",
+        sql_user="truckeeuser",
+        sql_pass="truckeepassword",
+        redis_host="localhost:6379",
+        test_functionality=False,
+        test_integration=False,
+        test_compatibility=False,
+        # etc.
+    )
+    # Filesystem is active, background daemons are running if enabled.
+    # ...
+    fs.Stop()
+
+if __name__ == "__main__":
+    main()
+```
+
+### Mounting via FUSE
+
+**TRUCKEEFS** inherits `RiverFS` and `pyfuse3.Operations`. For a simple mount:
+```python
+import logging
+logging.basicConfig(level=logging.INFO)
+
+from src.TRUCKEEFS import TRUCKEEFS
+
+def main():
+    fuse_fs = TRUCKEEFS()
+    fuse_fs(
+        mount="/mnt/truckeefs",
+        rootcap="URI:DIR2:abc...",
+        sql_host="localhost:3306",
+        sql_db="truckeefs",
+        sql_user="truckeeuser",
+        sql_pass="truckeepassword",
+        # ...
+    )
+
+if __name__ == "__main__":
+    main()
+```
+Run the script, then verify `/mnt/truckeefs` is mounted. Unmount with:
+```bash
+fusermount3 -u /mnt/truckeefs
+```
+
+### Running Tests / Skipping Tests
+
+By default, RiverFS tries to run:
+- Compatibility tests (`test_compatibility`)
+- Integration tests (`test_integration`)
+
+Functionality tests are disabled by default.
+
+Set each flag to `false` to skip:
+```bash
+truckeefs \
+  --rootcap URI:DIR2:abc... \
+  --test-compatibility false \
+  --test-integration false \
+  --test-functionality false
+```
+Or set them to false in your YAML config / environment.
+
+#### Functionality Tests
+
+RiverFS also provides functionality tests that can be enabled with `--test-functionality true`.
+
+Functionality tests are currently designed to only work on a fresh install of TruckeeFS. If you're reusing an existing database or local file cache, the tests may fail.
+
+
+### Stopping TruckeeFS
+
+The best way to stop TruckeeFS is to unmount it.
+NOTE: If you're using fuse and simply ^C or kill the process, the mount may be left dangling and will need to be unmounted anyway. Since unmounting will cause a clean shutdown of TruckeeFS, it's best to just start with that.
+
+```bash
+umount /mnt/truckeefs
+```
+
+---
+
+## License
+
+This project is licensed under the **GNU Affero General Public License v3 (AGPLv3)**.  
+&copy; Eons LLC
+
+---
+
+## More Information
+
+- **Source Code**:  
+  [git.infrastructure.tech/eons/exe/truckeefs](https://git.infrastructure.tech/eons/exe/truckeefs)
+  
+- **Tahoe-LAFS**:  
+  [Tahoe Docs](https://tahoe-lafs.org/)
+
+- **Redis**:  
+  [redis.io](https://redis.io/)
+
+- **MySQL**:  
+  [mysql.com](https://www.mysql.com/) or [mariadb.org](https://mariadb.org/)
+
+- **FUSE** for Python:  
+  [pyfuse3 GitHub](https://github.com/libfuse/pyfuse3)
+
+Feel free to open an issue or merge request if you run into any problems or have questions!
