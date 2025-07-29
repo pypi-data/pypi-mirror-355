@@ -1,0 +1,165 @@
+[project]
+name = "cz-light-conventional-gitmoji"
+version = "0.3.2"
+description = "A commitizen plugin that combines gitmoji and conventional commits in a lightweight way."
+authors = [
+  { name = "sasirven", email = "77392535+sasirven@users.noreply.github.com" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+repository = "https://github.com/sasirven/cz-light-conventional-gitmoji"
+requires-python = ">=3.9"
+dependencies = [
+  "commitizen>=4.8.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "src/shared",
+  "src/cz_light_gitmoji",
+  "src/gitmojify"
+]
+
+[dependency-groups]
+  dev = [
+  "black>=25.1.0",
+  "coverage[toml]>=7.9.1",
+  "pyright>=1.1.402",
+  "pytest>=8.2.0",
+  "pytest-cov>=6.2.1",
+  "ruff>=0.11.13",
+]
+
+
+[project.scripts]
+gitmojify = "gitmojify.mojify:run"
+
+[project.entry-points."commitizen.plugin"]
+cz_light_gitmoji = "cz_light_gitmoji.main:CommitizenGitmojiCz"
+
+[tool.commitizen]
+name = "cz_light_gitmoji"
+tag_format = "$version"
+version_scheme = "semver"
+version_provider = "pep621"
+update_changelog_on_bump = true
+
+[tool.black]
+preview = true
+skip-magic-trailing-comma = true
+line-length = 79
+
+# ruff
+[tool.ruff]
+preview = true
+show-fixes = true
+unsafe-fixes = true
+src = ["src", "tests"]
+line-length = 79
+
+[tool.ruff.analyze]
+preview = true
+
+[tool.ruff.format]
+preview = true
+skip-magic-trailing-comma = true
+docstring-code-format = true
+docstring-code-line-length = 72
+
+[tool.ruff.lint]
+preview = true
+select = [
+    "ALL",
+    "D213", # Force the use of this rule even with the "pep257" pydocstyle convention.
+    "D404", # Force the use of this rule even with the "pep257" pydocstyle convention.
+]
+ignore = [
+    "COM812", # Ignored because cause conflict with Ruff format xor Black.
+    "CPY001", # Ignored because the copyright header is not mandatory.
+    "RUF028", # Still in preview and not stable for now.
+    "DOC", # DOC rules are ignored for now because Ruff doesn't support Sphinx (ReST) docstrings.
+    "PLC2701", # Ignored because Pyright is already checking for this.
+]
+allowed-confusables = ["➖", "➕"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "INP001", # Ignored because pytest does not recommend having __init__.py in the "tests" folder.
+    "S101", # Ignored because we can use "assert" in tests.
+    "ARG001", # Ignored because of pytest fixtures.
+    "FBT001", # Ignored because of in tests methods we can use boolean withtout explicitly use keyword argument.
+]
+
+[tool.ruff.lint.flake8-bandit]
+check-typed-exception = true
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 72
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.pylint]
+max-args = 12
+max-positional-args = 6
+
+# pyright
+[tool.pyright]
+pythonVersion = "3.9"
+pythonPlatform = "All"
+src = ["src", "tests"]
+strict = ["src", "tests"]
+typeCheckingMode = "strict"
+deprecateTypingAliases = true
+reportPropertyTypeMismatch = "error"
+reportUninitializedInstanceVariable = "warning"
+reportImplicitOverride = "warning"
+reportImportCycles = "warning"
+reportShadowedImports = "warning"
+reportUnusedCallResult = "information"
+reportMissingSuperCall = "information"
+reportCallInDefaultInitializer = "information"
+reportUnnecessaryTypeIgnoreComment = "information"
+
+[tool.coverage.run]
+branch = true
+parallel = true
+command_line = "--module pytest"
+data_file = "reports/.coverage"
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 80
+precision = 1
+show_missing = true
+exclude_lines = [
+    'if __name__ == "__main__":',
+    'pragma: no cover',
+    'if TYPE_CHECKING:',
+]
+
+[tool.coverage.xml]
+output = "reports/coverage.xml"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov-branch",
+    "--import-mode=importlib",
+    "--color=yes",
+    "--doctest-modules",
+    "--exitfirst",
+    "--failed-first",
+    "--strict-markers",
+    "--strict-config",
+    "--verbosity=2",
+    "--junitxml=reports/pytest.xml",
+    "--cov"
+]
+testpaths = ["src", "tests"]
