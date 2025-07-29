@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: bareASGI-jinja2
+Version: 5.0.0a2
+Summary: Jinja2 support for bareASGI
+Author-email: Rob Blackbourn <rob.blackbourn@gmail.com>
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://rob-blackbourn.github.io/bareASGI-jinja2
+Project-URL: Repository, https://github.com/rob-blackbourn/bareASGI-jinja2
+Project-URL: Issues, https://github.com/rob-blackbourn/bareASGI-jinja2/issues
+Keywords: asgi,web,framework,asyncio,http
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Internet :: WWW/HTTP
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: bareASGI>=5.0.0-alpha.2
+Requires-Dist: jinja2<4,>=3.0
+Provides-Extra: dev
+Requires-Dist: autopep8; extra == "dev"
+Requires-Dist: coverage; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"
+Requires-Dist: pylint; extra == "dev"
+Requires-Dist: types-setuptools; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: mkdocs; extra == "docs"
+Requires-Dist: mkdocs-material; extra == "docs"
+Requires-Dist: jetblack-markdown; extra == "docs"
+Requires-Dist: mike; extra == "docs"
+Provides-Extra: examples
+Requires-Dist: hypercorn; extra == "examples"
+Requires-Dist: uvicorn; extra == "examples"
+Dynamic: license-file
+
+# bareASGI-jinja2
+
+Jinja2 support for [bareASGI](http://github.com/rob-blackbourn/bareasgi)
+(read the [documentation](https://rob-blackbourn.github.io/bareASGI-jinja2/))
+
+## Usage
+
+Try the following.
+
+```python
+from typing import Mapping, Any
+import jinja2
+import os.path
+import uvicorn
+from bareasgi import Application
+from bareasgi_jinja2 import Jinja2TemplateProvider, add_jinja2
+
+here = os.path.abspath(os.path.dirname(__file__))
+
+async def http_request_handler(request: HttpRequest) -> HttpResponse:
+    """Handle the request"""
+    template = 'example1.html'
+    variables = {'name': 'rob'}
+    return await Jinja2TemplateProvider.apply(request, template, variables)
+
+app = Application()
+
+env = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.join(here, 'templates')),
+    autoescape=jinja2.select_autoescape(['html', 'xml']),
+    enable_async=True
+)
+
+add_jinja2(app, env)
+
+app.http_router.add({'GET'}, '/example1', http_request_handler)
+
+uvicorn.run(app, port=9010)
+
+```
