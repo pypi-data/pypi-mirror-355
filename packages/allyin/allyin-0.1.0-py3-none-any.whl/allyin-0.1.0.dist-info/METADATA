@@ -1,0 +1,135 @@
+Metadata-Version: 2.4
+Name: allyin
+Version: 0.1.0
+Summary: Allyin: Modular AI tools for enterprise data processing
+Home-page: https://github.com/AllyInAi/libs/tree/d2d0ec320bbc0bdcf0ce337610aff035340186f0/allyin/multimodal2text
+Author: Niraj Dalavi
+Author-email: niraj@allyin.ai
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai-whisper==20240930
+Requires-Dist: readability-lxml==0.8.4.1
+Requires-Dist: beautifulsoup4==4.13.4
+Requires-Dist: pillow==11.2.1
+Requires-Dist: pytesseract==0.3.13
+Requires-Dist: pymupdf==1.26.0
+Requires-Dist: python-pptx==1.0.2
+Requires-Dist: pytest==8.4.0
+Requires-Dist: python-docx==1.1.2
+Requires-Dist: pandas==2.3.0
+Requires-Dist: openpyxl==3.1.5
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 📚 multimodal2text — Universal Unstructured Content Extractor
+
+`multimodal2text` is a plug-and-play Python library that extracts clean, structured text from **unstructured files** like PDFs, images, audio, slides, and HTML. Ideal as a preprocessing layer for RAG pipelines, LLM agents, and enterprise data ingestion systems.
+
+---
+
+## 🔧 Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Ensure dependencies like Tesseract (`brew install tesseract`) and ffmpeg (`brew install ffmpeg`) are installed if running OCR or audio transcription.
+
+---
+
+## 🏗️ Directory Structure
+
+```
+multimodal2text/
+  ├── dispatcher.py         # Central router
+  ├── pdf_parser.py
+  ├── image_ocr.py
+  ├── audio_transcriber.py
+  ├── slide_parser.py
+  ├── html_cleaner.py
+  ├── data_cleaner.py       # Final text cleaner
+  ├── utils.py
+tests/
+  └── test_*.py             # Test cases for all parsers
+```
+
+---
+
+## ⚙️ How It Works
+
+```python
+from allyin.multimodal2text import extract_text
+
+text = extract_text("path/to/your/file.pdf")  # Works for .pdf, .png, .wav, .pptx, .html
+print(text)
+```
+
+The dispatcher:
+1. Detects file type by extension
+2. Calls the correct parser (PDF, OCR, Whisper, etc.)
+3. Passes the raw text through `data_cleaner.py` to normalize
+
+---
+
+## 📥 Supported Formats
+
+| Format        | Module               | Notes                          |
+|---------------|----------------------|--------------------------------|
+| `.pdf`        | `pdf_parser.py`      | Uses PyMuPDF (`fitz`)          |
+| `.png/jpg`    | `image_ocr.py`       | Uses Tesseract OCR             |
+| `.wav/mp3/mp4`| `audio_transcriber.py` | Uses OpenAI Whisper         |
+| `.pptx`       | `slide_parser.py`    | Uses `python-pptx`             |
+| `.html`       | `html_cleaner.py`    | Strips boilerplate + tags      |
+
+---
+
+## 🧪 Testing
+
+```bash
+pytest -s tests/
+```
+
+Sample files are provided under `tests/sample_files/`.
+
+---
+
+## 💡 Use Cases
+
+- Input preprocessor for **RAG pipelines**
+- Cleaner for enterprise **document search**
+- Bridge between **files and embeddings**
+- ETL for **AI agent ingestion**
+
+---
+
+## 📁 Example Script: `run_demo.py`
+
+```python
+from allyin.multimodal2text import extract_text
+
+file_path = "tests/sample_files/sample.pdf"
+print(extract_text(file_path))
+```
+
+---
+
+## 🚧 Notes
+
+- You can add `.docx`, `.xlsx`, or `.json` support by extending `dispatcher.py` and adding a new parser module.
+- Tesseract and Whisper must be installed and callable in your system PATH.
+- These are external system binaries, not Python packages.
+    # brew install ffmpeg
+    # brew install tesseract
+
