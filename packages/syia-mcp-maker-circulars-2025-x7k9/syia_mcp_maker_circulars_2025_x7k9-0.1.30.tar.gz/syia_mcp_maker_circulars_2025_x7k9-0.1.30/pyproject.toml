@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "syia-mcp-maker-circulars-2025-x7k9"
+version = "0.1.30"
+description = "MCP Maker Circulars Module"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "cohere>=5.15.0",
+    "colorama>=0.4.6",
+    "loguru>=0.7.3",
+    "mcp>=1.8.0",
+    "motor>=3.7.0",
+    "openai>=1.78.1",
+    "playwright>=1.52.0",
+    "pydantic>=2.11.4",
+    "pymongo>=4.12.1",
+    "python-dateutil>=2.8.2",
+    "python-dotenv>=1.0.0",
+    "requests>=2.32.3",
+    "typesense>=1.0.3",
+    "httpx>=0.25.2"
+]
+
+[project.urls]
+Repository = "https://github.com/syia-ai/mcp-data-science"
+Homepage = "https://github.com/syia-ai/mcp-data-science"
+
+[tool.setuptools.packages.find]
+include = ["maker_circulars*", "utils*"]
+exclude = ["tests*", "logs*", "k8s*", "Agent*", "scheduler*"]
+
+[tool.setuptools.package-data]
+"*" = ["config/*"]
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2.post1",
+    "twine>=6.1.0",
+]
