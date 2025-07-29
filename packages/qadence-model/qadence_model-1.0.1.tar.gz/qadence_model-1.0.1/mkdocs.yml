@@ -1,0 +1,113 @@
+site_name: Qadence Model
+site_url: "https://pasqal-io.github.io/qadence-hub/qadence-model/latest"
+repo_url: "https://github.com/pasqal-io/qadence-hub.git"
+repo_name: "qadence-hub"
+
+nav:
+
+  - Qadence Model: index.md
+
+  - Getting Started: model/start.md
+
+  - Contents:
+    - Variational quantum algorithms: model/contents/content.md
+    - Configuring a QNN: model/contents/qnn_config.md
+    - QCNN model: model/contents/qcnn.md
+
+  - Tutorials:
+    - Solving MaxCut with QAOA: model/tutorials/qaoa.md
+    - Solving a 1D ODE: model/tutorials/dqc_1d.md
+    - Quantum Circuit Learning: model/tutorials/qcl.md
+    - Quantum Natural Gradient: model/tutorials/qng.md
+    - Introduction to Perceptrain: model/tutorials/perceptrain.md
+
+  - API:
+    - QNN Config: api/qnn_config.md
+    - QNN Model: api/qnn_model.md
+    - QCNN Model: api/qcnn_model.md
+    - Parameters: api/parameter.md
+    - Constructors: api/constructor.md
+
+theme:
+  name: material
+  features:
+  - content.code.annotate
+  - content.action.view
+  - content.action.edit
+  - navigation.tabs
+  - navigation.indexes
+  - navigation.sections
+  - content.code.copy
+  - content.code.annotate
+
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: light green
+    accent: purple
+    toggle:
+      icon: material/weather-sunny
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: black
+    accent: light green
+    toggle:
+      icon: material/weather-night
+      name: Switch to light mode
+
+markdown_extensions:
+- admonition  # for notes
+- footnotes
+- pymdownx.arithmatex: # for mathjax
+    generic: true
+- pymdownx.highlight:
+    anchor_linenums: true
+- pymdownx.inlinehilite
+- pymdownx.snippets
+- pymdownx.details
+- pymdownx.superfences:
+    custom_fences:
+    - name: python
+      class: python
+      validator: "!!python/name:markdown_exec.validator"
+      format: "!!python/name:markdown_exec.formatter"
+
+plugins:
+- search
+- section-index
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        options:
+          selection:
+            filters:
+              - "!^_"  # exlude all members starting with _
+              - "^__init__$"  # but always include __init__ modules and methods
+              - "^__new__$"  # but always include __init__ modules and methods
+          show_root_toc_entry: false
+          heading_level: 3
+          merge_init_into_class: true
+          docstring_section_style: spacy
+
+- mkdocs-jupyter:
+    theme: light
+- markdown-exec
+
+extra:
+ version:
+   provider: mike
+
+# To get nice tabs
+extra_css:
+- css/mkdocstrings.css
+
+# For mathjax
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+watch:
+  - qadence_model
