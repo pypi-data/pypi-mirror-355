@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: dynamicts
+Version: 0.1.4
+Summary: A library for time series analysis and preprocessing
+Home-page: https://github.com/Chinar-Quantum-AI-Ltd/DynamicTS
+Author: Chinar-Quantum-AI-Ltd
+Author-email: engineering@chinarqai.com
+License: MIT
+Project-URL: Issue Tracker, https://github.com/Chinar-Quantum-AI-Ltd/DynamicTS/issues
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Requires-Dist: ensure>=1.0.2
+Requires-Dist: pandas>=2.0.2
+Requires-Dist: numpy>=1.24.4
+Requires-Dist: matplotlib>=3.7.5
+Requires-Dist: statsmodels>=0.14.1
+Provides-Extra: testing
+Requires-Dist: pytest>=7.1.3; extra == "testing"
+Requires-Dist: mypy>=0.971; extra == "testing"
+Requires-Dist: flake8>=5.0.4; extra == "testing"
+Requires-Dist: tox>=3.25.1; extra == "testing"
+Requires-Dist: black>=22.8.0; extra == "testing"
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: home-page
+Dynamic: project-url
+Dynamic: summary
+
+# DynamicTS
+
+A Python library for time series analysis and preprocessing.
+
+## Modules
+- statistical_measures.py: Rolling stats, moving averages, missing detection, visuals
+- stationarity.py: ADF test, rolling stat visuals
+- smoothing.py: Simple exponential smoothing, plotting
+- correlation.py: ACF, PACF, lag matrix
+- summary.py: Summary and combined plots
+
+## Requirements
+- pandas
+- numpy
+- matplotlib
+- statsmodels
+
+## Usage
+Import the modules and use the functions as needed for your time series analysis workflow.
