@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: pyomnisense
+Version: 0.1.2
+Summary: Python library for accessing Omnisense sensor data from omnisense.com
+Author-email: Stefan Slivinski <sslivins@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/sslivins/pyomnisense
+Project-URL: Bug Tracker, https://github.com/sslivins/pyomnisense/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp>=3.11.12
+Requires-Dist: beautifulsoup4>=4.13.3
+Provides-Extra: tests
+Requires-Dist: pytest>=8.3.4; extra == "tests"
+Requires-Dist: pytest-asyncio>=0.25.3; extra == "tests"
+Requires-Dist: aioresponses>=0.7.8; extra == "tests"
+Requires-Dist: python-dotenv>=1.0.1; extra == "tests"
+Dynamic: license-file
+
+# pyomnisense
+
+pyomnisense is a Python library for accessing Omnisense sensor data directly from the omnisense.com website. It supports logging into the service, retrieving site lists, and fetching sensor data.
+
+## Features
+
+- Login to the Omnisense website
+- Retrieve a list of sites with sensor data
+- Fetch detailed sensor data for a selected site
+- Asynchronous methods using aiohttp
+
+## Install this repo
+
+Clone the repository and install in editable mode:
+
+```bash
+git clone https://github.com/your_username/pyomnisense.git
+cd pyomnisense
+pip install -e .
+```
+
+## Install from pypi.org
+
+```bash
+pip install pyomnisense
+```
+
+## Usage
+
+```python
+from pyomnisense import Omnisense
+
+async def main():
+    omnisense = Omnisense()
+    # Login with your credentials
+    await omnisense.login("your_username", "your_password")
+    
+    # Get list of sites
+    sites = await omnisense.get_site_list()
+    print("Available sites:", sites)
+
+    sensor_data = await omnisense.get_sensor_data(sites)
+
+    print("Sensor Data for Site:", sensor_data)
+    
+    # When done, close the session
+    await omnisense.close()
+
+import asyncio
+asyncio.run(main())
+```
+
+Replace `"your_username"` and `"your_password"` with your actual Omnisense credentials. For more details, refer to the documentation or explore the source code.
+
+## Testing
+Tests are written using pytest and pytest-asyncio. You can run tests as follows:
+
+pytest
