@@ -1,0 +1,76 @@
+{
+	"name": "packages-chatmcp-cli",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "packages/chatmcp_cli",
+	"projectType": "library",
+	"tags": [],
+	"targets": {
+		"install": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": [
+					"cd packages/chatmcp_cli && export SETUPTOOLS_SCM_PRETEND_VERSION_FOR_CHATMCP_CLI=1.1.0 && pip install -e .[dev,playwright]"
+				],
+				"parallel": false
+			}
+		},
+		"start": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": [
+					"cd packages/chatmcp_cli && python -m aider --model gemini/gemini-2.5-pro-preview-05-06 --no-auto-commits"
+				],
+				"parallel": false,
+				"envFile": "packages/chatmcp_cli/.env"
+			}
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": [
+					"cd packages/chatmcp_cli && flake8 aider/"
+				],
+				"parallel": false
+			}
+		},
+		"test": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": [
+					"cd packages/chatmcp_cli && python -m pytest tests/"
+				],
+				"parallel": false
+			}
+		},
+		"build": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": [
+					"cd packages/chatmcp_cli && export SETUPTOOLS_SCM_PRETEND_VERSION_FOR_CHATMCP_CLI=1.1.0 && python -m build"
+				],
+				"parallel": false
+			}
+		},
+		"publish": {
+			"executor": "nx:run-commands",
+			"dependsOn": ["build"],
+			"options": {
+				"commands": [
+					"cd packages/chatmcp_cli && python -m twine upload dist/*"
+				],
+				"parallel": false,
+				"envFile": "packages/chatmcp_cli/.env"
+			}
+		},
+		"publish-test": {
+			"executor": "nx:run-commands",
+			"dependsOn": ["build"],
+			"options": {
+				"commands": [
+					"cd packages/chatmcp_cli && python -m twine upload --repository testpypi dist/*"
+				],
+				"parallel": false
+			}
+		}
+	}
+}
