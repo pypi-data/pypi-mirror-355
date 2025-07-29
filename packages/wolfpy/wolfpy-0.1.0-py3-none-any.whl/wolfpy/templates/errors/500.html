@@ -1,0 +1,45 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}500 - Internal Server Error - WolfPy{% endblock %}
+
+{% block icon %}⚠️{% endblock %}
+
+{% block error_code %}500{% endblock %}
+
+{% block error_title %}Internal Server Error{% endblock %}
+
+{% block error_message %}
+We're experiencing some technical difficulties. Our team has been notified and is working to fix the issue.
+{% endblock %}
+
+{% block actions %}
+<a href="/" class="btn btn-primary">Go Home</a>
+<a href="javascript:location.reload()" class="btn btn-secondary">Try Again</a>
+{% endblock %}
+
+{% block debug_extra %}
+{% if error %}
+<div class="debug-item" style="margin-top: 15px;">
+    <span class="debug-label">Exception:</span>
+    <pre style="background: #fff; padding: 10px; border-radius: 4px; margin-top: 5px; overflow-x: auto;">{{ error }}</pre>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_content %}
+<div style="margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 6px; text-align: left;">
+    <h4 style="color: #856404; margin-bottom: 15px;">What happened?</h4>
+    <p style="color: #333; line-height: 1.6; margin-bottom: 15px;">
+        A server error occurred while processing your request. This could be due to:
+    </p>
+    <ul style="color: #333; line-height: 1.6;">
+        <li>Temporary server overload</li>
+        <li>Database connectivity issues</li>
+        <li>Application configuration problems</li>
+        <li>Unexpected data or input</li>
+    </ul>
+    <p style="color: #333; line-height: 1.6; margin-top: 15px;">
+        Please try again in a few moments. If the problem persists, contact support.
+    </p>
+</div>
+{% endblock %}
