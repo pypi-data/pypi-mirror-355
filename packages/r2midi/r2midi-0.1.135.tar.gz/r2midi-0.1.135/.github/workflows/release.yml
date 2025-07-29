@@ -1,0 +1,263 @@
+name: Release
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      version-type:
+        description: 'Version increment type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - none
+
+permissions:
+  contents: write
+
+jobs:
+  # Version management
+  version:
+    name: Version Management
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.new_version }}
+      changed: ${{ steps.version.outputs.changed }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --local user.name "GitHub Action"
+          git config --local user.email "action@github.com"
+
+      - name: Update version
+        id: version
+        run: |
+          # Get current version
+          CURRENT_VERSION=$(grep -o '__version__ = "[^"]*"' server/version.py | cut -d'"' -f2)
+          echo "Current version: $CURRENT_VERSION"
+
+          # Determine increment type
+          INCREMENT_TYPE="${{ github.event.inputs.version-type || 'patch' }}"
+
+          if [ "$INCREMENT_TYPE" = "none" ]; then
+            echo "new_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "changed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Parse version
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+          # Increment based on type
+          case "$INCREMENT_TYPE" in
+            major)
+              NEW_VERSION="$((MAJOR + 1)).0.0"
+              ;;
+            minor)
+              NEW_VERSION="$MAJOR.$((MINOR + 1)).0"
+              ;;
+            patch)
+              NEW_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+              ;;
+          esac
+
+          echo "New version: $NEW_VERSION"
+
+          # Update files
+          sed -i "s/__version__ = \"$CURRENT_VERSION\"/__version__ = \"$NEW_VERSION\"/" server/version.py
+          sed -i "s/version = \"$CURRENT_VERSION\"/version = \"$NEW_VERSION\"/" pyproject.toml
+
+          # Update CHANGELOG if it exists
+          if [ -f "CHANGELOG.md" ]; then
+            TODAY=$(date +%Y-%m-%d)
+            sed -i "s/## \[Unreleased\]/## [$NEW_VERSION] - $TODAY\n\n### Changed\n- Version increment: $INCREMENT_TYPE\n\n## [Unreleased]/" CHANGELOG.md
+            git add CHANGELOG.md
+          fi
+
+          # Commit changes
+          git add server/version.py pyproject.toml
+          git commit -m "chore: bump version to $NEW_VERSION [skip ci]"
+          git push
+
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "changed=true" >> $GITHUB_OUTPUT
+
+  # Run tests in parallel with multiple Python versions
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    needs: version
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      python-version: ${{ matrix.python-version }}
+      coverage: ${{ matrix.python-version == '3.12' }}
+
+  # Build Python package
+  python-package:
+    name: Build Python Package
+    needs: [version, test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+
+      - name: Verify project structure
+        run: |
+          echo "🔍 Verifying project structure for Python package build..."
+          
+          # Configure Git for safety
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          
+          # Ensure server/midi-presets directory exists (no longer a submodule)
+          if [ ! -d "server/midi-presets" ]; then
+            echo "📁 Creating server/midi-presets directory..."
+            mkdir -p server/midi-presets
+            echo "# MIDI Presets Directory" > server/midi-presets/README.md
+            echo "This directory can contain MIDI preset files." >> server/midi-presets/README.md
+            echo "" >> server/midi-presets/README.md
+            echo "For the original presets repository, see:" >> server/midi-presets/README.md
+            echo "https://github.com/tirans/midi-presets" >> server/midi-presets/README.md
+            
+            # Create .gitkeep to ensure directory is included in builds
+            touch server/midi-presets/.gitkeep
+          fi
+          
+          echo "✅ Project structure verified"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+          python -m build
+
+      - name: Check package
+        run: |
+          python -m twine check dist/*
+
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package
+          path: dist/
+          retention-days: 30
+
+  # Build applications for all platforms
+  build-apps:
+    name: Build (${{ matrix.platform }})
+    needs: [version, test]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            os: ubuntu-latest
+          - platform: windows
+            os: windows-latest
+          - platform: macOS
+            os: macos-13
+            sign: true
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      platform: ${{ matrix.platform }}
+      os: ${{ matrix.os }}
+      build-type: production
+      version-suffix: ""
+      sign-builds: ${{ matrix.sign || false }}
+    secrets: inherit
+
+  # Publish to PyPI
+  publish-pypi:
+    name: Publish to PyPI
+    needs: [version, python-package]
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write  # Required for OIDC trusted publishing
+    # Using OIDC trusted publishing for PyPI
+    # See: https://docs.pypi.org/trusted-publishers/using-a-publisher/
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+
+  # Create GitHub release
+  create-release:
+    name: Create Release
+    needs: [version, build-apps, publish-pypi]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: production-*
+          path: release_files
+          merge-multiple: true
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.version.outputs.version }}
+          name: R2MIDI v${{ needs.version.outputs.version }}
+          files: release_files/*
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            ## 🚀 R2MIDI v${{ needs.version.outputs.version }}
+
+            ### 📦 Downloads
+
+            #### 🍎 macOS
+            - DMG installers (drag & drop)
+            - PKG installers (automated install)
+
+            #### 🪟 Windows
+            - ZIP packages
+
+            #### 🐧 Linux
+            - DEB packages
+            - TAR.GZ archives
+
+            ### 📋 Installation
+
+            See the [installation guide](https://github.com/tirans/r2midi/wiki/Installation) for detailed instructions.
+
+            ### 🔄 Changes
+
+            See [CHANGELOG.md](https://github.com/tirans/r2midi/blob/master/CHANGELOG.md) for details.
+
+            ### 📊 PyPI Package
+
+            The Python package is available on PyPI: https://pypi.org/project/r2midi/
