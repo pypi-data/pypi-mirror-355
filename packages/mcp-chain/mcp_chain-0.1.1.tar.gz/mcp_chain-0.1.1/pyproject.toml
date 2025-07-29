@@ -1,0 +1,60 @@
+[project]
+name = "mcp-chain"
+version = "0.1.1"
+description = "An MCP server proxy with to modify and enrich calls to other MCP servers"
+readme = "README.md"
+authors = [
+    { name = "Ronie Uliana", email = "ronie.uliana@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pytest>=8.4.0",
+    "mcp>=1.2.0",
+]
+
+[project.scripts]
+mcp-chain = "mcp_chain.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+packages = ["mcp_chain"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_chain"]
+include = ["src/mcp_chain/py.typed"]
+
+[dependency-groups]
+dev = [
+    "coverage>=7.8.2",
+    "pytest-cov>=6.1.1",
+]
+
+[tool.coverage.run]
+source = ["src", "."]
+omit = [
+    "tests/*",
+    ".venv/*", 
+    "__pycache__/*",
+    "*.egg-info/*",
+    ".git/*",
+    ".pytest_cache/*"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+show_missing = true
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
