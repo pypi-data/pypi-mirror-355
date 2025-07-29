@@ -1,0 +1,159 @@
+# 🛠️ tkla_utils_flask_api
+
+**tkla_utils_flask_api** es una librería modular que provee utilidades esenciales para el desarrollo de APIs Flask. Incluye herramientas para autenticación con JWT, hashing seguro de contraseñas, generación de tokens, decoradores de seguridad, manejo de fechas y respuestas JSON uniformes.
+
+---
+
+## 🚀 Características principales
+
+- 🔐 Generación y verificación de JWT.
+- 🔑 Hashing seguro de contraseñas con bcrypt.
+- 🧬 Generación de tokens aleatorios y UUIDs.
+- 🕒 Manejo de fechas UTC y formato ISO 8601.
+- 📦 Decoradores para proteger rutas con roles.
+- 📡 Respuestas JSON uniformes y coherentes.
+
+---
+
+## 📦 Instalación
+
+```bash
+pip install tkla_utils_flask_api
+```
+
+> ⚠️ Asegúrate de tener `pip` actualizado y Python ≥ 3.7
+
+---
+
+## 🧪 Ejemplo de uso con Flask
+
+```python
+from flask import Flask, request
+from tkla_utils_flask_api.jwt_utils import generate_jwt
+from tkla_utils_flask_api.hashing import hash_password, verify_password
+from tkla_utils_flask_api.responses import success_response, error_response
+from tkla_utils_flask_api.decorators import require_jwt
+
+app = Flask(__name__)
+SECRET_KEY = "mi_clave_secreta"
+
+usuarios = {
+    "admin": hash_password("1234")
+}
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    if username not in usuarios or not verify_password(password, usuarios[username]):
+        return error_response("Credenciales inválidas", 401)
+
+    token = generate_jwt({"user": username, "role": "admin"}, SECRET_KEY)
+    return success_response({"token": token}, "Inicio de sesión exitoso")
+
+@app.route("/perfil", methods=["GET"])
+@require_jwt(SECRET_KEY, roles=["admin"])
+def perfil(user):
+    return success_response({"usuario": user}, "Perfil accedido correctamente")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+---
+
+## 📚 Documentación por módulo
+
+### 🔐 `jwt_utils.py`
+- `generate_jwt(payload, secret, exp_minutes)`
+- `decode_jwt(token, secret)`
+
+### 🔑 `hashing.py`
+- `hash_password(password)`
+- `verify_password(password, hashed)`
+
+### 🧬 `tokens.py`
+- `generate_random_token(length=32)`
+- `generate_uuid_token()`
+
+### 🕒 `time_utils.py`
+- `get_current_utc_timestamp()`
+- `format_datetime_iso(datetime_obj)`
+
+### 🛡️ `decorators.py`
+- `@require_jwt(secret, roles=['admin'])`
+
+### 📡 `responses.py`
+- `success_response(data, message, status_code)`
+- `error_response(message, status_code)`
+
+---
+
+## 📁 Estructura del proyecto
+
+```
+tkla_utils_flask_api/
+│
+├── jwt_utils.py
+├── hashing.py
+├── tokens.py
+├── time_utils.py
+├── decorators.py
+├── responses.py
+├── version.py
+├── __init__.py
+```
+
+---
+
+## 🧪 Requisitos
+
+- Python ≥ 3.7
+- Flask
+- PyJWT
+- bcrypt
+
+Instalación automática desde `setup.py`:
+
+```python
+install_requires=[
+    'Flask',
+    'PyJWT',
+    'bcrypt'
+]
+```
+
+---
+
+## 🛠️ Desarrollo y pruebas
+
+Puedes probar el ejemplo completo en `ejemplo_app/app.py`. Ejecuta:
+
+```bash
+python ejemplo_app/app.py
+```
+
+---
+
+## 📝 Licencia
+
+MIT License © 2025 Lovenson Pierre
+
+---
+
+## 🌐 Publicación en PyPI
+
+Para publicar:
+
+```bash
+python setup.py sdist bdist_wheel
+twine upload dist/*
+```
+
+---
+
+## 📬 Contacto
+
+Creado y mantenido por **Lovenson Pierre** — [lovesonpierre25@gmail.com](mailto:lovesonpierre25@gmail.com)
