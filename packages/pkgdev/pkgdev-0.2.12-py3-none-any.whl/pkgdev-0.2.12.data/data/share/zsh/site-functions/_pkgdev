@@ -1,0 +1,107 @@
+#compdef pkgdev
+
+typeset -a base_options
+local curcontext=$curcontext state state_descr line ret=1
+
+base_options=(
+  '(- :)'{-h,--help}'[show help information and exit]'
+  '(- :)'--version'[show version information and exit]'
+  '(--debug --help -h)--debug[enable debugging output]'
+  '(--quiet -q --verbose -v)'{-q,--quiet}'[suppress non-error output]'
+  '(--verbose -v --quiet -q)'{-v,--verbose}'[show verbose output]'
+  "--color[Color output]:yes/no:((y\:'yes' n\:'no'))"
+)
+
+_arguments -C \
+  $base_options \
+  '(-): :->command' \
+  '(-)*:: :->subcommand' \
+  && ret=0
+
+case $state in
+  (command)
+    typeset -a subcommands
+
+    subcommands=(
+      commit:'create git commit'
+      manifest:'update package manifests'
+      mask:'mask packages'
+      push:'run QA checks on commits and push them'
+      showkw:'show package keywords'
+    )
+
+    _describe -t subcommands subcommand subcommands && ret=0
+
+    ;;
+  (subcommand)
+    curcontext=${curcontext%:*}-$line[1]:
+
+    case $line[1] in
+      (commit)
+        _arguments -C -A '-*' \
+          $base_options \
+          {'(--bug)-b','(-b)--bug'}'[add Bug tag for a given Gentoo or upstream bug]:bug ID or URL' \
+          {'(--closes)-c','(-c)--closes'}'[add Closes tag for a given Gentoo bug or upstream PR URL]:bug ID or URL' \
+          {'(--tag)-T','(-T)--tag'}'[add commit tag]:tag\:value' \
+          {'(--dry-run)-n','(-n)--dry-run'}'[pretend to create commit]' \
+          {'(--scan)-s','(-s)--scan'}'[run pkgcheck against staged changes]' \
+          {'(--ask)-A','(-A)--ask'}'[confirm creating commit with QA errors]' \
+          '--mangle[forcibly enable/disable file mangling]' \
+          '--signoff[add a Signed-off-by trailer]' \
+          '--gpg-sign[enable GPG signing]' \
+          '--no-gpg-sign[disable GPG signing]' \
+          \*{--message,-m}'[specify commit message]:message' \
+          {'(--message-template)-M','(-M)--message-template'}'[use commit message template from specified file]:template:_files' \
+          {'(--edit)-e','(-e)--edit'}'[force edit of commit]' \
+          {'(--update)-u','(-u)--update'}'[stage all changed files]' \
+          {'(--all)-a','(-a)--all'}'[stage all changed/new/removed files]' \
+          && ret=0
+        ;;
+      (manifest)
+        _arguments -C -A '-*' \
+          $base_options \
+          {'(--distdir)-d','(-d)--distdir'}'[target download directory]:distdir:_files -/' \
+          {'(--force)-f','(-f)--force'}'[forcibly remanifest packages]' \
+          {'(--mirrors)-m','(-m)--mirrors'}'[enable fetching from Gentoo mirrors]' \
+          '--if-modified[only check packages that have uncommitted modifications]' \
+          && ret=0
+        ;;
+      (mask)
+        _arguments -C -A '-*' \
+          $base_options \
+          {'(--rites)-r','(-r)--rites'}'[mark for last rites]' \
+          {'(--bugs)-b','(-b)--bugs'}'[reference bug in the mask comment]' \
+          '--email[spawn email composer with prepared email for sending to mailing lists]' \
+          && ret=0
+        ;;
+      (push)
+        _arguments -C -A '-*' \
+          $base_options \
+          {'(--ask)-A','(-A)--ask'}'[confirm pushing commits with QA errors]' \
+          {'(--dry-run)-n','(-n)--dry-run'}'[pretend to push commits]' \
+          '--pull[run git pull --rebase before scanning]' \
+          && ret=0
+        ;;
+      (showkw)
+        _arguments -C -A '-*' \
+          $base_options \
+          {'(--format)-f','(-f)--format'}'[keywords table format]' \
+          {'(--collapse)-c','(-c)--collapse'}'[show collapsed list of arches]' \
+          {'(--stable)-s','(-s)--stable'}'[show stable arches]' \
+          {'(--unstable)-u','(-u)--unstable'}'[show unstable arches]' \
+          {'(--only-unstable)-o','(-o)--only-unstable'}'[show arches that only have unstable keywords]' \
+          {'(--prefix)-p','(-p)--prefix'}'[show prefix and non-native arches]' \
+          {'(--arch)-a','(-a)--arch'}'[select arches to display]:arch' \
+          {'(--repo)-r','(-r)--repo'}'[repo to query]:repo' \
+          && ret=0
+        ;;
+      (*)
+        _nothing
+        ;;
+    esac
+    ;;
+esac
+
+return ret
+
+# vim: set et sw=2 ts=2 ft=zsh:
