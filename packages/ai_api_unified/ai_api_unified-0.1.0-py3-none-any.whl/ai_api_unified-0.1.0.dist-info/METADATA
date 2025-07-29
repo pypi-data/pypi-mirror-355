@@ -1,0 +1,106 @@
+Metadata-Version: 2.3
+Name: ai_api_unified
+Version: 0.1.0
+Summary: Unified access layer for completion and embedding services
+License: MIT
+Keywords: llm,openai,bedrock,embeddings,completion,api
+Author: Dave Thomas
+Author-email: davidcthomas@gmail.com
+Requires-Python: >=3.12,<3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: boto3 (>=1.34.0,<2.0.0)
+Requires-Dist: httpx (>=0.27.0,<0.28.0)
+Requires-Dist: openai (>=1.25.0,<2.0.0)
+Requires-Dist: pandas (>=2.2.0,<3.0.0)
+Requires-Dist: pydantic (>=2,<3)
+Requires-Dist: pydantic-settings (>=2,<3)
+Requires-Dist: tiktoken (>=0.5.1,<0.6.0)
+Description-Content-Type: text/markdown
+
+# ai_api_unified · Unified Foundation-Model Client Library
+
+> **Version:** 0.1.0 &nbsp;|&nbsp; **License:** MIT
+
+`ai_api_unified` provides a single, typed interface for calling both completion-style
+LLMs and text-embedding models across vendors (OpenAI, Amazon Bedrock/Titan, …).
+
+## Prerequisites
+
+- **Python 3.12.1** (only)  
+  We strongly recommend using [pyenv](https://github.com/pyenv/pyenv) to install and pin **exactly** 3.12.1, so that compiled wheels (e.g. `tiktoken`) are available and no Rust toolchain is required.
+
+## Installation
+
+```bash
+# from your internal Artifactory PyPI
+pip install --index-url https://<org>.jfrog.io/artifactory/api/pypi/pypi-local/simple ai_api_unified
+```
+
+Supported Python ≥ 3.9 (< 4.0).
+
+## Quick start
+
+```python
+from ai_api_unified import AIFactory
+
+# Completions
+client = AIFactory.get_ai_completions_client()           # auto-selects engine via .env
+response = client.send_prompt("Say hello in German")
+print(response)  # → "Hallo!"
+
+# Embeddings
+embedder = AIFactory.get_ai_embedding_client()
+vector = embedder.generate_embeddings("vectorize me")
+```
+
+---
+
+## Repository layout
+
+```
+src/ai_api_unified/              ← package source
+└── ai_base.py           ← abstract interfaces
+└── ai_factory.py        ← runtime factory
+tests/                   ← pytest suite
+.env_template            ← sample environment config
+```
+
+---
+
+## Development
+
+```bash
+# create virtualenv & install runtime + dev dependencies
+poetry install --with dev
+pytest -q
+```
+
+Linting and formatting:
+
+```bash
+ruff check .
+ruff format .
+```
+
+---
+
+## Publishing to Artifactory (Poetry workflow)
+
+```bash
+poetry version 0.1.0        # bump when ready
+poetry build                # builds wheel + sdist
+poetry config repositories.ups-ai https://<org>.jfrog.io/artifactory/api/pypi/pypi-local
+poetry publish -r ups-ai
+```
+
+---
+
+## Roadmap
+
+- Add more provider back-ends (Anthropic, Google).
+- Provide async variants for high-throughput workloads.
+
