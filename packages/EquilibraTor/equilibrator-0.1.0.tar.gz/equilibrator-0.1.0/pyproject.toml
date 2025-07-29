@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "EquilibraTor"
+version = "0.1.0"
+description = "EquilibraTor streamlines molecular dynamics and equilibration simulations for proteins and protein–ligand complexes."
+authors = [
+  "José D. D. Cediel-Becerra <jcedielbecerra@ufl.edu>",
+  "Jose Cleydson F Silva <jferreiradasilva@ufl.edu>",
+  "Raquel Dias <raquel.dias@ufl.edu>"
+]
+license = "MIT"
+readme = "README.md"
+
+include = [
+  { path = "src/equilibrator/flat", format = "sdist" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+numpy = "*"
+matplotlib = "*"
+
+[[tool.poetry.packages]]
+include = "equilibrator"
+from = "src"
+
+[tool.poetry.scripts]
+equilibrator = "equilibrator.main:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
