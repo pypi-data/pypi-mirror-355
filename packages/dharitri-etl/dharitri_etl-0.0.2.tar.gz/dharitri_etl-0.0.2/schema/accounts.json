@@ -1,0 +1,82 @@
+[
+    {
+        "name": "_id",
+        "type": "STRING",
+        "description": "The address of the account, in bech32 encoding. Same as `address`."
+    },
+    {
+        "name": "address",
+        "type": "STRING",
+        "description": "The address in bech32 encoding. Should be equal to the `_id` field."
+    },
+    {
+        "name": "userName",
+        "type": "STRING",
+        "description": "The herotag the address possesses."
+    },
+    {
+        "name": "balance",
+        "type": "STRING",
+        "description": "The REWA balance, in atomic units. E.g. '1500000000000000000' means 1.5 REWA."
+    },
+    {
+        "name": "balanceNum",
+        "type": "FLOAT",
+        "description": "See `balance`. This value is expressed in REWA."
+    },
+    {
+        "name": "nonce",
+        "type": "FLOAT",
+        "description": "The sequence number of the address."
+    },
+    {
+        "name": "shardID",
+        "type": "NUMERIC",
+        "description": "The shard of the account."
+    },
+    {
+        "name": "timestamp",
+        "type": "TIMESTAMP",
+        "description": "The last moment when the address balance was changed."
+    },
+    {
+        "name": "developerRewards",
+        "type": "STRING",
+        "description": "The developer rewards (for smart contract calls), in atomic units of REWA. E.g. '1500000000000000000' means 1.5 REWA."
+    },
+    {
+        "name": "developerRewardsNum",
+        "type": "FLOAT",
+        "description": "See `developerRewards`. This value is expressed in REWA."
+    },
+    {
+        "name": "totalBalanceWithStake",
+        "type": "STRING",
+        "description": "Total balance of the account, including the staked amount, in atomic units of REWA. E.g. '1500000000000000000' means 1.5 REWA."
+    },
+    {
+        "name": "totalBalanceWithStakeNum",
+        "type": "FLOAT",
+        "description": "See `totalBalanceWithStake`. This value is expressed in REWA."
+    },
+    {
+        "name": "currentOwner",
+        "type": "STRING",
+        "description": "The address in a bech32 format of the current owner of the smart contract. This field is populated only for the smart contract addresses."
+    },
+    {
+        "name": "codeHash",
+        "type": "STRING",
+        "description": "The current code hash of the smart contract."
+    },
+    {
+        "name": "rootHash",
+        "type": "STRING",
+        "description": "The root hash of the smart contract's data trie."
+    },
+    {
+        "name": "codeMetadata",
+        "type": "STRING",
+        "description": "The code metadata of the smart contract."
+    }
+]
