@@ -1,0 +1,162 @@
+Metadata-Version: 2.4
+Name: hydrosim_sdk
+Version: 1.5.0b2
+Summary: HydroSim Shared Memory SDK
+Home-page: https://gitlab.com/hydrosim/shared-memory-api/hydrosim-sdk-python
+License: MIT
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: dtypes
+Requires-Dist: pywin32; os_name == "nt"
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# HydroSim SDK Python
+
+This is a python package for connecting to the Shared Memory API of the boat racing sim [HydroSim](http://www.hydrosimracing.com).
+
+# Install
+
+The package can be installed with pip.
+
+```shell
+pip install hydrosim_sdk
+```
+
+# Usage
+
+First import the HydroSimSDK.
+
+```python
+from hydrosim_sdk import HydroSimSDK
+```
+
+Then create an instance of the SDK.
+
+```python
+hydrosim = HydroSimSDK()
+```
+
+This will automatically start a thread that reads from the
+Memory Mapped Files that HydroSim writes to at 60hz.
+
+The data can be accessed through several member properties.
+
+> **Note**: You can look at the `hydrosim.running` property to check
+if the game is currently running.
+
+
+* **hydrosim.hydro_sim** - Returns the game and API version and a tick value that will increment as long as the game is running.
+* **hydrosim.telemetry** - Telemetry data for the local player
+* **hydrosim.timing** - Live timing data for all drivers.
+* **hydrosim.spectators** - Spectators connected to the server.
+* **hydrosim.course_info** - Information about the current course and layout.
+* **hydrosim.server** - Information about the currently connected server, including rules.
+* **hydrosim.session** - Session time and status data.
+* **hydrosim.buoys** - Location and state of all the buoys.
+* **hydrosim.chat_messages** - Chat messages that have been received.
+
+# Dealing with multiple instances
+
+In case you need to work with multiple instances of HydroSim, for instance, if running multiple dedicated servers on the same machine.
+
+You can pass the command line parameter `-mmapName` with any string
+value when launching HydroSim. This will append the name to the
+default memory mapped file names.
+
+For instance if you pass `-mmapName "Server1"`, then the names will change
+from:
+
+```python
+hydro_sim_file_name = "Local\\HydroSim"
+telemetry_file_name = "Local\\HydroSimTelemetry"
+session_file_name = "Local\\HydroSimSession"
+timing_file_name = "Local\\HydroSimTiming"
+spectators_file_name = "Local\\HydroSimSpectators"
+course_info_file_name = "Local\\HydroSimCourseInfo"
+buoys_file_name = "Local\\HydroSimBuoys"
+server_file_name = "Local\\HydroSimServerSettings"
+chat_file_name = "Local\\HydroSimChat"
+```
+
+to
+
+```python
+hydro_sim_file_name = "Local\\HydroSim.Server1"
+telemetry_file_name = "Local\\HydroSimTelemetry.Server1"
+session_file_name = "Local\\HydroSimSession.Server1"
+timing_file_name = "Local\\HydroSimTiming.Server1"
+spectators_file_name = "Local\\HydroSimSpectators.Server1"
+course_info_file_name = "Local\\HydroSimCourseInfo.Server1"
+buoys_file_name = "Local\\HydroSimBuoys.Server1"
+server_file_name = "Local\\HydroSimServerSettings.Server1"
+chat_file_name = "Local\\HydroSimChat.Server1"
+```
+
+To connect the python SDK to this instance, you then need to specify the
+name to the HydroSimSDK constructor.
+
+```python
+hydrosim = HydroSimSDK(mmap_name='Server1')
+```
+
+Some commands can be sent to the game as well. This requires enabling commands
+when instantiating the HydroSimSDK.
+
+```python
+hydrosim = HydroSimSDK(enable_commands=True)
+```
+
+Most of the commands will only work if the local instance over HydroSim is
+running as a server. The following are commands that can be sent to the game.
+
+```python
+hydrosim.commands.send_chat(message: str, targetId=-1)
+hydrosim.commands.change_course(course: str)
+hydrosim.commands.change_session(session: SessionType)
+hydrosim.commands.set_server_settings(server_settings: ServerSettingsCommandIPC)
+hydrosim.commands.set_rules(rules: RuleCommandIPC)
+hydrosim.commands.add_penalty(
+    connectionId: int, infraction: InfractionTypes, severity: SeverityTypes, lap: int
+)
+hydrosim.commands.remove_penalty(
+    connectionId: int, infraction: InfractionTypes, severity: SeverityTypes, lap: int
+)
+hydrosim.commands.revoke_admin(connectionId: int)
+hydrosim.commands.leave_water(connectionId: int)
+hydrosim.commands.kick(connectionId: int)
+hydrosim.commands.make_admin(connectionId: int, admin_type: ClientTypes)
+```
+
+There are also callback functions that can be passed to `HydroSimSDK`,
+so you don't have to make your own loop.
+
+```python
+def update(hydrosim: HydroSimSDK):
+    # Called after all data has been updated.
+    pass
+
+def session_changed(hydrosim: HydroSimSDK):
+    # Called only when session changes, this also happens when course changed.
+    pass
+
+hydrosim = HydroSimSDK(update_cb=update, session_changed_cb=session_changed)
+
+while True:
+    time.sleep(60)
+```
