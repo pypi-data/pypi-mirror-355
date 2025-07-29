@@ -1,0 +1,110 @@
+Metadata-Version: 2.4
+Name: quick-tts-mcp
+Version: 0.1.3
+Summary: MCP server providing text-to-speech functionality using OpenAI's API
+Project-URL: Homepage, https://github.com/diogoseca/quick-tts-mcp
+Project-URL: Repository, https://github.com/diogoseca/quick-tts-mcp
+Author-email: Diogo Seca <diogoseca@users.noreply.github.com>
+License: MIT
+Requires-Python: >=3.8
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: python-dotenv>=1.1.0
+Requires-Dist: quick-tts>=0.1.2
+Description-Content-Type: text/markdown
+
+# Quick-TTS MCP Server
+
+MCP server providing text-to-speech functionality using OpenAI's TTS API via the [quick-tts](https://github.com/diogoseca/quick-tts) package.
+
+## Installation
+
+### Using uvx (Recommended)
+```bash
+uvx quick-tts-mcp
+```
+
+### Using pip
+```bash
+pip install quick-tts-mcp
+```
+
+### Using Docker
+```bash
+docker run -e OPENAI_API_KEY=your-key quick-tts-mcp
+```
+
+## Configuration
+
+Create a `.env` file:
+```bash
+OPENAI_API_KEY=sk-your-openai-api-key-here
+```
+
+## Usage
+
+### Start the server
+```bash
+quick-tts-mcp
+```
+
+### Available tools:
+- `generate_speech`: Convert text to speech
+- `list_voices`: List available voices  
+- `list_models`: List available models
+
+## Example MCP client configuration
+```json
+{
+  "mcpServers": {
+    "quick-tts": {
+      "command": "uvx",
+      "args": ["quick-tts-mcp"],
+      "env": {
+        "OPENAI_API_KEY": "sk-your-key"
+      }
+    }
+  }
+}
+```
+
+## Tools
+
+### generate_speech
+Convert text to speech using OpenAI's TTS API.
+
+**Parameters:**
+- `text` (required): Text to convert to speech
+- `voice` (optional): Voice to use - alloy, echo, fable, onyx, nova, shimmer (default: alloy)
+- `model` (optional): Model to use - tts-1, tts-1-hd (default: tts-1-hd)
+- `output_format` (optional): Output format - mp3, wav (default: mp3)
+
+**Returns:**
+JSON with file path, size, and metadata
+
+### list_voices
+List all available TTS voices with descriptions.
+
+**Returns:**
+JSON array of available voices
+
+### list_models
+List all available TTS models with descriptions.
+
+**Returns:**
+JSON array of available models
+
+## Development
+
+### Local installation
+```bash
+pip install -e .
+```
+
+### Running locally
+```bash
+python -m quick_tts_mcp.server
+```
+
+## License
+
+MIT
