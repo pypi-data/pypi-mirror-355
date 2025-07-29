@@ -1,0 +1,25 @@
+from typing import Type, Union, Literal, Optional, Dict, List, Tuple, Set, Annotated, Any
+from pydantic import BaseModel, Field
+from pydantic import model_validator
+from .common import ListenerType, CommonListenerConfig
+
+class HttpCallbackConfig(BaseModel):
+    path: str
+    method: Literal[ "GET", "POST", "PUT", "DELETE", "PATCH" ] = "GET"
+    bulk: bool = False
+    identify_by: str
+
+class HttpCallbackListenerConfig(CommonListenerConfig):
+    type: Literal[ListenerType.HTTP_CALLBACK]
+    host: Optional[str] = "0.0.0.0"
+    port: Optional[int] = 8090
+    base_path: Optional[str] = None
+    callbacks: Optional[List[HttpCallbackConfig]] = Field(default_factory=list)
+
+    @model_validator(mode="before")
+    def inflate_single_callback(cls, values):
+        if "callbacks" not in values:
+            callback_keys = set(HttpCallbackConfig.model_fields.keys())
+            if any(k in values for k in callback_keys):
+                values["callbacks"] = [ { k: values.pop(k) for k in callback_keys if k in values } ]
+        return values
