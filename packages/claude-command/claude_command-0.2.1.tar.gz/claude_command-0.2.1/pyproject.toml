@@ -1,0 +1,45 @@
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project]
+name = "claude-command"
+version = "0.2.1"
+description = "Claude Command - AI command center for Claude Code"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [ "fastmcp", "google-generativeai", "openai", "anthropic",]
+classifiers = [ "Development Status :: 5 - Production/Stable", "Intended Audience :: Developers", "License :: OSI Approved :: MIT License", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3.10", "Programming Language :: Python :: 3.11", "Programming Language :: Python :: 3.12", "Topic :: Software Development :: Libraries :: Python Modules",]
+[[project.authors]]
+name = "Shane Holloman"
+
+[dependency-groups]
+dev = [ "mypy>=1.16.0", "pre-commit>=4.2.0", "ruff>=0.11.13", "toml>=0.10.2",]
+
+[project.license]
+text = "MIT"
+
+[project.optional-dependencies]
+dev = [ "ruff", "mypy",]
+
+[project.urls]
+Homepage = "https://github.com/shaneholloman/mcp-claude-command"
+Repository = "https://github.com/shaneholloman/mcp-claude-command"
+Issues = "https://github.com/shaneholloman/mcp-claude-command/issues"
+
+[project.scripts]
+claude-command = "claude_command.server:main"
+
+[tool.mypy]
+python_version = "3.10"
+mypy_path = "src"
+explicit_package_bases = true
+namespace_packages = true
+show_error_codes = true
+warn_unused_ignores = true
+
+[tool.hatch.build.targets.wheel]
+packages = [ "src/claude_command",]
+
+[tool.hatch.build.targets.sdist]
+include = [ "src/", "README.md", "LICENSE", "examples.md",]

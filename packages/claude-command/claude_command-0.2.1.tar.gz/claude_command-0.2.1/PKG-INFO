@@ -1,0 +1,231 @@
+Metadata-Version: 2.4
+Name: claude-command
+Version: 0.2.1
+Summary: Claude Command - AI command center for Claude Code
+Project-URL: Homepage, https://github.com/shaneholloman/mcp-claude-command
+Project-URL: Repository, https://github.com/shaneholloman/mcp-claude-command
+Project-URL: Issues, https://github.com/shaneholloman/mcp-claude-command/issues
+Author: Shane Holloman
+License: MIT
+License-File: LICENSE
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: anthropic
+Requires-Dist: fastmcp
+Requires-Dist: google-generativeai
+Requires-Dist: openai
+Provides-Extra: dev
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Claude Command MCP Server
+
+Real-time AI command center for Claude Code CLI with dynamic multi-provider support.
+
+## Overview
+
+Claude Command is an MCP (Model Context Protocol) server that enables live three-way conversations between Claude Code CLI, multiple AI providers, and human developers. Built with fastMCP, it supports dynamic provider switching and real-time streaming conversations.
+
+## Features
+
+- **Multi-Provider Support**: Gemini, OpenAI, and Anthropic models
+- **Dynamic Provider Switching**: Call any AI provider on-demand
+- **Real-Time Streaming**: Watch conversations unfold live via `tail -f`
+- **Context Preservation**: Full conversation history maintained across providers
+- **Background Processing**: Non-blocking AI calls with threading
+- **Session Management**: Persistent conversation storage in JSON format
+
+## Architecture
+
+Built using fastMCP framework with modular client architecture:
+
+```sh
+Claude Code CLI (Hub) ↔ fastMCP Server ↔ [Gemini ↔ OpenAI ↔ Anthropic]
+```
+
+## Installation
+
+### Prerequisites
+
+- [Claude Code CLI](https://claude.ai/code)
+- Python 3.10+
+- API keys for desired providers
+
+### Install Dependencies
+
+```bash
+git clone https://github.com/shaneholloman/mcp-claude-command
+cd mcp-claude-command
+uv sync
+```
+
+### Configure API Keys
+
+Set environment variables:
+
+```bash
+export GEMINI_API_KEY="your_gemini_key"
+export OPENAI_API_KEY="your_openai_key"
+export ANTHROPIC_API_KEY="your_anthropic_key"
+```
+
+Or use command line arguments:
+
+```bash
+uv run python -m claude_command \
+  --gemini-api-key YOUR_GEMINI_KEY \
+  --openai-api-key YOUR_OPENAI_KEY \
+  --anthropic-api-key YOUR_ANTHROPIC_KEY
+```
+
+### Add to Claude Code
+
+Install as a global UV tool and configure with Claude CLI:
+
+```bash
+# Install claude-command globally
+uv tool install .
+
+# Configure with Claude CLI (includes all API keys for multi-provider support)
+# Option 1: Using environment variables (if you have them set)
+claude mcp add claude-command claude-command \
+  -e GEMINI_API_KEY="$GEMINI_API_KEY" \
+  -e CLAUDE_COMMAND_OPENAI_API_KEY="$OPENAI_API_KEY" \
+  -e CLAUDE_COMMAND_ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" \
+  --scope user
+
+# Option 2: Using your actual API keys directly (replace with your real keys)
+claude mcp add claude-command claude-command \
+  -e GEMINI_API_KEY="AIzaSyBxxxxxxxxxxxxxxxxxxxxxxx" \
+  -e CLAUDE_COMMAND_OPENAI_API_KEY="sk-proj-xxxxxxxxxxxxxxxxxxxxxxx" \
+  -e CLAUDE_COMMAND_ANTHROPIC_API_KEY="sk-ant-api03-xxxxxxxxxxxxxxx" \
+  --scope user
+
+# Verify configuration
+claude mcp list
+claude mcp get claude-command
+
+# Verify API keys are properly configured (incontrovertible proof)
+claude mcp get claude-command | grep -A 10 "Environment:"
+```
+
+> > [!IMPORTANT]
+> Now, restart Claude's CLI. This is important.
+
+## Usage
+
+### Available Tools
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `claude_command_query` | Interactive conversation with AI | `prompt`, `conversation_id`, `temperature`, `provider` |
+| `claude_command_review` | Code review by AI | `code`, `focus`, `provider` |
+| `claude_command_brainstorm` | Creative brainstorming session | `topic`, `context`, `provider` |
+| `claude_command_conversation_history` | Retrieve conversation history | `conversation_id` |
+| `claude_command_status` | Server health and configuration | - |
+| `claude_command_conversations_list` | List all conversation files | - |
+| `claude_command_conversations_cleanup` | Clean up old conversations | `keep_count` |
+
+### Provider Selection
+
+Specify AI provider for any tool:
+
+```bash
+# Use default provider (first available)
+claude_command_query prompt="Hello!"
+
+# Use specific provider
+claude_command_query prompt="Hello!" provider="gemini"
+claude_command_query prompt="What do you think?" provider="openai"
+claude_command_query prompt="Your perspective?" provider="anthropic"
+```
+
+### Live Streaming
+
+Watch conversations in real-time:
+
+```bash
+tail -f ~/claude-command/live_stream.txt
+```
+
+### Multi-AI Conversations
+
+Create conversations between multiple AI providers:
+
+1. Start conversation with one provider
+2. Use different providers for follow-up responses
+3. Each AI sees full conversation context
+4. Watch live streaming for real-time collaboration
+
+## File Locations
+
+All conversation data stored in `~/claude-command/`:
+
+- **Live Stream**: `live_stream.txt` - Real-time conversation output
+- **Sessions**: `session_YYYY-MM-DD_HH-MM-SS_XXXXXXXX.json` - Session files
+- **Conversations**: `conversation_YYYY-MM-DD_HH-MM-SS_XXXXXXXX.json` - Individual conversations
+
+## Configuration
+
+### Settings
+
+Configure via environment variables or command line:
+
+- `GEMINI_API_KEY` / `--gemini-api-key`
+- `OPENAI_API_KEY` / `--openai-api-key`
+- `ANTHROPIC_API_KEY` / `--anthropic-api-key`
+- `CONVERSATIONS_DIR` / `--conversations-dir` (default: `~/claude-command`)
+- `DEFAULT_TEMPERATURE` / `--temperature` (default: 0.7)
+
+### Models
+
+Default models by provider:
+
+- **Gemini**: `gemini-2.0-flash-exp`
+- **OpenAI**: `gpt-4`
+- **Anthropic**: `claude-3-5-sonnet-20241022`
+
+## Development
+
+### Project Structure
+
+```tree
+src/claude_command/
+├── server.py              # Main MCP server with fastMCP tools
+├── settings.py            # Configuration management
+├── sessions.py            # Conversation session handling
+└── clients/
+    ├── interface.py       # AI client interface
+    ├── gemini.py         # Gemini implementation
+    ├── openai.py         # OpenAI implementation
+    ├── anthropic.py      # Anthropic implementation
+    └── factory.py        # Client factory
+```
+
+### Local Development
+
+```bash
+git clone https://github.com/shaneholloman/mcp-claude-command
+cd mcp-claude-command
+uv sync
+uv run python -m claude_command --gemini-api-key YOUR_KEY
+```
+
+## Requirements
+
+- Claude Code CLI (will NOT work with Claude Desktop)
+- At least one API key (Gemini, OpenAI, or Anthropic)
+- Python 3.10+
+- uv package manager
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
