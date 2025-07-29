@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alo-agent-sdk" # Conventional PyPI naming
+version = "0.2.8" # Increment for new releases
+authors = [
+    { name="Daniele Ligorio / Alomana", email="dl@alomana.com" }, # Replace
+]
+description = "SDK for building and deploying AI agents, with project templating."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text="MIT" } # Or use { file="LICENSE" } if you have a LICENSE file at root
+classifiers = [
+    "Development Status :: 3 - Alpha", # Example, adjust as needed
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License", # Ensure this matches your actual license
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+dependencies = [
+    "fastapi==0.110.3",
+    "uvicorn[standard]==0.24.0.post1",
+    "httpx==0.28.1",
+    "pydantic==2.11.3",
+    "requests==2.32.3",
+    "typer==0.16.0",
+    "jinja2==3.1.6",
+    "python-dotenv>=0.21.0,<2.0.0", # For loading .env files for local MCP servers
+    "ruamel.yaml>=0.17.21,<0.19.0" # For YAML processing (generating Docker Compose snippets)
+]
+
+[project.urls]
+"Homepage" = "https://github.com/aidataspark/alo-agent-sdk" # Replace
+"Repository" = "https://github.com/aidataspark/alo-agent-sdk" # Replace
+"Bug Tracker" = "https://github.com/aidataspark/alo-agent-sdk/issues" # Replace
+
+[project.scripts]
+alo-sdk = "alo_agent_sdk.cli.main:app" # Points to a Typer app in alo_agent_sdk/cli/main.py
+
+[project.optional-dependencies]
+openai = ["openai>=1.0.0,<2.0.0"]
+anthropic = ["anthropic>=0.20.0,<1.0.0"]
+bedrock = ["boto3>=1.20.0,<2.0.0", "aioboto3>=10.0.0,<13.0.0"]
+all = [
+    "openai>=1.0.0,<2.0.0",
+    "anthropic>=0.20.0,<1.0.0",
+    "boto3>=1.20.0,<2.0.0",
+    "aioboto3>=10.0.0,<13.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]  # Search for packages in the current directory (root of pyproject.toml)
+include = ["alo_agent_sdk*"]  # Include the main SDK package and its submodules
+exclude = ["tests*", "docs*", "examples*", "my_multi_agent_app*", "mana*"] # Exclude test, docs, examples, and old mana/my_multi_agent_app folders if they are at this level
+
+[tool.setuptools.package-data]
+# This is crucial for including the project_templates in the distributed package
+# The paths are relative to the package directory (alo_agent_sdk if it's the main package folder)
+# If pyproject.toml is at the root and alo_agent_sdk/ is the package,
+# then project_templates is outside.
+# A common way is to place project_templates inside the alo_agent_sdk package folder
+# e.g. alo_agent_sdk/alo_agent_sdk/project_templates
+# Or, adjust MANIFEST.in if not using this.
+# For now, assuming project_templates will be inside the installable alo_agent_sdk package:
+# alo_agent_sdk = ["project_templates/mana/**/*"]
+# If project_templates is at the same level as the alo_agent_sdk source folder,
+# and pyproject.toml is at the root:
+# This part is tricky with setuptools and pyproject.toml alone for non-code data outside the package.
+# Often, MANIFEST.in is used:
+# recursive-include project_templates *
+# For now, let's assume we'll handle template inclusion via MANIFEST.in or by moving templates
+# inside the `alo_agent_sdk` source directory.
+# The simplest for setuptools is to have data inside the package.
+# If `alo_agent_sdk` (source folder) is at the root alongside `project_templates`:
+# This configuration assumes `pyproject.toml` is at the root, and `alo_agent_sdk` is the package folder.
+# To include `project_templates` which is a sibling to `alo_agent_sdk` package folder,
+# it's usually done via MANIFEST.in or by ensuring the build process copies it.
+# For a pure pyproject.toml approach with setuptools, data files are typically inside the package.
+# Let's assume for now that the CLI will locate templates relative to its installed location.
+# We will need to ensure the templates are copied into the sdist and wheel.
+# A MANIFEST.in with `recursive-include project_templates *` would be the classic way.
+# Or, if using a build backend like `hatch`, it has better support for this in pyproject.toml.
+# For setuptools, we might need to ensure `include_package_data = True` in a setup.cfg or setup.py,
+# and use MANIFEST.in.
+# For now, I'll leave this section minimal and we can refine template packaging later.
+# The CLI script will need a robust way to find these templates.
+# This tells setuptools that for the package "alo_agent_sdk", 
+# include files matching "project_templates/mana/**/*" and "templates/**/*" 
+# found within that package's directory.
+"alo_agent_sdk" = [
+    "project_templates/**/*",
+    "templates/**/*"
+]
