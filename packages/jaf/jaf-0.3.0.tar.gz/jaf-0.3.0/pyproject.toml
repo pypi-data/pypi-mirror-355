@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jaf"
+version = "0.3.0"
+description = "JSON Array Filter (jaf) is a versatile filter for JSON arrays. It is a domain-specific language (DSL) that allows you to filter JSON arrays using a simple, yet powerful syntax. Programmatically, the AST can be used to filter JSON arrays in a more flexible way."
+authors = [
+    { name = "Alex Towell", email = "lex@metafunctor.com" }
+]
+readme = "README.md"
+license = { text = "MIT License" }
+keywords = ["filter", "JSON", "AST", "DSL", "Lark", "parser", "array"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "lark-parser",
+    "rapidfuzz"
+]
+
+# Specify package discovery
+[tool.setuptools.packages.find]
+include = ["jaf", "jaf.*"]
+
+[project.urls]
+Homepage = "https://github.com/queelius/jaf"
+Documentation = "https://queelius.github.io/jaf" # Updated to where gh-pages will be
+Repository = "https://github.com/queelius/jaf"
+
+[project.scripts]
+jaf = "jaf.console_script:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+    "pymdown-extensions>=10.0",
+    "build",
+    "twine"
+]
