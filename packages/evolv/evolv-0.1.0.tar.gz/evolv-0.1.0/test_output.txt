@@ -1,0 +1,387 @@
+Running simple example...
+
+
+
+
+[34m[2025-06-12T17:54:17.306310][0m
+
+[31mSystem message:[0m
+
+Your input fields are:
+1. `current_program` (ProgramInfo): Current program to improve
+2. `inspiration_programs` (list[ProgramInfo]): High-scoring example programs
+3. `goal` (str): Optimization goal
+4. `primary_metric` (str): Primary metric to optimize
+Your output fields are:
+1. `reasoning` (str):
+2. `improvement` (str): Specific improvement description for the code
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## current_program ## ]]
+{current_program}
+
+[[ ## inspiration_programs ## ]]
+{inspiration_programs}
+
+[[ ## goal ## ]]
+{goal}
+
+[[ ## primary_metric ## ]]
+{primary_metric}
+
+[[ ## reasoning ## ]]
+{reasoning}
+
+[[ ## improvement ## ]]
+{improvement}
+
+[[ ## completed ## ]]
+In adhering to this structure, your objective is:
+        Improve code by learning from high-scoring examples.
+
+
+[31mUser message:[0m
+
+[[ ## current_program ## ]]
+{"code": "@evolve(goal=\"Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters\")\ndef create_and_train_model(X_train, y_train, max_depth=3, min_samples_split=2):\n    \"\"\"Create and train a DecisionTree model. Only the model logic can be evolved.\"\"\"\n    # Train model with evolving parameters\n    clf = DecisionTreeClassifier(max_depth=max_depth, min_samples_split=min_samples_split, random_state=42)\n    clf.fit(X_train, y_train)\n    return clf\n", "metrics": {"fitness": 1.0}, "score": 1.0}
+
+[[ ## inspiration_programs ## ]]
+[]
+
+[[ ## goal ## ]]
+Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters
+
+[[ ## primary_metric ## ]]
+fitness
+
+Respond with the corresponding output fields, starting with the field `[[ ## reasoning ## ]]`, then `[[ ## improvement ## ]]`, and then ending with the marker for `[[ ## completed ## ]]`.
+
+
+[31mResponse:[0m
+
+[32m[[ ## reasoning ## ]]
+The current program implements a DecisionTreeClassifier with two hyperparameters exposed for evolution: max_depth and min_samples_split. While these are important, DecisionTreeClassifier has additional hyperparameters that can significantly influence accuracy, especially on small datasets like Iris. The current code is simple and functional but potentially limited in its search space for optimal accuracy. Including more hyperparameters—such as criterion ('gini' vs 'entropy'), max_features, or min_samples_leaf—can allow the evolutionary process to discover higher-performing configurations. Furthermore, the method to set the random_state ensures reproducibility, which is good. No inspiration programs are provided, so improvement relies on knowledge of DecisionTreeClassifier's options and common practices.
+
+[[ ## improvement ## ]]
+Expand the set of evolvable hyperparameters in the DecisionTreeClassifier to include criterion, max_features, and min_samples_leaf in addition to max_depth and min_samples_split. This will provide a richer search space for the evolutionary algorithm, increasing the chances of finding a configuration that yields maximal accuracy on the Iris dataset. For example:
+
+```python
+@evolve(goal="Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters")
+def create_and_train_model(
+    X_train, y_train,
+    max_depth=3,
+    min_samples_split=2,
+    criterion='gini',
+    max_features=None,
+    min_samples_leaf=1
+):
+    """Create and train a DecisionTree model. Only the model logic can be evolved."""
+    clf = DecisionTreeClassifier(
+        max_depth=max_depth,
+        min_samples_split=min_samples_split,
+        criterion=criterion,
+        max_features=max_features,
+        min_samples_leaf=min_samples_leaf,
+        random_state=42
+    )
+    clf.fit(X_train, y_train)
+    return clf
+```
+This allows the evolutionary system to tune more parameters for potentially better accuracy.
+
+[[ ## completed ## ]][0m
+
+
+
+
+
+
+
+
+
+[34m[2025-06-12T17:54:17.306310][0m
+
+[31mSystem message:[0m
+
+Your input fields are:
+1. `current_program` (ProgramInfo): Current program to improve
+2. `inspiration_programs` (list[ProgramInfo]): High-scoring example programs
+3. `goal` (str): Optimization goal
+4. `primary_metric` (str): Primary metric to optimize
+Your output fields are:
+1. `reasoning` (str):
+2. `improvement` (str): Specific improvement description for the code
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## current_program ## ]]
+{current_program}
+
+[[ ## inspiration_programs ## ]]
+{inspiration_programs}
+
+[[ ## goal ## ]]
+{goal}
+
+[[ ## primary_metric ## ]]
+{primary_metric}
+
+[[ ## reasoning ## ]]
+{reasoning}
+
+[[ ## improvement ## ]]
+{improvement}
+
+[[ ## completed ## ]]
+In adhering to this structure, your objective is:
+        Improve code by learning from high-scoring examples.
+
+
+[31mUser message:[0m
+
+[[ ## current_program ## ]]
+{"code": "@evolve(goal=\"Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters\")\ndef create_and_train_model(X_train, y_train, max_depth=3, min_samples_split=2):\n    \"\"\"Create and train a DecisionTree model. Only the model logic can be evolved.\"\"\"\n    # Train model with evolving parameters\n    clf = DecisionTreeClassifier(max_depth=max_depth, min_samples_split=min_samples_split, random_state=42)\n    clf.fit(X_train, y_train)\n    return clf\n", "metrics": {"fitness": 1.0}, "score": 1.0}
+
+[[ ## inspiration_programs ## ]]
+[]
+
+[[ ## goal ## ]]
+Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters
+
+[[ ## primary_metric ## ]]
+fitness
+
+Respond with the corresponding output fields, starting with the field `[[ ## reasoning ## ]]`, then `[[ ## improvement ## ]]`, and then ending with the marker for `[[ ## completed ## ]]`.
+
+
+[31mResponse:[0m
+
+[32m[[ ## reasoning ## ]]
+The current program implements a DecisionTreeClassifier with two hyperparameters exposed for evolution: max_depth and min_samples_split. While these are important, DecisionTreeClassifier has additional hyperparameters that can significantly influence accuracy, especially on small datasets like Iris. The current code is simple and functional but potentially limited in its search space for optimal accuracy. Including more hyperparameters—such as criterion ('gini' vs 'entropy'), max_features, or min_samples_leaf—can allow the evolutionary process to discover higher-performing configurations. Furthermore, the method to set the random_state ensures reproducibility, which is good. No inspiration programs are provided, so improvement relies on knowledge of DecisionTreeClassifier's options and common practices.
+
+[[ ## improvement ## ]]
+Expand the set of evolvable hyperparameters in the DecisionTreeClassifier to include criterion, max_features, and min_samples_leaf in addition to max_depth and min_samples_split. This will provide a richer search space for the evolutionary algorithm, increasing the chances of finding a configuration that yields maximal accuracy on the Iris dataset. For example:
+
+```python
+@evolve(goal="Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters")
+def create_and_train_model(
+    X_train, y_train,
+    max_depth=3,
+    min_samples_split=2,
+    criterion='gini',
+    max_features=None,
+    min_samples_leaf=1
+):
+    """Create and train a DecisionTree model. Only the model logic can be evolved."""
+    clf = DecisionTreeClassifier(
+        max_depth=max_depth,
+        min_samples_split=min_samples_split,
+        criterion=criterion,
+        max_features=max_features,
+        min_samples_leaf=min_samples_leaf,
+        random_state=42
+    )
+    clf.fit(X_train, y_train)
+    return clf
+```
+This allows the evolutionary system to tune more parameters for potentially better accuracy.
+
+[[ ## completed ## ]][0m
+
+
+
+
+
+
+
+
+
+[34m[2025-06-12T17:54:17.306310][0m
+
+[31mSystem message:[0m
+
+Your input fields are:
+1. `current_program` (ProgramInfo): Current program to improve
+2. `inspiration_programs` (list[ProgramInfo]): High-scoring example programs
+3. `goal` (str): Optimization goal
+4. `primary_metric` (str): Primary metric to optimize
+Your output fields are:
+1. `reasoning` (str):
+2. `improvement` (str): Specific improvement description for the code
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## current_program ## ]]
+{current_program}
+
+[[ ## inspiration_programs ## ]]
+{inspiration_programs}
+
+[[ ## goal ## ]]
+{goal}
+
+[[ ## primary_metric ## ]]
+{primary_metric}
+
+[[ ## reasoning ## ]]
+{reasoning}
+
+[[ ## improvement ## ]]
+{improvement}
+
+[[ ## completed ## ]]
+In adhering to this structure, your objective is:
+        Improve code by learning from high-scoring examples.
+
+
+[31mUser message:[0m
+
+[[ ## current_program ## ]]
+{"code": "@evolve(goal=\"Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters\")\ndef create_and_train_model(X_train, y_train, max_depth=3, min_samples_split=2):\n    \"\"\"Create and train a DecisionTree model. Only the model logic can be evolved.\"\"\"\n    # Train model with evolving parameters\n    clf = DecisionTreeClassifier(max_depth=max_depth, min_samples_split=min_samples_split, random_state=42)\n    clf.fit(X_train, y_train)\n    return clf\n", "metrics": {"fitness": 1.0}, "score": 1.0}
+
+[[ ## inspiration_programs ## ]]
+[]
+
+[[ ## goal ## ]]
+Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters
+
+[[ ## primary_metric ## ]]
+fitness
+
+Respond with the corresponding output fields, starting with the field `[[ ## reasoning ## ]]`, then `[[ ## improvement ## ]]`, and then ending with the marker for `[[ ## completed ## ]]`.
+
+
+[31mResponse:[0m
+
+[32m[[ ## reasoning ## ]]
+The current program implements a DecisionTreeClassifier with two hyperparameters exposed for evolution: max_depth and min_samples_split. While these are important, DecisionTreeClassifier has additional hyperparameters that can significantly influence accuracy, especially on small datasets like Iris. The current code is simple and functional but potentially limited in its search space for optimal accuracy. Including more hyperparameters—such as criterion ('gini' vs 'entropy'), max_features, or min_samples_leaf—can allow the evolutionary process to discover higher-performing configurations. Furthermore, the method to set the random_state ensures reproducibility, which is good. No inspiration programs are provided, so improvement relies on knowledge of DecisionTreeClassifier's options and common practices.
+
+[[ ## improvement ## ]]
+Expand the set of evolvable hyperparameters in the DecisionTreeClassifier to include criterion, max_features, and min_samples_leaf in addition to max_depth and min_samples_split. This will provide a richer search space for the evolutionary algorithm, increasing the chances of finding a configuration that yields maximal accuracy on the Iris dataset. For example:
+
+```python
+@evolve(goal="Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters")
+def create_and_train_model(
+    X_train, y_train,
+    max_depth=3,
+    min_samples_split=2,
+    criterion='gini',
+    max_features=None,
+    min_samples_leaf=1
+):
+    """Create and train a DecisionTree model. Only the model logic can be evolved."""
+    clf = DecisionTreeClassifier(
+        max_depth=max_depth,
+        min_samples_split=min_samples_split,
+        criterion=criterion,
+        max_features=max_features,
+        min_samples_leaf=min_samples_leaf,
+        random_state=42
+    )
+    clf.fit(X_train, y_train)
+    return clf
+```
+This allows the evolutionary system to tune more parameters for potentially better accuracy.
+
+[[ ## completed ## ]][0m
+
+
+
+
+
+
+
+
+
+[34m[2025-06-12T17:54:17.306310][0m
+
+[31mSystem message:[0m
+
+Your input fields are:
+1. `current_program` (ProgramInfo): Current program to improve
+2. `inspiration_programs` (list[ProgramInfo]): High-scoring example programs
+3. `goal` (str): Optimization goal
+4. `primary_metric` (str): Primary metric to optimize
+Your output fields are:
+1. `reasoning` (str):
+2. `improvement` (str): Specific improvement description for the code
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## current_program ## ]]
+{current_program}
+
+[[ ## inspiration_programs ## ]]
+{inspiration_programs}
+
+[[ ## goal ## ]]
+{goal}
+
+[[ ## primary_metric ## ]]
+{primary_metric}
+
+[[ ## reasoning ## ]]
+{reasoning}
+
+[[ ## improvement ## ]]
+{improvement}
+
+[[ ## completed ## ]]
+In adhering to this structure, your objective is:
+        Improve code by learning from high-scoring examples.
+
+
+[31mUser message:[0m
+
+[[ ## current_program ## ]]
+{"code": "@evolve(goal=\"Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters\")\ndef create_and_train_model(X_train, y_train, max_depth=3, min_samples_split=2):\n    \"\"\"Create and train a DecisionTree model. Only the model logic can be evolved.\"\"\"\n    # Train model with evolving parameters\n    clf = DecisionTreeClassifier(max_depth=max_depth, min_samples_split=min_samples_split, random_state=42)\n    clf.fit(X_train, y_train)\n    return clf\n", "metrics": {"fitness": 1.0}, "score": 1.0}
+
+[[ ## inspiration_programs ## ]]
+[]
+
+[[ ## goal ## ]]
+Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters
+
+[[ ## primary_metric ## ]]
+fitness
+
+Respond with the corresponding output fields, starting with the field `[[ ## reasoning ## ]]`, then `[[ ## improvement ## ]]`, and then ending with the marker for `[[ ## completed ## ]]`.
+
+
+[31mResponse:[0m
+
+[32m[[ ## reasoning ## ]]
+The current program implements a DecisionTreeClassifier with two hyperparameters exposed for evolution: max_depth and min_samples_split. While these are important, DecisionTreeClassifier has additional hyperparameters that can significantly influence accuracy, especially on small datasets like Iris. The current code is simple and functional but potentially limited in its search space for optimal accuracy. Including more hyperparameters—such as criterion ('gini' vs 'entropy'), max_features, or min_samples_leaf—can allow the evolutionary process to discover higher-performing configurations. Furthermore, the method to set the random_state ensures reproducibility, which is good. No inspiration programs are provided, so improvement relies on knowledge of DecisionTreeClassifier's options and common practices.
+
+[[ ## improvement ## ]]
+Expand the set of evolvable hyperparameters in the DecisionTreeClassifier to include criterion, max_features, and min_samples_leaf in addition to max_depth and min_samples_split. This will provide a richer search space for the evolutionary algorithm, increasing the chances of finding a configuration that yields maximal accuracy on the Iris dataset. For example:
+
+```python
+@evolve(goal="Maximize accuracy of DecisionTree on Iris dataset by evolving hyperparameters")
+def create_and_train_model(
+    X_train, y_train,
+    max_depth=3,
+    min_samples_split=2,
+    criterion='gini',
+    max_features=None,
+    min_samples_leaf=1
+):
+    """Create and train a DecisionTree model. Only the model logic can be evolved."""
+    clf = DecisionTreeClassifier(
+        max_depth=max_depth,
+        min_samples_split=min_samples_split,
+        criterion=criterion,
+        max_features=max_features,
+        min_samples_leaf=min_samples_leaf,
+        random_state=42
+    )
+    clf.fit(X_train, y_train)
+    return clf
+```
+This allows the evolutionary system to tune more parameters for potentially better accuracy.
+
+[[ ## completed ## ]][0m
+
+
+
+
+
+[Evolution] Iteration 1/1 | Variants: 4/4 | Best: 1.0000 (+0.0%) | Time: 27.2s
+Result: {'status': 'Evolution process initiated and concluded.'}

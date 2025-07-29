@@ -1,0 +1,20 @@
+#!/bin/bash
+# Custom slash command: /evolve-demo
+# Runs a quick evolution demo with specified parameters
+
+echo "🧬 Running evolution demo: $ARGUMENTS"
+
+# Parse arguments or use defaults
+ITERATIONS="${1:-3}"
+STRATEGY="${2:-linear}"
+SCENARIO="${3:-simple}"
+
+echo "Configuration:"
+echo "  - Iterations: $ITERATIONS"
+echo "  - Strategy: $STRATEGY"
+echo "  - Scenario: $SCENARIO"
+echo ""
+
+# Run the demo
+EVOLVE=1 EVOLVE_ITERATIONS=$ITERATIONS EVOLVE_STRATEGY=$STRATEGY \
+    python examples/${SCENARIO}_example.py

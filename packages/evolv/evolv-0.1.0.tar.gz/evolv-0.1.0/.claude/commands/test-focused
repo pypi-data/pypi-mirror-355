@@ -1,0 +1,17 @@
+#!/bin/bash
+# Custom slash command: /test-focused
+# Runs tests for the current focus area with detailed output
+
+echo "🧪 Running focused tests on: $ARGUMENTS"
+
+if [ -z "$ARGUMENTS" ]; then
+    echo "Usage: /test-focused <module_name or pattern>"
+    exit 1
+fi
+
+# Run tests with maximum verbosity for the specified pattern
+uv run pytest -xvs -k "$ARGUMENTS" --tb=short
+
+# Show coverage for the tested modules
+echo -e "\n📊 Coverage for tested modules:"
+uv run pytest --cov=src/evolve --cov-report=term-missing -k "$ARGUMENTS" -q

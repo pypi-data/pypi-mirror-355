@@ -1,0 +1,21 @@
+{
+  "project": {
+    "description": "Evolve Framework - AI-driven code evolution",
+    "mcpServers": {
+      "github": {
+        "command": "mcp-server-github",
+        "args": [],
+        "env": {
+          "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+        }
+      },
+      "filesystem": {
+        "command": "mcp-server-filesystem",
+        "args": ["--root", "."],
+        "env": {}
+      }
+    }
+  },
+  "debug": false,
+  "logLevel": "info"
+}

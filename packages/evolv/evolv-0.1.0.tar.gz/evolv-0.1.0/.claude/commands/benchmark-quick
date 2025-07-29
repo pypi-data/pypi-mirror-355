@@ -1,0 +1,20 @@
+#!/bin/bash
+# Custom slash command: /benchmark-quick
+# Quick performance benchmark with comparison
+
+echo "⚡ Quick benchmark: $ARGUMENTS"
+
+SCENARIO="${ARGUMENTS:-async}"
+TIMESTAMP=$(date +%s)
+
+# Run baseline
+echo "📊 Running baseline (3 iterations)..."
+BASELINE="/tmp/benchmark_${TIMESTAMP}_baseline.txt"
+./scripts/test_e2e.py --scenario $SCENARIO --iterations 3 > "$BASELINE" 2>&1
+
+# Extract timing
+echo -e "\n📈 Results:"
+grep -E "(Total time|Average time|Performance)" "$BASELINE" || grep -E "seconds|ms" "$BASELINE" | tail -5
+
+echo -e "\nNow make your changes and run: /benchmark-quick $SCENARIO"
+echo "Previous baseline saved at: $BASELINE"

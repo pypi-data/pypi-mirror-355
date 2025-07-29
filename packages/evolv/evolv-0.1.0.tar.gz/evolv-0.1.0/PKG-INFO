@@ -1,0 +1,693 @@
+Metadata-Version: 2.4
+Name: evolv
+Version: 0.1.0
+Summary: A Python framework for evolving code using AI.
+Project-URL: Homepage, https://github.com/johan-gras/evolve
+Project-URL: Repository, https://github.com/johan-gras/evolve
+Author-email: Johan Gras <johan.gras-sub@outlook.com>
+License: MIT
+License-File: LICENSE
+Keywords: ai,autonomous agents,code generation,evolutionary algorithms,python
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Requires-Dist: aiofiles>=24.1.0
+Requires-Dist: dspy>=2.6.27
+Requires-Dist: modal>=1.0.3
+Requires-Dist: numpy>=2.0.2
+Requires-Dist: pandas>=2.3.0
+Requires-Dist: python-dotenv>=1.1.0
+Requires-Dist: scikit-learn>=1.6.1
+Provides-Extra: dev
+Requires-Dist: black>=24.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.11.0; extra == 'dev'
+Requires-Dist: pre-commit>=3.5.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.1.0; extra == 'dev'
+Requires-Dist: pytest>=7.0; extra == 'dev'
+Requires-Dist: ruff>=0.8.0; extra == 'dev'
+Requires-Dist: types-requests>=2.31.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Evolv 🧬
+
+[![CI](https://github.com/johan-gras/evolve/actions/workflows/ci.yml/badge.svg)](https://github.com/johan-gras/evolve/actions/workflows/ci.yml)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+**AI-powered code improvement made simple.**
+
+Evolv automatically improves your Python code using evolutionary algorithms. Just add two decorators and watch your code get better. No configuration files, no complex setup - it just works!
+
+## 🚀 Quick Start
+
+Transform any Python function into an evolving, self-improving program:
+
+```python
+from evolve import evolve, main_entrypoint
+
+@evolve(goal="Maximize classification accuracy")
+def classify(X, y):
+    # Your initial implementation
+    model = RandomForestClassifier(n_estimators=10)
+    return model.fit(X, y)
+
+@main_entrypoint
+def main():
+    # Load your data and evaluate
+    accuracy = evaluate_model()
+    return {"fitness": accuracy}
+
+# Run evolution with: EVOLVE=1 python your_script.py
+```
+
+## 📋 Table of Contents
+
+- [Why Evolv?](#-why-evolv)
+- [Installation](#-installation)
+- [Core Concepts](#-core-concepts)
+- [Usage Guide](#-usage-guide)
+- [Architecture](#-architecture)
+- [API Reference](#-api-reference)
+- [Examples](#-examples)
+- [Development](#-development)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+
+## 🎯 Why Evolv?
+
+Imagine if your code could improve itself. With Evolv, it can!
+
+We've taken cutting-edge research from evolutionary algorithms and made it as easy to use as `@functools.cache`. Whether you're optimizing ML models, algorithms, or any Python function, Evolv helps you find better solutions automatically.
+1. **Analyzing** your code and its performance metrics
+2. **Learning** from successful variations in the population
+3. **Suggesting** intelligent improvements using LLMs
+4. **Testing** changes in sandboxed environments
+5. **Selecting** the best performers for the next generation
+
+### Key Benefits
+- **🎯 Simple API**: Just two decorators to get started
+- **🧠 Intelligent**: Learns from high-performing variants
+- **🛡️ Safe**: All mutations run in isolated sandboxes
+- **📊 Measurable**: Track improvements across generations
+- **🔧 Flexible**: Works with any Python code and metrics
+
+### How Evolv Fits In
+
+Evolv builds on amazing work from the research community and complements existing tools:
+
+- **Research Foundation**: Inspired by DeepMind's AlphaEvolve and evolutionary computation research
+- **Works Great With**: DSPy for prompting, LangChain for chains, existing ML frameworks
+- **Focus**: Making evolutionary algorithms accessible to every developer
+- **Philosophy**: We believe great tools should be easy to use - complexity is the enemy of adoption
+
+## 🛠️ Installation
+
+### Prerequisites
+- Python 3.9 or higher
+- [uv](https://github.com/astral-sh/uv) (recommended) or pip
+- OpenRouter API key (for LLM access)
+- Modal account (for sandboxed execution)
+
+### Step 1: Install Evolv
+
+```bash
+# Clone the repository
+git clone https://github.com/johan-gras/evolve
+cd evolve
+
+# Install with uv (recommended)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv sync --all-extras
+
+# Or install with pip
+pip install -e .
+```
+
+### Step 2: Install Required Tools
+
+```bash
+# Install Aider (AI code editor)
+uv tool install aider-chat
+
+# Install development tools (optional)
+uv tool install pre-commit --with pre-commit-uv
+pre-commit install
+```
+
+### Step 3: Configure Services
+
+```bash
+# Set up OpenRouter (required)
+export OPEN_ROUTER_API_KEY="your-openrouter-api-key"
+
+# Set up Modal (required for cloud execution)
+pip install modal
+modal token new
+
+# For local execution only (no Modal needed)
+export EVOLVE_EXECUTOR=local
+```
+
+### Step 4: Verify Installation
+
+```bash
+# Run tests
+make test
+
+# Or manually
+uv run pytest -v
+```
+
+## 🧬 Core Concepts
+
+### Evolution Process
+
+```mermaid
+graph LR
+    A[Initial Code] --> B[Evaluate Performance]
+    B --> C{Good Enough?}
+    C -->|No| D[Select Parents]
+    D --> E[Generate Improvements]
+    E --> F[Apply Modifications]
+    F --> G[Test Variants]
+    G --> B
+    C -->|Yes| H[Best Code]
+```
+
+### Key Components
+
+1. **Population**: Collection of code variants with their performance metrics
+2. **Fitness**: Measurable metric(s) that define success (accuracy, speed, etc.)
+3. **Selection**: Choosing parent programs for the next generation
+4. **Mutation**: LLM-guided code modifications
+5. **Evaluation**: Safe execution and metric collection
+
+### Evolution Strategies
+
+- **Linear**: Always evolve from the most recent successful variant
+- **Random**: Select parents randomly from successful variants
+- **Tournament**: Competition-based selection for diversity
+- **MAP-Elites**: Maintain diversity across multiple dimensions
+
+### When to Use Evolv
+
+Evolv shines when you want to:
+- 🎯 **Optimize ML Models**: Automatically improve accuracy, reduce training time
+- 🔧 **Tune Algorithms**: Find better parameters without grid search
+- 📈 **Improve Existing Code**: Let AI suggest optimizations you might miss
+- 🧪 **Experiment Quickly**: Try many variations without manual coding
+
+Perfect for hackathons, prototypes, and production code that needs that extra edge!
+
+## 📖 Usage Guide
+
+### Basic Usage
+
+1. **Decorate your target function**:
+```python
+@evolve(goal="Improve model accuracy")
+def train_classifier(n_estimators=10):
+    model = RandomForestClassifier(n_estimators=n_estimators)
+    # ... training code ...
+    return model
+```
+
+2. **Create an evaluation function**:
+```python
+@main_entrypoint
+def main():
+    model = train_classifier()
+    accuracy = evaluate_on_test_set(model)
+    return {"fitness": accuracy}  # Must return metrics dict
+```
+
+3. **Run evolution**:
+```bash
+# Normal execution
+python your_script.py
+
+# Evolution mode (3 iterations by default)
+EVOLVE=1 python your_script.py
+
+# Custom iterations
+EVOLVE=1 EVOLVE_ITERATIONS=10 python your_script.py
+```
+
+### Advanced Configuration
+
+#### Using Config File
+Create `evolve.json` in your project root:
+```json
+{
+  "model": "openrouter/anthropic/claude-3-opus",
+  "temperature": 0.7,
+  "default_iterations": 5,
+  "primary_metric": "accuracy",
+  "executor_type": "modal"
+}
+```
+
+#### Programmatic Configuration
+```python
+from evolve.config import EvolveConfig, set_config
+
+config = EvolveConfig(
+    api_key="your-key",
+    model="gpt-4",
+    temperature=0.8,
+    default_iterations=10
+)
+set_config(config)
+```
+
+#### Environment Variables
+```bash
+# Core settings
+export OPEN_ROUTER_API_KEY="sk-..."
+export OPENROUTER_MODEL="anthropic/claude-3-opus"
+export EVOLVE_ITERATIONS="5"
+export PRIMARY_METRIC="f1_score"
+
+# Execution settings
+export EVOLVE_EXECUTOR="local"  # or "modal"
+export LOCAL_EXECUTOR_TIMEOUT="60"
+export EVOLVE_PARALLEL="4"  # Parallel variants
+
+# Strategy settings
+export EVOLVE_STRATEGY="tournament"  # or "linear", "random", "map_elites"
+```
+
+### Working with Local Files
+
+If your code needs access to data files:
+
+```python
+@evolve(
+    goal="Optimize data processing",
+    mount_dir="./data",  # Mount local directory
+    extra_packages=["pandas", "numpy"]  # Additional dependencies
+)
+def process_data():
+    # In sandbox, ./data is mounted at /mnt/user_code
+    df = pd.read_csv("dataset.csv")  # Reads from mounted directory
+    return processed_df
+```
+
+### Multi-Objective Optimization
+
+Optimize for multiple metrics simultaneously:
+
+```python
+@main_entrypoint
+def main():
+    model = train_classifier()
+
+    # Return multiple metrics
+    return {
+        "fitness": accuracy,      # Primary metric
+        "f1_score": f1,
+        "training_time": time,
+        "model_size": size
+    }
+```
+
+## 🏗️ Architecture
+
+### System Overview
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                     User Code                           │
+│                  @evolve decorator                      │
+└────────────────────────┬───────────────────────────────┘
+                         │
+┌────────────────────────▼───────────────────────────────┐
+│                 EvolutionCoordinator                    │
+│  • Orchestrates the evolution loop                      │
+│  • Manages async variant generation                     │
+│  • Tracks progress and metrics                          │
+└──────┬─────────────┬────────────┬──────────────┬───────┘
+       │             │            │              │
+┌──────▼──────┐ ┌───▼────┐ ┌────▼─────┐ ┌──────▼──────┐
+│ DSPyModule  │ │ Aider  │ │ Executor │ │  Database   │
+│ • LLM calls │ │ • Code │ │ • Runs   │ │ • Stores    │
+│ • Prompts   │ │   mods  │ │   code   │ │   variants  │
+└─────────────┘ └────────┘ └──────────┘ └─────────────┘
+```
+
+### Core Modules
+
+#### `coordinator.py`
+- Manages the evolution lifecycle
+- Implements decorators (`@evolve`, `@main_entrypoint`)
+- Coordinates async operations
+- Tracks evolution progress
+
+#### `dspy_async.py`
+- Interfaces with LLMs via DSPy
+- Generates improvement suggestions
+- Learns from inspiration programs
+- Uses Pydantic models for type safety
+
+#### `aider_async.py`
+- Applies code modifications
+- Integrates with Aider tool
+- Handles AST parsing
+- Manages code extraction
+
+#### `executor_async.py`
+- Runs code in sandboxed environments
+- Supports Modal (cloud) and local execution
+- Captures metrics and errors
+- Manages timeouts and resources
+
+#### `database.py`
+- Stores program variants
+- Tracks genealogy and metrics
+- Implements sampling strategies
+- Maintains best performers
+
+#### `strategies/`
+- Pluggable evolution algorithms
+- Base strategy interface
+- Built-in strategies (Linear, Random, Tournament, MAP-Elites)
+- Extensible for custom strategies
+
+### Data Flow
+
+1. **Initialization**: Capture decorated function/class
+2. **Evaluation**: Run initial code, establish baseline
+3. **Evolution Loop**:
+   - Select parent(s) from population
+   - Sample high-scoring inspiration programs
+   - Generate improvement via LLM
+   - Apply changes with Aider
+   - Execute variant in sandbox
+   - Update population database
+4. **Completion**: Return best variant
+
+## 📚 API Reference
+
+### Decorators
+
+#### `@evolve`
+Marks a function or class for evolution.
+
+```python
+@evolve(
+    goal: str,                    # Natural language optimization goal
+    iterations: int = None,       # Override default iterations
+    strategy: str = "linear",     # Evolution strategy
+    mount_dir: str = None,        # Local directory to mount
+    extra_packages: List[str] = None,  # Additional pip packages
+    strategy_config: dict = None  # Strategy-specific settings
+)
+```
+
+#### `@main_entrypoint`
+Marks the evaluation function.
+
+```python
+@main_entrypoint
+def main() -> Dict[str, float]:
+    # Must return metrics dictionary
+    return {"fitness": score, "other_metric": value}
+```
+
+### Configuration
+
+#### `EvolveConfig`
+```python
+class EvolveConfig:
+    api_key: str                 # OpenRouter API key
+    model: str = "gpt-4"         # LLM model
+    temperature: float = 0.7     # LLM temperature
+    default_iterations: int = 3  # Default evolution iterations
+    primary_metric: str = "fitness"  # Metric to optimize
+    executor_type: str = "modal"     # "modal" or "local"
+```
+
+### Strategies
+
+#### Built-in Strategies
+- `"linear"`: Evolve from most recent success
+- `"random"`: Random parent selection
+- `"tournament"`: Tournament selection (size configurable)
+- `"map_elites"`: Quality-diversity optimization
+
+#### Custom Strategies
+```python
+from evolve.strategies import BaseStrategy
+
+class MyStrategy(BaseStrategy):
+    def select_parents(self, database, count=1):
+        # Your selection logic
+        return selected_programs
+```
+
+## 🎯 Examples
+
+### Simple Example: Optimize Hyperparameters
+```python
+from evolve import evolve, main_entrypoint
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+from sklearn.model_selection import cross_val_score
+
+@evolve(goal="Find optimal RandomForest hyperparameters for Iris dataset")
+def create_model(n_estimators=10, max_depth=3, min_samples_split=2):
+    return RandomForestClassifier(
+        n_estimators=n_estimators,
+        max_depth=max_depth,
+        min_samples_split=min_samples_split,
+        random_state=42
+    )
+
+@main_entrypoint
+def main():
+    X, y = load_iris(return_X_y=True)
+    model = create_model()
+    score = cross_val_score(model, X, y, cv=5).mean()
+    return {"fitness": score}
+
+if __name__ == "__main__":
+    main()
+```
+
+### Advanced Example: Multi-Objective with MAP-Elites
+```python
+@evolve(
+    goal="Balance accuracy and inference speed",
+    strategy="map_elites",
+    strategy_config={
+        "features": [
+            ("accuracy", (0.0, 1.0), 20),
+            ("speed", (0.0, 10.0), 20)
+        ],
+        "initial_population": 50
+    }
+)
+class TextClassifier:
+    def __init__(self, vocab_size=1000, embedding_dim=50):
+        self.vocab_size = vocab_size
+        self.embedding_dim = embedding_dim
+        self.model = self._build_model()
+
+    def _build_model(self):
+        # Model architecture that can evolve
+        pass
+```
+
+### Real-World Example: Data Pipeline
+```python
+@evolve(
+    goal="Optimize data preprocessing for better model performance",
+    mount_dir="./data",
+    extra_packages=["pandas", "scikit-learn"]
+)
+def preprocess_data(df):
+    # Feature engineering that evolves
+    df['new_feature'] = df['col1'] * df['col2']
+    df = df.dropna(subset=['target'])
+
+    # Scaling approach that can change
+    from sklearn.preprocessing import StandardScaler
+    scaler = StandardScaler()
+    numeric_cols = df.select_dtypes(include=['float64']).columns
+    df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
+
+    return df
+```
+
+More examples in the [`examples/`](examples/) directory:
+- [`simple_example.py`](examples/simple_example.py) - Basic classification
+- [`regression_example.py`](examples/regression_example.py) - Regression with custom metrics
+- [`map_elites_example.py`](examples/map_elites_example.py) - Quality-diversity optimization
+- [`inspiration_demo.py`](examples/inspiration_demo.py) - Demonstrates learning from high-scorers
+
+## 🔧 Development
+
+### Setting Up Development Environment
+
+```bash
+# Clone and install
+git clone https://github.com/johan-gras/evolve
+cd evolve
+uv sync --all-extras
+
+# Install dev tools
+make install
+
+# Run all checks before committing
+make pr-ready
+```
+
+### Available Make Commands
+
+```bash
+make help        # Show all commands
+make test        # Run tests
+make format      # Format code
+make lint        # Check code style
+make check       # Run all checks
+make e2e         # Run end-to-end tests
+make clean       # Clean temporary files
+```
+
+### Project Structure
+
+```
+evolve/
+├── src/evolve/          # Core library code
+│   ├── coordinator.py   # Main orchestrator
+│   ├── strategies/      # Evolution algorithms
+│   ├── prompting/       # LLM prompt models
+│   └── ...
+├── examples/            # Usage examples
+├── docs/               # Documentation
+│   ├── adr/            # Architecture decisions
+│   ├── development-patterns.md
+│   ├── error-log.md
+│   └── codebase-map.md
+├── scripts/            # Utility scripts
+└── tests/              # Test suite
+```
+
+### Testing
+
+```bash
+# Run all tests
+make test
+
+# Run with coverage
+make test-cov
+
+# Run specific test
+uv run pytest src/tests/test_coordinator.py -v
+
+# Run end-to-end tests (requires API keys)
+make e2e
+```
+
+### Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+Key points:
+1. Use `make pr-ready` before submitting PRs
+2. Add tests for new features
+3. Update documentation
+4. Create ADRs for significant decisions
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### "API key not configured"
+```bash
+export OPEN_ROUTER_API_KEY="your-key-here"
+```
+
+#### "Modal not configured"
+```bash
+modal token new
+# Or use local execution:
+export EVOLVE_EXECUTOR=local
+```
+
+#### "Import error: evolve not found"
+```bash
+# Ensure you're in the project directory
+uv sync --all-extras
+# Or: pip install -e .
+```
+
+#### "CI failures on formatting"
+```bash
+# Run before pushing
+make format
+# Or: uv run ruff format .
+```
+
+### Performance Tips
+
+1. **Use async execution**: Set `EVOLVE_PARALLEL=4` for faster evolution
+2. **Optimize sandbox startup**: Use `extra_packages` sparingly
+3. **Cache dependencies**: Modal caches package installations
+4. **Profile metrics collection**: Ensure metrics code is efficient
+
+### Debug Mode
+
+```bash
+# Enable debug logging
+export EVOLVE_DEBUG=1
+
+# Verbose LLM interactions
+export EVOLVE_LOG_LEVEL=DEBUG
+```
+
+## 📚 Learning Resources
+
+- **[Architecture Decision Records](docs/adr/)**: Why key design decisions were made
+- **[Development Patterns](docs/development-patterns.md)**: Best practices and anti-patterns
+- **[Error Log](docs/error-log.md)**: Learn from past mistakes
+- **[Codebase Map](docs/codebase-map.md)**: Navigate the codebase efficiently
+- **[CLAUDE.md](CLAUDE.md)**: AI assistant instructions and tips
+
+## 🤝 Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+Areas where we'd love help:
+- New evolution strategies
+- Performance optimizations
+- Additional examples
+- Documentation improvements
+- Bug fixes
+
+## 📄 License
+
+This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
+
+## 🙏 Acknowledgments
+
+- Inspired by [Google DeepMind's AlphaEvolve](https://deepmind.google/discover/blog/alphaevolve-evolving-algorithms-with-llms/)
+- Built with [DSPy](https://dspy-docs.vercel.app/), [Aider](https://aider.chat/), and [Modal](https://modal.com/)
+- Thanks to all contributors and the open-source community
+
+---
+
+<div align="center">
+  <b>Ready to evolve your code?</b><br>
+  <code>EVOLVE=1 python your_script.py</code>
+</div>
