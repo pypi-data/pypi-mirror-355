@@ -1,0 +1,190 @@
+Metadata-Version: 2.4
+Name: supertask
+Version: 0.0.0.dev0
+Summary: A convenience job scheduler.
+Author-email: Walter Behmann <walter@crate.io>, Andreas Motl <andreas.motl@crate.io>
+License-Expression: AGPL-3.0-or-later
+Project-URL: Changelog, https://github.com/pyveci/supertask/blob/main/CHANGES.md
+Project-URL: Documentation, https://supertask.readthedocs.io/
+Project-URL: Issues, https://github.com/pyveci/supertask/issues
+Project-URL: Repository, https://github.com/pyveci/supertask
+Keywords: apscheduler,automation,cron,interval,jobs,recurrent,scheduler,scheduling,tasks,timetable,toolkit
+Classifier: Development Status :: 1 - Planning
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Customer Service
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Manufacturing
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: System Administrators
+Classifier: Intended Audience :: Telecommunications Industry
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Adaptive Technologies
+Classifier: Topic :: Communications
+Classifier: Topic :: Database
+Classifier: Topic :: Documentation
+Classifier: Topic :: Education
+Classifier: Topic :: Internet
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Office/Business
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Pre-processors
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Version Control
+Classifier: Topic :: System :: Archiving
+Classifier: Topic :: System :: Benchmark
+Classifier: Topic :: System :: Clustering
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Topic :: System :: Logging
+Classifier: Topic :: System :: Monitoring
+Classifier: Topic :: System :: Networking
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: apscheduler<4
+Requires-Dist: click<9
+Requires-Dist: colorama<0.5
+Requires-Dist: colorlog<7
+Requires-Dist: fastapi<0.116
+Requires-Dist: halo<0.1
+Requires-Dist: icecream<3
+Requires-Dist: jinja2<4
+Requires-Dist: markupsafe<4
+Requires-Dist: pueblo[fileio]
+Requires-Dist: pydantic<3
+Requires-Dist: python-dotenv[cli]<2
+Requires-Dist: python-multipart==0.0.20
+Requires-Dist: pytz
+Requires-Dist: sqlalchemy-cratedb==0.41.0
+Requires-Dist: uvicorn<0.35
+Requires-Dist: watchdog<7
+Provides-Extra: develop
+Requires-Dist: mypy<1.16; extra == "develop"
+Requires-Dist: poethepoet<1; extra == "develop"
+Requires-Dist: pyproject-fmt<3; extra == "develop"
+Requires-Dist: ruff<0.12; extra == "develop"
+Requires-Dist: validate-pyproject<1; extra == "develop"
+Provides-Extra: release
+Requires-Dist: build<2; extra == "release"
+Requires-Dist: twine<7; extra == "release"
+Provides-Extra: test
+Requires-Dist: cratedb-toolkit==0.0.31; extra == "test"
+Requires-Dist: httpx<0.29; extra == "test"
+Requires-Dist: psycopg2-binary<3; extra == "test"
+Requires-Dist: pytest<9; extra == "test"
+Requires-Dist: pytest-cov<7; extra == "test"
+Requires-Dist: pytest-mock<4; extra == "test"
+Dynamic: license-file
+
+# Supertask
+
+Supertask is a convenience job scheduler based on [APScheduler], [FastAPI],
+[Pydantic], [SQLAlchemy], and a few other excellent packages.
+
+You can use Supertask to invoke time-driven actions like the venerable [cron]
+daemon is doing it. It can be used both as a standalone program, and as a
+library.
+
+Supertask aims for [DWIM]-like usefulness and [UX], and provides CLI-, HTTP-,
+and other interfaces.
+
+» [Documentation]
+| [Changelog]
+| [PyPI]
+| [Issues]
+| [Source code]
+| [License]
+| [Community Forum]
+
+[![CI][badge-ci]][project-ci]
+[![Coverage][badge-coverage]][project-coverage]
+[![Downloads per month][badge-downloads-per-month]][project-downloads]
+[![License][badge-license]][project-license]
+
+[![Release Notes][badge-release-notes]][project-release-notes]
+[![Package version][badge-package-version]][project-pypi]
+[![Status][badge-status]][project-pypi]
+[![Supported Python versions][badge-python-versions]][project-pypi]
+
+## Features
+
+- Store jobs in databases supported by SQLAlchemy.
+- HTTP API to manipulate the job data model.
+- Optionally, jobs can be pre-seeded from a JSON file `config.json`, either
+  from the local filesystem, or from a wide range of remote locations.
+  When using the filesystem, a watchdog monitors the file for changes, in
+  order to keep the schedules up to date.
+
+## Status
+
+Please note that Supertask is a work in progress, and to be considered
+alpha-quality software. Contributions of all kinds are much welcome,
+in order to make it more solid, and to add features.
+
+Breaking changes should be expected until a 1.0 release, so applying
+version pinning is strongly recommended when consuming the packages.
+
+## Installation
+
+See [Supertask Installation].
+
+## Usage
+
+See [Supertask Handbook].
+
+## Contribute
+
+See [Supertask Sandbox].
+
+
+
+[APScheduler]: https://pypi.org/project/APScheduler/
+[cron]: https://en.wikipedia.org/wiki/Cron
+[DWIM]: https://en.wikipedia.org/wiki/DWIM
+[FastAPI]: https://pypi.org/project/fastapi/
+[Pydantic]: https://pypi.org/project/pydantic/
+[SQLAlchemy]: https://pypi.org/project/SQLAlchemy/
+[UX]: https://en.wikipedia.org/wiki/User_experience
+
+[Changelog]: https://github.com/pyveci/supertask/blob/main/CHANGES.md
+[Community Forum]: https://community.panodata.org/
+[Documentation]: https://supertask.readthedocs.io/
+[Issues]: https://github.com/pyveci/supertask/issues
+[License]: https://github.com/pyveci/supertask/blob/main/LICENSE
+[PyPI]: https://pypi.org/project/supertask/
+[Supertask Handbook]: https://supertask.readthedocs.io/handbook.html
+[Supertask Installation]: https://supertask.readthedocs.io/install.html
+[Supertask Sandbox]: https://supertask.readthedocs.io/sandbox.html
+[Source code]: https://github.com/pyveci/supertask
+
+[badge-ci]: https://github.com/pyveci/supertask/actions/workflows/main.yml/badge.svg
+[badge-coverage]: https://codecov.io/gh/pyveci/supertask/branch/main/graph/badge.svg
+[badge-downloads-per-month]: https://pepy.tech/badge/supertask/month
+[badge-license]: https://img.shields.io/github/license/pyveci/supertask.svg
+[badge-package-version]: https://img.shields.io/pypi/v/supertask.svg
+[badge-python-versions]: https://img.shields.io/pypi/pyversions/supertask.svg
+[badge-release-notes]: https://img.shields.io/github/release/pyveci/supertask?label=Release+Notes
+[badge-status]: https://img.shields.io/pypi/status/supertask.svg
+[project-ci]: https://github.com/pyveci/supertask/actions/workflows/main.yml
+[project-coverage]: https://app.codecov.io/gh/pyveci/supertask
+[project-downloads]: https://pepy.tech/project/supertask/
+[project-license]: https://github.com/pyveci/supertask/blob/main/LICENSE
+[project-pypi]: https://pypi.org/project/supertask
+[project-release-notes]: https://github.com/pyveci/supertask/releases
