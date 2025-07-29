@@ -1,0 +1,31 @@
+{% spaceless %}
+    <div class="login-bar{% if class %} {{ class }}{% endif %}">
+        <div class="login-bar__body">
+            {% if request.user.is_authenticated %}
+                {% if detail_url %}
+                    <a class="login-bar__link login-bar__link--primary" href="{{ details_url }}">{{ label_logged_in_as }} {{ request.user }}</a>
+                {% else %}
+                    {{ label_logged_in_as }} {{ request.user }}
+                {% endif %}
+
+                {% if admin_link and request.user.is_staff %}
+                <a class="login-bar__link login-bar__link--secondary" href="{% url 'admin:index' %}">{{ label_admin }}</a>
+                {% endif %}
+                {% if logout_url %}
+                    <form id="logout-form" action="{{ logout_url }}"  method="post">
+                    {% csrf_token %}
+                        <button class="login-bar__link login-bar__link--secondary" type="submit">{{ label_logout }}</button>
+                    </form>
+                {% endif %}
+            {% else %}
+                {% if login_url %}
+                    <a class="login-bar__link login-bar__link--primary" href="{{ login_url }}">{{ label_login }}</a>
+                {% endif %}
+                {% if registration_url %}
+                    <a class="login-bar__link login-bar__link--secondary" href="{{ registration_url }}">{{ label_request_account }}</a>
+                {% endif %}
+            {% endif %}
+
+        </div>
+    </div>
+{% endspaceless %}
