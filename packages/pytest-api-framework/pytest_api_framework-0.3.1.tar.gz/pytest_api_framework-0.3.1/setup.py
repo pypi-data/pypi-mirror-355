@@ -1,0 +1,31 @@
+from setuptools import setup, find_packages
+
+setup(
+    name='pytest-api-framework',
+    version='0.3.1',
+    packages=find_packages(),
+    author='wangjinliang',
+    author_email='wangjinliang219@gmail.com',
+    description='pytest framework',
+    install_requires=[
+        "PyMySQL==1.1.0",
+        "redis==3.5.3",
+        "DBUtils==3.1.0",
+        "pyotp==2.9.0",
+        "cn2an==0.5.19",
+        "python-dotenv==1.0.1",
+        "pycryptodome==3.21.0",
+        "requests==2.25.1",
+        "PyYAML==6.0.2",
+        "python-box==7.2.0",
+        "allure-pytest==2.13.1",
+        "dill==0.4.0",
+        "pytest==7.2.2",
+        "jsonpath==0.82",
+        "requests-toolbelt==1.0.0",
+        "Faker==18.3.2",
+        "retry==0.9.2",
+        "pytest-rerunfailures==11.1",
+        "pytest-timeout==2.2.0"
+    ]
+)
