@@ -1,0 +1,96 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "better-dedent"
+dynamic = ["version"]
+description = 'Basically textwrap.dedent with t-string support.'
+readme = "README.md"
+requires-python = ">=3.14"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Trey Hunner" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/treyhunner/better-dedent#readme"
+Issues = "https://github.com/treyhunner/better-dedent/issues"
+Source = "https://github.com/treyhunner/better-dedent"
+
+[tool.hatch.version]
+path = "src/better_dedent/__about__.py"
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = [
+  "hypothesis",
+]
+extra-args = ["-vv"]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.14"]
+
+[tool.hatch.envs.default]
+python = "3.14"
+dependencies = [
+  "coverage[toml]",
+]
+
+[tool.hatch.envs.default.scripts]
+cov-report = ["- coverage combine", "coverage report", "coverage xml"]
+cov-html = "coverage html"
+
+
+[tool.hatch.envs.lint]
+dependencies = [
+  "ruff",
+]
+[tool.hatch.envs.lint.scripts]
+check = ["ruff check {args:.}", "ruff format --check {args:.}"]
+fmt = "ruff format {args:.}"
+
+[tool.coverage.run]
+source_pkgs = ["better_dedent", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/better_dedent/__about__.py",
+]
+
+[tool.coverage.paths]
+better_dedent = ["src/better_dedent", "*/better-dedent/src/better_dedent"]
+tests = ["tests", "*/better-dedent/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.ruff]
+target-version = "py313"  # TODO upgrade once ruff supports Python 3.14
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # pyflakes
+  "I",   # isort
+  "B",   # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "UP",  # pyupgrade
+]
+ignore = [
+  "E999",  # TODO syntax error - ruff doesn't understand t-strings yet
+]

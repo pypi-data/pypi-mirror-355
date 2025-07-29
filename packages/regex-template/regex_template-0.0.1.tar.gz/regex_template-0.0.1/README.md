@@ -1,0 +1,187 @@
+# regex template
+
+[![PyPI - Version](https://img.shields.io/pypi/v/regex-template.svg)](https://pypi.org/project/regex-template)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/regex-template.svg)](https://pypi.org/project/regex-template)
+
+-----
+
+Compiled regular expressions with auto-escaped interpolations using Python 3.14's t-strings.
+
+This only supports Python 3.14 (which is not yet released) because it relies on t-strings.
+
+## The problem: escaping regular expressions
+
+Have you ever tried to use user input or variables in a regular expression and run into escaping issues?
+
+For example, if you want to match a file extension that's stored in a variable:
+
+```pycon
+>>> import re
+>>> extension = ".txt"
+>>> pattern = re.compile(rf"^.*{extension}$")
+>>> text = "filetxt"
+>>> if pattern.search(text):
+...     print(f"{text} matched")
+... else:
+...     print(f"{text} did not match")
+...
+filetxt matched
+```
+
+Special regular expression characters like `.`, `*`, `+`, and `?` need to be properly escaped when used in regular expressions.
+
+We can use the `re.escape` function to manually escape each replacement field:
+
+```pycon
+>>> import re
+>>> extension = ".txt"
+>>> pattern = re.compile(rf"^.*{re.escape(extension)}$")
+>>> text = "filetxt"
+>>> if pattern.search(text):
+...     print(f"{text} matched")
+... else:
+...     print(f"{text} did not match")
+...
+filetxt did not match
+```
+
+This is tedious, especially with multiple f-string replacement fields.
+
+
+## The solution: auto-escaping with t-strings
+
+The `regex_template.compile` function automatically escapes interpolated variables when using t-strings, while leaving the main pattern unescaped:
+
+```pycon
+>>> import regex_template as ret
+>>> extension = ".txt"
+>>> pattern = ret.compile(rt"^.*{extension}$")
+>>> text = "filetxt"
+>>> if pattern.search(text):
+...     print(f"{text} matched")
+... else:
+...     print(f"{text} did not match")
+...
+filetxt did not match
+```
+
+Replacement fields (`{`...`}`) are automatically escaped.
+
+Note that `regex_template.compile` only accepts t-strings.
+
+
+## Safe interpolation
+
+If you need to ensure specific replacement fields that are *not* escaped, use the `:safe` format specifier:
+
+```pycon
+>>> import regex_template as ret
+>>> part = "[^/]+"
+>>> pattern = ret.compile(rt"/home/({part:safe})/Documents")
+>>> text = "/home/trey/Documents"
+>>> if match := pattern.search(text):
+...     print(f"Matched Documents for user {match[1]}")
+...
+Matched Documents for user trey
+```
+
+
+## Format specifiers
+
+All standard Python format specifiers work normally and are applied before escaping:
+
+```pycon
+>>> import regex_template as ret
+>>> tracks = [(1, "Gloria"), (2, "Redondo Beach")]
+>>> filename = "01 Gloria.mp3"
+>>> for n, name in tracks:
+...     pattern = ret.compile(rt"{n:02d}\ {name}\.mp3")
+...     if pattern.fullmatch(filename):
+...         print(f"Track {n} found!")
+...
+Track 1 found!
+```
+
+## Verbose mode
+
+By default, `regex_template.compile` enables verbose mode (`re.VERBOSE`) to encourage the use of more readable regular expressions:
+
+```python
+import regex_template as ret
+
+username = "trey"
+hostname = "farnsworth"
+
+# SSH log entry pattern
+pattern = ret.compile(rt"""
+    ^
+    (\w{{3}} \s+ \d{{1,2}}) \s+         # Month and day ("Jan 1")
+    (\d{{2}} : \d{{2}} : \d{{2}}) \s+   # Time ("14:23:45")
+    {hostname} \s+                      # Server hostname (auto-escaped)
+    sshd \[\d+\] : \s+                  # sshd process
+    Accepted \s+ \w+ \s+                # Authentication method
+    for \s+ {username} \s+              # Username (auto-escaped)
+    from \s+ ([\d.]+) \s+               # IP address
+    port \s+ \d+                        # Port number
+""")
+
+with open("sshd.log") as log_file:
+    for line in log_file:
+        if match := pattern.search(line):
+            print("Login from IP {match[1]}")
+```
+
+You can set `verbose=False` to disable this:
+
+
+```python
+pattern = ret.compile(
+    rt"^(\w+ \d+ \d+:\d+:\d+) {hostname} .* for {username} from ([\d.]+)",
+    verbose=False,
+)
+```
+
+
+## Installation
+
+You can install `regex-template` with `pip` (you'll need to be on Python 3.14):
+
+```console
+pip install regex-template
+```
+
+Or if you have [uv](https://docs.astral.sh/uv/) installed and you'd like to play with it right now (Python 3.14 will be auto-installed):
+
+```console
+uvx --with regex-template python
+```
+
+You can then import `regex_template` like this:
+
+```python
+import regex_template as ret
+```
+
+
+## Testing
+
+This project uses [hatch](https://hatch.pypa.io).
+
+To run the tests:
+
+```console
+hatch test
+```
+
+To see code coverage:
+
+```console
+hatch test --cover
+hatch run cov-html
+open htmlcov/index.html
+```
+
+
+## License
+
+`regex-template` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
