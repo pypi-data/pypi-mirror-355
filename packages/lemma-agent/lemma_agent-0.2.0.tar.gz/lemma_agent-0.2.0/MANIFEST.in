@@ -1,0 +1,58 @@
+# Include important documentation files
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include CODE_OF_CONDUCT.md
+
+# Include package configuration
+include pyproject.toml
+include setup.py
+include requirements.txt
+include requirements-dev.txt
+
+# Include type information
+include lemma/py.typed
+
+# Include configuration files
+recursive-include lemma/config *.yaml *.yml *.json
+recursive-include lemma/templates *.json *.yaml *.yml
+
+# Include test data (if any)
+recursive-include tests/data *.json *.yaml *.txt *.csv
+
+# Exclude unnecessary files
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude tox.ini
+exclude Makefile
+
+# Exclude development and build artifacts
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.so
+recursive-exclude * .DS_Store
+recursive-exclude * .pytest_cache
+recursive-exclude * .mypy_cache
+recursive-exclude * .coverage
+recursive-exclude * htmlcov
+recursive-exclude * .tox
+recursive-exclude * .git*
+
+# Exclude documentation build artifacts
+recursive-exclude docs/_build *
+recursive-exclude docs/.doctrees *
+
+# Exclude IDE files
+recursive-exclude * .vscode
+recursive-exclude * .idea
+recursive-exclude * *.swp
+recursive-exclude * *.swo
+recursive-exclude * *~
+
+# Exclude distribution artifacts
+exclude build
+exclude dist
+recursive-exclude build *
+recursive-exclude dist *
+recursive-exclude *.egg-info *
