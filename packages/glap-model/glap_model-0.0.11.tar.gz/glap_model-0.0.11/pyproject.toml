@@ -1,0 +1,88 @@
+[project]
+name = 'glap-model'
+version = '0.0.11'
+dependencies = [
+    'numpy',
+    'pyyaml',
+    'setuptools',
+    'soundfile',
+    "fairseq2>=0.4.5",
+    "sonar-space",
+    'torch>=1.8.2',
+    'jaxtyping',
+    'torchaudio',
+    'torchinfo',
+    'sentencepiece',
+    'dasheng',
+    "transformers",
+    'loguru',
+]
+requires-python = '>=3.10'
+authors = [
+  {name = "Heinrich Dinkel", email = "dinkelheinrich@xiaomi.com"},
+  {name = "Junbo Zhang", email = "zhangjunbo1@xiaomi.com"},
+]
+maintainers = [
+  {name = "Heinrich Dinkel", email = "dinkelheinrich@xiaomi.com"},
+  {name = "Junbo Zhang", email = "zhangjunbo1@xiaomi.com"},
+]
+
+readme = "README.md"
+license = {file = "LICENSE"}
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+
+  # Indicate who your project is intended for
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+
+  # Pick your license as you wish (see also "license" above)
+  "License :: OSI Approved :: Apache Software License",
+
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Environment :: GPU :: NVIDIA CUDA :: 11.4",
+  "Environment :: GPU :: NVIDIA CUDA :: 12",
+  "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+
+[project.urls]
+Homepage = "https://github.com/xiaomi-research/GLAP"
+Documentation = "https://github.com/xiaomi-research/GLAP"
+Repository = "https://github.com/xiaomi-research/GLAP"
+Issues = "https://github.com/xiaomi-research/GLAP/issues"
+
+[build-system]
+requires = ['hatchling']
+build-backend = 'hatchling.build'
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+bypass-selection = true
+
+[tool.uv]
+index-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[tool.setuptools.packages.find]
+where = ["."]  # Look in current directory
+
+[project.scripts]
+score_glap = "glap_model.inference:main"
+
+[project.optional-dependencies]
+dev = [
+    'einops',
+    'tokenizers',
+    'fire',
+    'pytorch-ignite',
+    'accelerate',
+    'bitsandbytes',
+    'scipy',
+    'webdataset',
+    'phonemizer',
+    'pandas',
+]
