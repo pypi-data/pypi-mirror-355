@@ -1,0 +1,186 @@
+Metadata-Version: 2.4
+Name: git-permalink-fixer
+Version: 0.2.0
+Summary: A tool to find, replace, and protect GitHub permalinks in your project.
+Project-URL: Homepage, https://github.com/huyz/git-permalink-fixer
+Project-URL: Bug Tracker, https://github.com/huyz/git-permalink-fixer/issues
+Project-URL: Repository, https://github.com/huyz/git-permalink-fixer
+Author-email: huyz <huyz@users.noreply.github.com>
+License: MIT License
+        
+        Copyright (c) 2025 huyz
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: git,git-tag,github,permalink
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Version Control :: Git
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Requires-Dist: requests>=2.32.3
+Description-Content-Type: text/markdown
+
+# Git Permalink Fixer
+
+[![PyPI version](https://badge.fury.io/py/git-permalink-fixer.svg)](https://badge.fury.io/py/git-permalink-fixer)
+[![Build Status](https://github.com/huyz/git-permalink-fixer/actions/workflows/test.yml/badge.svg)](https://github.com/huyz/git-permalink-fixer/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+`git-permalink-fixer` is a command-line tool that scans your project files for GitHub permalinks (referencing commit
+SHAs) and helps you update them to more resilient references (e.g., permalinks referencing tags or the latest commit on
+the main branch, that still contains the same content) or create tags to preserve the original commits.
+
+## The Problem
+
+GitHub permalinks using full commit SHAs are great for pointing to a specific version of code at a point in time.
+However, as repositories evolve, commits can become unreachable if branches are rebased or never merged into main.
+
+This tool helps you manage and update these permalinks proactively before GitHub garbage-collects these commits.
+
+It finds GitHub commit permalinks in a repository, checks if commits are merged into `main` and, for
+unmerged commits, tries to find the closest ancestor in `main` (and checks that any line references
+still make sense).
+For unmerged commits, it prompts the user to replace its permalinks to new ones pointing to the
+ancestor; it also provides a fallback of tagging the commit to protect it.
+
+Supports GitHub permalinks of the form:
+- `https://github.com/org/project/blob/commit_hash/url_path#Lline_start-Lline_end`
+- `https://github.com/org/project/tree/commit_hash`
+
+## Features
+
+- **Scan various text file types**: Finds GitHub permalinks in Markdown, code, text files, etc.
+    skipping git-ignored files.
+- **Intelligent suggestions**:
+  - Identifies if the linked commit is an ancestor of your main branch.
+  - Suggests updating to a permalink on the main branch if the content still matches.
+  - Allows manually specifying arbitrary replacement URLs.
+  - Alternatively, allows creating and pushing a Git tag at the original commit so that GitHub never garbage-collects it.
+- **Content verification**: Checks if the content at the original permalink line(s) matches the content (within a
+    configurable line-shift tolerance) at the suggested new location before proposing a replacement. Private
+    repositories are supported.
+- **Interactive mode**: Prompts for action on each found permalink (replace, tag, skip).
+- **Batch operations**: Options to automate frequent operations.
+- **Repository aliasing**: Useful if your project references upstreams or mirrors or your repository has been renamed.
+- **Dry-run mode**: See what changes would be made without modifying files.
+- **JSON report**: Outputs a JSON report of changes made (or in dry-run mode, would make)
+
+## Installation
+
+Requires Python 3.9 or later.
+
+To install from [PyPI](https://pypi.org/project/git-permalink-fixer/):
+
+```bash
+pipx install git-permalink-fixer
+```
+
+## Usage
+
+Navigate to your Git repository's root directory and run:
+
+```bash
+cd $REPO_ROOT
+git-permalink-fixer [path]
+```
+
+### Options
+
+- **`--repo-alias REPO_ALIASES`**
+    Alternative repository names (e.g., `'old-repo-name'`, `'project-alias'`) that should be considered aliases for the current repository when parsing permalinks.
+    This flag can be used multiple times to specify different aliases.
+
+- **`--main-branch MAIN_BRANCH`**
+    Specify the main branch name (default: `main`).
+
+- **`--tag-prefix TAG_PREFIX`**
+    Specify the tag prefix for preserving commits (default: `permalinks/ref`).
+
+- **`--line-shift-tolerance LINE_SHIFT_TOLERANCE`**
+    Max number of lines to shift up/down when searching for matching content in ancestor commits (default: `20`).
+    Can be an absolute number (e.g., `20`) or a percentage of the target file's lines (e.g., `10%`).
+    Set to `0` or `0%` to disable shifting.
+
+- **`--fetch-mode {prompt,always,never}`**
+    Behavior for fetching commits not found locally from `origin` remote (default: `prompt`).
+    - `prompt`: Ask for each commit or group.
+    - `always`: Automatically fetch all missing commits.
+    - `never`: Never fetch missing commits.
+
+- **`--auto-accept-replace`**
+    Automatically accept suggested replacements if verification is successful (e.g., ancestor found and lines match within tolerance, or user manually resolved to a verifiable state).
+    Bypasses the final action prompt for these cases.
+
+- **`--auto-fallback {tag,skip}`**
+    If a permalink cannot be successfully replaced (e.g., no ancestor, or line content verification fails and isn't resolved by user), automatically choose a fallback action:
+    - `tag`: Tag the original commit
+    - `skip`: Skip the permalink
+    Bypasses the final action prompt for these fallback cases.
+
+- **`--non-interactive`**
+    Enable non-interactive mode. This is a shorthand for setting:
+    - `--auto-accept-replace`
+    - `--auto-fallback tag`
+    - `--fetch-mode always`
+    User will not be prompted for decisions.
+
+- **`--output-json-report OUTPUT_JSON_REPORT`**
+    File path to output a JSON report of actions (replacements and tags).
+
+- **`-v`, `--verbose`**
+    Enable verbose output for more detailed logging.
+
+- **`--version`**
+    Show program's version number and exit.
+
+- **`-n`, `--dry-run`**
+    Show what would be done without making any changes (tags, file modifications, or remote pushes).
+    *Note: will still attempt to fetch commits if they are not found locally.*
+
+- **`-I`, `--no-ignore`**
+    Disable checking `.gitignore`. By default, files ignored by git are skipped.
+    Set this flag to include them in the search (current behavior before this flag).
+
+### Environment variables
+
+If a replacement URL points to private repositories, this tool will try to verify that the content at the original
+permalink line(s) matches the content at the suggested new location.
+You can set the following environment variable to authenticate:
+
+- **`GITHUB_TOKEN`**: Personal access token with `repo` scope for private repositories.
+
+### Examples
+
+For example, to generate a JSON report of suggested permalink replacements without making any changes:
+
+```bash
+cd $REPO_ROOT
+git-permalink-fixer --dry-run --non-interactive --output-json-report $(date -I).permalinks-to-replace.json --line-shift-tolerance '10%'
+```
