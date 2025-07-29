@@ -1,0 +1,53 @@
+# [build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tiktok-captcha-solver-fork"
+version = "0.8.6"
+
+description = "This package integrates with Selenium or Playwright to solve any TikTok captcha in one line of code."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+
+keywords = ["tiktok", "captcha", "solver", "selenium", "rotate", "puzzle", "3d"]
+
+authors = [{ name = "Toughdata LLC", email = "greg@toughdata.net" }]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+dependencies = [
+    "selenium",
+    "webdriver-manager",
+    "pydantic",
+    "requests",
+    "pytest",
+    "pytest-asyncio",
+    "playwright",
+    "playwright-stealth",
+    "undetected_chromedriver",
+    "setuptools",
+    "nodriver",
+    "zendriver",
+]
+
+[project.urls]
+"Homepage" = "https://www.sadcaptcha.com"
+"Source" = "https://github.com/outlandishdigital/tiktok-captcha-solver"
+"Bug Reports" = "https://github.com/outlandishdigital/tiktok-captcha-solver/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
