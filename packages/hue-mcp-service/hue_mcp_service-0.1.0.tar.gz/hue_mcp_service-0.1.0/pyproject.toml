@@ -1,0 +1,61 @@
+[project]
+name = "hue-mcp-service"
+version = "0.1.0"
+description = "FastMCP service for controlling Philips Hue lights"
+authors = [{name = "Claude Code User", email = "user@example.com"}]
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+keywords = [
+    "philips-hue", "hue", "smart-lights", "home-automation", "iot", 
+    "mcp", "fastmcp", "model-context-protocol", "claude", "ai", 
+    "lighting", "smart-home", "automation", "api", "rest-api"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Home Automation",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+    "Environment :: Console",
+    "Natural Language :: English",
+]
+dependencies = [
+    "fastmcp>=2.0.0",
+    "qhue>=2.0.0",
+    "requests>=2.25.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/plwp/hue-mcp-service"
+Repository = "https://github.com/plwp/hue-mcp-service"
+Issues = "https://github.com/plwp/hue-mcp-service/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "ruff>=0.1.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 88
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
