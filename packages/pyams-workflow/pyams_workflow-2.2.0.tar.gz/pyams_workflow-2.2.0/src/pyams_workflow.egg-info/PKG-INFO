@@ -1,0 +1,155 @@
+Metadata-Version: 2.1
+Name: pyams-workflow
+Version: 2.2.0
+Summary: PyAMS workflow management package
+Home-page: https://pyams.readthedocs.io
+Author: Thierry Florac
+Author-email: tflorac@ulthar.net
+License: ZPL
+Keywords: Pyramid PyAMS workflow
+Classifier: License :: OSI Approved :: Zope Public License
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Framework :: Pyramid
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Provides-Extra: test
+License-File: LICENSE
+
+=================================
+PyAMS workflow management package
+=================================
+
+.. contents::
+
+
+What is PyAMS?
+==============
+
+PyAMS (Pyramid Application Management Suite) is a small suite of packages written for applications
+and content management with the Pyramid framework.
+
+**PyAMS** is actually mainly used to manage web sites through content management applications (CMS,
+see PyAMS_content package), but many features are generic and can be used inside any kind of web
+application.
+
+All PyAMS documentation is available on `ReadTheDocs <https://pyams.readthedocs.io>`_; source code
+is available on `Gitlab <https://gitlab.com/pyams>`_ and pushed to `Github
+<https://github.com/py-ams>`_. Doctests are available in the *doctests* source folder.
+
+
+What is PyAMS workflow?
+=======================
+
+PyAMS_workflow is an extension package for PyAMS, which is used to handle contents workflows.
+This package is based on "hurry.workflow", which was a workflow management package for Zope 3,
+now adapted and extended for Pyramid.
+
+Please note however that this package doesn't provide any management interface, so can probably
+be reused easily outside of Pyramid.
+
+
+Changelog
+=========
+
+2.2.0
+-----
+ - added method to content workflow publication info interface to apply first publication date
+   on content "real" publication
+
+2.1.5
+-----
+ - updated workflow content displayed date vocabulary to handle un-versioned contents
+
+2.1.4
+-----
+ - updated doctest for last PyAMS_zmi compatibility
+ - added support for Python 3.12
+
+2.1.3
+-----
+ - updated "get_version()" method to exclude deleted versions from result
+   when no version index is specified
+
+2.1.2
+-----
+ - switched default timezone to UTC
+
+2.1.1
+-----
+ - updated doctests
+
+2.1.0
+-----
+ - added support for dividers in workflow transitions dropdown menu
+ - added marker interface to history table to support extension viewlets
+ - updated principal getter when firing transition
+
+2.0.3
+-----
+ - added check in versions helper for contents not supporting versioning
+
+2.0.2
+-----
+ - updated ZMI dependency
+ - updated doctests based on last ZMI release
+
+2.0.1
+-----
+ - updated modal forms title
+
+2.0.0
+-----
+ - upgraded to Pyramid 2.0
+
+1.3.3
+-----
+ - updated default view permission
+ - automatically get last version if specified version ID is -1
+
+1.3.2
+-----
+ - updated base transition form renderer
+
+1.3.1
+-----
+ - added helper class to handle publication info of "hidden" contents
+ - added support for Python 3.11
+
+1.3.0
+-----
+ - added helper functions to get last versions of a given content
+ - added support for Python 3.10
+ - updated translations
+ - updated versions menu status
+
+1.2.0
+-----
+ - added workflow label
+ - added workflow information property to keep first publication date of a managed content,
+   including all it's versions
+ - don't allow setting of publication date before current datetime
+ - remove workflow management task interface from package
+ - small updates in base workflow transition management form
+ - updated style of workflow versions menu options
+ - use iterator in versions sub-locations adapter
+
+1.1.1
+-----
+ - import Invalid from zope.interface instead of zope.interface.interfaces
+
+1.1.0
+-----
+ - removed support for Python < 3.7
+ - updated workflow content transition form
+ - added check against previous state before applying any transition
+ - added workflow adapter for any IWorkflowVersion content
+ - added timezone to all generated datetimes
+
+1.0.1
+-----
+ - updated Gitlab-CI configuration
+ - removed Travis-CI configuration
+
+1.0.0
+-----
+ - initial release
