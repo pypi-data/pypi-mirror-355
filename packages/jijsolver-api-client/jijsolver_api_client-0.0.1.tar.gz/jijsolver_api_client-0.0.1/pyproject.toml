@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools >= 64", "setuptools_scm >= 8", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jijsolver_api_client"
+authors = [
+    {name = "Jij Inc.", email = "info@j-ij.com"},
+]
+description = "A client for JijSolver API."
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">= 3.9"
+dependencies = [
+    "ommx >= 1.8.0, < 2.0.0",
+    "grpcio >= 1.69.0, < 2.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "requests"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = [
+    "jijsolver",
+    "jijsolver_proto",
+]
+
+[tool.ruff]
+target-version="py311"
+line-length = 88
+indent-width = 4
+fix = true
+exclude = [
+    "*_pb2.py",
+    "*_pb2_grpc.py", 
+    "*_pb2.pyi"
+]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "Q",
+    "PERF",
+    "RUF"
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+
+[tool.setuptools_scm]
+root = ".."
+tag_regex = "^client-(?P<version>[vV]?\\d+(?:\\.\\d+){0,2}[^\\+]*)(?:\\+.*)?$"
