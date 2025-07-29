@@ -1,0 +1,15 @@
+The question is when to break out of the onestep loop.
+
+The basic concept is not hard:
+
+    - if in atomic mode, don't break
+    - otherwise
+        - break when doing a load, store, del, or print operation
+        - break when going into atomic mode
+
+However, we want to make the following optimizations:
+
+    - a list of assert statements should be combined into a single assert statement
+    - atomic blocks (and particularly assert statements) that do not access global
+      variables should not lead to a break
+    - multiple prints in the same atomic block should be split to simplify NFA->DFA conversion
