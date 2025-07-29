@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: faker-books
+Version: 0.1.0
+Summary: A community Faker provider for book-related data.
+Author-email: Maximos Nikiforakis <nikiforos@live.co.uk>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/Maxcode123/faker_books
+Keywords: faker,books
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: faker>=37.3.0
+Dynamic: license-file
+
+# faker_books
+Books Faker Community Provider
+
+## Installation
+```
+> pip install faker_books
+```
+## Usage
+```py
+from faker import Faker
+from faker_books import BookProvider
+
+fake = Faker()
+fake.add_provider(BookProvider)
+
+fake.book_genre()
+fake.book_author()
+fake.book_title()
+fake.book_publisher()
+```
+
+## Acknowledgements
+The layout for this repository was mainly inspired by https://github.com/jeffwright13/faker_music
+

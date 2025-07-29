@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["faker_books*"]
+exclude = ["faker_books.tests*"]
+
+[project]
+name = "faker-books"
+version = "0.1.0"
+description = "A community Faker provider for book-related data."
+authors = [
+    { name="Maximos Nikiforakis", email="nikiforos@live.co.uk" },
+]
+keywords = ["faker", "books"]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "faker>=37.3.0",
+]
+ 
+[project.urls]
+Homepage = "https://github.com/Maxcode123/faker_books"
