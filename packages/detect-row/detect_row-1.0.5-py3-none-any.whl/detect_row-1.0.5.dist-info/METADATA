@@ -1,0 +1,227 @@
+Metadata-Version: 2.1
+Name: detect-row
+Version: 1.0.5
+Summary: A library for detecting rows in images
+Home-page: https://github.com/yourusername/detect-row
+Author: Your Name
+Author-email: your.email@example.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: opencv-python>=4.8.0
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: pytesseract>=0.3.10
+
+# Detect Row
+
+Thư viện phát hiện và cắt các hàng từ bảng trong ảnh, với khả năng tích hợp OCR.
+
+## 1. Tính năng
+
+- Phát hiện đường kẻ ngang trong ảnh bảng
+- Cắt hàng dựa trên phát hiện đường kẻ và phân tích histogram
+- Phát hiện các hàng không có văn bản
+- Tích hợp OCR với Tesseract
+- Xuất kết quả dưới dạng văn bản, JSON, TSV
+- Debug với ảnh trung gian
+- Xử lý các trường hợp đặc biệt (không có đường kẻ, bảng đơn giản)
+
+## 2. Cài đặt
+
+### 2.1. Cài đặt từ PyPI
+
+```bash
+pip install detect-row
+```
+
+### 2.2. Cài đặt từ mã nguồn
+
+```bash
+# Clone repository
+git clone https://github.com/CoderTeam20266/detect_row.git
+cd detect_row
+
+# Cài đặt package
+pip install -e .
+```
+
+## 3. Sử dụng
+
+### 3.1. Trích xuất hàng cơ bản
+
+```python
+from detect_row import BasicRowExtractor
+
+# Khởi tạo bộ trích xuất
+extractor = BasicRowExtractor(
+    input_dir="input",
+    output_dir="output/rows",
+    debug_dir="debug/basic"
+)
+
+# Xử lý một ảnh
+result = extractor.process_image("input/table.jpg")
+
+# Xử lý nhiều ảnh
+extractor.process_directory()
+
+# Truy cập kết quả
+print(f"Phát hiện {result['rows']} hàng")
+print(f"Chi tiết hàng: {result['row_info']}")
+```
+
+### 3.2. Trích xuất hàng nâng cao
+
+```python
+from detect_row import AdvancedRowExtractor
+
+# Khởi tạo bộ trích xuất nâng cao
+extractor = AdvancedRowExtractor(
+    input_dir="input", 
+    output_dir="output/advanced_rows", 
+    debug_dir="debug/lines"
+)
+
+# Xử lý ảnh với tùy chọn
+result = extractor.process_image(
+    "input/table.jpg",
+    min_line_length_ratio=0.5,  # Chiều dài tối thiểu của đường kẻ (tỷ lệ so với chiều rộng ảnh)
+    line_adjustment=2,          # Hiệu chỉnh vị trí đường kẻ (pixel)
+    check_text=True,            # Kiểm tra text trong hàng
+    add_margin=True,            # Thêm lề cho hàng
+    margin=5                    # Kích thước lề (pixel)
+)
+
+# Trích xuất hàng từ ảnh đã tải
+image = cv2.imread("input/table.jpg")
+rows = extractor.extract_rows_from_image(image)
+```
+
+### 3.3. Phát hiện bảng và trích xuất hàng
+
+```python
+from detect_row import TableRowExtractorMain
+
+# Khởi tạo bộ trích xuất với phát hiện bảng
+extractor_main = TableRowExtractorMain(
+    input_dir="input", 
+    output_dir="output/tables_rows", 
+    debug_dir="debug/tables"
+)
+
+# Xử lý ảnh có thể chứa nhiều bảng
+result = extractor_main.process_image(
+    "input/document.jpg",
+    add_margin=True,
+    margin=5
+)
+
+# Kết quả chứa thông tin về các bảng phát hiện được
+for i, table in enumerate(result['tables']):
+    print(f"Bảng {i+1}: {table['rows']} hàng")
+```
+
+### 3.4. Trích xuất hàng và OCR với Tesseract
+
+```python
+from detect_row import TesseractRowExtractor
+
+# Khởi tạo bộ trích xuất OCR
+ocr_extractor = TesseractRowExtractor(
+    input_dir="input", 
+    output_dir="output/tesseract_ocr", 
+    debug_dir="debug/tesseract"
+)
+
+# Xử lý ảnh với OCR
+result = ocr_extractor.process_image(
+    "input/table.jpg",
+    lang="vie+eng",           # Ngôn ngữ cho OCR
+    config="--oem 1 --psm 6", # Cấu hình Tesseract
+    output_format="json"      # Định dạng xuất: text, json, tsv
+)
+
+# Truy cập văn bản đã trích xuất
+for i, row_text in enumerate(result['text']):
+    print(f"Hàng {i+1}: {row_text}")
+
+# Lưu kết quả vào file
+ocr_extractor.save_to_file(
+    result['text'],
+    "output/result",
+    format="json"
+)
+```
+
+## 4. Cấu trúc thư viện
+
+```
+detect_row/
+├── __init__.py              # Định nghĩa API public
+├── base.py                  # Lớp cơ sở và các tiện ích
+├── basic_row_extractor.py   # Bộ trích xuất hàng cơ bản
+├── advanced_row_extractor.py # Bộ trích xuất hàng nâng cao
+├── tesseract_ocr_extractor.py # Bộ trích xuất OCR
+├── requirements.txt         # Các thư viện cần thiết
+└── setup.py                 # Cấu hình cài đặt
+```
+
+## 5. Các tham số cấu hình
+
+### 5.1. Tham số phát hiện đường kẻ
+
+| Tham số | Mô tả | Giá trị mặc định |
+|---------|-------|------------------|
+| min_line_length_ratio | Chiều dài tối thiểu của đường kẻ (tỷ lệ so với chiều rộng ảnh) | 0.5 |
+| line_adjustment | Hiệu chỉnh vị trí đường kẻ (pixel) | 2 |
+| min_distance_lines | Khoảng cách tối thiểu giữa các đường kẻ (pixel) | 10 |
+| max_lines | Số đường kẻ tối đa để phát hiện | 50 |
+| threshold_value | Ngưỡng nhị phân hóa ảnh (0-255) | 200 |
+
+### 5.2. Tham số OCR
+
+| Tham số | Mô tả | Giá trị mặc định |
+|---------|-------|------------------|
+| lang | Ngôn ngữ cho OCR | "vie+eng" |
+| config | Cấu hình Tesseract | "" |
+| output_format | Định dạng xuất kết quả | "text" |
+
+## 6. Xử lý lỗi và debug
+
+Mọi bộ trích xuất đều hỗ trợ chế độ debug:
+
+```python
+# Bật debug
+extractor = AdvancedRowExtractor(
+    input_dir="input",
+    output_dir="output/rows",
+    debug_dir="debug/lines",
+    debug=True  # Bật chế độ debug
+)
+```
+
+Các ảnh debug được lưu trong thư mục `debug_dir` và bao gồm:
+- Ảnh bảng đã tiền xử lý
+- Ảnh với các đường kẻ đã phát hiện
+- Ảnh với các hàng đã cắt
+- Histogram phân tích
+
+## 7. Yêu cầu
+
+- Python >= 3.6
+- OpenCV
+- NumPy
+- Matplotlib
+- PyTesseract (cho OCR)
+- Pillow
+
+## 8. Giấy phép
+
+MIT
+
+
