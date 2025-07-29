@@ -1,0 +1,37 @@
+"""
+This is an Life Cycle Oriented study
+"""
+
+def read_data():
+    print("I am reading some data")
+    return None
+
+def lcia_step() -> float :
+    print("I am building LCIA")
+    return "LCA impact"
+
+def curate_data():
+    print("Data curated")
+    return None
+
+def prepare():
+    curate_data()
+    print("I am preparing some data")
+
+def build_lci() ->  None :
+    prepare()
+    print('I am building LCI')
+    return None
+
+def export(results):
+    print(f"I am exporting results: {results}")
+
+def main():
+    build_lci()
+    results = lcia_step()
+    export(results)
+
+    print("Main is done")
+
+if __name__=="__main__":
+    main()

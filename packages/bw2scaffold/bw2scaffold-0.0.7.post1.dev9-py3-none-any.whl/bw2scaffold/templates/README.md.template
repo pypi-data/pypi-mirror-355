@@ -1,0 +1,76 @@
+# Welcome to the {{project_name}} project.
+
+## About this repository
+
+Provide a general description of the repository.
+
+
+## Installation
+
+Provide detailed instructions to install the required dependencies. bw2scaffold prepares a `environment.yaml` if a conda environment is detected, or just a `requirements.txt` if not.
+
+## Repository structure
+
+This subsection should be used to present the repository structure.
+
+> [!NOTE] The repository contains a predetermined structure.
+>
+> While these folders are mandatory, more children directories can be added if necessary.
+> When running `bw2init packup`, the parser will only focus on this structure to building the report.
+> In this sense, any non-children folder will be ignored.
+
+
+    {{project_name}}
+    ├── data
+    │   ├── private     <- Everything here is ignored in .gitignore
+    │   │   ├── processed
+    │   │   │   └── README.md
+    │   │   ├── raw
+    │   │   │   └── README.md
+    │   │   └── README.md
+    │   ├── processed   <- Ultimate/canonical form of the data before being ingested into the models.
+    │   │   └── README.md
+    │   └── raw   <- Pristine and unmodified data resources.
+    │       └── README.md
+    ├── environment.yaml  <- To build environment when conda is installed.
+    ├── models  <- Contains serialized, ready-to-use models.
+    │   └── README.md
+    ├── README.md
+    └── src <- Contains pure code
+        ├── analysis <- Scripts and notebooks used to analyse results.
+        │   └── README.md
+        ├── processing  <- Routines used to process raw data.
+        │   └── README.md
+        └── models  <- Scripts and notebooks containing the code that generates models.
+            └── README.md
+
+
+## Computation graph
+
+Here some diagrams and text explaining the followed computation is presented.
+Leave the next part so `bw2init prepare` can automatically generate the graph.
+
+---->[START]<----
+
+[COMPUTATION_GRAPH]
+
+---->[END]<-----
+
+## Usage
+
+Here the conventional usage should be defined.
+
+
+## 📫 Contact
+
+Provide an email here [myemail@list.lu]
+
+## ♻️ License
+
+Indicate license
+
+## 🤝 Acknowledgement
+
+Here goes acknowledgement
+
+## Contributors
