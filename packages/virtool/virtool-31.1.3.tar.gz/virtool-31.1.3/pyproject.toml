@@ -1,0 +1,109 @@
+[project]
+name = "virtool"
+description = "Viral infection diagnostics using next-generation sequencing"
+dynamic = [
+    "dependencies",
+    "version"
+]
+requires-python = ">3.12.0,<3.13.0"
+authors = [
+    {name = "Ian Boyes"},
+    {name = "Reece Hoffmann"},
+    {name = "Aman Monga"},
+    {name = "Blake Smith"},
+    {name = "Jake Alexander"},
+    {name = "Josh Moreira"},
+    {name = "Lilly Roberts"},
+    {name = "Matthew Curtis"},
+    {name = "Naomi Schaufele"},
+    {name = "Ryan Fang"},
+    {name = "Sebastian Chen"},
+    {name = "Tiansheng Sui"},
+    {name = "Bryce Davidson"},
+]
+maintainers = [
+    {name = "Ian Boyes" },
+    {name = "Reece Hoffmann" },
+]
+license = "MIT"
+version = "31.1.3"
+
+[project.scripts]
+virtool = "virtool.config.cli:entry"
+
+[tool.poetry]
+packages = [
+    { include = "virtool" },
+]
+
+[tool.poetry.dependencies]
+aiohttp = {extras = ["speedups"], version = "^3.10"}
+aiohttp-pydantic = "^1.12.1"
+aiojobs = "1.2.1" # Pinned because 1.3.0 breaks uploads.
+alembic = {extras = ["tz"], version = "^1.10.3"}
+arrow = "^1.3.0"
+asyncpg = "^0.30.0"
+bcrypt = "^4.0.0"
+biopython = "^1.84"
+Cerberus = "^1.3.4"
+certifi = "^2024.8.30"
+click = "^8.0.1"
+dictdiffer = "^0.8.1"
+email-validator = "^2.0.0"
+faker = "^12.3.3"
+motor = "^3.6.0"
+msal = "^1.16.0"
+openfga-sdk = "^0.1.1"
+openpyxl = "^3.1.5"
+orjson = "^3.8.0"
+pydantic = "1.10.16"
+pyyaml = "^6.0.0"
+pyjwt = "^2.9.0"
+semver = "^2.13.0"
+sentry-sdk = "^2.18.0"
+setuptools = "^75.3.0"
+sqlalchemy = "2.0.24"
+structlog-sentry = "^2.1.0"
+uvloop = "^0.21.0"
+visvalingamwyatt = "^0.1.4"
+redis = "^6.2.0"
+enum-tools = "^0.13.0"
+
+[tool.poetry.group.dev.dependencies]
+furo = "^2024.8.6"
+mypy = "^1.6.0"
+pytest = "^8.3.4"
+pytest-aiohttp = "^1.0.5"
+pytest-asyncio = "^0.21.0"
+pytest-mock = "^3.14.0"
+pytest-profiling = "^1.7.0"
+pytest-rerunfailures = "^10.2"
+pytest-structlog = "^0.6"
+pytest-xdist = "^3.3.1"
+ruff = "^0.4.1"
+snakeviz = "^2.2.0"
+sphinx = "^8.2.3"
+sphinx-autobuild = "^2024"
+sphinx-autofixture = "^0.4.0"
+sphinx-toolbox = "^4.0.0"
+syrupy = "^4.5.0"
+
+[tool.pytest.ini_options]
+addopts = [
+    "-n", "auto",  # Automatically use the number of available CPUs
+    "--maxprocesses", "12",
+]
+asyncio_mode = "auto"
+python_files = ["test_*.py"]
+testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["ANN101", "COM812", "D203", "D213", "EM102", "FBT001", "ISC001", "PLR0913"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN201", "ANN202", "D205", "S101", "S106"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
