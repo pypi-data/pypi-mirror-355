@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools", "wheel", "pybind11>=2.6.0", "cmake"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aindex2"
+dynamic = ["version"]
+description = "Perfect hash based index for genome data."
+authors = [{name = "Aleksey Komissarov", email = "ad3002@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "intervaltree==3.1.0",
+    "editdistance==0.8.1",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: C++",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+]
+
+[project.urls]
+Homepage = "https://github.com/ad3002/aindex"
+
+[project.scripts]
+aindex = "aindex.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aindex*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "aindex.__version__"}
+
+[tool.cibuildwheel]
+before-all = """
+    uname -a
+    mkdir -p external
+    cd external
+    git clone https://github.com/ad3002/emphf.git
+    cd emphf
+    cmake .
+    make
+    cd ../../
+    make pybind11
+    """
+archs = ["x86_64"]
+environment = { CIBW_BUILD = "cp3?-*-manylinux*"}
+skip = "*-win32 *-manylinux_i686 *-manylinux2010_i686 *-manylinux2014_i686 *-manylinux_aarch64 *-manylinux_ppc64le *-manylinux_s390x *-musllinux_i686 *-musllinux_aarch64 *-musllinux_ppc64le *-musllinux_s390x *-musllinux_x86_64"
+
+[tool.cibuildwheel.linux]
+repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
