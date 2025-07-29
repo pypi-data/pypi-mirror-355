@@ -1,0 +1,57 @@
+# sysmess
+
+Fancy terminal message box renderer using Unicode box characters and ANSI styling.
+
+## Installation & Building
+
+- Build the extension in-place:
+
+  ```bash
+  python3 setup.py build
+  ```
+
+- (Optional) Install into your current environment:
+
+  ```bash
+  pip install .
+  ```
+
+## Usage
+
+```python
+import sysmess
+
+msg = sysmess.fancy_box(
+    "Hello, world!",
+    title="Greeting",
+    center=True,
+    bold=True,
+    italic=False,
+)
+print(msg)
+
+# Measure the width of the box (including borders)
+width = sysmess.measure_box_width("Hello, world!", title="Greeting")
+print(width)
+```
+
+## Examples
+
+Once built (or installed), run the demonstration script to see sample outputs:
+
+```bash
+python3 examples.py
+```
+
+## Testing
+
+Run the unit tests using the included test runner:
+
+```bash
+python3 test.py
+```
+
+## Continuous Integration
+
+A GitHub Actions workflow is included at `.github/workflows/ci.yml`, which builds the extension, runs the tests, and executes the examples on each push or pull request to `main`.
+
