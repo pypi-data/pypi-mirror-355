@@ -1,0 +1,29 @@
+.TH HCLI_HST 1 "SEPTEMBER 2024" Linux "User Manuals"
+.SH NAME
+hcli_hst \- A python package wrapper that contains an HCLI sample application (hst); hst is an HCLI for playing SpaceTraders via the SpaceTraders API.
+.SH SYNOPSIS
+.B hcli_hst
+[
+.I option
+|
+.I <command>
+]
+.SH DESCRIPTION
+.B hcli_hst
+HCLI hst is a python package wrapper that contains an HCLI sample application (hst); hst is an HCLI for playing SpaceTraders via the SpaceTraders API.
+
+.SH COMMANDS
+.IP "path"
+Provides the installation path of hcli_hst, which can be used to help locate the path of the HCLI app to use in an HCLI Connector.
+.IP help
+This help file.
+.SH OPTIONS
+.IP --version
+.B hcli_hst
+version and the version of it's dependencies.
+.SH EXAMPLE
+hcli_hst path
+
+hcli_hst --version
+
+gunicorn --workers=1 --threads=100 -b 0.0.0.0:10000 "hcli_core:connector(\\"`hcli_hst path`\\")"
