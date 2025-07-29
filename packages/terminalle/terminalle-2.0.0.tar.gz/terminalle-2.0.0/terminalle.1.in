@@ -1,0 +1,105 @@
+.TH terminalle 1 "{date}" "v{version}"
+
+.SH NAME
+Terminalle
+
+.SH SYNOPSIS
+.B terminalle
+[-h|-v] [-c PATH] [-s]
+.PD 0
+.LP
+.B terminalle
+COMMAND [COMMAND-OPTION ...]
+.PD
+
+.SH DESCRIPTION
+A fancy "drop\-down" terminal emulateur.
+
+.SH OPTIONS
+.TP
+\fB\-c\fR PATH, \fB\-\-config=\fRPATH
+load config settings from PATH
+.TP
+\fB\-s\fR, \fB\-\-show\fR
+show the window immediately on startup
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show a help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+
+.SH COMMANDS
+.TP
+\fBterminalle\fR \fI\,auto\/\fR [-h] [-u|-s] [-f] [--no-start-on-login] [--no-restart-if-closed]
+
+Install an XDG desktop file to auto\-start Terminalle (in hidden mode) on login, as well as a DBUS service file to auto\-restart Terminalle if it's not already running when the user attempts to toggle it.
+.TP
+\fBterminalle\fR \fI\,no-auto\/\fR [-h] [-u|-s] [-f]
+
+Remove the DBUS service file and XDG desktop file that were installed using the \fIauto\fR subcommand.
+.TP
+\fBterminalle\fR \fI\,key\/\fR [-h] [-t KEYS ...] [-q KEYS ...] [--gnome | --kde]
+
+Set up keyboard shortcut(s) to invoke actions (Toggle or Quit). Supports GNOME-based desktops (including Unity, Cinnamon, etc.), or KDE. The running desktop environment is autodetected by default.
+.TP
+\fBterminalle\fR \fI\,no-key\/\fR [-h] [--gnome | --kde]
+
+Remove any keyboard shortcut(s) to invoke actions (Toggle or Quit).
+
+.SH COMMAND OPTIONS 'auto' / 'no-auto'
+.TP
+\fB\-u\fR, \fB\-\-user\fR
+apply to the current user only - this is the default
+.TP
+\fB\-s\fR, \fB\-\-system\fR
+apply to all users on the system
+.TP
+\fB\-f\fR, \fB\-\-force\fR
+delete files even if the contents are unexpected
+.TP
+\fB\-\-no\-start\-on\-login\fR
+do \fBnot\fR install XDG desktop file
+.TP
+\fB\-\-no\-restart\-if\-closed\fR
+do \fBnot\fR install DBUS service file
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show a help message and exit
+
+.SH COMMAND OPTIONS 'key' / 'no-key'
+.TP
+\fB\-t\fR, \fB\-\-toggle=\fRKEYS
+shortcut to toggle window visibility
+.TP
+\fB\-q\fR, \fB\-\-quit=\fRKEYS
+shortcut to shut down the application
+.TP
+\fB\-\-gnome\fR
+assume the desktop environment is GNOME
+.TP
+\fB\-\-kde\fR
+assume the desktop environment is KDE
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show a help message and exit
+
+.SH AUTHORS
+Will Noble
+.MT author@will.party
+.ME .
+
+.SH DISTRIBUTION
+Documentation:
+.UR https://github.com/ouillie/terminalle
+.UE
+.PD 0
+.LP
+Source:
+.UR https://github.com/ouillie/terminalle
+.UE
+.LP
+Python Package Index:
+.UR https://pypi.org/project/terminalle/
+.UE
+.PD
