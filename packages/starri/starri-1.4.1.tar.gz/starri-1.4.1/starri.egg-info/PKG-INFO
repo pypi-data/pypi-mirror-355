@@ -1,0 +1,120 @@
+Metadata-Version: 2.2
+Name: starri
+Version: 1.4.1
+Summary: A terminal-based menu system using blessed.
+Home-page: https://github.com/lioen-dev/starri
+Author: Rowan Barker
+Author-email: barker.rowan@sugarsalem.com
+Description-Content-Type: text/markdown
+Requires-Dist: blessed>=1.20.0
+Requires-Dist: py-gradify
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: summary
+
+# Starri
+
+Starri is a simple Python library for creating terminal-based menus. It supports navigation with the arrow keys and submenus for a dynamic user experience.
+
+## Installation
+
+You can install Starri with pip:
+
+```pip install starri```
+
+## Usage
+
+Hereâ€™s how to use Starri:
+
+```python
+
+# Comments unnecessary, just for explanation
+
+from starri import *
+
+def main():
+    starri(
+        title = "Main Menu", # Shown at the top of the screen
+        content = {
+            spacer() # Blank line, cannot be selected
+            text("Please Select an Option Below.") # Text, cannot be selected
+            spacer() # Blank line, cannot be selected
+            option("Option 1", option1()) # Basic option, can be selected. first arg is the text for the option, second arg is what it does if selected
+            option("Option 2", option2()) # Basic option, can be selected. first arg is the text for the option, second arg is what it does if selected
+            option("Option 3", option3()) # Basic option, can be selected. first arg is the text for the option, second arg is what it does if selected
+            option("Option 4", option4()) # Basic option, can be selected. first arg is the text for the option, second arg is what it does if selected
+            option("Option 5", option5()) # Basic option, can be selected. first arg is the text for the option, second arg is what it does if selected
+            option("Exit", exit()) # Basic option, can be selected. first arg is the text for the option, second arg is what it does if selected
+        }
+    )
+
+def option1():
+    starri(
+        title = "You Pressed Option 1!" # Shown at the top of the screen
+        content = {
+            option("Go Back", main()) # Basic option, can be selected. first arg is the text for the option, second arg is what it does if selected
+        }
+    )
+
+def option2():
+    starri(
+        title = "You Pressed Option 2!" # Shown at the top of the screen
+        content = {
+            spacer() # Blank line, cannot be selected
+            text("Example Confirmation?") # Text, cannot be selected
+            spacer() # Blank line, cannot be selected
+            sidebyside("Yes", dosomething(), "No", cancel()) # Two options, side by side. navigate betweeen the two by using the left and right arrow keys. horizontally centered by default, and spaced evenly.
+        }
+    )
+
+def option3():
+    starri(
+        title = "You Pressed Option 3!" # Shown at the top of the screen
+        content = {
+            spacer() # Blank line, cannot be selected
+            text("Checkboxes Example")  # Text, cannot be selected
+            spacer() # Blank line, cannot be selected
+            checkbox(
+                "Checkbox 1", False, # First arg is the text for the checkbox, second arg is whether it is checked by default
+                "Checkbox 2", False, # First arg is the text for the checkbox, second arg is whether it is checked by default
+                "Checkbox 3", False, # First arg is the text for the checkbox, second arg is whether it is checked by default
+                "Checkbox 4", False, # First arg is the text for the checkbox, second arg is whether it is checked by default
+                "Checkbox 5", False, # First arg is the text for the checkbox, second arg is whether it is checked by default
+
+                submitbutton("Submit", exampleactionaftercheckboxes()) # Text for the submit button
+
+            )
+
+        }
+    )
+
+def exampleactionaftercheckboxes():
+    if box1:
+        print("Checkbox 1 is checked!")
+    if box2:
+        print("Checkbox 2 is checked!")
+    if box3:
+        print("Checkbox 3 is checked!")
+    if box4:
+        print("Checkbox 4 is checked!")
+    if box5:
+        print("Checkbox 5 is checked!")
+
+def option4():
+    starri(
+        title = "You Pressed Option 4!" # Shown at the top of the screen
+        content = {
+            spacer() # Blank line, cannot be selected
+            text("Text Input Example") # Text, cannot be selected
+            spacer() # Blank line, cannot be selected
+            textinput("Enter some text:", exampleactionaftertextinput()) # Text input, first arg is the prompt, second arg is what to do with the input. second arg is called on enter when selected
+        }
+    )
+    
+if __name__ == "__main__":
+    main()
+```
