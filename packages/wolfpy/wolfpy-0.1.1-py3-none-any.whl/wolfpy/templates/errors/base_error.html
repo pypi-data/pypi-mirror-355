@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Error - WolfPy{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .error-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            margin: 20px;
+        }
+        
+        .error-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .error-code {
+            font-size: 72px;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .error-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .error-message {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+            transform: translateY(-2px);
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #495057;
+        }
+        
+        .debug-info h4 {
+            margin-bottom: 15px;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .debug-item {
+            margin-bottom: 8px;
+        }
+        
+        .debug-label {
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .validation-errors {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .validation-errors h4 {
+            color: #721c24;
+            margin-bottom: 10px;
+        }
+        
+        .validation-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .validation-errors li {
+            color: #721c24;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .error-container {
+                padding: 30px 20px;
+            }
+            
+            .error-code {
+                font-size: 60px;
+            }
+            
+            .error-title {
+                font-size: 24px;
+            }
+            
+            .error-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="error-container">
+        {% block content %}
+        <div class="error-icon">{% block icon %}🚫{% endblock %}</div>
+        <div class="error-code">{% block error_code %}500{% endblock %}</div>
+        <div class="error-title">{% block error_title %}Something went wrong{% endblock %}</div>
+        <div class="error-message">
+            {% block error_message %}
+            We're sorry, but something went wrong on our end. Please try again later.
+            {% endblock %}
+        </div>
+        
+        <div class="error-actions">
+            {% block actions %}
+            <a href="/" class="btn btn-primary">Go Home</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+            {% endblock %}
+        </div>
+        
+        {% if debug and request %}
+        <div class="debug-info">
+            <h4>Debug Information</h4>
+            <div class="debug-item">
+                <span class="debug-label">Method:</span> {{ request.method }}
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Path:</span> {{ request.path }}
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Query String:</span> {{ request.query_string or 'None' }}
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">User Agent:</span> {{ request.user_agent or 'Unknown' }}
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Remote Address:</span> {{ request.remote_addr or 'Unknown' }}
+            </div>
+            <div class="debug-item">
+                <span class="debug-label">Timestamp:</span> {{ timestamp }}
+            </div>
+            {% block debug_extra %}{% endblock %}
+        </div>
+        {% endif %}
+        
+        {% block extra_content %}{% endblock %}
+        {% endblock %}
+    </div>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

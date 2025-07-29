@@ -1,0 +1,165 @@
+{% extends "auth/base.html" %}
+
+{% block title %}Profile - {{ super() }}{% endblock %}
+
+{% block header %}User Profile{% endblock %}
+{% block subtitle %}Manage your account information{% endblock %}
+
+{% block extra_head %}
+<style>
+    .profile-info {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .profile-field {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #EAEFEF;
+    }
+    
+    .profile-field:last-child {
+        border-bottom: none;
+    }
+    
+    .profile-field label {
+        font-weight: 500;
+        color: #333446;
+        margin: 0;
+    }
+    
+    .profile-field .value {
+        color: #7F8CAA;
+        font-family: monospace;
+    }
+    
+    .profile-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .btn-secondary {
+        background: #7F8CAA;
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+        background: #6a7694;
+        color: white;
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn-danger:hover {
+        background: #c82333;
+        color: white;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .stat-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333446;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+        color: #7F8CAA;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-info">
+    <div class="profile-field">
+        <label>Username</label>
+        <span class="value">{{ user.username }}</span>
+    </div>
+    
+    <div class="profile-field">
+        <label>Email</label>
+        <span class="value">{{ user.email|default('Not provided') }}</span>
+    </div>
+    
+    <div class="profile-field">
+        <label>User ID</label>
+        <span class="value">{{ user.id }}</span>
+    </div>
+    
+    {% if user.attributes %}
+    {% for key, value in user.attributes.items() %}
+    {% if key not in ['password_hash'] %}
+    <div class="profile-field">
+        <label>{{ key|title }}</label>
+        <span class="value">{{ value }}</span>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ current_time()|format_datetime('%Y-%m-%d') }}</div>
+        <div class="stat-label">Member Since</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-value">Active</div>
+        <div class="stat-label">Status</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-value">User</div>
+        <div class="stat-label">Role</div>
+    </div>
+</div>
+
+<div class="profile-actions">
+    <a href="/profile/edit" class="btn-secondary">Edit Profile</a>
+    <a href="/dashboard" class="btn-secondary">Dashboard</a>
+    <a href="/logout" class="btn-danger" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
+</div>
+{% endblock %}
+
+{% block auth_links %}
+<div class="auth-links">
+    <p><a href="/dashboard">← Back to Dashboard</a></p>
+</div>
+{% endblock %}

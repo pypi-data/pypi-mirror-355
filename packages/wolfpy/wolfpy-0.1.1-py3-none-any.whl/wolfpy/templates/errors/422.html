@@ -1,0 +1,44 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}422 - Validation Error - WolfPy{% endblock %}
+
+{% block icon %}📝{% endblock %}
+
+{% block error_code %}422{% endblock %}
+
+{% block error_title %}Validation Error{% endblock %}
+
+{% block error_message %}
+The data you submitted contains errors. Please review and correct the highlighted fields.
+{% endblock %}
+
+{% block actions %}
+<a href="javascript:history.back()" class="btn btn-primary">Go Back</a>
+<a href="/" class="btn btn-secondary">Go Home</a>
+{% endblock %}
+
+{% block extra_content %}
+{% if validation_errors %}
+<div class="validation-errors">
+    <h4>Please correct the following errors:</h4>
+    <ul>
+        {% for field, messages in validation_errors.items() %}
+            {% for message in messages %}
+            <li><strong>{{ field }}:</strong> {{ message }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div style="margin-top: 30px; padding: 20px; background: #d1ecf1; border-radius: 6px; text-align: left;">
+    <h4 style="color: #0c5460; margin-bottom: 15px;">Tips for fixing validation errors:</h4>
+    <ul style="color: #333; line-height: 1.6;">
+        <li>Check that all required fields are filled out</li>
+        <li>Ensure email addresses are in the correct format</li>
+        <li>Verify that passwords meet the requirements</li>
+        <li>Make sure numeric fields contain valid numbers</li>
+        <li>Check that dates are in the correct format</li>
+    </ul>
+</div>
+{% endblock %}
