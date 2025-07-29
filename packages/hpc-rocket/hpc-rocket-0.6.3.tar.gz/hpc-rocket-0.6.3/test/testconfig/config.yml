@@ -1,0 +1,40 @@
+host: $REMOTE_HOST
+user: $REMOTE_USER
+private_keyfile: ${HOME}/.ssh/keyfile
+password: 1234
+
+proxyjumps:
+  - host: proxy1.example.com
+    user: proxy1-user
+    password: proxy1-pass
+    private_keyfile: $PROXY1_KEYFILE
+
+  - host: proxy2.example.com
+    user: proxy2-user
+    password: proxy2-pass
+    private_keyfile: /home/user/.ssh/proxy2_keyfile
+
+  - host: proxy3.example.com
+    user: proxy3-user
+    password: $PROXY3_PASSWORD
+    private_keyfile: /home/user/.ssh/proxy3_keyfile
+
+copy:
+  - from: myfile.txt
+    to: mycopy.txt
+
+  - from: $LOCAL_SLURM_SCRIPT_PATH
+    to: $REMOTE_SLURM_SCRIPT_PATH
+    overwrite: true
+
+collect:
+  - from: $REMOTE_RESULT_FILEPATH
+    to: result.txt
+    overwrite: true
+
+clean:
+  - mycopy.txt
+  - $REMOTE_SLURM_SCRIPT_PATH
+
+sbatch: $REMOTE_SLURM_SCRIPT_PATH
+continue_if_job_fails: true

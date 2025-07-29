@@ -1,0 +1,33 @@
+
+host: $TARGET_HOST
+user: $TARGET_USER
+private_keyfile: $TARGET_KEY
+
+proxyjumps:
+  - host: $PROXY_HOST
+    user: $PROXY_USER
+    private_keyfile: $PROXY_KEY
+
+copy:
+  - from: local_slurm.job
+    to: $REMOTE_SLURM_SCRIPT
+    overwrite: true
+
+  - from: $ABS_DIR/dir/*.txt
+    to: dir/
+    overwrite: true
+
+  - from: $ABS_DIR/dir/*
+    to: target
+    overwrite: true
+
+collect:
+  - from: ./dir/*.txt
+    to: .
+
+clean:
+  - $REMOTE_SLURM_SCRIPT
+  - dir/*.txt
+
+sbatch: $REMOTE_SLURM_SCRIPT
+continue_if_job_fails: true
