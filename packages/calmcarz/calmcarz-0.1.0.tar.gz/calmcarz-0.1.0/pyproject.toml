@@ -1,0 +1,40 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "calmcarz"
+version = "0.1.0"
+authors = [
+    { name = "Yue Wang", email = "yuw90@pitt.edu" },
+]
+description = "A Python package for batch correction (CALM) and activity scoring (CARZ, TAS) of gene expression data."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+# --- DEPENDENCIES ---
+# List all libraries your package needs to run.
+# pip will automatically install these when a user installs your package.
+dependencies = [
+    "numpy",
+    "pandas",
+    "anndata",
+    "statsmodels",
+    "scipy",
+    "tqdm",
+    "typing"
+]
+
+[project.urls]
+Homepage = "https://github.com/lenore-yue/calmcarz-package"
+Issues = "https://github.com/lenore-yue/calmcarz-package/issues"
