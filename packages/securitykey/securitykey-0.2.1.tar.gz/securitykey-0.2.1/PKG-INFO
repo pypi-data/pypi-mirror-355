@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: securitykey
+Version: 0.2.1
+Summary: A Python module to generate and verify security keys for unique identification
+Author: JTCoder8290
+Author-email: jacktay.yujie@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-python
+Dynamic: summary
+
+# securitykey
+
+`securitykey` is a lightweight Python module to generate, store, and verify security keys easily.
+
+## Features
+
+- Generate random security keys with customizable length  
+- Store keys in memory during runtime  
+- Verify keys against stored keys  
+
+## Installation
+
+You can install the module via pip (once published):
+
+```bash
+pip install securitykey
+Usage
+python
+Copy
+Edit
+import securitykey
+
+# Generate a new key and key ID
+keyid, key = securitykey.generateKey()
+
+print(f"Generated Key ID: {keyid}")
+print(f"Generated Key: {key}")
+
+# Store the key in memory
+securitykey.storeKey(keyid, key)
+
+# Verify the key later
+is_valid = securitykey.verifyKey(keyid, key)
+print("Key is valid:", is_valid)
+Functions
+generateKey(keyid="", key="", keyLength=16, idLength=8)
+Generates a new key ID and key. You can provide your own or generate random ones.
+
+storeKey(keyid, key)
+Stores the key in memory for later verification.
+
+verifyKey(keyid, some_key)
+Verifies if the given key matches the stored key ID.
+
+License
+MIT License
+
+Made by JTCoder8290
