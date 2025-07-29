@@ -1,0 +1,274 @@
+
+@import "variables";
+
+
+/**
+ * PyAMS DarkGreen theme layout
+ */
+:root {
+  --fc-event-border-color: #{$fc-event-border};
+}
+
+body {
+  background-color: $body-bg;
+  font-weight: $font-family-base-weight;
+}
+
+
+.page {
+  width: 100%;
+  background-color: $page-bg;
+  box-shadow: $page-shadow;
+}
+
+#topbar {
+  background-color: $topbar-bg;
+}
+
+#banner {
+  font-family: $headings-font-family;
+  letter-spacing: 1px;
+}
+
+#header {
+  .page-header {
+    .user-profile-menu {
+      .dropdown {
+        &-toggle {
+          &:empty::after {
+            margin-left: -0.75rem;
+            vertical-align: 0;
+            color: var(--warning);
+          }
+        }
+      }
+    }
+  }
+}
+
+#logo {
+  width: 150px;
+
+  img {
+    height: 70px;
+  }
+}
+
+#main-navigation {
+
+  .sf-menu >*,
+  .sub-menu >* {
+    background-color: $page-bg;
+  }
+
+  >ul {
+    border-bottom: 1px solid $gray-200;
+  }
+
+  >ul >li {
+    border-bottom: 1px solid $gray-200;
+    margin-bottom: -1px;
+
+    &.active,
+    &:hover {
+      border-bottom: 4px solid $primary;
+      margin-bottom: -4px;
+    }
+    &:hover {
+      background-color: $gray-200;
+    }
+
+    ul.sub-menu {
+      margin-top: 4px;
+
+      li {
+        &.active {
+          background-color: $gray-200 !important;
+        }
+        a:hover {
+          background-color: $gray-300;
+        }
+      }
+    }
+  }
+
+  a {
+    color: $body-color;
+  }
+  .sf-arrows {
+    .sf-with-ul {
+
+      padding-right: 1em;
+
+      &::after {
+        content: none;
+      }
+    }
+  }
+}
+
+#page-navigation {
+  &.bg-light {
+    background-color: $nav-light-bg !important;
+
+    a:hover {
+      background-color: $nav-light-hover-bg !important;
+    }
+  }
+}
+
+
+.toolbox {
+  .btn {
+    &.btn-light {
+      background-color: $toolbox-btn-light-bg !important;
+
+      &:hover {
+        background-color: $toolbox-btn-light-hover-bg !important;
+      }
+    }
+  }
+}
+
+
+.nav-link {
+  &.selected {
+    border: $nav-link-selected-border;
+    color: $nav-link-selected-color;
+    background-color: $nav-link-selected-bg;
+  }
+}
+
+
+.wrapper-alerts {
+  z-index: 5;
+  width: 100%;
+  margin: 0 auto;
+  font-size: 1.25rem;
+
+  a {
+    color: $alerts-link;
+  }
+  button {
+    width: 3rem;
+    height: 3rem;
+
+    svg {
+      background-color: $alerts-button-bg;
+      fill: $alerts-button-fill;
+    }
+  }
+}
+
+
+@media only screen and (max-width: $media-md) {
+  #topbar {
+    height: 1em;
+  }
+}
+
+@media only screen and (min-width: $media-md) {
+  .page {
+    margin: 0 auto;
+  }
+  #topbar {
+    height: 2em;
+  }
+}
+
+
+@media only screen and (max-width: $media-sm) {
+  body {
+    padding: 0 $body-padding-xs-width;
+  }
+  .wrapper-alerts {
+    width: calc(100% - 2 * #{$body-padding-xs-width});
+  }
+  .col-xs-0 {
+    display: none;
+  }
+  .col-xs-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+
+@media only screen and (min-width: $media-sm) and (max-width: $media-md) {
+  body {
+    padding: 0 $body-padding-sm-width;
+  }
+  .page {
+  }
+  .header {
+    .banner-wrapper {
+      margin: 0 2em;
+    }
+  }
+  .wrapper-alerts {
+    width: calc(100% - 2 * #{$body-padding-sm-width});
+  }
+  .col-sm-0 {
+    display: none;
+  }
+}
+
+
+@media only screen and (min-width: $media-md) and (max-width: $media-lg) {
+  body {
+    padding: 0 $body-padding-md-width;
+  }
+  .page {
+  }
+  .header {
+    .banner-wrapper {
+      margin: 0 4em;
+    }
+  }
+  .wrapper-alerts {
+    width: calc(100% - 2 * #{$body-padding-md-width});
+  }
+  .col-md-0 {
+    display: none;
+  }
+}
+
+
+@media only screen and (min-width: $media-lg) and (max-width: $media-xl) {
+  body {
+    padding: 0 $body-padding-lg-width;
+  }
+  .page {
+  }
+  .header {
+    .banner-wrapper {
+      margin: 0 4em;
+    }
+  }
+  .wrapper-alerts {
+    width: calc(100% - 2 * #{$body-padding-lg-width});
+  }
+  .col-lg-0 {
+    display: none;
+  }
+}
+
+
+@media only screen and (min-width: $media-xl) {
+  body {
+    padding: 0 $body-padding-xl-width;
+  }
+  .page {
+  }
+  .header {
+    .banner-wrapper {
+      margin: 0 6em;
+    }
+  }
+  .wrapper-alerts {
+    width: calc(100% - 2 * #{$body-padding-xl-width});
+  }
+  .col-xl-0 {
+    display: none;
+  }
+}

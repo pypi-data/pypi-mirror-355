@@ -1,0 +1,210 @@
+
+//
+// fonts families
+//
+
+$font-family-sans-serif:         "Signika", "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif !default;
+$font-family-base:               $font-family-sans-serif !default;
+$font-family-base-weight:        300 !default;
+
+$headings-font-family:           "Passion One", "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif !default;
+$headings-font-weight:           400 !default;
+
+
+
+//
+// headers font sizes
+//
+
+$font-size-base:                 1rem !default;  // assumes the browser default, typically `16px`
+
+$h1-font-size:                   $font-size-base * 3 !default;
+$h2-font-size:                   $font-size-base * 2 !default;
+$h3-font-size:                   $font-size-base * 1.5 !default;
+$h4-font-size:                   $font-size-base * 1.3 !default;
+$h5-font-size:                   $font-size-base * 1.1 !default;
+$h6-font-size:                   $font-size-base !default;
+
+$h1-font-size-mobile:            $font-size-base * 2 !default;
+$h2-font-size-mobile:            $font-size-base * 1.75 !default;
+
+
+//
+// devices width
+//
+
+$media-sm:                       576px !default;
+$media-md:                       768px !default;
+$media-lg:                       992px !default;
+$media-xl:                       1200px !default;
+
+
+//
+// custom block sizes
+//
+
+$borders:                        0, 1, 2, 3, 4, 5 !default;
+$columns:                        1, 2, 3, 4, 5, 6 !default;
+$heights: (
+  1: 100px,
+  2: 200px,
+  3: 300px,
+  4: 400px,
+  5: 500px
+) !default;
+
+$grid-row-columns:               12 !default;
+
+$fa-sizes:                       1, 2, 3, 4, 5, 6, 7, 8, 9, 10 !default;
+
+$aligns:                         left, center, right !default;
+$justify:                        normal, center, start, end, flex-start, flex-end, left, right,
+                                 space-between, space-around, space-evenly, stretch;
+
+
+//
+// base colors
+//
+
+$white:                          #ffffff !default;
+$gray-100:                       #fafafa !default;
+$gray-200:                       #f0f0f0 !default;
+$gray-300:                       #e6e6e6 !default;
+$gray-400:                       #d9d9d9 !default;
+$gray-500:                       #bdbdbd !default;
+$gray-600:                       #7d7d7d !default;
+$gray-700:                       #575757 !default;
+$gray-800:                       #404040 !default;
+$gray-900:                       #292929 !default;
+$black:                          #000 !default;
+
+$base-color:                     #a30413 !default;
+$base-light-1:                   #d11a2b !default;
+$base-light-2:                   #e65664 !default;
+$base-dark-1:                    #79000c !default;
+$base-dark-2:                    #430006 !default;
+
+$comp-color:                     #1b8c04 !default;
+$comp-light-1:                   #32b416 !default;
+$comp-light-2:                   #60c64a !default;
+$comp-dark-1:                    #126900 !default;
+$comp-dark-2:                    #0a3a00 !default;
+
+$alt1-color:                     #7d957f !default;
+$alt1-light-1:                   #98b69b !default;
+$alt1-light-2:                   #c5e9c8 !default;
+$alt1-dark-1:                    #647765 !default;
+$alt1-dark-2:                    #516153 !default;
+
+$alt2-color:                     #9aa604 !default;
+$alt2-light-1:                   #c7d51a !default;
+$alt2-light-2:                   #e0ea58 !default;
+$alt2-dark-1:                    #727b00 !default;
+$alt2-dark-2:                    #3f4400 !default;
+
+$primary-0:                      $alt1-color !default;
+$primary-light-1:                $alt1-light-1 !default;
+$primary-light-2:                $alt1-light-2 !default;
+$primary-dark-1:                 $alt1-dark-1 !default;
+$primary-dark-2:                 $alt1-dark-2 !default;
+
+$primary:                        #f6516c !default;
+$info:                           $primary-light-2 !default;
+$light:                          $primary-light-2 !default;
+$danger:                         #ca0021 !default;
+
+// body
+$body-bg:                        #7d957f !default;
+$body-padding-xs-width:          0 !default;
+$body-padding-sm-width:          1rem !default;
+$body-padding-md-width:          4% !default;
+$body-padding-lg-width:          8% !default;
+$body-padding-xl-width:          10% !default;
+
+// page
+$page-bg:                        $white !default;
+$page-shadow:                    0 0 30px 15px rgba(0, 0, 0, 0.25) !default;
+
+// topbar
+$topbar-bg:                      #f6516c !default;
+
+// header
+$header-underline:               $primary-light-1 !default;
+
+// footer
+$footer-color:                   $gray-100 !default;
+$footer-bg:                      $primary-dark-2 !default;
+
+// navigation
+$nav-light-bg:                   $gray-200 !default;
+$nav-light-hover-bg:             $gray-500 !default;
+
+$nav-tabs-hover:                 $gray-200 !default;
+$nav-tabs-link-active-bg:        $gray-200 !default;
+
+$nav-link-selected-border:       1px solid $primary-0 !default;
+$nav-link-selected-color:        $page-bg !default;
+$nav-link-selected-bg:           $primary-dark-1 !default;
+
+// tags
+$tags-badge-hover:               $primary !default;
+$tags-font-weight:               500 !default;
+
+// toolbox
+$toolbox-btn-light-bg:           $gray-300 !default;
+$toolbox-btn-light-hover-bg:     $gray-600 !default;
+
+// links
+$link-color:                     $primary-0 !default;
+$link-font-weight:               300 !default;
+
+// carousel
+$carousel-font-weight:           300 !default;
+
+// glossary
+$glossary-term-font-weight:      500 !default;
+
+// thesaurus
+$thesaurus-term:                 $primary-light-1 !default;
+$thesaurus-term-font-weight:     500 !default;
+
+// alerts
+$alerts-link:                    $white !default;
+$alerts-button-bg:               $danger !default;
+$alerts-button-fill:             $white !default;
+
+// tables
+$table-th:                       $gray-200 !default;
+$table-th-bg:                    $topbar-bg !default;
+
+// forms
+$form-required-font-weight:      500 !default;
+
+// calendars
+$fc-event-border:                $primary-light-1 !default;
+
+// datetime pickers
+$bs-datetimepicker-active-bg:          $primary-0 !default;
+$bs-datetimepicker-buttons-color:      $primary-dark-1 !default;
+$bs-datetimepicker-buttons-color-dark: $primary-dark-2 !default;
+
+// footer
+$footer:                         $gray-600 !default;
+$footer-bg:                      $gray-400 !default;
+$footer-link:                    $gray-200 !default;
+$footer-icon-bg:                 $gray-600 !default;
+$footer-link-bg:                 $footer-bg !default;
+$footer-border-bottom:           $gray-400 !default;
+$footer-hr-border:               $gray-700 !default;
+
+
+//
+// mobile menu
+//
+
+$mobile-menu-title-color:        $gray-100 !default;
+$mobile-menu-color:              $gray-500 !default;
+$mobile-menu-color-active:       $gray-100 !default;
+$mobile-menu-bg:                 $primary-dark-1 !default;
+$mobile-menu-border:             $primary-light-1 !default;
+$mobile-menu-font-weight:        300 !default;

@@ -1,0 +1,78 @@
+
+@import "variables";
+
+
+#mobile-navigation {
+
+  color: $mobile-menu-color;
+
+  div {
+    background-color: $mobile-menu-bg;
+  }
+
+  .mobile-menu-button {
+    width: 55px;
+    height: 55px;
+    background: url(../img/mobile-menu.png) no-repeat center;
+    cursor: pointer;
+  }
+
+  .mobile-menu-title {
+    color: $mobile-menu-title-color;
+    cursor: pointer;
+  }
+
+  .mobile-menu-inner {
+    display: none;
+    width: 256px;
+    max-height: calc(100vh - 150px);
+    top: calc(100% + 1px);
+    right: 0;
+    z-index: 99;
+    overflow: scroll;
+
+    .nav-link {
+      padding: 0.25rem 0.6rem;
+    }
+
+    .sub-menu {
+      .selected {
+        font-weight: bold;
+
+        &::before {
+          content: '>';
+          position: absolute;
+          left: 1rem;
+        }
+      }
+    }
+
+    >ul {
+      >li {
+        border-width: 2px;
+
+        >a {
+          font-weight: $mobile-menu-font-weight;
+        }
+      }
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 1em;
+
+      li {
+        border-color: $mobile-menu-border !important;
+
+        &.active {
+          >a {
+            color: $mobile-menu-color-active;
+          }
+        }
+      }
+      a {
+        color: $mobile-menu-color;
+      }
+    }
+  }
+}
