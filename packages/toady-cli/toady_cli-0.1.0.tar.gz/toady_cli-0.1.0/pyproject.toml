@@ -1,0 +1,303 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "toady-cli"
+version = "0.1.0"
+description = "A CLI tool for managing GitHub PR code reviews efficiently"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    {name = "Tony Blank", email = "guillotine@lawnfucker.com"},
+]
+maintainers = [
+    {name = "Tony Blank", email = "guillotine@lawnfucker.com"},
+]
+keywords = ["github", "cli", "code-review", "pull-request", "automation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Software Development :: Quality Assurance",
+    "Environment :: Console",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.1.7",
+    "rich>=13.9.0",  # For pretty output formatting
+    "rich-click>=1.8.0",  # Enhanced click with rich formatting
+    "typing-extensions>=4.12.0;python_version<'3.11'",
+]
+
+[project.optional-dependencies]
+# Development dependencies - latest versions as of Dec 2024
+dev = [
+    # Testing framework
+    "pytest>=8.3.0",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "pytest-xdist>=3.6.0",  # Parallel test execution
+    "pytest-timeout>=2.3.1",  # Test timeouts
+
+    # Code quality
+    "black>=24.8.0",
+    "ruff>=0.8.0",  # Much faster than flake8/isort
+    "mypy>=1.13.0",
+    "pre-commit>=4.0.0",
+
+    # Type stubs
+    "types-click>=7.1.8",
+    "types-psutil>=6.1.0",
+
+    # Build and publish
+    "build>=1.2.0",
+    "twine>=6.0.0",
+
+    # Development utilities
+    "python-dotenv>=1.0.1",
+    "psutil>=6.1.0",
+
+    # Documentation (optional)
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.5.0",
+]
+
+# Separate test dependencies for CI efficiency
+test = [
+    "pytest>=8.3.0",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "pytest-xdist>=3.6.0",
+    "python-dotenv>=1.0.1",
+]
+
+# Documentation dependencies
+docs = [
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.5.0",
+    "mkdocs-click>=0.8.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/tonyblank/toady-cli"
+Documentation = "https://github.com/tonyblank/toady-cli#readme"
+Repository = "https://github.com/tonyblank/toady-cli.git"
+"Bug Tracker" = "https://github.com/tonyblank/toady-cli/issues"
+
+[project.scripts]
+toady = "toady.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["toady*"]
+
+[tool.setuptools.package-data]
+toady = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+extend-exclude = [
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".pytest_cache",
+    "htmlcov",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+# Enable core linting rules (focused on critical issues)
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "B",     # flake8-bugbear (critical bugs)
+    "C4",    # flake8-comprehensions
+    "UP",    # pyupgrade (basic Python version compatibility)
+]
+
+ignore = [
+    "FBT001",  # Boolean positional arg in function definition
+    "FBT002",  # Boolean default positional argument in function definition
+    "TRY003",  # Avoid specifying long messages outside the exception class
+    "EM101",   # Exception must not use a string literal
+    "EM102",   # Exception must not use an f-string literal
+    "G004",    # Logging statement uses f-string
+    "COM812",  # Missing trailing comma (conflicts with formatter)
+    "ISC001",  # Implicitly concatenated string literals (conflicts with formatter)
+]
+
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "ARG001",   # Unused function argument
+    "ARG002",   # Unused method argument
+    "S101",     # Use of assert detected
+    "PLR2004",  # Magic value used in comparison
+    "SLF001",   # Private member accessed
+    "FBT",      # Boolean trap
+]
+"src/toady/cli.py" = ["ARG001"]  # Ignore unused arguments in CLI stubs
+"conftest.py" = ["ARG001"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+known-first-party = ["toady"]
+force-sort-within-sections = true
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--color=yes",
+    "--tb=short",
+    "--cov=src/toady",  # Updated for uv/modern structure
+    "--cov-branch",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=html:htmlcov",
+    "--cov-report=xml:coverage.xml",
+    "--cov-fail-under=90",  # Raised from 80% since you improved coverage
+    "-p", "no:warnings",
+    "--maxfail=10",  # Stop after 10 failures
+    "--timeout=300",  # 5 minute timeout per test
+]
+testpaths = ["tests"]
+pythonpath = ["src"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*", "*Tests"]
+python_functions = ["test_*", "check_*"]
+norecursedirs = [".git", ".tox", "dist", "build", "*.egg", "htmlcov", ".pytest_cache"]
+markers = [
+    "unit: Unit tests (fast, isolated, no external dependencies)",
+    "integration: Integration tests (may require authentication or external services)",
+    "slow: Slow running tests (>1s execution time)",
+    "cli: CLI integration tests using CliRunner",
+    "service: Service layer tests (GitHub API interactions, business logic)",
+    "model: Model/data structure tests (serialization, validation)",
+    "formatter: Output formatting tests (JSON, pretty print, tables)",
+    "parser: Data parsing tests (GraphQL responses, API data)",
+    "validator: Validation logic tests (input validation, error handling)",
+    "smoke: Basic smoke tests for critical functionality",
+    "regression: Regression tests for specific bug fixes",
+    "parametrized: Parametrized tests with multiple input scenarios",
+    "mock: Tests that heavily use mocking",
+    "real_api: Tests that make actual API calls (requires auth)",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::UserWarning:pytest_mock.*",
+    "error::pytest.PytestUnraisableExceptionWarning",
+]
+timeout = 300
+timeout_method = "thread"
+junit_family = "xunit2"
+junit_logging = "all"
+junit_log_passing_tests = false
+
+[tool.coverage.run]
+source = ["src/toady"]
+branch = true
+parallel = true
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+    "*/venv/*",
+    "*/env/*",
+    "setup.py",
+    "conftest.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if False:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
+skip_covered = false
+precision = 2
+sort = "Cover"
+
+[tool.coverage.html]
+directory = "htmlcov"
+title = "Toady CLI Test Coverage Report"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py39,py310,py311,py312,lint,type
+
+[testenv]
+deps =
+    pytest
+    pytest-cov
+    pytest-mock
+commands =
+    pytest {posargs}
+
+[testenv:lint]
+deps =
+    black
+    ruff
+commands =
+    black --check src tests
+    ruff check src tests
+
+[testenv:type]
+deps =
+    mypy
+    types-click
+commands =
+    mypy src
+"""
