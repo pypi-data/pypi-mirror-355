@@ -1,0 +1,14 @@
+import dspy
+from dotenv import load_dotenv
+{% if spec.signature.outputs | selectattr("kind","equalto","choices") | list %}
+from typing import Literal
+{% endif %}
+
+load_dotenv()
+
+{% include "signature.j2" %}
+
+{% include "llm.j2" %}
+
+{% include "module.j2" %}
+

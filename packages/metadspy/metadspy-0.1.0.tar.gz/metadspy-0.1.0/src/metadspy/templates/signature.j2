@@ -1,0 +1,16 @@
+class {{ spec.signature.name }}(dspy.Signature):
+{% if spec.signature.docstring %}
+    """{{ spec.signature.docstring.strip().replace('\n', '\n    ') }}"""
+{% endif %}
+{% for f in spec.signature.inputs %}
+    {{ f.name }}: {{ f.py_type }} = dspy.InputField(desc={{ f.desc | tojson }})
+{% endfor %}
+{% for f in spec.signature.outputs %}
+    {{ f.name }}: {{ f.py_type }} = dspy.OutputField(desc={{ f.desc | tojson }})
+{% endfor %}
+
+{% if spec.signature.instructions %}
+{{ spec.signature.name }} = {{ spec.signature.name }}.with_instructions(
+    {{ spec.signature.instructions | tojson }}
+)
+{% endif %}
