@@ -1,0 +1,17 @@
+[project]
+name = "crowd-eval"
+version = "0.1.10"
+description = "Human evaluation tools for AI models and datasets"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "rapidata>=2.27.0",
+    "wandb>=0.20.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatchling.build.targets.wheel]
+packages = ["src"]
