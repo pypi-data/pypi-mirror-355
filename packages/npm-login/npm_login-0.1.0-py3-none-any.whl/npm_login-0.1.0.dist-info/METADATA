@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: npm-login
+Version: 0.1.0
+Summary: Mimics `npm login` command behaviour with support only for legacy login
+Author-email: Vyacheslav Konovalov <crabvk@protonmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/crabvk/npm-login
+Project-URL: Repository, https://github.com/crabvk/npm-login.git
+Keywords: npm,yarn,node,nodejs,authentication,login
+Classifier: Environment :: Console
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# Replacement for `npm login`
+
+Simulates `npm login` command behavior, supporting only legacy authentication with a username and password.
+
+## Motivation
+
+* Npm encounters an issue with usernames containing "non-url-safe" characters, displaying a "Name may not contain non-url-safe chars" warning and prompting for a new username. The previously suggested [workaround](https://atornblad.se/allowing-at-characters-in-npm-usernames) is no longer working. While Yarn avoids this bug, installing it solely for authentication is inconvenient and cumbersome.
+
+* Eliminate the need to install `npm` for authentication, for example when using alternative runtimes like Bun.
