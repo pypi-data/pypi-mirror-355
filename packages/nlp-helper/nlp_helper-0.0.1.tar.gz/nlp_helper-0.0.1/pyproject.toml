@@ -1,0 +1,33 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nlp-helper"
+version = "0.0.1"
+authors = [
+  { name="kkorn", email="k.kornilov1015@gmail.com" },
+]
+description = "A small collection of NLP utility functions."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Topic :: Text Processing",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["nlp", "text processing", "utilities"]
+
+license = "MIT" # Просто строка с идентификатором SPDX для MIT License
+
+[project.urls]
+Homepage = "https://github.com/yourusername/your-repo-name"
+"Bug Tracker" = "https://github.com/yourusername/your-repo-name/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nlp_helper*"]
