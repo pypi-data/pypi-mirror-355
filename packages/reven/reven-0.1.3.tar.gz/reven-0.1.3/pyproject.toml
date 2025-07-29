@@ -1,0 +1,32 @@
+[project]
+name = "reven"
+dependencies = [
+    "attrs~=25.3",
+    "cattrs~=25.1",
+    "typer~=0.16.0",
+    "PyYAML~=6.0",
+    "scikit-learn~=1.7",
+    "UpSetPlot~=0.9.0",
+    "PyQt6~=6.9",
+]
+authors = [
+    { name = "Norbert Arkadiusz Görke", email = "me@ngorke.dev" },
+    { name = "Magnust Hektoen Steensland", email = "mag.steensland@gmail.com" },
+]
+license = "Apache-2.0"
+description = "Flexible reverse engineering CLI tool for analyzing many files at once."
+readme = { file = "README.md", content-type = "text/markdown" }
+keywords = ["reverse engineering"]
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/reven-project/reven.git"
+
+[project.scripts]
+reven = "reven.main:main"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
