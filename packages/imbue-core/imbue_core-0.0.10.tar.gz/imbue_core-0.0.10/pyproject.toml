@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imbue-core"
+version = "0.0.10"
+description = "Utilities for imbue-desktop."
+readme = "README.md"
+authors = [
+  { name="Imbue", email="imbue@imbue.com" },
+]
+license = "MIT"
+dependencies = [
+    "anyio",
+    "attrs",
+    "cachetools",
+    "cattrs",
+    "httpx",
+    "inline-snapshot",
+    "loguru",
+    "pathspec",
+    "pydantic>=2.11.4",
+    "pydantic-settings",
+    "pyhumps",
+    "pytest",
+    "pytest-asyncio",
+    "pytest-mock",
+    "tblib==2.0.0", # pinning because Hammers code relies on "get_locals"
+    "traceback-with-variables>=2.2.0",
+    "yasoo",
+    "sentry-sdk",
+    "tenacity>=8.2.2",
+    "grpclib>=0.4.7",
+]
+requires-python = ">=3.11,<3.13"
+
+[project.urls]
+"homepage" = "https://imbue.com/"
+
+[tool.setuptools]
+package-data.imbue = ["py.typed"]
+
+[tool.setuptools.packages.find]
+include = ["imbue_core*"]
