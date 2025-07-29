@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: boxfit
+Version: 0.1.0
+Summary: A fitting algorithm for volumetric hits caused by limited detector resolution
+Project-URL: Homepage, https://github.com/calebmiller/boxfit
+Project-URL: Issues, https://github.com/calebmiller/boxfit/issues
+Author-email: Caleb Miller <calebmiller@uvic.ca>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# BoxFit: Volumetric Fit Algorithm
+
+**BoxFit** is a fitting algorithm designed to account for uncertainites arising from detector resolution that result in no or unusual minimization. Unlike traditional methods that treat each "hit" as a point with associated uncertainties, BoxFit models each hit as a 3D volume of equal likelihood. This approach provides a more realistic representation of spatial uncertainty in low-resolution tracking detectors.
+
+## Installation
+
+You can install BoxFit using pip:
+
+```
+pip install boxfit
+
