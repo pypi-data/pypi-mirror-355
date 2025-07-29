@@ -1,0 +1,176 @@
+---
+# more human-readable test-protocol @
+# https://github.com/orgua/shepherd-v2-planning/blob/main/doc_testbed/Target_pre-deployment-tests.xlsx
+- datatype: target
+  parameters:
+    id: 2  # Outer ID - selected by user for XP - can be rearranged
+    name: nRF52_FRAM_1392_377  # inner ID - used to link all parts together
+    version: v1.3
+    description: nRF52 as MCU + Radio, MSP430FR as SPI-FRAM or additional MCU
+    comment: slight scratches from manufacturing
+    created: 2024-11-29
+    mcu1:
+      name: nRF52
+    mcu2:
+      name: MSP430FR
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 8
+    name: nRF52_FRAM_1392_378
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 9
+    name: nRF52_FRAM_1392_379
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392380
+    name: nRF52_FRAM_1392_380
+    comment: msp fails to program
+    active: false
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392381
+    name: nRF52_FRAM_1392_381
+    comment: nrf failed to program in testbed (but was fine before)
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392382
+    name: nRF52_FRAM_1392_382
+    comment: msp fails to program
+    active: false
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392383
+    name: nRF52_FRAM_1392_383
+    comment: nrf failed to program in testbed (but was fine before)
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 4
+    name: nRF52_FRAM_1392_384
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 5
+    name: nRF52_FRAM_1392_385
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 6
+    name: nRF52_FRAM_1392_386
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 7
+    name: nRF52_FRAM_1392_387
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392388
+    name: nRF52_FRAM_1392_388
+    comment: msp fails to program, msp removed, in darmstadt
+    mcu2: null
+    active: false
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392389
+    name: nRF52_FRAM_1392_389
+    comment: msp fails to program, msp removed, in darmstadt
+    mcu2: null
+    active: false
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 10
+    name: nRF52_FRAM_1392_390
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392391
+    name: nRF52_FRAM_1392_391
+    comment: nrf failed to program in testbed (but was fine before)
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392392
+    name: nRF52_FRAM_1392_392
+    comment: msp fails to program
+    active: false
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1
+    name: nRF52_FRAM_1392_393
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392394
+    name: nRF52_FRAM_1392_394
+    comment: msp fails to program
+    active: false
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 3
+    name: nRF52_FRAM_1392_395
+    comment: initial test unit
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 11
+    name: nRF52_FRAM_1392_396
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392397
+    name: nRF52_FRAM_1392_397
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392398
+    name: nRF52_FRAM_1392_398
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392399
+    name: nRF52_FRAM_1392_399
+    comment: LabPrototype
+- datatype: target
+  parameters:
+    inherit_from: nRF52_FRAM_1392_377
+    id: 1392400
+    name: nRF52_FRAM_1392_400
+    comment: in darmstadt
+
+
+- datatype: target
+  parameters:
+    id: 1001
+    name: target_nRF52_01
+    version: v2.1r0
+    description: single target PCB, v2.1r0
+    comment: ONLY VIRTUAL - NOT REAL - for unittests
+    mcu1:
+      name: nRF52
+    mcu2: null
+    created: 2022-12-12 12:12:12
+
+- datatype: target
+  parameters:
+    id: 42
+    name: unit_testing_target
+    version: v0
+    description: for unit testing
+    comment: no comment
+    created: 2025-04-29
+    mcu1:
+      name: nRF52
+    mcu2:
+      name: MSP430FR
