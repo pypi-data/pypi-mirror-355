@@ -1,0 +1,98 @@
+site_name: SQLAlchemy CRUD Plus
+site_description: 强大的 SQLAlchemy CRUD 库，支持高级关系查询功能
+site_url: https://wu-clan.github.io/sqlalchemy-crud-plus
+site_author: Wu Clan
+repo_name: sqlalchemy-crud-plus
+repo_url: https://github.com/wu-clan/sqlalchemy-crud-plus
+
+nav:
+  - 首页: index.md
+  - 安装: installing.md
+  - 快速开始: getting-started/quick-start.md
+  - 基础用法: usage/crud.md
+  - 关系查询: relationships/overview.md
+  - 高级功能:
+      - 过滤条件: advanced/filter.md
+      - 事务控制: advanced/transaction.md
+  - API 参考:
+      - CRUDPlus 类: api/crud-plus.md
+      - 类型定义: api/types.md
+      - 错误类型: api/errors.md
+  - 更新日志: changelog.md
+
+theme:
+  name: material
+  language: zh
+  font:
+    code: Roboto Mono
+  palette:
+    - media: '(prefers-color-scheme)'
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: pink
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.path
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - toc.follow
+
+plugins:
+  - search:
+      lang: zh
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: sphinx
+            show_source: true
+            show_root_heading: true
+            show_root_toc_entry: true
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - tables
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/wu-clan/sqlalchemy-crud-plus
+    - icon: fontawesome/brands/discord
+      link: https://wu-clan.github.io/homepage/
