@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "httpit"
+dynamic = ["version"]
+description = "Ultra-fast lightweight HTTP server"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "GPL-2.0"}
+authors = [
+    {name = "Farshid Ashouri", email = "farshid@rodmena.co.uk"}
+]
+maintainers = [
+    {name = "Farshid Ashouri", email = "farshid@rodmena.co.uk"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS :: MacOS X",
+    # Remove "Operating System :: Microsoft :: Windows",
+    "Programming Language :: C",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+dependencies = [
+    "setuptools>=80.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/rodmena-limited/fasthttp"
+Repository = "https://github.com/rodmena-limited/fasthttp"
+Company = "https://rodmena.co.uk"
+Issues = "https://github.com/rodmena-limited/fasthttp/issues"
+
+[project.scripts]
+httpit = "fasthttp.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["fasthttp*"]
+
+[tool.setuptools.dynamic]
+version = {file = "VERSION"}
+
+[tool.cibuildwheel]
+build = "cp39-* cp310-* cp311-* cp312-* cp313-*"
+skip = "*-win32 *-manylinux_i686 pp* *musllinux*"
+test-requires = "pytest"
+test-command = "python -c \"import fasthttp; print('FastHTTP imported successfully')\""
+build-verbosity = 1
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64", "universal2"]
+environment = { MACOSX_DEPLOYMENT_TARGET = "10.9" }
+
+[tool.cibuildwheel.linux]
+archs = ["native"]  # Only build for the host architecture
+manylinux-x86_64-image = "manylinux2014"
+manylinux-aarch64-image = "manylinux2014"
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+before-build = [
+    "pip install delvewheel",
+    "pip install setuptools wheel"
+]
+repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
+
