@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "aiorussound"
+version = "4.6.0"
+description = "Asyncio client for Russound RIO devices."
+authors = ["Noah Husby <opensource@husbylabs.com>"]
+maintainers = ["Noah Husby <opensource@husbylabs.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/noahhusby/aiorussound"
+repository = "https://github.com/noahhusby/aiorussound"
+documentation = "https://github.com/noahhusby/aiorussound"
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+mashumaro = "^3.11"
+orjson = ">=3.9.0"
+
+[tool.poetry.group.dev.dependencies]
+coverage = {version = "7.8.2"}
+mypy = "1.16.0"
+pre-commit = "4.2.0"
+pre-commit-hooks = "5.0.0"
+pylint = "3.3.7"
+pytest = "8.4.0"
+pytest-asyncio = "0.26.0"
+pytest-cov = "6.1.1"
+ruff = "0.11.13"
+
+[tool.poetry.group.docs.dependencies]
+pdoc = ">=14.7,<16.0"
+
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
