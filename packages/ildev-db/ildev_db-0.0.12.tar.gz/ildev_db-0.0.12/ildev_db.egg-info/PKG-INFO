@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: ildev-db
+Version: 0.0.12
+Summary: Reusable SQLite + SQLAlchemy async repository module
+Author: Ilias Aiupov
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: sqlalchemy[asyncio]>=1.4
+Requires-Dist: aiosqlite>=0.18
+Requires-Dist: pydantic>=1.10
+Requires-Dist: ildev-log>=0.0.3
+Provides-Extra: build
+Requires-Dist: build; extra == "build"
+Requires-Dist: twine; extra == "build"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-asyncio; extra == "test"
+Provides-Extra: dev
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"
+
+# ildev_db
+
+A reusable Python module that integrates SQLite, SQLAlchemy (async), and the repository pattern.
+
+## Features
+
+- Async database access using SQLite and SQLAlchemy.
+- Implements the repository pattern.
+- Fully tested and reusable.
+
+
+## Installation
+
+```bash
+pip install ildev_db
+```
+
+## Usage locally
+```
+python -m venv local-venv
+./local-venv/Scripts/activate
+pip install -r requirements.txt 
+OR
+pip install .[build]      # Install build tools
+pip install .[test]       # Install test tools
+pip install .[dev]        # Install all dev tools
+
+if python.exe access denied: Remove-Item -Recurse -Force \ildev_db\local-venv
+```
