@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  agent_registry:
+    build: ./agent_registry
+    container_name: mana_agent_registry
+    ports:
+      - "8001:8001" # Expose registry on host port 8001, container uses $PORT (default 8001)
+    environment:
+      - PORT=8001
+    networks:
+      - mana_network
+
+  time_agent:
+    build: ./time_agent
+    container_name: mana_time_agent
+    ports:
+      - "8080:8080" # Expose agent on host port 8080, container uses $PORT (default 8080)
+    environment:
+      - PORT=8080
+      - ALO_REGISTRY_URL=http://agent_registry:8001 # Service discovery via Docker network
+      # For ALO_AGENT_BASE_URL, AgentBuilder in time_agent/main.py defaults to http://localhost:$PORT
+      # If the registry needs to call back to the agent, 'localhost' from within the registry container
+      # won't work. It should be the service name 'http://time_agent:8080'.
+      # The time_agent/main.py has a note about this.
+      # For now, we rely on the agent registering its accessible URL.
+      # If AgentBuilder's auto-detection of base URL isn't sufficient in Docker Compose,
+      # we might need to explicitly set ALO_AGENT_SERVICE_URL here for the agent.
+      # e.g. ALO_AGENT_SERVICE_URL=http://time_agent:8080
+      # Let's add it for clarity, assuming time_agent/main.py picks it up.
+      - ALO_AGENT_SERVICE_URL=http://time_agent:8080
+    depends_on:
+      - agent_registry
+    networks:
+      - mana_network
+
+  orchestrator_backend:
+    build: ./orchestrator_backend
+    container_name: mana_orchestrator_backend
+    ports:
+      - "8000:8000" # Expose orchestrator on host port 8000, container uses $PORT (default 8000)
+    environment:
+      - PORT=8000
+      - ALO_REGISTRY_URL=http://agent_registry:8001 # Service discovery
+    depends_on:
+      - agent_registry
+      - time_agent # Depends on time_agent conceptually, though not strictly for startup order if discovery is robust
+    networks:
+      - mana_network
+
+networks:
+  mana_network:
+    driver: bridge

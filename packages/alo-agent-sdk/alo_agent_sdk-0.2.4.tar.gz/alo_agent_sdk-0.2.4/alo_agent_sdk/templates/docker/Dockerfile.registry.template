@@ -1,0 +1,29 @@
+# ALO Agent SDK - Agent Registry Service Dockerfile Template
+# Use this template to build a Docker image for the ALO Agent Registry Service.
+
+# Specify the Python version you want to use
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# 1. Copy requirements.sdk.txt (which should list alo-agent-sdk==0.1.12)
+#    This file should be in the registry project's root.
+COPY requirements.sdk.txt .
+
+# 2. Install alo-agent-sdk and its dependencies from PyPI.
+#    This also installs other dependencies listed in requirements.sdk.txt.
+RUN pip install --no-cache-dir -r requirements.sdk.txt
+
+# Note: The specific COPY lines for 'registry_service' and 'core' are no longer needed
+# as the entire SDK (which includes them) will be installed as a dependency.
+
+# Google Cloud Run expects the application to listen on the port specified by $PORT
+# Default port for the registry, can be overridden by Cloud Run's $PORT environment variable.
+ENV PORT 8081
+EXPOSE $PORT
+
+# Command to run the Uvicorn server for the FastAPI Registry Service application
+# This should point to the FastAPI 'app' instance in alo_agent_sdk.registry_service.main
+# Assumes that /app is in PYTHONPATH and contains alo_agent_sdk/
+CMD uvicorn alo_agent_sdk.registry_service.main:app --host 0.0.0.0 --port ${PORT:-8081}
