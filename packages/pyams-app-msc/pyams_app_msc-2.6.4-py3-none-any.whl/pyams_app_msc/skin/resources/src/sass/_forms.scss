@@ -1,0 +1,76 @@
+
+
+@import "_variables.scss";
+
+
+.alert {
+  *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-group {
+  label {
+    &.empty {
+      display: none;
+    }
+  }
+  &.required-field {
+    >label {
+      &::after {
+        content: ' * ';
+        color: $danger;
+        font-weight: $form-required-font-weight;
+      }
+    }
+    .control-label {
+      &::after {
+        content: '*';
+        display: inline-block;
+        color: $danger;
+      }
+    }
+  }
+  .object-field {
+    .form-group {
+      .required-field {
+        position: relative;
+
+        &::after {
+          content: ' * ';
+          color: $danger;
+          font-weight: $form-required-font-weight;
+          
+          @media only screen and (min-width: $media-sm) {
+            position: absolute;
+            right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .input {
+    .error {
+      color: $danger;
+    }
+  }
+}
+
+.datepicker {
+  table {
+    thead {
+      th,
+      td {
+        background-color: $page-bg;
+        color: $body-bg;
+      }
+    }
+  }
+}
+
+footer {
+  button {
+    margin: 0 0.25em;
+  }
+}
