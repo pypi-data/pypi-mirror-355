@@ -1,0 +1,44 @@
+
+[build-system]
+# Setuptools ≥ 61 understands all its metadata from pyproject.toml
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# ────────────────────────────────────────────────────────────
+[project]
+name            = "transcriber-sh"
+version         = "0.1.2"
+description     = "Real-time microphone → OpenAI → text (CLI)"
+readme          = "README.md"
+requires-python = ">=3.9"
+
+authors = [
+  { name = "Your Name", email = "you@example.com" }
+]
+
+# Runtime dependencies (exact versions, as you provided)
+dependencies = [
+  "certifi==2025.4.26",
+  "cffi==1.17.1",
+  "charset-normalizer==3.4.2",
+  "dotenv==0.9.9",
+  "idna==3.10",
+  "numpy==1.26.3",
+  "pycparser==2.22",
+  "python-dotenv==1.1.0",
+  "requests==2.32.4",
+  "soundcard==0.4.4",
+  "urllib3==2.4.0",
+  "websocket-client==1.8.0"
+]
+
+# Optional extras (example: dev tools)
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2",
+  "ruff>=0.4"
+]
+
+# CLI entry-point
+[project.scripts]
+transcriber = "transcriber.__main__:cli"
