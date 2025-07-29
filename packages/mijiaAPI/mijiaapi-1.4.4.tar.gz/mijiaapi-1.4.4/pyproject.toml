@@ -1,0 +1,48 @@
+[project]
+name = "mijiaAPI"
+version = "1.4.4"
+description = "A Python API for Xiaomi Mijia"
+readme = "README.md"
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "pillow>=11.0.0,<12.0.0",
+    "qrcode>=8.0,<9.0",
+    "requests>=2.32.3,<3.0.0",
+]
+
+[project.scripts]
+mijiaAPI = "mijiaAPI.__main__:cli"
+
+[tool.poetry]
+name = "mijiaAPI"
+version = "1.4.4"
+description = "A Python API for Xiaomi Mijia"
+authors = ["Do1e <dpj.email@qq.com>"]
+license = "GPLv3"
+readme = "README.md"
+homepage = "https://github.com/Do1e/mijia-api"
+repository = "https://github.com/Do1e/mijia-api"
+packages = [
+    {include = "mijiaAPI"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+requests = "^2.32.3"
+qrcode = "^8.0"
+pillow = "^11.0.0"
+
+[tool.poetry.scripts]
+mijiaAPI = "mijiaAPI.__main__:cli"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
