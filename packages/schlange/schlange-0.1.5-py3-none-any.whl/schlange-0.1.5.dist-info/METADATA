@@ -1,0 +1,299 @@
+Metadata-Version: 2.1
+Name: schlange
+Version: 0.1.5
+Summary: Python auf Deutsch - Deutsche Schlüsselwörter für Python
+Home-page: https://github.com/yourusername/schlange
+Author: Konja Rehm
+Author-email: Konja Rehm <private@konja-rehm.de>
+License: MIT
+Project-URL: Homepage, https://github.com/Nokohokon/schlange
+Project-URL: Bug Reports, https://github.com/Nokohokon/schlange/issues
+Project-URL: Source, https://github.com/Nokohokon/schlange
+Project-URL: Documentation, https://github.com/Nokohokon/schlange#readme
+Keywords: deutsch,german,python,education,programming,localization
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: German
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Education
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Localization
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Schlange 🐍
+
+**Python auf Deutsch** - Ein Python-Package, das deutsche Schlüsselwörter für Python bereitstellt.
+
+## Überblick
+
+Schlange ermöglicht es, Python-Code mit deutschen Schlüsselwörtern zu schreiben. Anstatt `if`, `for`, `while` etc. können Sie deutsche Begriffe wie `wenn`, `für`, `solange` verwenden.
+
+## Installation
+
+```bash
+pip install schlange
+```
+
+## Schnellstart
+
+### Methode 1: Deutsche Funktionen direkt verwenden
+
+```python
+from schlange.functions import drucke, bereich, länge
+
+drucke("Hallo Welt!")
+for i in bereich(1, 6):
+    drucke(f"Zahl: {i}")
+```
+
+### Methode 2: Deutsche Syntax mit Transformation
+
+```python
+from schlange.transformer import führe_aus
+
+deutscher_code = """
+funktion begrüße(name):
+    drucke(f"Hallo {name}!")
+    gib_zurück f"Begrüßung für {name}"
+
+wenn 5 > 3:
+    nachricht = begrüße("Welt")
+    drucke(nachricht)
+"""
+
+führe_aus(deutscher_code)
+```
+
+### Methode 3: CLI-Tool für deutsche .py-Dateien
+
+Erstellen Sie eine Datei `mein_programm.py`:
+```python
+von schlange importiere *
+
+drucke("Deutsches Python!")
+für i in bereich(5):
+    drucke(f"Zahl {i}")
+```
+
+Führen Sie aus:
+```bash
+python -m schlange.cli mein_programm.py
+```
+
+## Verwendung
+
+### Methode 1: Deutsche Funktionen direkt verwenden
+
+```python
+from schlange import drucke, bereich, laenge
+
+drucke("Hallo Welt!")
+für i in bereich(1, 6):
+    drucke(f"Zahl: {i}")
+```
+
+### Methode 2: Deutsche Syntax mit deutsch() Funktion
+
+```python
+from schlange import deutsch
+
+deutsch("""
+funktion begrüße(name):
+    drucke(f"Hallo {name}!")
+    zurückgeben f"Begrüßung für {name}"
+
+wenn 5 > 3:
+    nachricht = begrüße("Welt")
+    drucke(nachricht)
+""")
+```
+
+### Methode 3: CLI-Tool für deutsche .py-Dateien
+
+Erstellen Sie eine Datei `mein_programm.py`:
+```python
+# Datei: mein_programm.py
+drucke("Deutsches Python!")
+für i in bereich(5):
+    drucke(f"Zahl {i}")
+```
+
+Führen Sie aus:
+```bash
+python -m schlange.cli mein_programm.py
+```
+
+### 🆕 Methode 4: .schlange Dateien verwenden
+
+Erstellen Sie eine Datei `mein_programm.schlange`:
+```python
+# Datei: mein_programm.schlange
+drucke("Hallo aus einer .schlange Datei!")
+
+mein_name = "Python Schlange"
+alter = 25
+
+wenn alter >= 18:
+    drucke(f"{mein_name} ist erwachsen!")
+
+# Funktion definieren
+funktion grüße(name):
+    drucke(f"Hallo {name}!")
+    zurückgeben f"Grüße an {name}"
+
+resultat = grüße("Entwickler")
+drucke(resultat)
+```
+
+Verwenden Sie in Python:
+```python
+import schlange
+
+# Direkte Ausführung
+schlange.fuehre_schlange_aus("mein_programm.schlange")
+
+# Oder mit Namespace-Zugriff
+namespace = schlange.lade_schlange_datei("mein_programm.schlange")
+print("Name:", namespace['mein_name'])
+print("Alter:", namespace['alter'])
+
+# Funktionen aufrufen
+greet_func = namespace['grüße']
+result = greet_func("Welt")
+print("Ergebnis:", result)
+```
+
+## Deutsche Schlüsselwörter
+
+| Deutsch | English | Beschreibung |
+|---------|---------|--------------|
+| `wenn` | `if` | Bedingte Anweisung |
+| `sonst` | `else` | Alternative Anweisung |
+| `sonstwenn` | `elif` | Weitere Bedingung |
+| `für` | `for` | Schleife |
+| `solange` | `while` | Bedingte Schleife |
+| `funktion` | `def` | Funktionsdefinition |
+| `klasse` | `class` | Klassendefinition |
+| `importiere` | `import` | Modul importieren |
+| `von` | `from` | Import von spezifischen Elementen |
+| `zurückgeben` | `return` | Rückgabewert |
+| `gib_zurück` | `return` | Rückgabewert (Alternative) |
+| `versuche` | `try` | Fehlerbehandlung |
+| `außer` | `except` | Ausnahmebehandlung |
+| `endlich` | `finally` | Abschlussblock |
+| `Wahr` | `True` | Boolean True |
+| `Falsch` | `False` | Boolean False |
+| `Nichts` | `None` | None-Wert |
+| `und` | `and` | Logisches UND |
+| `oder` | `or` | Logisches ODER |
+| `nicht` | `not` | Logisches NICHT |
+| `in` | `in` | Enthaltensein-Operator |
+
+## .schlange Dateien
+
+`.schlange` Dateien sind eine neue Funktion, die es ermöglicht, vollständig deutsche Python-Programme zu schreiben:
+
+### Vorteile:
+- ✅ Vollständig deutsche Syntax ohne Mischung
+- ✅ Keine `deutsch()` Wrapper-Funktion nötig
+- ✅ Direkter Zugriff auf Variablen und Funktionen
+- ✅ Bessere Lesbarkeit für deutsche Entwickler
+- ✅ Einfache Integration in bestehende Projekte
+
+### Beispiel:
+
+**Datei: `mathematik.schlange`**
+```python
+funktion addiere(a, b):
+    zurückgeben a + b
+
+funktion multipliziere(a, b):
+    zurückgeben a * b
+
+zahlen = [1, 2, 3, 4, 5]
+drucke(f"Liste hat {laenge(zahlen)} Elemente")
+
+für zahl in zahlen:
+    resultat = multipliziere(zahl, 2)
+    drucke(f"{zahl} * 2 = {resultat}")
+```
+
+**Verwendung in Python:**
+```python
+import schlange
+
+# Direkte Ausführung
+schlange.fuehre_schlange_aus("mathematik.schlange")
+
+# Mit Namespace-Zugriff
+namespace = schlange.lade_schlange_datei("mathematik.schlange")
+add_func = namespace['addiere']
+result = add_func(10, 5)
+print(f"10 + 5 = {result}")
+```
+
+📖 **Weitere Informationen:** Siehe [SCHLANGE_DATEIEN.md](SCHLANGE_DATEIEN.md) für eine detaillierte Anleitung.
+| `ist` | `is` | Identitäts-Operator |
+| `durchbrechen` | `break` | Schleife verlassen |
+| `fortsetzen` | `continue` | Nächste Iteration |
+| `bestehen` | `pass` | Leere Anweisung |
+
+## Funktionen
+
+| Deutsch | English | Beschreibung |
+|---------|---------|--------------|
+| `drucke()` | `print()` | Ausgabe |
+| `eingabe()` | `input()` | Benutzereingabe |
+| `länge()` | `len()` | Länge ermitteln |
+| `bereich()` | `range()` | Zahlenbereich |
+| `typ()` | `type()` | Typ ermitteln |
+| `liste()` | `list()` | Liste erstellen |
+| `wörterbuch()` | `dict()` | Dictionary erstellen |
+
+## Beispiele
+
+### Einfaches Programm
+
+```python
+from schlange import *
+
+name = eingabe("Wie heißt du? ")
+drucke(f"Hallo {name}!")
+
+wenn länge(name) > 10:
+    drucke("Du hast einen langen Namen!")
+sonst:
+    drucke("Dein Name ist schön kurz.")
+```
+
+### Klasse definieren
+
+```python
+from schlange import *
+
+klasse Person:
+    funktion __init__(selbst, name, alter):
+        selbst.name = name
+        selbst.alter = alter
+    
+    funktion vorstellen(selbst):
+        drucke(f"Ich bin {selbst.name} und {selbst.alter} Jahre alt.")
+
+person = Person("Max", 25)
+person.vorstellen()
+```
+
+## Lizenz
+
+MIT License
