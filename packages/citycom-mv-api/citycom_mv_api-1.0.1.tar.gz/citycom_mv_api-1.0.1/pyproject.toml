@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "citycom-mv-api"
+version = "1.0.1"
+description = "A Python wrapper for citycom-mv water meters api"
+authors = ["shenharo"]
+license = "MIT"
+readme = "README.md"
+maintainers = [
+    "Omer Shenhar <shenharo@gmail.com>",
+]
+repository = "https://github.com/Shenharo/py-citycom-mv-api"
+keywords = ["python", "poetry", "api", "citcom","citcom-mv", "israel", "water", "meter"]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+mashumaro = "^3.12"
+requests = "^2.31.0"
+pkce = "^1.0.3"
+aiohttp = "^3.9.1"
+aiofiles = "^23.2.1"
+cachetools="^5.3.3"
+loguru = "^0.7.2"
+pytz = "^2024.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "8.1.1"
+pytest-cov = "^4.1.0"
+ruff = "^0.3.0"
+pre-commit = "^3.2.2"
+
+[tool.pytest.ini_options]
+testpaths = ["tests",]
+
+[tool.coverage.run]
+branch = true
+omit = ["*/tests/*", "example.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.ruff]
+line-length = 120
+lint.select = ["E", "F", "W", "I", "N"]
+target-version = "py311"
+
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

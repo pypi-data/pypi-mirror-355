@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: citycom-mv-api
+Version: 1.0.1
+Summary: A Python wrapper for citycom-mv water meters api
+Home-page: https://github.com/Shenharo/py-citycom-mv-api
+License: MIT
+Keywords: python,poetry,api,citcom,citcom-mv,israel,water,meter
+Author: shenharo
+Maintainer: Omer Shenhar
+Maintainer-email: shenharo@gmail.com
+Requires-Python: >=3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aiofiles (>=23.2.1,<24.0.0)
+Requires-Dist: aiohttp (>=3.9.1,<4.0.0)
+Requires-Dist: cachetools (>=5.3.3,<6.0.0)
+Requires-Dist: loguru (>=0.7.2,<0.8.0)
+Requires-Dist: mashumaro (>=3.12,<4.0)
+Requires-Dist: pkce (>=1.0.3,<2.0.0)
+Requires-Dist: pytz (>=2024.1,<2025.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Project-URL: Repository, https://github.com/Shenharo/py-citycom-mv-api
+Description-Content-Type: text/markdown
+
+# citycom_mv_api
+
+A python wrapper for citycom_mv api
+
+## Module Usage
+
+```python
+import asyncio
+import os
+
+import aiohttp
+from loguru import logger
+
+from citycom_mv_api.citycom_mv_client import CityComMVClient
+from citycom_mv_api.login import LoginError
+from citycom_mv_api.models.exceptions import CitycomError
+
+session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False), timeout=aiohttp.ClientTimeout(total=10))
+try:
+    # Example of usage
+    client = CityComMVClient("XXXX@citycom-mv.com", "YYY", session)
+
+    token_json_file = "token.json"
+    if os.path.exists(token_json_file):
+        await client.load_token_from_file(token_json_file)
+    else:
+        try:
+            await client.login()
+            await client.save_token_to_file(token_json_file)
+        except LoginError as err:
+            logger.error(f"Failed Login: (Code {err.code}): {err.error}")
+            raise
+
+    # refresh token example- currently not implemented, it just logins again
+    token = client.get_token()
+    await client.check_token()
+    new_token = client.get_token()
+    if token != new_token:
+        print("Token refreshed")
+        await client.save_token_to_file(token_json_file)
+
+    print("access_token: " + token.access_token)
+
+    customer = await client.get_customer()
+    print(customer)
+
+    reading = await client.get_last_meter_reading(customer.properties[0].meters[0].meter_id)
+    print(reading)
+
+except CitycomError as err:
+    logger.error(f"Error: (Code {err.code}): {err.error}")
+finally:
+    await session.close()
