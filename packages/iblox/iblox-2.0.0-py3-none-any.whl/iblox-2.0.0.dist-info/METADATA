@@ -1,0 +1,77 @@
+Metadata-Version: 2.4
+Name: iblox
+Version: 2.0.0
+Summary: Infoblox WAPI Module
+Project-URL: Homepage, http://iblox.readthedocs.io/
+Project-URL: Repository, https://bitbucket.org/isaiah1112/infoblox
+Author-email: Jesse Almanrode <jesse@almanrode.com>
+License-Expression: LGPL-3.0-or-later
+License-File: LICENSE
+License-File: LICENSE.lesser
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: <4.0,>3.9
+Requires-Dist: requests>=2.25.1
+Description-Content-Type: text/markdown
+
+![Logo](docs/source/_static/iblox.png "iblox")
+
+A Python module for interacting with [Infoblox's WAPI](https://www.infoblox.com/).
+It uses Python's request module to handle session caching and is very flexible.
+We currently maintian compatibility with the [latest supported versions of Python!](https://devguide.python.org/versions/)
+
+## License
+
+[iblox][] is released under the [GNU Lesser General Public License v3.0][],
+see the file LICENSE and LICENSE.lesser for the license text.
+
+## Installation
+
+The most straightforward way to get the iblox module working for you is:
+```commandline
+pip install iblox
+```
+
+This will ensure that all the requirements are met.
+
+## Documentation
+
+Documentation for the iblox module can be found at http://iblox.readthedocs.io/
+
+You can build the documentation locally by running:
+```commandline
+make docs;
+```
+
+Then simply open `docs/build/html/index.html` in your browser.
+
+## Contributing
+
+Comments and enhancements are very welcome.
+
+Report any issues or feature requests on the [BitBucket bug
+tracker](https://bitbucket.org/isaiah1112/infoblox/issues?status=new&status=open). Please include a minimal
+(not-) working example which reproduces the bug and, if appropriate, the
+ traceback information.  Please do not request features already being worked
+towards.
+
+Code contributions are encouraged: please feel free to [fork the
+project](https://bitbucket.org/isaiah1112/infoblox/fork) and submit pull requests to the **develop** branch.
+
+## More information
+
+- [Infoblox DDI](https://www.infoblox.com/)
+
+[GNU Lesser General Public License v3.0]: http://choosealicense.com/licenses/lgpl-3.0/ "LGPL v3"
+
+[iblox]: https://bitbucket.org/isaiah1112/infoblox "iblox Module"
