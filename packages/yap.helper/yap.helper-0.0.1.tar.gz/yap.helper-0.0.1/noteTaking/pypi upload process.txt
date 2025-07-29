@@ -1,0 +1,29 @@
+type into command prompt: 
+"pip3 install setuptools twine"
+
+then navigate to the path of the yap.helper:
+
+yap.helper's path = C:\Users\graham.lasseigne\AppData\Local\Programs\Python\Python311\yap.helper
+
+once you have navigated to it you can type in "ls" (that's an L then an S)
+    you'll be able to see the directory
+
+we now must create a distruptable version of our library
+
+now in the same directory, type: 
+"python3 setup.py sdist" then enter
+
+that does everything we need. 
+
+and if you retype in the "ls" after you have run the sdist in command prompt 
+    you can now see a dist file appear in the directory
+
+to upload it to pypi, we need to use a tool named twine 
+
+then type in this: "twine upload --repository-url https://upload.pypi.org/legacy/ dist/*"
+
+it will ask your username and password
+username: "yap.athy" 
+password: idk
+
+then it is on there, good job
