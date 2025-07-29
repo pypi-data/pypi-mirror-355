@@ -1,0 +1,282 @@
+Metadata-Version: 2.4
+Name: windninjapy
+Version: 0.0.3
+Summary: Python bindings for the WindNinja wind simulation library
+Author-email: Patrick Laflamme <patrickj.laflamme@gmail.com>
+Maintainer-email: Patrick Laflamme <patrickj.laflamme@gmail.com>
+License-Expression: GPL-3.0-or-later
+Project-URL: Homepage, https://github.com/laflamme-fire-lab/windninjapy
+Project-URL: Documentation, https://windninjapy.readthedocs.io/
+Project-URL: Repository, https://github.com/laflamme-fire-lab/windninjapy.git
+Project-URL: Issues, https://github.com/laflamme-fire-lab/windninjapy/issues
+Project-URL: Changelog, https://github.com/laflamme-fire-lab/windninjapy/blob/main/CHANGELOG.md
+Keywords: wind,simulation,meteorology,windninja,fire,modeling,terrain,atmospheric
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: C++
+Classifier: Topic :: Scientific/Engineering :: Atmospheric Science
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: typing-extensions>=3.7.4; python_version < "3.8"
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.10; extra == "dev"
+Requires-Dist: black>=22.0; extra == "dev"
+Requires-Dist: isort>=5.0; extra == "dev"
+Requires-Dist: flake8>=4.0; extra == "dev"
+Requires-Dist: mypy>=0.900; extra == "dev"
+Requires-Dist: bump2version>=1.0; extra == "dev"
+Requires-Dist: twine>=4.0; extra == "dev"
+Requires-Dist: build>=0.8; extra == "dev"
+Requires-Dist: check-manifest>=0.47; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=4.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints>=1.12; extra == "docs"
+Requires-Dist: myst-parser>=0.17; extra == "docs"
+Provides-Extra: test
+Requires-Dist: pytest>=6.0; extra == "test"
+Requires-Dist: pytest-cov>=2.10; extra == "test"
+Requires-Dist: pytest-mock>=3.6; extra == "test"
+Requires-Dist: pytest-benchmark>=3.4; extra == "test"
+Requires-Dist: pytest-rerunfailures>=10.0; extra == "test"
+Dynamic: license-file
+
+# WindNinjaPy
+
+Python bindings for the [WindNinja](https://github.com/firelab/windninja) wind simulation library.
+
+## Overview
+
+WindNinjaPy provides Python bindings for WindNinja, a diagnostic wind model developed by the US Forest Service for wildland fire modeling. WindNinja computes spatially varying wind fields for wildland fire applications, accounting for complex terrain effects on wind flow.
+
+## Features
+
+- **High-resolution wind modeling**: Simulate terrain effects on wind at very high spatial resolution
+- **Multiple input modes**: 
+  - Forecast mode using mesoscale weather model data
+  - Point measurement mode using surface wind observations
+  - Uniform wind mode with user-specified conditions
+- **Python integration**: Easy-to-use Python interface for the powerful WindNinja C++ engine
+- **NumPy compatibility**: Input and output data as NumPy arrays for seamless integration with scientific Python workflows
+
+## Installation
+
+### Prerequisites
+
+- Python 3.8 or higher
+- NumPy
+- For full WindNinja functionality (optional):
+  - Git (for automatic WindNinja download)
+  - CMake 3.12+ (for automatic WindNinja build)
+  - C++ compiler (GCC, Clang, or MSVC)
+
+### Quick Installation
+
+```bash
+pip install windninjapy
+```
+
+### Automatic WindNinja Setup
+
+WindNinjaPy now includes **automatic WindNinja setup**! If you don't have WindNinja installed, the package will automatically:
+
+1. **Download** the WindNinja source code from GitHub
+2. **Build** WindNinja using CMake
+3. **Link** against the locally built WindNinja libraries
+
+This means you can get full WindNinja functionality without manually installing WindNinja:
+
+```bash
+# This will automatically download and build WindNinja if needed
+pip install windninjapy
+```
+
+The automatic setup requires:
+- **Git** (to download WindNinja source)
+- **CMake 3.12+** (to build WindNinja)
+- **C++ compiler** (GCC, Clang, or MSVC)
+
+On macOS:
+```bash
+# Install dependencies via Homebrew
+brew install git cmake
+
+# Install windninjapy (will auto-build WindNinja)
+pip install windninjapy
+```
+
+On Ubuntu/Debian:
+```bash
+# Install dependencies
+sudo apt-get install git cmake build-essential
+
+# Install windninjapy (will auto-build WindNinja)
+pip install windninjapy
+```
+
+### Manual WindNinja Installation
+
+If you prefer to install WindNinja manually, you can:
+
+1. **Build WindNinja from source:**
+   ```bash
+   git clone --recursive https://github.com/firelab/windninja.git
+   cd windninja
+   mkdir build && cd build
+   cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
+   make -j$(nproc)
+   sudo make install
+   ```
+
+2. **Set the WindNinja location:**
+   ```bash
+   export WINDNINJA_ROOT=/usr/local
+   pip install windninjapy
+   ```
+
+### Installation Options
+
+- **Stub mode only** (no C++ dependencies):
+  ```bash
+  # Install without Git/CMake - uses Python stub implementation
+  pip install windninjapy --no-build-isolation
+  ```
+
+- **Force rebuild** (if you want to update WindNinja):
+  ```bash
+  pip install --force-reinstall windninjapy
+  ```
+
+- **Development installation:**
+  ```bash
+  git clone https://github.com/firelab/windninjapy.git
+  cd windninjapy
+  pip install -e .
+  ```
+
+## Quick Start
+
+```python
+import windninjapy as wn
+import numpy as np
+
+# Create a wind simulation
+simulation = wn.WindSimulation()
+
+# Set up domain from DEM file
+simulation.set_dem("path/to/elevation.tif")
+
+# Configure wind conditions
+simulation.set_uniform_wind(
+    speed=10.0,  # m/s
+    direction=270.0,  # degrees (west wind)
+    vegetation_type=wn.VegetationType.TREES
+)
+
+# Run simulation
+result = simulation.run()
+
+# Access results as NumPy arrays
+wind_speed = result.wind_speed  # 2D array of wind speeds
+wind_direction = result.wind_direction  # 2D array of wind directions
+```
+
+## Development
+
+### Setting up development environment
+
+```bash
+# Clone the repository
+git clone <this-repository>
+cd windninjapy
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install in development mode
+pip install -e ".[dev]"
+```
+
+### Running tests
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=windninjapy
+
+# Run only unit tests
+pytest -m "unit"
+
+# Run integration tests (requires WindNinja installation)
+pytest -m "integration"
+```
+
+### Code formatting
+
+```bash
+# Format code
+black src/ tests/
+isort src/ tests/
+
+# Check code style
+flake8 src/ tests/
+mypy src/
+```
+
+## Architecture
+
+WindNinjaPy uses [pybind11](https://github.com/pybind/pybind11) to create Python bindings for the WindNinja C++ library. The architecture follows these principles:
+
+- **Minimal overhead**: Direct binding to C++ classes and functions
+- **Pythonic interface**: Python-friendly API that feels natural to Python developers
+- **NumPy integration**: Seamless data exchange using NumPy arrays
+- **Memory management**: Automatic memory management using pybind11's reference counting
+
+## Contributing
+
+Contributions are welcome! Please see our contributing guidelines and ensure all tests pass before submitting a pull request.
+
+### Testing Philosophy
+
+We follow Test-Driven Development (TDD) practices:
+
+1. Write tests first to define the expected behavior
+2. Implement the minimum code to make tests pass
+3. Refactor while keeping tests green
+
+Test categories:
+- **Unit tests**: Test individual components in isolation
+- **Integration tests**: Test interaction with WindNinja C++ library
+- **Performance tests**: Ensure acceptable performance characteristics
+
+## License
+
+This project is licensed under the GPL License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- WindNinja development team at the US Forest Service Missoula Fire Sciences Laboratory
+- Principal Investigators: Natalie Wagenbrenner and Jason Forthofer
+- Funding: Joint Fire Science Program, RMRS Fire, Fuel, and Smoke Science Program
+
+## References
+
+- [WindNinja Official Website](https://research.fs.usda.gov/firelab/products/dataandtools/windninja)
+- [WindNinja GitHub Repository](https://github.com/firelab/windninja)
+- [WindNinja Publications](https://research.fs.usda.gov/firelab/products/dataandtools/windninja#publications) 
