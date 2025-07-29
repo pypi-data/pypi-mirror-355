@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>UCloud | Relatório de Testes - {{ collection.info.name or 'N/A' }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #222; margin: 0; padding: 0; background: #f4f6fa; }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; border: 1px solid #eee; }
+        .header { background: #0266C8; color: #fff; padding: 24px 16px; text-align: center; }
+        .metrics-table, .details-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        .metrics-table th, .metrics-table td, .details-table th, .details-table td { border: 1px solid #e0e0e0; padding: 8px; font-size: 14px; }
+        .metrics-table th { background: #f4f6fa; }
+        .fail { color: #c00; font-weight: bold; }
+        .ok { color: #090; font-weight: bold; }
+        .section-title { background: #f4f6fa; color: #0266C8; padding: 8px; font-weight: bold; font-size: 16px; margin-top: 24px; }
+        .microcopy { text-align: center; color: #0266C8; font-size: 15px; margin: 24px 0 0 0; }
+        .footer { text-align: center; color: #888; font-size: 12px; margin: 24px 0 0 0; }
+        ul { padding-left: 18px; }
+        @media only screen and (max-width: 600px) {
+            .container { width: 100% !important; padding: 0 !important; }
+            .metrics-table, .details-table { font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo UCloud centralizada -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:24px;">
+        <tr>
+            <td align="center">
+                <img src="https://static.ucloud.services/img/logo-no-background.png"
+                     alt="UCloud"
+                     title="UCloud"
+                     width="120"
+                     style="display:block;max-width:120px;height:auto;margin-bottom:16px;">
+            </td>
+        </tr>
+    </table>
+    <div class="container">
+        <div class="header">
+            <h2 style="margin:0 0 8px 0;">Relatório de Testes Automatizados</h2>
+            <div style="font-size:16px; font-weight:bold;">
+              {{ collection.info.name or 'N/A' }}
+            </div>
+            <div style="font-size:13px; margin:6px 0 0 0;">Executado em: {{ timestamp }}</div>
+            <div style="margin-top:10px;">
+                {% if run.failures|length > 0 %}
+                <span class="fail">⚠️ Falhas encontradas</span>
+                {% else %}
+                <span class="ok">✅ Todos os testes passaram</span>
+                {% endif %}
+            </div>
+        </div>
+        <table class="metrics-table">
+            <tr>
+                <th>Total de Requisições</th>
+                <th>Falhas</th>
+                <th>Assertions</th>
+                <th>Tempo Médio</th>
+            </tr>
+            <tr>
+                <td style="text-align:center;">{{ run.stats.requests.total if run.stats and run.stats.requests else 'N/A' }}</td>
+                <td style="text-align:center;" class="{{ 'fail' if run.stats.requests.failed else 'ok' }}">{{ run.stats.requests.failed if run.stats and run.stats.requests else 'N/A' }}</td>
+                <td style="text-align:center;">{{ run.stats.assertions.total if run.stats and run.stats.assertions else 'N/A' }}</td>
+                <td style="text-align:center;">{{ run.timings.responseAverage ~ ' ms' if run.timings and run.timings.responseAverage is defined else 'N/A' }}</td>
+            </tr>
+        </table>
+        <div class="section-title">Detalhamento das Requests</div>
+        <table class="details-table">
+            <tr>
+                <th>Request</th>
+                <th>Método</th>
+                <th>Status</th>
+                <th>Tempo</th>
+                <th>Falhas</th>
+            </tr>
+            {% if run.executions is defined and run.executions|length > 0 %}
+                {% for e in run.executions %}
+                <tr>
+                    <td>{{ e.item['name'] }}</td>
+                    <td>{{ e.request['method'] }}</td>
+                    <td>{% if e.response is defined %}{{ e.response['code'] }} {{ e.response['status'] }}{% else %}N/A{% endif %}</td>
+                    <td>{% if e.response is defined %}{{ e.response['responseTime'] }} ms{% else %}N/A{% endif %}</td>
+                    <td>
+                        {% if e.assertions is defined and e.assertions|length > 0 %}
+                            {% for a in e.assertions %}
+                                {% if a.error is defined %}<span class="fail">✖ {{ a.error['message'] }}</span><br>{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan="5" style="text-align:center;">Nenhuma request executada</td></tr>
+            {% endif %}
+        </table>
+        {% if run.failures|length > 0 %}
+        <div class="section-title">Falhas Detalhadas</div>
+        <ul>
+            {% for f in run.failures %}
+            <li><span class="fail">{{ f.source['name'] }}: {{ f.error['message'] }}</span></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if environment['values'] is defined and environment['values']|length > 0 %}
+        <div class="section-title">Variáveis de Ambiente</div>
+        <ul>
+            {% for var in environment['values'] %}
+            <li>{{ var['key'] }}: {{ var['value'] }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="microcopy">
+            {% if run.failures|length > 0 %}
+            <b>Foram encontradas falhas nos testes. Revise os detalhes acima e acione o time responsável.</b>
+            {% else %}
+            <b>Todos os testes passaram! Parabéns ao time pela qualidade contínua! 🚀</b>
+            {% endif %}
+        </div>
+        <div class="footer">
+            Relatório gerado automaticamente pelo pipeline de testes.<br>
+            UCloud | Newman Runner
+        </div>
+    </div>
+</body>
+</html> 
