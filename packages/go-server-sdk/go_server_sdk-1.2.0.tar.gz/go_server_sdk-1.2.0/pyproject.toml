@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "go-server-sdk"
+version = "1.2.0"
+authors = [
+    {name = "go-server team"},
+]
+description = "Python SDK for go-server distributed task scheduling system"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+]
+keywords = ["distributed computing", "task scheduling", "websocket", "rpc"]
+dependencies = [
+    "requests>=2.25.0",
+    "websocket-client>=1.0.0",
+    "typing-extensions>=3.7.4; python_version<'3.8'",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-asyncio>=0.18.0",
+    "black>=21.0.0",
+    "flake8>=3.8.0",
+    "mypy>=0.800",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/go-enols/go-server"
+"Bug Reports" = "https://github.com/go-enols/go-server/issues"
+"Source" = "https://github.com/go-enols/go-server"
+"Documentation" = "https://github.com/go-enols/go-server/blob/main/README.md"
+
+[tool.setuptools.packages.find]
+where = ["."]  # list of folders that contain the packages (["src"] by default)
+include = ["schedulersdk*", "workersdk*"]  # package names should match these glob patterns (["*"] by default)
+exclude = ["examples*"]  # exclude packages matching these glob patterns (empty by default)
