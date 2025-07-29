@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "toolcall"
+version = "2.0.2"
+requires-python = ">=3.12"
+description = "The agentic framework for building without an agentic framework."
+authors = [
+    {name = "Ryan Young", email = "dev@ryayoung.com"}
+]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/ryayoung/toolcall"
+repository = "https://github.com/ryayoung/toolcall"
+documentation = "https://toolcall.readthedocs.io"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries"
+]
+dependencies = [
+    'pydantic',
+]
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "openai>=1.86.0",
+    "pyright>=1.1.402",
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.0.0",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.11.13",
+    "taskipy>=1.14.1",
+]
+
+[tool.hatch.build.targets.sdist]
+packages = ["toolcall"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["toolcall"]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "module"
+
+[tool.taskipy.tasks]
+format = "ruff format"
+typecheck = "pyright"
+tests = "pytest --cov=toolcall --cov-branch -vvs"
+
+[tool.pyright]
+reportUnusedImport = "error"
+reportMissingParameterType = "error"
+
