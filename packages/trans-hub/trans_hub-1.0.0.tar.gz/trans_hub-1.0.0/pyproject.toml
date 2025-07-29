@@ -1,0 +1,107 @@
+# ==============================================================================
+#  构建系统配置
+# ==============================================================================
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+# ==============================================================================
+#  项目元数据与依赖 (Poetry 配置) - v1.0.0 发布版
+# ==============================================================================
+[tool.poetry]
+# --- 基本信息 ---
+name = "trans-hub"
+version = "1.0.0"
+description = "一个可嵌入的、带持久化存储的智能本地化（i18n）后端引擎。"
+authors = ["Saken <saken.w@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+# --- 链接信息 ---
+homepage = "https://github.com/SakenW/trans-hub"
+repository = "https://github.com/SakenW/trans-hub"
+documentation = "https://github.com/SakenW/trans-hub/blob/main/README.md"
+
+# --- PyPI 分类器 ---
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Localization",
+    "Topic :: Text Processing",
+]
+
+# --- 核心依赖 ---
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^2.0"
+structlog = "^23.0"
+translators = "^6.0.1"
+
+# --- 可选依赖 (Extras) ---
+[tool.poetry.extras]
+openai = ["openai", "pydantic-settings", "python-dotenv"]
+# all = ["openai", "pydantic-settings", "python-dotenv"]  # 可按需启用
+
+# ==============================================================================
+#  开发依赖 (仅用于本地开发、测试等环境)
+# ==============================================================================
+[tool.poetry.group.dev.dependencies]
+# ✅ 测试相关
+pytest = "^7.4"
+pytest-cov = "^4.1"
+pytest-asyncio = "^0.21.0"
+
+# ✅ 格式化与检查
+black = "^23.0"
+isort = "^5.12"
+ruff = "^0.1.0"
+mypy = "^1.5"
+
+# ✅ 可选功能相关（用于完整测试）
+openai = "^1.37.0"
+pydantic-settings = "^2.3.4"
+python-dotenv = "^1.0.1"
+
+# ==============================================================================
+#  开发工具配置
+# ==============================================================================
+
+[tool.black]
+line-length = 88
+target-version = ["py39"]
+skip-string-normalization = false  # 默认行为，推荐保留
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+
+[tool.ruff]
+line-length = 88
+extend-select = ["E", "W", "F", "I", "N", "D", "UP", "B", "C4"]
+ignore = [
+    "D100", "D104", "D107",
+    "D200", "D203", "D204", "D205",
+    "D211", "D212", "D213",
+    "D400", "D407", "D413", "D415",
+    "E501",  # ⬅️ 添加这一行，忽略行过长错误
+]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+strict_optional = true
+show_error_codes = true
+pretty = true
