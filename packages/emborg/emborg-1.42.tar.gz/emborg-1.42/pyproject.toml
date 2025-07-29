@@ -1,0 +1,62 @@
+[project]
+name = "emborg"
+version = "1.42"
+description = "Borg front end."
+readme = "README.rst"
+keywords = ["emborg", "borg", "borgbackup", "borgmatic", "vorta", "backups"]
+authors = [
+    {name = "Ken Kundert"},
+    {email = "emborg@nurdletech.com"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.6"
+dependencies = [
+    "appdirs",
+    "arrow",
+    # "avendesora",  # optional
+    "docopt",
+    "inform>=1.31",
+    "nestedtext",
+    "quantiphy",
+    "requests",
+]
+
+[project.optional-dependencies]
+avendesora = [
+    'avendesora',
+]
+
+[project.scripts]
+emborg = "emborg.main:main"
+emborg-overdue = "emborg.overdue:main"
+
+[project.urls]
+homepage = "https://emborg.readthedocs.io"
+documentation = "https://emborg.readthedocs.io"
+repository = "https://github.com/kenkundert/emborg"
+changelog = "https://emborg.readthedocs.io/en/latest/releases.html"
+
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.ruff]
+exclude = [".tox", "doc"]
+
+[tool.ruff.lint]
+select = ["F"]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"emborg/overdue.py" = ["F841"]
+
