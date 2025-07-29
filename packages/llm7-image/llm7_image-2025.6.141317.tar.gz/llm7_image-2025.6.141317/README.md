@@ -1,0 +1,74 @@
+[![PyPI version](https://badge.fury.io/py/llm7-image.svg)](https://badge.fury.io/py/llm7-image)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://static.pepy.tech/badge/llm7-image)](https://pepy.tech/project/llm7-image)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-blue)](https://www.linkedin.com/in/eugene-evstafev-716669181/)
+
+# llm7\_image
+
+`llm7_image` is a minimal helper that calls the **LLM7** image-generation endpoint and returns a final, ready-to-use image URL (either a CDN redirect or an inline `data:` URI).
+It performs parameter validation, handles redirects, and surfaces clear errors when the API says “no”.
+
+---
+
+## Installation
+
+```bash
+pip install llm7-image
+```
+
+---
+
+## Quick start
+
+```python
+from llm7_image import generate_image
+
+TOKEN = "paste-your-token-here"          # Get a free token at https://token.llm7.io/
+
+def main() -> None:
+    prompt = "A beautiful landscape with mountains and a river."
+    url = generate_image(prompt, token=TOKEN, w=800, h=600, model=2)
+    print(url)                           # → https://wsrv.nl/?url=https://api.llm7.io/i/abc123.jpeg…
+
+if __name__ == "__main__":
+    main()
+```
+
+If the image is streamed directly (rare), the helper returns an inline Base64-encoded `data:` URI instead of a redirect URL, so you can drop it straight into an `<img>` tag.
+
+---
+
+## Parameters
+
+| Argument  | Range / Options                  | Default    | Notes                          |
+| --------- | -------------------------------- | ---------- | ------------------------------ |
+| `prompt`  | 1 – 10 000 chars                 | —          | Text prompt for the model.     |
+| `token`   | valid LLM7 token                 | —          | Required; obtain one for free. |
+| `w`, `h`  | 100 – 1500 px                    | `1000`     | Output dimensions.             |
+| `seed`    | 0 – 1 000 000 000                | `0`        | RNG seed.                      |
+| `model`   | `1` or `2`                       | `1`        | Diffusion model version.       |
+| `timeout` | `(connect, read)` tuple or float | `(5, 300)` | Passed to `requests.get`.      |
+
+Invalid values raise `ValueError`. Non-2xx API responses raise `GenerationError` with the server’s message.
+
+---
+
+## Why use this helper?
+
+* **Zero boilerplate** – one call, one URL.
+* **Strict validation** – catch mistakes before they hit the network.
+* **Friendly errors** – clear messages instead of cryptic HTTP codes.
+* **Tiny footprint** – only dependency is `requests`.
+
+---
+
+## Contributing
+
+Bug reports, ideas, and pull requests are welcome!
+Open an issue or PR on the [GitHub repo](https://github.com/chigwell/llm7_image).
+
+---
+
+## License
+
+`llm7_image` is released under the [MIT License](https://choosealicense.com/licenses/mit/).
