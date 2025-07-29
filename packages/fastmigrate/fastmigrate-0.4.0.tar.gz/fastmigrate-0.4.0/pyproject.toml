@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastmigrate"
+version = "0.4.0"
+description = "Structured migration of data in SQLite databases"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "apswutils>=0.0.2"
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0.0",
+    "mypy>=1.0.0",
+    "pytest-mock>=3.14.0",
+]
+
+[project.scripts]
+fastmigrate_backup_db = "fastmigrate.cli:backup_db"
+fastmigrate_check_version = "fastmigrate.cli:check_version"
+fastmigrate_create_db = "fastmigrate.cli:create_db"
+fastmigrate_enroll_db = "fastmigrate.cli:enroll_db"
+fastmigrate_run_migrations = "fastmigrate.cli:run_migrations"
+
+[tool.pytest]
+testpaths = ["tests"]
+
+# No linting/formatting tools specified
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.setuptools]
+packages = ["fastmigrate"]
