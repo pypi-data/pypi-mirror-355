@@ -1,0 +1,3 @@
+**SyloraQApi**
+
+pip install SyloraQ
