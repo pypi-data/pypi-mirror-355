@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: ytcook
+Version: 0.1.0
+Summary: Auto cookie extractor for YouTube using browser-cookie3
+Home-page: https://github.com/ToN-Service/ytcook
+Author: Ahmed
+Author-email: support@ton-service.info
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: browser-cookie3
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# ytcook
+
+📦 A simple Python library to automatically extract YouTube cookies from your browser for use with `yt-dlp`.
+
+## Installation
+
+```bash
+pip install ytcook
+```
+
+## Usage
+
+```python
+import ytcook
+
+ytcook.save_cookies_to_file()  # Saves cookies to cookies.txt
+```
+
+You can now use it with `yt-dlp`:
+
+```bash
+yt-dlp --cookies cookies.txt https://youtube.com/watch?v=...
+```
