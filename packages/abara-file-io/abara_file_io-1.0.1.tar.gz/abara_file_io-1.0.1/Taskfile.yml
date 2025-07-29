@@ -1,0 +1,61 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+    silent: true
+
+  help:
+    desc: 'Show all tasks'
+    cmds:
+      - task: default
+    aliases: [h]
+
+  install:
+    desc: 'Install dependencies'
+    cmds:
+      - uv add rich
+
+  install-dev:
+    desc: 'Install development dependencies'
+    cmds:
+      - uv add --dev ruff pyright pre-commit
+      - uv add --group test pytest pytest-cov
+      - uv run pre-commit install
+
+  init:
+    desc: 'Install all dependencies'
+    cmds:
+      - task: install
+      - task: install-dev
+      - task: remove-unnecessary-mainpy
+
+  sync:
+    desc: 'sync all dependencies'
+    cmds:
+      - uv sync --all-groups
+
+  remove-unnecessary-mainpy:
+    internal: true
+    cmds:
+      - uv run python -c "from pathlib import Path;Path('./main.py').unlink(missing_ok=True)"
+    silent: true
+
+  test-pypi-publish:
+    desc: 'publish to test.pypi.org'
+    prompt: 'Is it okay to publish this project to test.pypi.org?'
+    dotenv: ['.env']
+    cmds:
+      - uv build
+      - uv publish --publish-url https://test.pypi.org/legacy/ --token $TEST_PYPI_TOKEN
+
+  production-pypi-publish:
+    desc: 'publish to pypi.org'
+    prompt: 'Is it okay to publish this project to pypi.org?'
+    dotenv: ['.env']
+    cmds:
+      - uv build
+      - uv publish

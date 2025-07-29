@@ -1,0 +1,71 @@
+# Configuration file for ruff.
+# https://docs.astral.sh/ruff/configuration/
+
+line-length = 99
+indent-width = 4
+
+[format]
+quote-style = 'single'
+indent-style = 'space'
+line-ending = 'lf'
+docstring-code-format = true
+
+[lint.flake8-quotes]
+inline-quotes = 'single'
+multiline-quotes = 'double' # PEP 8
+docstring-quotes = 'double' # PEP 257
+
+[lint.pylint]
+max-args = 8
+
+[lint.pydocstyle]
+convention = 'google'
+
+[lint]
+select = ['ALL']
+ignore = [
+    'D1',     # docstringsをクラスや関数に必ず記載する（undocumented-public-...）
+    'D203',   # docstringsとクラス名の間に空白行が必要、D211と競合（incorrect-blank-line-before-class）
+    'D213',   # docstrinsgの最初の行に空白行が必要、D212と競合（multi-line-summary-second-line）
+    'D415',   # docstringsの最初の行の末尾にピリオドや感嘆符が必要（missing-terminal-punctuation）
+    'TD001',  # fixmeを不正なtodoとして扱う（invalid-todo-tag）
+    'TD002',  # todoに制作者名の記述が必要（missing-todo-author）
+    'TD003',  # todoに問題へのリンクの記述が必要（missing-todo-link）
+    'G004',   # loggingでf-stringを使用してはいけない（logging-f-string）
+    'RUF001', # 文字列にUnicode文字を使用してはいけない（ambiguous-unicode-character-string）
+    'RUF002', # docstringsにUnicode文字を使用してはいけない（ambiguous-unicode-character-docstring）
+    'RUF003', # コメントにUnicode文字を使用してはいけない（ambiguous-unicode-character-comment）
+    # Ruff公式がformatterとの併用を推奨しないルール
+    # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    'W191',   # タブを使用したインデントの禁止（tabs-instead-of-spaces）
+    'E111',   # インデントが4の倍数ではない（indentation-with-invalid-multiple）
+    'E114',   # インデントが4の倍数ではないコメント（indentation-with-invalid-multiple-comment ）
+    'E117',   # インデントのスペースが多すぎる（over-indented）
+    'D206',   # docstringsがタブでインデントされてはいけない（docstring-tab-indentation）
+    'D300',   # docstringsの三重引用符がシングルクォートではいけない（triple-single-quotes）
+    'Q000',   # lint.flake8-quotes.inline-quotesと一貫性のない引用符（bad-quotes-inline-string）
+    'Q001',   # lint.flake8-quotes.multiline-quotesと一貫性のない複数行引用符（bad-quotes-multiline-string）
+    'Q002',   # lint.flake8-quotes.docstring-quotesと一貫性のない引用符（bad-quotes-docstring）
+    'Q003',   # エスケープされた引用符は避けるべき（avoidable-escaped-quote）
+    'COM812', # 末尾にカンマをつける（missing-trailing-comma）
+    'COM819', # 不必要な末尾のカンマを禁止（prohibited-trailing-comma）
+    'ISC001', # 一行の中での暗黙的な文字列の連結を禁止（single-line-implicit-string-concatenation）
+    'ISC002', # 複数行の中での暗黙的な文字列の連結を禁止（multi-line-implicit-string-concatenation）
+    # Github ActionsでLinux実行時にエラーになるので追加
+    'EXE',
+    # 作業中のみ追加
+    'ERA001',
+]
+unfixable = [
+    'F401', # 未使用のimportを削除（unused-import）
+    'F841', # 未使用の変数を削除（unused-variable）
+]
+
+[lint.per-file-ignores]
+'tests/**/*.py' = [
+    'S101',    # assertを使用させない（assert）
+    'ARG',     # 未使用の引数を許容しない（flake8-unused-arguments）
+    'FBT',     # bool型の位置引数を許容しない（flake8-boolean-trap）
+    'PLR2004', # マジックナンバーの利用を許容しない（magic-value-comparisonggg）
+    'S311',    # 標準のrandomを暗号化に使用させない（suspicious-non-cryptographic-random-usage）
+]
