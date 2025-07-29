@@ -1,0 +1,30 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "img-masker"
+version = "1.0.1"
+description = "A simple image masking tool."
+readme = "README.md"
+authors = [{ name = "j-ncel" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+keywords = ["image processing", "masking", "Python"]
+dependencies = ["Pillow", "requests"]
+requires-python = ">=3.8"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+include = ["img_masker"]
+exclude = ["samples"]
+
+[project.urls]
+Homepage = "https://github.com/j-ncel/img-masker"
+Repository = "https://github.com/j-ncel/img-masker"
