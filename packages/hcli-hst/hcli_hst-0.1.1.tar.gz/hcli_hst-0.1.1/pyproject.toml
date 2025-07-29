@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools==75.3.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hcli_hst"
+dynamic = ["version", "dependencies"]
+description="HCLI hst is a python package wrapper that contains an HCLI sample application (hst); hst is an HCLI SpaceTraders V2 API wrapper to help play the SpaceTraders API game."
+readme = "README.rst"
+authors = [{name = "Jeff Michaud", email = "cometaj2@proton.me"}]
+license = { file = "LICENSE.txt" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+keywords = ["game", "cli", "client", "server", "connector", "hypermedia", "rest", "generic", "development"]
+
+[project.urls]
+Homepage = "https://github.com/cometaj2/hcli_hst"
+
+[project.scripts]
+hcli_hst = "hcli_hst.__main__:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "hcli_hst.package.__version__"}
+dependencies = {file = "requirements.txt"}
+
+[tool.setuptools]
+packages = ["hcli_hst",
+            "hcli_hst.cli",
+            "hcli_hst.cli.utils",
+            "hcli_hst.data"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"hcli_hst" = ["**/*"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["*.pyc", "*.pyo", "*.pyd", "__pycache__"]
