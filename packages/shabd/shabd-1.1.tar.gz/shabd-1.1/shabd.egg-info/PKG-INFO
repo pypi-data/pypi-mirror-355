@@ -1,0 +1,103 @@
+Metadata-Version: 2.4
+Name: shabd
+Version: 1.1
+Summary: A command-line English dictionary tool
+Home-page: https://github.com/spignelon/shabd
+Author: Ujjawal Saini
+Author-email: spignelon@proton.me
+License: GPL-3.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Education
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: beautifulsoup4==4.13.4
+Requires-Dist: certifi==2025.4.26
+Requires-Dist: charset-normalizer==3.4.2
+Requires-Dist: idna==3.10
+Requires-Dist: requests==2.32.4
+Requires-Dist: soupsieve==2.7
+Requires-Dist: typing_extensions==4.14.0
+Requires-Dist: urllib3==2.4.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Shabd
+
+A command-line English dictionary tool for quick word lookups.
+
+## Features
+
+- Lookup English word meanings directly from your terminal
+- Caches previously looked up words for offline access
+- Simple and straightforward command-line interface
+
+## Installation
+
+You can install Shabd from PyPI:
+
+```bash
+pip install shabd
+```
+
+Or install directly from the repository:
+
+```bash
+git clone https://github.com/spignelon/shabd.git
+cd shabd
+pip install .
+```
+
+## Usage
+
+Basic usage:
+
+```bash
+# Look up a single word
+shabd apple
+
+# Look up a phrase
+shabd "machine learning"
+```
+
+Options:
+
+```bash
+# Display help
+shabd --help
+
+# Display version
+shabd --version
+```
+
+On first run, Shabd will create a database file `.shabd.db` in your home directory to cache word lookups.
+
+## How It Works
+
+Shabd fetches word definitions from the Cambridge Dictionary website and stores them locally for faster future lookups. The tool stores all looked-up words in a SQLite database located at `~/.shabd.db` in your home directory.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+This project is the continuation of the [cambridge-dictionary](https://github.com/spignelon/cambridge-dictionary) project.
