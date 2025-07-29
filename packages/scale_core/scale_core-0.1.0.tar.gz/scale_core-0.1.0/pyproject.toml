@@ -1,0 +1,50 @@
+[project]
+name = "scale_core"
+version = "0.1.0"
+description = "Scales is a python framework for asyncio and threading"
+authors = [
+    {name = "ExperimentalLabs"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ruff (>=0.11.11,<0.12.0)",
+    "isort (>=6.0.1,<7.0.0)",
+    "anyio (>=4.9.0,<5.0.0)",
+    "trio (>=0.30.0,<0.31.0)",
+    "psutil (>=7.0.0,<8.0.0)",
+]
+
+
+[tool.isort]
+profile = 'black'
+line_length = 160
+known_first_party = ['broker',
+
+]
+default_section = 'THIRDPARTY'
+force_single_line = true
+
+[tool.ruff]
+line-length = 160
+target-version = 'py311'
+
+[tool.ruff.lint]
+ignore = ['I001',
+'B904',
+]
+fixable = ['ALL']
+unfixable = []
+select = ["E4", "E7", "E9", "F"]
+per-file-ignores = {}
+
+[tool.ruff.format]
+quote-style = 'single'
+indent-style = 'space'
+skip-magic-trailing-comma = false
+line-ending = 'auto'
+docstring-code-format = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
