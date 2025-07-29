@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:p01="http://namespaces.zope.org/p01"
+    i18n_domain="p01">
+
+  <!-- JSON-RPC select2 tagging search API -->
+  <p01:jsonrpc
+      for="zope.publisher.interfaces.browser.IBrowserPage"
+      class=".jsonrpc.Select2Result"
+      methods="j01Select2Result"
+      permission="zope.Public"
+      />
+
+</configure>

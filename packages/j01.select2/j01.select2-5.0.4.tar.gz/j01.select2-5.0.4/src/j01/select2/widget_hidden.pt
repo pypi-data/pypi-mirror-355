@@ -1,0 +1,8 @@
+<tal:block tal:repeat="item view/items">
+  <input id="" name="" value="" class="hidden-widget"
+         type="hidden"
+         tal:condition="item/selected"
+         tal:attributes="id item/id;
+                         name view/name;
+                         value item/value" />
+</tal:block>
