@@ -1,0 +1,31 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}404 - Page Not Found - WolfPy{% endblock %}
+
+{% block icon %}🔍{% endblock %}
+
+{% block error_code %}404{% endblock %}
+
+{% block error_title %}Page Not Found{% endblock %}
+
+{% block error_message %}
+The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
+{% endblock %}
+
+{% block actions %}
+<a href="/" class="btn btn-primary">Go Home</a>
+<a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+<a href="/search" class="btn btn-secondary">Search</a>
+{% endblock %}
+
+{% block extra_content %}
+<div style="margin-top: 30px; padding: 20px; background: #e3f2fd; border-radius: 6px; text-align: left;">
+    <h4 style="color: #1976d2; margin-bottom: 15px;">What can you do?</h4>
+    <ul style="color: #333; line-height: 1.6;">
+        <li>Check the URL for typos</li>
+        <li>Use the navigation menu to find what you're looking for</li>
+        <li>Go back to the previous page</li>
+        <li>Visit our homepage</li>
+    </ul>
+</div>
+{% endblock %}
