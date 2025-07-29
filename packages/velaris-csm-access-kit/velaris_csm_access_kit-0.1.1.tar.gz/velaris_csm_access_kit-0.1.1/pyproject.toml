@@ -1,0 +1,61 @@
+[project]
+name = "velaris-csm-access-kit"
+dynamic = ["version"]
+description = "A Python library providing authentication, caching, database connection pooling, service registry, and secrets management functionality for Velaris CSM applications"
+readme = "README.md"
+authors = [
+    { name = "Velaris", email = "thilina.wickramaratne@velaris.io" }
+]
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.25.0",
+    "PyJWT>=2.0.0",
+    "psycopg[pool]>=3.0.0",
+    "boto3>=1.20.0",
+]
+keywords = ["velaris", "csm", "authentication", "aws", "database", "cache"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration :: Authentication/Directory",
+]
+
+[project.urls]
+Homepage = "https://github.com/velaris/velaris-csm-access-kit"
+Repository = "https://github.com/velaris/velaris-csm-access-kit"
+Documentation = "https://github.com/velaris/velaris-csm-access-kit#readme"
+Issues = "https://github.com/velaris/velaris-csm-access-kit/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "flake8>=4.0.0",
+    "mypy>=0.950",
+]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/velaris_csm_access_kit/_version.py"
+
+[dependency-groups]
+dev = [
+    "twine>=6.1.0",
+]

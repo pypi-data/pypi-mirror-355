@@ -1,0 +1,247 @@
+# Velaris CSM Access Kit
+
+A Python library providing authentication, caching, database connection pooling, service registry, and secrets management functionality for Velaris CSM applications.
+
+## Features
+
+- **Token Management**: JWT token validation and service-based token generation
+- **Caching**: TTL-based caching system for improved performance
+- **Database Connection Pooling**: Async PostgreSQL connection pooling with AWS SSM integration
+- **Service Registry**: AWS SSM-based service discovery and URL management
+- **Secrets Management**: AWS Secrets Manager integration for secure credential storage
+
+## Installation
+
+### Using uv (recommended)
+
+```bash
+uv add velaris-csm-access-kit
+```
+
+### Using pip
+
+```bash
+pip install velaris-csm-access-kit
+```
+
+## Quick Start
+
+### Token Validation
+
+```python
+from velaris_csm_access_kit import validate_token
+
+# Validate a JWT token
+try:
+    decoded_token = validate_token(
+        token="your-jwt-token",
+        public_key="your-public-key",
+        env="production"
+    )
+    print(f"User: {decoded_token['user']}")
+    print(f"Tenant: {decoded_token['tenant']}")
+except ValueError as e:
+    print(f"Token validation failed: {e}")
+```
+
+### Token Service
+
+```python
+import boto3
+from velaris_csm_access_kit import TokenService, ServiceRegistry
+
+# Initialize AWS session
+session = boto3.Session()
+
+# Create service registry
+service_registry = ServiceRegistry(
+    aws_session=session,
+    AWS_REGION="us-east-1",
+    env="production",
+    ttl=300  # 5 minutes cache
+)
+
+# Create token service
+token_service = TokenService(
+    service_registry=service_registry,
+    ttl=300
+)
+
+# Get application token
+app_token = token_service.get_application_token(
+    audience=["service1", "service2"]
+)
+
+# Get user token
+user_token = token_service.get_user_token(
+    initiator="API_GATEWAY",
+    user_id=123,
+    role="Administrator",
+    tenant={"tenantIdentifier": "tenant-123"}
+)
+```
+
+### Database Connection Pooling
+
+```python
+import boto3
+from velaris_csm_access_kit import AsyncMultiDbConnectionPool
+
+# Initialize with AWS SSM
+session = boto3.Session()
+ssm_client = session.client("ssm", region_name="us-east-1")
+
+db_pool = AsyncMultiDbConnectionPool(
+    ssm=ssm_client,
+    credentials_path="/csm/production/db",
+    min_connections=1,
+    max_connections=10
+)
+
+# Get connection pool for a specific database
+async def example():
+    pool = await db_pool.get_connection_pool("main_db", read_only=False)
+    
+    async with pool.connection() as conn:
+        async with conn.cursor() as cur:
+            await cur.execute("SELECT * FROM users")
+            results = await cur.fetchall()
+    
+    # Clean up
+    await db_pool.close_pools()
+```
+
+### Caching
+
+```python
+from velaris_csm_access_kit import TTLCache
+
+# Create cache with 5-minute TTL
+cache = TTLCache(ttl=300)
+
+# Store and retrieve values
+cache.set("key1", "value1")
+value = cache.get("key1")  # Returns "value1"
+
+# After TTL expires
+import time
+time.sleep(301)
+value = cache.get("key1")  # Returns None (expired)
+```
+
+### Secrets Management
+
+```python
+import boto3
+from velaris_csm_access_kit import get_secret
+
+session = boto3.Session()
+
+# Get entire secret as string
+secret_value = get_secret(
+    session=session,
+    region="us-east-1",
+    secret_id="my-secret-id"
+)
+
+# Get specific key from JSON secret
+api_key = get_secret(
+    session=session,
+    region="us-east-1",
+    secret_id="my-json-secret",
+    key="api_key"
+)
+```
+
+## Configuration
+
+### Environment Variables
+
+For local development, you can use environment variables instead of AWS services:
+
+```bash
+# Database connection (fallback when AWS SSM is not available)
+export DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
+```
+
+### AWS Configuration
+
+Ensure your AWS credentials are configured with appropriate permissions for:
+
+- **SSM Parameter Store**: `ssm:GetParameter`, `ssm:GetParametersByPath`
+- **Secrets Manager**: `secretsmanager:GetSecretValue`
+
+## Development
+
+### Setting up development environment
+
+```bash
+# Clone the repository
+git clone https://github.com/velaris/velaris-csm-access-kit.git
+cd velaris-csm-access-kit
+
+# Install with development dependencies using uv
+uv sync --extra dev
+
+# Run tests
+uv run pytest
+
+# Format code
+uv run black src/
+uv run isort src/
+
+# Type checking
+uv run mypy src/
+```
+
+### Running Tests
+
+```bash
+uv run pytest tests/
+```
+
+## API Reference
+
+### Classes
+
+#### `TTLCache`
+Time-to-live cache implementation.
+
+#### `ServiceRegistry`
+AWS SSM-based service discovery.
+
+#### `TokenService`
+JWT token generation and management.
+
+#### `AsyncMultiDbConnectionPool`
+Async PostgreSQL connection pooling.
+
+#### `AuthenticatedService`
+Base class for authenticated HTTP services.
+
+#### `UserManagmentService`
+User management service client.
+
+### Functions
+
+#### `validate_token(token, public_key, env, algorithm="RS256")`
+Validates JWT tokens.
+
+#### `get_secret(session, region, secret_id, key=None)`
+Retrieves secrets from AWS Secrets Manager.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Support
+
+For support, please contact [support@velaris.com](mailto:support@velaris.com) or create an issue on GitHub.
