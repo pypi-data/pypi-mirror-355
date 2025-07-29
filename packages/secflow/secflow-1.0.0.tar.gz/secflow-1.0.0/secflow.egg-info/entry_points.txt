@@ -1,0 +1,12 @@
+[console_scripts]
+secflow = pyseckit.cli:main
+sf = pyseckit.cli:main
+
+[pyseckit.scanners]
+bandit = pyseckit.sast.bandit:BanditScanner
+checkov = pyseckit.cloud.checkov:CheckovScanner
+gitleaks = pyseckit.secret_scan.gitleaks:GitleaksScanner
+safety = pyseckit.sast.safety:SafetyScanner
+semgrep = pyseckit.sast.semgrep:SemgrepScanner
+trufflehog = pyseckit.secret_scan.trufflehog:TruffleHogScanner
+zap = pyseckit.dast.zap:ZapScanner
