@@ -1,0 +1,465 @@
+# Feynman Learning
+
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/RichardFeynman-PaineMansionWoods1984_copyrightTamikoThiel_bw.jpg" alt="Richard Feynman" width="300" style="border-radius: 10px; margin: 20px 0;">
+  <br>
+  <em>"If you can't explain it simply, you don't understand it well enough." - Richard Feynman</em>
+</div>
+
+AI-powered learning using the Feynman Technique to help you understand complex concepts through explanation and simplification.
+
+## Features
+
+- **AI-Enhanced Understanding**: Leverage OpenAI or OpenAI-compatible models to enhance your learning
+- **Feynman Technique Implementation**: Study → Explain → Identify Gaps → Simplify → Review
+- **Progress Tracking**: Monitor your learning journey with detailed session management
+- **Knowledge Gap Identification**: AI helps identify areas that need more attention
+- **Multiple AI Providers**: Support for OpenAI GPT and OpenAI-compatible endpoints (local models, vLLM, etc.)
+- **Command-Line Interface**: Easy-to-use CLI for interactive learning sessions
+
+<details>
+<summary><h2>📦 Installation</h2></summary>
+
+Install from PyPI:
+
+```bash
+pip install feynman-learning
+```
+
+Or install from source:
+
+```bash
+git clone https://github.com/your-username/feynman-learning.git
+cd feynman-learning
+pip install -e .
+```
+
+For development:
+
+```bash
+pip install -e ".[dev]"
+```
+
+</details>
+
+<details>
+<summary><h2>💻 CLI Usage</h2></summary>
+
+The easiest way to get started is with the command-line interface:
+
+### Interactive Learning Session
+
+```bash
+# Start an interactive learning session
+feynman-learning learn
+```
+
+This will guide you through:
+1. Choosing your AI provider (OpenAI or local endpoint)
+2. Entering the concept you want to learn
+3. Following the 5-phase Feynman Technique process
+
+### View Learning Statistics
+
+```bash
+# Show your overall learning statistics
+feynman-learning stats
+```
+
+### Track Progress for a Specific Concept
+
+```bash
+# Show progress for a specific concept
+feynman-learning progress "Quantum Computing"
+```
+
+### Export Learning Report
+
+```bash
+# Export your learning progress to a JSON file
+feynman-learning export -o my_learning_report.json
+```
+
+### Configuration Management
+
+Feynman Learning automatically saves your preferences in `~/.feynman.conf` for convenience. On first use, it will guide you through an interactive setup process.
+
+```bash
+# View current configuration
+feynman-learning config show
+
+# Interactive configuration setup
+feynman-learning config setup
+
+# Set specific configuration values
+feynman-learning config set ai_provider.type openai
+feynman-learning config set ai_provider.model gpt-4
+feynman-learning config set session.default_target_audience "high school student"
+feynman-learning config set display.show_tips false
+
+# Reset to defaults
+feynman-learning config reset
+```
+
+**Configuration Options:**
+- `ai_provider.type` - AI provider type (openai, local, none)
+- `ai_provider.api_key` - Your API key
+- `ai_provider.model` - Model name to use
+- `ai_provider.base_url` - Base URL for OpenAI or compatible endpoints
+- `ai_provider.organization` - Organization ID (for OpenAI teams/orgs)
+- `ai_provider.timeout` - Request timeout in seconds
+- `session.default_target_audience` - Default explanation target audience
+- `learning.min_mastery_score` - Minimum mastery score threshold (0.0-1.0)
+- `display.show_tips` - Show helpful tips during sessions (true/false)
+- `display.use_colors` - Use colored output (true/false)
+- `display.compact_mode` - Use compact display mode (true/false)
+
+### CLI Example Session
+
+Here's a complete example of using Feynman Learning to understand a complex concept:
+
+**First Time Setup:**
+```bash
+$ feynman-learning learn
+
+=== Feynman Learning Interactive Session ===
+
+👋 Welcome to Feynman Learning!
+Let's set up your configuration first...
+
+=== Feynman Learning Configuration Setup ===
+
+🤖 AI Provider Configuration
+------------------------------
+AI Provider type (openai/local/none) [current: openai]: openai
+OpenAI API key: sk-proj-abc123...
+Model [current: gpt-3.5-turbo]: gpt-4
+Organization ID (optional) [current: none]: 
+
+📚 Session Preferences
+--------------------
+Default target audience [current: beginner]: college student
+
+🎯 Learning Preferences
+----------------------
+Minimum mastery score (0.0-1.0) [current: 0.7]: 
+
+🎨 Display Preferences
+--------------------
+Show helpful tips (true/false) [current: True]: 
+
+✅ Configuration saved successfully!
+
+🎯 Now let's start your learning session!
+
+What concept would you like to learn? Neural Networks
+Enter content/description for 'Neural Networks': Neural networks are computing systems inspired by biological neural networks. They consist of interconnected nodes (neurons) that process information using a connectionist approach to computation.
+
+🎯 Starting learning session: session_20241213_143022
+==================================================
+
+📚 PHASE 1: STUDY
+--------------------
+Let me help you understand Neural Networks better:
+
+**Key Points:**
+• Neural networks mimic how the human brain processes information
+• They consist of layers of interconnected artificial neurons
+• Each connection has a weight that determines signal strength
+• Networks learn by adjusting these weights based on training data
+
+**Real-world Examples:**
+• Image recognition (identifying objects in photos)
+• Language translation (Google Translate)
+• Recommendation systems (Netflix, Spotify)
+• Autonomous vehicles (Tesla's self-driving cars)
+
+**Prerequisites:**
+• Basic understanding of mathematics (algebra, calculus)
+• Familiarity with programming concepts
+• Understanding of machine learning fundamentals
+
+Press Enter to continue to explanation phase...
+
+🗣️  PHASE 2: EXPLAIN
+--------------------
+Who are you explaining this to? (default: college student): 
+
+Your explanation for college student:
+Think of a neural network like a team of students solving a complex problem together. Each student (neuron) receives information from their classmates, processes it based on their expertise (weights), and passes their conclusion to other students. 
+
+Initially, the team makes random guesses, but through practice (training), they learn which student's advice to trust more in different situations. Eventually, the whole team becomes incredibly good at solving similar problems they've never seen before.
+
+For example, if you show the network thousands of cat photos labeled "cat," it learns to recognize patterns - pointy ears, whiskers, fur texture. When you show it a new cat photo, different neurons fire up saying "I see pointy ears!" "I detect whiskers!" and together they conclude "This is likely a cat!"
+
+🔍 PHASE 3: IDENTIFY GAPS
+-------------------------
+Knowledge gaps identified:
+1. No explanation of backpropagation (how learning actually happens)
+2. Missing discussion of different network architectures (CNN, RNN, etc.)
+3. No mention of activation functions and their role
+4. Lack of explanation about overfitting and how to prevent it
+
+🚀 PHASE 4: IMPROVE EXPLANATION
+------------------------------
+Let me improve the explanation by addressing these gaps:
+
+Imagine teaching that student team I mentioned earlier. The key insight is HOW they learn from mistakes - this is called backpropagation.
+
+When the team gets an answer wrong, they don't just try again randomly. Instead, they trace back through their reasoning: "Sarah's advice about fur texture was wrong, so let's trust her less next time." This backwards error-checking happens for every connection between students.
+
+There are also different team structures:
+• Convolutional teams (CNNs) are great at visual problems - they have specialists who only look at small parts of images
+• Recurrent teams (RNNs) have members with good memory - perfect for sequential data like text
+
+Each student also has a decision-making style (activation function) - some are decisive (step function), others are more nuanced (sigmoid), and some are efficient (ReLU).
+
+📊 PHASE 5: REVIEW
+------------------
+Learning Progress:
+  Concept: Neural Networks
+  Mastery Score: 82%
+  Gaps Found: 4
+  Explanations Created: 2
+
+Next Steps:
+  • Practice with a simple neural network implementation
+  • Study specific architectures (CNN for images, RNN for sequences)
+  • Learn about training techniques and hyperparameter tuning
+  • Explore modern developments like transformers and attention mechanisms
+
+==================================================
+🎉 SESSION COMPLETE!
+📈 Total learning time: 12 minutes
+🔥 Learning streak: 3 days
+
+💡 Next suggestion: Review a related concept (Deep Learning) - You've built good foundations!
+```
+
+**Subsequent Sessions (Streamlined):**
+```bash
+$ feynman-learning learn
+
+=== Feynman Learning Interactive Session ===
+
+Using saved openai configuration...
+✅ AI assistance enabled with OpenAI
+
+What concept would you like to learn? Blockchain
+Enter content/description for 'Blockchain': A blockchain is a distributed ledger technology...
+
+[Complete 5-phase learning process continues...]
+```
+
+</details>
+
+<details>
+<summary><h2>🐍 Python API Quick Start</h2></summary>
+
+For programmatic usage, you can use the Python API:
+
+```python
+from feynman_learning import FeynmanLearner, AIExplainer, OpenAICompatibleProvider
+
+# Set up AI provider (works with OpenAI and all compatible endpoints)
+
+# Option 1: OpenAI (default)
+provider = OpenAICompatibleProvider(
+    api_key="your-openai-api-key",
+    model="gpt-3.5-turbo"  # or gpt-4, etc.
+)
+
+# Option 2: OpenAI with organization
+# provider = OpenAICompatibleProvider(
+#     api_key="your-openai-api-key",
+#     model="gpt-4",
+#     organization="your-org-id"
+# )
+
+# Option 3: Local model or custom endpoint
+# provider = OpenAICompatibleProvider(
+#     api_key="dummy-key",  # or your endpoint's API key
+#     base_url="http://localhost:1234/v1",  # your endpoint
+#     model="your-model-name"
+# )
+
+ai_explainer = AIExplainer(provider)
+
+# Create learner
+learner = FeynmanLearner(ai_explainer)
+
+# Add a concept to learn
+concept = learner.add_concept(
+    "Quantum Computing",
+    "Quantum computing uses quantum mechanical phenomena like superposition and entanglement to perform calculations..."
+)
+
+# Follow the Feynman Technique
+learner.study_concept("Quantum Computing")
+explanation = learner.explain_concept("Quantum Computing", "high school student")
+gaps = learner.identify_knowledge_gaps("Quantum Computing")
+improved = learner.improve_explanation("Quantum Computing")
+progress = learner.review_concept("Quantum Computing")
+
+print(f"Mastery Score: {progress['mastery_score']}")
+```
+
+</details>
+
+<details>
+<summary><h2>🧩 Components</h2></summary>
+
+### FeynmanLearner
+Core class implementing the 5-phase Feynman Technique:
+1. **Study**: Understand the concept
+2. **Explain**: Teach it in simple terms
+3. **Identify Gaps**: Find what you don't understand
+4. **Simplify**: Address gaps and improve explanation
+5. **Review**: Assess mastery level
+
+### AIExplainer
+AI-powered assistant that helps with:
+- Enhancing understanding of complex concepts
+- Generating simple explanations
+- Identifying knowledge gaps
+- Improving explanations
+- Assessing mastery levels
+- Creating quiz questions
+
+### SessionManager
+Track your learning progress with:
+- Session tracking and timing
+- Progress statistics
+- Learning streaks
+- Concept-specific progress
+- Export capabilities
+
+</details>
+
+<details>
+<summary><h2>🤖 AI Provider</h2></summary>
+
+Feynman Learning uses a single, unified provider that works with OpenAI and all OpenAI-compatible endpoints:
+
+### OpenAI (Official)
+```python
+from feynman_learning import OpenAICompatibleProvider
+
+# Standard OpenAI usage
+provider = OpenAICompatibleProvider(
+    api_key="your-openai-api-key",
+    model="gpt-3.5-turbo"  # or "gpt-4"
+)
+
+# With organization (for OpenAI teams/orgs)
+provider = OpenAICompatibleProvider(
+    api_key="your-openai-api-key",
+    model="gpt-4",
+    organization="your-org-id"
+)
+```
+
+### Local & Compatible Endpoints
+Use any OpenAI-compatible API endpoint including local models, vLLM, LM Studio, Ollama, and more:
+
+```python
+from feynman_learning import OpenAICompatibleProvider
+
+# Local LM Studio
+provider = OpenAICompatibleProvider(
+    api_key="dummy-key",  # many local endpoints don't require real keys
+    base_url="http://localhost:1234/v1",
+    model="local-model"
+)
+
+# vLLM server
+provider = OpenAICompatibleProvider(
+    api_key="dummy-key",
+    base_url="http://localhost:8000/v1",
+    model="meta-llama/Llama-2-7b-chat-hf"
+)
+
+# Ollama (with OpenAI-compatible API)
+provider = OpenAICompatibleProvider(
+    api_key="dummy-key",
+    base_url="http://localhost:11434/v1",
+    model="llama2"
+)
+
+# Any other OpenAI-compatible endpoint
+provider = OpenAICompatibleProvider(
+    api_key="your-api-key",
+    base_url="https://your-custom-endpoint.com/v1",
+    model="your-model-name",
+    timeout=30.0  # custom timeout
+)
+```
+
+</details>
+
+<details>
+<summary><h2>📊 Session Management</h2></summary>
+
+```python
+from feynman_learning import SessionManager
+
+session_manager = SessionManager()
+
+# Start a learning session
+session_id = session_manager.start_session("Quantum Computing", initial_mastery=0.2)
+
+# Add notes during learning
+session_manager.add_note("Learned about superposition")
+session_manager.update_phase("explain")
+
+# End session
+session_manager.end_session(final_mastery=0.7)
+
+# Get statistics
+stats = session_manager.get_learning_statistics()
+print(f"Learning streak: {stats['learning_streak_days']} days")
+```
+
+</details>
+
+<details>
+<summary><h2>📚 Examples</h2></summary>
+
+Check out the `examples/` directory for comprehensive usage examples:
+
+- `examples/openai_compatible_example.py` - Demonstrates using various OpenAI-compatible endpoints (LM Studio, vLLM, Ollama, etc.)
+
+```bash
+# Run the OpenAI-compatible example
+python examples/openai_compatible_example.py
+```
+
+</details>
+
+<details>
+<summary><h2>🛠️ Development</h2></summary>
+
+This project uses modern Python packaging with `pyproject.toml`:
+
+```bash
+# Install in development mode with dev dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+
+# Format code
+black feynman_learning/
+
+# Type checking
+mypy feynman_learning/
+
+# Build package
+python -m build
+```
+
+</details>
+
+## License
+
+MIT License
