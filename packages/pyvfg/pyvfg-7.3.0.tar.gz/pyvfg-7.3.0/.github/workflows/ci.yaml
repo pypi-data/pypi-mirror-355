@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    name: Build and test
+    # Don't run on release commits
+    if: ${{ !contains(github.event.head_commit.message, '[skip build]') }}
+    uses: ./.github/workflows/build-test.yaml
+    secrets: inherit
+  
+  check-format:
+    name: Check Code Format
+    # Don't run on release commits
+    if: ${{ !contains(github.event.head_commit.message, '[skip build]') }}
+    uses: ./.github/workflows/check.yaml
+    secrets: inherit
+  
+  create-release:
+    name: Create Release
+    needs:
+      - build-test
+      - check-format
+    # Don't run on release commits
+    if: ${{ !contains(github.event.head_commit.message, '[skip build]') }}
+    uses: ./.github/workflows/release-please.yaml
+    secrets: inherit
+    with:
+      config-file: release-please-config.json
+      manifest-file: .release-please-manifest.json

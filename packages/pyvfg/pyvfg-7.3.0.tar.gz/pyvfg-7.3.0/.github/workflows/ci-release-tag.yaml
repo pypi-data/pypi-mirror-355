@@ -1,0 +1,38 @@
+name: CI (Release)
+
+on:
+  release:
+    types:
+      - published
+
+jobs:    
+  publish-gpil-internal:
+    name: Publish gpil to internal pypi
+    if: contains(github.ref_name, 'gpil')
+    uses: VersesTech/github-actions/.github/workflows/python-publish.yaml@main
+    secrets: inherit
+    with:
+      tool: uv
+      uv-package: gpil
+      use-cache: "false"
+  
+  publish-pyvfg-internal:
+    name: Publish pyvfg to internal pypi
+    if: contains(github.ref_name, 'pyvfg')
+    uses: VersesTech/github-actions/.github/workflows/python-publish.yaml@main
+    secrets: inherit
+    with:
+      tool: uv
+      uv-package: pyvfg
+      use-cache: "false"
+
+  publish-pyvfg-public-pypi:
+    name: Publish pyvfg to public pypi
+    if: contains(github.ref_name, 'pyvfg')
+    uses: VersesTech/github-actions/.github/workflows/python-publish.yaml@main
+    secrets: inherit
+    with:
+      tool: uv
+      uv-package: pyvfg
+      registry: pypi
+      use-cache: "false"

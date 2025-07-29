@@ -1,0 +1,36 @@
+name: Build and Test
+
+on:
+  workflow_call:
+
+jobs:
+  build-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Setup Python
+        id: setup-python
+        uses: VersesTech/github-actions/actions/setup-python@main
+        with:
+          tool: uv
+          python-version: ${{ matrix.python-version }}
+          use-cache: "false"
+          aws-access-key-id: ${{ secrets.ECR_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_KEY }}
+
+      - name: Install dependencies
+        run: |
+          uv sync
+
+      - name: Run tests
+        run: |-
+          uv run pytest -m "not benchmark"

@@ -1,0 +1,31 @@
+{
+    "version": "0.3.0",
+    "variables": {
+        "cloudy": {"elements": ["no", "yes"]},
+        "rain": {"elements": ["no", "yes"]},
+        "sprinkler": {"elements": ["off", "on"]},
+        "wet_grass": {"elements": ["no", "yes"]}
+    },
+    "factors": [
+        {
+            "variables": ["cloudy"],
+            "values": [0.5, 0.5],
+            "distribution": "categorical"
+        },
+        {
+            "variables": ["rain"],
+            "values": [0.5, 0.5],
+            "distribution": "categorical"
+        },
+        {
+            "variables": ["sprinkler"],
+            "values": [0.5, 0.5],
+            "distribution": "categorical"
+        },
+        {
+            "variables": ["wet_grass"],
+            "values": [0.5, 0.5],
+            "distribution": "categorical"
+        }
+    ]
+}

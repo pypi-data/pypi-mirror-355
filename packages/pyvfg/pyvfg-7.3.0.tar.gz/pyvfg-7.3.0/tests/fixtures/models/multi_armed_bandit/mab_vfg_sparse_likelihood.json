@@ -1,0 +1,137 @@
+{
+    "version": "0.3.0",
+    "variables": {
+      "context_names": {
+        "elements": [
+          "Left-Better", "Right-Better"
+        ]
+      },
+      "choice_names": {
+        "elements": [
+          "Start", "Hint", "Left-Arm", "Right-Arm"
+        ]
+      },
+      "context_action_names": {
+        "elements": ["Do-nothing"]
+      },
+      "choice_action_names": {
+        "elements": [
+          "Move-start", "Get-hint", "Play-left", "Play-right"
+        ]
+      },
+      "hint_obs_names": {
+        "elements": [
+          "Null", "Hint-left", "Hint-right"
+        ]
+      },
+      "reward_obs_names": {
+        "elements": [
+          "Null", "Loss", "Reward"
+        ]
+      },
+      "choice_obs_names": {
+        "elements": [
+          "Start", "Hint", "Left-Arm", "Right-Arm"
+        ]
+      }
+    },
+    "factors": [
+      {
+        "variables": ["hint_obs_names", "context_names", "choice_names"],
+        "role": "likelihood",
+        "distribution": "categorical_conditional",
+        "values":
+        [[[1.0, 0.0, 1.0, 1.0],
+          [1.0, 0.0, 1.0, 1.0]],
+         [[0.0, 0.7, 0.0, 0.0],
+          [0.0, 0.3, 0.0, 0.0]],
+         [[0.0, 0.3, 0.0, 0.0],
+          [0.0, 0.7, 0.0, 0.0]]]
+      },
+      {
+        "variables": ["reward_obs_names", "context_names", "choice_names"],
+        "role": "likelihood",
+        "distribution": "categorical_conditional",
+        "values":
+        [[[1.0, 1.0, 0.0, 0.0],
+          [1.0, 1.0, 0.0, 0.0]],
+          [[0.0, 0.0, 0.2, 0.8],
+          [0.0, 0.0, 0.8, 0.2]],
+          [[0.0, 0.0, 0.8, 0.2],
+          [0.0, 0.0, 0.2, 0.8]]]
+      },
+      {
+        "variables": ["choice_obs_names", "choice_names"],
+        "role": "likelihood",
+        "distribution": "categorical_conditional",
+        "values": [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0]
+        ]
+      },
+      {
+        "variables": ["context_names", "context_names", "context_action_names"],
+        "role": "transition",
+        "distribution": "categorical_conditional",
+        "values":
+        [[[1.0],
+          [0.0]],
+        [[0.0],
+          [1.0]]]
+      },
+      {
+        "variables": ["choice_names", "choice_names", "choice_action_names"],
+        "role": "transition",
+        "distribution": "categorical_conditional",
+          "values":
+        [[[1.0, 0.0, 0.0, 0.0],
+          [1.0, 0.0, 0.0, 0.0],
+          [1.0, 0.0, 0.0, 0.0],
+          [1.0, 0.0, 0.0, 0.0]],
+          [[0.0, 1.0, 0.0, 0.0],
+          [0.0, 1.0, 0.0, 0.0],
+          [0.0, 1.0, 0.0, 0.0],
+          [0.0, 1.0, 0.0, 0.0]],
+          [[0.0, 0.0, 1.0, 0.0],  
+          [0.0, 0.0, 1.0, 0.0],
+          [0.0, 0.0, 1.0, 0.0],
+          [0.0, 0.0, 1.0, 0.0]],
+          [[0.0, 0.0, 0.0, 1.0],
+          [0.0, 0.0, 0.0, 1.0],
+          [0.0, 0.0, 0.0, 1.0],
+          [0.0, 0.0, 0.0, 1.0]]]
+      },
+      {
+        "variables": ["hint_obs_names"],
+        "role": "preference",
+        "distribution": "logits",
+        "values": [0.0, 0.0, 0.0]
+      },
+      {
+        "variables": ["reward_obs_names"],
+        "role": "preference",
+        "distribution": "logits",
+        "values": [0.0, -2.0, 2.0]
+      },
+      {
+        "variables": ["choice_obs_names"],
+        "role": "preference",
+        "distribution": "logits",
+        "values": [0.0, 0.0, 0.0, 0.0]
+      },
+      {
+        "variables": ["context_names"],
+        "role": "initial_state_prior",
+        "distribution": "categorical",
+        "values": [0.5, 0.5]
+      },
+      {
+        "variables": ["choice_names"],
+        "role": "initial_state_prior",
+        "distribution": "categorical",
+          "values": [1.0, 0.0, 0.0, 0.0]
+      }
+    ]
+}

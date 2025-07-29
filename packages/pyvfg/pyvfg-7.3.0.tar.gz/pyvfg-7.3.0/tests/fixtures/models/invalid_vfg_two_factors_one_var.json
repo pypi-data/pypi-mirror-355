@@ -1,0 +1,138 @@
+{
+  "version": "0.5.0",
+  "metadata": null,
+  "variables": {
+    "Storm_Presence": {
+      "elements": [
+        "no",
+        "yes"
+      ],
+      "role": null
+    },
+    "Line_001_Load": {
+      "elements": [
+        "normal",
+        "overloaded"
+      ],
+      "role": null
+    },
+    "Line_001_Temp": {
+      "elements": [
+        "normal",
+        "high"
+      ],
+      "role": null
+    },
+    "Line_001_Failure": {
+      "elements": [
+        "no",
+        "yes"
+      ],
+      "role": null
+    }
+  },
+  "factors": [
+    {
+      "variables": [
+        "Storm_Presence"
+      ],
+      "distribution": "categorical",
+      "counts": null,
+      "values": [
+        0.6965,
+        0.3035
+      ],
+      "role": null
+    },
+    {
+      "variables": [
+        "Line_001_Load",
+        "Storm_Presence"
+      ],
+      "distribution": "categorical_conditional",
+      "counts": null,
+      "values": [
+        [
+          0.9649,
+          0.5195
+        ],
+        [
+          0.03510000000000002,
+          0.48050000000000004
+        ]
+      ],
+      "role": null
+    },
+    {
+      "variables": [
+        "Line_001_Temp",
+        "Storm_Presence"
+      ],
+      "distribution": "categorical_conditional",
+      "counts": null,
+      "values": [
+        [
+          0.9584,
+          0.4451
+        ],
+        [
+          0.04159999999999997,
+          0.5549
+        ]
+      ],
+      "role": null
+    },
+    {
+      "variables": [
+        "Line_001_Temp",
+        "Line_001_Load"
+      ],
+      "distribution": "categorical_conditional",
+      "counts": null,
+      "values": [
+        [
+          0.8944,
+          0.0876
+        ],
+        [
+          0.10560000000000003,
+          0.9124
+        ]
+      ],
+      "role": null
+    },
+    {
+      "variables": [
+        "Line_001_Failure",
+        "Line_001_Load",
+        "Line_001_Temp"
+      ],
+      "distribution": "categorical_conditional",
+      "counts": null,
+      "values": [
+        [
+          [
+            0.9998,
+            0.5855
+          ],
+          [
+            0.8699,
+            0.0122
+          ]
+        ],
+        [
+          [
+            0.00019999999999997797,
+            0.4145
+          ],
+          [
+            0.1301,
+            0.9878
+          ]
+        ]
+      ],
+      "role": null
+    }
+  ],
+  "visualization_metadata": null
+}

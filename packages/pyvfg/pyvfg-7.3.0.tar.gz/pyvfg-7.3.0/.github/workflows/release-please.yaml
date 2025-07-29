@@ -1,0 +1,63 @@
+name: Release Please
+
+on:
+  workflow_call:
+    inputs:
+      config-file:
+        description: Release-please config file
+        required: true
+        type: string
+
+      manifest-file:
+        description: Release-please manifest file
+        required: true
+        type: string
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Github App token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Release please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: ${{ inputs.config-file }}
+          manifest-file: ${{ inputs.manifest-file }}
+          token: ${{ steps.app-token.outputs.token }}
+
+      ############################################################
+      # Auto-merge pull request releases
+      ############################################################
+      - name: Checkout code
+        if: steps.release.outputs.prs_created == 'true'
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Automerge pre-release PR
+        if: steps.release.outputs.prs_created == 'true'
+        run: |
+          for pr_number in ${{ join(fromJSON(steps.release.outputs.prs).*.number, ' ') }}
+          do
+            gh pr merge "${pr_number}" --admin --squash --delete-branch
+          done
+        env:
+          # We have to use a different token from the repo token in order to re-trigger this CI
+          # See: https://docs.github.com/en/actions/using-workflows/triggering-a-workflow#triggering-a-workflow-from-a-workflow
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}

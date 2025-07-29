@@ -1,0 +1,49 @@
+{
+    "version": "0.1.0",
+    "variables": {
+        "cloudy": ["no", "yes"],
+        "rain": ["no", "yes"],
+        "sprinkler": ["off", "on"],
+        "wet_grass": ["no", "yes"]
+    },
+    "factors": [
+        {
+          "variables": ["cloudy"],
+          "distribution": "categorical",
+          "values": [
+              0.5, 0.5
+          ]
+        },
+        {
+            "variables": ["rain", "cloudy"],
+            "distribution": "categorical_conditional",
+            "values": [
+                [0.8, 0.2],
+                [0.2, 0.8]
+            ]
+        },
+        {
+            "variables": ["sprinkler", "cloudy"],
+            "distribution": "categorical_conditional",
+            "values": [
+                [0.5, 0.9],
+                [0.5, 0.1]
+            ]
+        },
+        {
+            "variables": ["wet_grass", "sprinkler", "rain"],
+            "distribution": "categorical_conditional",
+            "values": [
+                [
+                    [1.0, 0.1],
+                    [0.1, 0.01]
+
+                ],
+                [
+                    [0.0, 0.9],
+                    [0.9, 0.99]
+                ]
+            ]
+        }
+    ]
+  }

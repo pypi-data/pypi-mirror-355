@@ -1,0 +1,72 @@
+{
+    "version": "0.4.0",
+    "metadata": {
+        "model_type": "markov_random_field"
+    },
+    "variables": {
+        "var_ab": {
+            "elements": [
+                "a",
+                "b"
+            ]
+        },
+        "var_cde": {
+            "elements": [
+                "c",
+                "d",
+                "e"
+            ],
+            "role": "latent"
+        },
+        "var_car": {
+            "cardinality": 1
+        },
+        "var_car_role": {
+            "cardinality": 1,
+            "role": "latent"
+        }
+    },
+    "factors": [
+        {
+            "variables": [
+                "v1"
+            ],
+            "distribution": "categorical",
+            "values": [
+                0.1,
+                0.2
+            ],
+            "role": "likelihood"
+        },
+        {
+            "variables": [
+                "v1",
+                "v2",
+                "v3"
+            ],
+            "distribution": "categorical_conditional",
+            "values": [
+                [
+                    0.3,
+                    0.4
+                ],
+                [
+                    0.5,
+                    0.6
+                ],
+                [
+                    0.7,
+                    0.8
+                ]
+            ]
+        }
+    ],
+    "visualization_metadata": {
+        "cloud": {
+            "lining": "silver"
+        },
+        "problems": {
+            "count": 99
+        }
+    }
+}
