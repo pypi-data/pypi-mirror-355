@@ -1,0 +1,1 @@
+Useful for caching variables in jupyter notebooks
