@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+version = "1.0.0"
+name = "organisationsnummer"
+description = "Validate Swedish organization numbers"
+license = { file = "./LICENSE" }
+readme = "README.md"
+authors = [
+    { name = "Organisationsnummer and Contributors", email = "hello@organisationsnummer.dev" },
+]
+classifiers = [
+	"License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "personnummer"
+]
+
+[project.urls]
+Homepage = "https://organisationsnummer.dev"
+Repository = "https://github.com/organisationsnummer/python"
+
+[project.entry-points."console_scripts"]
+organisationsnummer = "organisationsnummer.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "build",
+]
+
+[options]
+packages = ["organisationsnummer"]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+exclude = ["organisationsnummer/tests*"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "organisationsnummer/tests",
+]
+addopts = "-ra -v"
