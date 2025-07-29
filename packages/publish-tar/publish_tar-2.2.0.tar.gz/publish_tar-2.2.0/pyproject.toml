@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "publish-tar"
+authors = [
+    {name = "qun", email = "qun.chen@hexagon.com"}
+]
+description = "publish test results to tar."
+
+requires-python = ">=3.0"
+keywords = ["junit"]
+license = {text = "MIT License"}
+version = "2.2.0"
+readme = "README.md"
+
+[project.scripts]
+publish-tar = "publish_tar:main"
+
+[tool.setuptools]
+py-modules = ["junit_xml", "logger", "publish_tar"]
