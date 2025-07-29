@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: chroma-feedback
+Version: 13.5.1
+Summary: Turn your RGB powered hardware into a status indicator for continuous integration, continuous deployment and infrastructure monitoring
+Home-page: https://chroma-feedback.com
+Author: Henry Ruhs
+Author-email: info@henryruhs.com
+License: MIT
+Keywords: appveyor atlassian.bamboo atlassian.bitbucket betterstack buddy circle cloudbees.codeship custom datadog gitlab heroku jenkins jetbrains.teamcity microsoft.azure microsoft.github netlify travis uptimerobot vercel
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: busylight-for-humans==0.35.4
+Requires-Dist: lifxlan==1.2.8
+Requires-Dist: liquidctl==1.15.0
+Requires-Dist: nanoleafapi==2.1.2
+Requires-Dist: phue==1.1
+Requires-Dist: python-magichue==0.3.2
+Requires-Dist: pyqt6==6.9.1
+Requires-Dist: pywizlight==0.6.2
+Requires-Dist: requests==2.32.3
+Requires-Dist: streamdeck==0.9.6
+Requires-Dist: yeelight==0.7.16
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+Chroma Feedback
+===============
+
+> Turn your RGB powered hardware into a status indicator for continuous integration, continuous deployment and infrastructure monitoring.
+
+[![Build Status](https://img.shields.io/github/actions/workflow/status/henryruhs/chroma-feedback/ci.yml.svg?branch=master)](https://github.com/henryruhs/chroma-feedback/actions?query=workflow:ci)
+[![Coverage Status](https://img.shields.io/coveralls/henryruhs/chroma-feedback.svg)](https://coveralls.io/r/henryruhs/chroma-feedback)
+[![PyPI](https://img.shields.io/pypi/v/chroma-feedback.svg)](https://pypi.org/project/chroma-feedback)
+[![License](https://img.shields.io/pypi/l/chroma-feedback.svg)](https://pypi.org/project/chroma-feedback)
+
+
+Preview
+-------
+
+![Terminal Session](https://raw.githubusercontent.com/henryruhs/chroma-feedback/master/.github/terminal-session.svg?sanitize=true)
+
+
+Installation
+------------
+
+Install Chroma Feedback:
+
+```
+pip3 install chroma-feedback
+```
+
+Install the dependencies for Linux:
+
+```
+apt install libudev-dev libusb-1.0-0-dev libhidapi-libusb0 libxcb-cursor0
+```
+
+```
+add-apt-repository ppa:openrazer/stable
+apt update
+```
+
+```
+apt install openrazer-meta
+```
+
+
+Usage
+-----
+
+Combine producers and consumers as needed:
+
+```
+chroma-feedback [options]
+
+-p, --producer <producer>
+-c, --consumer <consumer>
+-i, --background-interval <background-interval>
+-b, --background-run
+-d, --dry-run
+-l, --log-level
+-v, --version
+```
+
+
+Documentation
+-------------
+
+Read the [documentation](https://henryruhs.gitbook.io/chroma-feedback) for a deep dive.
