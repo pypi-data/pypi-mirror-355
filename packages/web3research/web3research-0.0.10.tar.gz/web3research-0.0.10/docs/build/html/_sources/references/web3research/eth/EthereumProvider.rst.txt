@@ -1,0 +1,25 @@
+web3research.eth.EthereumProvider
+=================================
+
+.. py:class:: web3research.eth.EthereumProvider(api_token, backend: Optional[str] = None, database: str = 'ethereum', settings: Optional[Dict[str, Any]] = None, generic_args: Optional[Dict[str, Any]] = None, **kwargs)
+
+   Bases: :py:obj:`web3research.db.ClickhouseProvider`
+
+
+   Base ClickHouse Connect client
+
+
+   .. py:attribute:: database
+
+
+   .. py:method:: blocks(where: Optional[str], order_by: Optional[Dict[str, bool]] = None, limit: Optional[int] = 100, offset: Optional[int] = 0, parameters: Optional[Dict[str, Any]] = None)
+
+
+   .. py:method:: transactions(where: Optional[str], order_by: Optional[Dict[str, bool]] = None, limit: Optional[int] = 100, offset: Optional[int] = 0, parameters: Optional[Dict[str, Any]] = None)
+
+
+   .. py:method:: traces(where: Optional[str], order_by: Optional[Dict[str, bool]] = None, limit: Optional[int] = 100, offset: Optional[int] = 0, parameters: Optional[Dict[str, Any]] = None)
+
+
+   .. py:method:: events(where: Optional[str], order_by: Optional[Dict[str, bool]] = None, limit: Optional[int] = 100, offset: Optional[int] = 0, parameters: Optional[Dict[str, Any]] = None)
+
