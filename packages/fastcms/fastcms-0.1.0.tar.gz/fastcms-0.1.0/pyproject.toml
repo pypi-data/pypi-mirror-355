@@ -1,0 +1,55 @@
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "fastcms"
+authors = [{name = "Azat (@azataiot)", email = "8280770+azataiot@users.noreply.github.com "}]
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+dynamic = ["version", "description"]
+requires-python = ">=3.13"
+dependencies = [
+    "aioboto3>=14.3.0",
+    "aiofiles>=24.1.0",
+    "fastapi>=0.115.12",
+    "passlib[argon2,bcrypt]>=1.7.4",
+    "pydantic>=2.11.5",
+    "pyjwt>=2.10.1",
+    "python-ulid[pydantic]>=3.0.0",
+    "sqlmodel>=0.0.24",
+]
+
+[project.urls]
+Home = "https://azgh.cc/fastcms/"
+
+
+[dependency-groups]
+build = [
+    "flit-core>=3.12.0",
+]
+dev = [
+    "ruff>=0.11.13",
+]
+docs = [
+    "mdx-truly-sane-lists>=1.3",
+    "mkdocs-material>=9.6.14",
+]
+test = [
+    "pytest>=8.4.0",
+    "pytest-cov>=6.1.1",
+]
+
+[tool.ruff]
+line-length = 88
+
+[tool.pytest.ini_options]
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+    "--ignore=docs_src",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:passlib.*",
+]
