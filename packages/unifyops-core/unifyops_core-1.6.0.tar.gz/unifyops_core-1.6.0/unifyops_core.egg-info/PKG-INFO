@@ -1,0 +1,180 @@
+Metadata-Version: 2.4
+Name: unifyops-core
+Version: 1.6.0
+Summary: Core utilities for UnifyOps Python projects
+Home-page: https://github.com/unifyops/unifyops-core
+Author: UnifyOps Team
+Author-email: UnifyOps Team <admin@unifyops.com>
+License: MIT
+Project-URL: Homepage, https://github.com/unifyops/unifyops-core
+Project-URL: Repository, https://github.com/unifyops/unifyops-core
+Keywords: unifyops,utilities,logging,exceptions,opentelemetry,observability
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.4.0
+Provides-Extra: otel
+Requires-Dist: opentelemetry-api>=1.27.0; extra == "otel"
+Requires-Dist: opentelemetry-sdk>=1.27.0; extra == "otel"
+Requires-Dist: opentelemetry-exporter-otlp>=1.27.0; extra == "otel"
+Requires-Dist: opentelemetry-instrumentation>=0.48b0; extra == "otel"
+Requires-Dist: opentelemetry-semantic-conventions>=0.48b0; extra == "otel"
+Requires-Dist: opentelemetry-instrumentation-logging>=0.48b0; extra == "otel"
+Requires-Dist: grpcio>=1.59.0; extra == "otel"
+Requires-Dist: protobuf>=4.21.0; extra == "otel"
+Provides-Extra: fastapi-otel
+Requires-Dist: opentelemetry-api>=1.27.0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-sdk>=1.27.0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-exporter-otlp>=1.27.0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-instrumentation>=0.48b0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-semantic-conventions>=0.48b0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-instrumentation-logging>=0.48b0; extra == "fastapi-otel"
+Requires-Dist: grpcio>=1.59.0; extra == "fastapi-otel"
+Requires-Dist: protobuf>=4.21.0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-instrumentation-fastapi>=0.48b0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-instrumentation-requests>=0.48b0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-instrumentation-sqlalchemy>=0.48b0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-instrumentation-psycopg2>=0.48b0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-propagator-b3>=1.27.0; extra == "fastapi-otel"
+Requires-Dist: opentelemetry-propagator-jaeger>=1.27.0; extra == "fastapi-otel"
+Provides-Extra: all
+Requires-Dist: opentelemetry-api>=1.27.0; extra == "all"
+Requires-Dist: opentelemetry-sdk>=1.27.0; extra == "all"
+Requires-Dist: opentelemetry-exporter-otlp>=1.27.0; extra == "all"
+Requires-Dist: opentelemetry-instrumentation>=0.48b0; extra == "all"
+Requires-Dist: opentelemetry-semantic-conventions>=0.48b0; extra == "all"
+Requires-Dist: opentelemetry-instrumentation-logging>=0.48b0; extra == "all"
+Requires-Dist: grpcio>=1.59.0; extra == "all"
+Requires-Dist: protobuf>=4.21.0; extra == "all"
+Requires-Dist: opentelemetry-instrumentation-fastapi>=0.48b0; extra == "all"
+Requires-Dist: opentelemetry-instrumentation-requests>=0.48b0; extra == "all"
+Requires-Dist: opentelemetry-instrumentation-sqlalchemy>=0.48b0; extra == "all"
+Requires-Dist: opentelemetry-instrumentation-psycopg2>=0.48b0; extra == "all"
+Requires-Dist: opentelemetry-propagator-b3>=1.27.0; extra == "all"
+Requires-Dist: opentelemetry-propagator-jaeger>=1.27.0; extra == "all"
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+# UnifyOps Core
+
+Core utilities for UnifyOps Python projects. This package provides shared functionality that can be used across all UnifyOps Python applications.
+
+## Features
+
+- **Logging**: Standardized logging configuration with JSON support and OpenTelemetry integration
+- **Exceptions**: Common exception classes with proper HTTP status code mapping
+- **OpenTelemetry**: Centralized observability setup for tracing and logging
+
+## Installation
+
+### Basic Installation
+
+```bash
+pip install unifyops-core
+```
+
+### With OpenTelemetry Support
+
+For observability and monitoring with Signoz:
+
+```bash
+# Basic OpenTelemetry support
+pip install unifyops-core[otel]
+
+# Full FastAPI + OpenTelemetry support (recommended for APIs)
+pip install unifyops-core[fastapi-otel]
+
+# All optional dependencies
+pip install unifyops-core[all]
+```
+
+### Using Pipenv
+
+```toml
+# In your Pipfile
+[packages]
+unifyops-core = {extras = ["fastapi-otel"], version = "*"}
+```
+
+Then install with:
+
+```bash
+pipenv install
+```
+
+## Usage
+
+### OpenTelemetry Setup (New!)
+
+Replace complex OpenTelemetry setup in your service with a single function call:
+
+```python
+from unifyops_core.logging import setup_otel_for_service
+
+# Simple setup - replaces 40+ lines of boilerplate
+otel_success = setup_otel_for_service(
+    service_name="my-api",
+    service_version="1.0.0",
+    environment="production",
+    additional_resource_attributes={
+        "team": "backend",
+        "domain": "user-management"
+    }
+)
+```
+
+### Logging
+
+```python
+from unifyops_core.logging import get_logger
+
+# Create a standard logger
+logger = get_logger("my_app")
+logger.info("This is a log message")
+
+# Create a JSON logger
+json_logger = get_logger("my_app.json", json_format=True)
+json_logger.info("This is a structured log", extra={"props": {"user_id": "123", "action": "login"}})
+
+# Log with context
+from unifyops_core.logging import log_with_context
+log_with_context(logger, logger.INFO, "User logged in", user_id="123", action="login")
+```
+
+### Exceptions
+
+```python
+from unifyops_core.exceptions import NotFoundError, ValidationError
+
+# Raise standard exceptions
+raise NotFoundError("User not found")
+raise ValidationError("Invalid email format", details={"email": "Invalid format"})
+
+# Custom exception with details
+from unifyops_core.exceptions import UnifyOpsException
+raise UnifyOpsException(
+    message="Payment processing failed",
+    code="PAYMENT_ERROR",
+    status_code=400,
+    details={"payment_id": "123", "reason": "Insufficient funds"}
+)
+```
+
+## Installation Options
+
+| Extra          | Description                             | Use Case                                 |
+| -------------- | --------------------------------------- | ---------------------------------------- |
+| `otel`         | Basic OpenTelemetry support             | Services needing observability           |
+| `fastapi-otel` | FastAPI + OpenTelemetry instrumentation | FastAPI applications                     |
+| `all`          | All optional dependencies               | Development or full-featured deployments |
+
+## License
+
+This project is licensed under the MIT License.
