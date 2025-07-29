@@ -1,0 +1,14 @@
+<table>
+    <tbody>
+        <tr hx-swap-oob="innerHTML:#tr-{{ object.pk }}">
+            {% include 'ui/table.html#td' with object=object fields=fields %}
+        </tr>
+    </tbody>
+    {% if footer %}
+        <tfoot>
+            <tr hx-swap-oob="innerHTML:#tf-row">
+                {% include 'ui/table.html#tf' with object=object fields=fields %}
+            </tr>
+        </tfoot>
+    {% endif %}
+</table>
