@@ -1,0 +1,130 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wolfpy"
+version = "0.1.0"
+authors = [{ name = "Manish", email = "manishchowdary2006@gmail.com" }]
+description = "A modular Python web framework built from scratch using AI"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Internet :: WWW/HTTP :: WSGI",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "bcrypt>=4.0.0",
+    "Mako>=1.2.0",
+    "Jinja2>=3.1.0",
+    "MarkupSafe>=2.1.0",
+    "markdown>=3.4.0",
+    "pygments>=2.15.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+postgresql = [
+    "psycopg2-binary>=2.9.0",
+]
+mysql = [
+    "mysql-connector-python>=8.0.0",
+]
+redis = [
+    "redis>=4.0.0",
+]
+mongodb = [
+    "pymongo>=4.0.0",
+]
+all-databases = [
+    "psycopg2-binary>=2.9.0",
+    "mysql-connector-python>=8.0.0",
+    "redis>=4.0.0",
+    "pymongo>=4.0.0",
+]
+production = [
+    "gunicorn>=21.0.0",
+    "uvicorn[standard]>=0.24.0",
+    "gevent>=23.0.0",
+]
+deployment = [
+    "docker>=6.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+wolfpy = "wolfpy.cli.main:main"
+
+[project.urls]
+Homepage = "https://github.com/manish12ys/wolfpy"
+Repository = "https://github.com/manish12ys/wolfpy"
+Documentation = "https://wolfpy.readthedocs.io"
+"Bug Tracker" = "https://github.com/manish12ys/wolfpy/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wolfpy"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/examples",
+    "/docs",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=wolfpy --cov-report=html --cov-report=term-missing"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
