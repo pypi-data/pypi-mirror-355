@@ -1,0 +1,50 @@
+[project]
+name = "katalyst"
+version = "0.4.2"
+description = "A terminal coding agent for Python."
+authors = [{name = "Maruti Agarwal", email = "marutiagarwal@gmail.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "openai>=1.82.0",
+    "langgraph>=0.4.5",
+    "langchain-core>=0.3.61",
+    "dotenv>=0.9.9",
+    "langchain-openai>=0.3.18",
+    "pathspec>=0.12.1",
+    "tree-sitter==0.21.3",
+    "tree-sitter-languages>=1.10.2",
+    "rich>=13.9.4",
+    "instructor>=1.8.3",
+    "litellm>=1.72.1",
+    "bm25s (>=0.2.13,<0.3.0)",
+    "pytest-asyncio (>=1.0.0,<2.0.0)"
+]
+
+[project.scripts]
+katalyst = "katalyst_agent.main:main"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta" 
+
+[tool.poetry]
+packages = [
+    { include = "katalyst_agent", from = "src" }
+]
+
+[tool.poetry.dependencies]
+openai = "^1.82.0"
+langgraph = "^0.4.5"
+langchain-core = "^0.3.61"
+dotenv = "^0.9.9"
+langchain-openai = "^0.3.18"
+pathspec = "^0.12.1"
+tree-sitter = "0.21.3"
+tree-sitter-languages = "^1.10.2"
+rich = "^13.9.4"
+pytest = "^8.3.5"
+instructor = "^1.8.3"
+pytest-cov = "^6.1.1"
+litellm = "^1.72.1"
