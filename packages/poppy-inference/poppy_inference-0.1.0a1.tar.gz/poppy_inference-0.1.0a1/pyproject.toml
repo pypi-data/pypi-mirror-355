@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools-scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "poppy-inference"
+authors = [
+    {name = "Michael J. Williams", email = "michaeljw1@googlemail.com"},
+]
+description = "Bayesian Posterior Post-processing in Python"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "matplotlib",
+    "numpy",
+    "array-api-compat",
+    "wrapt",
+    "h5py",
+]
+
+dynamic = ["version"]
+
+[project.optional-dependencies]
+jax = [
+    "jax",
+    "jaxlib",
+    "flowjax"
+]
+torch = [
+    "torch",
+    "zuko",
+]
+minipcn = [
+    "minipcn",
+]
+emcee = [
+    "emcee",
+]
+test = [
+    "pytest",
+    "pytest-requires",
+]
+
+[project.urls]
+Homepage = "https://github.com/mj-will/poppy"
+
+[tool.setuptools_scm]
+
+[tool.setuptools.package-dir]
+poppy = "src/poppy"
+
+[tool.ruff]
+line-length = 79
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.lint]
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+extend-select = ["I"]
