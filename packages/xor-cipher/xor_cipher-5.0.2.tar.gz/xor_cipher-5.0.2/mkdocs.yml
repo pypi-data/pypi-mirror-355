@@ -1,0 +1,67 @@
+site_name: xor-cipher
+site_author: GDPS App
+site_description: Simple, reusable and optimized XOR ciphers in Python.
+
+repo_name: GDPSApp/xor-cipher-python
+repo_url: https://github.com/GDPS/xor-cipher-python
+
+remote_branch: github-pages
+
+nav:
+  - Index: "index.md"
+  - Reference: "reference.md"
+  - Changelog: "changelog.md"
+  - Security: "security.md"
+  - Code of Conduct: "code_of_conduct.md"
+  - Contributing: "contributing.md"
+
+watch:
+  - docs
+  - src
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+
+      primary: deep purple
+      accent: light blue
+
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to light mode
+
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+
+      primary: light blue
+      accent: deep purple
+
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+
+plugins:
+  - search
+
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            members_order: source
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            show_signature_annotations: true
+
+          paths: [xor_cipher]
+
+          import:
+            - https://docs.python.org/3/objects.inv
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
