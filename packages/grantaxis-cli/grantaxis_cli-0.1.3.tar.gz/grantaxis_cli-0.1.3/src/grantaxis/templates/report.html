@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GrantAxis Risk Report</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+        th { background-color: #eee; }
+    </style>
+</head>
+<body>
+    <h1>GrantAxis Risk Report</h1>
+    <p>Generated: {{ timestamp }}</p>
+
+    {% for section, findings in data.items() if section != "timestamp" %}
+    <h2>{{ section.replace('_', ' ').title() }} ({{ findings | length }})</h2>
+    {% if findings %}
+    <table>
+        <tr>
+            {% for key in findings[0].keys() %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in findings %}
+        <tr>
+            {% for val in row.values() %}
+            <td>{{ val }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No findings.</p>
+    {% endif %}
+    {% endfor %}
+</body>
+</html>
