@@ -1,0 +1,41 @@
+[project]
+name = "pyproxytools-sdk"
+description = "Python API Client for PyProxy"
+version = "0.1.2"
+readme = "README.md"
+license = "MIT"
+license-files = [
+    "LICENSE",
+]
+authors = [{name = "pyproxytools"}]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+Documentation = "https://github.com/pyproxytools/pyproxy/wiki"
+"Issue tracker" = "https://github.com/pyproxytools/pyproxy/issues"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.dynamic]
+dependencies = { file = "requirements.txt" }
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
