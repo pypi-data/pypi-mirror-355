@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools >= 80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "proxify-tool"
+version = "1.0.0"
+description = "Proxify is a Python tool for fetching and validating public proxies."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"} 
+authors = [
+    {name = "Filming"} 
+]
+
+dependencies = [
+    "aiohttp",
+    "aiohttp-socks",
+    "beautifulsoup4",
+    "lxml",
+    "Brotli",
+    "python-dotenv",
+]
+
+[project.urls]
+Homepage = "https://github.com/filming/proxify"
+Repository = "https://github.com/filming/proxify"
+
+[tool.setuptools.packages.find]
+where = ["src"]
