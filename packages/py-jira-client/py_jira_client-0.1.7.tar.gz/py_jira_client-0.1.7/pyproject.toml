@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-jira-client"
+version = "0.1.7"
+description = "Python client library for JIRA API"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Rushil Patel", email = "rpatel@codegen.com" }]
+keywords = ["jira", "api", "client", "atlassian"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["urllib3>=1.25.3", "pydantic>=2.0.0", "python-dateutil>=2.8.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0.0", "pytest-cov>=4.0.0", "twine>=4.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/codegen-sh/py-jira"
+Repository = "https://github.com/codegen-sh/py-jira"
+Issues = "https://github.com/codegen-sh/py-jira/issues"
+
+[tool.setuptools]
+packages = ["jira_client", "jira_client.api", "jira_client.models"]
+
+[tool.setuptools.package-data]
+jira_client = ["py.typed"]
+
+[dependency-groups]
+dev = ["twine>=6.1.0"]
