@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-server-endstone"
+version = "0.1.4"
+description = "一个为 EndstoneMC 开发提供支持的 Model Context Protocol (MCP) 服务器"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+    {name = "mcayear", email = "mcayear@163.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "mcp>=0.1.0",
+]
+
+[project.scripts]
+mcp-server-endstone = "mcp_server_endstone.cli:main"
+
+[project.urls]
+"Homepage" = "https://github.com/Mcayear/mcp-server-endstone"
+"Bug Tracker" = "https://github.com/Mcayear/mcp-server-endstone/issues"
+
+[tool.setuptools]
+include-package-data = true
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+mcp_server_endstone = ["reference/**/*"] 
