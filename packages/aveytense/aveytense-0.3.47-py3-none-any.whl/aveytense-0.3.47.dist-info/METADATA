@@ -1,0 +1,128 @@
+Metadata-Version: 2.2
+Name: aveytense
+Version: 0.3.47
+Summary: Library written in Python, includes several extensions for inbuilt Python solutions
+Home-page: https://aveyzan.glitch.me/aveytense/
+Author: Aveyzan
+Author-email: aveyzan@gmail.com
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Software Development
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: typing_extensions>=4.10.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AveyTense
+
+**AveyTense** (formally *Tense*) is a library written by Aveyzan using Python, which provides especially extensions to inbuilt Python solutions.
+
+## Features
+
+Features are included in [this page](https://aveyzan.glitch.me/aveytense#documentation). Some will be documented below in abridged version.
+For code changes see [this Google document](https://docs.google.com/document/d/1GC_KAOXML65jNfBZA8GhVViqPnrMoFtbLv_jHvUhBlg/edit?usp=sharing).
+
+## Getting started
+
+To install AveyTense, run the following command:
+
+```
+pip install aveytense
+```
+
+Ensure you have [`typing_extensions`](https://pypi.org/project/typing_extensions) PyPi project with version 4.10.0 or above, and Python 3.8 or above.
+
+If you think you are out of date, consider checking out [releases section](https://pypi.org/project/aveytense/#history) and running following command:
+
+```py
+pip install --upgrade aveytense
+```
+
+After installation process, you can import module `aveytense`, which imports AveyTense components into your project.
+
+> **Note**: It is highly recommended to install latest final version of AveyTense. Do not rely on alpha, beta releases, and
+> release candidates before their final counterparts are published.
+
+> **Warning**: Support for Python 3.8 just has been initiated in version 0.3.46, so some definitions will be still prone for errors due
+> to the backward-compatibility. For code changes to completely support Python 3.8 there will be still need to inspect every definition
+> included in the project.
+
+## Example programs
+
+```py
+from aveytense import *
+
+a = [652, 6754]
+b = {6534: 532}
+c = "Hello, AveyTense!"
+
+### aveytense.Tense ###
+
+print(a, b, c)
+Tense.clear(a, b, c)
+# clear every mutable sequence, including sets, dictionaries, strings, instances of
+# 'types.FrameType', 'aveytense.Color' and 'aveytense.util.MutableString' classes, ...
+print(a, b, c)
+# would output empty list, empty set, and empty string (the last one will not be visible)
+
+print(Tense.append([4322, 6546, 654], 63, 124, 651, 982))
+print(Tense.extend([4322, 6546, 654], [63, 124], {651, 982}))
+# append items to and extend an iterable with variable amount of values!
+# returned is list in both cases, and primal iterable is NOT changed
+
+print(Tense.expect([23, 33, 43, 53], "< len", lambda x: Math.isNegative(x)))
+# expect negative integers and matches below iterable length; there False is returned
+
+print(list(Tense.repeat(33, 3)))
+# prints list with number 33 repeated 3 times
+
+
+### aveytense.Color ###
+
+print(Color("Hello World!", 8, 69) % Color.BOLD_ITALIC_UNDERLINE)
+# prints "Hello World!" colored blue, with bolded oblique font and line under
+
+
+### aveytense.Math ###
+
+print(Math.isPositive([432, 325, 4321]))
+# all numbers in this sequence have to be positive; there True is returned
+
+print(Math.lwdp(18))
+# prints 29 (2 * 9 = 18); abbreviation to 'least with digit product'
+
+```
+
+## Bug report
+
+You found anomalies in code? Consider sending mail to [my email](mailto:aveyzan@gmail.com) or contacting on my [Discord server](https://discord.gg/avey) - in &#35;coding channel.
+Bug fixes will be issued in future versions of AveyTense. The project isn't intended to be a malware or any subject for hacking others' computers.
+
+If you will use my project for your projects, please enjoy! It will become my duty providing more changes.
+
+- Aveyzan, 30th May 2025
+AveyTense Project Owner
+
+AveyTense project maintained on PyPi since 7th August 2024.
+Â© 2024-Present Aveyzan &#47;&#47; License: MIT
