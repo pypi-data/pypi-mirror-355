@@ -1,0 +1,89 @@
+"""utility function to get the user info of the current user or via stat uid"""
+from __future__ import annotations
+
+import pwd
+from dataclasses import dataclass, asdict
+
+@dataclass
+class UserInfo:
+    """Data class to hold user information."""
+    uid: int
+    name: str
+    realname: str | None = None
+    default_group: str | None = None
+
+    @classmethod
+    def from_username(cls, name: str) -> UserInfo:
+        """Create a UserInfo instance from a username."""
+        try:
+            user = pwd.getpwnam(name)
+        except KeyError:
+            raise ValueError(f"User '{name}' does not exist.")
+
+        try:
+            from damply.admin.group_info import GroupInfo
+            default_group = GroupInfo.from_group_id(user.pw_gid).name
+        except ValueError:
+            default_group = None
+
+        return cls(
+            uid=user.pw_uid,
+            name=user.pw_name,
+            realname=user.pw_gecos.split(',')[0] if user.pw_gecos else None,
+            default_group=default_group
+        )
+
+    @classmethod
+    def from_uid(cls, uid: int) -> UserInfo:
+        """Create a UserInfo instance from a user ID."""
+        try:
+            user = pwd.getpwuid(uid)
+        except KeyError:
+            raise ValueError(f"User with UID {uid} does not exist.")
+
+        try:
+            from damply.admin.group_info import GroupInfo
+            default_group = GroupInfo.from_group_id(user.pw_gid).name
+        except ValueError:
+            default_group = None
+
+        return cls(
+            uid=user.pw_uid,
+            name=user.pw_name,
+            realname=user.pw_gecos.split(',')[0] if user.pw_gecos else None,
+            default_group=default_group
+        )
+
+    def to_dict(self):
+        """Convert the UserInfo instance to a dictionary."""
+        base_dict = asdict(self)
+        # add groups to the dictionary
+        base_dict['groups'] = self.groups
+        return base_dict
+
+    @property
+    def groups(self) -> list[str]:
+        """Get the list of groups the user belongs to.
+        
+        Because of our permissions, we have to use subprocess and `groups <user>`
+        to get the groups of the user.
+        Returns:
+            list[str]: List of group names the user belongs to.
+        """
+        import subprocess
+        try:
+            result = subprocess.run(['groups', self.name], capture_output=True, text=True, check=True)
+            groups = result.stdout.strip().split(': ')[1].split()
+            return groups
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Failed to get groups for user {self.name}: {e}")
+
+    def __repr__(self):
+        return (f"UserInfo(uid={self.uid}, "
+            f"name='{self.name}', "
+            f"realname='{self.realname}', "
+            f"default_group='{self.default_group}', "
+            f"groups={self.groups})")
+
+if __name__ == "__main__":
+    from rich import print
