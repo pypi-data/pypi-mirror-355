@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "credit-risk-creditum"
+version = "1.2.0"
+description = "A comprehensive credit risk assessment system"
+readme = "README.md"
+authors = [{name = "Omoshola Owolabi", email = "omoshola@example.com"}]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+keywords = ["credit-risk", "finance", "machine-learning", "risk-assessment"]
+dependencies = [
+    "numpy>=1.19.0",
+    "pandas>=1.1.0",
+    "scikit-learn>=0.24.0",
+    "typing-extensions>=3.7.4; python_version<'3.8'",
+]
+requires-python = ">=3.7"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.8",
+    "twine>=3.0",
+    "build>=0.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/omoshola-o/credit-risk-creditum"
+Repository = "https://github.com/omoshola-o/credit-risk-creditum"
+Issues = "https://github.com/omoshola-o/credit-risk-creditum/issues"
+Documentation = "https://github.com/omoshola-o/credit-risk-creditum/docs"
+
+[project.scripts]
+credit-risk = "credit_risk.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.black]
+line-length = 88
+target-version = ["py37"]
