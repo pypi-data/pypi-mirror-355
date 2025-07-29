@@ -1,0 +1,194 @@
+.TH HUCKLE 1
+.SH NAME
+huckle \- A generic hypertext command line interface (HCLI) client
+.SH SYNOPSIS
+.B huckle
+[--version | -n] { env | cli { install <url> | rm <cliname> | flush <cliname> | run <cliname> [arg] ... [help] | ls | config <cliname> [<key> <value>]] | credential <cliname> <user>} } | help }
+.SH DESCRIPTION
+.B huckle
+is a generic HCLI client, CLI, and python library, that can be used with any API that presents
+hypertext command line interface (HCLI) semantics.
+.sp
+By default huckle installs itself in a user's home directory (i.e. ~), however this can be overridden via the HUCKLE_HOME environment variable
+(e.g. export HUCKLE_HOME=/tmp)
+.sp
+CLI aliases are directly invoked by name if the HCLI entry scripts are locatable in your shell PATH.
+See 'huckle env' for details to make your environment configuration more permanent.
+.SH COMMANDS
+.IP "env"
+This outputs the HCLI entry scripts path to export to enable direct HCLI execution by name (i.e. <cliname>. Equivalent to huckle cli run <cliname>).
+.sp
+"eval $(huckle env)" can be setup in ~/.bashrc, ~/.bash_profile or ~/.profile to ensure the path is always loaded on shell start.
+.IP "cli install <url>"
+This attempts to install/auto configure a CLI if provided with a convenience wrapper URL, or the root URL of an HCLI API. If successful, the CLI
+can be invoked by name.
+.sp
+For a localhost deployment, the convenience wrapper would likely be accessible on something like "localhost:port" or "ip:port".
+.sp
+- Installed HCLI entry script are located under $HUCKLE_HOME/.huckle/bin/<cliname> (huckle created).
+.br
+- Installed HCLI configuration is located under $HUCKLE_HOME/.huckle/etc/<cliname>/config (huckle created). See EXAMPLE HCLI CONFIGURATION FILE.
+.sp
+Note that an existing configuration file is left alone if the command is run multiple times for the same CLI.
+.IP "cli rm <cliname>"
+Removes an installed CLI.
+.IP "cli flush <cliname>"
+Flushes pinned urls (url cache of final/non-HCLI/API surface urls). The cache is used to increase speed to API surface by reducing the quantity of network calls normally executed to navigate the HCLI semantics.
+.sp
+Note that unexpected failures can occur if the cache is invalidated for a reason or another.
+.IP "cli run <cliname>"
+Used to invoke a CLI by name, the details of which are otherwise left to API implementers. This is equivalent to invoking
+<cliname> directly after CLI installation and after exporting the huckle env path (see "huckle env").
+.sp
+Note that in certain exceptional cases where a parameter might be passed on the command line, if the parameter value matches exactly an available command,
+huckle will not be able to distinguish between an intent to pass a command or a parameter and will require additional information; notably escapement via backslash double quote or single quote.
+.sp
+Huckle accept lazy parameters (without quotes), and this works most of the time, however if ambiguity arises, additional information must be provided.
+.sp
+For example, assuming an "hc" HCLI, an hc "connect" command and otherwise valid "-j" option; the following will fail:
+.sp
+echo '$$' | hc -j "connect"
+.sp
+echo '$$' | hc -j 'connect'
+.sp
+The following however would succeed:
+.sp
+echo '$$'| hc -j \\'connect\\'
+.sp
+echo '$$'| hc -j \\"connect\\"
+.sp
+This would also succeed if multiple words must be passed as a parameter:
+.sp
+echo '$$'| hc -j 'connect me'
+.sp
+echo '$$'| hc -j "connect me"
+.IP "cli ls"
+Lists all the installed CLIs.
+.IP "cli config <cliname>"
+Lists the configuration options of an installed CLI.
+.IP "cli config <cliname> <property>"
+Returns the value of a set configured property.
+.IP "cli config <cliname> <property> <value>"
+Sets the value of a property to a specific value.
+.IP "cli credential <cliname> <username | keyid>"
+Sets the value of a username password or keyid apikey, as submitted via stdin to the configured credential helper.
+.IP "<cliname> ..."
+The <cliname> alias created for brevity, via huckle cli install.
+.IP "<cliname> ... help"
+The "help" command can be used anywhere in a command line invocation to generate help pages from an HCLI document. This
+is useful to explore what a CLI can do.
+.IP help
+This help file.
+.SH OPTIONS
+.IP --version
+.B huckle
+version and the version of its dependencies.
+.IP -n
+.B huckle
+prevents the default output of a linefeed in stdout, for *nix tool compatibility, in favor of exact data stream handling (e.g. binary streams).
+.SH CACHING
+Huckle is able to cache the final execution URL of given command to help avoid traversal of HCLI semantics. This allows for a tradeoff between performance and relevance (e.g. potential staleness per the expected HCLI semantics); see url.pinning under EXAMPLE HCLI CONFIGURATION FILE.
+.SH LOGGING
+Huckle supports logging of errors to $HUCKLE_HOME/.huckle/var/log/huckle.log if configured in the common configuration file per $HUCKLE_HOME/.huckle/etc/config; see log and log.level under EXAMPLE COMMON CONFIGURATION FILE.
+.SS EXAMPLE COMMON CONFIGURATION FILE
+.br
+[default]
+.br
+log = <skip | log>
+.br
+log.level = <info | debug | warning | error | critical>
+.br
+help = <text | man>
+.br
+.SH AUTHENTICATION
+Huckle supports three authentication modes:
+.sp
+- No Authentication - See auth.mode under EXAMPLE HCLI CONFIGURATION FILE.
+.br
+- HTTP Basic Authentication - See auth.mode and auth.user.profile under EXAMPLE HCLI CONFIGURATION FILE.
+.br
+- HCOAK (HCLI Core API Key Authentication) - See auth.mode and auth.apikey.profile under EXAMPLE HCLI CONFIGURATION FILE.
+.sp
+A user created credentials file is expected under $HUCKLE_HOME/.huckle/etc/<cliname>/credentials for its respective HCLI, and will only be used by huckle in that context.
+.SS HUCKLE VS KEYRING
+Huckle makes available two credential helpers: huckle, and keyring; see credential.helper under EXAMPLE HCLI CONFIGURATION FILE.
+.sp
+The huckle credential helper simply works with a $HUCKLE_HOME/.huckle/etc/<cliname>/credentials plaintext file. It is not particularly secure, but is otherwise convenient and can be made sufficiently secure if the user's environment is made sufficiently secure.
+.sp
+The keyring credential helper makes use of the keyring library which defaults to a recommended backend. The following are supported by default:
+.sp
+- macOS Keychain
+.br
+- Freedesktop Secret Service supports many DE including GNOME (requires secretstorage)
+.br
+- KDE4 & KDE5 KWallet (requires dbus)
+.br
+- Windows Credential Locker
+.sp
+See https://pypi.org/project/keyring/ for the full range or supported features and to understand how to setup 3rd party or custom storage backends.
+.sp
+Both HTTP Basic Authentication and HCOAK Authentication are supported via the use of [profile] in a credentials file, as referenced by auth.user.profile or auth.apikey.profile; see EXAMPLE HCLI CREDENTIALS FILE and EXAMPLE HCLI CONFIGURATION FILE.
+.SS EXAMPLE HCLI CREDENTIALS FILE
+[default]
+.br
+username = <username>
+.br
+password = <password>
+.sp
+[anotherprofile]
+.br
+username = <anotherusername>
+.br
+password = <anotherpassword>
+.sp
+[user_apikeyprofile]
+.br
+keyid = <apikeyid>
+.br
+apikey = <apikey>
+.SH EXAMPLE HCLI CONFIGURATION FILE
+[default]
+.br
+url = <url>
+.br
+ssl.verify = <skip | verify>
+.br
+url.pinning = <dynamic | pin>
+.br
+credential.helper = <huckle | keyring>
+.br
+auth.mode = <skip | basic | hcoak>
+.br
+auth.user.profile = <credentials profile (section name)>
+.br
+auth.apikey.profile = <credentials profile (section name)>
+.SH EXAMPLE
+huckle cli install https://hcli.io/hcli/cli/jsonf?command=jsonf
+.sp
+eval $(huckle env)
+.sp
+jsonf
+.sp
+huckle cli install localhost:8000
+.sp
+huckle cli install localhost:8000 | xargs bash -c '$0 help'
+.sp
+huckle cli run jsonf (equivalent to simply invoking "jsonf" in the shell after a successful cli installation and setup via 'eval $(huckle env)')
+.sp
+huckle cli ls
+.sp
+huckle cli config jsonf
+.sp
+huckle cli flush jsonf
+.sp
+huckle cli rm jsonf
+.sp
+huckle cli config jsonf url.pinning pin
+.sp
+huckle cli config hco credential.helper keyring
+.sp
+huckle cli credential hco admin <<< $PASSWORD
+.sp
+hco passwd admin <<< $NEWPASSWORD
+.sp
+huckle --version
