@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "pymapgis"
+version = "1.0.1"
+description = "Enterprise-Grade Modern GIS Toolkit for Python - Revolutionizing geospatial workflows with built-in data sources, intelligent caching, cloud-native processing, and enterprise authentication"
+authors = ["Nicholas Karlson <nicholaskarlson@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/pymapgis/core"
+repository = "https://github.com/pymapgis/core"
+documentation = "https://pymapgis.github.io/core/"
+keywords = ["gis", "geospatial", "mapping", "census", "visualization", "geography"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+packages = [{ include = "pymapgis" }]
+
+[tool.poetry.scripts]
+pymapgis = "pymapgis.cli:app"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+geopandas = "^1.1"
+fsspec = "^2025.5"
+leafmap = "^0.47.2"
+pydantic-settings = "^2.9.1"
+# (add rasterio later, once the click conflict is solved)
+requests-cache = "^1.2.1"
+pandas = "^2.3.0"
+dask = "^2024.12.0"
+xarray = "^2023.12.0"
+rioxarray = "^0.14.1"
+zarr = "^2.18.3"
+toml = "^0.10.2"
+typer = "^0.12.0"
+networkx = "^3.2"
+pyarrow = "^15.0.0"
+geoarrow-pyarrow = "^0.1.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4"
+pytest-cov = "^6.1"
+pytest-asyncio = "^1.0.0"
+ruff = "^0.11"
+black = "^25.1"
+mypy = "^1.16"
+pre-commit = "^4.2"
+types-pyyaml = "^6.0.12.20250516"
+types-requests = "^2.32.4.20250611"
+types-toml = "^0.10.8.20240310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+]
+asyncio_mode = "auto"
+markers = [
+    "asyncio: marks tests as async tests",
+    "integration: marks tests as integration tests",
+    "slow: marks tests as slow",
+    "network: marks tests that require network access",
+    "auth: marks tests that require authentication",
+    "cloud: marks tests that require cloud services",
+]
+
+[build-system]
+requires = ["poetry-core>=1.9.0"]
+build-backend = "poetry.core.masonry.api"
