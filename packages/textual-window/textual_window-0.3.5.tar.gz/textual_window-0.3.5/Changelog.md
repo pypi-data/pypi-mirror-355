@@ -1,0 +1,93 @@
+# Textual-Window Changelog
+
+## (2025-06-14) 0.3.5
+
+- Added a `DockToggled` message to the Windowbar which will emit a message whenever the windowbar has the dock location toggled. Can handle with `@on(WindowBar.DockToggled)`.
+
+## (2025-06-11) 0.3.4
+
+- Replaced default for `menu_options` argument to be None instead of empty dictionary. Forgot that you can't use a mutable value as a default in a method, it would result in unexpected behavior.
+
+## (2025-06-10) 0.3.3
+
+- New feature: Windows now maintain their highlighting focus color when their children (contents in the window) are being interacted with.
+- Breaking change - `show_maximize_button` argument for Window class renamed to `allow_maximize` to be more similar to `allow_resize`.
+- Refactored some logic so focusing now brings windows forward according to `always_bring_forward` instead of it being a separate call.
+
+## 0.3.2
+
+- New feature: added a dot on WindowBar buttons to mark which windows are currently minimized.
+- Breaking change - `reset_window`, `reset_size`, and `reset_position` in the Window class were made into async functions and now must be awaited. Likewise the correspoding `reset_all_windows` in the manager was also made async.
+- Breaking change - `reset_all_window_positions` and `reset_all_windows_size` methods in the manager were removed, as I think they're just unnecessary (not used anywhere in the library).
+- Breaking change - `set_dock` and `toggle_dock` in window manager renamed to `set_dock_location` and `toggle_dock_location` respectively.
+- `_dom_ready` in Window class was made into a normal (non-threaded) worker.
+- `_calculate_max_min_sizes` and `_calculate_starting_position` were made into async functions (They do not yield themselves but now the `_dom_ready` worker can await them upon initialization, which is a very mild benefit.)
+
+## 0.3.1
+
+- Added a 'Desktop' button in the window switcher which will minimize all windows.
+- Fixed bug with window switcher crashing when there are no windows.
+- Made the cycle key be an argument on the WindowSwitcher class.
+- Added __all__ variables to windowbar.py, switcher.py, and manager.py
+- Manager's `remove_window` method renamed to `unregister_window`.
+- Fixed bug in manager where close_all_windows crashed from a window trying to focus while the stack is being closed.
+- Renamed `_add_window` and `_remove_window` in the window bar to `add_window_button` and `remove_window_button`.
+
+## 0.3.0 - Dynamic windows update
+
+- Breaking change: The `name` attribute is no longer required, the `id` attribute is now required instead. The window will automatically replace any underscores in the id with spaces to use for the display name (in titlebar, etc).
+- Windows have a new 'mode' setting to choose between "temporary" and "permanent". In temporary mode, windows will be removed from the DOM and windowbar when closed (as a normal Desktop would). In permanent mode, the close button is removed and the window can only be minimized.
+- Windows can now be added and removed from the DOM and the window bar and manager will update automatically.
+- Added a new "Add window" button to the demo to demonstrate the dynamic windows feature.
+- Added new "close" and "minimize" options to the WindowBar menus to reflect how these are now 2 different options.
+- Added new buttons in the demo to hide the RichLog and to make the background transparent.
+- Added new hotkey "ctrl-d" to windows for minimizing.
+- Window switcher now toggles the minimize state of the currently focused window.
+- Added a new icon argument for the window.
+- Removed the footer from the demo because the transparency mode (ansi_color) messes it up for some reason (but nothing else, strangely).
+- Replaced the windowbar system that built windows at start with a new dynamic system that can add and remove window buttons in real time.
+- Replaced the manager worker that watched for _dom_ready on a loop to instead rely on `call_after_refresh` in a window's `on_mount` method.
+- Windows now track the DOM ready themselves due to the above feature, and calculate their own max sizes and starting positions accordingly, and add themselves to the window bar (still through the manager) when they're ready.
+
+## 0.2.3
+
+- Moved all button symbols to a single dictionary to remove code duplication.
+- Slightly modified the button rendering logic to remove whitespace, hopefully fixes a graphical glitching issue.
+
+## 0.2.2
+
+- Added 3 new methods:
+  - `mount_in_window`
+  - `mount_all_in_window`
+  - `remove_children_in_window`
+  
+These 3 methods make it possible to change the widgets inside of a window after it has been created. They are bridge methods that connect to `mount`, `mount_all`, and `remove_children` in the content pane.
+
+## 0.2.1
+
+- Small fixes to documentation.
+- Made the Window.calculate_starting_position and Window.calculate_max_size methods into private methods
+
+## 0.2.0
+
+Huge update with many improvements:
+
+- Breaking change: Made the name argument for the window be mandatory.
+- Built a window focus cycler screen. This will dynamically show which window had most recent focus using a Queue and works very similar to alt-tab in a normal desktop.
+- Built a way to focus windows / tell which is focused.
+- Disabled focusing for inner content pane (The vertical scroll). Now it passes through all the scrolling controls from the window to the vertical scroll while the window is focused. Overrode several `action_scroll` methods to do this.
+- Replaced the lock button with a generic hamburger menu ☰, which now shows a list of callbacks which can be passed into the window as an argument.
+- Add snap/lock state indicator for windows on the WindowBar.
+- Make the resize button slightly larger.
+- Restoring (unmaximizing) a window now restores to its previous size and location.
+- Maximize symbol now changes to '_' symbol after maximizing.
+- Added more help info to the demo.
+
+## 0.1.2
+
+- Fixed bug with double quotes containing double quotes (apparently allowed in Python >= 3.12)
+- Changed Python required version to 3.10
+
+## 0.1.0
+
+- First public release
