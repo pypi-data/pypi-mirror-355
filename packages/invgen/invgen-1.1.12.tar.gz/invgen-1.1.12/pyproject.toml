@@ -1,0 +1,38 @@
+[project]
+name = "invgen"
+version = "1.1.12"
+description = "Dynamic Ansible Inventory Generator"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["jinja2", "pyyaml>=6.0.2", "typer>=0.13.1", "watchdog"]
+license = { file = "LICENSE" }
+
+[project.scripts]
+invgen = "invgen.cmd:app"
+invgen-ansible = "invgen.inventory:inventory_app"
+
+[tool.setuptools]
+packages = ["invgen"]
+license-files = []
+
+[tool.uv]
+dev-dependencies = ["pre-commit>=4.0.1", "pytest>=8.3.3", "pytest-cov>=4.1.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "*_test.py"
+python_functions = "test_*"
+
+[tool.coverage.run]
+source = ["invgen"]
+omit = ["tests/*", "**/__init__.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
