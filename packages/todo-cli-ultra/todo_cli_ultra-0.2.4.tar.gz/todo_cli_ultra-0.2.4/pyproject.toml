@@ -1,0 +1,15 @@
+[project]
+name = "todo-cli-ultra"
+version = "0.2.4"
+description = "CLI tool for todo app"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "typer>=0.16.0",
+]
+
+[project.scripts]
+todo-cli-ultra = "main:app"
+
+[tool.setuptools]
+py-modules = ["main", "constants","utils","models"]
