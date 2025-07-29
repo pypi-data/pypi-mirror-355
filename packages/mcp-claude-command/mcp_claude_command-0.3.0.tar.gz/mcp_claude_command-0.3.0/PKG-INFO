@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: mcp-claude-command
+Version: 0.3.0
+Summary: Namespace alias for claude-command - AI command center for Claude Code
+Project-URL: Homepage, https://github.com/shaneholloman/mcp-claude-command
+Project-URL: Repository, https://github.com/shaneholloman/mcp-claude-command
+Project-URL: Issues, https://github.com/shaneholloman/mcp-claude-command/issues
+Author-email: Shane Holloman <shane@shaneholloman.com>
+License: MIT
+Keywords: ai,assistant,claude,command,mcp
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.11
+Requires-Dist: claude-command==0.3.0
+Description-Content-Type: text/markdown
+
+# mcp-claude-command
+
+This is a namespace alias for the main [`claude-command`](https://pypi.org/project/claude-command/) package.
+
+## Installation
+
+```bash
+uv tool install claude-command
+```
+
+Then configure with Claude CLI:
+```bash
+claude mcp add claude-command claude-command \
+  -e GEMINI_API_KEY="$GEMINI_API_KEY" \
+  -e CLAUDE_COMMAND_OPENAI_API_KEY="$OPENAI_API_KEY" \
+  -e CLAUDE_COMMAND_ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" \
+  --scope user
+```
+
+This package automatically installs and re-exports the main `claude-command` package. All functionality is identical.
+
+## Why This Package Exists
+
+This package exists to secure the `mcp-claude-command` namespace and redirect users to the canonical `claude-command` package.
+
+## Usage
+
+See the main [claude-command documentation](https://github.com/shaneholloman/mcp-claude-command) for usage instructions.
