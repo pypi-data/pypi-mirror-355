@@ -1,0 +1,14 @@
+include README.md
+include LICENSE
+recursive-include src/lambda_mcp *.py
+
+# Exclude build artifacts and caches
+global-exclude *.py[cod]
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .DS_Store
+prune .git
+prune .github
+prune .pytest_cache
+prune dist
+prune build
