@@ -1,0 +1,229 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.17.0]: 
+
+### Satocash support
+
+Supported commands:
+* satocash_get_status(self)
+* satocash_import_mint(self, url: str)
+* satocash_export_mint(self, index: int)
+* satocash_remove_mint(self, index: int)
+* satocash_import_keyset(self, keyset_id: bytes, mint_index: int, unit: int)
+* satocash_export_keysets(self, index_list: list[int])
+* satocash_remove_keyset(self, index: int)
+* satocash_import_proof(self, keyset_index: int, amount_exponent: int, secret_bytes: bytes, unblinded_key_bytes: bytes)
+* satocash_export_proofs(self, index_list: list[int])
+* satocash_get_proof_info(self, unit: int, info_type: int, index_start: int, index_size: int)
+
+### NDEF authentikey support
+
+PKI: add support for card_import_ndef_authentikey() APDU command
+This command imports the NDEF authentikey private key into the card (if supported).
+This is used to sign and authenticate NDEF record exchanged by tapping the card on a smartphone.
+The NDEF authentikey may be shared by multiple devices for better privacy.
+
+## [0.16.0]: 
+
+### add support for MuSig2 (WIP)
+
+* Add test class for musig2 (requires modified Satochip firmware)
+* Generic CLI commands for MuSig2
+* Encrypted secnonce: secnonce are exported in encrypted & authenticated format to reduce memory footprint
+* Implementation using test vectors from bip327 specification
+* Supported commands:
+  * card_musig2_generate_nonce(self, keynbr: int, aggpk: Optional[bytes], msg: Optional[bytes], extra: Optional[bytes])
+  * card_musig2_sign_hash(self, keynbr: int, secnonce: bytes, b: bytes, ea: bytes, r_has_even_y: bool, ggacc_is_1: bool)
+
+## [0.15.5]:
+
+* Add support for Liquid-Bitcoin Master Blinding Key export 
+* Add support to Enable/disable optional features in Satochip v0.14-0.5+
+
+## [0.15.4]:
+
+* Add support for Nostr event signature in satochip_cli CLI.
+```commandline
+python3 satochip_cli.py --verbose satochip-sign-nostr-event --keyslot 0 --message "Hello, world" --kind 1 --broadcast
+```
+
+## [0.15.3]:
+
+* Add support for Schnorr signatures:
+    - sign hash with card_sign_schnorr_hash()
+    - private key must be tweaked before signing using card_taproot_tweak_privkey()
+* Add support for single private key wallet:
+    - import a secp256k1 private key with satochip_import_privkey()
+    - reset a secp256k1 private key satochip_reset_privkey()
+    - recover the pubkey of a private key with satochip_get_pubkey_from_keyslot()
+* Also add suport for these functions in CLI.
+
+These functions are not yet supported when 2FA is enabled.
+
+Some examples:
+* Import a private key on slot #0:
+```commandline
+python3 satochip_cli.py --verbose satochip-import-privkey --keyslot 0 --privkey aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899
+```
+* Get the corresponding publick key:
+```commandline
+python3 satochip_cli.py satochip-get-pubkey-from-keyslot --keyslot 0
+```
+* Sign a hash with Schnorr on this slot:
+```commandline
+python3 satochip_cli.py satochip-sign-schnorr-hash --hash 796962c8f2a7b8540f818cbe37d2894b1ab4b71bccddced12e2a4dc11d8802c3 --keyslot 0
+```
+
+More CLI commands:
+* Get satochip_cli help:
+```commandline
+python3 satochip_cli.py
+```
+* Setup new card:
+```commandline
+python3 satochip_cli.py common-initial-setup --label my-card-label
+```
+
+## [0.15.2]:
+
+Add NDEF support:
+* get or set an NDEF tag for the card (if supported by the card)
+* also add support in command line tool
+
+## [0.15.1]:
+
+Add support for Seedkeeper v0.2:
+* add support for BIP85 derivation for Masterseed secrets stored in seedkeeper (v0.2 only)
+* add support for secret export to satochip using seedkeeper_export_secret_to_satochip()
+* add seedkeeper_generate_random_secret() + seedkeeper_derive_master_password() + BIP39 Mnemonic v2 
+* add NFC policy support (enable/disable/deactivate)
+* implement new Factory Reset mechanism for SeedKeeper v0.2
+* add support for secret reset
+* Update test suite for seedkeeper
+
+CLI:
+* add support to get PIN data from environment variable 'PYSATOCHIP_PIN' when available
+
+Factory reset:
+* In CardConnector, use a flag 'mode_factory_reset' to switch in and out of factory reset mode. Flag must be set to True for reset factory
+* Add card_reset_factory_signal() in CardConnector to send a reset-to-factory command. Several commands must be send to reset the card, with the card must be disconnected between each command.
+
+Porting simplified PIN method from Pysatochip v0.12.6:
+* Refactor & simplify PIN verification with new method card_verify_PIN_simple(). 
+* State management when PIN verification fails (wrong PIN, card removed, Pin blocked...) is handled in the client app, not in pysatochip
+* Remove some exception handling in card_transmit(), usually exceptions should be handled in calling method or in client app
+* Get rid of most 'self.client.request()' callbacks, except for updating status when inserting/removing card physically
+* Add more specific exceptions classes
+
+Patches:
+* Add SecureChannelError Exception class
+* Update status after successful setup
+* Raise specific error when card not setup during PIN verification
+
+## [0.14.3]:
+
+ - Add CLI to access module functionality (Including code from Seedkeeper & satodime tools)
+ - Fix some bugs
+ - Re-Org constants a bit for less duplication
+ - More doc
+
+To use the Command Line Interface, additional dependencies need to be installed using this command: `pip install "pysatochip[CLI]"` or `pip install -e ".[CLI]"` (local install). 
+
+## [0.14.2]:
+
+Some minor improvements & corrections to support Satochip & Satodime.
+ - Patch https://github.com/Toporin/pysatochip/issues/3
+ - Satodime support: add is_owner field
+ - Satodime support: add key_tokenid_int field
+
+## [0.14.1]:
+
+- Add support for Satodime : the open-source bearer crypto card
+Website: satodime.io
+Github: https://github.com/Toporin/Satodime-Applet
+
+### Added 
+ 
+ - Add support for Satodime
+ - Add test-subca-satochip certificate (for testing only)
+ 
+### Changed
+
+- Refactor card_select() to choose card_applets to select
+    
+    A list of targeted applets is provided in CardConnector constructor through variable 'card_filter'.
+    When a card is inserted, the application only attempts to select these applets.
+    Selection is attempted in the order in which the applets are listed in card_filter.
+    Supported applets are 'satochip', 'seedkeeper' & 'satodime'
+
+## [0.12.3]: 
+
+### Changed 
+
+- Patch: allow pyscard >= v1.9.9 in requirements to solve conflicts in some (windows) build.
+
+## [0.12.2]: 
+
+### Added 
+
+- Allow user to select 2FA server from a list.
+
+## [0.12.1]: 
+
+### Added 
+
+- add support for SeedKeeper v0.1
+SeedKeeper is a smartcard device that can be used to securely store seeds and other sensitive data for long term protection.
+
+- add support for perso pki
+During personalization, each card (Satochip and SeedKeeper) can be optionally signed and certified by a PKI.
+Each card generates its own private/public keypair that is signed by the PKI, and the certificte is stored inside the card for future validation.
+This is not supported by Satochip applet version<12
+
+## [0.11.4]: 
+
+### Added 
+
+- add this changelog
+- add new check for error code returned by the card
+- add MANIFEST.in
+
+### Changed
+
+- change some warning message
+
+### Fixed
+
+- include README.md, LICENSE & CHANGELOG.md to source distributable
+
+## [0.11.3]:
+
+### Added 
+
+- add support for altcoin message signing in CardConnector.card_sign_message()
+
+## [0.11.2]: 
+
+#### Changed
+
+- use ecdsa & pyaes libraries instead of cryptography for ecdh key exchange
+
+## [0.11.1]: 
+
+### Changed
+
+- change License to LGPLv3
+- minor code changes
+
+## [0.11.a]: 
+
+### Added
+
+- Pysatochip v0.11.a - Initial commit
+- WIP: Integration library with support for Satochip applet up to version 0.11.
+
