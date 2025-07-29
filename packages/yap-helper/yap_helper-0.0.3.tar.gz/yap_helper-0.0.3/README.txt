@@ -1,0 +1,1 @@
+This is the helper library to assist me with the mundane tedious tasks a contractor has to deal with.
