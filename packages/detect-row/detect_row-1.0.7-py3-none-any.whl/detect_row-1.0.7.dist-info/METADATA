@@ -1,0 +1,198 @@
+Metadata-Version: 2.4
+Name: detect-row
+Version: 1.0.7
+Summary: Công cụ phát hiện và cắt các hàng từ bảng trong ảnh với OCR
+Home-page: https://github.com/detectrow/detect-row
+Author: Row Detection Team
+Author-email: Row Detection Team <detect.row.team@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/detectrow/detect-row
+Project-URL: Bug Reports, https://github.com/detectrow/detect-row/issues
+Project-URL: Source, https://github.com/detectrow/detect-row
+Project-URL: Documentation, https://github.com/detectrow/detect-row/blob/main/README.md
+Keywords: computer vision,table extraction,row detection,OCR,vietnamese,image processing
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: opencv-python>=4.5.0
+Requires-Dist: matplotlib>=3.4.0
+Requires-Dist: pytesseract>=0.3.8
+Requires-Dist: Pillow>=8.2.0
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# DetectRow - Table Row Detection and Extraction
+
+🔍 **DetectRow** là một thư viện Python mạnh mẽ để phát hiện và trích xuất các hàng từ bảng trong ảnh với khả năng OCR tích hợp.
+
+## ✨ Tính năng chính
+
+- 🎯 **Phát hiện bảng tự động** từ ảnh
+- 📋 **Trích xuất hàng chính xác** với thuật toán tiên tiến
+- 🔤 **OCR tích hợp** với Tesseract
+- 📊 **Phát hiện đường gạch dọc** để cắt cột chính xác
+- 🎨 **Visualization** kết quả trích xuất
+- 📦 **Package PyPI** sẵn sàng sử dụng
+
+## 🚀 Cài đặt
+
+### Từ PyPI (Khuyến nghị)
+```bash
+pip install detect-row
+```
+
+### Từ source code
+```bash
+git clone https://github.com/CoderTeam20266/detect-row.git
+cd detect-row
+pip install -e .
+```
+
+## 📋 Yêu cầu hệ thống
+
+- Python 3.7+
+- OpenCV
+- NumPy
+- Matplotlib
+- Tesseract OCR (cho chức năng OCR)
+
+### Cài đặt Tesseract
+**Windows:**
+```bash
+# Tải từ: https://github.com/UB-Mannheim/tesseract/wiki
+# Hoặc dùng chocolatey:
+choco install tesseract
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install tesseract-ocr
+```
+
+**macOS:**
+```bash
+brew install tesseract
+```
+
+## 🎯 Sử dụng nhanh
+
+### 1. Sử dụng Package từ PyPI
+
+```python
+from detect_row import AdvancedTableExtractor, AdvancedRowExtractorMain
+
+# Trích xuất bảng
+table_extractor = AdvancedTableExtractor(
+    input_dir="input",
+    output_dir="output/tables"
+)
+result = table_extractor.process_image("image.png")
+
+# Trích xuất rows
+row_extractor = AdvancedRowExtractorMain()
+rows = row_extractor.extract_rows_from_table(table_image, "table_0")
+```
+
+### 2. Script hoàn chỉnh
+
+Xem file `extract_table_pip_package.py` để có ví dụ đầy đủ về:
+- Trích xuất bảng từ ảnh
+- Phát hiện và cắt rows
+- OCR cột đầu tiên (STT)
+- Tạo báo cáo và visualization
+
+## 📁 Cấu trúc dự án
+
+```
+detect-row/
+├── detect_row/              # Package chính
+│   ├── __init__.py
+│   ├── base.py             # Base classes
+│   ├── advanced_table_extractor.py
+│   ├── advanced_row_extractor.py
+│   └── tesseract_ocr_extractor.py
+├── extract_table_pip_package.py  # Script demo
+├── extract_table_standalone.py   # Standalone version
+├── setup.py                # Package setup
+├── requirements.txt        # Dependencies
+└── README.md              # Documentation
+```
+
+## �� Các tính năng nâng cao
+
+### Phát hiện đường gạch dọc
+```python
+# Tự động phát hiện đường gạch dọc để cắt cột chính xác
+lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold=height*0.3)
+```
+
+### OCR cột đầu tiên (STT)
+```python
+# Cắt và OCR chỉ cột đầu tiên
+first_column = row_image[:, :first_column_width]
+stt_text = pytesseract.image_to_string(first_column, config=custom_config)
+```
+
+### Clustering thông minh
+```python
+# Sử dụng DBSCAN để nhóm các đường kẻ
+from sklearn.cluster import DBSCAN
+clustering = DBSCAN(eps=5, min_samples=1).fit(positions)
+```
+
+## 📊 Kết quả
+
+- ✅ **Trích xuất chính xác** 40+ rows từ 2 bảng
+- ✅ **Tự động bỏ qua** hàng tiêu đề
+- ✅ **Phát hiện STT** với độ chính xác cao
+- ✅ **Visualization** chi tiết kết quả
+
+## 🤝 Đóng góp
+
+1. Fork repository
+2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Tạo Pull Request
+
+## 📝 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 👥 Tác giả
+
+- **CoderTeam20266** - *Initial work* - [@CoderTeam20266](https://github.com/CoderTeam20266)
+
+## 🙏 Acknowledgments
+
+- OpenCV community
+- Tesseract OCR team
+- scikit-learn developers
+- Python community
+
+## 📞 Liên hệ
+
+- GitHub: [@CoderTeam20266](https://github.com/CoderTeam20266)
+- Project Link: [https://github.com/CoderTeam20266/detect-row](https://github.com/CoderTeam20266/detect-row)
+
+---
+
+⭐ **Nếu project này hữu ích, hãy cho chúng tôi một star!** ⭐
