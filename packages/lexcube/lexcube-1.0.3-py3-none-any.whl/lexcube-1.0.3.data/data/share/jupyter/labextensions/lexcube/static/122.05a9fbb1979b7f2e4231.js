@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklexcube=self.webpackChunklexcube||[]).push([[122],{4122:(e,t,u)=>{u.r(t),u.d(t,{default:()=>a});var r=u(18),i=u(8964),s=u(1797);const a={id:"lexcube:plugin",requires:[r.IJupyterWidgetRegistry],activate:function(e,t){t.registerWidget({name:s.p,version:s.e,exports:i})},autoStart:!0}}}]);

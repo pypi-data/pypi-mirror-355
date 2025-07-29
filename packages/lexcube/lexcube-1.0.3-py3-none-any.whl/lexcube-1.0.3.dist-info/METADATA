@@ -1,0 +1,1124 @@
+Metadata-Version: 2.4
+Name: lexcube
+Version: 1.0.3
+Summary: Lexcube: 3D Data Cube Visualization in Jupyter Notebooks
+Project-URL: Homepage, https://github.com/msoechting/lexcube
+Author-email: Maximilian Söchting <maximilian.soechting@uni-leipzig.de>
+License:                     GNU GENERAL PUBLIC LICENSE
+                               Version 3, 29 June 2007
+        
+         Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+         Everyone is permitted to copy and distribute verbatim copies
+         of this license document, but changing it is not allowed.
+        
+                                    Preamble
+        
+          The GNU General Public License is a free, copyleft license for
+        software and other kinds of works.
+        
+          The licenses for most software and other practical works are designed
+        to take away your freedom to share and change the works.  By contrast,
+        the GNU General Public License is intended to guarantee your freedom to
+        share and change all versions of a program--to make sure it remains free
+        software for all its users.  We, the Free Software Foundation, use the
+        GNU General Public License for most of our software; it applies also to
+        any other work released this way by its authors.  You can apply it to
+        your programs, too.
+        
+          When we speak of free software, we are referring to freedom, not
+        price.  Our General Public Licenses are designed to make sure that you
+        have the freedom to distribute copies of free software (and charge for
+        them if you wish), that you receive source code or can get it if you
+        want it, that you can change the software or use pieces of it in new
+        free programs, and that you know you can do these things.
+        
+          To protect your rights, we need to prevent others from denying you
+        these rights or asking you to surrender the rights.  Therefore, you have
+        certain responsibilities if you distribute copies of the software, or if
+        you modify it: responsibilities to respect the freedom of others.
+        
+          For example, if you distribute copies of such a program, whether
+        gratis or for a fee, you must pass on to the recipients the same
+        freedoms that you received.  You must make sure that they, too, receive
+        or can get the source code.  And you must show them these terms so they
+        know their rights.
+        
+          Developers that use the GNU GPL protect your rights with two steps:
+        (1) assert copyright on the software, and (2) offer you this License
+        giving you legal permission to copy, distribute and/or modify it.
+        
+          For the developers' and authors' protection, the GPL clearly explains
+        that there is no warranty for this free software.  For both users' and
+        authors' sake, the GPL requires that modified versions be marked as
+        changed, so that their problems will not be attributed erroneously to
+        authors of previous versions.
+        
+          Some devices are designed to deny users access to install or run
+        modified versions of the software inside them, although the manufacturer
+        can do so.  This is fundamentally incompatible with the aim of
+        protecting users' freedom to change the software.  The systematic
+        pattern of such abuse occurs in the area of products for individuals to
+        use, which is precisely where it is most unacceptable.  Therefore, we
+        have designed this version of the GPL to prohibit the practice for those
+        products.  If such problems arise substantially in other domains, we
+        stand ready to extend this provision to those domains in future versions
+        of the GPL, as needed to protect the freedom of users.
+        
+          Finally, every program is threatened constantly by software patents.
+        States should not allow patents to restrict development and use of
+        software on general-purpose computers, but in those that do, we wish to
+        avoid the special danger that patents applied to a free program could
+        make it effectively proprietary.  To prevent this, the GPL assures that
+        patents cannot be used to render the program non-free.
+        
+          The precise terms and conditions for copying, distribution and
+        modification follow.
+        
+                               TERMS AND CONDITIONS
+        
+          0. Definitions.
+        
+          "This License" refers to version 3 of the GNU General Public License.
+        
+          "Copyright" also means copyright-like laws that apply to other kinds of
+        works, such as semiconductor masks.
+        
+          "The Program" refers to any copyrightable work licensed under this
+        License.  Each licensee is addressed as "you".  "Licensees" and
+        "recipients" may be individuals or organizations.
+        
+          To "modify" a work means to copy from or adapt all or part of the work
+        in a fashion requiring copyright permission, other than the making of an
+        exact copy.  The resulting work is called a "modified version" of the
+        earlier work or a work "based on" the earlier work.
+        
+          A "covered work" means either the unmodified Program or a work based
+        on the Program.
+        
+          To "propagate" a work means to do anything with it that, without
+        permission, would make you directly or secondarily liable for
+        infringement under applicable copyright law, except executing it on a
+        computer or modifying a private copy.  Propagation includes copying,
+        distribution (with or without modification), making available to the
+        public, and in some countries other activities as well.
+        
+          To "convey" a work means any kind of propagation that enables other
+        parties to make or receive copies.  Mere interaction with a user through
+        a computer network, with no transfer of a copy, is not conveying.
+        
+          An interactive user interface displays "Appropriate Legal Notices"
+        to the extent that it includes a convenient and prominently visible
+        feature that (1) displays an appropriate copyright notice, and (2)
+        tells the user that there is no warranty for the work (except to the
+        extent that warranties are provided), that licensees may convey the
+        work under this License, and how to view a copy of this License.  If
+        the interface presents a list of user commands or options, such as a
+        menu, a prominent item in the list meets this criterion.
+        
+          1. Source Code.
+        
+          The "source code" for a work means the preferred form of the work
+        for making modifications to it.  "Object code" means any non-source
+        form of a work.
+        
+          A "Standard Interface" means an interface that either is an official
+        standard defined by a recognized standards body, or, in the case of
+        interfaces specified for a particular programming language, one that
+        is widely used among developers working in that language.
+        
+          The "System Libraries" of an executable work include anything, other
+        than the work as a whole, that (a) is included in the normal form of
+        packaging a Major Component, but which is not part of that Major
+        Component, and (b) serves only to enable use of the work with that
+        Major Component, or to implement a Standard Interface for which an
+        implementation is available to the public in source code form.  A
+        "Major Component", in this context, means a major essential component
+        (kernel, window system, and so on) of the specific operating system
+        (if any) on which the executable work runs, or a compiler used to
+        produce the work, or an object code interpreter used to run it.
+        
+          The "Corresponding Source" for a work in object code form means all
+        the source code needed to generate, install, and (for an executable
+        work) run the object code and to modify the work, including scripts to
+        control those activities.  However, it does not include the work's
+        System Libraries, or general-purpose tools or generally available free
+        programs which are used unmodified in performing those activities but
+        which are not part of the work.  For example, Corresponding Source
+        includes interface definition files associated with source files for
+        the work, and the source code for shared libraries and dynamically
+        linked subprograms that the work is specifically designed to require,
+        such as by intimate data communication or control flow between those
+        subprograms and other parts of the work.
+        
+          The Corresponding Source need not include anything that users
+        can regenerate automatically from other parts of the Corresponding
+        Source.
+        
+          The Corresponding Source for a work in source code form is that
+        same work.
+        
+          2. Basic Permissions.
+        
+          All rights granted under this License are granted for the term of
+        copyright on the Program, and are irrevocable provided the stated
+        conditions are met.  This License explicitly affirms your unlimited
+        permission to run the unmodified Program.  The output from running a
+        covered work is covered by this License only if the output, given its
+        content, constitutes a covered work.  This License acknowledges your
+        rights of fair use or other equivalent, as provided by copyright law.
+        
+          You may make, run and propagate covered works that you do not
+        convey, without conditions so long as your license otherwise remains
+        in force.  You may convey covered works to others for the sole purpose
+        of having them make modifications exclusively for you, or provide you
+        with facilities for running those works, provided that you comply with
+        the terms of this License in conveying all material for which you do
+        not control copyright.  Those thus making or running the covered works
+        for you must do so exclusively on your behalf, under your direction
+        and control, on terms that prohibit them from making any copies of
+        your copyrighted material outside their relationship with you.
+        
+          Conveying under any other circumstances is permitted solely under
+        the conditions stated below.  Sublicensing is not allowed; section 10
+        makes it unnecessary.
+        
+          3. Protecting Users' Legal Rights From Anti-Circumvention Law.
+        
+          No covered work shall be deemed part of an effective technological
+        measure under any applicable law fulfilling obligations under article
+        11 of the WIPO copyright treaty adopted on 20 December 1996, or
+        similar laws prohibiting or restricting circumvention of such
+        measures.
+        
+          When you convey a covered work, you waive any legal power to forbid
+        circumvention of technological measures to the extent such circumvention
+        is effected by exercising rights under this License with respect to
+        the covered work, and you disclaim any intention to limit operation or
+        modification of the work as a means of enforcing, against the work's
+        users, your or third parties' legal rights to forbid circumvention of
+        technological measures.
+        
+          4. Conveying Verbatim Copies.
+        
+          You may convey verbatim copies of the Program's source code as you
+        receive it, in any medium, provided that you conspicuously and
+        appropriately publish on each copy an appropriate copyright notice;
+        keep intact all notices stating that this License and any
+        non-permissive terms added in accord with section 7 apply to the code;
+        keep intact all notices of the absence of any warranty; and give all
+        recipients a copy of this License along with the Program.
+        
+          You may charge any price or no price for each copy that you convey,
+        and you may offer support or warranty protection for a fee.
+        
+          5. Conveying Modified Source Versions.
+        
+          You may convey a work based on the Program, or the modifications to
+        produce it from the Program, in the form of source code under the
+        terms of section 4, provided that you also meet all of these conditions:
+        
+            a) The work must carry prominent notices stating that you modified
+            it, and giving a relevant date.
+        
+            b) The work must carry prominent notices stating that it is
+            released under this License and any conditions added under section
+            7.  This requirement modifies the requirement in section 4 to
+            "keep intact all notices".
+        
+            c) You must license the entire work, as a whole, under this
+            License to anyone who comes into possession of a copy.  This
+            License will therefore apply, along with any applicable section 7
+            additional terms, to the whole of the work, and all its parts,
+            regardless of how they are packaged.  This License gives no
+            permission to license the work in any other way, but it does not
+            invalidate such permission if you have separately received it.
+        
+            d) If the work has interactive user interfaces, each must display
+            Appropriate Legal Notices; however, if the Program has interactive
+            interfaces that do not display Appropriate Legal Notices, your
+            work need not make them do so.
+        
+          A compilation of a covered work with other separate and independent
+        works, which are not by their nature extensions of the covered work,
+        and which are not combined with it such as to form a larger program,
+        in or on a volume of a storage or distribution medium, is called an
+        "aggregate" if the compilation and its resulting copyright are not
+        used to limit the access or legal rights of the compilation's users
+        beyond what the individual works permit.  Inclusion of a covered work
+        in an aggregate does not cause this License to apply to the other
+        parts of the aggregate.
+        
+          6. Conveying Non-Source Forms.
+        
+          You may convey a covered work in object code form under the terms
+        of sections 4 and 5, provided that you also convey the
+        machine-readable Corresponding Source under the terms of this License,
+        in one of these ways:
+        
+            a) Convey the object code in, or embodied in, a physical product
+            (including a physical distribution medium), accompanied by the
+            Corresponding Source fixed on a durable physical medium
+            customarily used for software interchange.
+        
+            b) Convey the object code in, or embodied in, a physical product
+            (including a physical distribution medium), accompanied by a
+            written offer, valid for at least three years and valid for as
+            long as you offer spare parts or customer support for that product
+            model, to give anyone who possesses the object code either (1) a
+            copy of the Corresponding Source for all the software in the
+            product that is covered by this License, on a durable physical
+            medium customarily used for software interchange, for a price no
+            more than your reasonable cost of physically performing this
+            conveying of source, or (2) access to copy the
+            Corresponding Source from a network server at no charge.
+        
+            c) Convey individual copies of the object code with a copy of the
+            written offer to provide the Corresponding Source.  This
+            alternative is allowed only occasionally and noncommercially, and
+            only if you received the object code with such an offer, in accord
+            with subsection 6b.
+        
+            d) Convey the object code by offering access from a designated
+            place (gratis or for a charge), and offer equivalent access to the
+            Corresponding Source in the same way through the same place at no
+            further charge.  You need not require recipients to copy the
+            Corresponding Source along with the object code.  If the place to
+            copy the object code is a network server, the Corresponding Source
+            may be on a different server (operated by you or a third party)
+            that supports equivalent copying facilities, provided you maintain
+            clear directions next to the object code saying where to find the
+            Corresponding Source.  Regardless of what server hosts the
+            Corresponding Source, you remain obligated to ensure that it is
+            available for as long as needed to satisfy these requirements.
+        
+            e) Convey the object code using peer-to-peer transmission, provided
+            you inform other peers where the object code and Corresponding
+            Source of the work are being offered to the general public at no
+            charge under subsection 6d.
+        
+          A separable portion of the object code, whose source code is excluded
+        from the Corresponding Source as a System Library, need not be
+        included in conveying the object code work.
+        
+          A "User Product" is either (1) a "consumer product", which means any
+        tangible personal property which is normally used for personal, family,
+        or household purposes, or (2) anything designed or sold for incorporation
+        into a dwelling.  In determining whether a product is a consumer product,
+        doubtful cases shall be resolved in favor of coverage.  For a particular
+        product received by a particular user, "normally used" refers to a
+        typical or common use of that class of product, regardless of the status
+        of the particular user or of the way in which the particular user
+        actually uses, or expects or is expected to use, the product.  A product
+        is a consumer product regardless of whether the product has substantial
+        commercial, industrial or non-consumer uses, unless such uses represent
+        the only significant mode of use of the product.
+        
+          "Installation Information" for a User Product means any methods,
+        procedures, authorization keys, or other information required to install
+        and execute modified versions of a covered work in that User Product from
+        a modified version of its Corresponding Source.  The information must
+        suffice to ensure that the continued functioning of the modified object
+        code is in no case prevented or interfered with solely because
+        modification has been made.
+        
+          If you convey an object code work under this section in, or with, or
+        specifically for use in, a User Product, and the conveying occurs as
+        part of a transaction in which the right of possession and use of the
+        User Product is transferred to the recipient in perpetuity or for a
+        fixed term (regardless of how the transaction is characterized), the
+        Corresponding Source conveyed under this section must be accompanied
+        by the Installation Information.  But this requirement does not apply
+        if neither you nor any third party retains the ability to install
+        modified object code on the User Product (for example, the work has
+        been installed in ROM).
+        
+          The requirement to provide Installation Information does not include a
+        requirement to continue to provide support service, warranty, or updates
+        for a work that has been modified or installed by the recipient, or for
+        the User Product in which it has been modified or installed.  Access to a
+        network may be denied when the modification itself materially and
+        adversely affects the operation of the network or violates the rules and
+        protocols for communication across the network.
+        
+          Corresponding Source conveyed, and Installation Information provided,
+        in accord with this section must be in a format that is publicly
+        documented (and with an implementation available to the public in
+        source code form), and must require no special password or key for
+        unpacking, reading or copying.
+        
+          7. Additional Terms.
+        
+          "Additional permissions" are terms that supplement the terms of this
+        License by making exceptions from one or more of its conditions.
+        Additional permissions that are applicable to the entire Program shall
+        be treated as though they were included in this License, to the extent
+        that they are valid under applicable law.  If additional permissions
+        apply only to part of the Program, that part may be used separately
+        under those permissions, but the entire Program remains governed by
+        this License without regard to the additional permissions.
+        
+          When you convey a copy of a covered work, you may at your option
+        remove any additional permissions from that copy, or from any part of
+        it.  (Additional permissions may be written to require their own
+        removal in certain cases when you modify the work.)  You may place
+        additional permissions on material, added by you to a covered work,
+        for which you have or can give appropriate copyright permission.
+        
+          Notwithstanding any other provision of this License, for material you
+        add to a covered work, you may (if authorized by the copyright holders of
+        that material) supplement the terms of this License with terms:
+        
+            a) Disclaiming warranty or limiting liability differently from the
+            terms of sections 15 and 16 of this License; or
+        
+            b) Requiring preservation of specified reasonable legal notices or
+            author attributions in that material or in the Appropriate Legal
+            Notices displayed by works containing it; or
+        
+            c) Prohibiting misrepresentation of the origin of that material, or
+            requiring that modified versions of such material be marked in
+            reasonable ways as different from the original version; or
+        
+            d) Limiting the use for publicity purposes of names of licensors or
+            authors of the material; or
+        
+            e) Declining to grant rights under trademark law for use of some
+            trade names, trademarks, or service marks; or
+        
+            f) Requiring indemnification of licensors and authors of that
+            material by anyone who conveys the material (or modified versions of
+            it) with contractual assumptions of liability to the recipient, for
+            any liability that these contractual assumptions directly impose on
+            those licensors and authors.
+        
+          All other non-permissive additional terms are considered "further
+        restrictions" within the meaning of section 10.  If the Program as you
+        received it, or any part of it, contains a notice stating that it is
+        governed by this License along with a term that is a further
+        restriction, you may remove that term.  If a license document contains
+        a further restriction but permits relicensing or conveying under this
+        License, you may add to a covered work material governed by the terms
+        of that license document, provided that the further restriction does
+        not survive such relicensing or conveying.
+        
+          If you add terms to a covered work in accord with this section, you
+        must place, in the relevant source files, a statement of the
+        additional terms that apply to those files, or a notice indicating
+        where to find the applicable terms.
+        
+          Additional terms, permissive or non-permissive, may be stated in the
+        form of a separately written license, or stated as exceptions;
+        the above requirements apply either way.
+        
+          8. Termination.
+        
+          You may not propagate or modify a covered work except as expressly
+        provided under this License.  Any attempt otherwise to propagate or
+        modify it is void, and will automatically terminate your rights under
+        this License (including any patent licenses granted under the third
+        paragraph of section 11).
+        
+          However, if you cease all violation of this License, then your
+        license from a particular copyright holder is reinstated (a)
+        provisionally, unless and until the copyright holder explicitly and
+        finally terminates your license, and (b) permanently, if the copyright
+        holder fails to notify you of the violation by some reasonable means
+        prior to 60 days after the cessation.
+        
+          Moreover, your license from a particular copyright holder is
+        reinstated permanently if the copyright holder notifies you of the
+        violation by some reasonable means, this is the first time you have
+        received notice of violation of this License (for any work) from that
+        copyright holder, and you cure the violation prior to 30 days after
+        your receipt of the notice.
+        
+          Termination of your rights under this section does not terminate the
+        licenses of parties who have received copies or rights from you under
+        this License.  If your rights have been terminated and not permanently
+        reinstated, you do not qualify to receive new licenses for the same
+        material under section 10.
+        
+          9. Acceptance Not Required for Having Copies.
+        
+          You are not required to accept this License in order to receive or
+        run a copy of the Program.  Ancillary propagation of a covered work
+        occurring solely as a consequence of using peer-to-peer transmission
+        to receive a copy likewise does not require acceptance.  However,
+        nothing other than this License grants you permission to propagate or
+        modify any covered work.  These actions infringe copyright if you do
+        not accept this License.  Therefore, by modifying or propagating a
+        covered work, you indicate your acceptance of this License to do so.
+        
+          10. Automatic Licensing of Downstream Recipients.
+        
+          Each time you convey a covered work, the recipient automatically
+        receives a license from the original licensors, to run, modify and
+        propagate that work, subject to this License.  You are not responsible
+        for enforcing compliance by third parties with this License.
+        
+          An "entity transaction" is a transaction transferring control of an
+        organization, or substantially all assets of one, or subdividing an
+        organization, or merging organizations.  If propagation of a covered
+        work results from an entity transaction, each party to that
+        transaction who receives a copy of the work also receives whatever
+        licenses to the work the party's predecessor in interest had or could
+        give under the previous paragraph, plus a right to possession of the
+        Corresponding Source of the work from the predecessor in interest, if
+        the predecessor has it or can get it with reasonable efforts.
+        
+          You may not impose any further restrictions on the exercise of the
+        rights granted or affirmed under this License.  For example, you may
+        not impose a license fee, royalty, or other charge for exercise of
+        rights granted under this License, and you may not initiate litigation
+        (including a cross-claim or counterclaim in a lawsuit) alleging that
+        any patent claim is infringed by making, using, selling, offering for
+        sale, or importing the Program or any portion of it.
+        
+          11. Patents.
+        
+          A "contributor" is a copyright holder who authorizes use under this
+        License of the Program or a work on which the Program is based.  The
+        work thus licensed is called the contributor's "contributor version".
+        
+          A contributor's "essential patent claims" are all patent claims
+        owned or controlled by the contributor, whether already acquired or
+        hereafter acquired, that would be infringed by some manner, permitted
+        by this License, of making, using, or selling its contributor version,
+        but do not include claims that would be infringed only as a
+        consequence of further modification of the contributor version.  For
+        purposes of this definition, "control" includes the right to grant
+        patent sublicenses in a manner consistent with the requirements of
+        this License.
+        
+          Each contributor grants you a non-exclusive, worldwide, royalty-free
+        patent license under the contributor's essential patent claims, to
+        make, use, sell, offer for sale, import and otherwise run, modify and
+        propagate the contents of its contributor version.
+        
+          In the following three paragraphs, a "patent license" is any express
+        agreement or commitment, however denominated, not to enforce a patent
+        (such as an express permission to practice a patent or covenant not to
+        sue for patent infringement).  To "grant" such a patent license to a
+        party means to make such an agreement or commitment not to enforce a
+        patent against the party.
+        
+          If you convey a covered work, knowingly relying on a patent license,
+        and the Corresponding Source of the work is not available for anyone
+        to copy, free of charge and under the terms of this License, through a
+        publicly available network server or other readily accessible means,
+        then you must either (1) cause the Corresponding Source to be so
+        available, or (2) arrange to deprive yourself of the benefit of the
+        patent license for this particular work, or (3) arrange, in a manner
+        consistent with the requirements of this License, to extend the patent
+        license to downstream recipients.  "Knowingly relying" means you have
+        actual knowledge that, but for the patent license, your conveying the
+        covered work in a country, or your recipient's use of the covered work
+        in a country, would infringe one or more identifiable patents in that
+        country that you have reason to believe are valid.
+        
+          If, pursuant to or in connection with a single transaction or
+        arrangement, you convey, or propagate by procuring conveyance of, a
+        covered work, and grant a patent license to some of the parties
+        receiving the covered work authorizing them to use, propagate, modify
+        or convey a specific copy of the covered work, then the patent license
+        you grant is automatically extended to all recipients of the covered
+        work and works based on it.
+        
+          A patent license is "discriminatory" if it does not include within
+        the scope of its coverage, prohibits the exercise of, or is
+        conditioned on the non-exercise of one or more of the rights that are
+        specifically granted under this License.  You may not convey a covered
+        work if you are a party to an arrangement with a third party that is
+        in the business of distributing software, under which you make payment
+        to the third party based on the extent of your activity of conveying
+        the work, and under which the third party grants, to any of the
+        parties who would receive the covered work from you, a discriminatory
+        patent license (a) in connection with copies of the covered work
+        conveyed by you (or copies made from those copies), or (b) primarily
+        for and in connection with specific products or compilations that
+        contain the covered work, unless you entered into that arrangement,
+        or that patent license was granted, prior to 28 March 2007.
+        
+          Nothing in this License shall be construed as excluding or limiting
+        any implied license or other defenses to infringement that may
+        otherwise be available to you under applicable patent law.
+        
+          12. No Surrender of Others' Freedom.
+        
+          If conditions are imposed on you (whether by court order, agreement or
+        otherwise) that contradict the conditions of this License, they do not
+        excuse you from the conditions of this License.  If you cannot convey a
+        covered work so as to satisfy simultaneously your obligations under this
+        License and any other pertinent obligations, then as a consequence you may
+        not convey it at all.  For example, if you agree to terms that obligate you
+        to collect a royalty for further conveying from those to whom you convey
+        the Program, the only way you could satisfy both those terms and this
+        License would be to refrain entirely from conveying the Program.
+        
+          13. Use with the GNU Affero General Public License.
+        
+          Notwithstanding any other provision of this License, you have
+        permission to link or combine any covered work with a work licensed
+        under version 3 of the GNU Affero General Public License into a single
+        combined work, and to convey the resulting work.  The terms of this
+        License will continue to apply to the part which is the covered work,
+        but the special requirements of the GNU Affero General Public License,
+        section 13, concerning interaction through a network will apply to the
+        combination as such.
+        
+          14. Revised Versions of this License.
+        
+          The Free Software Foundation may publish revised and/or new versions of
+        the GNU General Public License from time to time.  Such new versions will
+        be similar in spirit to the present version, but may differ in detail to
+        address new problems or concerns.
+        
+          Each version is given a distinguishing version number.  If the
+        Program specifies that a certain numbered version of the GNU General
+        Public License "or any later version" applies to it, you have the
+        option of following the terms and conditions either of that numbered
+        version or of any later version published by the Free Software
+        Foundation.  If the Program does not specify a version number of the
+        GNU General Public License, you may choose any version ever published
+        by the Free Software Foundation.
+        
+          If the Program specifies that a proxy can decide which future
+        versions of the GNU General Public License can be used, that proxy's
+        public statement of acceptance of a version permanently authorizes you
+        to choose that version for the Program.
+        
+          Later license versions may give you additional or different
+        permissions.  However, no additional obligations are imposed on any
+        author or copyright holder as a result of your choosing to follow a
+        later version.
+        
+          15. Disclaimer of Warranty.
+        
+          THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
+        APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
+        HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY
+        OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
+        THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+        PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM
+        IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF
+        ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+        
+          16. Limitation of Liability.
+        
+          IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+        WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS
+        THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY
+        GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE
+        USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF
+        DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD
+        PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS),
+        EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+        SUCH DAMAGES.
+        
+          17. Interpretation of Sections 15 and 16.
+        
+          If the disclaimer of warranty and limitation of liability provided
+        above cannot be given local legal effect according to their terms,
+        reviewing courts shall apply local law that most closely approximates
+        an absolute waiver of all civil liability in connection with the
+        Program, unless a warranty or assumption of liability accompanies a
+        copy of the Program in return for a fee.
+        
+                             END OF TERMS AND CONDITIONS
+        
+                    How to Apply These Terms to Your New Programs
+        
+          If you develop a new program, and you want it to be of the greatest
+        possible use to the public, the best way to achieve this is to make it
+        free software which everyone can redistribute and change under these terms.
+        
+          To do so, attach the following notices to the program.  It is safest
+        to attach them to the start of each source file to most effectively
+        state the exclusion of warranty; and each file should have at least
+        the "copyright" line and a pointer to where the full notice is found.
+        
+            <one line to give the program's name and a brief idea of what it does.>
+            Copyright (C) <year>  <name of author>
+        
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.
+        
+            This program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            GNU General Public License for more details.
+        
+            You should have received a copy of the GNU General Public License
+            along with this program.  If not, see <https://www.gnu.org/licenses/>.
+        
+        Also add information on how to contact you by electronic and paper mail.
+        
+          If the program does terminal interaction, make it output a short
+        notice like this when it starts in an interactive mode:
+        
+            <program>  Copyright (C) <year>  <name of author>
+            This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+            This is free software, and you are welcome to redistribute it
+            under certain conditions; type `show c' for details.
+        
+        The hypothetical commands `show w' and `show c' should show the appropriate
+        parts of the General Public License.  Of course, your program's commands
+        might be different; for a GUI interface, you would use an "about box".
+        
+          You should also get your employer (if you work as a programmer) or school,
+        if any, to sign a "copyright disclaimer" for the program, if necessary.
+        For more information on this, and how to apply and follow the GNU GPL, see
+        <https://www.gnu.org/licenses/>.
+        
+          The GNU General Public License does not permit incorporating your program
+        into proprietary programs.  If your program is a subroutine library, you
+        may consider it more useful to permit linking proprietary applications with
+        the library.  If this is what you want to do, use the GNU Lesser General
+        Public License instead of this License.  But first, please read
+        <https://www.gnu.org/licenses/why-not-lgpl.html>.
+License-File: COPYING
+Keywords: IPython,Jupyter,Widgets
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: Jupyter
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: JavaScript
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Requires-Dist: aiohttp>=3.7.4
+Requires-Dist: bottleneck>=1.3.7
+Requires-Dist: cachey>=0.2.1
+Requires-Dist: dask>=2022.12.0
+Requires-Dist: ipywidgets==7.8.3
+Requires-Dist: netcdf4>=1.6.3
+Requires-Dist: opencv-python-headless>=4.7.0.72
+Requires-Dist: xarray>=v2022.12.0
+Requires-Dist: zarr>=2.14.2
+Provides-Extra: docs
+Requires-Dist: jupyter-sphinx; extra == 'docs'
+Requires-Dist: nbsphinx; extra == 'docs'
+Requires-Dist: nbsphinx-link; extra == 'docs'
+Requires-Dist: pypandoc; extra == 'docs'
+Requires-Dist: pytest-check-links; extra == 'docs'
+Requires-Dist: recommonmark; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme; extra == 'docs'
+Requires-Dist: sphinx>=1.5; extra == 'docs'
+Provides-Extra: examples
+Provides-Extra: test
+Requires-Dist: nbval; extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
+Requires-Dist: pytest>=6.0; extra == 'test'
+Description-Content-Type: text/markdown
+
+[![Lexcube Logo](/readme-media/lexcube-logo.png)](https://github.com/msoechting/lexcube)
+
+**3D Data Cube Visualization in Jupyter Notebooks**
+
+![Lexcube Demo GIF](https://raw.githubusercontent.com/msoechting/lexcube/main/readme-media/lexcube-demo.gif)
+
+--- 
+
+**GitHub**: [https://github.com/msoechting/lexcube](https://github.com/msoechting/lexcube)
+
+**Paper**: [https://doi.org/10.1080/20964471.2025.2471646](https://doi.org/10.1080/20964471.2025.2471646) 
+
+**PyPI**: [https://pypi.org/project/lexcube/](https://pypi.org/project/lexcube/)
+
+---
+
+**NEW with version 0.4.16**: [Craft your own paper data cube!](#print-your-own-paper-data-cube)
+
+![Print template graphic](https://raw.githubusercontent.com/msoechting/lexcube/main/readme-media/print-template.png)
+
+---
+
+Lexcube is a library for interactively visualizing three-dimensional floating-point data as 3D cubes in Jupyter notebooks. 
+
+Supported data formats:
+- numpy.ndarray (with exactly 3 dimensions)
+- xarray.DataArray (with exactly 3 dimensions, rectangularly gridded)
+
+Possible data sources:
+- Any gridded Zarr or NetCDF data set (local or remote, e.g., accessed with S3)
+- Copernicus Data Storage, e.g., [ERA5 data](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-complete?tab=overview)
+- Google Earth Engine ([using xee, see example notebook](https://github.com/msoechting/lexcube/blob/main/examples/4_google_earth_engine.ipynb))
+
+Example notebooks can be found in the [examples](https://github.com/msoechting/lexcube/tree/main/examples) folder. For a live demo, see also [lexcube.org](https://www.lexcube.org).
+
+## Table-of-Contents
+
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
+
+- [Table-of-Contents](#table-of-contents)
+- [Attribution](#attribution)
+- [How to Use Lexcube](#how-to-use-lexcube)
+    - [Example Notebooks](#example-notebooks)
+    - [Getting Started - Minimal Example](#getting-started---minimal-example)
+- [Installation](#installation)
+- [Cube Visualization](#cube-visualization)
+- [Interacting with the Cube](#interacting-with-the-cube)
+- [Range Boundaries](#range-boundaries)
+- [Colormaps](#colormaps)
+    - [Supported colormaps](#supported-colormaps)
+- [Overlay GeoJSON data](#overlay-geojson-data)
+- [Save figures](#save-figures)
+- [Print your own paper data cube](#print-your-own-paper-data-cube)
+- [Get currently visible data subset](#get-currently-visible-data-subset)
+- [Supported metadata](#supported-metadata)
+- [Troubleshooting](#troubleshooting)
+    - [The cube does not respond / API methods are not doing anything / Cube does not load new data](#the-cube-does-not-respond-api-methods-are-not-doing-anything-cube-does-not-load-new-data)
+    - [After installation/update, no widget is shown, only text](#after-installationupdate-no-widget-is-shown-only-text)
+    - [w.savefig breaks when batch-processing/trying to create many figures quickly](#wsavefig-breaks-when-batch-processingtrying-to-create-many-figures-quickly)
+    - [The layout of the widget looks very messed up](#the-layout-of-the-widget-looks-very-messed-up)
+    - ["Error creating WebGL context" or similar](#error-creating-webgl-context-or-similar)
+    - [Memory is filling up a lot when using a chunked dataset](#memory-is-filling-up-a-lot-when-using-a-chunked-dataset)
+- [Known bugs](#known-bugs)
+- [Attributions](#attributions)
+- [Development Installation & Guide](#development-installation-guide)
+- [License](#license)
+
+<!-- /TOC -->
+
+
+## Attribution
+
+When using Lexcube and generated images or videos, please acknowledge/cite:
+```bibtex
+@article{Soechting2025Lexcube,
+    author = {Maximilian Söchting and Gerik Scheuermann and David Montero and Miguel D. Mahecha},
+    title = {Interactive Earth system data cube visualization in Jupyter notebooks},
+    journal = {Big Earth Data},
+    pages = {1--15},
+    year = {2025},
+    publisher = {Taylor \& Francis},
+    doi = {10.1080/20964471.2025.2471646},
+    URL = {https://doi.org/10.1080/20964471.2025.2471646},
+}
+```
+Lexcube is a project by Maximilian Söchting at the [RSC4Earth](https://www.rsc4earth.de/) at Leipzig University, advised by Prof. Dr. Miguel D. Mahecha and Prof. Dr. Gerik Scheuermann. Thanks to the funding provided by ESA through [DeepESDL](https://www.earthsystemdatalab.net/) and DFG through the NFDI4Earth pilot projects!
+
+
+## How to Use Lexcube
+### Example Notebooks
+If you are new to Lexcube, try the [general introduction notebook](https://github.com/msoechting/lexcube/blob/main/examples/1_introduction.ipynb) which demonstrates how to visualize a remote Xarray data set.
+
+There are also specific example notebooks for the following use cases:
+- [Visualizing Google Earth Engine data - using xee](https://github.com/msoechting/lexcube/blob/main/examples/4_google_earth_engine.ipynb)
+- [Generating and visualizing a spectral index data cube from scratch - using cubo and spyndex, with data from Microsoft Planetary Computer](https://github.com/msoechting/lexcube/blob/main/examples/3_spectral_indices_with_cubo_and_spyndex.ipynb)
+- [Generating and visualizing a spectral index data cube - with data from OpenEO](https://github.com/msoechting/lexcube/blob/main/examples/5_spectral_indices_with_open_eo.ipynb)
+- [Visualizing Numpy data](https://github.com/msoechting/lexcube/blob/main/examples/2_numpy.ipynb)
+
+### Getting Started - Minimal Example
+#### Visualizing Xarray Data
+```python
+import xarray as xr
+import lexcube 
+ds = xr.open_dataset("https://data.rsc4earth.de/download/EarthSystemDataCube/v3.0.2/esdc-8d-0.25deg-256x128x128-3.0.2.zarr/", chunks={}, engine="zarr")
+da = ds["air_temperature_2m"][256:512,256:512,256:512]
+w = lexcube.Cube3DWidget(da, cmap="thermal_r", vmin=-20, vmax=30)
+w.plot()
+```
+#### Visualizing Numpy Data
+```python
+import numpy as np
+import lexcube 
+data_source = np.sum(np.mgrid[0:256,0:256,0:256], axis=0)
+w = lexcube.Cube3DWidget(data_source, cmap="prism", vmin=0, vmax=768)
+w.plot()
+```
+
+#### Visualizing Google Earth Engine Data
+See [the full example here](https://github.com/msoechting/lexcube/blob/main/examples/4_google_earth_engine.ipynb).
+```python 
+import lexcube
+import xarray as xr
+import ee
+ee.Authenticate()
+ee.Initialize(opt_url="https://earthengine-highvolume.googleapis.com")
+ds = xr.open_dataset("ee://ECMWF/ERA5_LAND/HOURLY", engine="ee", crs="EPSG:4326", scale=0.25, chunks={})
+da = ds["temperature_2m"][630000:630003,2:1438,2:718]
+w = lexcube.Cube3DWidget(da)
+w.plot()
+```
+
+#### Note on Google Collab
+If you are using Google collab, you may need to execute the following before running Lexcube:
+
+```python
+from google.colab import output
+output.enable_custom_widget_manager()
+```
+
+#### Note on Juypter for VSCode
+If you are using Jupyter within VSCode, you may have to add the following to your settings before running Lexcube:
+```json
+    "jupyter.widgetScriptSources": [
+        "jsdelivr.com",
+        "unpkg.com"
+    ],
+```
+If you are working on a remote server in VSCode, do not forget to set this setting also there! This allows the Lexcube JavaScript front-end files to be downloaded from these sources ([read more](https://github.com/microsoft/vscode-jupyter/wiki/IPyWidget-Support-in-VS-Code-Python)).
+
+## Installation
+
+You can install using `pip`:
+
+```bash
+pip install lexcube
+```
+
+After installing or upgrading Lexcube, you should **refresh the Juypter web page** (if currently open) and **restart the kernel** (if currently running).
+
+If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
+the nbextension:
+```bash
+jupyter nbextension enable --py [--sys-prefix|--user|--system] lexcube
+```
+
+## Cube Visualization
+On the cube, the dimensions are visualized as follow: X from left-to-right (0 to max), Y from top-to-bottom (0 to max), Z from back-to-front (0 to max); with Z being the first dimension (`axis[0]`), Y the second dimension (`axis[1]`) and X the third dimension (`axis[2]`) on the input data. If you prefer to flip any dimension or re-order dimensions, you can modify your data set accordingly before calling the Lexcube widget, e.g. re-ordering dimensions with xarray: `ds.transpose(ds.dims[0], ds.dims[2], ds.dims[1])` and flipping dimensions with numpy: `np.flip(ds, axis=1)`.
+
+## Interacting with the Cube
+- Zooming in/out on any side of the cube: 
+    - Mousewheel
+    - Scroll gesture on touchpad (two fingers up or down)
+    - On touch devices: Two-touch pinch gesture
+- Panning the currently visible selection: 
+    - Click and drag the mouse cursor
+    - On touch devices: touch and drag
+- Moving over the cube with your cursor will show a tooltip in the bottom left about the pixel under the cursor.
+- For more precise input, you can use the sliders provided by `w.show_sliders()`:
+![Sliders](https://raw.githubusercontent.com/msoechting/lexcube/main/readme-media/sliders.png)
+
+
+## Range Boundaries
+You can read and write the boundaries of the current selection via the `xlim`, `ylim` and `zlim` tuples.
+
+```python
+w = lexcube.Cube3DWidget(da, cmap="thermal", vmin=-20, vmax=30)
+w.plot()
+# Next cell:
+w.xlim = (20, 400)
+```
+
+For fine-grained interactive controls, you can display a set of sliders in another cell, like this:
+
+```python
+w = lexcube.Cube3DWidget(da, cmap="thermal", vmin=-20, vmax=30)
+w.plot()
+# Next cell:
+w.show_sliders()
+```
+For very large data sets, you may want to use `w.show_sliders(continuous_update=False)` to prevent any data being loaded before making a final slider selection. 
+
+If you want to wrap around a dimension, i.e., seamleasly scroll over back to the 0-index beyond the maximum index, you can enable that feature like this: 
+```python
+w.xwrap = True
+```
+For data sets that have longitude values in their metadata very close to a global round-trip, this is automatically active for the X dimension.
+
+*Limitations: Currently only supported for the X dimension. If xwrap is active, the xlim tuple may contain values up to double the valid range to always have a range where x_min < x_max. To get values in the original/expected range, you can simply calculate x % x_max.*
+
+## Colormaps
+All colormaps of matplotlib and cmocean are supported.
+The range of the colormap, if not set using `vmin`/`vmax`, is automatically adjusted to the approximate observed minimum and maximum values<sup>*note*</sup> within the current session. Appending "_r" to any colormap name will reverse it.
+
+
+```python
+# 1) Set cmap in constructor
+w = lexcube.Cube3DWidget(da, cmap="thermal", vmin=-20, vmax=30)
+w.plot()
+
+# 2) Set cmap later
+w.cmap = "thermal"
+w.vmin = -20
+w.vmax = 30
+
+# 3) Set custom colormap using lists (evenly spaced RGB values)
+w.cmap = cmocean.cm.thermal(np.linspace(0.0, 1.0, 100)).tolist()
+w.cmap = [[0.0, 0.0, 0.0], [1.0, 0.5, 0.5], [0.5, 1.0, 1.0]]
+```
+
+<sup><sup>*note*</sup> Lexcube actually calculates the mean of all values that have been visible so far in this session and applies ±2.5σ (standard deviation) in both directions to obtain the colormap ranges, covering approximately 98.7% of data points. This basic method allows to filter most outliers that would otherwise make the colormap range unnecessarily large and, therefore, the visualization uninterpretable.</sup>
+
+### Supported colormaps
+```python
+Cmocean:
+- "thermal", "haline", "solar", "ice", "gray", "oxy", "deep", "dense", "algae", "matter", "turbid", "speed", "amp", "tempo", "rain", "phase", "topo", "balance", "delta", "curl", "diff", "tarn"
+Proplot custom colormaps:
+- "Glacial", "Fire", "Dusk", "DryWet", "Div", "Boreal", "Sunset", "Sunrise", "Stellar", "NegPos", "Marine"
+Scientific Colormaps by Crameri:
+- "acton", "bam", "bamako", "bamO", "batlow", "batlowK", "batlowW", "berlin", "bilbao", "broc", "brocO", "buda", "bukavu", "cork", "corkO", "davos", "devon", "fes", "glasgow", "grayC", "hawaii", "imola", "lajolla", "lapaz", "lisbon", "lipari", "managua", "navia", "nuuk", "oleron", "oslo", "roma", "romaO", "tofino", "tokyo", "turku", "vanimo", "vik", "vikO"
+PerceptuallyUniformSequential:
+- "viridis", "plasma", "inferno", "magma", "cividis"
+Sequential:
+- "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds", "YlOrBr", "YlOrRd", "OrRd", "PuRd", "RdPu", "BuPu", "GnBu", "PuBu", "YlGnBu", "PuBuGn", "BuGn", "YlGn"
+Sequential(2):
+- "binary", "gist_yarg", "gist_gray", "gray", "bone", "pink", "spring", "summer", "autumn", "winter", "cool", "Wistia", "hot", "afmhot", "gist_heat", "copper"
+Diverging:
+- "PiYG", "PRGn", "BrBG", "PuOr", "RdGy", "RdBu", "RdYlBu", "RdYlGn", "Spectral", "coolwarm", "bwr", "seismic",
+Cyclic:
+- "twilight", "twilight_shifted", "hsv"
+Qualitative:
+- "Pastel1", "Pastel2", "Paired", "Accent", "Dark2", "Set1", "Set2", "Set3", "tab10", "tab20", "tab20b", "tab20c"
+Miscellaneous:
+- "flag", "prism", "ocean", "gist_earth", "terrain", "gist_stern", "gnuplot", "gnuplot2", "CMRmap", "cubehelix", "brg", "gist_rainbow", "rainbow", "jet", "nipy_spectral", "gist_ncar"
+```
+
+## Overlay GeoJSON data
+You can overlay GeoJSON data onto the cube visualization like this:
+```python
+# 1. Using a URL
+w.overlay_geojson("https://github.com/nvkelso/natural-earth-vector/raw/refs/heads/master/geojson/ne_50m_admin_0_countries.geojson")
+
+# 2. Using a local file
+w.overlay_geojson("regions.geojson")
+
+# 3. Using a JSON/dict object
+w.overlay_geojson({
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [24, -11],
+                    [13, -5], 
+                    [17, -7],
+                    [24, -11]
+                ]]
+            }
+        })
+```
+Lexcube extracts the geospatial context from the data set to overlay the GeoJSON. Your data set will need to have "y"/"lat"/"latitude" (as Y) and "x"/"lon"/"longitude" (as X) dimensions for this to work. Lexcube assumes pixel-centered addressing and regular steps across the dimensions.
+
+Using `MultiPolygon` or `Polygon` is preferred. `Point`, `MultiPoint`, `MultiLineString` and `LineString` are also supported. `Point` and `MultiPoint` are represented via diamonds.
+
+If the default color does not work for your data, you can change the color using the second argument:
+```python
+# All 140 X11 color names are supported (no camelcase)
+w.overlay_geojson(natural_earth_url, "skyblue")
+
+# Alternatively:
+w.overlay_geojson(natural_earth_url, "rgb(255, 0, 0)")
+```
+
+## Save figures
+You can save transparent PNG images of the cube like this: 
+```python
+w.savefig(fname="cube.png", include_ui=True, dpi_scale=2.0)
+```
+- `fname`: name of the image file. Default: `lexcube-{current time and date}.png`.
+- `include_ui`: whether to include UI elements such as the axis descriptions and the colormap legend in the image. Default: `true`.
+- `dpi_scale`: the image resolution is multiplied by this value to obtain higher-resolution/quality images. For example, a value of 2.0 means that the image resolution is doubled for the PNG vs. what is visible in the notebook. Default: `2.0`.
+
+If you want to edit multiple cubes into one picture, you may prefer an isometric rendering (no depth distortion). You can enable it in the widget constructor: `lexcube.Cube3DWidget(data_source, isometric_mode=True)`. For comparison:
+
+![Isometric vs. perspective camera comparison](https://raw.githubusercontent.com/msoechting/lexcube/main/readme-media/isometric.png)
+
+## Print your own paper data cube
+You can generate a template to make your own paper data cube from your currently visible data cube like this:
+```python
+w.save_print_template()
+```
+In the opened dialog, you can download the print template as either PNG or SVG to your computer. You can also add a custom note to the print template, e.g. to remember specifics about the data set. Printing (recommended: thick paper or photo paper, e.g., 15x20cm at a photo shop or self-service photo printer), cutting and gluing will give you your own paper data cube for your desk:
+
+![Print template graphic](https://raw.githubusercontent.com/msoechting/lexcube/main/readme-media/print-template.png)
+
+## Get currently visible data subset
+
+You can get the currently visible sub-selection of your data set with `w.get_current_cube_selection()`. There are three ways to use this function:
+
+```python
+# 1. Return currently visible data subset
+air_temperature_sub_cube = w.get_current_cube_selection()
+
+# 2. Return the currently visible selection, but applied to a different 3D dataset
+kndvi_sub_cube = w.get_current_cube_selection(data_to_be_indexed=ds["kndvi"])
+
+# 3. Return indices of the currently visible selection
+selection_indices = w.get_current_cube_selection(return_index_only=True)
+```
+See the end of the [introduction notebook](https://github.com/msoechting/lexcube/blob/main/examples/1_introduction.ipynb) for a live example.
+
+## Supported metadata
+When using Xarray for the input data, the following metadata is automatically integrated into the visualization:
+
+- Dimension names
+    - Read from the xarray.DataArray.dims attribute
+- Parameter name
+    - Read from the xarray.DataArray.attrs.long_name attribute
+- Units
+    - Read from the xarray.DataArray.attrs.units attribute
+- Indices
+    - Time indices are converted to UTC and displayed in local time in the widget
+    - Latitude and longitude indices are displayed in their full forms in the widget
+    - Other indices (strings, numbers) are displayed in their full form
+    - If no indices are available, the numeric indices are displayed
+
+## Troubleshooting
+Below you can find a number of different common issues when working with Lexcube. If the suggested solutions do not work for you, feel free to [open an issue](https://github.com/msoechting/lexcube/issues/new/choose)!
+
+### The cube does not respond / API methods are not doing anything / Cube does not load new data
+Under certain circumstances, the widget may get disconnected from the kernel. You can recognize it with this symbol (crossed out chain 🔗):
+![Crossed-out chain symbol under cell](https://raw.githubusercontent.com/msoechting/lexcube/main/readme-media/disconnected.png)
+
+Possible Solutions:
+1. Execute the cell again
+2. Restart the kernel
+3. Refresh the web page (also try a "hard refresh" using CTRL+F5 or Command+Option+R - this forces the browser to ignore its cache)
+
+
+### After installation/update, no widget is shown, only text
+Example:
+![Broken widget in post-installation](https://raw.githubusercontent.com/msoechting/lexcube/main/readme-media/post-installation-broken-widget.png)
+
+Possible solutions:
+1. Restart the kernel
+2. Refresh the web page (also try a "hard refresh" using CTRL+F5 or Command+Option+R - this forces the browser to ignore its cache)
+
+### w.savefig breaks when batch-processing/trying to create many figures quickly
+The current `savefig` implementation is limited by its asynchronous nature. This means that the `savefig` call returns before the image is rendered and downloaded. Therefore, a workaround, such as waiting one second between images, is necessary to correctly create images when batchprocessing.
+
+### The layout of the widget looks very messed up
+This can happen in old versions of browsers. Update your browser or use a modern, up-to-date browser such as Firefox or Chrome. Otherwise, feel free to create an issue with your exact specs.
+
+### "Error creating WebGL context" or similar
+WebGL 2 seems to be not available or disabled in your browser. Check this page to test if your browser is compatible: https://webglreport.com/?v=2. Possible solutions are:
+1. Update your browser
+2. Update your video card drivers
+
+### Memory is filling up a lot when using a chunked dataset 
+Lexcube employs an alternative, more aggressive chunk caching mechanism in contrast to xarray. It will cache any touched chunk in memory without releasing it until the widget is closed. Disabling it will most likely decrease memory usage, but increase the average data access latency, i.e., make Lexcube slower. To disable it, use: `lexcube.Cube3DWidget(data_source, use_lexcube_chunk_caching=False)`.
+
+
+## Known bugs
+- Zoom interactions with the mousewheel may be difficult for data sets with very small ranges on some dimensions (e.g. 2-5).
+- Zoom interactions may behave unexpectedly when zooming on multiple cube faces subsequently.
+
+## Attributions
+
+Lexcube uses lots of amazing open-source software and packages, including:
+* Data access: [Xarray](https://docs.xarray.dev/en/stable/index.html) & [Numpy](https://numpy.org/)
+* Lossy floating-point compression: [ZFP](https://zfp.io/)
+* Client boilerplate: [TypeScript Three.js Boilerplate](https://github.com/Sean-Bradley/Three.js-TypeScript-Boilerplate) by Sean Bradley
+* Jupyter widget boilerplate: [widget-ts-cookiecutter](https://github.com/jupyter-widgets/widget-ts-cookiecutter)
+* Colormaps: [matplotlib](https://matplotlib.org), [cmocean](https://matplotlib.org/cmocean/), [Scientific colour maps by Fabio Crameri](https://zenodo.org/records/8409685), [Proplot custom colormaps](https://github.com/proplot-dev/proplot)
+* 3D graphics engine: [Three.js](https://github.com/mrdoob/three.js/) (including the OrbitControls, which have been modified for this project)
+* Client bundling: [Webpack](https://webpack.js.org/)
+* UI sliders: [Nouislider](https://refreshless.com/nouislider/)
+* Decompression using WebAssembly: [numcodecs.js](https://github.com/manzt/numcodecs.js)
+* WebSocket communication: [Socket.io](https://socket.io/)
+
+## Development Installation & Guide
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
+## License
+The Lexcube application core, the Lexcube Jupyter extension, and other portions of the official Lexcube distribution not explicitly licensed otherwise, are licensed under the GNU GENERAL PUBLIC LICENSE v3 or later (GPLv3+) -- see the "COPYING" file in this directory for details.
