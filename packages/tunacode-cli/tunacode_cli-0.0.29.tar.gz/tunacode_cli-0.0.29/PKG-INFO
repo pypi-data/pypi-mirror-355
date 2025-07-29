@@ -1,0 +1,121 @@
+Metadata-Version: 2.4
+Name: tunacode-cli
+Version: 0.0.29
+Summary: Your agentic CLI developer.
+Author-email: larock22 <noreply@github.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/larock22/tunacode
+Project-URL: Repository, https://github.com/larock22/tunacode
+Keywords: cli,agent,development,automation
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typer==0.15.3
+Requires-Dist: prompt_toolkit==3.0.51
+Requires-Dist: pydantic-ai[logfire]==0.2.6
+Requires-Dist: pygments==2.19.1
+Requires-Dist: rich==14.0.0
+Provides-Extra: dev
+Requires-Dist: build; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: textual-dev; extra == "dev"
+Dynamic: license-file
+
+# TunaCode
+
+<div align="center">
+
+[![PyPI version](https://badge.fury.io/py/tunacode-cli.svg)](https://badge.fury.io/py/tunacode-cli)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**AI-powered CLI coding assistant**
+
+![Demo](demo.gif)
+
+</div>
+
+---
+
+## Quick Install
+
+```bash
+# Option 1: One-line install (Linux/macOS)
+wget -qO- https://raw.githubusercontent.com/alchemiststudiosDOTai/tunacode/master/scripts/install_linux.sh | bash
+
+# Option 2: pip install
+pip install tunacode-cli
+```
+
+## Configuration
+
+Choose your AI provider and set your API key:
+
+```bash
+# OpenAI
+tunacode --model "openai:gpt-4o" --key "sk-your-openai-key"
+
+# Anthropic Claude  
+tunacode --model "anthropic:claude-3.5-sonnet" --key "sk-ant-your-anthropic-key"
+
+# OpenRouter (100+ models)
+tunacode --model "openrouter:openai/gpt-4o" --key "sk-or-your-openrouter-key"
+```
+
+Your config is saved to `~/.config/tunacode.json`
+
+## Start Coding
+
+```bash
+tunacode
+```
+
+## Basic Commands
+
+| Command | Description |
+| ------- | ----------- |
+| `/help` | Show all commands |
+| `/model <provider:name>` | Switch model |
+| `/clear` | Clear message history |
+| `/compact` | Summarize conversation |
+| `/branch <name>` | Create Git branch |
+| `/yolo` | Skip confirmations |
+| `!<command>` | Run shell command |
+| `exit` | Exit TunaCode |
+
+## Safety First
+
+⚠️ **Important**: TunaCode can modify your codebase. Always:
+- Use Git branches before making changes
+- Review file modifications before confirming
+- Keep backups of important work
+
+## Documentation
+
+- [**Features**](documentation/FEATURES.md) - All features, tools, and commands
+- [**Advanced Configuration**](documentation/ADVANCED-CONFIG.md) - Provider setup, MCP, customization
+- [**Architecture**](documentation/ARCHITECTURE.md) - Source code organization and design
+- [**Development**](documentation/DEVELOPMENT.md) - Contributing and development setup
+
+## Links
+
+- [PyPI Package](https://pypi.org/project/tunacode-cli/)
+- [GitHub Repository](https://github.com/alchemiststudiosDOTai/tunacode)
+- [Report Issues](https://github.com/alchemiststudiosDOTai/tunacode/issues)
+
+---
+
+MIT License - see [LICENSE](LICENSE) file
