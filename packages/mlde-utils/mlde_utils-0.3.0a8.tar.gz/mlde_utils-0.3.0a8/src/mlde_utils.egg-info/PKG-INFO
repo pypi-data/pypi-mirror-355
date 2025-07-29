@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: mlde_utils
+Version: 0.3.0a8
+Summary: A package for shared code between ML downscaling repos
+Author-email: Henry Addison <henry.addison@bristol.ac.uk>
+Project-URL: Homepage, https://github.com/henryaddison/mlde_utils
+Project-URL: Bug Tracker, https://github.com/henryaddison/mlde_utils/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cartopy
+Requires-Dist: cdo
+Requires-Dist: cf-xarray
+Requires-Dist: cftime
+Requires-Dist: scitools-iris
+Requires-Dist: metpy
+Requires-Dist: netcdf4
+Requires-Dist: pint
+Requires-Dist: xarray
+Requires-Dist: pyyaml
+Dynamic: license-file
+
+# Util code for ML downscaling emulator
+
+## Configuration
+
+### Environment variables
+
+| Name | Description |
+|------|-------------|
+|`DERIVED_DATA`| The base path to where datasets are to be found |
+|`WORKDIRS_PATH`| The common path to where emulator artefacts (including samples) are to be found |
