@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: ckanext-blocksmith
+Version: 0.3.0
+Summary: A modern page builder extension for CKAN, powered by GrapesJS
+Author-email: DataShades <datashades@linkdigital.com.au>, Oleksandr Cherniavskiy <mutantsan@gmail.com>, Yan Rudenko <yan.rudenko@gmail.com>
+License: AGPL
+Project-URL: Homepage, https://github.com/DataShades/ckanext-blocksmith
+Keywords: CKAN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: beautifulsoup4<5.0.0,>=4.8.2
+Provides-Extra: docs
+Requires-Dist: mkdocs; extra == "docs"
+Requires-Dist: mkdocs-material; extra == "docs"
+Requires-Dist: mkdocstrings[python]; extra == "docs"
+Dynamic: license-file
+
+[![Pytest](https://github.com/DataShades/ckanext-blocksmith/actions/workflows/test.yml/badge.svg)](https://github.com/DataShades/ckanext-blocksmith/actions/workflows/test.yml)
+
+Blocksmith is a CKAN extension that allows you to create and manage pages using a visual editor.
+
+![editor screenshot](https://raw.githubusercontent.com/DataShades/ckanext-blocksmith/master/docs/images/editor.png)
+
+![list screenshot](https://raw.githubusercontent.com/DataShades/ckanext-blocksmith/master/docs/images/list.png)
+
+Check full [documentation](https://datashades.github.io/ckanext-blocksmith/) for more information.
+
+## Requirements
+
+CKAN 2.10+
+Python 3.10+
+
+## Installation
+
+Install it from source:
+    ```
+    pip install -e .
+    ```
+
+Or use `pypi` to install:
+    ```
+    pip install ckanext-blocksmith
+    ```
+
+Initialize DB tables by running ```ckan -c PATH_TO_CONFIG db upgrade -p blocksmith```
+
+## License
+
+[AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html)
