@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-claude-commander"
+version = "0.3.0"
+description = "Namespace alias for claude-command - AI command center for Claude Code"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Shane Holloman", email = "shane@shaneholloman.com" },
+]
+keywords = ["ai", "mcp", "claude", "command", "assistant"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "claude-command==0.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/shaneholloman/mcp-claude-command"
+Repository = "https://github.com/shaneholloman/mcp-claude-command"
+Issues = "https://github.com/shaneholloman/mcp-claude-command/issues"
+
+[project.scripts]
+mcp-claude-commander = "claude_command.server:main"
+
+[tool.hatch.build]
+include = [
+    "mcp_claude_commander/__init__.py",
+    "README.md",
+]
