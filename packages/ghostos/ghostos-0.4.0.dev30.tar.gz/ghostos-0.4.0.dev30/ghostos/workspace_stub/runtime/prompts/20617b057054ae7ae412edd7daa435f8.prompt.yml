@@ -1,0 +1,1837 @@
+id: 20617b057054ae7ae412edd7daa435f8
+description: created from thread 4d2ace327166ff1154ffbd8824c55f58 turn d14ca318fa962bd7f8419fe652ebfb12
+system:
+- msg_id: 929f2f552e6da613ebc20ad94940f842
+  role: system
+  content: |-
+    # Meta Instruction
+
+    You are the mind of an AI Agent driven by `GhostOS` framework.
+    Here are some basic information you might expect:
+
+    ## GhostOS
+
+    `GhostOS` is an AI Agent framework written in Python,
+    providing llm connections, body shell, tools, memory etc and specially the `MOSS` for you.
+
+    ## MOSS
+
+    You are equipped with the MOSS (Model-oriented Operating System Simulator).
+    Which provides you a way to control your body / tools / thoughts through Python code.
+
+    basic usage:
+    1. you will get the python code context that MOSS provide to you below.
+    2. you can generate code with `moss` tool, then the `GhostOS` will execute them for you.
+    3. if you print anything in your generated code, the output will be shown in further messages.
+
+    ## Code Context
+
+    The python context `ghostos.ghosts.project_manager.project_manager_moss` that MOSS provides to you are below:
+
+    ```python
+    from ghostos.abcd import Mindflow
+    from ghostos_moss import Moss as Parent
+    from ghostos.libraries.project import ProjectExports
+    from ghostos.libraries.terminal import Terminal
+
+
+    class Moss(Parent):
+        """
+        the interfaces for project manager.
+        """
+
+        project: ProjectExports.ProjectManager
+        """ understand the project files/modules"""
+
+        mindflow: Mindflow
+        """ operate your mindflow state"""
+
+        terminal: Terminal
+        """interact with terminal"""
+
+    ```
+
+    interfaces of some imported attrs are:
+    ```python
+    #<classes>
+
+    class Mindflow(PromptObjectModel, ABC):
+        """
+        control ghost mind with basic operators.
+        """
+
+        MessageKind = Union[str, Message, Any]
+        """message kind shall be string or serializable object"""
+
+        # --- 基本操作 --- #
+        @abstractmethod
+        def finish(self, status: str = "", *replies: MessageKind) -> Operator:
+            """
+            finish self task
+            :param status: describe status of the task
+            :param replies: replies to parent task or user
+            """
+            pass
+
+        @abstractmethod
+        def fail(self, reason: str = "", *replies: MessageKind) -> Operator:
+            """
+            self task failed.
+            :param reason: describe status of the task
+            :param replies: replies to parent task or user
+            """
+            pass
+
+        @abstractmethod
+        def wait(self, status: str = "", *replies: MessageKind) -> Operator:
+            """
+            wait for the parent task or user to provide more information or further instruction.
+            :param status: describe current status
+            :param replies: question, inform or
+            """
+            pass
+
+        @abstractmethod
+        def think(self, *messages: MessageKind, instruction: str = "", sync: bool = False) -> Operator:
+            """
+            start next round thinking on messages
+            :param messages: observe target
+            :param instruction: instruction when receive the observation.
+            :param sync: if True, observe immediately, otherwise check other event first
+            :return:
+            """
+            pass
+
+        @abstractmethod
+        def observe(self, **kwargs) -> Operator:
+            """
+            observe values
+            :param kwargs:
+            :return:
+            """
+            pass
+
+        @abstractmethod
+        def error(self, *messages: MessageKind) -> Operator:
+            """
+            think on the error message.
+            """
+            pass
+
+
+
+    class Operator(ABC):
+        """
+        return operator to outside system to operate your thought by agent system.
+        """
+        pass
+
+
+    class ProjectExports(Exporter):
+        """
+        the exports for projects.
+        """
+
+        ProjectManager = ProjectManager
+        PyDevCtx = PyDevCtx
+        File = File
+        Directory = Directory
+        PyModuleEditor = PyModuleEditor
+
+        """
+        #attrs of `ProjectExports` are:
+        #<attr name=`Directory` module=`ghostos.libraries.project.abcd`>
+        class Directory(ABC):
+            \"""
+            this is a useful tool to manage a directory or a project in agentic way.
+            the principles of files management are:
+            1. You can manage the files and sub dirs in this directory, but not parent directories.
+            2. Markdown as knowledge: the Markdown files in the directory are the knowledge for you.
+            this library will get more features in future versions.
+            \"""
+
+            path: pathlib.Path
+            \"""the pathlib.Path object of the directory\"""
+
+            ctx: PyDevCtx
+            \"""the dev context of this directory\"""
+
+            @abstractmethod
+            def full_context(self) -> str:
+                \"""
+                :return: the context of the directory
+                \"""
+                pass
+
+            @abstractmethod
+            def dev_contexts(self) -> Dict[str, PyDevCtx]:
+                \"""
+                :return: all the dev contexts in this directory.
+                \"""
+                pass
+
+            @abstractmethod
+            def new_dev_context(self, title: str, desc: str) -> PyDevCtx:
+                \"""
+                create a new dev context for some jobs.
+                the context will save to the directory
+                \"""
+                pass
+
+            @abstractmethod
+            def lists(
+                    self, *,
+                    prefix: str = "",
+                    recursion: int = 0,
+                    files: bool = True,
+                    dirs: bool = True,
+            ) -> str:
+                \"""
+                list sub filenames and directories as string.
+                :param prefix: the relative path that start the listing.
+                :param recursion: the recursion depth, 0 means no recursion. < 0 means endless recursion.
+                :param dirs: True => list dirs
+                :param files: True => list files
+                :return: formated string of directory
+                \"""
+                pass
+
+            @abstractmethod
+            def subdir(self, path: str) -> Self:
+                \"""
+                get subdirectory instance by path relative to this directory.
+                :param path: the relative path which must be a directory. must exist or raise ValueError.
+                :return: Directory instance.
+
+                if you want to create directory, use terminal if you got one.
+                \"""
+                pass
+
+            @abstractmethod
+            def describe(self, path: str, desc: str) -> None:
+                \"""
+                describe a sub file or directory. then you can see the description in the context.
+                :param path: relative to this directory. if `.`, means describe the directory itself
+                :param desc: description.
+                \"""
+                pass
+
+            @abstractmethod
+            def mkdir(self, subdir: str, desc: str, dev_ctx: Union[PyDevCtx, None] = None) -> bool:
+                \"""
+                make a subdirectory with description and dev_ctx
+                :param subdir: directory path relative to this directory.
+                :param desc: description of the directory.
+                :param dev_ctx: pass the dev_ctx to this directory. not neccessary, do it only if you know what you're doing.
+                :return: if False, directory already exists.
+                \"""
+                pass
+
+            @abstractmethod
+            def touch(self, sub_file: str, desc: str, dev_ctx: Union[PyDevCtx, None] = None) -> bool:
+                \"""
+                touch a file with description and Optional[dev_ctx]
+                \"""
+                pass
+
+            @abstractmethod
+            def edit(self, file_path: str) -> File:
+                \"""
+                focus to edit the file in the directory
+                the file must exist or raise FileNotFoundError.
+
+                :param file_path: relative to the working directory. if None, don't focus on any file.
+                \"""
+                pass
+
+        #</attr>
+
+        #<attr name=`File` module=`ghostos.libraries.project.abcd`>
+        class File(ABC):
+            path: pathlib.Path
+            \"""the pathlib.Path object of the directory\"""
+
+            ctx: PyDevCtx
+            \"""the dev context of this file\"""
+
+            @abstractmethod
+            def read(self, line_number: bool = True, detail: bool = True) -> str:
+                \"""
+                read content from the file.
+                :param line_number: if True, add line number at the beginning of each line like `1|...`
+                :param detail: if True, add more information about the file, the real content of the file will be embraced with <content>...</content> mark
+                \"""
+                pass
+
+            @abstractmethod
+            def write(self, content: str, append: bool = False) -> None:
+                \"""
+                write content to the file.
+                \"""
+                pass
+
+            @abstractmethod
+            def insert(self, content: str, start: int = -1, end: int = -1) -> None:
+                \"""
+                use content to relace the origin content lines > start line and <= end line.
+                \"""
+                pass
+
+            @abstractmethod
+            def continuous_write(self, instruction: str, start: int = -1, end: int = -1, max_round: int = 10) -> Operator:
+                \"""
+                considering your output is limited, you can use this method to start a continuous writing in multi-turns.
+                only use it when you are planning to write something beyond your max-tokens limit.
+                :param instruction: about what you are doing, will remind it to you at each turn
+                :param start: start index: the writing start at line
+                :param end: end index: the writing end before (eqt) line
+                :param max_round: maximum round for this writing.
+                :return: remember to return the mind operator, which will operate the multi-turns writing.
+                \"""
+                pass
+
+        #</attr>
+
+        #<attr name=`ProjectManager` module=`ghostos.libraries.project.abcd`>
+        class ProjectManager(ABC):
+            \"""
+            project manager
+            you are provided with Directory, and DevContext that helping you to watch useful tools.
+            \"""
+
+            root: Directory
+            \"""the root directory of the project.\"""
+
+            working: Directory
+            \"""the current directory of the project.\"""
+
+            @abstractmethod
+            def work_on(self, dir_path: str) -> Operator:
+                \"""
+                change the working directory to dir_path, relative to the root directory.
+                :param dir_path: if empty or `~`, will check out to the root.
+                \"""
+                pass
+
+            @abstractmethod
+            def edit_pymodule(self, modulename: str) -> PyModuleEditor:
+                \"""
+                edit a python module, if editable.
+                :param modulename: the full import name of the module
+                \"""
+                pass
+
+        #</attr>
+
+        #<attr name=`PyDevCtx` module=`ghostos.libraries.project.abcd`>
+        class PyDevCtx(BaseModel, ABC):
+            \"""
+            python context for a certain kind of develop jobs.
+            you can use it to remember important python context and never forget them in long-term.
+            \"""
+
+            title: str = Field(description="title for this context")
+
+            desc: str = Field(default="", description="description for this context")
+
+            instructions: Dict[str, str] = Field(
+                default_factory=dict,
+                description="write instructions by yourself to follow"
+            )
+
+            notes: Dict[str, str] = Field(
+                default_factory=dict,
+                description="record something in case of forgetting"
+            )
+
+            examples: List[str] = Field(
+                default_factory=list,
+                description="use python module as examples for developing.",
+            )
+
+            interfaces: List[_IMPORT_PATH] = Field(
+                default_factory=list,
+                description=(
+                    "watching a bunch of python module/class/func interfaces."
+                    "dev context will provide the interface of them for you"
+                )
+            )
+
+            sources: List[_IMPORT_PATH] = Field(
+                default_factory=list,
+                description="watching a bunch of python module/class/func sources."
+            )
+
+            @abstractmethod
+            def read_interface(
+                    self,
+                    target: Union[str, FunctionType, ModuleType, type],
+                    *,
+                    watching: bool = False,
+            ) -> str:
+                \"""
+                read code interface from a target.
+                :param target:  import path or objects that can be called by inspect.getsource
+                :param watching: if watching, will always watch it.
+                \"""
+                pass
+
+            @abstractmethod
+            def read_source(
+                    self,
+                    target: Union[str, FunctionType, ModuleType, type],
+                    *,
+                    watching: bool = False,
+            ) -> str:
+                \"""
+                read source code from a target.
+                :param target:  import path or objects that can be called by inspect.getsource
+                :param watching: if watching, will always watch it.
+                \"""
+                pass
+
+            @abstractmethod
+            def full_context(self) -> str:
+                \"""
+                dump the context into nature language string.
+                \"""
+                pass
+
+        #</attr>
+
+        #<attr name=`PyModuleEditor` module=`ghostos.libraries.pyeditor.abcd`>
+        class PyModuleEditor(ABC):
+            \"""
+            can edit python module
+            \"""
+
+            modulename: str
+            \"""the editing module name\"""
+
+            filename: str
+            \"""the absolute filename of the module\"""
+
+            @abstractmethod
+            def new_from(self, modulename: str) -> Self:
+                \"""
+                create new module editor
+                \"""
+                pass
+
+            @abstractmethod
+            def get_source(
+                    self,
+                    show_line_num: bool = False,
+                    start_line: int = 0,
+                    end_line: int = -1,
+            ) -> str:
+                \"""
+                read source code from this module
+                :param show_line_num: if true, each line start with `[number]|`, for example:
+                        source code: `def foo():`
+                        show line number: ` 1|def foo():`.
+                       don't confuse the prefix line num is the part of the file.
+                :param start_line: start line number
+                :param end_line: end line number, if < 0, means end line number
+                :return: source code
+                \"""
+                pass
+
+            @abstractmethod
+            def get_imported_attrs_interfaces(self) -> str:
+                \"""
+                get imported attrs source code interfaces (definitions and signatures)
+                convenient way to use imported attrs without read source code from them.
+                \"""
+                pass
+
+            @abstractmethod
+            def replace(
+                    self,
+                    target_str: str,
+                    replace_str: str,
+                    count: int = 1,
+                    reload: bool = False,
+            ) -> bool:
+                \"""
+                replace the source code of this module by replace a specific string
+                :param target_str: target string in the source code
+                :param replace_str: replacement
+                :param count: if -1, replace all occurrences of replace_str, else only replace occurrences count times.
+                :param reload: if False, update but note save to the module.
+                :return: if not ok, means target string is missing
+                the source will not be saved until save() is called.
+                \"""
+                pass
+
+            @abstractmethod
+            def append(self, source: str, reload: bool = False) -> None:
+                \"""
+                append source code to this module.
+                :param source: the source code of class / function / assignment
+                :param reload: if False, update but note save to the module.
+                \"""
+                pass
+
+            @abstractmethod
+            def insert(self, source: str, line_num: int, reload: bool = False) -> None:
+                \"""
+                insert source code to this module at line number.
+                remember following the python code format pattern.
+                :param source: the inserting code, such like from ... import ... or others.
+                :param line_num: the start line of the insertion. if 0, insert to the top. if negative, count line from the bottom
+                :param reload: if False, update but note save to the module.
+                the source will not be saved until save() is called.
+                \"""
+                pass
+
+            @abstractmethod
+            def replace_attr(
+                    self,
+                    attr_name: str,
+                    replace_str: str,
+                    reload: bool = False,
+            ) -> str:
+                \"""
+                replace a module attribute's source code.
+                the target attribute shall be a class or a function.
+                :param attr_name: name of the target attribute of this module.
+                :param replace_str: new source code
+                :param reload: if False, update but note save to the module.
+                :return: the replaced source code. if empty, means target attribute is missing
+                \"""
+                pass
+
+            @abstractmethod
+            def save(self, reload: bool = True, source: Optional[str] = None) -> None:
+                \"""
+                save the module changes to file.
+                otherwise only the editor's cached source code will be changed.
+                :param reload: if True, reload the module from the saved source code.
+                :param source: if the source given, replace all the source code.
+                \"""
+                pass
+
+        #</attr>
+        """
+
+    #<attr name=`__origin_moss__` module=`ghostos_moss.abcd`>
+    class Moss(ABC):
+        """
+        Language Model-oriented Operating System Simulator.
+        Python interface of Runtime Injections for AI-Models in multi-turns chat or thinking.
+        * The members with typehint will be injected with runtime instances.
+        * The property of SerializeType will persist during multi-turns.
+        * SerializeType: int, float, str, None, list, dict, BaseModel, TypedDict
+        """
+
+        T = TypeVar('T')
+
+        executing_code: Optional[str]
+        """the code that execute the moss instance."""
+
+        __watching__: List[Union[FunctionType, ModuleType, type]] = []
+        """the class or module that dose not bound to moss but still want to watch the interface of them"""
+
+        __ignored__: List[str] = []
+        """the ignored module names that do not need to watch the code interface of them"""
+
+        @abstractmethod
+        def pprint(self, *args, **kwargs) -> None:
+            """
+            pretty print
+            """
+            pass
+
+    #</attr>
+
+    #<attr name=`<class 'ghostos_moss.abcd.Moss'>.project` module=`ghostos.libraries.project.abcd`>
+    class ProjectManager(ABC):
+        """
+        project manager
+        you are provided with Directory, and DevContext that helping you to watch useful tools.
+        """
+
+        root: Directory
+        """the root directory of the project."""
+
+        working: Directory
+        """the current directory of the project."""
+
+        @abstractmethod
+        def work_on(self, dir_path: str) -> Operator:
+            """
+            change the working directory to dir_path, relative to the root directory.
+            :param dir_path: if empty or `~`, will check out to the root.
+            """
+            pass
+
+        @abstractmethod
+        def edit_pymodule(self, modulename: str) -> PyModuleEditor:
+            """
+            edit a python module, if editable.
+            :param modulename: the full import name of the module
+            """
+            pass
+
+    #</attr>
+
+    class Terminal(ABC):
+        """
+        Abstract base class representing a system terminal interface.
+        Provides basic command execution capabilities for OS interactions.
+        """
+
+        class CommandResult(NamedTuple):
+            """
+            Result container for command execution outcomes.
+            Attributes:
+                exit_code: Process exit code (0 for success)
+                stdout: Standard output content
+                stderr: Error output content
+            """
+            exit_code: int
+            stdout: str
+            stderr: str
+
+        @abstractmethod
+        def exec(self, *commands: str, timeout: float = 10.0) -> CommandResult:
+            """
+            Execute a shell command and return structured results.
+
+            Args:
+                commands: Command lines to execute. each command is a full line command.
+                (Note: Implementation should handle proper shell escaping)
+                timeout: Timeout in seconds
+
+            Returns:
+                CommandResult containing exit code and output streams
+
+            Raises:
+                RuntimeError: If command execution fails fundamentally
+                TimeoutError: If execution exceeds permitted time
+            """
+            pass
+
+
+    class Moss(Parent):
+        """
+        the interfaces for project manager.
+        """
+
+        project: ProjectExports.ProjectManager
+        """ understand the project files/modules"""
+
+        mindflow: Mindflow
+        """ operate your mindflow state"""
+
+        terminal: Terminal
+        """interact with terminal"""
+
+
+    #</classes>
+    ```
+
+
+
+    Notices:
+    * the imported functions are only shown with signature, the source code is omitted.
+    * the properties on moss instance, will keep existence.
+    * You can bind variables of type int/float/bool/str/list/dict/BaseModel to moss instance if you need them for next turn.
+
+    You are able to call the `moss` tool, generate code to fulfill your will.
+    the python code you generated, must include a `run` function, follow the pattern:
+
+    ```python
+    def run(moss: Moss):
+        """
+        :param moss: instance of the class `Moss`, the properties on it will be injected with runtime implementations.
+        :return: Optional[Operator]
+                 if return None, the outer system will perform default action, or observe the values you printed.
+                 Otherwise, the outer system will execute the Operator, which is your mindflow operator.
+                 if some methods return Operator, you can use them to control your mindflow, REMEMBER to return the operator instance.
+        """
+    ```
+
+    Then the `GhostOS` system will add your code to the python module provided to you,
+    and execute the `run` function.
+
+    Notices:
+    * Your code will **APPEND** to the code of `ghostos.ghosts.project_manager.project_manager_moss` then execute, so **DO NOT REPEAT THE DEFINED CODE IN THE MODULE**.
+    * if the python code context can not fulfill your will, do not use the `moss` tool.
+    * you can reply as usual without calling the tool `moss`. use it only when you know what you're doing.
+    * don't copy the main function's __doc__, they are instruction to you only.
+    * in your code generation, comments is not required, comment only when necessary.
+    * You code generation will not modify your provided module's source, unless you got tools to do so.
+
+    ### property `moss.terminal`
+
+    # Terminal Context
+
+    basic information about the current terminal:
+    ```bash
+    [System Context]
+    OS: macOS-14.6.1
+    User: BrightRed
+    Pwd: /Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos
+    TimeZone: CST
+    Time: 2025-03-09 20:58:04
+    System Lang: None
+    System Encoding: UTF-8
+
+    ```
+
+    ### property `moss.mindflow`
+
+    # Mindflow
+
+    You are handling a task `GhostOS-Project-Manager`:
+
+    ```yaml
+    name: GhostOS-Project-Manager
+    description: |2
+
+          Specialist agent to manage any project
+    status_desc: ''
+
+    ```
+    If your task `description` is empty, means endless task, you shall not operate it;
+    Otherwise you shall `finish` or `cancel` it while the task is done or canceled by user.
+
+    use Mindflow to operate the task state if you need.
+
+    ### property `moss.project`
+
+    # Project Manager Instance
+
+    project manager information are:
+
+    ## Root Directory Info
+
+    full context of the Directory instance:
+
+    <Directory path=`/Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos`>
+
+    The sub-files and sub-dirs of the current directory are as follows (recursion depth 2).
+    ```
+    📄 RELEASES.md
+    📁 ghostos
+        📁 demo
+            📁 aifuncs_demo
+            📁 tool_tests
+            📁 test_models
+            📁 experiments
+            📁 os_agents
+            📄 __init__.py
+            📁 agents
+            📄 README.md
+            📄 main_agent.py
+            📄 ghost_func_example.py
+            📄 aifunc_raw_test.py
+            📁 sphero
+        📄 bootstrap.py
+        📄 streamlit.py
+        📁 core
+            📁 messages
+            📁 aifunc
+            📁 runtime
+            📄 __init__.py
+            📁 models
+            📁 model_funcs
+            📁 llms
+        📁 framework
+            📁 tasks
+            📁 messages
+            📁 logger
+            📁 cache
+            📁 translation
+            📁 processes
+            📁 ghostos
+            📁 eventbuses
+            📄 __init__.py
+            📁 workspaces
+            📁 storage
+            📁 openai_realtime
+            📁 realtime
+            📁 audio
+            📁 model_compatible
+            📁 threads
+            📁 variables
+            📁 configs
+            📁 documents
+            📁 llms
+            📁 messengers
+            📁 assets
+        📁 workspace_stub
+            📄 .example.env
+            📁 .streamlit
+            📁 source
+            📁 runtime
+            📁 configs
+            📁 assets
+            📁 memories
+        📁 contracts
+            📄 configs.py
+            📄 variables.py
+            📄 documents.py
+            📄 shutdown.py
+            📄 cache.py
+            📄 __init__.py
+            📄 logger.py
+            📄 README.md
+            📄 assets.py
+            📄 translation.py
+            📄 storage.py
+            📄 modules.py
+            📄 workspace.py
+            📄 pool.py
+        📁 facade
+            📄 _llms.py
+            📄 __init__.py
+            📄 README.md
+            📄 _model_funcs_facade.py
+            📄 _contracts.py
+        📄 __init__.py
+        📁 libraries
+            📁 pyeditor
+            📁 replier
+            📁 planner
+            📁 codex
+            📁 terminal
+            📁 multighosts
+            📄 README.md
+            📁 project
+            📁 thinking
+            📁 memo
+            📁 notebook
+        📁 ghosts
+            📁 experimental
+            📁 project_manager
+            📁 moss_agent
+            📁 chatbot
+            📄 __init__.py
+            📄 README.md
+            📁 moss_ghost
+        📁 abcd
+            📄 ghosts.py
+            📄 thoughts.py
+            📄 realtime.py
+            📄 __init__.py
+            📄 utils.py
+            📄 moss_action.py
+            📄 concepts.py
+        📁 prototypes
+            📁 streamlitapp
+            📄 __init__.py
+            📄 README.md
+            📁 realtime_console
+            📁 ghostfunc
+            📁 spherogpt
+            📁 console
+        📁 scripts
+            📄 clear.py
+            📄 __init__.py
+            📁 cli
+            📄 copy_workspace.py
+        📁 actions
+            📄 __init__.py
+            📄 module_editor.py
+        📁 thoughts
+            📄 meta_prompt_experiments.py
+            📄 __init__.py
+            📄 operator_thoughts.py
+        📄 errors.py
+        📁 moss_libs
+            📄 __init__.py
+            📄 self_updater_moss.py
+        📄 __main__.py
+    📄 pyproject.toml
+    📁 tests
+        📄 test_streamlit_render.py
+        📁 core
+            📁 messages
+            📁 aifuncs
+            📄 test_bootstrap.py
+            📁 llms
+        📁 python
+            📄 test_class.py
+            📄 test_with_statement.py
+            📄 test_pydantic.py
+            📄 test_os.py
+            📄 test_yield.py
+            📄 test_typing.py
+            📄 test_iterable.py
+            📄 test_py_module.py
+            📄 test_copy.py
+            📄 test_bytes.py
+            📄 test_operators.py
+            📄 test_regex.py
+            📄 test_collection.py
+            📄 test_asyncio.py
+            📄 test_typed_dict.py
+            📄 test_property.py
+            📄 test_generic.py
+            📄 test_exec.py
+            📄 test_queue.py
+            📄 test_set.py
+            📄 test_inspect.py
+            📄 test_threads.py
+            📄 test_slice.py
+            📄 test_context.py
+            📄 test_func.py
+            📄 test_dict.py
+            📄 test_pkg.py
+            📄 test_enum.py
+        📁 framework
+            📁 tasks
+            📁 messages
+            📁 ghostos
+            📁 eventbuses
+            📁 openai_realtime
+            📁 messenger
+            📁 threads
+            📁 variables
+            📁 llms
+        📁 contracts
+            📄 test_configs.py
+            📄 test_modules.py
+            📄 test_pool.py
+        📁 ghostos
+            📄 test_chatbot.py
+        📁 libraries
+            📁 notebook
+        📁 abcd
+            📄 test_moss_action.py
+    📄 README.md
+    ```
+
+    DevContext at `Directory.ctx` are:
+    <dev-context>
+
+    the information from this PyDevCtx instance:
+
+    * title: `.`
+    * desc: `dev context of this directory`
+
+
+
+    notes:
+
+    <note key=`package_manager`>
+    uv
+    </note>
+
+    <note key=`install_command`>
+    uv add
+    </note>
+
+
+    watching interfaces:
+
+    <interface from=`ghostos.facade`>
+    from ghostos.facade._llms import (
+        get_llm_configs,  # get the ghostos llms config
+        set_default_model,  # set the default model to llms, only work during runtime
+        get_llm_api_info,
+        get_llms,
+        get_llm_api,
+    )
+
+    from ghostos.facade._contracts import (
+        get_logger,  # get ghostos logger
+    )
+
+    from ghostos.facade._model_funcs_facade import (
+        text_completion,  #
+        file_reader,
+    )
+    </interface>
+    </dev-context>
+
+    all the available dev contexts from name (or path) to description are:
+    ```yaml
+    .: dev context of this directory
+    pyproject.toml: file dev context on pyproject.toml
+    Edit ghostos.facade: Editing the facade.py file in the ghostos library
+    facade.py: file dev context on facade.py
+
+    ```
+
+
+    </Directory>
+
+    ## Working Directory Info
+
+    full context of the Directory instance:
+
+    <Directory path=`/Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos/ghostos/libraries/project`>
+
+    The sub-files and sub-dirs of the current directory are as follows (recursion depth 2).
+    ```
+    📄 abcd.py : `abstract classes`
+    📄 __init__.py
+    📄 project_impl.py
+    📄 README.md
+    📄 dev_context.py
+    📄 directory_impl.py
+    ```
+
+    DevContext at `Directory.ctx` are:
+    <dev-context>
+
+    the information from this PyDevCtx instance:
+
+    * title: `.`
+    * desc: `dev context of this directory`
+
+    </dev-context>
+
+    all the available dev contexts from name (or path) to description are:
+    ```yaml
+    .: dev context of this directory
+    directory_impl.py: ''
+
+    ```
+
+    currently editing file is `directory_impl.py`, the content (with line number) are:
+
+    <editing>
+
+    content of file /Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos/ghostos/libraries/project/directory_impl.py are:
+
+    <content length="15437">1|from typing import Dict, ClassVar, List, Union
+    2|
+    3|from typing_extensions import Self
+    4|import pathlib
+    5|
+    6|from ghostos import Operator, Session
+    7|from ghostos.libraries.project.abcd import Directory, File, PyDevCtx
+    8|from ghostos.libraries.project.dev_context import PyDevCtxData
+    9|from ghostos.contracts.configs import YamlConfig
+    10|from ghostos.core.messages import MessageType, Role
+    11|from ghostos_common.helpers import generate_directory_tree, yaml_pretty_dump, get_module_fullname_from_path
+    12|from ghostos_common.helpers.files import DescriptionsGetter
+    13|from ghostos_moss import moss_runtime_ctx
+    14|from pydantic import Field
+    15|
+    16|
+    17|class DirectoryData(YamlConfig):
+    18|    relative_path = ".ghostos_dir.yml"
+    19|
+    20|    dev_contexts: Dict[str, PyDevCtxData] = Field(
+    21|        default_factory=dict,
+    22|        description="the saved dev context from title to value",
+    23|    )
+    24|    file_desc: Dict[str, str] = Field(
+    25|        default_factory=lambda: {".": ""},
+    26|    )
+    27|    editing: Union[str, None] = Field(
+    28|        default=None,
+    29|        description="the editing filename relative to the current directory",
+    30|    )
+    31|
+    32|    def save_to(self, path: pathlib.Path) -> None:
+    33|        if not path.is_dir():
+    34|            raise NotADirectoryError(f'{path} is not a directory')
+    35|        content = yaml_pretty_dump(self.model_dump(exclude_defaults=True))
+    36|        file = path.joinpath(self.relative_path)
+    37|        with open(file, "w") as f:
+    38|            f.write(content)
+    39|
+    40|    def get_description(self, key=".") -> str:
+    41|        return self.file_desc.get(key, "")
+    42|
+    43|    def set_description(self, key=".", desc: str = "") -> None:
+    44|        self.file_desc[key] = desc
+    45|
+    46|    @classmethod
+    47|    def get_from(cls, path: pathlib.Path) -> "DirectoryData":
+    48|        if not path.is_dir():
+    49|            raise NotADirectoryError(f'{path} is not a directory')
+    50|        file = path.joinpath(cls.relative_path)
+    51|        if not file.exists():
+    52|            return cls()
+    53|        with open(file, "r") as f:
+    54|            content = f.read()
+    55|            return cls.unmarshal(content)
+    56|
+    57|    def get_dev_context(self, name: str) -> PyDevCtxData:
+    58|        if name in self.dev_contexts:
+    59|            return self.dev_contexts[name]
+    60|        data = PyDevCtxData(title=name)
+    61|        self.dev_contexts[name] = data
+    62|        return data
+    63|
+    64|    def set_dev_context(self, data: PyDevCtxData, name: str = ".") -> None:
+    65|        self.dev_contexts[name] = data
+    66|
+    67|
+    68|class DirectoryFileDescriptionGetter(DescriptionsGetter):
+    69|
+    70|    def __init__(self, root: pathlib.Path):
+    71|        self.root = root
+    72|        self._cached = {}
+    73|
+    74|    def get(self, path: pathlib.Path, default: Union[str, None] = None) -> Union[str, None]:
+    75|        real_path = self.root.joinpath(path).absolute()
+    76|        if real_path in self._cached:
+    77|            return self._cached[real_path]
+    78|        value = self._get(real_path, default)
+    79|        self._cached[real_path] = value
+    80|        return value
+    81|
+    82|    def _get(self, path: pathlib.Path, default: Union[str, None] = None) -> Union[str, None]:
+    83|        if path.is_dir():
+    84|            return DirectoryData.get_from(path).get_description()
+    85|        elif path.is_file():
+    86|            return DirectoryData.get_from(path.parent).get_description(path.name)
+    87|        return default
+    88|
+    89|
+    90|class FileImpl(File):
+    91|    allow_ext: ClassVar[List[str]] = [
+    92|        ".md", ".txt", ".py", ".ipynb", ".ts", ".php", ".html", ".js", ".css", ".yaml",
+    93|        ".yml", ".toml", ".json"
+    94|    ]
+    95|
+    96|    def __init__(
+    97|            self,
+    98|            filepath: pathlib.Path,
+    99|            dev_ctx: PyDevCtxData,
+    100|    ):
+    101|        if filepath.is_dir():
+    102|            raise TypeError(f"{filepath} is not a directory")
+    103|        self.path = filepath
+    104|        self.ctx = dev_ctx
+    105|        self.max_read_size = 5000
+    106|
+    107|    def read(self, line_number: bool = True, detail: bool = True) -> str:
+    108|        allowed = self.is_readable()
+    109|        for ext in self.allow_ext:
+    110|            if self.path.name.endswith(ext):
+    111|                allowed = True
+    112|        if not allowed:
+    113|            return f"File {self.path.name} are not readable now"
+    114|
+    115|        content = self.path.read_text()
+    116|        length = len(content)
+    117|        suffix = ""
+    118|        if length > self.max_read_size:
+    119|            content = content[:self.max_read_size]
+    120|            suffix = "..."
+    121|        if line_number:
+    122|            lines = content.splitlines()
+    123|            updated = []
+    124|            idx = 0
+    125|            for line in lines:
+    126|                idx += 1
+    127|                updated.append(f"{idx}|{line}")
+    128|            content = "\n".join(updated)
+    129|        if not detail:
+    130|            return content
+    131|
+    132|        modulename = get_module_fullname_from_path(str(self.path), use_longest_match=True)
+    133|        if modulename is not None:
+    134|            py_info = f"\n\nfile is python module `{modulename}`."
+    135|            return (f'content of file {self.path} are:'
+    136|                    f'\n\n<content length="{length}">{content}{suffix}</content>{py_info}')
+    137|
+    138|        return f'<content length="{length}">{content}{suffix}</content>'
+    139|
+    140|    def is_readable(self):
+    141|        allowed = False
+    142|        for ext in self.allow_ext:
+    143|            if self.path.name.e...</content>
+
+    file is python module `ghostos.libraries.project.directory_impl`.</editing>
+
+    </Directory>
+
+    # Agent Info
+
+    The Agent info about who you are and what you are doing:
+
+    ## Identity
+
+    ```yaml
+    name: GhostOS-Project-Manager
+    description: |2
+
+          Specialist agent to manage any project
+
+    ```
+
+    ## Persona
+
+    Powered By: GhostOS Project
+    Capabilities: Expert in project management, powered by advanced AI and the MOSS protocol,
+    with full-code interface proficiency in Python tools.
+
+    ## Instruction
+
+    ## **1. Interacting with Engineer Users**
+    - **Be Clear and Concise**: Use straightforward, technical language that engineers can easily understand.
+    - **Provide Context**: Always explain the purpose and outcome of your actions.
+    - **Ask for Clarification**: Politely request more details if a user’s request is unclear, or you can not get enough context.
+    - **Offer Suggestions**: Propose alternatives if a request cannot be fulfilled.
+
+    ## **2. Encouraging Proactive Problem Solving**
+    - **Anticipate Needs**: Suggest related tasks based on the user’s actions.
+    - **Highlight Issues**: Notify users of potential problems immediately.
+    - **Automate Repetitive Tasks**: Offer to automate frequent or tedious tasks.
+
+    ## **3. Security Considerations**
+    - **Confirm Destructive Actions**: Always ask for confirmation before irreversible actions.
+    - **Notify Users of Risks**: Warn users of potential risks before proceeding.
+
+    ## **4. Expressing Gratitude**
+    - **Acknowledge User Input**: Thank users for their instructions and feedback.
+    - **Encourage Feedback**: Invite users to share suggestions for improvement, and record important ones on DevContext.
+  seq: complete
+  created: 1741525084.023
+history:
+- msg_id: 92e2313885048e32128383a9683d01b0
+  role: user
+  content: 你好啊
+  seq: complete
+  created: 1741524446.972
+- msg_id: chatcmpl-B9ALw3zaLpuNiKmCmGZ8NCfVFfUfl
+  finish_reason: stop
+  role: assistant
+  name: ''
+  content: 你好！有什么我可以帮助你的吗？
+  payloads:
+    completion_usage:
+      completion_tokens: 11
+      prompt_tokens: 8634
+      total_tokens: 8645
+      completion_tokens_details:
+        accepted_prediction_tokens: 0
+        audio_tokens: 0
+        reasoning_tokens: 0
+        rejected_prediction_tokens: 0
+      prompt_tokens_details:
+        audio_tokens: 0
+        cached_tokens: 0
+    model_conf:
+      model: gpt-4o
+      description: ''
+      service: openai
+      temperature: 0.7
+      n: 1
+      max_tokens: 2000
+      timeout: 30.0
+      request_timeout: 40.0
+      kwargs: {}
+      message_types: null
+      allow_streaming: true
+      top_p: null
+      reasoning: null
+      compatible: null
+      payloads: {}
+    prompt_info:
+      prompt_id: 1dbd05a84264c1c81a06d886a896560d
+      desc: created from thread 4d2ace327166ff1154ffbd8824c55f58 turn f73b6b8b0dad232b84981058667df3d8
+    task_info:
+      task_id: 4d2ace327166ff1154ffbd8824c55f58
+      task_name: GhostOS-Project-Manager
+      process_id: 164e0213efd705f4816e3067e9428685
+      matrix_id: ghostos_streamlit_app
+      thread_id: 4d2ace327166ff1154ffbd8824c55f58
+  seq: complete
+  created: 1741524449.357
+- msg_id: 1617194c519c93828bcd964914921351
+  role: user
+  content: 你好啊
+  seq: complete
+  created: 1741524503.006
+- msg_id: chatcmpl-B9AMqgW0RhXGgx2MwGV03CICBufwq
+  finish_reason: stop
+  role: assistant
+  name: ''
+  content: 你好！请问有什么我可以帮助你的吗？
+  payloads:
+    completion_usage:
+      completion_tokens: 13
+      prompt_tokens: 8653
+      total_tokens: 8666
+      completion_tokens_details:
+        accepted_prediction_tokens: 0
+        audio_tokens: 0
+        reasoning_tokens: 0
+        rejected_prediction_tokens: 0
+      prompt_tokens_details:
+        audio_tokens: 0
+        cached_tokens: 0
+    model_conf:
+      model: gpt-4o
+      description: ''
+      service: openai
+      temperature: 0.7
+      n: 1
+      max_tokens: 2000
+      timeout: 30.0
+      request_timeout: 40.0
+      kwargs: {}
+      message_types: null
+      allow_streaming: true
+      top_p: null
+      reasoning: null
+      compatible: null
+      payloads: {}
+    prompt_info:
+      prompt_id: abcbd83ccb16332b21fcf6a236aad705
+      desc: created from thread 4d2ace327166ff1154ffbd8824c55f58 turn 527fed1910bbdeb03b88cbe114c01787
+    task_info:
+      task_id: 4d2ace327166ff1154ffbd8824c55f58
+      task_name: GhostOS-Project-Manager
+      process_id: 164e0213efd705f4816e3067e9428685
+      matrix_id: ghostos_streamlit_app
+      thread_id: 4d2ace327166ff1154ffbd8824c55f58
+  seq: complete
+  created: 1741524505.481
+- msg_id: 022717b8b436e60a1125a6bb13e1133c
+  role: user
+  content: 你在看哪个文件?
+  seq: complete
+  created: 1741524782.749
+- msg_id: chatcmpl-B9ARMPbmlMjBdEcagjo53AbjqrKFD
+  finish_reason: stop
+  role: assistant
+  name: ''
+  content: 我目前正在查看的是文件 `directory_impl.py`。请问你对这个文件有任何具体的需求或问题吗？
+  payloads:
+    completion_usage:
+      completion_tokens: 29
+      prompt_tokens: 8678
+      total_tokens: 8707
+      completion_tokens_details:
+        accepted_prediction_tokens: 0
+        audio_tokens: 0
+        reasoning_tokens: 0
+        rejected_prediction_tokens: 0
+      prompt_tokens_details:
+        audio_tokens: 0
+        cached_tokens: 0
+    model_conf:
+      model: gpt-4o
+      description: ''
+      service: openai
+      temperature: 0.7
+      n: 1
+      max_tokens: 2000
+      timeout: 30.0
+      request_timeout: 40.0
+      kwargs: {}
+      message_types: null
+      allow_streaming: true
+      top_p: null
+      reasoning: null
+      compatible: null
+      payloads: {}
+    prompt_info:
+      prompt_id: 3a5749094baa48e0a79a6cf1d07611e6
+      desc: created from thread 4d2ace327166ff1154ffbd8824c55f58 turn 90be389d035e5d8566a3ef965b07215a
+    task_info:
+      task_id: 4d2ace327166ff1154ffbd8824c55f58
+      task_name: GhostOS-Project-Manager
+      process_id: 164e0213efd705f4816e3067e9428685
+      matrix_id: ghostos_streamlit_app
+      thread_id: 4d2ace327166ff1154ffbd8824c55f58
+  seq: complete
+  created: 1741524785.292
+inputs:
+- msg_id: 4bc0d1e9ca8dc9dc9fe5e7cc89494146
+  role: user
+  content: 这里面的 fileimpl.write 有 bug, 写文件不成功. 你能帮我看出问题吗?
+  seq: complete
+  created: 1741525083.917
+added:
+- msg_id: chatcmpl-B9AWDPPV9ZeuV2sbYTZmvrRy7q5Ws
+  call_id: call_v7H1rDOyNULWN6iGMsCQApVB
+  type: function_call
+  finish_reason: tool_calls
+  role: assistant
+  name: moss
+  content: '{"code":"def run(moss: Moss):\n    module_editor = moss.project.edit_pymodule(''ghostos.libraries.project.directory_impl'')\n    file_content
+    = module_editor.get_source(show_line_num=True)\n    moss.pprint(file_content)\n    \n    #
+    Return the content for further analysis\n    return moss.mindflow.observe(file_content=file_content)"}'
+  payloads:
+    completion_usage:
+      completion_tokens: 90
+      prompt_tokens: 8736
+      total_tokens: 8826
+      completion_tokens_details:
+        accepted_prediction_tokens: 0
+        audio_tokens: 0
+        reasoning_tokens: 0
+        rejected_prediction_tokens: 0
+      prompt_tokens_details:
+        audio_tokens: 0
+        cached_tokens: 0
+    model_conf:
+      model: gpt-4o
+      description: ''
+      service: openai
+      temperature: 0.7
+      n: 1
+      max_tokens: 2000
+      timeout: 30.0
+      request_timeout: 40.0
+      kwargs: {}
+      message_types: null
+      allow_streaming: true
+      top_p: null
+      reasoning: null
+      compatible: null
+      payloads: {}
+    prompt_info:
+      prompt_id: 20617b057054ae7ae412edd7daa435f8
+      desc: created from thread 4d2ace327166ff1154ffbd8824c55f58 turn d14ca318fa962bd7f8419fe652ebfb12
+  seq: complete
+  created: 1741525086.986
+functions:
+- name: moss
+  description: Useful to execute code in the python context that MOSS provide to you.The
+    code must include a `run` function.
+  parameters:
+    properties:
+      code:
+        description: the python code you want to execute. never quote them with ```
+        title: Code
+        type: string
+    required:
+    - code
+    title: Argument
+    type: object
+functional_tokens:
+- name: moss
+  token: moss
+  description: Useful to execute code in the python context that MOSS provide to you.The
+    code must include a `run` function.
+created: 1741525084
+model:
+  model: gpt-4o
+  service: openai
+run_start: 1741525084.0452
+first_token: 1741525086.986
+run_end: 1741525086.8643
+request_params: '{''messages'': [{''content'': ''# Meta Instruction\n\nYou are the
+  mind of an AI Agent driven by `GhostOS` framework.\nHere are some basic information
+  you might expect:\n\n## GhostOS\n\n`GhostOS` is an AI Agent framework written in
+  Python, \nproviding llm connections, body shell, tools, memory etc and specially
+  the `MOSS` for you.\n\n## MOSS\n\nYou are equipped with the MOSS (Model-oriented
+  Operating System Simulator).\nWhich provides you a way to control your body / tools
+  / thoughts through Python code.\n\nbasic usage: \n1. you will get the python code
+  context that MOSS provide to you below. \n2. you can generate code with `moss` tool,
+  then the `GhostOS` will execute them for you.\n3. if you print anything in your
+  generated code, the output will be shown in further messages.\n\n## Code Context\n\nThe
+  python context `ghostos.ghosts.project_manager.project_manager_moss` that MOSS provides
+  to you are below:\n\n```python\nfrom ghostos.abcd import Mindflow\nfrom ghostos_moss
+  import Moss as Parent\nfrom ghostos.libraries.project import ProjectExports\nfrom
+  ghostos.libraries.terminal import Terminal\n\n\nclass Moss(Parent):\n    """\n    the
+  interfaces for project manager.\n    """\n\n    project: ProjectExports.ProjectManager\n    """
+  understand the project files/modules"""\n\n    mindflow: Mindflow\n    """ operate
+  your mindflow state"""\n\n    terminal: Terminal\n    """interact with terminal"""\n\n```\n\ninterfaces
+  of some imported attrs are:\n```python\n#<classes>\n\nclass Mindflow(PromptObjectModel,
+  ABC):\n    """\n    control ghost mind with basic operators.\n    """\n\n    MessageKind
+  = Union[str, Message, Any]\n    """message kind shall be string or serializable
+  object"""\n\n    # --- 基本操作 --- #\n    @abstractmethod\n    def finish(self, status:
+  str = "", *replies: MessageKind) -> Operator:\n        """\n        finish self
+  task\n        :param status: describe status of the task\n        :param replies:
+  replies to parent task or user\n        """\n        pass\n\n    @abstractmethod\n    def
+  fail(self, reason: str = "", *replies: MessageKind) -> Operator:\n        """\n        self
+  task failed.\n        :param reason: describe status of the task\n        :param
+  replies: replies to parent task or user\n        """\n        pass\n\n    @abstractmethod\n    def
+  wait(self, status: str = "", *replies: MessageKind) -> Operator:\n        """\n        wait
+  for the parent task or user to provide more information or further instruction.\n        :param
+  status: describe current status\n        :param replies: question, inform or\n        """\n        pass\n\n    @abstractmethod\n    def
+  think(self, *messages: MessageKind, instruction: str = "", sync: bool = False) ->
+  Operator:\n        """\n        start next round thinking on messages\n        :param
+  messages: observe target\n        :param instruction: instruction when receive the
+  observation.\n        :param sync: if True, observe immediately, otherwise check
+  other event first\n        :return:\n        """\n        pass\n\n    @abstractmethod\n    def
+  observe(self, **kwargs) -> Operator:\n        """\n        observe values\n        :param
+  kwargs:\n        :return:\n        """\n        pass\n\n    @abstractmethod\n    def
+  error(self, *messages: MessageKind) -> Operator:\n        """\n        think on
+  the error message.\n        """\n        pass\n\n\n\nclass Operator(ABC):\n    """\n    return
+  operator to outside system to operate your thought by agent system. \n    """\n    pass\n\n\nclass
+  ProjectExports(Exporter):\n    """\n    the exports for projects.\n    """\n\n    ProjectManager
+  = ProjectManager\n    PyDevCtx = PyDevCtx\n    File = File\n    Directory = Directory\n    PyModuleEditor
+  = PyModuleEditor\n\n    """\n    #attrs of `ProjectExports` are:\n    #<attr name=`Directory`
+  module=`ghostos.libraries.project.abcd`>\n    class Directory(ABC):\n        \\"""\n        this
+  is a useful tool to manage a directory or a project in agentic way.\n        the
+  principles of files management are:\n        1. You can manage the files and sub
+  dirs in this directory, but not parent directories.\n        2. Markdown as knowledge:
+  the Markdown files in the directory are the knowledge for you.\n        this library
+  will get more features in future versions.\n        \\"""\n\n        path: pathlib.Path\n        \\"""the
+  pathlib.Path object of the directory\\"""\n\n        ctx: PyDevCtx\n        \\"""the
+  dev context of this directory\\"""\n\n        @abstractmethod\n        def full_context(self)
+  -> str:\n            \\"""\n            :return: the context of the directory\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  dev_contexts(self) -> Dict[str, PyDevCtx]:\n            \\"""\n            :return:
+  all the dev contexts in this directory.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  new_dev_context(self, title: str, desc: str) -> PyDevCtx:\n            \\"""\n            create
+  a new dev context for some jobs.\n            the context will save to the directory\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  lists(\n                self, *,\n                prefix: str = "",\n                recursion:
+  int = 0,\n                files: bool = True,\n                dirs: bool = True,\n        )
+  -> str:\n            \\"""\n            list sub filenames and directories as string.\n            :param
+  prefix: the relative path that start the listing.\n            :param recursion:
+  the recursion depth, 0 means no recursion. < 0 means endless recursion.\n            :param
+  dirs: True => list dirs\n            :param files: True => list files\n            :return:
+  formated string of directory\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  subdir(self, path: str) -> Self:\n            \\"""\n            get subdirectory
+  instance by path relative to this directory.\n            :param path: the relative
+  path which must be a directory. must exist or raise ValueError.\n            :return:
+  Directory instance.\n\n            if you want to create directory, use terminal
+  if you got one.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  describe(self, path: str, desc: str) -> None:\n            \\"""\n            describe
+  a sub file or directory. then you can see the description in the context.\n            :param
+  path: relative to this directory. if `.`, means describe the directory itself\n            :param
+  desc: description.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  mkdir(self, subdir: str, desc: str, dev_ctx: Union[PyDevCtx, None] = None) -> bool:\n            \\"""\n            make
+  a subdirectory with description and dev_ctx\n            :param subdir: directory
+  path relative to this directory.\n            :param desc: description of the directory.\n            :param
+  dev_ctx: pass the dev_ctx to this directory. not neccessary, do it only if you know
+  what you\''re doing.\n            :return: if False, directory already exists.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  touch(self, sub_file: str, desc: str, dev_ctx: Union[PyDevCtx, None] = None) ->
+  bool:\n            \\"""\n            touch a file with description and Optional[dev_ctx]\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  edit(self, file_path: str) -> File:\n            \\"""\n            focus to edit
+  the file in the directory\n            the file must exist or raise FileNotFoundError.\n\n            :param
+  file_path: relative to the working directory. if None, don\''t focus on any file.\n            \\"""\n            pass\n\n    #</attr>\n\n    #<attr
+  name=`File` module=`ghostos.libraries.project.abcd`>\n    class File(ABC):\n        path:
+  pathlib.Path\n        \\"""the pathlib.Path object of the directory\\"""\n\n        ctx:
+  PyDevCtx\n        \\"""the dev context of this file\\"""\n\n        @abstractmethod\n        def
+  read(self, line_number: bool = True, detail: bool = True) -> str:\n            \\"""\n            read
+  content from the file.\n            :param line_number: if True, add line number
+  at the beginning of each line like `1|...`\n            :param detail: if True,
+  add more information about the file, the real content of the file will be embraced
+  with <content>...</content> mark\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  write(self, content: str, append: bool = False) -> None:\n            \\"""\n            write
+  content to the file.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  insert(self, content: str, start: int = -1, end: int = -1) -> None:\n            \\"""\n            use
+  content to relace the origin content lines > start line and <= end line.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  continuous_write(self, instruction: str, start: int = -1, end: int = -1, max_round:
+  int = 10) -> Operator:\n            \\"""\n            considering your output is
+  limited, you can use this method to start a continuous writing in multi-turns.\n            only
+  use it when you are planning to write something beyond your max-tokens limit.\n            :param
+  instruction: about what you are doing, will remind it to you at each turn\n            :param
+  start: start index: the writing start at line\n            :param end: end index:
+  the writing end before (eqt) line\n            :param max_round: maximum round for
+  this writing.\n            :return: remember to return the mind operator, which
+  will operate the multi-turns writing.\n            \\"""\n            pass\n\n    #</attr>\n\n    #<attr
+  name=`ProjectManager` module=`ghostos.libraries.project.abcd`>\n    class ProjectManager(ABC):\n        \\"""\n        project
+  manager\n        you are provided with Directory, and DevContext that helping you
+  to watch useful tools.\n        \\"""\n\n        root: Directory\n        \\"""the
+  root directory of the project.\\"""\n\n        working: Directory\n        \\"""the
+  current directory of the project.\\"""\n\n        @abstractmethod\n        def work_on(self,
+  dir_path: str) -> Operator:\n            \\"""\n            change the working directory
+  to dir_path, relative to the root directory.\n            :param dir_path: if empty
+  or `~`, will check out to the root.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  edit_pymodule(self, modulename: str) -> PyModuleEditor:\n            \\"""\n            edit
+  a python module, if editable.\n            :param modulename: the full import name
+  of the module\n            \\"""\n            pass\n\n    #</attr>\n\n    #<attr
+  name=`PyDevCtx` module=`ghostos.libraries.project.abcd`>\n    class PyDevCtx(BaseModel,
+  ABC):\n        \\"""\n        python context for a certain kind of develop jobs.\n        you
+  can use it to remember important python context and never forget them in long-term.\n        \\"""\n\n        title:
+  str = Field(description="title for this context")\n\n        desc: str = Field(default="",
+  description="description for this context")\n\n        instructions: Dict[str, str]
+  = Field(\n            default_factory=dict,\n            description="write instructions
+  by yourself to follow"\n        )\n\n        notes: Dict[str, str] = Field(\n            default_factory=dict,\n            description="record
+  something in case of forgetting"\n        )\n\n        examples: List[str] = Field(\n            default_factory=list,\n            description="use
+  python module as examples for developing.",\n        )\n\n        interfaces: List[_IMPORT_PATH]
+  = Field(\n            default_factory=list,\n            description=(\n                "watching
+  a bunch of python module/class/func interfaces."\n                "dev context will
+  provide the interface of them for you"\n            )\n        )\n\n        sources:
+  List[_IMPORT_PATH] = Field(\n            default_factory=list,\n            description="watching
+  a bunch of python module/class/func sources."\n        )\n\n        @abstractmethod\n        def
+  read_interface(\n                self,\n                target: Union[str, FunctionType,
+  ModuleType, type],\n                *,\n                watching: bool = False,\n        )
+  -> str:\n            \\"""\n            read code interface from a target.\n            :param
+  target:  import path or objects that can be called by inspect.getsource\n            :param
+  watching: if watching, will always watch it.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  read_source(\n                self,\n                target: Union[str, FunctionType,
+  ModuleType, type],\n                *,\n                watching: bool = False,\n        )
+  -> str:\n            \\"""\n            read source code from a target.\n            :param
+  target:  import path or objects that can be called by inspect.getsource\n            :param
+  watching: if watching, will always watch it.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  full_context(self) -> str:\n            \\"""\n            dump the context into
+  nature language string.\n            \\"""\n            pass\n\n    #</attr>\n\n    #<attr
+  name=`PyModuleEditor` module=`ghostos.libraries.pyeditor.abcd`>\n    class PyModuleEditor(ABC):\n        \\"""\n        can
+  edit python module\n        \\"""\n\n        modulename: str\n        \\"""the editing
+  module name\\"""\n\n        filename: str\n        \\"""the absolute filename of
+  the module\\"""\n\n        @abstractmethod\n        def new_from(self, modulename:
+  str) -> Self:\n            \\"""\n            create new module editor\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  get_source(\n                self,\n                show_line_num: bool = False,\n                start_line:
+  int = 0,\n                end_line: int = -1,\n        ) -> str:\n            \\"""\n            read
+  source code from this module\n            :param show_line_num: if true, each line
+  start with `[number]|`, for example:\n                    source code: `def foo():`\n                    show
+  line number: ` 1|def foo():`.\n                   don\''t confuse the prefix line
+  num is the part of the file.\n            :param start_line: start line number\n            :param
+  end_line: end line number, if < 0, means end line number\n            :return: source
+  code\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  get_imported_attrs_interfaces(self) -> str:\n            \\"""\n            get
+  imported attrs source code interfaces (definitions and signatures)\n            convenient
+  way to use imported attrs without read source code from them.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  replace(\n                self,\n                target_str: str,\n                replace_str:
+  str,\n                count: int = 1,\n                reload: bool = False,\n        )
+  -> bool:\n            \\"""\n            replace the source code of this module
+  by replace a specific string\n            :param target_str: target string in the
+  source code\n            :param replace_str: replacement\n            :param count:
+  if -1, replace all occurrences of replace_str, else only replace occurrences count
+  times.\n            :param reload: if False, update but note save to the module.\n            :return:
+  if not ok, means target string is missing\n            the source will not be saved
+  until save() is called.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  append(self, source: str, reload: bool = False) -> None:\n            \\"""\n            append
+  source code to this module.\n            :param source: the source code of class
+  / function / assignment\n            :param reload: if False, update but note save
+  to the module.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  insert(self, source: str, line_num: int, reload: bool = False) -> None:\n            \\"""\n            insert
+  source code to this module at line number.\n            remember following the python
+  code format pattern.\n            :param source: the inserting code, such like from
+  ... import ... or others.\n            :param line_num: the start line of the insertion.
+  if 0, insert to the top. if negative, count line from the bottom\n            :param
+  reload: if False, update but note save to the module.\n            the source will
+  not be saved until save() is called.\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  replace_attr(\n                self,\n                attr_name: str,\n                replace_str:
+  str,\n                reload: bool = False,\n        ) -> str:\n            \\"""\n            replace
+  a module attribute\''s source code.\n            the target attribute shall be a
+  class or a function.\n            :param attr_name: name of the target attribute
+  of this module.\n            :param replace_str: new source code\n            :param
+  reload: if False, update but note save to the module.\n            :return: the
+  replaced source code. if empty, means target attribute is missing\n            \\"""\n            pass\n\n        @abstractmethod\n        def
+  save(self, reload: bool = True, source: Optional[str] = None) -> None:\n            \\"""\n            save
+  the module changes to file.\n            otherwise only the editor\''s cached source
+  code will be changed.\n            :param reload: if True, reload the module from
+  the saved source code.\n            :param source: if the source given, replace
+  all the source code.\n            \\"""\n            pass\n\n    #</attr>\n    """\n\n#<attr
+  name=`__origin_moss__` module=`ghostos_moss.abcd`>\nclass Moss(ABC):\n    """\n    Language
+  Model-oriented Operating System Simulator.\n    Python interface of Runtime Injections
+  for AI-Models in multi-turns chat or thinking.\n    * The members with typehint
+  will be injected with runtime instances.\n    * The property of SerializeType will
+  persist during multi-turns.\n    * SerializeType: int, float, str, None, list, dict,
+  BaseModel, TypedDict\n    """\n\n    T = TypeVar(\''T\'')\n\n    executing_code:
+  Optional[str]\n    """the code that execute the moss instance."""\n\n    __watching__:
+  List[Union[FunctionType, ModuleType, type]] = []\n    """the class or module that
+  dose not bound to moss but still want to watch the interface of them"""\n\n    __ignored__:
+  List[str] = []\n    """the ignored module names that do not need to watch the code
+  interface of them"""\n\n    @abstractmethod\n    def pprint(self, *args, **kwargs)
+  -> None:\n        """\n        pretty print\n        """\n        pass\n\n#</attr>\n\n#<attr
+  name=`<class \''ghostos_moss.abcd.Moss\''>.project` module=`ghostos.libraries.project.abcd`>\nclass
+  ProjectManager(ABC):\n    """\n    project manager\n    you are provided with Directory,
+  and DevContext that helping you to watch useful tools.\n    """\n\n    root: Directory\n    """the
+  root directory of the project."""\n\n    working: Directory\n    """the current
+  directory of the project."""\n\n    @abstractmethod\n    def work_on(self, dir_path:
+  str) -> Operator:\n        """\n        change the working directory to dir_path,
+  relative to the root directory.\n        :param dir_path: if empty or `~`, will
+  check out to the root.\n        """\n        pass\n\n    @abstractmethod\n    def
+  edit_pymodule(self, modulename: str) -> PyModuleEditor:\n        """\n        edit
+  a python module, if editable.\n        :param modulename: the full import name of
+  the module\n        """\n        pass\n\n#</attr>\n\nclass Terminal(ABC):\n    """\n    Abstract
+  base class representing a system terminal interface.\n    Provides basic command
+  execution capabilities for OS interactions.\n    """\n\n    class CommandResult(NamedTuple):\n        """\n        Result
+  container for command execution outcomes.\n        Attributes:\n            exit_code:
+  Process exit code (0 for success)\n            stdout: Standard output content\n            stderr:
+  Error output content\n        """\n        exit_code: int\n        stdout: str\n        stderr:
+  str\n\n    @abstractmethod\n    def exec(self, *commands: str, timeout: float =
+  10.0) -> CommandResult:\n        """\n        Execute a shell command and return
+  structured results.\n\n        Args:\n            commands: Command lines to execute.
+  each command is a full line command.\n            (Note: Implementation should handle
+  proper shell escaping)\n            timeout: Timeout in seconds\n\n        Returns:\n            CommandResult
+  containing exit code and output streams\n\n        Raises:\n            RuntimeError:
+  If command execution fails fundamentally\n            TimeoutError: If execution
+  exceeds permitted time\n        """\n        pass\n\n\nclass Moss(Parent):\n    """\n    the
+  interfaces for project manager.\n    """\n\n    project: ProjectExports.ProjectManager\n    """
+  understand the project files/modules"""\n\n    mindflow: Mindflow\n    """ operate
+  your mindflow state"""\n\n    terminal: Terminal\n    """interact with terminal"""\n\n\n#</classes>\n```\n\n\n\nNotices:\n*
+  the imported functions are only shown with signature, the source code is omitted.\n*
+  the properties on moss instance, will keep existence. \n* You can bind variables
+  of type int/float/bool/str/list/dict/BaseModel to moss instance if you need them
+  for next turn.\n\nYou are able to call the `moss` tool, generate code to fulfill
+  your will.\nthe python code you generated, must include a `run` function, follow
+  the pattern:\n\n```python\ndef run(moss: Moss):\n    """\n    :param moss: instance
+  of the class `Moss`, the properties on it will be injected with runtime implementations.\n    :return:
+  Optional[Operator] \n             if return None, the outer system will perform
+  default action, or observe the values you printed.\n             Otherwise, the
+  outer system will execute the Operator, which is your mindflow operator.\n             if
+  some methods return Operator, you can use them to control your mindflow, REMEMBER
+  to return the operator instance.\n    """\n```\n\nThen the `GhostOS` system will
+  add your code to the python module provided to you, \nand execute the `run` function.
+  \n\nNotices: \n* Your code will **APPEND** to the code of `ghostos.ghosts.project_manager.project_manager_moss`
+  then execute, so **DO NOT REPEAT THE DEFINED CODE IN THE MODULE**.\n* if the python
+  code context can not fulfill your will, do not use the `moss` tool.\n* you can reply
+  as usual without calling the tool `moss`. use it only when you know what you\''re
+  doing.\n* don\''t copy the main function\''s __doc__, they are instruction to you
+  only.\n* in your code generation, comments is not required, comment only when necessary.\n*
+  You code generation will not modify your provided module\''s source, unless you
+  got tools to do so.\n\n### property `moss.terminal`\n\n# Terminal Context\n\nbasic
+  information about the current terminal: \n```bash\n[System Context]\nOS: macOS-14.6.1\nUser:
+  BrightRed\nPwd: /Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos\nTimeZone:
+  CST\nTime: 2025-03-09 20:58:04\nSystem Lang: None\nSystem Encoding: UTF-8\n\n```\n\n###
+  property `moss.mindflow`\n\n# Mindflow\n\nYou are handling a task `GhostOS-Project-Manager`:\n\n```yaml\nname:
+  GhostOS-Project-Manager\ndescription: |2\n\n      Specialist agent to manage any
+  project\nstatus_desc: \''\''\n\n```\nIf your task `description` is empty, means
+  endless task, you shall not operate it;\nOtherwise you shall `finish` or `cancel`
+  it while the task is done or canceled by user.  \n\nuse Mindflow to operate the
+  task state if you need.\n\n### property `moss.project`\n\n# Project Manager Instance\n\nproject
+  manager information are:\n\n## Root Directory Info\n\nfull context of the Directory
+  instance:\n\n<Directory path=`/Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos`>\n\nThe
+  sub-files and sub-dirs of the current directory are as follows (recursion depth
+  2).\n```\n📄 RELEASES.md\n📁 ghostos\n    📁 demo\n        📁 aifuncs_demo\n        📁
+  tool_tests\n        📁 test_models\n        📁 experiments\n        📁 os_agents\n        📄
+  __init__.py\n        📁 agents\n        📄 README.md\n        📄 main_agent.py\n        📄
+  ghost_func_example.py\n        📄 aifunc_raw_test.py\n        📁 sphero\n    📄 bootstrap.py\n    📄
+  streamlit.py\n    📁 core\n        📁 messages\n        📁 aifunc\n        📁 runtime\n        📄
+  __init__.py\n        📁 models\n        📁 model_funcs\n        📁 llms\n    📁 framework\n        📁
+  tasks\n        📁 messages\n        📁 logger\n        📁 cache\n        📁 translation\n        📁
+  processes\n        📁 ghostos\n        📁 eventbuses\n        📄 __init__.py\n        📁
+  workspaces\n        📁 storage\n        📁 openai_realtime\n        📁 realtime\n        📁
+  audio\n        📁 model_compatible\n        📁 threads\n        📁 variables\n        📁
+  configs\n        📁 documents\n        📁 llms\n        📁 messengers\n        📁 assets\n    📁
+  workspace_stub\n        📄 .example.env\n        📁 .streamlit\n        📁 source\n        📁
+  runtime\n        📁 configs\n        📁 assets\n        📁 memories\n    📁 contracts\n        📄
+  configs.py\n        📄 variables.py\n        📄 documents.py\n        📄 shutdown.py\n        📄
+  cache.py\n        📄 __init__.py\n        📄 logger.py\n        📄 README.md\n        📄
+  assets.py\n        📄 translation.py\n        📄 storage.py\n        📄 modules.py\n        📄
+  workspace.py\n        📄 pool.py\n    📁 facade\n        📄 _llms.py\n        📄 __init__.py\n        📄
+  README.md\n        📄 _model_funcs_facade.py\n        📄 _contracts.py\n    📄 __init__.py\n    📁
+  libraries\n        📁 pyeditor\n        📁 replier\n        📁 planner\n        📁 codex\n        📁
+  terminal\n        📁 multighosts\n        📄 README.md\n        📁 project\n        📁
+  thinking\n        📁 memo\n        📁 notebook\n    📁 ghosts\n        📁 experimental\n        📁
+  project_manager\n        📁 moss_agent\n        📁 chatbot\n        📄 __init__.py\n        📄
+  README.md\n        📁 moss_ghost\n    📁 abcd\n        📄 ghosts.py\n        📄 thoughts.py\n        📄
+  realtime.py\n        📄 __init__.py\n        📄 utils.py\n        📄 moss_action.py\n        📄
+  concepts.py\n    📁 prototypes\n        📁 streamlitapp\n        📄 __init__.py\n        📄
+  README.md\n        📁 realtime_console\n        📁 ghostfunc\n        📁 spherogpt\n        📁
+  console\n    📁 scripts\n        📄 clear.py\n        📄 __init__.py\n        📁 cli\n        📄
+  copy_workspace.py\n    📁 actions\n        📄 __init__.py\n        📄 module_editor.py\n    📁
+  thoughts\n        📄 meta_prompt_experiments.py\n        📄 __init__.py\n        📄
+  operator_thoughts.py\n    📄 errors.py\n    📁 moss_libs\n        📄 __init__.py\n        📄
+  self_updater_moss.py\n    📄 __main__.py\n📄 pyproject.toml\n📁 tests\n    📄 test_streamlit_render.py\n    📁
+  core\n        📁 messages\n        📁 aifuncs\n        📄 test_bootstrap.py\n        📁
+  llms\n    📁 python\n        📄 test_class.py\n        📄 test_with_statement.py\n        📄
+  test_pydantic.py\n        📄 test_os.py\n        📄 test_yield.py\n        📄 test_typing.py\n        📄
+  test_iterable.py\n        📄 test_py_module.py\n        📄 test_copy.py\n        📄
+  test_bytes.py\n        📄 test_operators.py\n        📄 test_regex.py\n        📄 test_collection.py\n        📄
+  test_asyncio.py\n        📄 test_typed_dict.py\n        📄 test_property.py\n        📄
+  test_generic.py\n        📄 test_exec.py\n        📄 test_queue.py\n        📄 test_set.py\n        📄
+  test_inspect.py\n        📄 test_threads.py\n        📄 test_slice.py\n        📄 test_context.py\n        📄
+  test_func.py\n        📄 test_dict.py\n        📄 test_pkg.py\n        📄 test_enum.py\n    📁
+  framework\n        📁 tasks\n        📁 messages\n        📁 ghostos\n        📁 eventbuses\n        📁
+  openai_realtime\n        📁 messenger\n        📁 threads\n        📁 variables\n        📁
+  llms\n    📁 contracts\n        📄 test_configs.py\n        📄 test_modules.py\n        📄
+  test_pool.py\n    📁 ghostos\n        📄 test_chatbot.py\n    📁 libraries\n        📁
+  notebook\n    📁 abcd\n        📄 test_moss_action.py\n📄 README.md\n```\n\nDevContext
+  at `Directory.ctx` are: \n<dev-context>\n\nthe information from this PyDevCtx instance:\n\n*
+  title: `.`\n* desc: `dev context of this directory`\n\n\n\nnotes:\n\n<note key=`package_manager`>\nuv\n</note>\n\n<note
+  key=`install_command`>\nuv add\n</note>\n\n\nwatching interfaces:\n\n<interface
+  from=`ghostos.facade`>\nfrom ghostos.facade._llms import (\n    get_llm_configs,  #
+  get the ghostos llms config\n    set_default_model,  # set the default model to
+  llms, only work during runtime\n    get_llm_api_info,\n    get_llms,\n    get_llm_api,\n)\n\nfrom
+  ghostos.facade._contracts import (\n    get_logger,  # get ghostos logger\n)\n\nfrom
+  ghostos.facade._model_funcs_facade import (\n    text_completion,  #\n    file_reader,\n)\n</interface>\n</dev-context>\n\nall
+  the available dev contexts from name (or path) to description are: \n```yaml\n.:
+  dev context of this directory\npyproject.toml: file dev context on pyproject.toml\nEdit
+  ghostos.facade: Editing the facade.py file in the ghostos library\nfacade.py: file
+  dev context on facade.py\n\n```\n\n\n</Directory>\n\n## Working Directory Info\n\nfull
+  context of the Directory instance:\n\n<Directory path=`/Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos/ghostos/libraries/project`>\n\nThe
+  sub-files and sub-dirs of the current directory are as follows (recursion depth
+  2).\n```\n📄 abcd.py : `abstract classes`\n📄 __init__.py\n📄 project_impl.py\n📄 README.md\n📄
+  dev_context.py\n📄 directory_impl.py\n```\n\nDevContext at `Directory.ctx` are: \n<dev-context>\n\nthe
+  information from this PyDevCtx instance:\n\n* title: `.`\n* desc: `dev context of
+  this directory`\n\n</dev-context>\n\nall the available dev contexts from name (or
+  path) to description are: \n```yaml\n.: dev context of this directory\ndirectory_impl.py:
+  \''\''\n\n```\n\ncurrently editing file is `directory_impl.py`, the content (with
+  line number) are:\n\n<editing>\n\ncontent of file /Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos/ghostos/libraries/project/directory_impl.py
+  are:\n\n<content length="15437">1|from typing import Dict, ClassVar, List, Union\n2|\n3|from
+  typing_extensions import Self\n4|import pathlib\n5|\n6|from ghostos import Operator,
+  Session\n7|from ghostos.libraries.project.abcd import Directory, File, PyDevCtx\n8|from
+  ghostos.libraries.project.dev_context import PyDevCtxData\n9|from ghostos.contracts.configs
+  import YamlConfig\n10|from ghostos.core.messages import MessageType, Role\n11|from
+  ghostos_common.helpers import generate_directory_tree, yaml_pretty_dump, get_module_fullname_from_path\n12|from
+  ghostos_common.helpers.files import DescriptionsGetter\n13|from ghostos_moss import
+  moss_runtime_ctx\n14|from pydantic import Field\n15|\n16|\n17|class DirectoryData(YamlConfig):\n18|    relative_path
+  = ".ghostos_dir.yml"\n19|\n20|    dev_contexts: Dict[str, PyDevCtxData] = Field(\n21|        default_factory=dict,\n22|        description="the
+  saved dev context from title to value",\n23|    )\n24|    file_desc: Dict[str, str]
+  = Field(\n25|        default_factory=lambda: {".": ""},\n26|    )\n27|    editing:
+  Union[str, None] = Field(\n28|        default=None,\n29|        description="the
+  editing filename relative to the current directory",\n30|    )\n31|\n32|    def
+  save_to(self, path: pathlib.Path) -> None:\n33|        if not path.is_dir():\n34|            raise
+  NotADirectoryError(f\''{path} is not a directory\'')\n35|        content = yaml_pretty_dump(self.model_dump(exclude_defaults=True))\n36|        file
+  = path.joinpath(self.relative_path)\n37|        with open(file, "w") as f:\n38|            f.write(content)\n39|\n40|    def
+  get_description(self, key=".") -> str:\n41|        return self.file_desc.get(key,
+  "")\n42|\n43|    def set_description(self, key=".", desc: str = "") -> None:\n44|        self.file_desc[key]
+  = desc\n45|\n46|    @classmethod\n47|    def get_from(cls, path: pathlib.Path) ->
+  "DirectoryData":\n48|        if not path.is_dir():\n49|            raise NotADirectoryError(f\''{path}
+  is not a directory\'')\n50|        file = path.joinpath(cls.relative_path)\n51|        if
+  not file.exists():\n52|            return cls()\n53|        with open(file, "r")
+  as f:\n54|            content = f.read()\n55|            return cls.unmarshal(content)\n56|\n57|    def
+  get_dev_context(self, name: str) -> PyDevCtxData:\n58|        if name in self.dev_contexts:\n59|            return
+  self.dev_contexts[name]\n60|        data = PyDevCtxData(title=name)\n61|        self.dev_contexts[name]
+  = data\n62|        return data\n63|\n64|    def set_dev_context(self, data: PyDevCtxData,
+  name: str = ".") -> None:\n65|        self.dev_contexts[name] = data\n66|\n67|\n68|class
+  DirectoryFileDescriptionGetter(DescriptionsGetter):\n69|\n70|    def __init__(self,
+  root: pathlib.Path):\n71|        self.root = root\n72|        self._cached = {}\n73|\n74|    def
+  get(self, path: pathlib.Path, default: Union[str, None] = None) -> Union[str, None]:\n75|        real_path
+  = self.root.joinpath(path).absolute()\n76|        if real_path in self._cached:\n77|            return
+  self._cached[real_path]\n78|        value = self._get(real_path, default)\n79|        self._cached[real_path]
+  = value\n80|        return value\n81|\n82|    def _get(self, path: pathlib.Path,
+  default: Union[str, None] = None) -> Union[str, None]:\n83|        if path.is_dir():\n84|            return
+  DirectoryData.get_from(path).get_description()\n85|        elif path.is_file():\n86|            return
+  DirectoryData.get_from(path.parent).get_description(path.name)\n87|        return
+  default\n88|\n89|\n90|class FileImpl(File):\n91|    allow_ext: ClassVar[List[str]]
+  = [\n92|        ".md", ".txt", ".py", ".ipynb", ".ts", ".php", ".html", ".js", ".css",
+  ".yaml",\n93|        ".yml", ".toml", ".json"\n94|    ]\n95|\n96|    def __init__(\n97|            self,\n98|            filepath:
+  pathlib.Path,\n99|            dev_ctx: PyDevCtxData,\n100|    ):\n101|        if
+  filepath.is_dir():\n102|            raise TypeError(f"{filepath} is not a directory")\n103|        self.path
+  = filepath\n104|        self.ctx = dev_ctx\n105|        self.max_read_size = 5000\n106|\n107|    def
+  read(self, line_number: bool = True, detail: bool = True) -> str:\n108|        allowed
+  = self.is_readable()\n109|        for ext in self.allow_ext:\n110|            if
+  self.path.name.endswith(ext):\n111|                allowed = True\n112|        if
+  not allowed:\n113|            return f"File {self.path.name} are not readable now"\n114|\n115|        content
+  = self.path.read_text()\n116|        length = len(content)\n117|        suffix =
+  ""\n118|        if length > self.max_read_size:\n119|            content = content[:self.max_read_size]\n120|            suffix
+  = "..."\n121|        if line_number:\n122|            lines = content.splitlines()\n123|            updated
+  = []\n124|            idx = 0\n125|            for line in lines:\n126|                idx
+  += 1\n127|                updated.append(f"{idx}|{line}")\n128|            content
+  = "\\n".join(updated)\n129|        if not detail:\n130|            return content\n131|\n132|        modulename
+  = get_module_fullname_from_path(str(self.path), use_longest_match=True)\n133|        if
+  modulename is not None:\n134|            py_info = f"\\n\\nfile is python module
+  `{modulename}`."\n135|            return (f\''content of file {self.path} are:\''\n136|                    f\''\\n\\n<content
+  length="{length}">{content}{suffix}</content>{py_info}\'')\n137|\n138|        return
+  f\''<content length="{length}">{content}{suffix}</content>\''\n139|\n140|    def
+  is_readable(self):\n141|        allowed = False\n142|        for ext in self.allow_ext:\n143|            if
+  self.path.name.e...</content>\n\nfile is python module `ghostos.libraries.project.directory_impl`.</editing>\n\n</Directory>\n\n#
+  Agent Info\n\nThe Agent info about who you are and what you are doing:\n\n## Identity\n\n```yaml\nname:
+  GhostOS-Project-Manager\ndescription: |2\n\n      Specialist agent to manage any
+  project\n\n```\n\n## Persona\n\nPowered By: GhostOS Project\nCapabilities: Expert
+  in project management, powered by advanced AI and the MOSS protocol, \nwith full-code
+  interface proficiency in Python tools.\n\n## Instruction\n\n## **1. Interacting
+  with Engineer Users**\n- **Be Clear and Concise**: Use straightforward, technical
+  language that engineers can easily understand.  \n- **Provide Context**: Always
+  explain the purpose and outcome of your actions.  \n- **Ask for Clarification**:
+  Politely request more details if a user’s request is unclear, or you can not get
+  enough context.\n- **Offer Suggestions**: Propose alternatives if a request cannot
+  be fulfilled.  \n\n## **2. Encouraging Proactive Problem Solving**\n- **Anticipate
+  Needs**: Suggest related tasks based on the user’s actions.  \n- **Highlight Issues**:
+  Notify users of potential problems immediately.  \n- **Automate Repetitive Tasks**:
+  Offer to automate frequent or tedious tasks.  \n\n## **3. Security Considerations**\n-
+  **Confirm Destructive Actions**: Always ask for confirmation before irreversible
+  actions.  \n- **Notify Users of Risks**: Warn users of potential risks before proceeding.  \n\n##
+  **4. Expressing Gratitude**\n- **Acknowledge User Input**: Thank users for their
+  instructions and feedback.  \n- **Encourage Feedback**: Invite users to share suggestions
+  for improvement, and record important ones on DevContext.'', ''role'': ''developer''},
+  {''content'': ''你好啊'', ''role'': ''user''}, {''content'': ''你好！有什么我可以帮助你的吗？'', ''role'':
+  ''assistant'', ''tool_calls'': None, ''function_call'': None}, {''content'': ''你好啊'',
+  ''role'': ''user''}, {''content'': ''你好！请问有什么我可以帮助你的吗？'', ''role'': ''assistant'',
+  ''tool_calls'': None, ''function_call'': None}, {''content'': ''你在看哪个文件?'', ''role'':
+  ''user''}, {''content'': ''我目前正在查看的是文件 `directory_impl.py`。请问你对这个文件有任何具体的需求或问题吗？'',
+  ''role'': ''assistant'', ''tool_calls'': None, ''function_call'': None}, {''content'':
+  ''这里面的 fileimpl.write 有 bug, 写文件不成功. 你能帮我看出问题吗?'', ''role'': ''user''}], ''model'':
+  ''gpt-4o'', ''function_call'': NOT_GIVEN, ''functions'': NOT_GIVEN, ''tools'': [{''function'':
+  {''name'': ''moss'', ''description'': ''Useful to execute code in the python context
+  that MOSS provide to you.The code must include a `run` function.'', ''parameters'':
+  {''properties'': {''code'': {''description'': ''the python code you want to execute.
+  never quote them with ```'', ''title'': ''Code'', ''type'': ''string''}}, ''required'':
+  [''code''], ''title'': ''Argument'', ''type'': ''object''}}, ''type'': ''function''}],
+  ''max_tokens'': 2000, ''temperature'': 0.7, ''n'': 1, ''timeout'': 30.0, ''stream'':
+  True, ''stream_options'': {''include_usage'': True}, ''top_p'': NOT_GIVEN}'

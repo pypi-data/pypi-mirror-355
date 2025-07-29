@@ -1,0 +1,1842 @@
+id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+on_created:
+  turn_id: c8bd021982927e2f8b7b926e10ce1e5f
+  created: 1741196626
+history:
+- turn_id: 6e57463e96ad847071f21a0ebd0d9e78
+  event:
+    event_id: 6e57463e96ad847071f21a0ebd0d9e78
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: bfc9447b589aa12a4e568dfc560125e2
+      role: user
+      content: 你能告诉我你在一个什么样的项目吗?
+      seq: complete
+      created: 1741196981.925
+  added:
+  - msg_id: chatcmpl-B7nAGTIOsOr4bA4OELhku1IhvmdwT
+    role: assistant
+    name: project-manager
+    content: |-
+      我在管理一个名为 `GhostOS` 的项目。这个项目的根目录位于 `/Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos`。项目里包含了多个子目录和文件，比如 `RELEASES.md`，`.pytest_cache`，`ghostos`，`pyproject.toml`，`tests`，`README.md`，`.idea` 等等。
+
+      项目的主要功能是为 AI Agent 提供一个操作系统框架，支持多种工具、记忆管理、以及模型导向的操作系统模拟器（MOSS）。这个框架是用 Python 编写的，旨在帮助开发者更好地构建和管理智能代理。
+    payloads:
+      completion_usage:
+        completion_tokens: 157
+        prompt_tokens: 3289
+        total_tokens: 3446
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 0
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: cac06e17403b5dd47602bb6dbb1b4ba9
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 6e57463e96ad847071f21a0ebd0d9e78
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741196985.702
+  created: 1741196982
+- turn_id: 2109a8d6c5ec0fe615c28eca5d350c49
+  event:
+    event_id: 2109a8d6c5ec0fe615c28eca5d350c49
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: 310519737d7042ffeca002a8c9765e35
+      role: user
+      content: 现在安装了哪些类库?
+      seq: complete
+      created: 1741197022.316
+  added:
+  - msg_id: chatcmpl-B7nAtv5Wv5awz6SDhTuCqArJv1bbs
+    call_id: call_374egPCdma5s4MGzJPdAKoAH
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    root_context = moss.project.root.full_context()\n    moss.pprint(root_context)"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 41
+        prompt_tokens: 3459
+        total_tokens: 3500
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 3328
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: b27253f4a1448b35cd2ebdee35aee3b0
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 2109a8d6c5ec0fe615c28eca5d350c49
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197024.535
+  - msg_id: 0ebea9200d1eda1902d9e728ef24fd06
+    call_id: call_374egPCdma5s4MGzJPdAKoAH
+    type: function_output
+    role: assistant
+    name: moss
+    content: |-
+      Moss output:
+      ```text
+      ('\n'
+       'full context of the Directory instance on '
+       '`/Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos`:\n'
+       '\n'
+       '<Context>\n'
+       '\n'
+       'sub files and directories in recursion 1: \n'
+       '```\n'
+       '📄 RELEASES.md\n'
+       '📁 .pytest_cache\n'
+       '    📄 CACHEDIR.TAG\n'
+       '    📄 README.md\n'
+       '    📁 v\n'
+       '📁 ghostos\n'
+       '    📁 demo\n'
+       '    📄 bootstrap.py\n'
+       '    📄 streamlit.py\n'
+       '    📁 core\n'
+       '    📁 app\n'
+       '    📁 framework\n'
+       '    📁 contracts\n'
+       '    📁 facade\n'
+       '    📄 __init__.py\n'
+       '    📁 libraries\n'
+       '    📁 ghosts\n'
+       '    📁 abcd\n'
+       '    📁 .mypy_cache\n'
+       '    📁 prototypes\n'
+       '    📁 scripts\n'
+       '    📁 actions\n'
+       '    📁 thoughts\n'
+       '    📄 errors.py\n'
+       '    📁 moss_libs\n'
+       '    📄 __main__.py\n'
+       '📄 pyproject.toml\n'
+       '📁 tests\n'
+       '    📄 test_streamlit_render.py\n'
+       '    📁 core\n'
+       '    📁 python\n'
+       '    📁 framework\n'
+       '    📁 contracts\n'
+       '    📁 ghostos\n'
+       '    📁 libraries\n'
+       '    📁 abcd\n'
+       '📄 README.md\n'
+       '📁 .idea\n'
+       '    📁 inspectionProfiles\n'
+       '    📄 vcs.xml\n'
+       '    📄 workspace.xml\n'
+       '    📄 modules.xml\n'
+       '    📄 misc.xml\n'
+       '    📄 ghostos.iml\n'
+       '```\n'
+       '\n'
+       'DevContext at `Directory.ctx` are: \n'
+       '<dev-context>\n'
+       '\n'
+       'the information from this PyDevCtx instance:\n'
+       '\n'
+       '* title: `.`\n'
+       '* desc: `dev context of this directory`\n'
+       '\n'
+       '</dev-context>\n'
+       '\n'
+       'all the dev contexts are: \n'
+       '\n'
+       '.: dev context of this directory\n'
+       '\n'
+       '\n'
+       '</Context>\n')
+
+      ```
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197025.348
+  created: 1741197022
+- turn_id: ff95570b344f03ad68ccb77aa0901f83
+  event:
+    event_id: ff95570b344f03ad68ccb77aa0901f83
+    type: rotate
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    reason: receive observation at turn 2
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7nAvvIZF5LYo8r1AgvIJQjNGTyEt
+    role: assistant
+    name: project-manager
+    content: |-
+      当前项目中安装的类库主要位于 `ghostos` 目录下，其子目录包含了：
+
+      - `demo`
+      - `core`
+      - `app`
+      - `framework`
+      - `contracts`
+      - `facade`
+      - `libraries`
+      - `ghosts`
+      - `abcd`
+      - `prototypes`
+      - `scripts`
+      - `actions`
+      - `thoughts`
+      - `moss_libs`
+
+      这些子目录中包含了项目相关的代码和功能模块。此外，根目录下还有 `pyproject.toml` 文件，通常用于定义项目依赖的 Python 包和版本信息。要获取具体安装了哪些第三方库，可以查看 `pyproject.toml` 文件中的 `[tool.poetry.dependencies]` 部分或 `requirements.txt` 文件（如果存在）。
+    payloads:
+      completion_usage:
+        completion_tokens: 166
+        prompt_tokens: 4037
+        total_tokens: 4203
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 3456
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 417e351cdfaa67dbdbb62cd07c1e09a3
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn ff95570b344f03ad68ccb77aa0901f83
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197026.598
+  created: 1741197025
+- turn_id: c90ad54c1dbf20620fb9db887c36bd87
+  event:
+    event_id: c90ad54c1dbf20620fb9db887c36bd87
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: 0bb50e05904fefffb00564182b512a0f
+      role: user
+      content: 你要记住, 拥有 pyproject.toml 的库, 可以从里面看到依赖
+      seq: complete
+      created: 1741197075.684
+  added:
+  - msg_id: chatcmpl-B7nBlHQREtlx8Ie1QmroKZu54NqyZ
+    role: assistant
+    name: project-manager
+    content: 好的，我会记住这一点。拥有 `pyproject.toml` 文件的项目，可以通过这个文件查看其依赖的库和版本信息。感谢你的提醒！如果你需要查看具体的依赖信息，可以让我知道，我可以帮助你获取这些信息。
+    payloads:
+      completion_usage:
+        completion_tokens: 58
+        prompt_tokens: 4230
+        total_tokens: 4288
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 4096
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 491d7b7a008e97c38983526ca1462f53
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn c90ad54c1dbf20620fb9db887c36bd87
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197077.987
+  created: 1741197076
+- turn_id: 4aba52f991f15db8da3d6e40ed6fdb2a
+  event:
+    event_id: 4aba52f991f15db8da3d6e40ed6fdb2a
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: a2619265f677e9dec66190906d3ba867
+      role: user
+      content: 记录一下
+      seq: complete
+      created: 1741197083.975
+  added:
+  - msg_id: chatcmpl-B7nBsuEWbKsj16D4LWdCALjYl2mqw
+    role: assistant
+    name: project-manager
+    content: 目前我没有记录信息的功能，但我可以在与您对话期间保留上下文信息。如果您有任何其他问题或需要进一步帮助，请随时告诉我！
+    payloads:
+      completion_usage:
+        completion_tokens: 39
+        prompt_tokens: 4296
+        total_tokens: 4335
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 4224
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 3eb9ffb8192875b46738cd58ce254d35
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 4aba52f991f15db8da3d6e40ed6fdb2a
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197085.207
+  created: 1741197084
+- turn_id: b0018f76a7ac15466d7f1f882d3f12a8
+  event:
+    event_id: b0018f76a7ac15466d7f1f882d3f12a8
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: 2ce9d245e569a86cf8bf0e6dec37bfce
+      role: user
+      content: 我怕你忘记
+      seq: complete
+      created: 1741197092.514
+  added:
+  - msg_id: chatcmpl-B7nC1dkfl4T151xAwvcuzrSbpHFUC
+    role: assistant
+    name: project-manager
+    content: 理解您的担忧。虽然我无法在会话之间保留信息，但在当前会话中，您可以随时询问我关于先前讨论过的信息，我会尽力提供帮助。如果您有任何具体问题或需要我执行某些操作，请告诉我！
+    payloads:
+      completion_usage:
+        completion_tokens: 60
+        prompt_tokens: 4346
+        total_tokens: 4406
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 4224
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: e134d01b8200e5ef53a28e2005e9d2e6
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn b0018f76a7ac15466d7f1f882d3f12a8
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197094.613
+  created: 1741197093
+- turn_id: a90f7452156ed841219e4975f0fda690
+  event:
+    event_id: a90f7452156ed841219e4975f0fda690
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: bb332ce21db9764d6f1e4119567ef1b6
+      role: user
+      content: 你能看出这个项目用什么包管理工具管理的吗?
+      seq: complete
+      created: 1741197163.251
+  added:
+  - msg_id: chatcmpl-B7nDBhC4wZpFUUwNV12o67dY5pofi
+    role: assistant
+    name: project-manager
+    content: 这个项目使用 `pyproject.toml` 文件来管理依赖，这表明它可能使用 `Poetry` 作为包管理工具。`pyproject.toml`
+      是一个通用的 Python 项目配置文件，但它通常与 `Poetry` 一起使用来管理项目的依赖和构建配置。如果你需要确认，可以查看 `pyproject.toml`
+      文件中是否有 `[tool.poetry]` 部分。
+    payloads:
+      completion_usage:
+        completion_tokens: 94
+        prompt_tokens: 4426
+        total_tokens: 4520
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 4352
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 6175453794a65d24ebcd599332f70550
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn a90f7452156ed841219e4975f0fda690
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197165.945
+  created: 1741197163
+- turn_id: b620aa5d23d6b5f7f7d5f7dce59aeebe
+  event:
+    event_id: b620aa5d23d6b5f7f7d5f7dce59aeebe
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: 0754bfd5696b11fffacae7247141026e
+      role: user
+      content: 你可以看看它
+      seq: complete
+      created: 1741197173.989
+  added:
+  - msg_id: chatcmpl-B7nDL9ipWfUaAuooXWkyd99XIB4xN
+    call_id: call_F27wyV2QyisZWlqlavjct2uW
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    moss.project.edit(\"pyproject.toml\")\n    content
+      = moss.project.editing.read()\n    moss.pprint(content)\n"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 52
+        prompt_tokens: 4530
+        total_tokens: 4582
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 4480
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: b4244de3820067eb19cac8d19124d48d
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn b620aa5d23d6b5f7f7d5f7dce59aeebe
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197176.252
+  - msg_id: 784e23c4ee4f933f442dc2a97a7a62c2
+    call_id: call_F27wyV2QyisZWlqlavjct2uW
+    type: function_output
+    role: assistant
+    name: moss
+    content: 'Function Error: error during executing moss code: ''NoneType'' object
+      has no attribute ''read'''
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197177.037
+  created: 1741197174
+- turn_id: 13f6bb0e2a567e8f1c2d8ac5034ea8ba
+  event:
+    event_id: 13f6bb0e2a567e8f1c2d8ac5034ea8ba
+    type: error
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7nDNWQh8MC4e6Z8PdNNO5OzkLvQ1
+    call_id: call_dZmhBJd14kSy41WitM5hvhx8
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    edit_operator = moss.project.edit(\"pyproject.toml\")\n    if
+      edit_operator:\n        moss.pprint(\"Successfully focused on pyproject.toml.\")\n        content
+      = moss.project.editing.read()\n        moss.pprint(content)\n    else:\n        moss.pprint(\"Failed
+      to focus on pyproject.toml.\")\n"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 133
+        prompt_tokens: 4609
+        total_tokens: 4742
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 4480
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: d583e048bbcd6ae0fa34c821e11d732f
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 13f6bb0e2a567e8f1c2d8ac5034ea8ba
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197179.835
+  - msg_id: 16a92f0f12309ac98b820e0cd1eff32b
+    call_id: call_dZmhBJd14kSy41WitM5hvhx8
+    type: function_output
+    role: assistant
+    name: moss
+    content: |-
+      Moss output:
+      ```text
+      'Successfully focused on pyproject.toml.'
+      ('<content length="2027">1|[project]\n'
+       '2|name = "ghostos"\n'
+       '3|description = "A framework offers an operating system simulator with a '
+       'Python Code Interface for AI Agents"\n'
+       '4|readme = "README.md"\n'
+       '5|version = "v0.4.0-dev13"\n'
+       '6|authors = [\n'
+       '7|    { name = "zhuming", email = "thirdgerb@gmail.com" },\n'
+       '8|    { name = "Nile Zhou", email = "nilezhou123@gmail.com" },\n'
+       '9|]\n'
+       '10|license = { text = "MIT" }\n'
+       '11|requires-python = ">=3.10"\n'
+       '12|dependencies = [\n'
+       '13|    "openai<2.0.0,>=1.59.0",\n'
+       '14|    "rich<14.0.0,>=13.7.1",\n'
+       '15|    "httpx-socks<1.0.0,>=0.9.1",\n'
+       '16|    "datasets<3.0.0,>=2.20.0",\n'
+       '17|    "anthropic<1.0.0,>=0.31.2",\n'
+       '18|    "prompt-toolkit<4.0.0,>=3.0.47",\n'
+       '19|    "streamlit<2.0.0,>=1.39.0",\n'
+       '20|    "pydantic-settings<3.0.0,>=2.5.2",\n'
+       '21|    "streamlit-antd-components<1.0.0,>=0.3.2",\n'
+       '22|    "streamlit-react-jsonschema<1.0.0,>=0.1.3",\n'
+       '23|    "python-dotenv<2.0.0,>=1.0.1",\n'
+       '24|    "websockets<14.0,>=13.1",\n'
+       '25|    "pysocks<2.0.0,>=1.7.1",\n'
+       '26|    "requests[socks]<3.0.0,>=2.32.3",\n'
+       '27|    "streamlit-paste-button<1.0.0,>=0.1.2",\n'
+       '28|    "ghostos-moss>=0.3.1",\n'
+       '29|    "ghostos-container>=0.2.3",\n'
+       '30|    "ghostos-common>=0.3.0",\n'
+       '31|]\n'
+       '32|\n'
+       '33|[tool.setuptools]\n'
+       '34|packages = [\n'
+       '35|    { include = "src" },\n'
+       '36|]\n'
+       '37|\n'
+       '38|[project.urls]\n'
+       '39|Homepage = "https://github.com/ghost-in-moss/GhostOS"\n'
+       '40|Repository = "https://github.com/ghost-in-moss/GhostOS"\n'
+       '41|Documentation = "https://ghost-in-moss.github.io/GhostOS/#/en/"\n'
+       '42|Issues = "https://github.com/ghost-in-moss/GhostOS/issues"\n'
+       '43|\n'
+       '44|[project.optional-dependencies]\n'
+       '45|realtime = [\n'
+       '46|    "pyaudio<1.0.0,>=0.2.14",\n'
+       '47|    "scipy<2.0.0,>=1.15.1",\n'
+       '48|]\n'
+       '49|sphero = [\n'
+       '50|    "spherov2<1.0.0,>=0.12.1",\n'
+       '51|    "bleak<1.0.0,>=0.22.3; python_version >= \\"3.10\\" and '
+       'python_version < \\"3.14\\"",\n'
+       '52|]\n'
+       '53|\n'
+       '54|\n'
+       '55|[tool.uv.sources]\n'
+       '56|ghostos-container = { workspace = true }\n'
+       '57|ghostos-common = { workspace = true }\n'
+       '58|ghostos-moss = { workspace = true }\n'
+       '59|\n'
+       '60|[project.scripts]\n'
+       '61|ghostos = "ghostos.scripts.cli:main"\n'
+       '62|\n'
+       '63|[dependency-groups]\n'
+       '64|dev = [\n'
+       '65|    "pytest>=8.1.1,<9.0.0",\n'
+       '66|    "mypy<2.0.0,>=1.13.0",\n'
+       '67|]\n'
+       '68|\n'
+       '69|\n'
+       '70|[tool.pdm.dev-dependencies]\n'
+       '71|dev = [\n'
+       '72|    "pytest<9.0.0,>=8.1.1",\n'
+       '73|    "mypy<2.0.0,>=1.13.0",\n'
+       '74|]\n'
+       '75|\n'
+       '76|[tool.pdm.build]\n'
+       '77|includes = []\n'
+       '78|[build-system]\n'
+       '79|requires = ["pdm-backend"]\n'
+       '80|build-backend = "pdm.backend"\n'
+       '81|</content>')
+
+      ```
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197182.009
+  created: 1741197177
+- turn_id: 4279170ca34994977691cac4e5d2ff4b
+  event:
+    event_id: 4279170ca34994977691cac4e5d2ff4b
+    type: rotate
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    reason: receive observation at turn 9
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7nDS5Z7bZzSNMdwCI4cBZftSqdLE
+    role: assistant
+    name: project-manager
+    content: |-
+      项目中确实使用了 `pyproject.toml` 文件，从中可以看出该项目使用了 `pdm` 作为包管理工具。具体的依赖管理部分如下：
+
+      - 主要依赖项在 `[project.dependencies]` 部分，包括如 `openai`、`rich`、`httpx-socks` 等多个库。
+      - 开发依赖项在 `[dependency-groups.dev]` 和 `[tool.pdm.dev-dependencies]` 部分中，包括 `pytest` 和 `mypy` 等。
+      - 构建系统设置在 `[build-system]` 部分，指出使用 `pdm-backend` 作为构建后端。
+
+      这些信息表明项目主要通过 `pdm` 来管理其依赖和构建过程。
+    payloads:
+      completion_usage:
+        completion_tokens: 166
+        prompt_tokens: 6002
+        total_tokens: 6168
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2944
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 132084331aea129edf1eb69be7ef7bf0
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 4279170ca34994977691cac4e5d2ff4b
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197183.395
+  created: 1741197182
+- turn_id: 1770a8fb1808bd6643636fcd844b23d0
+  event:
+    event_id: 1770a8fb1808bd6643636fcd844b23d0
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: 02003a4b05595d9466b64107750a1d06
+      role: user
+      content: 你会使用 uv 吗?
+      seq: complete
+      created: 1741197379.017
+  added:
+  - msg_id: chatcmpl-B7nGetG4AmpIRSluPr9sr9cIlnLqD
+    role: assistant
+    name: project-manager
+    content: |-
+      在项目的 `pyproject.toml` 文件中，有一个 `[tool.uv.sources]` 部分，这表明项目可能使用了一个名为 `uv` 的工具或库。然而，我目前没有关于 `uv` 的具体功能或用法的详细信息。
+
+      如果 `uv` 是一个外部工具或库，我可能需要查看其文档或示例代码来了解如何使用它。如果你有关于 `uv` 的具体问题或用法指南，可以提供更多信息，我将尽力帮助你。
+    payloads:
+      completion_usage:
+        completion_tokens: 111
+        prompt_tokens: 6181
+        total_tokens: 6292
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 6144
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 0a7603d1e1bbe4e38b3f6cee3dc762ea
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 1770a8fb1808bd6643636fcd844b23d0
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197381.431
+  created: 1741197379
+- turn_id: 608b4c72650f09a8d26ee22e0c891012
+  event:
+    event_id: 608b4c72650f09a8d26ee22e0c891012
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: 89a22ee5340168109dff8d39a9d60cf3
+      role: user
+      content: 你关注一下 ghostos.facade , 里面有大量你可以直接用的工具
+      seq: complete
+      created: 1741197743.696
+  added:
+  - msg_id: chatcmpl-B7nMXjeyWHipuTE5Ij2Wz3JzmLMsn
+    call_id: call_jmWptgVncOy9HOviVYcc68Hd
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    facade_interface = moss.project.root.ctx.read_interface(''ghostos.facade'',
+      watching=True)\n    moss.pprint(facade_interface)"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 52
+        prompt_tokens: 6334
+        total_tokens: 6386
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 0
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 6af4cfa5b36836553c5d4a4891a6be67
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 608b4c72650f09a8d26ee22e0c891012
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197746.443
+  - msg_id: 5c933ea7beb0fe2a1b6bb73f2cb1830a
+    call_id: call_jmWptgVncOy9HOviVYcc68Hd
+    type: function_output
+    role: assistant
+    name: moss
+    content: |-
+      Moss output:
+      ```text
+      ('from ghostos.facade._llms import (\n'
+       '    get_llm_configs,  # get the ghostos llms config\n'
+       '    set_default_model,  # set the default model to llms, only work during '
+       'runtime\n'
+       '    get_llm_api_info,\n'
+       '    get_llms,\n'
+       '    get_llm_api,\n'
+       ')\n'
+       '\n'
+       'from ghostos.facade._contracts import (\n'
+       '    get_logger,  # get ghostos logger\n'
+       ')\n'
+       '\n'
+       'from ghostos.facade._model_funcs_facade import (\n'
+       '    text_completion,  #\n'
+       '    file_reader,\n'
+       ')')
+
+      ```
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197747.435
+  created: 1741197744
+- turn_id: 3d777b59be2da52123e58694943af05e
+  event:
+    event_id: 3d777b59be2da52123e58694943af05e
+    type: rotate
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    reason: receive observation at turn 13
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7nMaqxlLluPM8zghTzb6WkwehSbz
+    role: assistant
+    name: project-manager
+    content: |-
+      在 `ghostos.facade` 中，有几个工具和功能可以直接使用：
+
+      1. `get_llm_configs` - 获取 GhostOS 的 LLM 配置。
+      2. `set_default_model` - 设置 LLM 的默认模型，该操作仅在运行时生效。
+      3. `get_llm_api_info` - 获取 LLM API 信息。
+      4. `get_llms` - 获取 LLM 列表。
+      5. `get_llm_api` - 获取 LLM API 实例。
+      6. `get_logger` - 获取 GhostOS 的日志记录器。
+      7. `text_completion` - 文本补全功能。
+      8. `file_reader` - 文件读取功能。
+
+      这些工具可以帮助在 GhostOS 框架内执行与语言模型和日志相关的操作。如果有需要使用这些功能的具体场景，可以让我知道，我会进一步帮助你。
+    payloads:
+      completion_usage:
+        completion_tokens: 185
+        prompt_tokens: 6556
+        total_tokens: 6741
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 6272
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 7bb87fb3d9f12ce46c0aa36198a927eb
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 3d777b59be2da52123e58694943af05e
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741197748.807
+  created: 1741197748
+- turn_id: edc9e0fa5cc2a21fd999c3f48e66945e
+  event:
+    event_id: edc9e0fa5cc2a21fd999c3f48e66945e
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: a7374ab9f0675c087705be8bfe9a5c5f
+      role: user
+      content: git 有多少未提交文件?
+      seq: complete
+      created: 1741198492.089
+  added:
+  - msg_id: chatcmpl-B7nYjcfA92IQIg85JJJiS4OkxWDjc
+    call_id: call_HVPjQBBWBYGLbdtE4b9EYxK1
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    result = moss.terminal.exec(''git
+      status --porcelain'')\n    moss.pprint(result.stdout)\n"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 47
+        prompt_tokens: 7067
+        total_tokens: 7114
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 3200
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: ddf617a1843d73a480e72969f4e29c21
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn edc9e0fa5cc2a21fd999c3f48e66945e
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198502.737
+  - msg_id: 5fb04b612c91717faec2e004dc90cc08
+    call_id: call_HVPjQBBWBYGLbdtE4b9EYxK1
+    type: function_output
+    role: assistant
+    name: moss
+    content: |-
+      Moss output:
+      ```text
+      (' M libs/common/RELEASES.md\n'
+       ' M libs/common/pyproject.toml\n'
+       ' M libs/common/src/ghostos_common/helpers/modules.py\n'
+       ' M libs/common/tests/helpers/test_modules_helper.py\n'
+       ' M libs/common/tests/test_prompter.py\n'
+       ' M libs/container/src/ghostos_container.py\n'
+       ' M libs/ghostos/.gitignore\n'
+       ' M libs/ghostos/ghostos/abcd/moss_action.py\n'
+       ' M libs/ghostos/ghostos/app/configs/ghostos_conf.yml\n'
+       ' M libs/ghostos/ghostos/contracts/configs.py\n'
+       ' M libs/ghostos/ghostos/framework/ghostos/__init__.py\n'
+       ' M libs/ghostos/ghostos/framework/ghostos/ghostos_impl.py\n'
+       ' M libs/ghostos/ghostos/framework/ghostos/shell_impl.py\n'
+       ' M libs/ghostos/ghostos/ghosts/moss_ghost/impl.py\n'
+       ' M libs/ghostos/ghostos/libraries/planner/abcd.py\n'
+       ' M libs/ghostos/ghostos/libraries/project/__init__.py\n'
+       'D  libs/ghostos/ghostos/libraries/project/_project_data.py\n'
+       'D  libs/ghostos/ghostos/libraries/project/_simple_impl.py\n'
+       ' M libs/ghostos/ghostos/libraries/project/abcd.py\n'
+       'D  libs/ghostos/ghostos/libraries/project/data.py\n'
+       'AM libs/ghostos/ghostos/libraries/project/directory_impl.py\n'
+       ' M libs/ghostos/ghostos/libraries/terminal/abcd.py\n'
+       ' M libs/ghostos/ghostos/prototypes/streamlitapp/pages/chat_with_ghost.py\n'
+       ' M libs/ghostos/ghostos/scripts/cli/__init__.py\n'
+       ' M libs/ghostos/ghostos/scripts/cli/utils.py\n'
+       ' M libs/ghostos/pyproject.toml\n'
+       ' M pyproject.toml\n'
+       '?? libs/ghostos/ghostos/demo/tool_tests/project_agent.py\n'
+       '?? libs/ghostos/ghostos/libraries/planner/provider.py\n'
+       '?? libs/ghostos/ghostos/libraries/project/dev_context.py\n'
+       '?? libs/ghostos/ghostos/libraries/project/project_impl.py\n')
+
+      ```
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198505.208
+  created: 1741198500
+- turn_id: c5265a20bfd264e320073df240757ada
+  event:
+    event_id: c5265a20bfd264e320073df240757ada
+    type: rotate
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    reason: receive observation at turn 22
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7nYnxnKE1kVVOYncl0C1SPvAMyOY
+    role: assistant
+    name: project-manager
+    content: |-
+      当前有多个未提交的文件和目录，具体如下：
+
+      已修改的文件 (`M`):
+      - `libs/common/RELEASES.md`
+      - `libs/common/pyproject.toml`
+      - `libs/common/src/ghostos_common/helpers/modules.py`
+      - `libs/common/tests/helpers/test_modules_helper.py`
+      - `libs/common/tests/test_prompter.py`
+      - `libs/container/src/ghostos_container.py`
+      - `libs/ghostos/.gitignore`
+      - 以及其他多个文件。
+
+      已删除的文件 (`D`):
+      - `libs/ghostos/ghostos/libraries/project/_project_data.py`
+      - `libs/ghostos/ghostos/libraries/project/_simple_impl.py`
+      - `libs/ghostos/ghostos/libraries/project/data.py`
+
+      新增未跟踪的文件 (`??`):
+      - `libs/ghostos/ghostos/demo/tool_tests/project_agent.py`
+      - `libs/ghostos/ghostos/libraries/planner/provider.py`
+      - `libs/ghostos/ghostos/libraries/project/dev_context.py`
+      - `libs/ghostos/ghostos/libraries/project/project_impl.py`
+
+      这些变化包括文件的修改、删除和新增未跟踪的文件。
+    payloads:
+      completion_usage:
+        completion_tokens: 253
+        prompt_tokens: 7632
+        total_tokens: 7885
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 3200
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 9934f6b28d83dad0c1a9e4c35873eeeb
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn c5265a20bfd264e320073df240757ada
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198506.9
+  created: 1741198505
+- turn_id: 3f1986553e25a194f718cbb0658dafa8
+  event:
+    event_id: 3f1986553e25a194f718cbb0658dafa8
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: 1eed139c1fde27ca041ecee336c4f460
+      role: user
+      content: 请你关注一下 ghostos.facade
+      seq: complete
+      created: 1741198613.848
+  added:
+  - msg_id: chatcmpl-B7naZatPq8VgEmCNaqM5qDRGXvqJ9
+    call_id: call_POKWuJOawFssu32nBtKZdYd4
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    moss.project.work_on(''ghostos'')\n    moss.project.root.subdir(''facade'').full_context()\n"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 48
+        prompt_tokens: 7899
+        total_tokens: 7947
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 0
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 313678341d7873264b11d093dc939a60
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 3f1986553e25a194f718cbb0658dafa8
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198616.722
+  - msg_id: 087a08627ae22833d464e17041109b2b
+    call_id: call_POKWuJOawFssu32nBtKZdYd4
+    type: function_output
+    role: assistant
+    name: moss
+    content: 'Function Error: error during executing moss code: /Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos/facade
+      is not a directory'
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198617.696
+  created: 1741198614
+- turn_id: b95a9a7c0bd2d9b458d76c5d4ab17aec
+  event:
+    event_id: b95a9a7c0bd2d9b458d76c5d4ab17aec
+    type: error
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7nacEa8iDdlDmCsT25nDbeiCLOaa
+    role: assistant
+    name: project-manager
+    content: 看起来 `ghostos/facade` 在文件系统中并不是一个目录，而可能是一个模块文件或其他类型的文件。为了获取更多关于 `ghostos.facade`
+      的信息，我可以查看它的源代码。请让我知道是否需要这样做。
+    payloads:
+      completion_usage:
+        completion_tokens: 59
+        prompt_tokens: 8373
+        total_tokens: 8432
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2816
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 2fec6b1e5cff4cda456198b7940574ec
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn b95a9a7c0bd2d9b458d76c5d4ab17aec
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198619.846
+  created: 1741198618
+- turn_id: dc6874964b667a0612d3cb22cb4672be
+  event:
+    event_id: dc6874964b667a0612d3cb22cb4672be
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: a96f3f2d614cc2fb52416789937883b2
+      role: user
+      content: 这是个 python 库, 你可以直接看它的 interface
+      seq: complete
+      created: 1741198637.176
+  added:
+  - msg_id: chatcmpl-B7nawG1LS7PeOtALtgykzkHWhXUj7
+    call_id: call_z8xkUbLf3GmHagvtuKVKkJoQ
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    facade_source = moss.project.root.ctx.read_source(''ghostos.facade'',
+      watching=True)\n    moss.pprint(facade_source)\n"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 53
+        prompt_tokens: 8452
+        total_tokens: 8505
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2816
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: f2f394211c1a5ff472b87c59b2a00be5
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn dc6874964b667a0612d3cb22cb4672be
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198640.365
+  - msg_id: 89c4c5753abdb075ea0f43c44e0499af
+    call_id: call_z8xkUbLf3GmHagvtuKVKkJoQ
+    type: function_output
+    role: assistant
+    name: moss
+    content: |-
+      Moss output:
+      ```text
+      ('from ghostos.facade._llms import (\n'
+       '    get_llm_configs,  # get the ghostos llms config\n'
+       '    set_default_model,  # set the default model to llms, only work during '
+       'runtime\n'
+       '    get_llm_api_info,\n'
+       '    get_llms,\n'
+       '    get_llm_api,\n'
+       ')\n'
+       '\n'
+       'from ghostos.facade._contracts import (\n'
+       '    get_logger,  # get ghostos logger\n'
+       ')\n'
+       '\n'
+       'from ghostos.facade._model_funcs_facade import (\n'
+       '    text_completion,  #\n'
+       '    file_reader,\n'
+       ')\n'
+       '\n'
+       '# ghostos.facade is a composer of all the application level functions.\n'
+       '# easy to use, but more likely are the tutorials of how to use ghostos\n'
+       '# ghostos 内部所有模块都不能依赖 facade.\n')
+
+      ```
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198640.957
+  created: 1741198637
+- turn_id: 1237f20709ab9103b8d519692d18055e
+  event:
+    event_id: 1237f20709ab9103b8d519692d18055e
+    type: rotate
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    reason: receive observation at turn 26
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7naz4Gb4bEX2J1mzaR9UIN2bFyqh
+    role: assistant
+    name: project-manager
+    content: |-
+      `ghostos.facade` 模块的接口主要由几个子模块组成：
+
+      1. **来自 `_llms` 模块的接口**：
+         - `get_llm_configs`: 获取 GhostOS 的 LLM 配置。
+         - `set_default_model`: 设置默认的 LLM 模型，注意该操作仅在运行时生效。
+         - `get_llm_api_info`: 获取 LLM API 信息。
+         - `get_llms`: 获取 LLM 列表。
+         - `get_llm_api`: 获取 LLM API 实例。
+
+      2. **来自 `_contracts` 模块的接口**：
+         - `get_logger`: 获取 GhostOS 的日志记录器。
+
+      3. **来自 `_model_funcs_facade` 模块的接口**：
+         - `text_completion`: 文本补全功能。
+         - `file_reader`: 文件读取功能。
+
+      此外，`ghostos.facade` 是所有应用级别函数的组合器，便于使用，但更倾向于作为使用 GhostOS 的教程。需要注意的是，GhostOS 内部的所有模块都不能依赖于 `facade`。
+    payloads:
+      completion_usage:
+        completion_tokens: 238
+        prompt_tokens: 8731
+        total_tokens: 8969
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2816
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: fbced367a712eaf65a6eca3dba7acadb
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 1237f20709ab9103b8d519692d18055e
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198642.686
+  created: 1741198641
+- turn_id: 5112ddbc8124229c07e2f42e6276216f
+  event:
+    event_id: 5112ddbc8124229c07e2f42e6276216f
+    type: input
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    messages:
+    - msg_id: 98476c023748835a2d6d8ecae812fbff
+      role: user
+      content: 我要你往里面添加一个 get_llms_configs_default() 函数, 获取 llms_config 的 default
+        值
+      seq: complete
+      created: 1741198678.389
+  added:
+  - msg_id: chatcmpl-B7nbbvxYM22UtdpoDbVRCppSReAdM
+    call_id: call_AOTN27wemacI0WelFkDtJ6jM
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    facade_file_path = ''ghostos/facade/__init__.py''\n    moss.project.edit(facade_file_path)\n    facade_code
+      = moss.project.editing.read()\n    if ''def get_llms_configs_default()'' not
+      in facade_code:\n        new_function = (''\\n\\n''\n                        ''def
+      get_llms_configs_default():\\n''\n                        ''    \"\"\"\\n''\n                        ''    获取
+      llms_config 的 default 值\\n''\n                        ''    \"\"\"\\n''\n                        ''    configs
+      = get_llm_configs()\\n''\n                        ''    return configs.get(\"default\",
+      None)\\n'')\n        moss.project.editing.write(facade_code + new_function)\n        moss.pprint(''Function
+      get_llms_configs_default has been added.'')\n    else:\n        moss.pprint(''Function
+      get_llms_configs_default already exists.'')\n"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 220
+        prompt_tokens: 8999
+        total_tokens: 9219
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2816
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 980aa6a575c55d65fdfee603a105aa42
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 5112ddbc8124229c07e2f42e6276216f
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198681.337
+  - msg_id: ab2fc133d87bfeeb2fdb490b94fddc48
+    call_id: call_AOTN27wemacI0WelFkDtJ6jM
+    type: function_output
+    role: assistant
+    name: moss
+    content: 'Function Error: error during executing moss code: ''NoneType'' object
+      has no attribute ''read'''
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198686.6
+  created: 1741198679
+- turn_id: e1ca098fbe747e4aaf7d7d53e03fddec
+  event:
+    event_id: e1ca098fbe747e4aaf7d7d53e03fddec
+    type: error
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7nbjDYnCdYOHCrXUdWiUIEpy5ZMM
+    call_id: call_8emOSMbyVjal67J7TBFkAaMD
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    # 确认当前工作目录为 ghostos\n    moss.project.work_on(''ghostos'')\n    #
+      打开并编辑 ghostos/facade/__init__.py 文件\n    edit_operator = moss.project.edit(''facade/__init__.py'')\n    if
+      edit_operator:\n        moss.pprint(''Editing facade/__init__.py'')\n        facade_code
+      = moss.project.editing.read()\n        if ''def get_llms_configs_default()''
+      not in facade_code:\n            new_function = (''\\n\\n''\n                            ''def
+      get_llms_configs_default():\\n''\n                            ''    \"\"\"\\n''\n                            ''    获取
+      llms_config 的 default 值\\n''\n                            ''    \"\"\"\\n''\n                            ''    configs
+      = get_llm_configs()\\n''\n                            ''    return configs.get(\"default\",
+      None)\\n'')\n            moss.project.editing.write(facade_code + new_function)\n            moss.pprint(''Function
+      get_llms_configs_default has been added.'')\n        else:\n            moss.pprint(''Function
+      get_llms_configs_default already exists.'')\n    else:\n        moss.pprint(''Failed
+      to edit facade/__init__.py'')\n"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 335
+        prompt_tokens: 9246
+        total_tokens: 9581
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2816
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 569c6ee589f357ac14004e68a3491c75
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn e1ca098fbe747e4aaf7d7d53e03fddec
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198691.054
+  - msg_id: 44b41c6a04c20042e49c48e4bac2a268
+    call_id: call_8emOSMbyVjal67J7TBFkAaMD
+    type: function_output
+    role: assistant
+    name: moss
+    content: 'Function Error: error during executing moss code: [Errno 2] No such
+      file or directory: ''/Users/BrightRed/Develop/github.com/ghost-in-moss/GhostOS/libs/ghostos/ghostos/ghostos/facade/__init__.py'''
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198697.657
+  created: 1741198687
+- turn_id: 5b6c074ff314b9115adbe0d72e16f4e7
+  event:
+    event_id: 5b6c074ff314b9115adbe0d72e16f4e7
+    type: error
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7nbuhRdA9bqr56j37tSqkDwMKUTL
+    call_id: call_fsdlprjvd6t328NpUyRD9CTq
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    # 确认当前工作目录为 ghostos\n    moss.project.work_on(''ghostos'')\n    #
+      打开并编辑 ghostos/facade.py 文件\n    edit_operator = moss.project.edit(''facade.py'')\n    if
+      edit_operator:\n        moss.pprint(''Editing facade.py'')\n        facade_code
+      = moss.project.editing.read()\n        if ''def get_llms_configs_default()''
+      not in facade_code:\n            new_function = (''\\n\\n''\n                            ''def
+      get_llms_configs_default():\\n''\n                            ''    \"\"\"\\n''\n                            ''    获取
+      llms_config 的 default 值\\n''\n                            ''    \"\"\"\\n''\n                            ''    configs
+      = get_llm_configs()\\n''\n                            ''    return configs.get(\"default\",
+      None)\\n'')\n            moss.project.editing.write(facade_code + new_function)\n            moss.pprint(''Function
+      get_llms_configs_default has been added.'')\n        else:\n            moss.pprint(''Function
+      get_llms_configs_default already exists.'')\n    else:\n        moss.pprint(''Failed
+      to edit facade.py'')\n"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 304
+        prompt_tokens: 9599
+        total_tokens: 9903
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2816
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 40b2c932b8a2da1c6de92302aca18d1d
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn 5b6c074ff314b9115adbe0d72e16f4e7
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198701.174
+  - msg_id: 6c7c4cc0e63884ff6ece596fc96fecaa
+    call_id: call_fsdlprjvd6t328NpUyRD9CTq
+    type: function_output
+    role: assistant
+    name: moss
+    content: |-
+      Moss output:
+      ```text
+      'Editing facade.py'
+      'Function get_llms_configs_default has been added.'
+
+      ```
+    payloads:
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198714.647
+  created: 1741198698
+current:
+  turn_id: e96699a5ce4dccc4b6522087ed105d78
+  event:
+    event_id: e96699a5ce4dccc4b6522087ed105d78
+    type: rotate
+    task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    from_task_name: project-manager
+    reason: receive observation at turn 30
+    callback: true
+  added:
+  - msg_id: chatcmpl-B7ncCFJyoZfpQLHNw2xyeh9y7rg6m
+    role: assistant
+    name: project-manager
+    content: 我已经在 `ghostos/facade.py` 文件中添加了 `get_llms_configs_default()` 函数。这个函数用于获取
+      `llms_config` 的 `default` 值。现在可以在代码中调用这个函数来获取默认配置。
+    payloads:
+      completion_usage:
+        completion_tokens: 57
+        prompt_tokens: 9908
+        total_tokens: 9965
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2816
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 0fc0969de315c0a210143c3494a7161c
+        desc: created from thread 3091c96ecec1bdeeec74c4a8c9a1d7c3 turn e96699a5ce4dccc4b6522087ed105d78
+      task_info:
+        task_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+        task_name: project-manager
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: 3091c96ecec1bdeeec74c4a8c9a1d7c3
+    seq: complete
+    created: 1741198722.629
+  created: 1741198715

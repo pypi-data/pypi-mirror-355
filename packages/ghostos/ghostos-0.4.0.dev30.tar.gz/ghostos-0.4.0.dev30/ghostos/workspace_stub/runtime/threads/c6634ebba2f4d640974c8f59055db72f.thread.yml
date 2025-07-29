@@ -1,0 +1,212 @@
+id: c6634ebba2f4d640974c8f59055db72f
+on_created:
+  turn_id: 9b9f17962e0b8aaf5f63953c9c78ced4
+  created: 1741260725
+history:
+- turn_id: 5c5a174030a8a9ac333af2e1d65d5cad
+  event:
+    event_id: 5c5a174030a8a9ac333af2e1d65d5cad
+    type: input
+    task_id: c6634ebba2f4d640974c8f59055db72f
+    messages:
+    - msg_id: 0b3605b223dd7e82fe182774a7b01372
+      role: user
+      content: 你好
+      seq: complete
+      created: 1741260724.774
+  added:
+  - msg_id: chatcmpl-B83kM90Uh2YVNdNAeHb9hDvSWJO2Z
+    role: assistant
+    name: ghostos_facade
+    content: 你好！有什么我可以帮助你的吗？
+    payloads:
+      completion_usage:
+        completion_tokens: 11
+        prompt_tokens: 2087
+        total_tokens: 2098
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 0
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 84c8d19efadc66b055f70f4b3d7363f8
+        desc: created from thread c6634ebba2f4d640974c8f59055db72f turn 5c5a174030a8a9ac333af2e1d65d5cad
+      task_info:
+        task_id: c6634ebba2f4d640974c8f59055db72f
+        task_name: ghostos_facade
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: c6634ebba2f4d640974c8f59055db72f
+    seq: complete
+    created: 1741260727.348
+  created: 1741260725
+- turn_id: 5953e71a3c9b99679ba7d4eeec746cc7
+  event:
+    event_id: 5953e71a3c9b99679ba7d4eeec746cc7
+    type: input
+    task_id: c6634ebba2f4d640974c8f59055db72f
+    messages:
+    - msg_id: 007385afc5967b2c0c891866fde41871
+      role: user
+      content: 有哪些函数可以用啊?
+      seq: complete
+      created: 1741260750.994
+  added:
+  - msg_id: chatcmpl-B83kmpfF4RqkccDhylZwPYQPH8P0X
+    role: assistant
+    name: ghostos_facade
+    content: |-
+      在当前环境中，你可以使用以下函数：
+
+      1. `text_completion(text: str) -> str`: 用于通过语言模型完成文本。你可以输入一段文本，模型将为你生成这段文本的后续内容。
+
+      2. `file_reader(filename: str, question: str) -> str`: 用于读取文件并回答有关该文件的问题。你需要提供文件的路径和你想问的问题。
+
+      3. `get_llm_configs() -> LLMsConfig`: 获取语言模型的配置。
+
+      4. `get_llm_api_info() -> List[Dict]`: 获取所有语言模型API的简单描述。
+
+      5. `get_llms(config: Optional[LLMsConfig] = None) -> LLMs`: 获取语言模型。
+
+      6. `get_llm_api(api_name: str = "", model: Optional[ModelConf] = None) -> LLMApi`: 从GhostOS获取语言模型API。
+
+      7. `set_default_model(model_name: str)`: 设置默认模型。
+
+      8. `get_logger() -> LoggerItf`: 获取GhostOS的日志记录器。
+
+      如果你需要使用这些函数中的任何一个或者对它们有疑问，请告诉我！
+    payloads:
+      completion_usage:
+        completion_tokens: 252
+        prompt_tokens: 2110
+        total_tokens: 2362
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2048
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: 952eb3c31f1c9bebdcae45024d340eca
+        desc: created from thread c6634ebba2f4d640974c8f59055db72f turn 5953e71a3c9b99679ba7d4eeec746cc7
+      task_info:
+        task_id: c6634ebba2f4d640974c8f59055db72f
+        task_name: ghostos_facade
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: c6634ebba2f4d640974c8f59055db72f
+    seq: complete
+    created: 1741260752.784
+  created: 1741260751
+- turn_id: 6c867d471ba5ab6abc10bcd04d0dd481
+  event:
+    event_id: 6c867d471ba5ab6abc10bcd04d0dd481
+    type: input
+    task_id: c6634ebba2f4d640974c8f59055db72f
+    messages:
+    - msg_id: d6d7254965ca53ed93bdf9d7e52bd13f
+      role: user
+      content: 帮我添加一个函数获取 llms config 的 default 值
+      seq: complete
+      created: 1741260772.795
+  added:
+  - msg_id: chatcmpl-B83l7dVMd5EaCN1yd6lgrE6QlxDTv
+    call_id: call_8ApwroN8h0KqIBTyyDn9FIGK
+    type: function_call
+    role: assistant
+    name: moss
+    content: '{"code":"def run(moss: Moss):\n    def get_default_llm_config() -> dict:\n        config
+      = get_llm_configs()\n        return config.default.dict()  # Assuming ''default''
+      is an attribute of config and is a Pydantic model\n\n    moss.updater.append(\"\"\"\n    def
+      get_default_llm_config() -> dict:\n        config = get_llm_configs()\n        return
+      config.default.dict()  # Assuming ''default'' is an attribute of config and
+      is a Pydantic model\n    \"\"\")\n    moss.updater.save()"}'
+    payloads:
+      completion_usage:
+        completion_tokens: 137
+        prompt_tokens: 2381
+        total_tokens: 2518
+        completion_tokens_details:
+          accepted_prediction_tokens: 0
+          audio_tokens: 0
+          reasoning_tokens: 0
+          rejected_prediction_tokens: 0
+        prompt_tokens_details:
+          audio_tokens: 0
+          cached_tokens: 2304
+      model_conf:
+        model: gpt-4o
+        description: ''
+        service: openai
+        temperature: 0.7
+        n: 1
+        max_tokens: 2000
+        timeout: 30.0
+        request_timeout: 40.0
+        kwargs: {}
+        message_types: null
+        allow_streaming: true
+        top_p: null
+        reasoning: null
+        compatible: null
+        payloads: {}
+      prompt_info:
+        prompt_id: a9361c16038e54c298ffa308af6568e1
+        desc: created from thread c6634ebba2f4d640974c8f59055db72f turn 6c867d471ba5ab6abc10bcd04d0dd481
+      task_info:
+        task_id: c6634ebba2f4d640974c8f59055db72f
+        task_name: ghostos_facade
+        process_id: 164e0213efd705f4816e3067e9428685
+        matrix_id: ghostos_streamlit_app
+        thread_id: c6634ebba2f4d640974c8f59055db72f
+    seq: complete
+    created: 1741260774.825
+  created: 1741260773
+  approved: false
+  pending_callers:
+  - call_id: call_8ApwroN8h0KqIBTyyDn9FIGK
+    name: moss
+    arguments: '{"code":"def run(moss: Moss):\n    def get_default_llm_config() ->
+      dict:\n        config = get_llm_configs()\n        return config.default.dict()  #
+      Assuming ''default'' is an attribute of config and is a Pydantic model\n\n    moss.updater.append(\"\"\"\n    def
+      get_default_llm_config() -> dict:\n        config = get_llm_configs()\n        return
+      config.default.dict()  # Assuming ''default'' is an attribute of config and
+      is a Pydantic model\n    \"\"\")\n    moss.updater.save()"}'
