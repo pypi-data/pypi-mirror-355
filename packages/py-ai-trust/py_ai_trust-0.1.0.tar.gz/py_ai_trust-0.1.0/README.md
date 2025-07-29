@@ -1,0 +1,184 @@
+py-ai-trust: Building Trustworthy & Responsible AI
+🚀 Overview
+py-ai-trust is a dedicated Python library designed to empower developers and researchers in building, evaluating, and monitoring Trustworthy and Responsible AI (RAI) systems. As AI models become increasingly powerful and integrated into critical applications, it's not enough for them to be merely accurate; they must also be fair, robust, private, and explainable.
+
+py-ai-trust provides a suite of tools to help you scrutinize your AI models across these crucial dimensions, complementing your existing AI development workflows and ensuring your "insane AI's" are also ethical and reliable.
+
+✨ Key Features
+py-ai-trust organizes its functionalities into distinct modules for comprehensive AI trustworthiness assessment:
+
+⚖️ Fairness Audit (fairness.py)
+Bias Detection: Calculate key fairness metrics such as Statistical Parity Difference, Disparate Impact, Equal Opportunity Difference, and Average Odds Difference across different sensitive groups.
+
+Group Analysis: Define and analyze privileged and unprivileged groups based on sensitive attributes.
+
+Visualizations: Generate bar charts to visualize fairness disparities and potential biases.
+
+🛡️ Bias Mitigation (mitigation.py)
+Reweighing (Pre-processing): Adjust sample weights in your training data to achieve statistical parity, reducing bias before model training.
+
+Equalized Odds (Post-processing): Implement techniques to adjust model prediction thresholds, ensuring fairness in True Positive Rates and False Positive Rates across groups.
+
+Reject Option Classification (Post-processing): Identify and handle predictions made with low confidence within a "reject region" to mitigate unfair outcomes.
+
+💪 Robustness Testing (robustness.py)
+Noise Evaluation: Assess model performance under various types and levels of random noise (Gaussian, Uniform) in input features.
+
+Conceptual Adversarial Examples: Generate simple adversarial perturbations to test model resilience against targeted attacks (note: true adversarial attacks for deep learning require specific frameworks like ART).
+
+Data Corruption Simulation: Evaluate model stability when inputs contain missing values, outliers, or random swaps.
+
+🔒 Privacy Auditing (privacy.py)
+Conceptual Membership Inference Attacks (MIA): Evaluate if your model "remembers" specific training data points by analyzing prediction confidence differences between seen and unseen data.
+
+Feature Leakage Detection: Identify features that are highly correlated with the target variable, potentially indicating data leakage from the future or an inappropriate data collection process.
+
+💡 Explainability Enhancement (explainability.py)
+Permutation Importance: A model-agnostic technique to quantify the importance of each feature by measuring the drop in model performance when that feature is randomly shuffled.
+
+Partial Dependence Plots (PDP): Visualize the marginal effect of one or two features on the predicted outcome of the model, showing global relationships.
+
+Individual Conditional Expectation (ICE) Plots: Uncover heterogeneous relationships by showing how each individual instance's prediction changes as a single feature varies.
+
+📋 Comprehensive Audit & Reporting (auditor.py)
+Orchestrated Audits: Conduct a holistic trustworthiness audit by seamlessly integrating the fairness, robustness, privacy, and explainability modules.
+
+Consolidated Reporting: Generate summary reports in Markdown format, providing actionable insights and recommendations based on the audit findings.
+
+Plot Saving: Automatically save generated plots for visual review and documentation.
+
+🏗️ How py-ai-trust Integrates with Your AI Ecosystem
+py-ai-trust is designed to seamlessly integrate with your existing AI development libraries and workflows. It's the perfect companion to enhance the trustworthiness of models built using:
+
+hyper-aidev: Your powerful library for accelerating the entire AI model development lifecycle, from data prep to fine-tuning and MLOps. Once you've used hyper-aidev to train a high-performing model, py-ai-trust steps in to ensure that model meets crucial responsible AI criteria before deployment.
+
+qcsc-mod: (If applicable, link to your specific module's functionality, e.g., "And for specific data quality and control in your pipelines, py-ai-trust ensures the models you're training with qcsc-mod adhere to ethical guidelines.")
+
+By combining hyper-aidev's development speed with py-ai-trust's focus on responsibility, you can build powerful, efficient, and trustworthy AI systems.
+
+🛠️ Installation
+py-ai-trust can be installed via pip:
+
+pip install py-ai-trust
+
+For optional features (e.g., advanced adversarial attack generation with specific libraries), install the respective dependencies:
+
+# For advanced adversarial attack generation
+pip install "py-ai-trust[adversarial]"
+
+# For differential privacy mechanisms
+pip install "py-ai-trust[privacy]"
+
+🚀 Quick Start & Usage Example
+Here's a basic example demonstrating how to use TrustAuditor to perform a comprehensive audit:
+
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_classification
+import os
+
+# Import the main auditor class from py_ai_trust
+from py_ai_trust import TrustAuditor, set_random_seed
+
+# 1. Setup: Generate Synthetic Data and Train a Dummy Model
+set_random_seed(42)
+
+num_samples = 1500
+n_features = 10
+n_informative = 5
+
+# Create synthetic data with a 'Gender' sensitive attribute
+X_synthetic, y_synthetic = make_classification(n_samples=num_samples, n_features=n_features, n_informative=n_informative,
+                                                n_redundant=0, n_clusters_per_class=1, random_state=42, flip_y=0.05)
+
+# Introduce a 'Gender' feature (binary: 0 for Female, 1 for Male)
+gender = np.random.choice([0, 1], size=num_samples, p=[0.5, 0.5])
+
+# Simulate bias: Make 'Feature_0' (e.g., credit score) generally lower for 'Gender' 0 (unprivileged)
+X_synthetic[gender == 0, 0] = np.random.uniform(0, 5, size=np.sum(gender == 0))
+X_synthetic[gender == 1, 0] = np.random.uniform(3, 10, size=np.sum(gender == 1))
+
+# Combine into a DataFrame to include the sensitive attribute
+feature_names = [f'F{i}' for i in range(n_features)]
+X_df = pd.DataFrame(X_synthetic, columns=feature_names)
+X_df['Gender'] = gender
+
+# Split data for training the model (excluding 'Gender' feature for training if desired)
+X_train_model, _, y_train_model, _ = train_test_split(
+    X_df.drop('Gender', axis=1), y_synthetic, test_size=0.2, random_state=42
+)
+
+# Train a RandomForestClassifier
+model = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
+model.fit(X_train_model, y_train_model)
+
+print("Dummy model trained. Ready for audit.")
+
+# 2. Initialize and Run the TrustAuditor
+audit_output_dir = "./py_ai_trust_audit_report_demo"
+auditor = TrustAuditor(output_dir=audit_output_dir)
+
+# Conduct a full audit, specifying the sensitive attribute for fairness analysis
+full_audit_report = auditor.conduct_full_audit(
+    model=model,
+    X=X_df, # Pass the DataFrame including the sensitive attribute for fairness
+    y_true=y_synthetic,
+    sensitive_attribute_name='Gender',
+    privileged_group_value=1, # Male (example)
+    unprivileged_group_value=0, # Female (example)
+    test_size=0.3, # Proportion of data to use for internal audit tests
+    random_state=42,
+    run_fairness_audit=True,
+    run_robustness_audit=True,
+    run_privacy_audit=True,
+    run_explainability_audit=True,
+    save_plots=True # Save plots to the output directory
+)
+
+# 3. Generate and View the Audit Summary
+summary = auditor.generate_report_summary(full_audit_report)
+print("\n" + "="*70)
+print("COMPREHENSIVE AI TRUSTWORTHINESS AUDIT SUMMARY")
+print("="*70)
+print(summary)
+print("="*70 + "\n")
+
+# The full JSON report and plots are saved in './py_ai_trust_audit_report_demo'
+print(f"Detailed audit report (JSON) and plots are saved in: {audit_output_dir}")
+
+# Cleanup (optional)
+# import shutil
+# if os.path.exists(audit_output_dir):
+#     shutil.rmtree(audit_output_dir)
+#     print(f"Cleaned up audit report directory: {audit_output_dir}")
+
+⚠️ Important Considerations
+Sensitive Attributes: Properly identifying and defining sensitive attributes (e.g., Gender, Race, Age) is crucial for meaningful fairness audits.
+
+Ground Truth: Accurate true labels (y_true) are essential for all audit components, especially fairness, robustness, and privacy assessments.
+
+Context Matters: The interpretation of audit findings requires domain expertise and an understanding of the real-world context and impact of your AI system.
+
+Heuristic Nature: Some privacy and adversarial robustness assessments use conceptual or heuristic methods due to the complexity of true attacks on non-differentiable models. For high-security applications, dedicated adversarial frameworks are recommended.
+
+Optional Dependencies: Remember to install optional dependencies if you plan to use advanced features (e.g., adversarial-robustness-toolbox).
+
+🤝 Contributing
+Contributions are highly welcome! If you have ideas for new features, bug fixes, or documentation improvements, please feel free to:
+
+Fork the repository.
+
+Create a new branch (git checkout -b feature/your-feature).
+
+Make your changes.
+
+Commit your changes (git commit -m 'Add new feature').
+
+Push to the branch (git push origin feature/your-feature).
+
+Open a Pull Request.
+
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.

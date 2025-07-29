@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-ai-trust"
+version = "0.1.0"
+authors = [
+  { name="3rror_py", email="your.email@example.com" },
+]
+description = "A comprehensive Python library for building trustworthy and responsible AI systems, focusing on fairness, robustness, privacy, and explainability."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Security", # This is a good existing one for privacy/robustness
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+keywords = [
+    "ai-ethics", "responsible-ai", "fairness", "bias-detection", "bias-mitigation",
+    "explainable-ai", "xai", "model-interpretability", "robustness", "adversarial-attacks",
+    "ai-privacy", "trustworthy-ai", "mlops", "audit", "compliance"
+]
+
+dependencies = [
+    "numpy>=1.20.0",
+    "pandas>=1.0.0",
+    "scikit-learn>=1.0.0",
+    "matplotlib>=3.0.0",
+    "seaborn>=0.11.0",
+    "scipy>=1.5.0",
+    "tqdm>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/py-ai-trust"
+"Bug Tracker" = "https://github.com/your-username/py-ai-trust/issues"
+
+[project.optional-dependencies]
+adversarial = [
+    "adversarial-robustness-toolbox[pytorch]>=1.0.0",
+]
+privacy = [
+    "opacus>=1.0.0",
+]
