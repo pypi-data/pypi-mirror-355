@@ -1,0 +1,385 @@
+/* PERFORMANCE-OPTIMIERTE CSS-ERWEITERUNGEN */
+
+/* Atlas Input Glow - Performante Animation */
+.atlas-input-glow {
+    box-shadow: 0 0 15px rgba(230, 126, 34, 0.6), 0 0 5px rgba(230, 126, 34, 0.8) !important;
+    border-color: #E67E22 !important;
+    transition: box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+}
+
+/* Typewriter-Cursor - Hardware-beschleunigt */
+.typewriter-cursor {
+    animation: blink 1s infinite step-end;
+    will-change: opacity;
+    transform: translateZ(0);
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Performance-Optimierungen für scrollbare Bereiche */
+.scroll-optimized {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(230, 126, 34, 0.6) rgba(26, 26, 26, 0.3);
+    scroll-behavior: smooth;
+    /* GPU-Beschleunigung */
+    will-change: scroll-position;
+    transform: translateZ(0);
+}
+
+.scroll-optimized::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll-optimized::-webkit-scrollbar-track {
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 4px;
+}
+
+.scroll-optimized::-webkit-scrollbar-thumb {
+    background: rgba(230, 126, 34, 0.6);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.scroll-optimized::-webkit-scrollbar-thumb:hover {
+    background: rgba(230, 126, 34, 0.8);
+}
+
+/* Code-Blocks - Performance-optimiert */
+.code-block {
+    contain: layout style paint;
+    will-change: contents;
+}
+
+.code-block pre {
+    margin: 0;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 6px;
+    border-left: 3px solid #E67E22;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    /* Performance */
+    contain: layout style;
+    will-change: scroll-position;
+}
+
+/* Erweiterte Glüh-Effekte - Hardware-beschleunigt */
+.atlas-glow {
+    text-shadow: 0 0 8px rgba(230, 126, 34, 0.8);
+    transition: text-shadow 0.3s ease;
+    will-change: text-shadow;
+    transform: translateZ(0);
+}
+
+.atlas-glow:hover {
+    text-shadow: 0 0 12px rgba(230, 126, 34, 1.0);
+}
+
+/* Status-Indikatoren - Performance-optimiert */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    transition: background-color 0.3s ease;
+    will-change: background-color;
+    transform: translateZ(0);
+}
+
+/* Context-Status-Indikator */
+.context-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    transition: all 0.3s ease;
+    will-change: background-color, color;
+}
+
+.context-status-indicator.healthy {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.context-status-indicator.warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.context-status-indicator.critical {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    animation: pulse-warning 1.5s infinite;
+}
+
+@keyframes pulse-warning {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.status-ready {
+    background-color: #10b981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.status-processing {
+    background-color: #f59e0b;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+    animation: pulse 1.5s infinite;
+}
+
+.status-error {
+    background-color: #ef4444;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Compact Mode für bessere Performance bei vielen Nachrichten */
+.compact-mode .terminal-message {
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.compact-mode #terminal-output {
+    gap: 4px;
+}
+
+/* Memory-Efficient Styles */
+.memory-efficient {
+    contain: strict;
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1px;
+}
+
+/* Touch-Optimierungen für mobile Geräte */
+@media (hover: none) and (pointer: coarse) {
+    .terminal-message {
+        padding: 10px 14px;
+        font-size: 14px;
+        touch-action: manipulation;
+    }
+    
+    .atlas-input-glow {
+        transition: none; /* Deaktiviere Animationen auf Touch-Geräten */
+    }
+}
+
+/* High-DPI Display Optimierungen */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .atlas-glow {
+        text-shadow: 0 0 4px rgba(230, 126, 34, 0.8);
+    }
+    
+    .code-block pre {
+        font-size: 13px;
+    }
+}
+
+/* Reduced Motion für Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .typewriter-cursor {
+        animation: none;
+        opacity: 1;
+    }
+    
+    .atlas-input-glow,
+    .atlas-glow,
+    .status-indicator {
+        transition: none;
+    }
+    
+    .status-processing {
+        animation: none;
+    }
+    
+    .scroll-optimized {
+        scroll-behavior: auto;
+    }
+}
+
+/* Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+    .code-block pre {
+        background: rgba(0, 0, 0, 0.6);
+        border-left-color: #E67E22;
+    }
+    
+    .atlas-glow {
+        text-shadow: 0 0 10px rgba(230, 126, 34, 0.9);
+    }
+}
+
+/* Performance-kritische Animationen */
+.performance-critical {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+/* Virtual Scrolling Support */
+.virtual-scroll-container {
+    height: 100%;
+    overflow: auto;
+    contain: strict;
+}
+
+.virtual-scroll-item {
+    contain: layout style paint;
+    will-change: transform;
+}
+
+/* CONTEXT-ROTATION UI */
+.context-rotation-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    margin: 8px 0;
+    background: linear-gradient(135deg, rgba(230, 126, 34, 0.1), rgba(230, 126, 34, 0.2));
+    border: 1px solid rgba(230, 126, 34, 0.3);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    will-change: transform, opacity;
+}
+
+.context-rotation-indicator.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.context-rotation-indicator.success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.context-rotation-indicator.error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2));
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.rotation-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #E67E22;
+    font-weight: 500;
+}
+
+.context-rotation-indicator.success .rotation-content {
+    color: #10b981;
+}
+
+.context-rotation-indicator.error .rotation-content {
+    color: #ef4444;
+}
+
+.rotation-spinner {
+    font-size: 16px;
+    animation: rotate 1s linear infinite;
+    display: inline-block;
+    will-change: transform;
+}
+
+.context-rotation-indicator.success .rotation-spinner,
+.context-rotation-indicator.error .rotation-spinner {
+    animation: none;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.rotation-text {
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+/* Context-Percentage Animation */
+.context-percentage {
+    transition: color 0.3s ease;
+}
+
+.context-percentage.warning {
+    color: #f59e0b !important;
+    text-shadow: 0 0 4px rgba(245, 158, 11, 0.5);
+}
+
+.context-percentage.critical {
+    color: #ef4444 !important;
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+    animation: pulse-critical 2s infinite;
+}
+
+@keyframes pulse-critical {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Debug-Hints für Context-Rotation */
+.debug-rotation-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #E67E22;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'Consolas', monospace;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.debug-rotation-hint.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Context-Rotation */
+@media (max-width: 768px) {
+    .context-rotation-indicator {
+        margin: 4px 0;
+        padding: 8px;
+    }
+    
+    .rotation-content {
+        font-size: 13px;
+    }
+    
+    .rotation-spinner {
+        font-size: 14px;
+    }
+}
+
+/* High-Performance Mode für Context-Rotation */
+.performance-mode .context-rotation-indicator {
+    animation: none;
+    transition: none;
+}
+
+.performance-mode .rotation-spinner {
+    animation-duration: 2s; /* Langsamere Animation für bessere Performance */
+}
