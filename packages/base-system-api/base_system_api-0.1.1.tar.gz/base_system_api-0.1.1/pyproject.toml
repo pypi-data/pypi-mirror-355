@@ -1,0 +1,37 @@
+[project]
+name = "base-system-api"
+version = "0.1.1"
+description = "A CLI tool for generating FastAPI project structures and code"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "BS CLI Developer", email = "developer@example.com"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "click>=8.0.0",
+    "jinja2>=3.0.0",
+]
+
+[project.scripts]
+bs = "bs_cli.cli:cli"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["bs_cli*"]
+
+[tool.setuptools.package-data]
+bs_cli = ["templates/*.py"]
