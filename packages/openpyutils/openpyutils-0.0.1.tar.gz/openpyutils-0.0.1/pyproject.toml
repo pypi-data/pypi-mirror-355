@@ -1,0 +1,30 @@
+[project]
+name = "openpyutils"
+version = "0.0.1"
+authors = [
+    { name = "YiXiaoCuoHuaiFenZi", email = "249664317@qq.com" },
+]
+description = "open source of python utils."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+[project.urls]
+"Bug Tracker" = "https://github.com/YiXiaoCuoHuaiFenZi/OpenPyUtils/issues"
+Homepage = "https://github.com/YiXiaoCuoHuaiFenZi/OpenPyUtils"
+
+[project.optional-dependencies]
+dev = [
+    "build>=0.5.1",
+    "twine>=3.4.2",
+    "pip-tools>=5",
+    "pytest>=6.2.4",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
