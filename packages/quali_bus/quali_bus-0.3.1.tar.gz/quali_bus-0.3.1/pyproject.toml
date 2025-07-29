@@ -1,0 +1,90 @@
+
+[tool.poetry]
+name = "quali_bus"
+version = "0.3.1"
+description = "Automatizar o cálculo do Índice de Qualidade do Transporte (IQT). O IQT é uma métrica essencial para a análise e otimização do transporte público, considerando fatores como pontualidade, frequência de atendimento, cumprimento de itinerários e infraestrutura."
+authors = ["Yago Maia <yagohenriquev123@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+keywords = ["transporte", "IQT", "GIS", "análise espacial", "transporte público"]
+homepage = "https://github.com/YagoMaia/quali_bus"
+repository = "https://github.com/YagoMaia/quali_bus"
+
+[tool.poetry.dependencies]
+python = ">=3.12, <4.0"
+contextily = "^1.6.2"
+mapclassify = "^2.9.0"
+numpy = "^2.3.0"
+pandas = "^2.3.0"
+geopandas = "^1.1.0"
+folium = "^0.19.7"
+shapely = "^2.1.1"
+matplotlib = "^3.10.3"
+fiona = "^1.10.1"
+seaborn = "^0.13.2"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 150
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "C",   # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "D",   # pydocstyle
+]
+
+# Removido "UP" para evitar reescrita de código
+
+ignore = [
+    "E501",  # line length violations
+    "W191",  # Ignore indentação com tabs
+    "E111",  # Indentação não múltipla de 4
+    "E114",  # Indentação não múltipla de 4 (comentários)
+    "E116",  # Indentação inesperada
+    "E117",  # Over-indented
+    "D206",
+    "D100",
+    "D212",
+    "D104",
+    "D101",
+    "D200",
+    "D107",
+    "B904",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+preview = true
+quote-style = "double"
+indent-style = "tab"
+skip-magic-trailing-comma = true
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = 60
+
+[tool.ruff.lint.isort]
+known-first-party = ["escritorio"]
+combine-as-imports = true
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "F401",  # Ignorar imports não usados
+    "F403",  # Ignorar imports globais
+    "D",     # Ignorar erros de docstring
+]
