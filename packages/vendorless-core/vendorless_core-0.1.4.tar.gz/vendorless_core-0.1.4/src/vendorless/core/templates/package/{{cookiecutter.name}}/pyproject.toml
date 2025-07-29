@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "vendorless-{{ cookiecutter.name }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.description }}"
+authors = ["{{ cookiecutter.author }} <{{ cookiecutter.email }}>"]
+license = "{{ cookiecutter.license }}"
+readme = "README.md"
+homepage = "https://{{ cookiecutter.github_username }}.github.io/vendorless-{{ cookiecutter.name }}/"
+documentation = "https://{{ cookiecutter.github_username }}.github.io/vendorless-{{ cookiecutter.name }}/"
+repository = "https://github.com/{{ cookiecutter.github_username }}/vendorless-{{ cookiecutter.name }}"
+
+packages = [
+    { include = "vendorless/{{ cookiecutter.name }}", from = "src" },
+]
+include = [
+    "vendorless/{{ cookiecutter.name }}/templates",
+]
+
+[tool.poetry.dependencies]
+vendorless-core = "^0.1.0"
+
+[tool.poetry.group.dev.dependencies]
+vendorless-core = { version = "^0.1.0", extras = ["dev"] }
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
