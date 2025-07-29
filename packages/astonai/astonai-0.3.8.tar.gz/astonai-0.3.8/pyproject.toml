@@ -1,0 +1,162 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astonai"
+version = "0.3.8"
+description = "Test Intelligence Engine"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+    { name = "Aston AI" }
+]
+keywords = ["aston", "test coverage", "static analysis"]
+dependencies = [
+    "numpy>=1.22.0,<2.3",
+    "pydantic>=1.10.0,<3.0",
+    "click>=8.1.3,<9.0",
+    "rich>=12.5.1,<15.0",
+    "PyYAML>=6.0,<7.0",
+    "gitpython>=3.1.0,<4.0",
+    "astgraph>=0.1.0,<0.2.0",
+    "networkx>=3.0.0,<4.0",
+    "parso>=0.8.0,<1.0",
+    "libcst>=1.0.0,<2.0",
+]
+
+[project.scripts]
+aston = "aston.cli.main:main"
+# Legacy support (will be removed in v0.5.0)
+testindex = "aston.cli.main:main"
+
+[tool.setuptools]
+packages = [
+    "testindex",  # Deprecation shim
+    "aston",
+    "aston.cli",
+    "aston.cli.commands",
+    "aston.cli.utils",
+    "aston.core",
+    "aston.core.cli",
+    "aston.analysis",
+    "aston.analysis.coverage",
+    "aston.analysis.test_quality",
+    "aston.analysis.utils",
+    "aston.preprocessing",
+    "aston.preprocessing.chunking",
+    "aston.preprocessing.cloning",
+    "aston.preprocessing.integration",
+    "aston.preprocessing.parsing",
+    "aston.preprocessing.parsing.visitors",
+    "aston.preprocessing.parsing.frameworks",
+    "aston.knowledge",
+    "aston.knowledge.embedding",
+    "aston.knowledge.embedding.providers",
+    "aston.knowledge.graph",
+    "aston.knowledge.schema",
+    "aston.api",
+    "aston.query",
+    "aston.query.execution",
+    "aston.query.model",
+    "aston.query.utils",
+    "aston.storage",
+    "aston.visualization",
+    "aston.llm",
+    "aston.llm.clients"
+]
+include-package-data = true
+
+# Include aston-rank binaries in the package
+[tool.setuptools.package-data]
+aston = ["bin/aston-rank-*"]
+
+[project.urls]
+
+[project.optional-dependencies]
+# Database connectivity (Neo4j)
+db = ["neo4j>=5.5.0,<6.0"]
+
+# Visualization capabilities  
+viz = ["matplotlib>=3.8,<3.12"]
+
+# LLM integration
+llm = ["openai>=1.0.0,<2.0"]
+
+# Embedding capabilities
+embed = [
+    "sentence-transformers>=2.0.0,<3.0",
+    "faiss-cpu>=1.7.0",
+    "aiohttp>=3.8.0,<4.0"  # For OpenAI API calls
+]
+
+# Testing dependencies
+test = [
+    "pytest>=8.0.0,<9.0",
+    "pytest-cov>=4.1.0,<5.0", 
+    "pytest-xdist>=3.0.0,<4.0",
+    "pytest-asyncio>=0.21.0,<1.0",
+    "mypy>=1.0.0,<2.0",
+    "flake8>=6.0.0,<8.0",
+    "packaging>=23.0,<25.0",
+    "aioresponses>=0.7.0,<1.0",  # For testing aiohttp requests
+]
+
+# Coverage tools
+coverage = [
+    "pytest-cov>=4.1.0,<5.0",
+    "coverage-conditional-plugin>=0.9.0,<1.0",
+]
+
+# Development dependencies  
+dev = [
+    "astonai[db,viz,llm,test,coverage,embed]",
+    "build>=1.0.0,<2.0",
+    "twine>=4.0.0,<6.0",
+]
+
+# Everything bundle
+all = ["astonai[db,viz,llm,test,coverage,embed]"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow to run",
+    "neo4j: marks tests requiring a Neo4j instance",
+    "integration: marks integration tests",
+    "llm: marks tests requiring LLM API access",
+    "docker: marks tests requiring Docker environment"
+]
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+]
+
+[tool.coverage.run]
+branch = false
+source = ["aston"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "aston/tests/*",
+    "tests/*",
+    "*/venv/*",
+    "*/__pycache__/*",
+    "*/migrations/*",
+    "testindex/*",  # Legacy shim
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
