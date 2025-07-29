@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "easyask"
+version = "0.8.0"
+description = "Generate ECharts option dictionaries"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pytest>=8.4.0",
+    "mcp[cli]>=1.9.2",
+    "dashscope>=1.23.4",
+    "pydantic-settings>=2.9.1",
+    "colorlog>=6.9.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
