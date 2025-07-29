@@ -1,0 +1,127 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "syneto-openapi-themes"
+version = "0.1.2"
+description = "Syneto-branded themes and utilities for OpenAPI documentation tools"
+authors = ["Syneto <dev@syneto.net>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/syneto/syneto-openapi-themes"
+repository = "https://github.com/syneto/syneto-openapi-themes"
+documentation = "https://github.com/syneto/syneto-openapi-themes"
+keywords = ["openapi", "fastapi", "rapidoc", "swagger", "redoc", "syneto", "themes"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Documentation",
+    "Framework :: FastAPI",
+]
+packages = [{include = "syneto_openapi_themes", from = "src"}]
+
+[tool.poetry.dependencies]
+# Core dependencies - always required
+python = "^3.9.2"
+openapipages = "^0.1.2"
+jinja2 = "^3.1.0"
+
+fastapi = {version = "^0.115.12"}
+pip = "^25.1.1"
+cryptography = "^45.0.4"
+
+[tool.poetry.extras]
+# FastAPI integration with all required dependencies
+fastapi = ["fastapi"]
+# All optional features
+all = ["fastapi"]
+
+[tool.poetry.group.dev.dependencies]
+# Testing framework and plugins
+pytest = "^7.0.0"
+pytest-asyncio = "^0.23.8"
+pytest-cov = "^4.1.0"
+httpx = "^0.28.1"  # Required for FastAPI TestClient in integration tests
+
+# FastAPI is required for development and testing (even though it's optional for users)
+fastapi = "^0.115.12"
+
+# Code formatting and linting
+black = "^24.3.0"
+ruff = ">=0.1,<0.12"
+mypy = "^1.0.0"
+
+# Security and quality tools
+safety = "^2.3.0"
+bandit = "^1.7.0"
+pre-commit = "^4.2.0"
+
+# Development server (for examples and testing)
+uvicorn = ">=0.20,<0.35"
+
+# Documentation and publishing
+markdown = "^3.8"
+twine = "^6.1.0"
+
+[tool.poetry.group.test.dependencies]
+# Test-specific dependencies that might be needed in CI
+pytest = "^7.0.0"
+pytest-asyncio = "^0.23.8"
+pytest-cov = "^4.1.0"
+httpx = "^0.28.1"
+# Include FastAPI for integration tests
+fastapi = "^0.115.12"
+
+[tool.black]
+line-length = 120
+target-version = ['py39']
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "openapipages.*",
+    "fastapi.*"
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "syneto_openapi_themes.fastapi_integration"
+disable_error_code = ["misc"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
