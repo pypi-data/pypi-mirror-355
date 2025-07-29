@@ -1,0 +1,51 @@
+[project]
+name = "cockroachdb-mcp-server"
+version = "0.2.0"
+description = "Model Context Protocol server with CockroachDB"
+authors = [{ name = "Virag Tripathi", email = "virag.tripathi@gmail.com" }]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.9"
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Quality Assurance",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent"
+]
+
+dependencies = [
+    "sqlalchemy",
+    "sqlalchemy-cockroachdb",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "psycopg2-binary>=2.9.9",
+    "python-dotenv>=1.0.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "black",
+    "pytest",
+    "pytest-mock",
+    "httpx",
+    "mkdocs",
+    "mkdocs-material"
+]
+
+[project.scripts]
+cockroachdb-mcp-server = "cockroachdb_mcp_server.cli:cli"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]  # ensures both top-level dirs are found
+include = ["cockroachdb_mcp_server"]
