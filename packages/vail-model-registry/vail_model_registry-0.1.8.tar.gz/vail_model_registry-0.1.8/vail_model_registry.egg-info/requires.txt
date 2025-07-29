@@ -1,0 +1,48 @@
+huggingface-hub>=0.30.1
+matplotlib>=3.10.1
+numpy==1.26.4
+onnx>=1.17.0
+onnxruntime>=1.17.0
+pgvector>=0.4.0
+pip>=25.0.1
+plotly>=5.23.0
+psycopg2-binary>=2.9.10
+scipy>=1.15.2
+seaborn>=0.13.2
+transformers>=4.50.3
+fastapi>=0.68.0
+uvicorn>=0.15.0
+pydantic>=1.8.0
+python-dotenv>=0.19.0
+psutil>=5.8.0
+pytest>=8.0.0
+GPUtil>=1.4.0
+py3nvml>=0.2.7
+requests>=2.31.0
+fastmcp>=0.1.0
+mcp[cli]>=1.6.0
+tiktoken>=0.9.0
+blobfile>=3.0.0
+sentencepiece==0.2.0
+accelerate>=0.26.0
+einops==0.8.1
+peft==0.15.1
+beam-client>=0.2.151
+duckdb>=1.0.0
+rich>=13.7.1
+
+[:platform_machine != "x86_64" or sys_platform != "darwin"]
+torch==2.6.0
+
+[:platform_machine == "x86_64" and sys_platform == "darwin"]
+torch==2.2.2
+
+[:sys_platform != "linux"]
+bitsandbytes==0.41.1
+
+[:sys_platform == "linux"]
+bitsandbytes==0.45.5
+
+[remoteonly]
+setuptools>=78.1.0
+triton>=3.2.0
