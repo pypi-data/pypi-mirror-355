@@ -1,0 +1,98 @@
+Metadata-Version: 2.4
+Name: repo-stargazer
+Version: 0.1.0
+Summary: Tell me about my stars
+Author: Sachdeva, Kapil
+License-File: LICENSE
+Requires-Python: >=3.13
+Requires-Dist: a2a-sdk>=0.2.8
+Requires-Dist: fastparquet>=2024.11.0
+Requires-Dist: google-adk>=1.3.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: lancedb>=0.23.0
+Requires-Dist: langchain-community>=0.3.24
+Requires-Dist: langchain-core>=0.3.64
+Requires-Dist: langchain-ollama>=0.3.3
+Requires-Dist: langchain-openai>=0.3.21
+Requires-Dist: langchain-text-splitters>=0.3.8
+Requires-Dist: langchain>=0.3.25
+Requires-Dist: litellm>=1.72.4
+Requires-Dist: mcp>=1.9.3
+Requires-Dist: mpire>=2.10.2
+Requires-Dist: pandas>=2.3.0
+Requires-Dist: pydantic-settings>=2.9.1
+Requires-Dist: pydantic>=2.11.5
+Requires-Dist: pygithub>=2.6.1
+Requires-Dist: rich>=14.0.0
+Requires-Dist: typer>=0.16.0
+Requires-Dist: xdg-base-dirs>=6.0.2
+Description-Content-Type: text/markdown
+
+# The Repo Stargazer
+
+## Problem
+
+I have been starring github projects for a long time. 
+
+There are two primary intentions behind giving stars -
+
+* Recognize the efforts of the author
+* Bookmark the repository for my own use
+
+Unfortunately the user interface to search the existing starred repositories is very primitive.
+
+Also, it would be nice to have not only do Semantic search but also provide the results to LLM to 
+further explore the starred repositories.
+
+## Solution
+
+This project uses semantic search and an AI agent as an attempt to solve the above problem.
+
+## Architecture & Implementation Details
+
+[TBD]
+
+## Install (User)
+
+You should be able to run this as tool thanks to `uvx`
+
+```bash
+uvx --from repo-stargazer rsg --help
+```
+
+## Usgage
+
+The tool requires you to have a configuration file in which various settings are to be specified. 
+
+There is an example configuration file `rsg-config.example.toml` at the root of this repository. The configuration
+uses TOML syntax.
+
+You should make a copy of it as perhaps call it `rsg-config.toml` (The name of the file does not really matter!)
+
+### Step 1 - Obtain the Github Personal Access Token
+
+[TBD]
+
+### Step 2 - Edit the `rsg-config.toml`
+
+- You should provide the Github PAT obtained in Step 1
+- You should fill the `[embedder]` section (Supported provider types are - ollama, openai, azure_openai)
+- You should fill the `[agent.litellm_params]` section
+
+[TBD] - Don't think above instructions are enough! To update and explain in detail the settings
+
+### Step 3 - Build the database
+
+```bash
+uvx --from repo-stargazer rsg build --config rsg-config.toml
+```
+
+### Step 4 - Run the agent using adk web & ui
+
+The agent is built using Google ADK and I have done somewhat of a hack to be able run the agent
+by the built-in fastapi server & user interface. The server & user interface is meant for development needs but
+for now it is the only UI there is 
+
+```bash
+uvx --from repo-stargazer rsg run-adk-server --config rsg-config.toml
+```
