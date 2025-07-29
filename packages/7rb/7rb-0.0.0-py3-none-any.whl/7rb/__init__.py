@@ -1,0 +1,1 @@
+from .7rb import Golden,Emoji
