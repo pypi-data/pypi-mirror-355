@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smart-legion-lab-library"
+version = "1.0.1"
+description = "Smart Legion Lab Library"
+authors = [{ name = "A.A. Suvorov", email = "smartlegiondev@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.8"
+license = "BSD-3-Clause"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "redis~=6.2.0",
+    "requests~=2.32.4"
+]
+
+[project.urls]
+Homepage = "https://github.com/smartlegionlab/smart-legion-lab-library"
+Documentation = "https://github.com/smartlegionlab/smart-legion-lab-library#readme"
+
+[tool.setuptools.dynamic]
+version = { attr = "smart_legion_lab_library.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["smart_legion_lab_library"]
