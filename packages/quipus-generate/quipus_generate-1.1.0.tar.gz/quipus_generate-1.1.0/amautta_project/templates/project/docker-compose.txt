@@ -1,0 +1,96 @@
+services:
+  example:
+    build:
+      context: ./example_entity
+      dockerfile: Dockerfile
+    container_name: example-service
+    volumes:
+      - ./example_entity:/app
+    command: uvicorn app.main:run --host 0.0.0.0 --port ${SERVICE_PORT} --reload
+    networks:
+      - quipus-network
+    expose:
+      - ${SERVICE_PORT}
+    depends_on:
+      - globaldb
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/sites:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+    networks:
+      - quipus-network
+    depends_on:
+      - example
+  globaldb:
+    image: postgres:latest
+    container_name: postgres-db-global
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_GLOBAL}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_GLOBAL}
+      POSTGRES_DB: ${POSTGRES_DB_GLOBAL}
+    ports:
+    - ${POSTGRES_PORT_GLOBAL}:5432
+    volumes:
+    - postgres_data_global:/var/lib/postgresql/data
+    networks:
+    - quipus-network
+  dbburbujas:
+    image: postgres:latest
+    container_name: postgres-db-burbujas
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_BURBUJAS}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_BURBUJAS}
+      POSTGRES_DB: ${POSTGRES_DB_BURBUJAS}
+    ports:
+    - ${POSTGRES_PORT_BURBUJAS}:5432
+    volumes:
+    - postgres_data_dbburbujas:/var/lib/postgresql/data
+    networks:
+    - quipus-network
+  dbzabala:
+    image: postgres:latest
+    container_name: postgres-db-zabala
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_ZABALA}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_ZABALA}
+      POSTGRES_DB: ${POSTGRES_DB_ZABALA}
+    ports:
+    - ${POSTGRES_PORT_ZABALA}:5432
+    volumes:
+    - postgres_data_zabala:/var/lib/postgresql/data
+    networks:
+    - quipus-network
+  dbmafeseguros:
+    image: postgres:latest
+    container_name: postgres-db-mafeseguros
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_MAFE}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_MAFE}
+      POSTGRES_DB: ${POSTGRES_DB_MAFE}
+    ports:
+    - ${POSTGRES_PORT_MAFE}:5432
+    volumes:
+    - postgres_data_mafeseguros:/var/lib/postgresql/data
+    networks:
+    - quipus-network
+networks:
+  quipus-network:
+    driver: bridge
+volumes:
+  postgres_data_global:
+    driver: local
+  postgres_data_dbburbujas:
+    driver: local
+  postgres_data_zabala:
+    driver: local
+  postgres_data_mafeseguros:
+    driver: local
