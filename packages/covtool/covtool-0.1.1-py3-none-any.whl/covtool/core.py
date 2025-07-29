@@ -1,0 +1,199 @@
+"""high-level abstraction for coverage data analysis and manipulation"""
+
+import os
+from typing import Dict, Set, List, Optional
+from collections import defaultdict, Counter
+from dataclasses import dataclass
+
+from .drcov import CoverageData, BasicBlock, ModuleEntry
+
+
+class CoverageSet:
+    """
+    high-level abstraction for coverage data analysis
+    provides set operations, filtering, and analysis methods
+    """
+
+    def __init__(self, coverage_data: CoverageData):
+        self.data = coverage_data
+        self._module_map = {m.id: m for m in coverage_data.modules}
+        self._blocks_set = set(coverage_data.basic_blocks)
+
+    @classmethod
+    def from_file(cls, filepath: str) -> "CoverageSet":
+        """create coverage set from file"""
+        from .drcov import read
+
+        return cls(read(filepath))
+
+    def __len__(self) -> int:
+        return len(self.data.basic_blocks)
+
+    def __bool__(self) -> bool:
+        return bool(self.data.basic_blocks)
+
+    def __or__(self, other: "CoverageSet") -> "CoverageSet":
+        """union operation: self | other"""
+        # combine modules from both sets
+        all_modules = {**self._module_map, **other._module_map}
+
+        # combine basic blocks
+        all_blocks = list(self._blocks_set | other._blocks_set)
+
+        # create new coverage data
+        from .drcov import CoverageData, FileHeader, ModuleTableVersion
+
+        new_data = CoverageData(
+            header=FileHeader(flavor="covtool_union"),
+            modules=list(all_modules.values()),
+            basic_blocks=all_blocks,
+            module_version=ModuleTableVersion.V2,
+        )
+
+        return CoverageSet(new_data)
+
+    def __and__(self, other: "CoverageSet") -> "CoverageSet":
+        """intersection operation: self & other"""
+        # combine modules from both sets
+        all_modules = {**self._module_map, **other._module_map}
+
+        # intersect basic blocks
+        intersected_blocks = list(self._blocks_set & other._blocks_set)
+
+        # create new coverage data
+        from .drcov import CoverageData, FileHeader, ModuleTableVersion
+
+        new_data = CoverageData(
+            header=FileHeader(flavor="covtool_intersect"),
+            modules=list(all_modules.values()),
+            basic_blocks=intersected_blocks,
+            module_version=ModuleTableVersion.V2,
+        )
+
+        return CoverageSet(new_data)
+
+    def __sub__(self, other: "CoverageSet") -> "CoverageSet":
+        """difference operation: self - other"""
+        # subtract basic blocks
+        diff_blocks = list(self._blocks_set - other._blocks_set)
+
+        # create new coverage data with only our modules
+        from .drcov import CoverageData, FileHeader, ModuleTableVersion
+
+        new_data = CoverageData(
+            header=FileHeader(flavor="covtool_diff"),
+            modules=list(self._module_map.values()),
+            basic_blocks=diff_blocks,
+            module_version=ModuleTableVersion.V2,
+        )
+
+        return CoverageSet(new_data)
+
+    def __xor__(self, other: "CoverageSet") -> "CoverageSet":
+        """symmetric difference: self ^ other"""
+        # combine modules from both sets
+        all_modules = {**self._module_map, **other._module_map}
+
+        # symmetric difference of basic blocks
+        symdiff_blocks = list(self._blocks_set ^ other._blocks_set)
+
+        # create new coverage data
+        from .drcov import CoverageData, FileHeader, ModuleTableVersion
+
+        new_data = CoverageData(
+            header=FileHeader(flavor="covtool_symdiff"),
+            modules=list(all_modules.values()),
+            basic_blocks=symdiff_blocks,
+            module_version=ModuleTableVersion.V2,
+        )
+
+        return CoverageSet(new_data)
+
+    def get_absolute_addresses(self) -> Set[int]:
+        """convert all blocks to absolute memory addresses"""
+        addresses = set()
+        for block in self.data.basic_blocks:
+            module = self.data.find_module(block.module_id)
+            if module:
+                addresses.add(module.base + block.start)
+        return addresses
+
+    def filter_by_module(self, module_filter: str) -> "CoverageSet":
+        """return coverage filtered to modules matching the given string"""
+        matching_modules = []
+        for module in self.data.modules:
+            if module_filter.lower() in module.path.lower():
+                matching_modules.append(module)
+
+        if not matching_modules:
+            # return empty coverage set
+            from .drcov import CoverageData, FileHeader, ModuleTableVersion
+
+            empty_data = CoverageData(
+                header=FileHeader(flavor="covtool_filtered"),
+                modules=[],
+                basic_blocks=[],
+                module_version=ModuleTableVersion.V2,
+            )
+            return CoverageSet(empty_data)
+
+        matching_ids = {m.id for m in matching_modules}
+        filtered_blocks = [
+            b for b in self.data.basic_blocks if b.module_id in matching_ids
+        ]
+
+        # create new coverage data
+        from .drcov import CoverageData, FileHeader, ModuleTableVersion
+
+        filtered_data = CoverageData(
+            header=FileHeader(flavor="covtool_filtered"),
+            modules=matching_modules,
+            basic_blocks=filtered_blocks,
+            module_version=self.data.module_version,
+        )
+
+        return CoverageSet(filtered_data)
+
+    def get_coverage_by_module(self) -> Dict[str, List[BasicBlock]]:
+        """organize coverage by module name"""
+        by_module = defaultdict(list)
+        for block in self.data.basic_blocks:
+            module = self.data.find_module(block.module_id)
+            if module:
+                module_name = os.path.basename(module.path)
+                by_module[module_name].append(block)
+        return dict(by_module)
+
+    def get_rarity_info(self, all_sets: List["CoverageSet"]) -> Dict[BasicBlock, int]:
+        """
+        for each block, count how many coverage sets contain it
+        useful for finding rare execution paths
+        """
+        block_counts = Counter()
+
+        for coverage_set in all_sets:
+            seen_in_this_set = set()
+            for block in coverage_set.data.basic_blocks:
+                # use a tuple key to avoid hash issues
+                block_key = (block.start, block.module_id, block.size)
+                if block_key not in seen_in_this_set:
+                    block_counts[block] += 1
+                    seen_in_this_set.add(block_key)
+
+        return dict(block_counts)
+
+    def write_to_file(self, filepath: str):
+        """write coverage set to drcov file"""
+        from .drcov import write
+
+        write(self.data, filepath)
+
+    @property
+    def modules(self) -> Dict[int, ModuleEntry]:
+        """access to module mapping"""
+        return self._module_map
+
+    @property
+    def blocks(self) -> Set[BasicBlock]:
+        """access to blocks set"""
+        return self._blocks_set
