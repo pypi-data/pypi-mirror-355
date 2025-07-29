@@ -1,0 +1,39 @@
+Metadata-Version: 2.3
+Name: qb
+Version: 0.1.25
+Summary: A functional programming language
+Author: henceiusegentoo
+Author-email: 61363222+henceiusegentoo@users.noreply.github.com
+Requires-Python: >=3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: qb-runtime (>=0.1.0,<0.2.0)
+Description-Content-Type: text/markdown
+
+# [qb](https://pypi.org/project/qb/)
+qb is a functional programming language written in python
+
+## Installation from pypi
+```sh
+pip install pipx # install pipx
+pipx install qb
+```
+
+## Building from source
+For the build process we use [Poetry](https://python-poetry.org/) and for the installation of packages we use [pipx](https://pypi.org/project/pipx/).
+
+### Setup
+```sh
+git clone https://github.com/henceiusegentoo/qb-2.0.git
+pip install pipx # install pipx
+pipx install poetry # use pipx to install poetry
+cd qb-2.0
+poetry install
+```
+
+### Building and Installation
+```sh
+poetry build --clean # build project
+pipx install ./dist/qb-[version]-py3-none-any.whl # install qb on your machine
+```
+
