@@ -1,0 +1,322 @@
+Metadata-Version: 2.4
+Name: humem
+Version: 0.1.0
+Summary: A memory management system for AI agents to store and retrieve user interactions
+Home-page: https://github.com/yourusername/humem
+Author: Your Name
+Author-email: Your Name <your.email@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yourusername/humem
+Project-URL: Bug Reports, https://github.com/yourusername/humem/issues
+Project-URL: Source, https://github.com/yourusername/humem
+Project-URL: Documentation, https://github.com/yourusername/humem#readme
+Keywords: ai,memory,agent,llm,chatbot,conversation
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: python-dateutil>=2.8.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Agent Memory
+
+A memory management system for AI agents to store and retrieve user interactions and preferences.
+
+[![PyPI version](https://badge.fury.io/py/agent-memory.svg)](https://badge.fury.io/py/agent-memory)
+[![Python Support](https://img.shields.io/pypi/pyversions/agent-memory.svg)](https://pypi.org/project/agent-memory/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Features
+
+- 🧠 **Persistent Memory Storage**: Store conversations, user preferences, facts, and context
+- 🔍 **Powerful Search**: Find memories by content, tags, importance, date ranges, and more  
+- 🏷️ **Flexible Tagging**: Organize memories with custom tags
+- ⏰ **Expiration Support**: Set automatic expiration for temporary memories
+- 📊 **Importance Scoring**: Rank memories by importance (0.0 to 1.0)
+- 📈 **Access Tracking**: Monitor memory usage with access counts and timestamps
+- 🗃️ **Multiple Backends**: SQLite (default), PostgreSQL, and other SQLAlchemy-supported databases
+- 🔧 **Type Safety**: Full type hints and Pydantic models
+- 🧪 **Well Tested**: Comprehensive test suite
+
+## Installation
+
+```bash
+pip install agent-memory
+```
+
+For development:
+```bash
+pip install agent-memory[dev]
+```
+
+## Quick Start
+
+```python
+from agent_memory import AgentMemory, MemoryType
+
+# Initialize the memory system
+memory = AgentMemory()
+
+# Add a conversation memory
+conversation = memory.add_conversation_memory(
+    user_id="user123",
+    user_message="I love Python programming",
+    agent_response="That's great! Python is a versatile language.",
+    importance=0.8,
+    tags=["programming", "python"]
+)
+
+# Add a user preference
+preference = memory.add_user_preference(
+    user_id="user123",
+    preference="programming_language",
+    value="Python"
+)
+
+# Search for memories
+memories = memory.search_memories(
+    user_id="user123",
+    content_search="Python",
+    min_importance=0.5
+)
+
+# Get all user preferences
+preferences = memory.get_user_preferences("user123")
+print(preferences)  # {"programming_language": "Python"}
+```
+
+## Core Concepts
+
+### Memory Types
+
+Agent Memory supports different types of memories:
+
+- **`CONVERSATION`**: Dialog between user and agent
+- **`USER_PREFERENCE`**: User settings and preferences  
+- **`FACT`**: Factual information about the user
+- **`CONTEXT`**: Contextual information for conversations
+- **`GOAL`**: User goals and objectives
+- **`FEEDBACK`**: User feedback on agent responses
+
+### Memory Properties
+
+Each memory contains:
+
+- **`id`**: Unique identifier (UUID)
+- **`user_id`**: User identifier
+- **`agent_id`**: Optional agent identifier  
+- **`content`**: The actual memory content
+- **`memory_type`**: Type of memory (see above)
+- **`importance`**: Importance score (0.0 to 1.0)
+- **`tags`**: List of tags for organization
+- **`metadata`**: Additional structured data
+- **`timestamp`**: When memory was created
+- **`expires_at`**: Optional expiration date
+
+## Advanced Usage
+
+### Custom Database
+
+```python
+# Use PostgreSQL
+memory = AgentMemory(
+    database_url="postgresql://user:pass@localhost/memories"
+)
+
+# Use custom SQLite location
+memory = AgentMemory(
+    database_url="sqlite:///path/to/custom/memories.db"
+)
+```
+
+### Advanced Searching
+
+```python
+from datetime import datetime, timedelta
+
+# Complex search query
+memories = memory.search_memories(
+    user_id="user123",
+    memory_type=MemoryType.CONVERSATION,
+    tags=["important", "work"],
+    min_importance=0.7,
+    created_after=datetime.now() - timedelta(days=7),
+    limit=20,
+    offset=0
+)
+```
+
+### Memory Management
+
+```python
+# Update memory
+updated = memory.update_memory(
+    memory_id=conversation.id,
+    importance=0.9,
+    tags=["programming", "python", "favorite"]
+)
+
+# Delete memory
+memory.delete_memory(conversation.id)
+
+# Cleanup expired memories
+removed_count = memory.cleanup_expired()
+```
+
+### Statistics and Analytics
+
+```python
+# Get memory statistics
+stats = memory.get_memory_stats(user_id="user123")
+print(f"Total memories: {stats['total_memories']}")
+print(f"By importance: {stats['by_importance']}")
+print(f"By type: {stats['by_type']}")
+```
+
+## API Reference
+
+### AgentMemory
+
+Main class for memory management.
+
+#### `__init__(database_url=None, auto_cleanup=True)`
+
+Initialize the memory system.
+
+- `database_url`: Database connection string (defaults to local SQLite)
+- `auto_cleanup`: Whether to automatically clean expired memories
+
+#### `add_memory(user_id, content, memory_type=CONVERSATION, **kwargs)`
+
+Add a new memory.
+
+**Parameters:**
+- `user_id` (str): User identifier
+- `content` (str): Memory content
+- `memory_type` (MemoryType): Type of memory
+- `agent_id` (str, optional): Agent identifier
+- `importance` (float): Importance score (0.0-1.0)
+- `tags` (List[str]): Tags for organization
+- `metadata` (dict): Additional metadata
+- `expires_in_days` (int): Days until expiration
+
+#### `search_memories(**filters)`
+
+Search for memories with flexible filtering.
+
+**Filters:**
+- `user_id`, `agent_id`, `memory_type`
+- `content_search`: Search in content
+- `tags`: Filter by tags
+- `min_importance`, `max_importance`: Importance range
+- `created_after`, `created_before`: Date range
+- `limit`, `offset`: Pagination
+- `include_expired`: Include expired memories
+
+#### Convenience Methods
+
+- `add_conversation_memory()`: Add user-agent conversation
+- `add_user_preference()`: Add user preference
+- `get_user_preferences()`: Get all preferences as dict
+- `get_user_memories()`: Get all memories for user
+- `cleanup_expired()`: Remove expired memories
+- `get_memory_stats()`: Get memory statistics
+
+## Development
+
+### Setup
+
+```bash
+git clone https://github.com/yourusername/agent-memory.git
+cd agent-memory
+pip install -e .[dev]
+```
+
+### Running Tests
+
+```bash
+pytest
+```
+
+### Code Quality
+
+```bash
+# Format code
+black agent_memory tests
+
+# Sort imports  
+isort agent_memory tests
+
+# Type checking
+mypy agent_memory
+
+# Linting
+flake8 agent_memory tests
+```
+
+### Building for PyPI
+
+```bash
+# Build package
+python -m build
+
+# Upload to PyPI (requires API token)
+python -m twine upload dist/*
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Add tests for new functionality
+5. Ensure all tests pass (`pytest`)
+6. Format code (`black .` and `isort .`)
+7. Commit changes (`git commit -m 'Add amazing feature'`)
+8. Push to branch (`git push origin feature/amazing-feature`)
+9. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+### v0.1.0 (Initial Release)
+
+- Core memory management functionality
+- SQLite and PostgreSQL support
+- Memory types: conversation, preference, fact, context, goal, feedback
+- Search and filtering capabilities
+- Expiration and cleanup
+- Comprehensive test suite
+
+## Support
+
+- 📧 Email: your.email@example.com
+- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/agent-memory/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/agent-memory/discussions) 
