@@ -1,0 +1,30 @@
+Metadata-Version: 2.4
+Name: llmpy_models
+Version: 0.0.16
+Summary: Automatically generated LLM models for llmpy-lib
+Author-email: Angelo Zangari <angelo.zangari10@gmail.com>
+License-File: LICENSE.txt
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# llmpy-models Auto Generator
+
+This project includes a script to regenerate and publish the `llmpy_models.py` file automatically.
+
+## Requirements
+
+To run `scripts/publish.sh`, ensure the following are available:
+
+- **Python** ≥ 3.10
+- **Virtual environment** in `.venv/` with dependencies installed
+- **macOS** (due to `sed -i ''` syntax)
+- **Tools installed**:
+  - `twine`
+  - `build`
+  - `diff`
+  - `sed`
+
+Make sure the update.sh script is executable:
+`chmod +x scripts/update.sh`
