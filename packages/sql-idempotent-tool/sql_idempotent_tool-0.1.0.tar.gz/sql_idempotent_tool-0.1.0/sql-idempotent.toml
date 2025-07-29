@@ -1,0 +1,88 @@
+include_patterns = [ "*.sql",]
+exclude_patterns = [ "*_backup.sql", "*.bak",]
+require_confirmation = false
+max_file_size_mb = 100
+create_backups = true
+backup_suffix = ".backup"
+
+[database]
+engine = "postgresql"
+version = "15"
+use_modern_syntax = true
+
+[parser]
+case_sensitive = false
+ignore_comments = true
+excluded_statement_types = []
+
+[output]
+preserve_formatting = true
+add_comments = true
+comment_template = "-- Idempotent transformation applied by sql-idempotent-tool"
+line_ending = "\n"
+
+[transformations.CREATE_VIEW]
+enabled = true
+strategy = "or_replace"
+
+[transformations.CREATE_MATERIALIZED_VIEW]
+enabled = true
+strategy = "or_replace"
+
+[transformations.CREATE_TRIGGER]
+enabled = true
+strategy = "or_replace"
+
+[transformations.CREATE_TYPE]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.CREATE_INDEX]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.CREATE_PROCEDURE]
+enabled = true
+strategy = "or_replace"
+
+[transformations.CREATE_FUNCTION]
+enabled = true
+strategy = "or_replace"
+
+[transformations.CREATE_SCHEMA]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.CREATE_POLICY]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.CREATE_SEQUENCE]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.CREATE_DOMAIN]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.CREATE_EXTENSION]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.CREATE_ROLE]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.CREATE_USER]
+enabled = true
+strategy = "if_not_exists"
+
+[transformations.GRANT]
+enabled = true
+strategy = "revoke_and_grant"
+
+[transformations.ADD_CONSTRAINT]
+enabled = true
+strategy = "if_not_exists"
+
+[parser.custom_patterns]
