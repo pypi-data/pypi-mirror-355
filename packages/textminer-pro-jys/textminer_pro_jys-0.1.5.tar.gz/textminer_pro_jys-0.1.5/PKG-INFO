@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: textminer-pro-jys
+Version: 0.1.5
+Summary: Advanced text mining utils
+Description-Content-Type: text/markdown
+Requires-Dist: nltk>=3.8
+Requires-Dist: scikit-learn>=1.4
+Requires-Dist: sumy>=0.11
+Requires-Dist: langdetect>=1.0
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: summary
+
+# textminer-pro-jys
+
+**고급 텍스트 분석 유틸리티**
+
+- Stop-word 제거: `remove_stopwords`
+- TF-IDF 키워드: `extract_keywords`
+- Sumy 요약: `summarize`
+- 언어 감지: `detect_language`
+
+```python
+from textminer_pro import summarize
+print(summarize("고급 텍스트 분석 패키지 입니다.", ratio=0.5))
