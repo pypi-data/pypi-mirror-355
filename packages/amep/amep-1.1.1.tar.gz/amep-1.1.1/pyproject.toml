@@ -1,0 +1,75 @@
+[project]
+name = "amep"
+version = "1.1.1"
+license = {file="LICENSE"}
+authors = [
+    {name = "Lukas Hecht", email = "lukas.hecht@pkm.tu-darmstadt.de"},
+]
+description = "Active Matter Evaluation Package for data analysis of active matter simulations"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = [
+    "active matter",
+    "soft matter",
+    "physics",
+    "data analysis",
+    "computational physics",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = [
+    "h5py >= 3.7.0",
+    "matplotlib >= 3.6.2",
+    "numba >= 0.56.4",
+    "numpy >= 1.21.6",
+    "scipy >= 1.10.0",
+    "scikit-image >= 0.20.0",
+    "tqdm >= 4.65.0",
+    "gsd >= 3.2.0",
+    "chemfiles >= 0.10.4"
+]
+
+[project.urls]
+"Homepage" = "https://amepproject.de/"
+"Issues" = "https://github.com/amepproject/amep/issues"
+"Repository" = "https://github.com/amepproject/amep"
+"Documentation" = "https://amepproject.de/"
+"Source Code" = "https://github.com/amepproject/amep"
+"Forum" = "https://github.com/amepproject/amep/discussions"
+"Changelog" = "https://github.com/amepproject/amep/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+# Should be a copy of the build dependencies below.
+dev = [
+    "setuptools >= 64",
+]
+
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = {}
+
+[options.packages.find]
+include = ["amep"]
+exclude = [
+    "doc",
+    "examples",
+    "test",
+]
+
+[tool.setuptools.package-data]
+"amep.styles" = ["*.mplstyle"]
