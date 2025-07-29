@@ -1,0 +1,127 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytaskai"
+version = "0.3.0"
+description = "Minimal AI-powered task management with MCP integration and hexagonal architecture"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "PyTaskAI Contributors", email = "noreply@pytaskai.dev"}
+]
+keywords = [
+    "task-management", "ai", "mcp", "hexagonal-architecture", 
+    "domain-driven-design", "openai", "fastmcp"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Office/Business :: Scheduling",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.8"
+dependencies = [
+    # Core MCP framework
+    "fastmcp>=0.3.0",
+    
+    # Data validation and modeling
+    "pydantic>=2.0.0",
+    
+    # Database
+    "sqlalchemy>=2.0.0",
+    
+    # AI integration (OpenAI only)
+    "openai>=1.0.0",
+    
+    # CLI interface
+    "click>=8.0.0",
+    "tabulate>=0.9.0",
+    
+    # Configuration management
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.20.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "flake8>=6.0.0",
+    "types-tabulate>=0.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mak1jk/pytaskai-public"
+Repository = "https://github.com/mak1jk/pytaskai-public"
+"Bug Tracker" = "https://github.com/mak1jk/pytaskai-public/issues"
+Changelog = "https://github.com/mak1jk/pytaskai-public/blob/main/CHANGELOG.md"
+
+[project.scripts]
+pytaskai = "pytaskai.adapters.cli.cli_app:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pytaskai*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+testpaths = ["pytaskai/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--cov=pytaskai",
+    "--cov-report=term-missing",
+]
+
+[tool.coverage.run]
+source = ["pytaskai"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    "venv",
+]
