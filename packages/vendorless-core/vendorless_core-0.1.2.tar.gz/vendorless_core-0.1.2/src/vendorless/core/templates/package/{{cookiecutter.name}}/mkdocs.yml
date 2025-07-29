@@ -1,0 +1,34 @@
+site_name: vendorless.{{ cookiecutter.name }}
+site_url: https://{{ cookiecutter.github_username }}.github.io/vendorless-{{ cookiecutter.name }}/
+repo_url: https://github.com/{{ cookiecutter.github_username }}/vendorless-{{ cookiecutter.name }}
+edit_uri: blob/main/docs/
+theme:
+  name: material
+  logo: https://raw.githubusercontent.com/LiamBindle/vendorless/refs/heads/main/docs/assets/square.png
+  favicon: https://raw.githubusercontent.com/LiamBindle/vendorless/refs/heads/main/docs/assets/favicon.ico
+  palette:
+    primary: white
+    accent: deep purple
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          docstring_style: numpy
+          summary: true
+          show_labels: false
+          docstring_section_style: table
+          filters: "public"
+          show_root_heading: true
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+          line_length: 80
+          modernize_annotations: true
+          show_signature: true
+          members_order: source
+          summary: true
+    default_handler: python
