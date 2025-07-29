@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: lambda-explorer
+Version: 0.1.0
+Summary: GUI tool for exploring formulas using DearPyGui
+Author: Noel Ernsting Luz
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: dearpygui
+Requires-Dist: sympy
+Requires-Dist: coloredlogs
+Requires-Dist: verboselogs
+Requires-Dist: pyyaml
+
+# Lambda Explorer
+
+A small GUI application for interacting with symbolic formulas and plotting them using [Dear PyGui](https://github.com/hoffstadt/dearpygui).
+
+The GUI presents every available formula and lets you calculate or plot results
+by filling in all but one variable. Formulas are defined with
+[SymPy](https://www.sympy.org/) and are automatically discovered when the
+application starts.
+
+## Installation
+
+```bash
+pip install lambda-explorer
+```
+
+To install from source:
+
+```bash
+pip install -r requirements.txt
+pip install -e .
+```
+
+## Usage
+
+After installation you can launch the GUI with the command:
+
+```bash
+lambda-explorer
+```
+
+This will open the formula browser where you can calculate and visualize formulas.
+
+### Lightweight CLI
+
+If memory usage is a concern you can use a simple command line interface:
+
+```bash
+lambda-explorer-cli
+```
+
+This avoids the GUI and only loads the selected formula when needed.
+
+## Library Usage
+
+`lambda-explorer` can also be used programmatically. Formula classes are
+available in `lambda_explorer.tools.aero_formulas` and provide a convenient
+`solve()` method. Exactly one variable must be omitted so that it can be
+calculated:
+
+```python
+from lambda_explorer.tools.aero_formulas import ReynoldsNumber
+
+eq = ReynoldsNumber()
+# Solve for Re while providing the other values
+re = eq.solve(rho=1.225, V=50.0, c=0.5, mu=1.8e-5)
+print(re)
+```
+
+To launch the GUI from Python simply call `lambda_explorer.main()`:
+
+```python
+from lambda_explorer import main
+
+main()
+```
+
+Default values used inside the GUI can be customised. Use the *Defaults* tab in
+any formula window to load or save the `defaults.yaml` file directly, or choose
+"Save As" to export the defaults to a custom YAML file. The defaults map
+variable names to their stored string values.
+
+The application also remembers your window layout. When you close the GUI, the
+current positions and sizes of all windows are written to `layout.ini` and
+restored on the next start.
+
+The *Settings* window lets you adjust the logging level of the application at
+runtime. Choose between `DEBUG`, `INFO`, `WARNING` and `ERROR` to control the
+amount of information written to the log window.
+
+## Developer Documentation
+
+Developers who want to implement additional formulas can follow the guide in
+[`docs/developer_guide.md`](docs/developer_guide.md). It describes the required
+class structure and how new equations are automatically integrated into the GUI.

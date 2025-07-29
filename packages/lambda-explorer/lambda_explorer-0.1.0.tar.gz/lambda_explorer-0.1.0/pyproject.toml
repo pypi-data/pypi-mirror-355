@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lambda-explorer"
+version = "0.1.0"
+authors = [{name = "Noel Ernsting Luz"}]
+description = "GUI tool for exploring formulas using DearPyGui"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "dearpygui",
+    "sympy",
+    "coloredlogs",
+    "verboselogs",
+    "pyyaml"
+]
+
+[project.scripts]
+lambda-explorer = "lambda_explorer:main"
+lambda-explorer-cli = "lambda_explorer.cli:run_cli"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+"lambda_explorer.tools" = ["defaults.yaml"]
