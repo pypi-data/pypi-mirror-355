@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytest-test-analyzer"
+version = "0.1.1"
+description = "A powerful tool for analyzing pytest test files and generating detailed reports"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Deekshith Poojary", email = "deekshithpoojary355@gmail.com"}
+]
+maintainers = [
+    {name = "Deekshith Poojary", email = "deekshithpoojary355@gmail.com"}
+]
+keywords = ["pytest", "testing", "test-analysis", "test-automation", "test-reports", "test-statistics"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 4 - Beta",
+]
+dependencies = [
+    "jinja2>=3.1.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/deekshith-poojary98/pytest-test-analyzer"
+Repository = "https://github.com/deekshith-poojary98/pytest-test-analyzer.git"
+
+[project.scripts]
+pytest-test-analyzer = "pytest_test_analyzer.cli:main"
+
+[tool.setuptools]
+packages = ["pytest_test_analyzer"]
+package-data = {pytest_test_analyzer = ["templates/*", "static/*"]} 
