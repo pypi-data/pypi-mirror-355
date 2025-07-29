@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quick-tts"
+version = "0.1.2"
+description = "Convert text to speech using OpenAI's Text-to-Speech API"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Diogo Seca", email = "diogoseca@users.noreply.github.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["tts", "text-to-speech", "openai", "audio", "speech"]
+requires-python = ">=3.8"
+dependencies = [
+    "openai>=1.86.0",
+    "python-dotenv>=1.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/diogoseca/quick-tts"
+Repository = "https://github.com/diogoseca/quick-tts"
+Issues = "https://github.com/diogoseca/quick-tts/issues"
+
+[project.scripts]
+quick-tts = "quick_tts.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quick_tts"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/README.md",
+    "/LICENSE",
+]
