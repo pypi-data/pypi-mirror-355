@@ -1,0 +1,25 @@
+[project]
+name = "opencmd-tinge"
+version = "0.0.1"
+description = "A terminal text styling library with chainable syntax"
+authors = [{ name="OpenCmd" }]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["cli", "style", "text", "terminal", "rich"]
+dependencies = ["rich>=13.0.0"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/opencommand/tinge-python"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["opencmd_tinge"]
