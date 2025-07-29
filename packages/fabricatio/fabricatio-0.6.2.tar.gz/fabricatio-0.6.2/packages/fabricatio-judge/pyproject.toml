@@ -1,0 +1,33 @@
+[project]
+name = "fabricatio-judge"
+version = "0.1.4-dev1"
+description = "fabricatio-judge extends the Fabricatio ecosystem to provide advanced judgment capabilities for LLM-driven applications."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Whth", email = "zettainspector@foxmail.com" }
+]
+requires-python = ">=3.12,<3.14"
+
+dependencies = [
+
+    "fabricatio-core",
+    "fabricatio_capabilities"
+
+]
+[dependency-groups]
+dev = [
+    "pytest",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+sources = ["python"]
+
+[project.urls]
+Homepage = "https://github.com/Whth/fabricatio"
+Repository = "https://github.com/Whth/fabricatio"
+Issues = "https://github.com/Whth/fabricatio/issues"
