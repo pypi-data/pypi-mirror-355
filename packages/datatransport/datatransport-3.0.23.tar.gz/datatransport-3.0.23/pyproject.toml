@@ -1,0 +1,81 @@
+[project]
+
+name = "datatransport"
+dynamic = ["version"]
+description = "Data Transport Network"
+readme = "README.rst"
+requires-python= ">= 3.9"
+license = { file = "LICENSE" }
+authors = [
+    { name= 'Todd Valentic', email='todd.valentic@gmail.com' }
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent"
+]
+
+dependencies = [
+    "python-dateutil",
+    "pytimeparse2",
+    "sapphire_config",
+    "texttable",
+    "importlib_resources>1.3; python_version < '3.10'",
+    "standard-nntplib; python_version >= '3.12'",
+    "standard-asyncore; python_version >= '3.12'"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.optional-dependencies]
+devel = [
+    'ruff',
+    'pyfakefs',
+    'pytest',
+    ]
+
+[project.urls]
+homepage="https://github.com/valentic/datatransport"
+repository="https://github.com/valentic/datatransport"
+
+[project.scripts]
+    archivegroups = "datatransport.apps.archivegroups:main"
+    directoryservice = "datatransport.apps.directoryservice:main"
+    diskmonitor = "datatransport.apps.diskmonitor:main"
+    filepost = "datatransport.apps.filepost:main"
+    filewatch = "datatransport.apps.filewatch:main"
+    groupcontrol = "datatransport.apps.groupcontrol:main"
+    instrumentstatus = "datatransport.apps.InstrumentStatus:main"
+    newsgateway = "datatransport.apps.newsgateway:main"
+    newsgroupmonitor = "datatransport.apps.NewsgroupMonitor:main"
+    plottool = "datatransport.apps.PlotTool:main"
+    postdatafiles = "datatransport.apps.postdatafiles:main"
+    realtimefeed = "datatransport.apps.realtimefeed:main"
+    resourcemonitor = "datatransport.apps.resourcemonitor:main"
+    scheduler = "datatransport.apps.scheduler:main"
+    watchurl = "datatransport.apps.watchurl:main"
+
+    cancelnewsgroup = "datatransport.commands.cancelnewsgroup:main"
+    createnewsgroup = "datatransport.commands.createnewsgroup:main"
+    console = "datatransport.commands.console:main"
+    listnewsgroups = "datatransport.commands.listnewsgroups:main"
+    rmnewsgroup = "datatransport.commands.rmnewsgroup:main"
+    transportctl = "datatransport.commands.transportctl:main"
+    transportd = "datatransport.commands.transportd:main"
+    transport-create-app = "datatransport.commands.transport_create_app:main"
+    transport-get-article = "datatransport.commands.transport_get_article:main"
+    transport-post-article = "datatransport.commands.transport_post_article:main"
+    transportps = "datatransport.commands.transportps:main"
+    viewlog = "datatransport.commands.viewlog:main"
+
+[tool.hatch.version]
+path = "src/datatransport/metadata.py"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib"
+]
+
