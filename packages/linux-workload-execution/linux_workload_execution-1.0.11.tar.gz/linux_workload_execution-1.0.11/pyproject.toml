@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linux_workload_execution"
+version = "1.0.11"
+authors = [
+{ name="Girija", email="girija.golla@ibm.com" },
+{ name="Sri Vaishnavi", email="sriva011@in.ibm.com" }
+]
+description = "linux_workload_execution is a Python package designed to take details like, lpar, ipaddress, script directory and script command as the input, and perform below activities"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+"Programming Language :: Python :: 3",
+"License :: OSI Approved :: MIT License",
+"Operating System :: OS Independent",
+]
+dependencies = ["gitdb>=4.0.12",
+"GitPython>=3.1.44",
+"pytest>=8.3.4",
+"paramiko>=3.5.1",
+"requests>=2.32.3",
+"setuptools>=75.8.0",
+"zhmccli>=1.12.0",
+"twine>=6.1.0",
+"build>=1.2.2",
+"pipreqs>=0.4.13"]
