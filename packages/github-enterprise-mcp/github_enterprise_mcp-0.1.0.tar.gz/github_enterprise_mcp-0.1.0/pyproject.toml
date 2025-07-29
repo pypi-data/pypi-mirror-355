@@ -1,0 +1,21 @@
+[project]
+name = "github-enterprise-mcp"
+version = "0.1.0"
+description = "An MCP server for GitHub Enterprise that handles repository access, branch creation, commits, and pushes"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [ 
+    "mcp>=1.9.4",
+    "PyGithub>=2.6.0",
+    "requests>=2.32.0"
+]
+[[project.authors]]
+name = "akhilthomas236"
+email = "akhilthomas236@gmail.com"
+
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project.scripts]
+github-enterprise-mcp = "github_enterprise_mcp:main"
