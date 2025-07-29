@@ -1,0 +1,126 @@
+from enum import Enum
+from plum import dispatch
+from typing import TypeVar, Union, Generic, List, Tuple
+from spire.pdf.common import *
+from spire.pdf import *
+from ctypes import *
+import abc
+
+class PdfTextMarkupAnnotation(PdfAnnotation):
+    """
+    Represents the text markup annotation.
+    """
+
+    @dispatch
+    def __init__(self):
+        """
+        Initializes a new instance of the PdfTextMarkupAnnotation class.
+        """
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotation.restype = c_void_p
+        intPtr = CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotation)
+        super(PdfTextMarkupAnnotation, self).__init__(intPtr)
+
+    @dispatch
+    def __init__(self, markupTitle: str, text: str, markupText: str, point: PointF, pdfFont: PdfFontBase):
+        """
+        Initializes a new instance of the PdfTextMarkupAnnotation class with the specified markup title, text, markup text, point, and PDF font.
+        
+        :param markupTitle: The markup title.
+        :param text: The text.
+        :param markupText: The markup text.
+        :param point: The point.
+        :param pdfFont: The PDF font.
+        """
+        ptrP: c_void_p = point.Ptr
+        ptrF: c_void_p = pdfFont.Ptr
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationMTMPP.argtypes = [c_wchar_p, c_wchar_p, c_wchar_p, c_void_p, c_void_p]
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationMTMPP.restype = c_void_p
+        intPtr = CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationMTMPP,markupTitle, text, markupText, ptrP, ptrF)
+        super(PdfTextMarkupAnnotation, self).__init__(intPtr)
+
+    @dispatch
+    def __init__(self, title: str, text: str, rect: RectangleF, pdfFont: PdfFontBase):
+        """
+        Initializes a new instance of the PdfTextMarkupAnnotation class with the specified title, text, rectangle, and PDF font.
+        
+        :param title: The title.
+        :param text: The text.
+        :param rect: The rectangle.
+        :param pdfFont: The PDF font.
+        """
+        ptrR: c_void_p = rect.Ptr
+        ptrF: c_void_p = pdfFont.Ptr
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationTTRF.argtypes = [c_wchar_p, c_wchar_p, c_void_p, c_void_p]
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationTTRF.restype = c_void_p
+        intPtr = CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationTTRF,title, text, ptrR, ptrF)
+        super(PdfTextMarkupAnnotation, self).__init__(intPtr)
+
+    @dispatch
+    def __init__(self, title: str, text: str, rect: RectangleF):
+        """
+        Initializes a new instance of the PdfTextMarkupAnnotation class with the specified title, text, and rectangle.
+        
+        :param title: The title.
+        :param text: The text.
+        :param rect: The rectangle.
+        """
+        ptrR: c_void_p = rect.Ptr
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationTTR.argtypes = [c_wchar_p, c_wchar_p, c_void_p]
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationTTR.restype = c_void_p
+        intPtr = CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationTTR,title, text, ptrR)
+        super(PdfTextMarkupAnnotation, self).__init__(intPtr)
+
+    @dispatch
+    def __init__(self, rect: RectangleF):
+        """
+        Initializes a new instance of the PdfTextMarkupAnnotation class with the specified rectangle.
+        
+        :param rect: The rectangle.
+        """
+        ptrR: c_void_p = rect.Ptr
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationR.argtypes = [c_void_p]
+        GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationR.restype = c_void_p
+        intPtr = CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_CreatePdfTextMarkupAnnotationR,ptrR)
+        super(PdfTextMarkupAnnotation, self).__init__(intPtr)
+
+    @property
+    def TextMarkupAnnotationType(self) -> 'PdfTextMarkupAnnotationType':
+        """
+        Gets or sets the text markup annotation type.
+        """
+        GetDllLibPdf().PdfTextMarkupAnnotation_get_TextMarkupAnnotationType.argtypes = [c_void_p]
+        GetDllLibPdf().PdfTextMarkupAnnotation_get_TextMarkupAnnotationType.restype = c_int
+        ret = CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_get_TextMarkupAnnotationType,self.Ptr)
+        objwrapped = PdfTextMarkupAnnotationType(ret)
+        return objwrapped
+
+    @TextMarkupAnnotationType.setter
+    def TextMarkupAnnotationType(self, value: 'PdfTextMarkupAnnotationType'):
+        """
+        Sets the text markup annotation type.
+        
+        :param value: The text markup annotation type.
+        """
+        GetDllLibPdf().PdfTextMarkupAnnotation_set_TextMarkupAnnotationType.argtypes = [c_void_p, c_int]
+        CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_set_TextMarkupAnnotationType,self.Ptr, value.value)
+
+    @property
+    def TextMarkupColor(self) -> 'PdfRGBColor':
+        """
+        Gets or sets the text markup color.
+        """
+        GetDllLibPdf().PdfTextMarkupAnnotation_get_TextMarkupColor.argtypes = [c_void_p]
+        GetDllLibPdf().PdfTextMarkupAnnotation_get_TextMarkupColor.restype = c_void_p
+        intPtr = CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_get_TextMarkupColor,self.Ptr)
+        ret = None if intPtr == None else PdfRGBColor(intPtr)
+        return ret
+
+    @TextMarkupColor.setter
+    def TextMarkupColor(self, value: 'PdfRGBColor'):
+        """
+        Sets the text markup color.
+        
+        :param value: The text markup color.
+        """
+        GetDllLibPdf().PdfTextMarkupAnnotation_set_TextMarkupColor.argtypes = [c_void_p, c_void_p]
+        CallCFunction(GetDllLibPdf().PdfTextMarkupAnnotation_set_TextMarkupColor,self.Ptr, value.Ptr)
