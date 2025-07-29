@@ -1,0 +1,11 @@
+[project]
+name = "lmbench"
+version = "0.1.0"
+description = "Benchmark your device's LLM training power"
+dependencies = [
+  "torch",
+]
+requires-python = ">=3.8"
+
+[project.scripts]
+lmbench = "lmbench.cli:main"
