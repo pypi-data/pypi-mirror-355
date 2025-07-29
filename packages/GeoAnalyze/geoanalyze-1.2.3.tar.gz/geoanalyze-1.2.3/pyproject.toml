@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "GeoAnalyze"
+dynamic = ["version"]
+description = "A Python package offering toolkits for geospatial processing, watershed delineation, and hydrologic analysis."
+authors = [
+  { name="Debasish Pal", email="bestdebasish@gmail.com" },
+]
+dependencies = [
+    "geopandas",
+    "rasterio",
+    "fiona",
+    "pyflwdir",
+    "matplotlib"
+]
+readme = "README.md"
+requires-python = ">=3.10,<=3.13.3"
+classifiers = [
+	"Development Status :: 5 - Production/Stable",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+	"Operating System :: OS Independent",
+	"Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+	"Topic :: Scientific/Engineering :: GIS",
+	"Topic :: Scientific/Engineering :: Hydrology"
+]
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+keywords = [
+    "GIS",
+    "Watershed",
+    "Hydrology",
+    "Spatial analysis",
+    "Raster",
+    "Vector"
+]
+
+
+[project.urls]
+"Homepage" = "https://github.com/debpal/GeoAnalyze"
+"Documentation" = "https://geoanalyze.readthedocs.io/en/latest/"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "GeoAnalyze.__version__"}
+
+
+[tool.pytest.ini_options]
+addopts = "-rA -Wignore::DeprecationWarning --cov=GeoAnalyze --cov-report=html:cov_GeoAnalyze --cov-report=term -s"
+testpaths = [
+    "tests"
+]
+
+
+[tool.mypy]
+files = [
+    "GeoAnalyze"
+]
+ignore_missing_imports = true
+strict = true
