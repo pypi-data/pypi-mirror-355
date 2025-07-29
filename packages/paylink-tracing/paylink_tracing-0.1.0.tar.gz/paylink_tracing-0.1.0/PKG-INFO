@@ -1,0 +1,24 @@
+Metadata-Version: 2.4
+Name: paylink_tracing
+Version: 0.1.0
+Summary: Async tracing SDK for Paylink mcp server
+Project-URL: Repository, https://github.com/paylink-ai/paylink_tracing_sdk
+Author-email: James Kanyiri <jameskanyiridev@gmail.com>
+Keywords: fintech,mpesa,observability,paylink,sdk,tracing
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Office/Business :: Financial
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.13
+Requires-Dist: pymongo[srv]>=4.13.1
+Requires-Dist: python-dotenv>=1.1.0
+Provides-Extra: dev
+Requires-Dist: build; extra == 'dev'
+Requires-Dist: hatch; extra == 'dev'
+Requires-Dist: ipykernel; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-asyncio; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'

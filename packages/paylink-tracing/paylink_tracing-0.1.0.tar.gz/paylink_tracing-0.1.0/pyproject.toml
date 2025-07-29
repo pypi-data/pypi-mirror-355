@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "paylink_tracing"
+dynamic = ["version"]
+description = "Async tracing SDK for Paylink mcp server"
+authors = [
+  { name = "James Kanyiri", email = "jameskanyiridev@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pymongo[srv]>=4.13.1",
+    "python-dotenv>=1.1.0",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Development Status :: 3 - Alpha",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Office/Business :: Financial",
+]
+
+keywords = ["tracing", "mpesa", "paylink", "fintech", "observability", "sdk"]
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "hatch",
+  "pytest",
+  "twine",
+  "ipykernel",
+  "pytest-asyncio",
+]
+
+
+[project.urls]
+Repository = "https://github.com/paylink-ai/paylink_tracing_sdk"
+
+
+[tool.hatch.version]
+path = "src/paylink_tracing/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/paylink_tracing"]
