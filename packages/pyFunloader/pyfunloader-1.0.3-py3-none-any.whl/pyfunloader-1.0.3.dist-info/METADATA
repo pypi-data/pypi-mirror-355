@@ -1,0 +1,57 @@
+Metadata-Version: 2.4
+Name: pyFunloader
+Version: 1.0.3
+Summary: A very fast downloader module that is based on pyCurl and multithreading.
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+
+
+A very fast downloader module that is based on pyCurl and multithreading.
+
+You can pause, resume, stop and retry your downloads. If you run into issues with pyCurl installation, try:
+
+env PYCURL_SSL_LIBRARY=openssl LDFLAGS="-L/path/to/openssl-parent-libdir" CFLAGS="-I/path/to/openssl-parent-include-dir" pip3 install --no-cache-dir --compile --ignore-installed pycurl
+
+## Example code:
+
+```
+from pyFunloader import Funload, humanize
+
+import asyncio
+
+async def test():
+    action = Funload(
+        url="https://proof.ovh.net/files/1Gb.dat",
+        destination="downloads/", # optional, / at the end is necessary for directory detection
+        progress_bar=True, # optional
+        in_memory=False, # optional, if true, file can be acquired by action.memory_file afterwards
+        block=False, # optional
+        timeout=10, # optional
+        useragent="Some user agent", # optional
+        buffer=20000 # optional
+    )
+
+    await action.start()
+
+    while True:
+        print(
+f"""
+File: {action.destination}
+Size: {humanize(action.file_size)}
+Downloaded: {humanize(action.downloaded)}
+Speed: {action.speed}
+Estimate: {action.estimate}
+Elapsed Time: {action.elapsed_time}
+Status: {action.status}
+Percentage: {action.percentage}
+"""
+        )
+
+        if action.is_finished:
+            break
+
+        await asyncio.sleep(1)
+
+asyncio.run(test())
+```
