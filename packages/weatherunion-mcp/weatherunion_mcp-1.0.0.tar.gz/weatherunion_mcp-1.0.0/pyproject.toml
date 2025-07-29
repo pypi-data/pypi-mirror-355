@@ -1,0 +1,18 @@
+[project]
+name = "weatherunion-mcp"
+version = "1.0.0"
+description = "Weather Union MCP Server - A Model Context Protocol server for weather data"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=0.2.0",
+    "python-dotenv>=1.1.0",
+    "requests>=2.31.0",
+]
+
+[project.scripts]
+weatherunion-mcp = "weatherunion_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
