@@ -1,0 +1,41 @@
+[build-system]
+requires = ["maturin >= 1.8.7"]
+build-backend = "maturin"
+
+[project]
+name = "xor-cipher-core"
+version = "1.2.0"
+description = "Simple, reusable and optimized XOR ciphers in Python (core)."
+readme = "README.md"
+requires-python = ">= 3.9"
+license.file = "LICENSE"
+keywords = ["xor", "cipher", "core"]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Rust",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/GDPSApp/xor-cipher-core"
+Documentation = "https://xor-cipher.gdps.app/"
+Issues = "https://github.com/GDPSApp/xor-cipher-core/issues"
+Repository = "https://github.com/GDPSApp/xor-cipher-core"
+
+[tool.maturin]
+module-name = "xor_cipher_core._xor_cipher_core"
+bindings = "pyo3"
+strip = true
