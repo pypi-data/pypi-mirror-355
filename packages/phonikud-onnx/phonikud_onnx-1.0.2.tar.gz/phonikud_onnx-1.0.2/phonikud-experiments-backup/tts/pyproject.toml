@@ -1,0 +1,16 @@
+[project]
+name = "inferences"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "phonikud-tts",
+    "piper-onnx>=1.0.5",
+    "soundfile>=0.13.1",
+    "torch>=2.7.0",
+    "transformers>=4.52.3",
+]
+
+[tool.uv.sources]
+phonikud-tts = { git = "https://github.com/thewh1teagle/phonikud-tts" }

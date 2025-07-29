@@ -1,0 +1,26 @@
+[project]
+name = "metrics"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "espeakng-loader>=0.2.4",
+    "huggingface-hub>=0.32.0",
+    "jiwer>=3.1.0",
+    "phonikud",
+    "phonemizer-fork>=3.3.2",
+    "pydub>=0.25.1",
+    "pywhispercpp>=1.3.1",
+    "soundfile>=0.13.1",
+    "torch>=2.7.0",
+    "tqdm>=4.67.1",
+    "transformers>=4.52.3",
+    "dicta-onnx>=1.0.9",
+    "nakdimon-onnx>=0.1.0",
+    "phonikud-onnx",
+]
+
+[tool.uv.sources]
+phonikud-hebrew = { git = "https://github.com/thewh1teagle/phonikud" }
+phonikud-onnx = { path = "../../" }
