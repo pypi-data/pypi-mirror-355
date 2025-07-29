@@ -1,0 +1,197 @@
+Metadata-Version: 2.3
+Name: scanner-cli
+Version: 0.1.0rc10
+Summary: Python command-line interface for Scanner API
+Author: Scanner, Inc.
+Author-email: support@scanner.dev
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: PyYAML (>=6.0.2,<7.0.0)
+Requires-Dist: click (>=8.1.7,<9.0.0)
+Requires-Dist: scanner-client (>=0.1.0rc10,<0.2.0)
+Description-Content-Type: text/markdown
+
+# scanner-cli
+
+This is a Python CLI for the Scanner API.
+
+## Usage
+
+To install the CLI, run
+
+```
+pip install scanner-cli
+```
+
+## Environment Variables
+
+For various commands, you will need to supply some Scanner configuration values.
+
+For `run-tests`, `validate`, and `sync`, you will need these values:
+- Scanner API URL
+- Scanner API key
+
+For `sync`, you will also need this value:
+- Scanner Team ID
+
+You can find these values in **Settings > General** and **Settings > API Keys**
+in your Scanner account.
+
+You can either set these values as environment variables:
+
+```
+# required for run-tests, validate, sync commands:
+export SCANNER_API_URL=<Scanner API URL>
+export SCANNER_API_KEY=<Scanner API key>
+
+# required for sync command:
+export SCANNER_TEAM_ID=<Scanner Team ID>
+```
+
+or provide them as arguments to the CLI:
+
+```
+scanner-cli <command> \
+    --api-url=<Scanner API URL> \
+    --api-key=<Scanner API key> \
+    --team-id=<Scanner Team ID> \
+    ...
+```
+
+## Commands
+
+Available commands are
+- `run-tests` - run tests on detection rules as code
+- `validate` - validate detection rules as code
+- `sync` - sync detection rules to Scanner
+- `migrate-elastic-rules` - migrate Elastic SIEM detection rules to Scanner YAML rules
+
+### `run-tests` and `validate`
+
+To validate or run tests on files:
+
+```
+scanner-cli validate -f detections/errors.yaml -f detections/unauthorized_logins.yaml
+scanner-cli run-tests -f detections/errors.yaml -f detections/unauthorized_logins.yaml
+```
+
+To validate or run tests on directories:
+
+```
+scanner-cli validate -d detections
+scanner-cli run-tests -d detections
+```
+
+To recursively validate or run-tests on a directory, use `-r` or `--recursive`:
+
+```
+scanner-cli validate -r -d detections
+scanner-cli run-tests -r -d detections
+
+scanner-cli validate --recursive -d detections
+scanner-cli run-tests --recursive -d detections
+```
+
+This will only validate or run tests on YAML files with the correct schema header.
+
+A file or directory must be provided. Multiple files and/or directories can be provided.
+
+### `sync`
+
+This command syncs detection rules to your Scanner account.
+
+You can sync individual files or full directories.
+
+```
+scanner-cli sync -f detections/errors.yaml -f detections/unauthorized_logins.yaml
+scanner-cli sync -r -d detections
+```
+
+#### `sync_key`
+
+Each detection rule must have the `sync_key` field defined. This is a unique
+identifier for the rule and can be any string you wish, as long as it is
+unique.
+
+#### `event_sink_keys`
+
+If your detection rules have `event_sink_keys` defined, you must provide a sync
+configuration file in YAML format using the `--sync-config-file` flag.
+
+This file allows you to map `event_sink_keys` in your detection rules (eg.
+`low_severity_alerts`, `high_severity_alerts`, etc.) to specific Scanner event
+sinks (eg. "Custom webhook", "Slack alerts channel", etc.)
+
+```
+scanner-cli sync --sync-config-file sync_config.yaml -r -d detections/
+```
+
+Where is what the sync configuration file looks like:
+```
+event_sink_keys:
+  low_severity_alerts:
+    - sink_id: "5098b2bd-065c-4c0d-9f11-685e88808fc2"
+  medium_severity_alerts:
+    - sink_id: "5098b2bd-065c-4c0d-9f11-685e88808fc2"
+    - sink_id: "62741ace-ea22-4255-8a36-b921a282d61e"
+  high_severity_alerts:
+    - sink_id: "5098b2bd-065c-4c0d-9f11-685e88808fc2"
+    - sink_id: "62741ace-ea22-4255-8a36-b921a282d61e"
+    - sink_id: "2313eb73-0020-4814-9b35-864e3d3439e0"
+```
+
+In this example, the `low_severity_alerts` event sink key is mapped to a single
+event sink, while the `medium_severity_alerts` and `high_severity_alerts` event
+sink keys are mapped to multiple event sinks.
+
+For instance, you might send low severity alerts to a SOAR webhook, but send
+medium and high severity alerts to a high-priority Slack channel and multiple
+webhooks.
+
+To find the Sink ID for a specific event sink, visit **Settings > Event Sinks**
+and click on the event sink you want to use.
+
+### `migrate-elastic-rules`
+
+This command migrates an `ndjson` file containing Elastic SIEM detection rules to Scanner YAML rules.
+
+For each rule in the `ndjson` file, a YAML file will be created in the output directory.
+
+```
+scanner-cli migrate-elastic-rules --elastic-files-rule elastic_rules.ndjson --output-dir scanner_rules/
+```
+
+Optionally, you can provide a migrate config file in YAML format.
+
+The migrate config file allows you to map Elastic Data View IDs to Scanner
+query terms. This way, the queries in your Scanner detection rules can be more
+selective about which logs they check against.
+
+```
+scanner-cli migrate-elastic-rules \
+    --migrate-config-file elastic_to_scanner_config.yaml \
+    --elastic-files-rule elastic_rules.ndjson \
+    --output-dir scanner_rules/
+```
+
+Here is an example migrate config file with a few mappings:
+- Map from an Elastic Data View ID to a Scanner index.
+- Map from an Elastic Data View wildcard name to a Scanner query for a specific
+  source type.
+- Map from an Elastic Data View wildcard name to a Scanner query with multiple
+  terms.
+
+```
+data_view_id_to_query_term:
+  e9874b58-5cee-40e0-8b49-5c3739572ea2: |-
+    @index={ 0f75b7fd-ea1e-421a-b4ee-007ac8570a20 | "application_logs" }
+  log-sources:aws:cloudtrail:*: |-
+    %ingest.source_type="aws:cloudtrail"
+  log-sources:non-prod-app-logs:*: |-
+    my_env=("staging" or "dev") and my_type="app_logs"
+```
+
