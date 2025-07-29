@@ -1,0 +1,249 @@
+# SliceSight-Next
+
+Advanced Redis hotspot detection and analysis tool for identifying load imbalances in Redis clusters.
+
+## Features
+
+- **Real-time hotspot detection** using multiple statistical metrics
+- **Adaptive thresholding** that adjusts based on cluster size and key distribution
+- **Comprehensive analysis** with load ratios, coefficient of variation, and Gini coefficients
+- **CLI interface** for simulation, scanning, and scoring
+- **High performance** with optimized algorithms for large-scale deployments
+
+## Installation
+
+```bash
+pip install slicesight-next
+```
+
+## Quick Start
+
+### Command Line Usage
+
+```bash
+# Simulate key distribution
+slicesight-hotshard simulate --keys 1000 --buckets 3 --auto-thresh
+
+# Score existing load distribution
+slicesight-hotshard score 100.0 200.0 150.0 --auto-thresh
+
+# Check system health
+slicesight-hotshard health
+```
+
+### Python API
+
+```python
+from slicesight_next import (
+    redis_cluster_slot,
+    load_ratio,
+    calc_cv,
+    calc_gini,
+    auto_ratio_thresh,
+    verdict
+)
+
+# Calculate Redis cluster slot
+key = "user:12345"
+slot = redis_cluster_slot(key)
+print(f"Key '{key}' maps to slot {slot}")
+
+# Analyze load distribution
+loads = [100.0, 200.0, 150.0]
+ratio = load_ratio(loads)
+cv = calc_cv(loads)
+gini = calc_gini(loads)
+
+print(f"Load ratio: {ratio:.2f}")
+print(f"Coefficient of variation: {cv:.2f}")
+print(f"Gini coefficient: {gini:.2f}")
+
+# Use adaptive threshold
+n_keys = 1000
+n_buckets = 3
+threshold = auto_ratio_thresh(n_keys, n_buckets)
+print(f"Adaptive threshold: {threshold:.3f}")
+
+# Generate hotspot verdict
+result = verdict(ratio, cv, gini, 0.1, threshold, 0.05)
+print(f"Hotspot detected: {result['hotspot_detected']}")
+```
+
+## Adaptive Threshold Formula
+
+The adaptive threshold automatically adjusts based on your cluster configuration:
+
+```
+ρ_auto(n,k) = 1 / (1 + 3√((k−1)/n))
+```
+
+Where:
+- `n` = number of keys
+- `k` = number of buckets/nodes
+
+This formula ensures that:
+- **Small clusters** get higher thresholds (more tolerance for imbalance)
+- **Large clusters** get lower thresholds (expect better distribution)
+- **More keys** result in lower thresholds (better distribution expected)
+
+## CLI Commands
+
+### simulate
+Simulate Redis key distribution and detect hotspots:
+
+```bash
+slicesight-hotshard simulate [OPTIONS]
+
+Options:
+  --keys INTEGER          Number of keys to simulate [default: 1000]
+  --buckets INTEGER       Number of buckets/nodes [default: 3]
+  --ratio-thresh FLOAT    Load ratio threshold
+  --auto-thresh          Use adaptive threshold
+  --p-thresh FLOAT       P-value threshold [default: 0.05]
+  --json                 Output in JSON format
+  --seed INTEGER         Random seed for reproducibility
+```
+
+### score
+Score given load distribution:
+
+```bash
+slicesight-hotshard score LOADS... [OPTIONS]
+
+Arguments:
+  LOADS...  Load values for each node
+
+Options:
+  --buckets INTEGER       Number of buckets
+  --ratio-thresh FLOAT    Load ratio threshold
+  --auto-thresh          Use adaptive threshold
+  --p-thresh FLOAT       P-value threshold [default: 0.05]
+  --json                 Output in JSON format
+```
+
+### scan
+Scan Redis instance (future implementation):
+
+```bash
+slicesight-hotshard scan [OPTIONS]
+
+Options:
+  --host TEXT            Redis host [default: localhost]
+  --port INTEGER         Redis port [default: 6379]
+  --buckets INTEGER      Number of buckets/nodes [default: 3]
+  --auto-thresh         Use adaptive threshold
+  --json               Output in JSON format
+```
+
+## Metrics Explained
+
+### Load Ratio
+The ratio between the highest and lowest loaded nodes:
+- **1.0** = Perfect balance
+- **>2.0** = Potential hotspot concern
+- **>5.0** = Significant imbalance
+
+### Coefficient of Variation (CV)
+Measures relative variability in the distribution:
+- **0.0** = No variation (perfect balance)
+- **>1.0** = High variability, potential hotspots
+
+### Gini Coefficient
+Measures inequality in load distribution:
+- **0.0** = Perfect equality
+- **>0.5** = Significant inequality
+- **1.0** = Maximum inequality
+
+### Chi-square P-value
+Tests if distribution differs significantly from uniform:
+- **>0.05** = Distribution appears uniform
+- **<0.05** = Significant deviation from uniform
+
+## Development
+
+### Setup
+```bash
+git clone https://github.com/slicesight/slicesight-next.git
+cd slicesight-next
+pip install -e ".[dev,test]"
+```
+
+### Testing
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=slicesight_next --cov-report=html
+
+# Run performance benchmarks
+pytest tests/performance/ -v
+
+# Run property-based tests
+pytest tests/property/ -v
+```
+
+### Code Quality
+```bash
+# Format and lint
+ruff check .
+ruff format .
+
+# Type checking
+mypy slicesight_next --strict
+
+# Security scan
+bandit -r slicesight_next
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Performance
+
+SliceSight-Next is optimized for production use:
+
+- **CRC16 calculation**: >100k ops/sec
+- **Slot distribution**: >50k keys/sec
+- **Metrics calculation**: >10k distributions/sec
+- **Memory efficient**: O(1) space complexity for most operations
+
+## Use Cases
+
+- **Redis Cluster Monitoring**: Detect hotspots in production clusters
+- **Load Testing**: Analyze key distribution in test scenarios
+- **Capacity Planning**: Model cluster behavior under different loads
+- **Performance Tuning**: Identify and resolve load imbalances
+
+## 💬 Feedback & Support
+
+We'd love to hear from you! SliceSight-Next is actively seeking user feedback to improve.
+
+### Quick Feedback
+```bash
+# Submit feedback directly via CLI
+slicesight-hotshard feedback "Your thoughts here"
+slicesight-hotshard feedback "Found a bug" --category bug --email you@company.com
+```
+
+### Community & Support
+- 🐛 [Report Issues](https://github.com/slicesight/slicesight-next/issues)
+- 💬 [Join Discussions](https://github.com/slicesight/slicesight-next/discussions)
+- 📖 [Documentation](https://slicesight-next.readthedocs.io/)
+- ⭐ [Star us on GitHub](https://github.com/slicesight/slicesight-next) if you find this useful!
+
+### What We're Looking For
+- Real-world Redis key patterns you're testing
+- Performance feedback on large datasets
+- Feature requests for better Redis monitoring
+- Use cases we haven't considered
+- Integration pain points
