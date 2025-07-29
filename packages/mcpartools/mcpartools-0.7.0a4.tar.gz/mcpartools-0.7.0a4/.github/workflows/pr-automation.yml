@@ -1,0 +1,55 @@
+name: Pull Request Automation
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  pr_checks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check PR Description
+        uses: actions/github-script@v6
+        id: check_pr_description
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body;
+            const prNumber = context.payload.pull_request.number;
+            const actor = context.actor;
+            const repoOwner = context.repo.owner;
+            const repoName = context.repo.repo;
+
+            if (!prBody || prBody.trim() === "") {
+              console.log("::warning file=.github/workflows/pr-automation.yml::Pull Request description is empty. Please provide a description for the pull request.");
+
+              // Post a comment to the PR
+              await github.rest.issues.createComment({
+                owner: repoOwner,
+                repo: repoName,
+                issue_number: prNumber,
+                body: `🤖 @${actor}, please provide a description for this pull request.`,
+              });
+            } else {
+              console.log("PR description is not empty.");
+            }
+
+      - name: Label PR by Size
+        uses: pascalgn/size-label-action@v0.5.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label PR by Type
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sync-labels: true
