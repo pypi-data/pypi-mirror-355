@@ -1,0 +1,189 @@
+import enum
+import inspect
+from typing import Any, Callable, Dict, List, Tuple, Union
+
+
+def function_to_json(func) -> dict:
+    """
+    Converts a Python function into a JSON-serializable dictionary
+    that describes the function's signature, including its name,
+    description, and parameters.
+    Function from https://github.com/openai/swarm
+
+    Args:
+        func: The function to be converted.
+
+    Returns:
+        A dictionary representing the function's signature in JSON format.
+    """
+    type_map = {
+        str: "string",
+        int: "integer",
+        float: "number",
+        bool: "boolean",
+        list: "array",
+        dict: "object",
+        type(None): "null",
+    }
+
+    try:
+        signature = inspect.signature(func)
+    except ValueError as e:
+        raise ValueError(
+            f"Failed to get signature for function {func.__name__}: {str(e)}"
+        )
+
+    parameters = {}
+    for param in signature.parameters.values():
+        try:
+            param_type = type_map.get(param.annotation, "string")
+        except KeyError as e:
+            raise KeyError(
+                f"Unknown type annotation {param.annotation} for parameter {param.name}: {str(e)}"
+            )
+        parameters[param.name] = {"type": param_type}
+
+    required = [
+        param.name
+        for param in signature.parameters.values()
+        if param.default == inspect._empty
+    ]
+
+    return {
+        "type": "function",
+        "function": {
+            "name": func.__name__,
+            "description": func.__doc__ or "",
+            "parameters": {
+                "type": "object",
+                "properties": parameters,
+                "required": required,
+            },
+        },
+    }
+
+
+class Mode(enum.Enum):
+    """The mode to use for patching the client"""
+
+    OPENAI_TOOLS = "openai_tools"
+    MISTRAL_TOOLS = "mistral_tools"
+    ANTHROPIC_TOOLS = "anthropic_tools"
+    GEMINI_TOOLS = "gemini_tools"
+
+
+def anthropic_schema(schema: Dict) -> Dict[str, Any]:
+    """
+    Return the schema in the format of Anthropic's schema
+    """
+    schema = schema["function"]
+    return {
+        "name": schema["name"],
+        "description": schema["description"],
+        "input_schema": schema["parameters"],
+    }
+
+
+def gemini_schema(schema: Dict) -> Dict[str, Any]:
+    """
+    Return the schema in the format of Gemini's schema
+    """
+    schema = schema["function"]
+    schema = {
+        "name": schema["name"],
+        "description": schema["description"],
+        "parameters": transform_tool_spec(uppercase_types_recursively(schema["parameters"]), keys_to_remove=["additionalProperties", "default", "$schema"]),
+    }
+    return schema
+
+
+def uppercase_types_recursively(schema: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Recursively uppercase the type values in the schema and remove the title attribute to match the Open API 3.0 spec that the google genai library requires.
+    """
+    if isinstance(schema, dict):
+        if "type" in schema:
+            schema["type"] = schema["type"].upper()
+        if "title" in schema:
+            del schema["title"]
+        for key, value in schema.items():
+            schema[key] = uppercase_types_recursively(value)
+    elif isinstance(schema, list):
+        for i, item in enumerate(schema):
+            schema[i] = uppercase_types_recursively(item)
+    return schema
+
+def transform_tool_spec(data, keys_to_remove):
+    """
+    Recursively removes 'additionalProperties', 'default', and '$schema' keys
+    from a dictionary or list representing tool specifications.
+    """
+    if isinstance(data, dict):
+        new_dict = {}
+        for key, value in data.items():
+            if key not in keys_to_remove:
+                new_dict[key] = transform_tool_spec(value, keys_to_remove)
+        return new_dict
+    elif isinstance(data, list):
+        return [transform_tool_spec(item, keys_to_remove) for item in data]
+    else:
+        return data
+
+
+def _check_tool_choice(tools: List[Dict], tool_choice: str) -> str:
+    """
+    Adhere to the tool_choice parameter requirements.
+    """
+
+    if tool_choice:
+        tool_choices = ["required", "auto"] + [
+            tool["function"]["name"] for tool in tools
+        ]
+        assert tool_choice in tool_choices, (
+            f"tool_choice must be one of {tool_choices}"
+        )
+
+    return tool_choice
+
+
+def format_tools(
+    tools: List[Union[Callable, Dict]], tool_choice: str, mode: Mode
+) -> Tuple[List[Dict[str, Any]], str]:
+    """
+    Given a series of functions, return the JSON schema required by each LLM provider.
+    Parameters
+    ----------
+    tools : List[Union[Callable, Dict]]
+        A list of tools in the OpenAI JSON format or a callable function.
+    tool_choice : str
+        The tool_choice parameter to use for the LLM provider
+    mode : Mode
+        The LLM provider to format the tools for
+    Returns
+    -------
+    List[Dict[str, Any]]
+        A list of JSON schemas for each tool
+    """
+    # first convert to the openai dict format if they are a callable
+    tools = [function_to_json(tool) if callable(tool) else tool for tool in tools]
+    tool_choice = _check_tool_choice(tools, tool_choice)
+    tools_formatted = []
+    if mode in {Mode.OPENAI_TOOLS, Mode.MISTRAL_TOOLS}:
+        for tool in tools:
+            tool = transform_tool_spec(tool, keys_to_remove=["default"])
+            # As it is already in the openai format, we can just append it
+            tools_formatted.append(tool)
+
+    elif mode == Mode.ANTHROPIC_TOOLS:
+        for tool in tools:
+            schema = anthropic_schema(tool)
+            tools_formatted.append(schema)
+
+    elif mode == Mode.GEMINI_TOOLS:
+        for tool in tools:
+            schema = gemini_schema(tool)
+            tools_formatted.append(schema)
+    else:
+        raise ValueError(f"Unknown mode {mode}")
+
+    return tools_formatted, tool_choice
