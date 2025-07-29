@@ -1,0 +1,44 @@
+# Global LLM configuration
+
+[llm]
+
+model = "gpt-4.1"           # Using GPT-4 Turbo model
+
+base_url = "https://api.openai.com/v1"  # OpenAI API endpoint
+
+api_key = "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"   # IMPORTANT: Replace with your actual OpenAI API key
+
+max_tokens = 8000                       # Reduced maximum tokens in response
+
+temperature = 0.7                       # Controls randomness
+
+api_type = "openai"                     # API type
+
+api_version = "v1"                      # API version
+
+# MCP Server configuration
+
+[mcp_server]
+server_url = "http://localhost:8000"    # MCP server URL
+
+# Vessel search API configuration
+
+[mcp_server.vessel_search]
+
+api_url = "https://ranking.syia.ai/search"    # Vessel search API endpoint
+
+# Browser configuration
+
+[browser]
+
+headless = true                         # Run browser in headless mode
+
+disable_security = true                 # Disable browser security features
+
+# Search configuration
+
+[search]
+
+max_results = 10                        # Maximum number of search results
+
+timeout = 30                            # Search timeout in seconds
