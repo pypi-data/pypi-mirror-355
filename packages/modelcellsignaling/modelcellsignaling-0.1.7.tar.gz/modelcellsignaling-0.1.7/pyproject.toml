@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=70.2.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modelcellsignaling"
+version = "0.1.7"
+authors = [
+    {name = "Adam Jaskuła", email = "aj429467@students.mimuw.edu.pl"},
+    {name = "Michał Korniak", email = "mk448287@students.mimuw.edu.pl"},
+    {name = "Zuz Kiczak", email = "zk439532@students.mimuw.edu.pl"}
+]
+description = "Generator for biological experiments"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Intended Audience :: Science/Research",
+]
+dependencies = [
+    "clearml~=1.10.1",
+    "gdown~=5.2.0",
+    "imageio~=2.31.5",         
+    "matplotlib~=3.8.4",       
+    "numpy<2.0",        
+    "pandas==2.2.2",           
+    "pytest~=8.1.0",
+    "scipy<1.14",              
+    "torch~=2.2.0",            
+    "torchvision~=0.17.0",     
+    "tqdm~=4.67.1"
+]
+
+[project.urls]
+Homepage = "https://github.com/M-Korniak/ZPP"
+Bug-Tracker = "https://github.com/M-Korniak/ZPP/issues"
+
+[tool.setuptools]
+packages = [
+    "src.data_processing",
+    "src.generator", 
+    "src.model",
+    "src.rule_based_generator",
+    "src.trainer",
+    "src.transformations",
+    "src.utils",
+    "src.visualizer"
+]
+[project.scripts]
+process-tensor = "src.data_processing.data_processing:main"
+train-model = "src.trainer.cli:train_model"
+generate-time-lapse-rule-based = "src.rule_based_generator.cli:main"
+generate-time-lapse-autoregressive = "src.generator.cli:main"
+load-model = "src.model.cli:main"
