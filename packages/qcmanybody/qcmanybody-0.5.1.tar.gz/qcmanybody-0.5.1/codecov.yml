@@ -1,0 +1,20 @@
+coverage:
+  ignore:
+    - qcmanybody/tests/component_data
+    - qcmanybody/tests/ref_data
+    - qcmanybody/tests/generate_component_data.py
+  status:
+    project:
+      default:
+        informational: true
+    #patch: false  # turn off
+    patch:
+      default:
+        informational: true
+        #threshold: 80%
+#comment: false  # turn off entirely for PR
+comment:
+  layout: "header"
+  require_changes: false
+  branches: null
+  behavior: once

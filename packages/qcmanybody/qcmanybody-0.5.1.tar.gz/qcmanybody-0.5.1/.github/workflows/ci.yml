@@ -1,0 +1,229 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "9 16 * * 1"
+
+jobs:
+  build:
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        cfg:
+          - label: Py-min
+            python-version: "3.8"
+            runs-on: ubuntu-latest
+            pytest: "-m 'not addon'"
+
+          - label: Py-max
+            python-version: "3.13"
+            runs-on: ubuntu-latest
+            pytest: "-k '(not (he4 and (3b or 4b) and not sio)) or supersys'"
+
+          - label: Demo
+            python-version: "3.11"
+            runs-on: ubuntu-latest
+            pytest: "-k 'examples or (121-nwchem_psi4 and 4b)'"
+
+          - label: QCSk-next
+            python-version: "3.12"
+            runs-on: ubuntu-latest
+            pytest: "-k '((not (he4 and (3b or 4b) and not sio)) or supersys) and not vmfc'"
+
+    name: "🐍 ${{ matrix.cfg.python-version }} • ${{ matrix.cfg.label }} • ${{ matrix.cfg.runs-on }}"
+    runs-on: ${{ matrix.cfg.runs-on }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Write a Conda Env File
+      run: |
+          cat > export.yaml <<EOF
+          name: test
+          channels:
+            - conda-forge
+          dependencies:
+            # Build
+            - setuptools
+            - setuptools-scm
+            # Core
+            - python
+            - qcelemental
+            - pydantic
+            # Testing
+            - pytest
+            - zstandard
+            - pytest-cov
+            - codecov
+            # Testing CMS
+            #- dummy1
+            #- dummy2
+            #- nwchem  # lands on different he4 soln
+          EOF
+          if [[ "${{ matrix.cfg.label }}" == "Py-min" ]]; then
+              sed -i "s;pydantic;pydantic=1;g" export.yaml
+          fi
+          if [[ "${{ matrix.cfg.label }}" == "Py-max" ]]; then
+              sed -i "s;#- dummy1;- psi4=1.9.1;g" export.yaml
+          fi
+          if [[ "${{ matrix.cfg.label }}" == "Demo" ]]; then
+            :
+              sed -i "s;#- dummy1;- psi4=1.9.1;g" export.yaml
+              sed -i "s;#- dummy2;- nwchem;g" export.yaml
+          fi
+          if [[ "${{ matrix.cfg.label }}" == "QCSk-next" ]]; then
+              sed -i "s;pydantic;pydantic=2;g" export.yaml
+              sed -i "s;#- dummy1;- psi4=1.9.1;g" export.yaml
+              sed -i "s;#- dummy2;- pydantic-settings;g" export.yaml
+          fi
+          # model sed for L/W
+          #   sed -i "s;;;g" export.yaml
+          # model sed for M
+          #   sed -E -i.bak "s;;;g" export.yaml
+          cat export.yaml
+
+    - name: Create Environment
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        activate-environment: test
+        environment-file: export.yaml
+        python-version: ${{ matrix.cfg.python-version }}
+        auto-activate-base: false
+        show-channel-urls: true
+        add-pip-as-python-dependency: true
+        channels: conda-forge
+        conda-remove-defaults: true
+
+    - name: Special Config - QCElemental Dep
+      if: false
+      run: |
+        conda remove qcelemental --force
+        python -m pip install 'git+https://github.com/MolSSI/QCElemental.git@loriab-patch-2' --no-deps
+
+    - name: Special Config - QCEngine Dep
+      if: false
+      #if: "(startsWith(matrix.cfg.label, 'Psi4')) || (matrix.cfg.label == 'ADCC') || (matrix.cfg.label == 'optimization-dispersion')"
+      run: |
+        conda remove qcengine --force
+
+    - name: Special Config - QCSchema Next Deps
+      if: "(startsWith(matrix.cfg.label, 'QCSk-next'))"
+      run: |
+        conda remove qcelemental qcengine --force
+        python -m pip install 'git+https://github.com/MolSSI/QCElemental.git@next2025' --no-deps
+        python -m pip install 'git+https://github.com/MolSSI/QCEngine.git@next2025' --no-deps
+
+    - name: Environment Information
+      run: |
+        conda info
+        conda list
+
+    - name: Install QCManyBody
+      run: |
+        pip install -e .
+        # python -m pip install . --no-deps  # gives no codecov beyond tests
+
+    - name: Configure QCEngine
+      if: "(matrix.cfg.label != 'Py-min')"
+      run: |
+        cat > qcengine.yaml <<EOF
+        all:
+          hostname_pattern: "*"
+          memory: 2
+          ncores: 2
+        EOF
+        cat qcengine.yaml
+        qcengine info
+
+    - name: PyTest
+      run: |
+        pytest -rws -v ${{ matrix.cfg.pytest }} \
+            --cov=qcmanybody --cov-report=xml \
+            --color=yes --durations 50 --durations-min 20
+
+    - name: CodeCov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: loriab/QCManyBody
+
+  release_docs:
+    needs: [build]
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        cfg:
+          - label: MkDocs
+            python-version: "3.10"
+            runs-on: ubuntu-latest
+
+    name: "🐍 ${{ matrix.cfg.python-version }} • ${{ matrix.cfg.label }}"
+    runs-on: ${{ matrix.cfg.runs-on }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Write a Conda Env File
+      run: |
+          cat > export.yaml <<EOF
+          name: test
+          channels:
+            - conda-forge
+          dependencies:
+            # Build
+            - setuptools
+            - setuptools-scm
+            # Core
+            - python
+            - qcelemental
+            # Docs
+            - mkdocs
+            - mkdocs-material
+            - mkdocstrings-python
+            - tabulate
+          EOF
+          cat export.yaml
+
+    - name: Create Environment
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        activate-environment: test
+        environment-file: export.yaml
+        python-version: ${{ matrix.cfg.python-version }}
+        auto-activate-base: false
+        show-channel-urls: true
+        add-pip-as-python-dependency: true
+        channels: conda-forge
+        conda-remove-defaults: true
+
+    - name: Environment Information
+      run: |
+        conda info
+        conda list --show-channel-urls
+
+    - name: Build Documentation
+      run: |
+        python -m pip install . --no-deps
+        QCMANYBODY_MAX_NBODY=5 PYTHONPATH=docs/extensions mkdocs build --strict
+        cd docs
+
+    - name: GitHub Pages Deploy
+      uses: JamesIves/github-pages-deploy-action@v4
+      if: github.event_name == 'push' && github.repository == 'MolSSI/QCManyBody' && ( startsWith( github.ref, 'refs/tags/' ) || github.ref == 'refs/heads/main' )
+      with:
+        branch: gh-pages
+        folder: site
