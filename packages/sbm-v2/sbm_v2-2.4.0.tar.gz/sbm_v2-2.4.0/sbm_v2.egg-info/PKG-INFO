@@ -1,0 +1,111 @@
+Metadata-Version: 2.4
+Name: sbm-v2
+Version: 2.4.0
+Summary: Site Builder Migration Tool V2 - Team-friendly migration tool for DealerInspire dealer websites
+Author: DealerInspire Development Team
+License: MIT
+Project-URL: Homepage, https://github.com/dealerinspire/sbm-v2
+Project-URL: Repository, https://github.com/dealerinspire/sbm-v2
+Project-URL: Documentation, https://github.com/dealerinspire/sbm-v2/docs
+Project-URL: Bug Tracker, https://github.com/dealerinspire/sbm-v2/issues
+Keywords: dealerinspire,migration,scss,site-builder
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click>=8.0.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: gitpython>=3.1.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: requests>=2.28.0
+Requires-Dist: mcp>=0.1.0
+Requires-Dist: pathlib2>=2.3.0
+Requires-Dist: colorama>=0.4.0
+Requires-Dist: jinja2>=3.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: pre-commit>=2.20.0; extra == "dev"
+Dynamic: license-file
+
+# SBM Tool V2 - Site Builder Migration
+
+**One-command automation** for converting DealerInspire dealer themes to Site Builder format.
+
+## 🚀 Quick Install
+
+```bash
+pip install sbm-v2
+```
+
+## 🎯 Quick Start
+
+```bash
+# 1. Setup dealer migration
+sbm setup your-dealer-slug --auto-start
+
+# 2. Run migration
+sbm migrate your-dealer-slug
+
+# 3. Create pull request
+sbm create-pr
+```
+
+## 📋 What It Does
+
+- ✅ **Converts SCSS files** to Site Builder format
+- ✅ **Updates mixins** to modern CSS
+- ✅ **Handles Git workflow** automatically
+- ✅ **Creates GitHub PR** with proper templates
+
+## 🔧 Requirements
+
+- Python 3.8+
+- Access to `~/di-websites-platform` directory
+- GitHub CLI (`gh`) authenticated
+
+## 📚 Commands
+
+| Command                         | Purpose                      |
+| ------------------------------- | ---------------------------- |
+| `sbm doctor`                    | Check system health          |
+| `sbm setup <slug> --auto-start` | Prepare dealer for migration |
+| `sbm migrate <slug>`            | Run the migration            |
+| `sbm create-pr`                 | Create GitHub pull request   |
+
+## 🚨 Getting Help
+
+1. **Always try first:** `sbm doctor`
+2. **Issues?** Check [troubleshooting guide](TROUBLESHOOTING.md)
+3. **Bugs?** Report at [GitHub Issues](https://github.com/nate-hart-di/auto-sbm/issues)
+
+## 🔧 Development
+
+**For developers**: Use the development branch which contains complete test suites, documentation, and validation data:
+
+```bash
+git checkout dev # Switch to development branch
+pytest           # Run full test suite
+```
+
+The `dev` branch includes:
+
+- Complete test suites (10+ real PR validation cases)
+- Development documentation and analysis
+- Validation data and compliance reports
+- Development guides and templates
+
+---
+
+**Need more details?** See [Complete Documentation](DOCS.md)
