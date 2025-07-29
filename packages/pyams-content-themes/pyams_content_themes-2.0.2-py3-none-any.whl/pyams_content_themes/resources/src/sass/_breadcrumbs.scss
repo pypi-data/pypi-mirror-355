@@ -1,0 +1,24 @@
+
+
+.breadcrumbs {
+  z-index: 2;
+
+  .breadcrumb {
+
+    &:empty {
+      display: none;
+    }
+
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 80%;
+
+    li:not(:last-child) {
+      &::after {
+        display: inline;
+        content: '/';
+        padding: 0 0.5em;
+      }
+    }
+  }
+}
