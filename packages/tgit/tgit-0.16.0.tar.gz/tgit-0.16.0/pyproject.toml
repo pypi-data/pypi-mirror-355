@@ -1,0 +1,66 @@
+[project]
+name = "tgit"
+version = "0.16.0"
+description = "Tool for Git Interaction Temptation (tgit): An elegant CLI tool that simplifies and streamlines your Git workflow, making version control a breeze."
+authors = [{ name = "Jannchie", email = "jannchie@gmail.com" }]
+dependencies = [
+    "rich>=13.9.4",
+    "pyyaml>=6.0.2",
+    "inquirer>=3.4.0",
+    "gitpython>=3.1.43",
+    "openai>=1.52.0",
+    "jinja2>=3.1.4",
+    "gitpython>=3.1.44",
+    "inquirer>=3.4.0",
+    "beautifulsoup4>=4.13.3",
+]
+readme = { content-type = "text/markdown", file = "README.md" }
+requires-python = ">= 3.11"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Version Control",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+keywords = ["git", "tool", "changelog", "version", "commit"]
+license = "MIT"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+upgrade = true
+package = true
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["tgit"]
+
+[project.scripts]
+tgit = "tgit:cli.main"
+
+[tool.ruff]
+line-length = 140
+select = ["ALL"]
+
+ignore = [
+    "PGH",
+    "RUF003",
+    "BLE001",
+    "ERA001",
+    "FIX002",
+    "TD002",
+    "TD003",
+    "D",
+    "TRY300",
+    "A004",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.9.4"]
