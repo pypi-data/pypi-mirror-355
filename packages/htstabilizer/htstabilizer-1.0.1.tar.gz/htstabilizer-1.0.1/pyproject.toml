@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "htstabilizer"
+version = "1.0.1"
+description = "Hardware-tailored quantum Clifford circuits for stabilizer state preparation or readout as well as mutually unbiased bases in order to perform efficient full-state tomography on small qubit systems."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Mc-Zen"}]
+license = { file = "LICENSE.txt" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["quantum circuits", "clifford", "hardware-tailored", "full-state tomography", "stabilizer", "quantum state preparation", "quantum readout circuits", "mutually unbiased bases", "short circuits", "full state tomography", "circuit optimization"]
+dependencies = [
+    "qiskit >= 0.39",
+    "numpy >= 1.22"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Mc-Zen/htstabilizer"
+"Bug Tracker" = "https://github.com/Mc-Zen/htstabilizer/issues"
