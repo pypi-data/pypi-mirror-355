@@ -1,0 +1,12 @@
+[project]
+name = "pulseaudio-simple-loopback"
+version = "1.0.0"
+description = "A simple CLI script to setup PulseAudio loopbacks"
+authors = [{name = "Rafał Kalisz"}]
+readme = "README.md"
+license = { text = "MIT" }
+dependencies = ["rich"]
+
+[project.scripts]
+loopback-setup = "pulseaudio_simple_loopback.loopback_setup:main"
+loopback-stop = "pulseaudio_simple_loopback.loopback_stop:main"
