@@ -1,0 +1,225 @@
+Metadata-Version: 2.4
+Name: midastrader
+Version: 1.0.28
+Summary: A robust backtesting and live trading engine designed for seamless strategy development and deployment. It supports user-defined strategies, multi-threaded execution, and integrations with brokers and data sources.
+Author-email: Anthony Baxter <anthonybaxter819@gmail.com>
+License: Apache-2.0
+Keywords: algorithmic-trading,event-driven-backtest,quantitative-finance,finance,markets
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp==3.9.5
+Requires-Dist: aiosignal==1.3.1
+Requires-Dist: appdirs==1.4.4
+Requires-Dist: arch==7.0.0
+Requires-Dist: async-timeout==4.0.3
+Requires-Dist: attrs==23.2.0
+Requires-Dist: backports.tarfile==1.2.0
+Requires-Dist: beautifulsoup4==4.12.3
+Requires-Dist: Brotli==1.1.0
+Requires-Dist: certifi==2024.7.4
+Requires-Dist: cffi==1.17.1
+Requires-Dist: chardet==5.2.0
+Requires-Dist: charset-normalizer==3.3.2
+Requires-Dist: contourpy==1.2.1
+Requires-Dist: cramjam==2.8.3
+Requires-Dist: cryptography==44.0.1
+Requires-Dist: cssselect2==0.7.0
+Requires-Dist: cycler==0.12.1
+Requires-Dist: databento==0.33.0
+Requires-Dist: databento-dbn==0.17.1
+Requires-Dist: docutils==0.21.2
+Requires-Dist: exchange_calendars==4.6
+Requires-Dist: fastparquet==2024.5.0
+Requires-Dist: fonttools==4.51.0
+Requires-Dist: frozendict==2.4.2
+Requires-Dist: frozenlist==1.4.1
+Requires-Dist: fsspec==2024.9.0
+Requires-Dist: html5lib==1.1
+Requires-Dist: ibapi==10.30.1
+Requires-Dist: idna==3.7
+Requires-Dist: importlib_metadata==8.6.1
+Requires-Dist: jaraco.classes==3.4.0
+Requires-Dist: jaraco.context==6.0.1
+Requires-Dist: jaraco.functools==4.1.0
+Requires-Dist: jeepney==0.8.0
+Requires-Dist: joblib==1.4.2
+Requires-Dist: keyring==25.6.0
+Requires-Dist: kiwisolver==1.4.5
+Requires-Dist: korean-lunar-calendar==0.3.1
+Requires-Dist: lxml==5.2.1
+Requires-Dist: markdown-it-py==3.0.0
+Requires-Dist: matplotlib==3.9.0
+Requires-Dist: mbinary==1.0.26
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: midas_client==1.0.22
+Requires-Dist: more-itertools==10.5.0
+Requires-Dist: multidict==6.0.5
+Requires-Dist: multitasking==0.0.11
+Requires-Dist: nh3==0.2.20
+Requires-Dist: numpy==1.26.4
+Requires-Dist: packaging==24.1
+Requires-Dist: pandas==2.2.2
+Requires-Dist: pandas_market_calendars==4.4.2
+Requires-Dist: patsy==0.5.6
+Requires-Dist: peewee==3.17.3
+Requires-Dist: pillow==10.3.0
+Requires-Dist: pkginfo==1.12.0
+Requires-Dist: pyarrow==17.0.0
+Requires-Dist: pycparser==2.22
+Requires-Dist: pydyf==0.10.0
+Requires-Dist: Pygments==2.19.1
+Requires-Dist: pyluach==2.2.0
+Requires-Dist: pyparsing==3.1.2
+Requires-Dist: pyphen==0.15.0
+Requires-Dist: pyproject_hooks==1.2.0
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: python-decouple==3.8
+Requires-Dist: python-dotenv==1.0.1
+Requires-Dist: pytz==2024.1
+Requires-Dist: quant_analytics==1.0.7
+Requires-Dist: readme_renderer==44.0
+Requires-Dist: reportlab==4.2.0
+Requires-Dist: requests==2.32.3
+Requires-Dist: requests-toolbelt==1.0.0
+Requires-Dist: rfc3986==2.0.0
+Requires-Dist: rich==13.9.4
+Requires-Dist: scikit-learn==1.4.2
+Requires-Dist: scipy==1.13.0
+Requires-Dist: seaborn==0.13.2
+Requires-Dist: SecretStorage==3.3.3
+Requires-Dist: six==1.16.0
+Requires-Dist: soupsieve==2.5
+Requires-Dist: statsmodels==0.14.2
+Requires-Dist: threadpoolctl==3.5.0
+Requires-Dist: tinycss2==1.3.0
+Requires-Dist: toml==0.10.2
+Requires-Dist: toolz==1.0.0
+Requires-Dist: tzdata==2024.1
+Requires-Dist: urllib3==2.3.0
+Requires-Dist: weasyprint==62.1
+Requires-Dist: webencodings==0.5.1
+Requires-Dist: XlsxWriter==3.2.0
+Requires-Dist: yarl==1.9.4
+Requires-Dist: yfinance==0.2.38
+Requires-Dist: zipp==3.21.0
+Requires-Dist: zopfli==0.2.3
+Requires-Dist: zstandard==0.22.0
+Dynamic: license-file
+
+# MidasTrader
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![pypi-version](https://img.shields.io/pypi/v/midastrader.svg)](https://pypi.org/project/midastrader/)
+
+MidasTrader is a robust trading system designed for seamless transitions between backtesting and live trading without requiring changes to user code. It integrates a flexible architecture combining a data engine, execution engine, and core components that streamline the strategy development process. The system is built with a multi-threaded design where each component communicates via a shared message bus.
+
+### Key Components
+
+1. **Core Engine**:
+
+   - Central to the system, the Core Engine includes:
+     - **Order Book**: Tracks market depth and price movements.
+     - **Portfolio Server**: Manages and tracks portfolio allocations and positions.
+     - **Performance Tracking**: Calculates and monitors key trading metrics.
+     - **Order Management System**: Handles order placement, modifications, and cancellations.
+     - **Base Strategy**: A foundation for user-defined strategies.
+
+2. **Data Engine**:
+
+   - Connects to user-defined data sources:
+     - **Midas Server**: Access historical data via the Midas ecosystem.
+     - **Binary Data Files**: Handles local files encoded with the Midas Binary Encoding Library.
+     - **External Sources**: Currently supports Databento, with more integrations planned.
+
+3. **Execution Engine**:
+
+   - Facilitates live trading by connecting to brokers:
+     - Currently supports Interactive Brokers.
+     - Users can configure broker details in the `config.toml` file.
+
+## Installation
+
+You can install `midastrader` directly from [PyPI](https://pypi.org/project/midastrader/):
+
+```bash
+pip install midastrader
+```
+
+## Configuration
+
+### Configuration File (`config.toml`)
+
+Define system parameters, including data sources, execution settings, and strategy configuration.
+
+- Example : [config.toml](example/config.toml)
+
+### Strategy File (`logic.py`)
+
+Strategies are implemented by extending the `BaseStrategy` class. Define your custom logic in Python.
+
+- Example : [logic.py](example/logic.py)
+
+## Usage
+
+#### CLI Mode
+
+Run the system using the following commands:
+
+```bash
+# Backtest Mode
+midas path/to/config.toml backtest
+
+# Live Mode
+midas path/to/config.toml live
+```
+
+#### Application Mode
+
+Alternatively, you can use the system programmatically in your application:
+
+```python
+from midas.cli import run
+
+# Backtest Mode
+run("path/to/config.toml", "backtest")
+
+# Live Mode
+run("path/to/config.toml", "live")
+```
+
+## Supported Features
+
+<!-- | ✅  | Alpha Vantage           | -->
+<!-- | ❌  | Yahoo Finance (Planned) | -->
+<!-- | ❌  | Quandl (Planned)        | -->
+
+|     | **Data Vendors** |
+| --- | ---------------- |
+| ✅  | Databento        |
+
+|     | **Brokers**         |
+| --- | ------------------- |
+| ✅  | Interactive Brokers |
+
+<!-- | ✅  | TD Ameritrade       | -->
+<!-- | ❌  | E\*TRADE            | -->
+<!-- | ❌  | Robinhood           | -->
+
+## Future Plans
+
+- Add more data sources.
+- Integrate additional brokers.
+
+## Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request with suggestions or improvements.
+
+## License
+
+This project is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for details.
