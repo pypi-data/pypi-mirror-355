@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: cult-common
+Version: 0.2.0
+Summary: Shared utilities, schemas, and mixins for Cult microservices
+Home-page: https://github.com/Oluwaseun-ayeni/cult-common
+Author: Oluwaseun Ayeni
+Author-email: Oluwaseun Ayeni <oluwastormy101@icloud.com>
+License: MIT
+Project-URL: homepage, https://github.com/Oluwaseun-ayeni/cult-common
+Project-URL: repository, https://github.com/Oluwaseun-ayeni/cult-common
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=1.10
+Requires-Dist: pydantic-settings>=0.3
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+```
+# cult-common
+
+Shared configuration and utility library for Cult microservices.
+
+## Installation
+
+pip install cult-common==0.1.0
+
+
+## Usage
+
+from cult_common.config import settings
+logger = cult_common.logging.get_logger(__name__)
+
+print(settings.KAFKA_BOOTSTRAP_SERVERS)
+```
