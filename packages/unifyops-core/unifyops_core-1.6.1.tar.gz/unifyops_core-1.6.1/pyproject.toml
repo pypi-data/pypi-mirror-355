@@ -1,0 +1,126 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unifyops-core"
+description = "Core utilities for UnifyOps Python projects"
+authors = [{name = "UnifyOps Team", email = "admin@unifyops.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["unifyops", "utilities", "logging", "exceptions", "opentelemetry", "observability"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers", 
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pydantic>=2.4.0",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+# OpenTelemetry observability support
+otel = [
+    "opentelemetry-api>=1.27.0",
+    "opentelemetry-sdk>=1.27.0",
+    "opentelemetry-exporter-otlp>=1.27.0",
+    "opentelemetry-instrumentation>=0.48b0",
+    "opentelemetry-semantic-conventions>=0.48b0",
+    "opentelemetry-instrumentation-logging>=0.48b0",
+    "grpcio>=1.59.0",
+    "protobuf>=4.21.0",
+]
+
+# Full FastAPI + OpenTelemetry support
+fastapi-otel = [
+    "opentelemetry-api>=1.27.0",
+    "opentelemetry-sdk>=1.27.0",
+    "opentelemetry-exporter-otlp>=1.27.0",
+    "opentelemetry-instrumentation>=0.48b0",
+    "opentelemetry-semantic-conventions>=0.48b0",
+    "opentelemetry-instrumentation-logging>=0.48b0",
+    "grpcio>=1.59.0",
+    "protobuf>=4.21.0",
+    "opentelemetry-instrumentation-fastapi>=0.48b0",
+    "opentelemetry-instrumentation-requests>=0.48b0",
+    "opentelemetry-instrumentation-sqlalchemy>=0.48b0",
+    "opentelemetry-instrumentation-psycopg2>=0.48b0",
+    "opentelemetry-propagator-b3>=1.27.0",
+    "opentelemetry-propagator-jaeger>=1.27.0",
+]
+
+# All optional dependencies
+all = [
+    "opentelemetry-api>=1.27.0",
+    "opentelemetry-sdk>=1.27.0",
+    "opentelemetry-exporter-otlp>=1.27.0",
+    "opentelemetry-instrumentation>=0.48b0",
+    "opentelemetry-semantic-conventions>=0.48b0",
+    "opentelemetry-instrumentation-logging>=0.48b0",
+    "grpcio>=1.59.0",
+    "protobuf>=4.21.0",
+    "opentelemetry-instrumentation-fastapi>=0.48b0",
+    "opentelemetry-instrumentation-requests>=0.48b0",
+    "opentelemetry-instrumentation-sqlalchemy>=0.48b0",
+    "opentelemetry-instrumentation-psycopg2>=0.48b0",
+    "opentelemetry-propagator-b3>=1.27.0",
+    "opentelemetry-propagator-jaeger>=1.27.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/unifyops/unifyops-core"
+Repository = "https://github.com/unifyops/unifyops-core"
+
+[tool.setuptools.dynamic]
+version = {attr = "unifyops_core.__version__"}
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+asyncio_mode = "auto"
+
+[tool.mypy]
+python_version = "3.12"
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true 
