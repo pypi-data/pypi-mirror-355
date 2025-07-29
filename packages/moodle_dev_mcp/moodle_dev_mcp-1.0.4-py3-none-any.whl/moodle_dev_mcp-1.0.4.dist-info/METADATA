@@ -1,0 +1,299 @@
+Metadata-Version: 2.4
+Name: moodle_dev_mcp
+Version: 1.0.4
+Summary: MCP Server for Moodle Developer Documentation
+Project-URL: Homepage, https://github.com/khairu-aqsara/moodle_dev_mcp
+Project-URL: Repository, https://github.com/khairu-aqsara/moodle_dev_mcp
+Project-URL: Issues, https://github.com/khairu-aqsara/moodle_dev_mcp/issues
+Author-email: Khairu Aqsara <wenkhairu@gmail.com>
+License-File: LICENSE
+Keywords: api,documentation,mcp,moodle
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.10
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: beautifulsoup4>=4.11.0
+Requires-Dist: mcp>=1.0.0
+Description-Content-Type: text/markdown
+
+# Moodle Developer Documentation MCP Server
+
+A Model Context Protocol (MCP) server that provides seamless access to Moodle developer documentation from [moodledev.io](https://moodledev.io). This server enables AI assistants and other MCP clients to search, browse, and retrieve Moodle development documentation with version-specific support.
+
+[![PyPI version](https://badge.fury.io/py/moodle_dev_mcp.svg)](https://badge.fury.io/py/moodle_dev_mcp)
+[![Python versions](https://img.shields.io/pypi/pyversions/moodle_dev_mcp.svg)](https://pypi.org/project/moodle_dev_mcp/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Features
+
+- 🔍 **Search Documentation**: Search across Moodle developer documentation with intelligent filtering
+- 📚 **Version Support**: Access documentation for multiple Moodle versions (4.1, 4.2, 5.0, etc.)
+- 🗂️ **API Structure**: Browse and explore Moodle's API documentation structure
+- 📄 **Page Fetching**: Retrieve full content from specific documentation pages
+- ⚡ **Async Performance**: Built with async/await for efficient concurrent operations
+- 🔧 **MCP Compatible**: Works with any MCP-compatible client (Claude Desktop, etc.)
+
+## Installation
+
+### Prerequisites
+
+- Python 3.8 or higher
+- pip (Python package installer)
+
+### Install from PyPI
+
+The easiest way to install the Moodle Developer Documentation MCP Server is via PyPI:
+
+```bash
+pip install moodle_dev_mcp
+```
+
+#### For Development or Specific Environments
+
+If you're working in a virtual environment (recommended):
+
+```bash
+# Create a virtual environment
+python -m venv moodle_mcp_env
+
+# Activate the virtual environment
+# On Windows:
+moodle_mcp_env\Scripts\activate
+# On macOS/Linux:
+source moodle_mcp_env/bin/activate
+
+# Install the package
+pip install moodle_dev_mcp
+```
+
+#### Install with UV (Recommended for faster installs)
+
+If you have [uv](https://github.com/astral-sh/uv) installed:
+
+```bash
+uv pip install moodle_dev_mcp
+```
+
+### Verify Installation
+
+After installation, verify that the server is properly installed:
+
+```bash
+python -c "import moodle_dev_mcp; print('Installation successful!')"
+```
+
+Or test the server directly:
+
+```bash
+python -m moodle_dev_mcp
+```
+
+## Configuration
+
+### Claude Desktop Integration
+
+To use this MCP server with Claude Desktop, add the following configuration to your Claude Desktop config file:
+
+**Location of config file:**
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+**Configuration:**
+
+```json
+{
+  "mcpServers": {
+    "moodle_dev_docs": {
+      "command": "python",
+      "args": ["-m", "moodle_dev_mcp"],
+      "env": {}
+    }
+  }
+}
+```
+
+If you installed in a virtual environment, use the full path to the Python executable:
+
+```json
+{
+  "mcpServers": {
+    "moodle_dev_docs": {
+      "command": "/path/to/your/venv/bin/python",
+      "args": ["-m", "moodle_dev_mcp"],
+      "env": {}
+    }
+  }
+}
+```
+
+### Other MCP Clients
+
+For other MCP clients, use the following command to start the server:
+
+```bash
+python -m moodle_dev_mcp
+```
+
+## Available Tools
+
+The server provides the following tools that can be used by MCP clients:
+
+### 1. `get_versions`
+Get a list of available Moodle versions in the developer documentation.
+
+**Parameters:** None
+
+**Example usage:**
+```
+Get available Moodle versions
+```
+
+### 2. `search_docs`
+Search Moodle developer documentation for specific topics or APIs.
+
+**Parameters:**
+- `query` (required): Search query (e.g., "database API", "plugin development")
+- `version` (optional): Specific Moodle version to search
+- `limit` (optional): Maximum number of results (default: 10)
+
+**Example usage:**
+```
+Search for "plugin development" in Moodle documentation
+Search for "database API" in version 4.2 with limit 5
+```
+
+### 3. `get_api_structure`
+Get the API documentation structure for a specific Moodle version.
+
+**Parameters:**
+- `version` (optional): Moodle version (defaults to latest)
+
+**Example usage:**
+```
+Get API structure for Moodle 4.2
+Get latest API structure
+```
+
+### 4. `fetch_page`
+Fetch full content of a specific Moodle developer documentation page.
+
+**Parameters:**
+- `url` (required): Full URL of the documentation page
+
+**Example usage:**
+```
+Fetch content from https://moodledev.io/docs/apis/plugintypes/mod
+```
+
+## Usage Examples
+
+Once configured with your MCP client, you can use natural language to interact with the Moodle documentation:
+
+### Basic Searches
+- "Search for plugin development best practices"
+- "Find documentation about database APIs"
+- "Look up authentication methods in Moodle"
+
+### Version-Specific Queries
+- "Get API documentation for Moodle 4.2"
+- "Search for web services in version 5.0"
+- "Show me the plugin structure for the latest version"
+
+### Detailed Content Retrieval
+- "Fetch the complete plugin development guide"
+- "Get the full content of the database API documentation"
+
+## Development
+
+### Development Installation
+
+For development, clone the repository and install in development mode:
+
+```bash
+git clone https://github.com/khairu-aqsara/moodle_dev_mcp.git
+cd moodle_dev_mcp
+
+# Install in development mode
+pip install -e .
+
+# Or with development dependencies
+pip install -e ".[dev]"
+```
+
+### Dependencies
+
+- **Python 3.8+**
+- **mcp**: Model Context Protocol implementation
+- **aiohttp**: Async HTTP client for web requests
+- **beautifulsoup4**: HTML parsing and content extraction
+
+### Testing
+
+Run tests with:
+
+```bash
+pytest
+```
+
+## Troubleshooting
+
+### Common Installation Issues
+
+1. **Permission Errors**: Use `pip install --user moodle_dev_mcp` if you encounter permission issues
+2. **Python Version**: Ensure you're using Python 3.8 or higher: `python --version`
+3. **Virtual Environment**: Consider using a virtual environment to avoid conflicts
+
+### Runtime Issues
+
+1. **Network Connectivity**: Ensure you have internet access to reach moodledev.io
+2. **Timeout Errors**: The server includes built-in retry logic, but very slow connections may timeout
+3. **Rate Limiting**: The server respects rate limits and includes appropriate delays
+
+### Debug Mode
+
+Enable debug logging by setting the environment variable:
+
+```bash
+export PYTHONPATH=.
+python -c "import logging; logging.basicConfig(level=logging.DEBUG)" -m moodle_dev_mcp
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+### Development Setup
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests (`pytest`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/khairu-aqsara/moodle_dev_mcp/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/khairu-aqsara/moodle_dev_mcp/discussions)
+- **Email**: wenkhairu@gmail.com
+
+## Acknowledgments
+
+- Built on the [Model Context Protocol](https://modelcontextprotocol.io/) by Anthropic
+- Documentation sourced from [Moodle Developer Resources](https://moodledev.io)
+- Thanks to the Moodle development community for comprehensive documentation
+
+---
+
+**Note**: This is an unofficial tool and is not affiliated with Moodle HQ. It's designed to make Moodle developer documentation more accessible through modern AI tools.
