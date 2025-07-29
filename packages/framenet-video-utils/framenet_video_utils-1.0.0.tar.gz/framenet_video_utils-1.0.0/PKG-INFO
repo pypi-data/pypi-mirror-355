@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: framenet-video-utils
+Version: 1.0.0
+Summary: A simple utility to get details like duration, resolution, and FPS from a video file.
+Author-email: Surendra Kumar Reddy <surendraruka514@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Ruka Surendra kumar reddy
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://www.framenet.ai
+Project-URL: Documentation, https://github.com/Ruka-Surendra-Kumar-Reddy/framenet-video-utils/
+Project-URL: Repository, https://github.com/Ruka-Surendra-Kumar-Reddy/framenet-video-utils/
+Project-URL: Bug Tracker, https://github.com/Ruka-Surendra-Kumar-Reddy/framenet-video-utils/issues
+Keywords: video,utils,ffmpeg,moviepy,framenet,video editing
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Multimedia :: Video
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: moviepy
+Dynamic: license-file
+
+# FrameNet Video Utils
+![alt text](https://badge.fury.io/py/framenet-video-utils.svg)
+![alt text](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+A simple, zero-dependency Python utility for getting video file details like duration, resolution, and frame rate.  
+This is a simple, open-source utility developed and maintained by the team at [FrameNet.ai](https://www.framenet.ai), the AI-powered platform that makes video editing effortless.
+
+## Installation
+
+Install the package directly from PyPI:
+
+```bash
+pip install framenet-video-utils
+```
+
+
+## Usage
+The library provides one primary function, get_video_details(). It takes the path to a video file and returns a dictionary containing the video's properties. It returns None if the file cannot be processed.
+```bash
+from framenet_video_utils import get_video_details
+
+# Get details from a local video file
+details = get_video_details("path/to/my_video.mp4")
+
+# The function returns a dictionary or None if it fails
+if details:
+    print(f"Resolution: {details['width']}x{details['height']}")
+    print(f"Duration: {details['duration']} seconds")
+    print(f"Frame Rate: {details['fps']} fps")
+else:
+    print("Could not retrieve video details.")
+```
+## About FrameNet.ai
+FrameNet.ai is a comprehensive suite of AI tools designed to simplify and automate your video creation workflow, from text-to-video generation to automatic subtitling.
+
+➡️ [Learn more about the FrameNet.ai platform](https://www.framenet.ai)
+
