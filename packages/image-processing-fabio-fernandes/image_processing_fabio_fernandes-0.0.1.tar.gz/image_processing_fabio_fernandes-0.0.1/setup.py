@@ -1,0 +1,21 @@
+from setuptools import setup, find_packages
+
+with open("README.md", "r") as f:
+    page_description = f.read()
+
+with open("requirements.txt") as f:
+    requirements = f.read().splitlines()
+    
+setup(
+    name="image_processing-fabio_fernandes",
+    version="0.0.1",
+    author="Fabio Fernandes",
+    author_email="fabiofernandes2002@gmail.com",
+    description="Um pequeno projeto para processamento de imagem usando skimage",
+    long_description=page_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/fabiofernandesjl/image-processing-package",
+    packages=find_packages(),
+    install_requires=requirements,
+    python_requires=">=3.5"
+    )
