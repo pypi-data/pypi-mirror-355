@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+    Hi {{ current_user.user_name }}!
+    {% if current_user.masini %}
+        <br>
+        <ol>
+        {% for masina in current_user.masini %}
+            <li><a href="/summary/{{masina}}">{{masina}}</a></li>
+            <form action="/summary/{{masina}}" method="POST" enctype="multipart/form-data">
+                Export {{masina}} without files: <input type="submit" name="export_detail_table_as_sql">
+            </form>
+            <form action="/summary/{{masina}}" method="POST" enctype="multipart/form-data">
+                Export {{masina}} with files: <input type="submit" name="export_detail_table_with_files">
+            </form>
+            <form action="/delete_masina/{{masina}}" method="POST" enctype="multipart/form-data">
+                Delete {{masina}} : <input type="submit" name="delete_all_inputs_from_user_for_car">
+            </form>
+        {% endfor %}
+            <br>
+        <a href="/add_masina">create/import a car</a>
+        </ol>
+    {% else %}
+        <li><a href="/add_masina">create/import a car</a></li>
+    {% endif %}
+{% else %}
+    Please log in
+{% endif %}
+
+{%endblock%}

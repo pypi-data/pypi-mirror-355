@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>Add to {{table_name}}</head>
+<form method="post" action="/addalim/{{table_name}}">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>Date</label>
+                <input type="date" name="data"/>
+            </div>
+            <div class="col">
+                <label>Type</label>
+                <select id="cars" name="type">
+                        {% for tt in types_of_costs %}
+                            <option value={{tt}}>{{tt}}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <label>eProvider</label>
+                <select id="cars" name="eprov">
+                        <option value={{tt}}></option>
+                        {% for tt in current_user.electric_providers %}
+                            <option value={{tt}}>{{tt}}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <label>Brutto[€]</label>
+                <input type="number" name="brutto" step="any" required/>
+            </div>
+            <div class="col">
+                <label>Qty.[L/KwH]</label>
+                <input type="number" name="amount" step="any" required/>
+            </div>
+            <div class="col">
+                <label>Km stand</label>
+                <input type="number" name="km"/>
+            </div>
+            <div class="col">
+                <label>Comment</label>
+                <input type="text" name="Comment"/>
+            </div>
+            <div class="col">
+                <input type="submit" name="add_alim"/>
+            </div>
+        </div>
+    </div>
+</form>
+<br>
+
+{% endblock %}
