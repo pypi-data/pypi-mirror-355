@@ -1,0 +1,50 @@
+Metadata-Version: 2.3
+Name: pop2net
+Version: 1.0.0
+Summary: Pop2net is a Python package designed to generate and manage relations between agents in agent-based models in a simple and flexible way.
+License: MIT
+Author: Marius Kaffai
+Author-email: marius.kaffai@sowi.uni-stuttgart.de
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: bokehgraph (>=1.1.0,<2.0.0)
+Requires-Dist: faker (>=15.1.1,<16.0.0)
+Requires-Dist: mesa (>=3.1.5,<4.0.0)
+Requires-Dist: numpy (>=1.26) ; python_version >= "3.12"
+Requires-Dist: numpy (>=1.7) ; python_full_version <= "3.12.0"
+Requires-Dist: pandas (>=1.5.1)
+Requires-Dist: scipy (>=1.11.3) ; python_version >= "3.12"
+Requires-Dist: scipy (>=1.6) ; python_full_version <= "3.12.0"
+Requires-Dist: seaborn (>=0.12.1,<0.13.0)
+Requires-Dist: tabulate (>=0.9.0,<0.10.0)
+Description-Content-Type: text/markdown
+
+![](https://github.com/mariuzka/pop2net/actions/workflows/tox.yml/badge.svg)
+![Python 3.11+](https://img.shields.io/badge/python->=3.11-blue.svg)
+
+# Pop2net
+
+Pop2net is a Python package that combines many steps related to network generation and management for agent-based modeling using a bipartite approach: 
+In Pop2net, relations are represented as a graph of agents and locations. Locations act as a contact layer, representing specific contexts through which agents connect. 
+This makes it easy to generate and manage custom network structures in an agent-based model.
+
+Pop2net can be used within custom modeling frameworks and also integrates seamlessly with established agent-based modeling frameworks [AgentPy](https://github.com/jofmi/agentpy) and [Mesa](https://github.com/projectmesa/mesa).
+
+
+## Installation
+
+You can install Pop2net using pip:
+
+```
+pip install pop2net
+```
+
+
+## Documentation
+
+Detailed documentation of all features and a collection of example analyses can be found [here](https://mariuzka.github.io/pop2net/).
+
