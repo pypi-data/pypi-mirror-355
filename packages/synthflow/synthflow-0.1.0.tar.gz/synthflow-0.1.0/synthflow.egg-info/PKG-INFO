@@ -1,0 +1,256 @@
+Metadata-Version: 2.4
+Name: synthflow
+Version: 0.1.0
+Summary: A library for generating high-quality synthetic data for AI development.
+Author: 3rror_py
+License: MIT License
+        
+        Copyright (c) 2025 3rror_py
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Keywords: synthetic data,data generation,AI,machine learning,privacy,data augmentation,time series,tabular data
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Security :: Cryptography
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas>=1.0.0
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: scikit-learn>=1.0.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: statsmodels>=0.13.0
+Provides-Extra: smote
+Requires-Dist: imbalanced-learn>=0.9.0; extra == "smote"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: isort>=5.0; extra == "dev"
+Requires-Dist: flake8>=6.0; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Dynamic: license-file
+
+synth-data-gen
+Version: 0.1.0 (Alpha Development Stage)
+
+Project Purpose and Core Concept
+The synth-data-gen library is designed to tackle crucial challenges in Artificial Intelligence (AI) development, primarily data scarcity and its associated complexities. Its core purpose is to offer robust, flexible, and intelligent tools for generating high-quality synthetic data that statistically mimics real-world datasets.
+
+Why is this crucial for AI construction?
+Accelerated Development: Synthetic data drastically reduces the time and cost associated with collecting, labeling, and cleaning real data, enabling faster prototyping, training, and testing of AI models.
+
+Privacy Preservation: It allows for the development of AI models in privacy-sensitive environments by generating data that captures statistical properties without revealing individual sensitive records.
+
+Addressing Data Imbalance: synth-data-gen can balance datasets suffering from class imbalance (e.g., rare fraud cases), leading to more robust and fair models.
+
+Enhanced Diversity and Robustness: By generating data with specific variations and edge cases, the library helps improve model generalization and resilience to unexpected inputs.
+
+Facilitating Research & Development: Researchers can experiment with new algorithms on diverse datasets without proprietary data access limitations.
+
+In essence, synth-data-gen acts as a data factory for AI, enabling faster iteration, safer development, and more robust AI systems by efficiently providing the necessary "raw material"—data.
+
+How it Works (General Approach)
+synth-data-gen operates by learning the underlying statistical patterns from real data and subsequently generating new data points that adhere to these learned patterns. It comprehensively analyzes various aspects of the input data:
+
+Univariate Distributions: The distribution characteristics of individual features (e.g., mean, standard deviation, shape).
+
+Multivariate Relationships: Correlations and dependencies between multiple features.
+
+Categorical Frequencies: The probability of occurrence for different categories within categorical features.
+
+Temporal Patterns: Trends, seasonality, and residual noise components in time series data.
+
+By accurately capturing these fundamental characteristics, the generated synthetic data aims to be statistically similar to the real data, making it suitable for training machine learning models that perform comparably to those trained on original data.
+
+Key Modules and Their Functionalities
+The library is structured into several modules, each addressing a specific type of data or generation technique:
+
+1. tabular.py - Tabular Data Synthesizer
+Purpose: Generates synthetic tabular data (similar to spreadsheets or database tables) that can contain both numerical and categorical features.
+
+Functionality:
+
+TabularSynthesizer.fit(df): Learns statistical properties from a real pandas.DataFrame. For numerical columns, it calculates mean and covariance to preserve inter-feature correlations, drawing new data from a multivariate normal distribution. For categorical columns, it learns frequency distributions.
+
+TabularSynthesizer.generate(num_samples): Creates a new pandas.DataFrame with the specified number of synthetic samples, sampling features based on learned distributions.
+
+Use Cases: Creating privacy-preserving datasets for sharing, expanding small datasets, generating data for ML pipeline testing.
+
+2. timeseries.py - Time Series Data Synthesizer
+Purpose: Generates synthetic time series data that mimics the temporal patterns (trend, seasonality, noise) of a real time series.
+
+Functionality:
+
+TimeSeriesSynthesizer.fit(ts_data, seasonal_period, model_type): Decomposes the input time series (pandas.Series or DataFrame) into trend, seasonal, and residual components using statsmodels. It fits a linear regression for the trend, stores seasonal patterns, and learns residual statistics.
+
+TimeSeriesSynthesizer.generate(num_steps, start_date): Synthesizes a new time series by extrapolating the trend, repeating seasonal patterns, and adding new noise sampled from the learned residual distribution.
+
+Use Cases: Generating data for forecasting model training, simulating future scenarios, creating diverse time series for robustness testing, developing anomaly detection systems.
+
+3. augmentation.py - Data Augmentation Techniques
+Purpose: Provides methods to expand existing datasets, with a special focus on addressing class imbalance.
+
+Functionality:
+
+DataAugmenter.smote_tabular(X, y, ...): Implements SMOTE (Synthetic Minority Over-sampling Technique) and its variants (BorderlineSMOTE, SVMSMOTE, ADASYN) for tabular data. It generates synthetic samples for minority classes by interpolating, thereby balancing the dataset (requires imbalanced-learn).
+
+DataAugmenter.feature_space_augmentation(X, num_augmented_samples, noise_level, strategy, ...): Generates new samples by adding random noise to existing data or interpolating between them within the feature space.
+
+Use Cases: Overcoming class imbalance in classification problems, increasing dataset size when data collection is difficult, diversifying training data.
+
+4. privacy.py - Privacy-Preserving Synthesizer (Conceptual)
+Purpose: Focuses on generating synthetic data with explicit privacy guarantees.
+
+Current/Conceptual Functionality: This module is envisioned to incorporate methods that generate data while ensuring privacy. This could include techniques like generating data from models trained with Differential Privacy (e.g., using frameworks like Opacus) or implementing privacy-aware sampling strategies.
+
+Use Cases: Generating data for public release or sharing across organizations without revealing sensitive individual information, enabling AI development on highly confidential datasets.
+
+5. text.py - Text Synthesizer (Simple/Structured)
+Purpose: Generates simple or structured synthetic text, distinct from complex Natural Language Generation (NLG) by large language models.
+
+Current/Conceptual Functionality: Envisioned for:
+
+Template-Based Generation: Filling predefined templates with synthetic entities (names, addresses, product IDs).
+
+Rule-Based Generation: Creating text adhering to simple grammatical rules or thematic keywords.
+
+Use Cases: Populating mock databases, generating realistic-looking but non-sensitive log files, creating synthetic dialogue snippets for simple chatbots based on predefined intents.
+
+6. config.py - Configuration Manager (Conceptual)
+Purpose: To manage configuration for synthetic data generation, allowing for profile-based or constraint-driven synthesis.
+
+Current/Conceptual Functionality: This module would enable users to define a statistical profile (e.g., means, standard deviations, correlations, categorical distributions) explicitly and generate data from it, rather than solely fitting to an existing dataset. It could also allow specifying hard constraints or rules that the generated data must satisfy.
+
+Use Cases: Generating data for specific stress testing scenarios, creating synthetic data for design verification, ensuring data quality from the outset.
+
+7. utils.py - Common Utilities
+Purpose: Centralizes common helper functions used across the synth-data-gen library to reduce code duplication and maintain consistency.
+
+Functionality:
+
+set_random_seed(): Ensures reproducibility of random processes.
+
+get_statistical_profile(): Analyzes a DataFrame and returns a summary of its statistical properties.
+
+evaluate_synthetic_data(): Compares a synthetic dataset to a real dataset based on various statistical measures, providing a quantitative assessment of generation quality.
+
+check_input_data_type(): Utility to confirm whether input data is a NumPy array or Pandas DataFrame.
+
+Relationship to Other AI Libraries
+synth-data-gen forms a crucial pillar in a broader AI development ecosystem, complementing other projects:
+
+Complements hyper-aidev: hyper-aidev (your AI development accelerator) focuses on efficient model training, evaluation, and MLOps. synth-data-gen provides the necessary data input for hyper-aidev. You can feed large synthetic datasets generated by synth-data-gen directly into hyper-aidev's AutoPilotAI for faster model prototyping, testing, and training, especially when real data is scarce or costly.
+
+Enhances py-ai-trust: py-ai-trust (your Responsible AI library) focuses on fairness, robustness, and privacy auditing. synth-data-gen can be used to proactively address Responsible AI (RAI) concerns at the data level. You can generate synthetic data that is:
+
+Fair-by-design: Create balanced datasets to inherently avoid biases.
+
+Robustness-test-ready: Generate data with controlled noise or specific edge cases to stress-test models.
+
+Privacy-preserving: Utilize privacy-focused synthesis techniques to reduce privacy risks from the ground up, minimizing the need for extensive privacy auditing of the data itself.
+
+Together, these libraries create a powerful suite: synth-data-gen provides the data, hyper-aidev builds the models efficiently, and py-ai-trust ensures they are responsible and trustworthy.
+
+Key Technologies and Libraries Used
+synth-data-gen leverages standard and widely-used Python libraries for data manipulation, scientific computing, and statistical modeling:
+
+numpy: Fundamental package for numerical computing.
+
+pandas: For efficient data manipulation and analysis of tabular data.
+
+scikit-learn: Provides various ML utilities, including base estimators and data preprocessing.
+
+scipy: For scientific computing, including statistical functions (e.g., multivariate_normal).
+
+statsmodels: Crucial for time series decomposition and analysis.
+
+matplotlib & seaborn: (Likely for internal visualization and examples, though not explicitly imported in all modules provided) For data visualization and plotting generated data characteristics.
+
+imbalanced-learn (Optional): For advanced data augmentation techniques like SMOTE.
+
+Installation
+You can install synth-data-gen using pip once it's packaged (assuming pyproject.toml is used with setuptools):
+
+pip install synth-data-gen
+
+To include optional dependencies for data augmentation (SMOTE), use:
+
+pip install "synth-data-gen[smote]"
+
+Usage Example (Tabular Data)
+import pandas as pd
+from synth_data_gen import TabularSynthesizer
+from synth_data_gen.utils import evaluate_synthetic_data, get_statistical_profile
+
+# 1. Prepare some real data
+data = {
+    'Age': [25, 30, 35, 28, 40, 25, 30, 50, 45, 33],
+    'Income': [50000, 60000, 75000, 55000, 80000, 52000, 62000, 90000, 85000, 70000],
+    'Gender': ['Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female'],
+    'City': ['NY', 'LA', 'NY', 'CHI', 'LA', 'NY', 'CHI', 'LA', 'NY', 'CHI']
+}
+real_df = pd.DataFrame(data)
+
+print("Original Real Data Head:")
+print(real_df.head())
+print("\nOriginal Real Data Profile:")
+print(get_statistical_profile(real_df))
+
+# 2. Initialize and fit the TabularSynthesizer
+synthesizer = TabularSynthesizer()
+synthesizer.fit(real_df)
+
+# 3. Generate synthetic data
+num_synthetic_samples = 100
+synthetic_df = synthesizer.generate(num_synthetic_samples)
+
+print(f"\nGenerated {num_synthetic_samples} Synthetic Data Head:")
+print(synthetic_df.head())
+print("\nSynthetic Data Profile:")
+print(get_statistical_profile(synthetic_df))
+
+# 4. Evaluate the quality
+evaluation_report = evaluate_synthetic_data(real_df, synthetic_df)
+import json
+print("\nSynthetic Data Evaluation Report:")
+print(json.dumps(evaluation_report, indent=4))
+
+Project Status and Future Vision
+synth-data-gen is currently at an Alpha development stage (0.1.0). It provides foundational capabilities for generating tabular and time-series data, along with basic augmentation.
+
+The future vision includes expanding its capabilities into more sophisticated areas like:
+
+Advanced Privacy-Preserving Techniques: Formal differential privacy implementations.
+
+More Complex Time Series Models: Incorporating ARIMA, Prophet, or deep learning models for time series.
+
+More Nuanced Text Generation: Moving beyond simple templates to more contextual and diverse synthetic text.
+
+Enhanced Configuration: Deeper integration of config.py for user-defined profiles and complex constraints.
+
+Ultimately, the goal is for synth-data-gen to become a comprehensive solution for synthetic data needs in AI development, paving the way for its deeper integration into the larger hsonic-ai ecosystem.

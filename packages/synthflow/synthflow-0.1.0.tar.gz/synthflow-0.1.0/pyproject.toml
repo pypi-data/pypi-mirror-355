@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "synthflow"
+version = "0.1.0"
+description = "A library for generating high-quality synthetic data for AI development."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+keywords = ["synthetic data", "data generation", "AI", "machine learning", "privacy", "data augmentation", "time series", "tabular data"]
+authors = [
+    { name = "3rror_py" } # As per project description
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License", # Assuming MIT License based on common practice for open source
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Security :: Cryptography" # For privacy aspects
+]
+
+dependencies = [
+    "pandas>=1.0.0",
+    "numpy>=1.20.0",
+    "scikit-learn>=1.0.0",
+    "scipy>=1.7.0",
+    "statsmodels>=0.13.0",
+]
+
+[project.optional-dependencies]
+# Dependencies for data augmentation features, specifically SMOTE variants
+smote = ["imbalanced-learn>=0.9.0"]
+# Dependencies for conceptual differential privacy features (if Opacus is integrated)
+# dp = ["opacus>=1.0.0"] # Uncomment if Opacus is officially supported and integrated
+# Dependencies for development and testing
+dev = [
+    "pytest>=7.0",
+    "black>=23.0",
+    "isort>=5.0",
+    "flake8>=6.0",
+    "mypy>=1.0"
+]
+
+[tool.setuptools.packages.find]
+# Automatically find packages under the 'synth_data_gen' directory
+where = ["."]
+include = ["synth_data_gen*"]
+
+# Optional: Add settings for code formatters/linters if used
+[tool.black]
+line-length = 120
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 120
+known_first_party = ["synth_data_gen"]
+sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true # Temporarily ignore missing imports for external libraries
