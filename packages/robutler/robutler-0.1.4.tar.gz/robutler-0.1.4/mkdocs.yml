@@ -1,0 +1,104 @@
+site_name: Robutler Platform
+site_description: API client and tools for the Robutler ecosystem - Build AI agents with OpenAI-compatible endpoints
+site_url: https://docs.robutler.net/
+repo_url: https://github.com/robutlerai/robutler
+repo_name: robutlerai/robutler
+copyright: Copyright &copy; 2025 Robutler
+
+theme:
+  name: material
+  features:
+    # Allows copying code blocks
+    - content.code.copy
+    # Allows selecting code blocks
+    - content.code.select
+    # Shows the current path in the sidebar
+    - navigation.path
+    # Shows sections in the sidebar
+    - navigation.sections
+    # Enables annotations in code blocks
+    - content.code.annotate
+  palette:
+    primary: black
+  logo: assets/robutler-logo.svg
+  favicon: assets/robutler-logo.svg
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["robutler"]
+          options:
+            # Shows links to other members in signatures
+            signature_crossrefs: true
+            # Orders members by source order, rather than alphabetical
+            members_order: source
+            # Puts the signature on a separate line from the member name
+            separate_signature: true
+            # Shows type annotations in signatures
+            show_signature_annotations: true
+            # Makes the font sizes nicer
+            heading_level: 3
+            # Show inherited members
+            inherited_members: true
+            # Use Google-style docstrings
+            docstring_style: google
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra:
+  # Remove material generation message in footer
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Introduction: index.md
+  - Connect:
+    - Your AI Assistant: connect/assistant.md
+    - Your Agent: connect/agent.md
+    - Robutler Agent: connect/robutler-agent.md
+  - Python SDK:
+    - Quickstart: sdk/quickstart.md
+    - Intent Discovery: sdk/intent-discovery.md
+    - Monetization: sdk/payment-system.md
+    - Hosting Your Agents: sdk/server-agent.md
+    - MCP Connector: sdk/mcp.md
+    - API Client: sdk/api-client.md
+  - Reference:
+    - RobutlerAgent: api/agent.md
+    - RobutlerServer: api/server.md
+    - API Client:
+      - Core Client: api/client_core.md
+      - Data Types: api/client_data.md
+      - Exceptions: api/client_exceptions.md
+    - MCP: api/mcp.md
+  - Developer Guide:
+    - Development Setup: developers/development.md
+    - Contributing: developers/contributing.md
+
+  - Glossary: glossary.md
+    # - Release Process: developers/releases.md
+
+watch:
+  - "robutler/" 
