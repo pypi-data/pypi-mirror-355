@@ -1,0 +1,39 @@
+diff -Naur python/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-0.ebuild fixed/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-0.ebuild
+--- python/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-0.ebuild
++++ fixed/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-0.ebuild
+@@ -1,5 +1,5 @@
+ EAPI=7
+-PYTHON_COMPAT=( python3_7 )
++PYTHON_COMPAT=( python3_{7..10} )
+
+ inherit python-r1
+
+diff -Naur python/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-1.ebuild fixed/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-1.ebuild
+--- python/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-1.ebuild
++++ fixed/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-1.ebuild
+@@ -1,5 +1,5 @@
+ EAPI=7
+-PYTHON_COMPAT=( python3_{7,8} )
++PYTHON_COMPAT=( python3_{7..10} )
+
+ inherit python-single-r1
+
+diff -Naur python/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-2.ebuild fixed/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-2.ebuild
+--- python/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-2.ebuild
++++ fixed/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-2.ebuild
+@@ -1,5 +1,5 @@
+ EAPI=7
+-PYTHON_COMPAT=( python3_{7,8} )
++PYTHON_COMPAT=( python3_{7..10} )
+
+ inherit python-any-r1
+
+diff -Naur python/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-3.ebuild fixed/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-3.ebuild
+--- python/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-3.ebuild
++++ fixed/PythonCompatCheck/PythonCompatUpdate/PythonCompatUpdate-3.ebuild
+@@ -1,5 +1,5 @@
+ EAPI=7
+-PYTHON_COMPAT=( python3_{7,8} pypy3 )
++PYTHON_COMPAT=( python3_{7..10} pypy3 pypy3.11 )
+
+ inherit python-any-r1
