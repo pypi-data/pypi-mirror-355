@@ -1,0 +1,10 @@
+[project]
+name = "zvault"
+version = "0.1.9"
+description = "Terminal password + key manager using AES encryption"
+authors = [{ name = "Zero", email = "your-email@example.com" }]
+requires-python = ">=3.8"
+dependencies = ["cryptography", "pyperclip", "rich", "pyotp"]
+
+[project.scripts]
+zvault = "zvault.cli:main"
