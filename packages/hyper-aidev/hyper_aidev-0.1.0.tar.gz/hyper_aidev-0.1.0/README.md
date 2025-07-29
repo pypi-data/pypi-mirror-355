@@ -1,0 +1,269 @@
+ai-dev: Accelerating AI Model Development & MLOps
+🚀 Overview
+ai-dev is a comprehensive Python library designed to accelerate and simplify the entire lifecycle of AI model development, from data preparation and model training to evaluation, deployment, and ongoing operations (MLOps). It aims to empower developers and researchers by abstracting away common complexities, integrating best practices, and offering intelligent automation for building robust and high-performing AI systems.
+
+Whether you're fine-tuning large language models, building traditional ML pipelines, or incorporating human feedback for continuous improvement, ai-dev provides a unified toolkit to significantly reduce development time and effort.
+
+✨ Key Features
+ai-dev offers a wide array of functionalities categorized into logical modules:
+
+📊 Data Management & Preparation (DataProcessor, EfficientDataLoader, DataProfiler)
+Flexible Data Loading: Load data from CSV files, with support for chunking large datasets to manage memory efficiently.
+
+Data Splitting: Robust train/validation/test splitting, including stratified sampling for classification tasks.
+
+Data Cleaning: Handling missing values, text cleaning (stopwords, stemming, lemmatization, regex).
+
+Memory Footprint Estimation: Tools to estimate the memory consumption of datasets.
+
+Comprehensive Data Profiling: Generate detailed reports on missing values, unique values, distributions, correlations, and data quality issues.
+
+🧠 Feature Engineering & Selection (FeatureEngineer)
+Polynomial Features: Generate higher-order and interaction terms for numerical data.
+
+Dimensionality Reduction: Apply PCA and t-SNE for visualizing and compressing high-dimensional data.
+
+Text Vectorization: Convert text into numerical representations using CountVectorizer and TF-IDF.
+
+Feature Selection: Select the most informative features using techniques like SelectKBest and VarianceThreshold.
+
+🏋️ Model Training & Optimization (FineTuner, AdvancedFineTuner, TrainingOptimizer, ModelOptimizer, HPOptimizer, LearningRateSchedulerHelper)
+Streamlined Fine-Tuning: Easily fine-tune pre-trained Transformer models (e.g., from Hugging Face) for specific tasks.
+
+Parameter-Efficient Fine-Tuning (PEFT/LoRA): Efficiently adapt large models with fewer trainable parameters.
+
+Automated Machine Learning (AutoML): Experiment with various traditional ML models (Logistic Regression, Random Forest, XGBoost, SVM, MLP) with automated hyperparameter tuning.
+
+Knowledge Distillation: Train smaller "student" models to mimic larger "teacher" models, reducing size and improving inference speed.
+
+Hyperparameter Optimization (HPO): Integrate with Optuna to automatically find optimal training hyperparameters.
+
+Gradient Accumulation & Clipping: Techniques to train with larger effective batch sizes or stabilize training.
+
+Learning Rate Schedulers: Implement common learning rate schedules (Linear Warmup, Cosine Annealing, Constant with Warmup) for stable training.
+
+📈 Evaluation & Explainability (ModelEvaluator)
+Comprehensive Metrics: Calculate standard metrics for classification (accuracy, precision, recall, F1, ROC AUC, confusion matrix) and regression (MSE, MAE, R2).
+
+Visualizations: Plot ROC curves, confusion matrices, and feature importance.
+
+Explainable AI (XAI): Integrate with LIME and SHAP to understand model predictions and feature importance.
+
+⚙️ MLOps & Production Readiness (ModelDeployment, TrainingManager, PerformanceMonitor, DataDriftDetector, ModelOutputMonitor)
+Model Export: Export models to optimized formats like ONNX for faster, cross-platform inference.
+
+Deployment Scaffolding: Generate boilerplate Dockerfiles for deploying models as simple API services.
+
+Robust Checkpointing: Save and resume training progress, including model weights, optimizer states, and best metric values.
+
+Performance Monitoring: Monitor real-time CPU, RAM, and NVIDIA GPU usage during training/inference.
+
+PyTorch Profiler Integration: Analyze PyTorch operation performance to identify bottlenecks.
+
+Data & Prediction Drift Detection: Monitor changes in input data distribution and model prediction distribution over time, crucial for production models.
+
+Model Ensembling: Combine predictions from multiple models for improved robustness.
+
+🤖 Automation & Orchestration (AutoPilotAI)
+End-to-End Workflow Automation: The AutoPilotAI class orchestrates data preparation, resource-aware configuration, model training, evaluation, and reporting with minimal user input.
+
+Intelligent Defaults: Automatically suggests training parameters based on available hardware and dataset characteristics.
+
+Task Inference: Infers common ML task types (e.g., text classification, regression) from your data.
+
+🧑‍💻 Human-in-the-Loop (HITL) & Active Learning (HumanFeedbackLoopManager)
+Feedback Logging: Log model predictions and facilitate recording human-provided correct labels/feedback.
+
+Active Learning Strategies: Intelligently select the most "informative" (e.g., most uncertain) unlabeled samples for human review, dramatically reducing labeling costs and accelerating model improvement.
+
+Feedback Integration: Manage a queue of newly labeled data to be integrated back into the training process for continuous model refinement.
+
+📝 Reporting & Documentation (ReportingIntegrator, ModelCardGenerator)
+TensorBoard Integration: Seamlessly log metrics, gradients, and model graphs to TensorBoard for rich experiment visualization.
+
+Custom Training Callbacks: Extend training loops with custom logic for early stopping, model checkpointing, learning rate logging, and progress bars.
+
+Automated Model Card Generation: Generate comprehensive Markdown model cards to document model details, dataset information, evaluation results, and usage examples, promoting transparency and reproducibility.
+
+⚠️ Important Considerations & Requirements
+Computational Resources: Training and fine-tuning deep learning models can be resource-intensive. A GPU (Graphics Processing Unit) is highly recommended for practical fine-tuning and running large models. Training on a CPU will be significantly slower, especially for Transformer models.
+
+Data Quality: The performance of your AI models heavily depends on the quality, quantity, and representativeness of your training data. ai-dev provides tools to profile and clean data, but understanding your data remains crucial.
+
+Optional Dependencies: Some advanced features (e.g., XAI with LIME/SHAP, PEFT, ONNX support) rely on optional Python packages. These are listed in pyproject.toml under [project.optional-dependencies] and need to be installed separately if you intend to use those features.
+
+NLTK Data: For text preprocessing features (tokenization, stemming, lemmatization), nltk data packages (stopwords, punkt, wordnet, omw-1.4) must be downloaded. You might need to run python -m nltk.downloader all or specific modules after installing nltk.
+
+🛠️ Installation
+ai-dev can be installed via pip (once published).
+
+pip install ai-dev
+
+For optional features, install the respective dependencies:
+
+# For Parameter-Efficient Fine-Tuning (PEFT/LoRA)
+pip install "ai-dev[peft]"
+
+# For model optimization (ONNX export/runtime)
+pip install "ai-dev[optimization]"
+
+# For AutoML with XGBoost
+pip install "ai-dev[automl]"
+
+# For Explainable AI (LIME, SHAP)
+pip install "ai-dev[xai]"
+
+# For API serving capabilities (FastAPI, Uvicorn)
+pip install "ai-dev[api-serving]"
+
+# For development dependencies (testing, linting)
+pip install "ai-dev[dev]"
+
+Note: The core installation will include torch (PyTorch) as a primary dependency. Depending on your system and GPU setup, you might need specific torch versions (e.g., torch==x.x.x+cu118 for CUDA 11.8). Refer to the official PyTorch installation guide for GPU-specific instructions if pip install torch does not automatically detect and install the correct CUDA version.
+
+🚀 Quick Start & Usage Example
+Here's a quick demonstration of how to use the AutoPilotAI to automate a simple text classification task:
+
+import os
+import pandas as pd
+from ai_dev import AutoPilotAI, load_model # Import load_model from main __init__.py for simplicity
+from transformers import AutoTokenizer # Use AutoTokenizer from transformers for direct loading
+import torch
+import numpy as np
+
+# 1. Initialize AutoPilotAI
+# Choose a base model (e.g., "distilbert-base-uncased" for faster training, "bert-base-uncased")
+autopilot = AutoPilotAI(base_model_name="distilbert-base-uncased")
+
+# 2. Prepare your dummy dataset (in a real scenario, this would be your actual data)
+dummy_data_path = "./my_text_data.csv"
+dummy_df = pd.DataFrame({
+    'text_col': [
+        "This is a positive statement. I love it!", 
+        "I really enjoy this product, highly recommended.", 
+        "Great movie! An absolute masterpiece of cinema.",
+        "This is a negative comment. It was terrible.", 
+        "I dislike this product immensely. Very bad experience.", 
+        "Utterly disappointing, never again."
+    ],
+    'label_col': [1, 1, 1, 0, 0, 0] # 1 for positive, 0 for negative
+})
+dummy_df.to_csv(dummy_data_path, index=False)
+print(f"Dummy dataset created at: {dummy_data_path}")
+
+# 3. Use AutoPilotAI to prepare the data (split, tokenize, infer task)
+print("\n--- AutoPilotAI: Preparing Data ---")
+prepared_data = autopilot.prepare_data(
+    data=dummy_data_path,
+    text_column='text_col',
+    label_column='label_col',
+    is_csv_path=True,
+    test_size=0.3 # Use 30% for evaluation
+)
+
+if prepared_data:
+    # 4. Train the model using AutoPilotAI's orchestration
+    # AutoPilotAI will suggest optimal batch size, epochs, etc., based on your system.
+    # You can override them as shown in the example below.
+    print("\n--- AutoPilotAI: Training Model ---")
+    training_results = autopilot.train_model(
+        prepared_data=prepared_data,
+        epochs=3, # Explicitly set epochs (overrides auto-suggestion for this example)
+        batch_size=4, # Explicitly set batch size (overrides auto-suggestion)
+        apply_early_stopping=True,
+        early_stopping_patience=1, # Stop early for quick demo if no improvement
+        generate_model_card=True, # Generate documentation
+        use_gradient_accumulation=True, # Example of enabling an advanced training feature
+        gradient_accumulation_steps=2
+    )
+
+    print("\n--- AutoPilotAI: Training Results ---")
+    print(f"Status: {training_results.get('status')}")
+    print(f"Evaluation Metrics: {training_results.get('evaluation_results')}")
+    print(f"Final Model Path: {training_results.get('final_model_path')}")
+    print(f"Model Card Path: {training_results.get('model_card_path')}")
+
+    # 5. Make predictions with the trained model
+    if training_results.get('final_model_path'):
+        print("\n--- AutoPilotAI: Making Predictions ---")
+        test_texts = [
+            "This was an absolutely brilliant experience!",
+            "I regret buying this, it's so bad.",
+            "The story was okay, nothing special.",
+        ]
+        
+        # Load the saved model and tokenizer using the helper function
+        loaded_tokenizer = AutoTokenizer.from_pretrained(training_results['final_model_path'])
+        loaded_model = load_model(training_results['final_model_path'], autopilot.device) # Use the load_model function
+        
+        predictions = autopilot.predict(
+            model_path=training_results['final_model_path'],
+            tokenizer=loaded_tokenizer, # Use the loaded tokenizer
+            texts=test_texts
+        )
+        
+        sentiment_labels = ["Negative", "Positive"] # Match your training labels
+        predicted_classes = np.argmax(predictions, axis=1) # For classification
+        
+        print("\n--- Predictions ---")
+        for i, text in enumerate(test_texts):
+            print(f"Text: '{text}'")
+            print(f"  Predicted Probabilities: {predictions[i]}")
+            print(f"  Predicted Sentiment: {sentiment_labels[predicted_classes[i]]}")
+
+    # 6. (Optional) Demonstrate Human-in-the-Loop Active Learning
+    print("\n--- AutoPilotAI: Human-in-the-Loop & Active Learning Demo ---")
+    
+    # Simulate a larger pool of unlabeled data (e.g., from production)
+    unlabeled_data_for_al = [torch.randn(10) for _ in range(50)] # Dummy torch tensors for input
+
+    # Initialize the HITL manager with the trained model and unlabeled data
+    hitl_manager = autopilot.human_feedback_loop_manager # Access through autopilot instance
+    # Re-initialize the HITL loop manager to use the *newly trained* model
+    hitl_manager.initialize_loop(initial_model=loaded_model, initial_unlabeled_data=unlabeled_data_for_al)
+    
+    print("\nRunning an Active Learning cycle (e.g., selecting 5 most uncertain samples)...")
+    hitl_manager.run_active_learning_cycle(
+        num_samples_to_label=5,
+        active_learning_strategy='uncertainty_entropy' # Or 'uncertainty_margin', 'random'
+    )
+    print(f"Number of new samples collected for retraining via HITL: {len(hitl_manager.labeled_data_queue)}")
+    print(f"Check '{hitl_manager.feedback_logger.log_file}' for human feedback log.")
+
+    # --- Cleanup ---
+    print("\n--- Cleaning up temporary files ---")
+    if os.path.exists(dummy_data_path):
+        os.remove(dummy_data_path)
+    if os.path.exists(autopilot.output_base_dir):
+        import shutil
+        shutil.rmtree(autopilot.output_base_dir)
+        print(f"Removed '{autopilot.output_base_dir}' directory.")
+    
+    # Clean up HITL specific log file if it exists
+    if os.path.exists(hitl_manager.feedback_logger.log_file):
+        os.remove(hitl_manager.feedback_logger.log_file)
+        print(f"Removed '{hitl_manager.feedback_logger.log_file}'.")
+
+    # Close TensorBoard writer
+    if autopilot.reporting_integrator.writer:
+        autopilot.reporting_integrator.close()
+
+    print("\n--- ai-dev demo complete ---")
+
+🤝 Contributing
+Contributions are highly welcome! If you have ideas for new features, bug fixes, or documentation improvements, please feel free to:
+
+Fork the repository.
+
+Create a new branch (git checkout -b feature/your-feature).
+
+Make your changes.
+
+Commit your changes (git commit -m 'Add new feature').
+
+Push to the branch (git push origin feature/your-feature).
+
+Open a Pull Request.
+
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
