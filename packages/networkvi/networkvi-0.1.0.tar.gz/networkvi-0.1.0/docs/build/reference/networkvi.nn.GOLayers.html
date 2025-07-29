@@ -1,0 +1,689 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>networkvi.nn.GOLayers &#8212; NetworkVI 1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=f9c1cefe"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/networkvi.nn.GOLayers';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorials" href="../tutorials.html" />
+    <link rel="prev" title="networkvi.nn.GeneLayers" href="networkvi.nn.GeneLayers.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">NetworkVI 1.0.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../api.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="networkvi.model.NETWORKVI.html">networkvi.model.NETWORKVI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="networkvi.nn.GeneLayers.html">networkvi.nn.GeneLayers</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">networkvi.nn.GOLayers</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials.html">Tutorials</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/paired_integration_and_query_mapping.html">Paired integration and query-to-reference mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/mosaic_integration.html">Mosaic integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/go_analysis.html">Interpretability: Inferring importances for GO and genes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/go_specific_covariate_attention.html">Interpretability: Inferring GO-specific covariate attention values</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/reference/networkvi.nn.GOLayers.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>networkvi.nn.GOLayers</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#networkvi.nn.GOLayers"><code class="docutils literal notranslate"><span class="pre">GOLayers</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#networkvi.nn.GOLayers.__init__"><code class="docutils literal notranslate"><span class="pre">GOLayers.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="networkvi-nn-golayers">
+<h1>networkvi.nn.GOLayers<a class="headerlink" href="#networkvi-nn-golayers" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="networkvi.nn.GOLayers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">networkvi.nn.</span></span><span class="sig-name descname"><span class="pre">GOLayers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geneobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genemodel_out_blocks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensembl_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obo_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_ensembl_go:</span> <span class="pre">list</span> <span class="pre">|</span> <span class="pre">~numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_go_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dropout:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_layers:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_hidden:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation_fn:</span> <span class="pre">~torch.nn.modules.module.Module</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'torch.nn.modules.activation.ReLU'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic_go_size:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">register_rancon:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_rancon:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cat_list=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inject_covariates:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_layer_inject_covariates:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_layer_inject_covariates:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#networkvi.nn.GOLayers" title="Link to this definition">#</a></dt>
+<dd><p>A helper class to build GOLayers for a neural network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geneobj</strong> – geneobj generated using GeneLayers.</p></li>
+<li><p><strong>genemodel_out_blocks</strong> – out blocks sparse matrix of object generated using GeneLayers.</p></li>
+<li><p><strong>ensembl_ids</strong> – ENSEMBL-IDs of features.</p></li>
+<li><p><strong>obo_file</strong> – Path .obo file of GO.</p></li>
+<li><p><strong>map_ensembl_go</strong> – List of .gaf files with mappings of Ensembl IDs to GO.</p></li>
+<li><p><strong>standard_go_size</strong> – Standard size of GO nodes in GO Layers.</p></li>
+<li><p><strong>input_dropout</strong> – Dropout rate to apply to each of the hidden layers</p></li>
+<li><p><strong>n_layers</strong> – The number of fully-connected hidden layers</p></li>
+<li><p><strong>n_hidden</strong> – The number of nodes per hidden layer</p></li>
+<li><p><strong>activation_fn</strong> – Which activation function to use</p></li>
+<li><p><strong>n_cat_list</strong> – A list containing, for each category of interest,
+the number of categories. Each category will be
+included using a one-hot encoding.</p></li>
+<li><p><strong>inject_covariates</strong> – Whether to deeply inject covariates into all layers of the endecoder. If False,
+covariates will only be included in the input layer.</p></li>
+<li><p><strong>first_layer_inject_covariates</strong> – Whether to deeply inject covariates into all layers of the decoder. If False,
+covariates will only be included in the input layer.</p></li>
+<li><p><strong>last_layer_inject_covariates</strong> – Whether to inject covariates into all layers of the decoder. If False,
+covariates will only be included in the input layer.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="networkvi.nn.GOLayers.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geneobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genemodel_out_blocks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ensembl_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obo_file:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_ensembl_go:</span> <span class="pre">list</span> <span class="pre">|</span> <span class="pre">~numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_go_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dropout:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_layers:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_hidden:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation_fn:</span> <span class="pre">~torch.nn.modules.module.Module</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'torch.nn.modules.activation.ReLU'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dynamic_go_size:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">register_rancon:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_rancon:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cat_list=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inject_covariates:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_layer_inject_covariates:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_layer_inject_covariates:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#networkvi.nn.GOLayers.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#networkvi.nn.GOLayers.__init__" title="networkvi.nn.GOLayers.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(geneobj, genemodel_out_blocks, ...)</p></td>
+<td><p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_module</span></code>(name, module)</p></td>
+<td><p>Add a child module to the current module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code>(fn)</p></td>
+<td><p>Apply <code class="docutils literal notranslate"><span class="pre">fn</span></code> recursively to every submodule (as returned by <code class="docutils literal notranslate"><span class="pre">.children()</span></code>) as well as self.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bfloat16</span></code>()</p></td>
+<td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">bfloat16</span></code> datatype.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffers</span></code>([recurse])</p></td>
+<td><p>Return an iterator over module buffers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code>()</p></td>
+<td><p>Return an iterator over immediate children modules.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compile</span></code>(*args, **kwargs)</p></td>
+<td><p>Compile this Module's forward using <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.compile()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cpu</span></code>()</p></td>
+<td><p>Move all model parameters and buffers to the CPU.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cuda</span></code>([device])</p></td>
+<td><p>Move all model parameters and buffers to the GPU.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">double</span></code>()</p></td>
+<td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">double</span></code> datatype.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval</span></code>()</p></td>
+<td><p>Set the module in evaluation mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">extra_repr</span></code>()</p></td>
+<td><p>Set the extra representation of the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>()</p></td>
+<td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">float</span></code> datatype.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(x, *cat_list[, cont_input])</p></td>
+<td><p>Define the computation performed at every call.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_buffer</span></code>(target)</p></td>
+<td><p>Return the buffer given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ds_terms_and_parents</span></code>(unknown, goobj, gos)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_extra_state</span></code>()</p></td>
+<td><p>Return any extra state to include in the module's state_dict.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_goobj_info</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_n_parameters</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_neurons_available</span></code>(dynamic_go_cfg, ...)</p></td>
+<td><p>Returns the OGM's number of neurons available for distribution per height level.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ordered_gos</span></code>(ensemblids, genetic_json, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_overflow_info</span></code>(dynamic_go_cfg, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parameter</span></code>(target)</p></td>
+<td><p>Return the parameter given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parents</span></code>(term)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sizes_by_level</span></code>([name])</p></td>
+<td><p>Returns the OGM's layersizes ordered per depth/ogmdepth/height as dict mapping level -&gt; list of layersizes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_submodule</span></code>(target)</p></td>
+<td><p>Return the submodule given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_total_size</span></code>()</p></td>
+<td><p>Returns the OGM's total number of neurons.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">half</span></code>()</p></td>
+<td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">half</span></code> datatype.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize_go_obj</span></code>(mode, obo_file, max_level, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipu</span></code>([device])</p></td>
+<td><p>Move all model parameters and buffers to the IPU.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_state_dict</span></code>(state_dict[, strict, assign])</p></td>
+<td><p>Copy parameters and buffers from <code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code> into this module and its descendants.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">modules</span></code>()</p></td>
+<td><p>Return an iterator over all modules in the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_buffers</span></code>([prefix, recurse, ...])</p></td>
+<td><p>Return an iterator over module buffers, yielding both the name of the buffer as well as the buffer itself.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_children</span></code>()</p></td>
+<td><p>Return an iterator over immediate children modules, yielding both the name of the module as well as the module itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_modules</span></code>([memo, prefix, remove_duplicate])</p></td>
+<td><p>Return an iterator over all modules in the network, yielding both the name of the module as well as the module itself.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_parameters</span></code>([prefix, recurse, ...])</p></td>
+<td><p>Return an iterator over module parameters, yielding both the name of the parameter as well as the parameter itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code>([recurse])</p></td>
+<td><p>Return an iterator over module parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">patch_bup_ontology</span></code>(goobj, relations)</p></td>
+<td><p>Patch ontology built from the bottom up (i.e. with filtering for max_level height).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_backward_hook</span></code>(hook)</p></td>
+<td><p>Register a backward hook on the module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_buffer</span></code>(name, tensor[, persistent])</p></td>
+<td><p>Add a buffer to the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_forward_hook</span></code>(hook, *[, prepend, ...])</p></td>
+<td><p>Register a forward hook on the module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_forward_pre_hook</span></code>(hook, *[, ...])</p></td>
+<td><p>Register a forward pre-hook on the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_full_backward_hook</span></code>(hook[, prepend])</p></td>
+<td><p>Register a backward hook on the module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_full_backward_pre_hook</span></code>(hook[, prepend])</p></td>
+<td><p>Register a backward pre-hook on the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_load_state_dict_post_hook</span></code>(hook)</p></td>
+<td><p>Register a post hook to be run after module's <code class="docutils literal notranslate"><span class="pre">load_state_dict</span></code> is called.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_module</span></code>(name, module)</p></td>
+<td><p>Alias for <code class="xref py py-func docutils literal notranslate"><span class="pre">add_module()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_parameter</span></code>(name, param)</p></td>
+<td><p>Add a parameter to the module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_state_dict_pre_hook</span></code>(hook)</p></td>
+<td><p>Register a pre-hook for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code> method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">requires_grad_</span></code>([requires_grad])</p></td>
+<td><p>Change if autograd should record operations on parameters in this module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_ensemblids</span></code>(unknown, goobj, gos, ensemblids)</p></td>
+<td><p>Sets the ensemblid attribute for every GOTerm of the GO object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_extra_state</span></code>(state)</p></td>
+<td><p>Set extra state contained in the loaded <cite>state_dict</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_layersize</span></code>(goobj, relations, ...)</p></td>
+<td><p>Sets the layersize attribute for every GOTerm of the GO object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_layersize_dynamic</span></code>(dynamic_go_cfg, goobj, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_topnode_and_unknown</span></code>(goobj, ontology, ...)</p></td>
+<td><p>Sets and returns the top (root) node and UNKNOWN node of the ontology.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">share_memory</span></code>()</p></td>
+<td><p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor.share_memory_()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_dict</span></code>(*args[, destination, prefix, ...])</p></td>
+<td><p>Return a dictionary containing references to the whole state of the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code>(*args, **kwargs)</p></td>
+<td><p>Move and/or cast the parameters and buffers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_empty</span></code>(*, device[, recurse])</p></td>
+<td><p>Move the parameters and buffers to the specified device without copying storage.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>([mode])</p></td>
+<td><p>Set the module in training mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code>(dst_type)</p></td>
+<td><p>Casts all parameters and buffers to <code class="xref py py-attr docutils literal notranslate"><span class="pre">dst_type</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpu</span></code>([device])</p></td>
+<td><p>Move all model parameters and buffers to the XPU.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_grad</span></code>([set_to_none])</p></td>
+<td><p>Reset gradients of all model parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Attributes</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">T_destination</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_super_init</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="networkvi.nn.GeneLayers.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">networkvi.nn.GeneLayers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../tutorials.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Tutorials</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#networkvi.nn.GOLayers"><code class="docutils literal notranslate"><span class="pre">GOLayers</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#networkvi.nn.GOLayers.__init__"><code class="docutils literal notranslate"><span class="pre">GOLayers.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Lucas Arnoldt, Julius Upmeier zu Belzen, Luis Herrmann, Khue Nguyen, Fabian Theis, Benjamin Wild, Roland Eils
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Lucas Arnoldt, Julius Upmeier zu Belzen, Luis Herrmann, Khue Nguyen, Fabian Theis, Benjamin Wild, Roland Eils.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

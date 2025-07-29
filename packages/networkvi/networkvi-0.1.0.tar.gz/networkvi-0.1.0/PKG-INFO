@@ -1,0 +1,170 @@
+Metadata-Version: 2.4
+Name: networkvi
+Version: 0.1.0
+Summary: Biologically Guided Variational Inference for Interpretable Multimodal Single-Cell Integration and Mechanistic Discovery
+Project-URL: Documentation, https://networkvi.readthedocs.io
+Project-URL: Source, https://github.com/LArnoldt/networkvi
+Project-URL: Home-page, https://networkvi.readthedocs.io
+Author: Lucas Arnoldt, Julius Upmeier zu Belzen, Luis Herrmann, Khue Nguyen, Fabian Theis, Bejamin Wild, Roland Eils
+Maintainer-email: Lucas Arnoldt <lucas.arnoldt@helmholtz-munich.de>
+License-Expression: BSD-3-Clause
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: <3.12,>=3.9
+Requires-Dist: addict
+Requires-Dist: docrep>=0.3.2
+Requires-Dist: flax
+Requires-Dist: goatools
+Requires-Dist: lightning>=2.0
+Requires-Dist: ml-collections>=0.1.1
+Requires-Dist: mudata>=0.1.2
+Requires-Dist: muon
+Requires-Dist: numpyro>=0.12.1
+Requires-Dist: pqdm
+Requires-Dist: prettytable
+Requires-Dist: pyro-ppl>=1.6.0
+Requires-Dist: rich>=12.0.0
+Requires-Dist: scikit-learn>=0.21.2
+Requires-Dist: sparse>=0.14.0
+Requires-Dist: tabulate
+Requires-Dist: tensorboard>=2.0
+Requires-Dist: torch==2.2.0
+Requires-Dist: torchmetrics>=0.11.0
+Requires-Dist: xarray>=2023.2.0
+Provides-Extra: all
+Requires-Dist: docutils!=0.18.*,!=0.19.*,>=0.8; extra == 'all'
+Requires-Dist: gdown; extra == 'all'
+Requires-Dist: ipython; extra == 'all'
+Requires-Dist: jupyter; extra == 'all'
+Requires-Dist: myst-nb; extra == 'all'
+Requires-Dist: myst-parser; extra == 'all'
+Requires-Dist: nbsphinx; extra == 'all'
+Requires-Dist: sphinx-autodoc-typehints; extra == 'all'
+Requires-Dist: sphinx-book-theme>=1.0.1; extra == 'all'
+Requires-Dist: sphinx-copybutton; extra == 'all'
+Requires-Dist: sphinx-design; extra == 'all'
+Requires-Dist: sphinx-hoverxref; extra == 'all'
+Requires-Dist: sphinx>=4.1; extra == 'all'
+Requires-Dist: sphinxcontrib-bibtex>=1.0.0; extra == 'all'
+Requires-Dist: sphinxext-opengraph; extra == 'all'
+Provides-Extra: aws
+Requires-Dist: boto3; extra == 'aws'
+Provides-Extra: census
+Requires-Dist: cellxgene-census; extra == 'census'
+Provides-Extra: docs
+Requires-Dist: docutils!=0.18.*,!=0.19.*,>=0.8; extra == 'docs'
+Requires-Dist: ipython; extra == 'docs'
+Requires-Dist: myst-nb; extra == 'docs'
+Requires-Dist: myst-parser; extra == 'docs'
+Requires-Dist: nbsphinx; extra == 'docs'
+Requires-Dist: sphinx-autodoc-typehints; extra == 'docs'
+Requires-Dist: sphinx-book-theme>=1.0.1; extra == 'docs'
+Requires-Dist: sphinx-copybutton; extra == 'docs'
+Requires-Dist: sphinx-design; extra == 'docs'
+Requires-Dist: sphinx-hoverxref; extra == 'docs'
+Requires-Dist: sphinx>=4.1; extra == 'docs'
+Requires-Dist: sphinxcontrib-bibtex>=1.0.0; extra == 'docs'
+Requires-Dist: sphinxext-opengraph; extra == 'docs'
+Provides-Extra: docsbuild
+Requires-Dist: docutils!=0.18.*,!=0.19.*,>=0.8; extra == 'docsbuild'
+Requires-Dist: ipython; extra == 'docsbuild'
+Requires-Dist: myst-nb; extra == 'docsbuild'
+Requires-Dist: myst-parser; extra == 'docsbuild'
+Requires-Dist: nbsphinx; extra == 'docsbuild'
+Requires-Dist: sphinx-autodoc-typehints; extra == 'docsbuild'
+Requires-Dist: sphinx-book-theme>=1.0.1; extra == 'docsbuild'
+Requires-Dist: sphinx-copybutton; extra == 'docsbuild'
+Requires-Dist: sphinx-design; extra == 'docsbuild'
+Requires-Dist: sphinx-hoverxref; extra == 'docsbuild'
+Requires-Dist: sphinx>=4.1; extra == 'docsbuild'
+Requires-Dist: sphinxcontrib-bibtex>=1.0.0; extra == 'docsbuild'
+Requires-Dist: sphinxext-opengraph; extra == 'docsbuild'
+Provides-Extra: hub
+Requires-Dist: huggingface-hub; extra == 'hub'
+Provides-Extra: loompy
+Requires-Dist: loompy>=3.0.6; extra == 'loompy'
+Provides-Extra: pymde
+Requires-Dist: pymde; extra == 'pymde'
+Provides-Extra: regseq
+Requires-Dist: biopython>=1.81; extra == 'regseq'
+Requires-Dist: genomepy; extra == 'regseq'
+Provides-Extra: scanpy
+Requires-Dist: scanpy>=1.6; extra == 'scanpy'
+Provides-Extra: tutorials
+Requires-Dist: gdown; extra == 'tutorials'
+Requires-Dist: jupyter; extra == 'tutorials'
+Description-Content-Type: text/markdown
+
+[![python](https://img.shields.io/badge/-Python_3.9_%7C_3.10_%7C_3.11_-blue?logo=python&logoColor=white)](https://docs.python.org/3/)
+[![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
+[![Documentation][badge-docs]][link-docs]
+[![PyPI][pypi-badge]][pypi-link]
+
+# NetworkVI: Biologically Guided Variational Inference for Interpretable Multimodal Single-Cell Integration and Mechanistic Discovery
+
+## Getting started
+
+`NetworkVI` is a sparse deep generative model designed for the paired, vertical (shared cells across measurements), horizontal (shared features across datasets) or mosaic integration and interpretation of multimodal single-cell data. The model learns a rich, batch-corrected low-dimensional representation of bi- and trimodal single-cell count datasets, estimating the representation using normalized input data. Please refer to the [documentation](https://networkvi.readthedocs.io/en/latest/). We also provide [tutorials](https://networkvi.readthedocs.io/docs/build/html/tutorials/):
+- [Paired integration and query-to-reference mapping](https://networkvi.readthedocs.io/docs/build/html/tutorials/paired_integration_and_query_mapping)
+- [Mosaic integration](https://rtd-larnoldt.readthedocs.io/docs/build/html/tutorials/mosaic_integration)
+- [Interpretability: Inference of GO importances and Gene-GO associations](https://rtd-larnoldt.readthedocs.io/docs/build/html/tutorials/go_analysis)
+- [Interpretability: Infernce of GO term-specific covariate attention values](https://rtd-larnoldt.readthedocs.io/docs/build/html/tutorials/go_specific_covariate_attention)
+
+## Installation
+
+`NetworkVI` requires Python>3.9 on your system.
+
+1. Install the latest release of `NetworkVI` from [PyPi](https://pypi.org/project/networkvi/):
+
+```
+pip install networkvi
+```
+
+2. Install the latest development version:
+
+```
+pip install git+https://github.com/LArnoldt/networkvi.git@main
+```
+
+Please also install the appropiate CUDA version of `torch`, `torch-scatter` and `torch-sparse` version. Here we give an example for CUDA 12.1:
+
+```
+pip install -U torch==2.2.0 --index-url https://download.pytorch.org/whl/cu121
+pip install -U torch-scatter torch-sparse -f https://data.pyg.org/whl/torch-2.2.0+cu121.html
+```
+
+## API
+
+Please find the [API](https://networkvi.readthedocs.io/docs/build/html/api.html) here.
+
+## Release notes
+
+Please find the [release notes](https://networkvi.readthedocs.io/docs/build/html/release_notes.html) here.
+
+## Contact
+
+If you found a bug, please use the [issue tracker](https://github.com/LArnoldt/networkvi/issues). If you use `NetworkVI` in your research, please consider citing the [preprint](https://www.biorxiv.org/content/10.1101/2025.06.10.657924v1):
+
+```
+Arnoldt, L., Upmeier zu Belzen, J., Herrmann, L., Nguyen, K., Theis, F.J., Wild, B. , Eils, R., "Biologically Guided Variational Inference for Interpretable Multimodal Single-Cell Integration and Mechanistic Discovery", bioRxiv, June 2025.
+```
+
+## Reproducibility
+
+Code and notebooks to reproduce the results and figues from the paper are available [here](https://github.com/LArnoldt/networkvi_reproducibility).
+
+[badge-docs]: https://img.shields.io/readthedocs/networkvi
+[link-docs]: https://networkvi.readthedocs.io/en/latest/
+[pypi-badge]: https://img.shields.io/pypi/v/networkvi.svg
+[pypi-link]: https://pypi.org/project/networkvi
+
+
+
