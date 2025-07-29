@@ -1,0 +1,19 @@
+#include "mockup{{suffix}}.h"
+
+{% for variable in variables %}
+{% if variable.is_constant %}
+{{ variable.get_definition() }} = {{ variable.initializer() }};
+{% else %}
+{{ variable.get_definition() }};
+{% endif %}
+{% endfor %}
+
+
+{% for function in functions %}
+
+{{function.get_signature()}}{
+{% if function.has_return_value() %}
+    return {{function.default_return()}};
+{% endif %}
+} /* {{function.name}} */
+{% endfor %}
