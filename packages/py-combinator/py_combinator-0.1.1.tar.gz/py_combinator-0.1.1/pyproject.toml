@@ -1,0 +1,27 @@
+[build-system]
+requires = ["maturin>=1.8,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "py_combinator"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+[project.optional-dependencies]
+tests = [
+    "pytest",
+]
+
+[tool.maturin]
+python-source = "python"
+module-name = "py_combinator._py_combinator"
+features = ["pyo3/extension-module"]
+manifest-path = "py-combinator/Cargo.toml"
+
+[tool.ruff.lint]
+select = [ "ALL" ]
+ignore = [ "D", "CPY", "T20", "E501", "COM812" ]
