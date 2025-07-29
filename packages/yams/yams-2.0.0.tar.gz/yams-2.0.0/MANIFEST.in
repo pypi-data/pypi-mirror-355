@@ -1,0 +1,23 @@
+include ChangeLog
+include COPYING
+include COPYING.LESSER
+include __pkginfo__.py
+include tox.ini
+include mypy.ini
+include docs/*
+include yams/py.typed
+include .readthedocs.yaml
+recursive-include bin *
+prune debian
+prune docs/_build
+exclude .hgrc
+exclude .gitlab-ci.yml
+include *.png
+include *.svg
+exclude yams/test/*.py
+exclude yams/test/data2/*.py
+recursive-exclude yams/test/data *.sql *.rel *.esql *.py *.txt toignore
+exclude .yamllint
+exclude .cube-doctor.yml
+exclude .hg-format-source
+exclude CHANGELOG.md
