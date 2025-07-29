@@ -1,0 +1,31 @@
+Metadata-Version: 2.4
+Name: bmsdna-sql-utils
+Version: 0.13.0
+Author-email: Adrian Ehrsam <adrian.ehrsam@bmsuisse.ch>
+Requires-Python: ~=3.11
+Requires-Dist: aiohttp<4,>=3.8.5
+Requires-Dist: aioodbc>=0.5.0
+Requires-Dist: arrow-odbc>=5.0.0
+Requires-Dist: deltalake2db>=0.3.4
+Requires-Dist: deltalake<1.0,>=0.16.4
+Requires-Dist: duckdb~=1.2
+Requires-Dist: lakeapi2sql>=0.9.1
+Requires-Dist: polars>=1.0.0
+Requires-Dist: pydantic<3,>=2.3.0
+Requires-Dist: pyodbc<6,>=5.0.1
+Requires-Dist: python-tds<2,>=1.13.0
+Requires-Dist: requests>=2.28.0
+Provides-Extra: db-io
+Requires-Dist: lakeapi2sql; extra == 'db-io'
+Requires-Dist: pyodbc; extra == 'db-io'
+Provides-Extra: db2delta
+Requires-Dist: aiohttp; extra == 'db2delta'
+Requires-Dist: arrow-odbc; extra == 'db2delta'
+Requires-Dist: deltalake; extra == 'db2delta'
+Requires-Dist: deltalake2db; extra == 'db2delta'
+Requires-Dist: duckdb; extra == 'db2delta'
+Provides-Extra: delta
+Requires-Dist: deltalake; extra == 'delta'
+Requires-Dist: duckdb; extra == 'delta'
+Provides-Extra: polars
+Requires-Dist: polars; extra == 'polars'
