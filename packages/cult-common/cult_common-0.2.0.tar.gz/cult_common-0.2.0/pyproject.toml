@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=69.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cult-common"
+version = "0.2.0"
+description = "Shared utilities, schemas, and mixins for Cult microservices"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name="Oluwaseun Ayeni", email="oluwastormy101@icloud.com" },
+]
+requires-python = ">=3.8"
+
+dependencies = [
+  "pydantic>=1.10",
+  "pydantic-settings>=0.3",
+]
+ 
+[project.urls]
+homepage = "https://github.com/Oluwaseun-ayeni/cult-common"
+repository = "https://github.com/Oluwaseun-ayeni/cult-common"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.0",
+  "pytest-cov>=4.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cult_common*"]
