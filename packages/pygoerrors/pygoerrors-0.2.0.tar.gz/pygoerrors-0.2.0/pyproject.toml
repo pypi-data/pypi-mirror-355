@@ -1,0 +1,51 @@
+[project]
+name = "pygoerrors"
+version = "0.2.0"
+description = "Go like errors for Python"
+authors = [{ name = "dreadster3", email = "afonso.antunes@live.com.pt" }]
+license = { file = "LICENSE" }
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.12"
+dependencies = ["cachetools (>=6.0.0,<7.0.0)"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+keywords = [
+  "error",
+  "errors",
+  "go",
+  "exceptions",
+  "error-handling",
+  "go-style",
+  "exceptions",
+  "error-wrapping",
+  "python-errors",
+  "error-protocol",
+  "functional-programming",
+]
+
+[project.urls]
+Source = "https://github.com/dreadster3/pygoerrors"
+Tracker = "https://github.com/dreadster3/pygoerrors/issues"
+
+[tool.mypy]
+exclude = ["examples/"]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+ruff = "^0.11.6"
+mypy = "^1.15.0"
+types-cachetools = "^6.0.0.20250525"
