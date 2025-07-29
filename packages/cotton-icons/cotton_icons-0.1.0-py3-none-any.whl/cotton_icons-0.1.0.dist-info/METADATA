@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: cotton-icons
+Version: 0.1.0
+Summary: Heroicons and Tabler Icons for Django Cotton
+Home-page: https://github.com/wrabit/cotton-icons
+License: MIT
+Keywords: django,cotton,heroicons,svg,icons
+Author: William Abbott
+Author-email: willabb83@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: django-cotton
+Project-URL: Documentation, https://github.com/wrabit/cotton-icons#readme
+Project-URL: Repository, https://github.com/wrabit/cotton-icons
+Description-Content-Type: text/markdown
+
+A package to provide popular icon packs for use with [Django Cotton](https://github.com/wrabit/django-cotton).
+Currently, [Heroicons](https://heroicons.com/) and [Tabler Icons](https://tabler-icons.io/) are supported.
+
+## Supported Icon Libraries
+
+*   **Heroicons:** `v2.1.5` 
+*   **Tabler Icons:** `v3.34.0` 
+
+## Install
+
+**1. Install from pypi**
+
+```
+pip install cotton-icons
+```
+
+**2. Install into your django project**
+
+```python
+# settings.py
+INSTALLED_APPS = [
+  'cotton_icons'
+]
+```
+
+**3. Use in template**
+
+`<c-heroicon.[kebab-case heroicon name] variant="outline|solid|mini" [any other attribute will pass to the <svg> tag] />`
+`<c-tablericon.[kebab-case tabler icon name] variant="outline|filled" [any other attribute will pass to the <svg> tag] />`
+
+* `variant` defaults to `outline`
+* for outline variant, you can also pass `stroke-width="" stroke_linecap="" stroke_linejoin=""` 
+
+Examples:
+   
+```html
+<c-heroicon.chevron-down class="size-5" /> <!-- default variant "outline" -->
+<c-heroicon.chevron-down variant="solid" class="size-5" />
+<c-heroicon.chevron-down variant="mini" class="size-5" />
+```
+   
+```html
+<c-tablericon.graph class="size-5" /> <!-- default variant "outline" -->
+<c-tablericon.graph variant="filled" class="size-5" />
+```
+
+### Roadmap
+
+- [x] Add [Tabler Icons](https://tabler-icons.io/)
+
+
+
