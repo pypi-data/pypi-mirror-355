@@ -1,0 +1,216 @@
+# Claude Command
+
+Command center for real-time three-way conversations between Claude Code, AI models (Gemini, OpenAI, etc.), and you.
+
+> [!NOTE]
+> **NOTE: This MCP server is designed exclusively for Claude Code CLI and will NOT work with Claude Desktop. Only use this with Claude Code.**
+
+## For AI Developers: System Prompt
+
+> [!IMPORTANT]
+> **IMPORTANT**: If you're an AI working on this project, start here first: **[System Prompt](/.air/prompts/system.prompt.md)** - The complete development guide containing:
+
+- Architecture overview and principles
+- Development workflow and commands
+- Project structure and conventions
+- Testing strategies and best practices
+- Common issues and solutions
+
+This system prompt is the heartbeat of the project and contains everything you need to understand, develop, and maintain Claude Command effectively.
+
+## Quick Start
+
+1. **Get an AI API key** (choose one):
+   - Gemini: <https://aistudio.google.com/apikey> (free)
+   - OpenAI: <https://platform.openai.com/api-keys> (paid)
+
+2. **Choose your installation method**:
+
+   **Option A: Install Script (Recommended)**
+
+   ```bash
+   curl -sSL https://raw.githubusercontent.com/shaneholloman/mcp-claude-command/main/install.sh | bash -s YOUR_API_KEY
+   ```
+
+   **Option B: Manual Installation via UVX**
+
+   ```bash
+   # Install the package
+   uvx install claude-command
+   # OR alternatively
+   uvx install claude-commander
+   ```
+
+   Then manually configure Claude Code's MCP settings by adding this to your Claude Code configuration:
+
+   ```json
+   {
+     "mcpServers": {
+       "claude-command": {
+         "command": "uvx",
+         "args": ["run", "claude-command"],
+         "env": {
+           "GEMINI_API_KEY": "your_api_key_here"
+         }
+       }
+     }
+   }
+   ```
+
+   **CRITICAL: This MCP server only works with Claude Code CLI. It will NOT work with Claude Desktop.**
+
+3. **Restart Claude Code**
+
+## Configuration
+
+Set your preferred AI model via environment variables:
+
+```bash
+# For Gemini (default)
+export GEMINI_API_KEY="your_key_here"
+export AI_CLIENT_TYPE="gemini"
+
+# For OpenAI (when available)
+export OPENAI_API_KEY="your_key_here"
+export AI_CLIENT_TYPE="openai"
+
+# Optional model configuration
+export GEMINI_MODEL_NAME="gemini-2.5-flash-preview-05-20"
+export AI_TEMPERATURE="0.5"
+
+# Optional user personalization
+export USER_NAME="Alice"  # Defaults to "Human" if not set
+```
+
+## Usage
+
+Start conversations using the MCP tools:
+
+```sh
+# Basic conversation
+mcp__claude-command__ai_query
+prompt: "Hello! Let's discuss this code architecture."
+
+# Code review
+mcp__claude-command__ai_review
+code: "your code here"
+focus: "security"
+
+# Brainstorming session
+mcp__claude-command__ai_brainstorm
+topic: "microservices vs monolith architecture"
+context: "Building a new e-commerce platform"
+```
+
+## Real-time Streaming
+
+Watch live AI responses as they generate:
+
+```bash
+# Watch the live conversation stream
+tail -f ~/claude-command/live_stream.txt
+```
+
+## File Locations
+
+All conversation data is organized in your home directory:
+
+- **Conversations Directory**: `~/claude-command/`
+- **Live Streaming File**: `~/claude-command/live_stream.txt`
+- **Session Files**: `~/claude-command/session_YYYY-MM-DD_HH-MM-SS_XXXXXXXX.json`
+- **Individual Conversations**: `~/claude-command/conversation_YYYY-MM-DD_HH-MM-SS_XXXXXXXX.json`
+
+## Available Tools
+
+| Tool | Description | Use Case |
+|------|-------------|----------|
+| `ask_ai` | Interactive conversation with context | General collaboration, Q&A |
+| `get_conversation_history` | Retrieve formatted conversation | Review past discussions |
+| `ai_code_review` | Detailed code analysis | Security, performance, best practices |
+| `ai_brainstorm` | Creative problem-solving | Architecture decisions, feature ideas |
+
+## Architecture
+
+The server uses a modular architecture supporting multiple AI providers:
+
+```tree
+src/
+├── config.py              # Configuration and environment variables
+├── sessions.py             # Conversation session management
+└── clients/
+    ├── interface.py        # Abstract AI client interface
+    ├── gemini.py          # Google Gemini implementation
+    ├── factory.py         # Client factory and management
+    └── [future: openai.py, claude.py, etc.]
+```
+
+## How It Works
+
+1. **Session Management**: Each Claude Code session creates a persistent conversation
+2. **Real-time Streaming**: AI responses stream live to a text file you can watch
+3. **Context Preservation**: Full conversation history maintained across interactions
+4. **Multi-AI Ready**: Architecture supports multiple AI providers seamlessly
+5. **Background Processing**: Non-blocking AI calls with streaming output
+
+## Supported AI Models
+
+| Provider | Model | Status | API Key Required |
+|----------|-------|---------|------------------|
+| Google Gemini | 2.5 Flash | ✅ Active | Free tier available |
+| OpenAI | GPT-4, GPT-3.5 | 🚧 Coming Soon | Paid usage |
+| Anthropic Claude | Claude 3.5 | 🚧 Planned | Paid usage |
+
+## Requirements
+
+- [Claude Code CLI](https://claude.ai/code)
+- Python 3.9+ (managed by UV)
+- AI API key (Gemini recommended for free tier)
+- macOS, Linux, or Windows with WSL
+
+## Advanced Usage
+
+### Multiple Conversations
+
+```sh
+# Start specific conversation
+mcp__claude-command__ai_query
+conversation_id: "architecture_discussion"
+prompt: "Let's continue our API design discussion"
+```
+
+### Temperature Control
+
+```sh
+# Creative brainstorming (higher temperature)
+mcp__claude-command__ai_brainstorm
+topic: "innovative user interface ideas"
+# Automatically uses temperature=0.7
+
+# Code review (lower temperature)
+mcp__claude-command__ai_review
+code: "function validateUser() { ... }"
+# Automatically uses temperature=0.2
+```
+
+### Development Setup
+
+For local development:
+
+```bash
+git clone https://github.com/shaneholloman/mcp-claude-command
+cd mcp-claude-command
+uv sync
+uv run python server.py
+```
+
+## Contributing
+
+1. Fork the repository
+2. Add new AI clients in `src/clients/`
+3. Implement the `AIClient` interface
+4. Update the factory registration
+5. Submit a pull request
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
