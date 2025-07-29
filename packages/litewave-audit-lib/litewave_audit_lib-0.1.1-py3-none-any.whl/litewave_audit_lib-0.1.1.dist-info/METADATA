@@ -1,0 +1,57 @@
+Metadata-Version: 2.4
+Name: litewave-audit-lib
+Version: 0.1.1
+Summary: A lightweight audit logging library with pluggable backends
+Home-page: https://github.com/litewave/litewave-audit-lib
+Author: Sonu Sudhakaran
+Author-email: Sonu Sudhakaran <sonu@litewave.ai>
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: nats-py>=2.0.0
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+# Litewave Audit Library
+
+Internal audit logging library for Litewave services.
+
+## Usage
+
+```python
+from litewave_audit_lib import get_logger
+
+# Get a logger with NATS backend
+logger = get_logger(
+    backend="nats",
+    servers=["nats://your-nats-server:4222"],
+    subject="audit.logs",
+    username="your_username",
+    password="your_password",
+    max_retries=3,        # Optional: Maximum number of reconnection attempts
+    retry_delay=1.0       # Optional: Delay between reconnection attempts in seconds
+)
+
+# Log an audit event
+logger.log(
+    who="user123",
+    resource="document",
+    action="view",
+    location="office",
+    request_context={"ip": "127.0.0.1"},
+    context={"document_id": "doc123"},
+    client="web"
+)
+```
+
+## Features
+
+- Automatic reconnection handling
+- Connection retry logic
+- Proper error handling and logging
+- Type hints for better IDE support
+- Automatic cleanup of NATS connections
+
+## Dependencies
+
+- nats-py (for NATS backend)
