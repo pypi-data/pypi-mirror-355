@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ezgitup"
+version = "0.2.4"
+description = "A simple tool to upload files to GitHub repositories"
+readme = "README.md"
+requires-python = ">=3.6"
+license = "Apache-2.0"
+authors = [
+    { name = "Murat Keçeli", email = "keceli@gmail.com" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests>=2.25.1",
+    "importlib_metadata>=4.6.0; python_version < '3.8'"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/keceli/EzGitUp"
+"Bug Tracker" = "https://github.com/keceli/EzGitUp/issues"
+
+[project.scripts]
+ezgitup = "ezgitup.uploader:main" 
