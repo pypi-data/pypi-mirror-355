@@ -1,0 +1,631 @@
+Metadata-Version: 2.4
+Name: amgd
+Version: 1.4.7
+Summary: Adaptive Momentum Gradient Descent for Regularized Poisson Regression
+Home-page: https://github.com/elbakari01/amgd_package
+Author: Ibrahim Bakari
+Author-email: 2020913072@ogr.cu.edu.tr
+License: MIT
+Project-URL: Homepage, https://github.com/elbakari01/amgd_package
+Project-URL: Repository, https://github.com/elbakari01/amgd_package
+Project-URL: Bug Reports, https://github.com/elbakari01/amgd_package/issues
+Project-URL: Documentation, https://amgd.readthedocs.io
+Keywords: machine learning,poisson regression,optimization,sparsity,regularization
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: scikit-learn>=1.0.0
+Requires-Dist: matplotlib>=3.3.0
+Requires-Dist: pandas>=1.3.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# AMGD: Adaptive Momentum Gradient Descent
+
+[![PyPI version](https://badge.fury.io/py/amgd.svg)](https://badge.fury.io/py/amgd)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Downloads](https://pepy.tech/badge/amgd)](https://pepy.tech/project/amgd)
+[![Tests](https://github.com/elbakari01/amgd/workflows/tests/badge.svg)](https://github.com/elbakari01/amgd/actions)
+
+A Python implementation of **Adaptive Momentum Gradient Descent (AMGD)** for high-dimensional sparse Poisson regression with L1 and Elastic Net regularization. AMGD combines adaptive learning rates with momentum-based updates and specialized soft-thresholding to achieve superior performance in feature selection and optimization efficiency.
+
+## 🚀 Key Features 
+
+- **🎯 Optimized** for Poisson regression with automatic feature selection
+- **⚡ Superior convergence** compared to Adam, AdaGrad, and GLMnet
+- **🔧 Adaptive soft-thresholding** for effective L1 and Elastic Net regularization
+- **📊 High-dimensional support** with excellent scalability (tested up to 1000+ features)
+- **🏆 Built-in benchmarking** tools for algorithm comparison
+- **🔌 Extensible framework** supporting custom penalties and GLM families
+- **📈 Comprehensive visualization** for convergence analysis and coefficient paths
+
+
+
+##  📊 Performance Highlights
+
+AMGD demonstrates effecient performance in regularized Poisson regression, as validated by comprehensive experiments on ecological count data:
+
+
+| Metric                 | AMGD vs Adam        | AMGD vs AdaGrad        | AMGD vs GLMnet        |
+|------------------------|---------------------|-------------------------|------------------------|
+| **MAE**                | 2.7% lower           | 56.6% lower             | 66.4% lower            |
+| **RMSE**               | 2.9% lower           | 49.2% lower             | 59.0% lower            |
+| **MPD**                | 3.0% lower           | 81.0% lower             | 92.4% lower            |
+| **Sparsity**           | 11× higher           | ∞ (from 0%)             | ∞ (from 0%)            |
+| **Runtime**            | 2× faster            | >370× faster            | 20× faster             |
+| **Stat. Significance** | p < 0.0001 (all)     | ✅ Large effect sizes   |                        |
+
+✅ **Achieves 35.29% model sparsity** (vs 11.76% for Adam, 0% for AdaGrad and GLMnet)  
+✅ **Bootstrapped performance is stable** across 1000 runs with tight confidence intervals  
+✅ **Adaptive thresholding** outperforms static regularization, enabling effective feature selection  
+✅ **Handles high-dimensional data** with robust convergence and minimal tuning  
+
+> “AMGD provides up to 56.6% MAE reduction over AdaGrad, and outperforms Adam on every metric while selecting significantly fewer features.”  
+> — *Bakari & Özkale (2025)*
+
+
+
+## 📦 Installation
+
+### Quick Install from PyPI
+
+```bash
+pip install amgd
+```
+
+### Development Installation
+
+```bash
+git clone https://github.com/elbakari01/amgd.git 
+cd amgd
+pip install -e .
+```
+
+### Dependencies
+
+```bash
+numpy>=1.21.0
+scipy>=1.7.0
+scikit-learn>=1.0.0
+matplotlib>=3.3.0
+seaborn>=0.11.0
+```
+
+## ⚡ Quick Start
+
+### 30-Second Example
+
+```python
+import numpy as np
+from amgd.models import PoissonRegressor
+from sklearn.datasets import make_regression
+from sklearn.model_selection import train_test_split
+
+# Generate sample data
+X, y = make_regression(n_samples=1000, n_features=50, noise=0.1, random_state=42)
+y = np.abs(y.astype(int))  # Convert to count data for Poisson
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train AMGD model
+model = PoissonRegressor(optimizer='amgd', penalty='l1', lambda1=0.1)
+model.fit(X_train, y_train)
+
+# Evaluate
+print(f"Test score: {model.score(X_test, y_test):.4f}")
+print(f"Selected features: {np.sum(model.coef_ != 0)}/{len(model.coef_)}")
+```
+
+### Basic Poisson Regression
+
+```python
+from amgd.models import PoissonRegressor
+
+# Create and train model
+model = PoissonRegressor(
+    optimizer='amgd',
+    penalty='l1',
+    lambda1=0.1,
+    max_iter=1000,
+    verbose=True
+)
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Evaluate performance
+from amgd.utils.metrics import poisson_deviance
+deviance = poisson_deviance(y_test, y_pred)
+print(f"Poisson deviance: {deviance:.4f}")
+```
+
+### Elastic Net for Grouped Feature Selection
+
+```python
+# Best for correlated features
+model = PoissonRegressor(
+    optimizer='amgd',
+    penalty='elasticnet',
+    lambda1=0.05,  # L1 penalty (sparsity)
+    lambda2=0.05,  # L2 penalty (grouping)
+    max_iter=1000
+)
+model.fit(X_train, y_train)
+
+# Analyze sparsity
+sparsity = np.mean(model.coef_ == 0)
+print(f"Sparsity: {sparsity:.2%}")
+print(f"Non-zero coefficients: {np.sum(model.coef_ != 0)}")
+```
+
+## 📖 Comprehensive Examples
+
+### 1. Real-World Example: Species Count Prediction
+
+```python
+from amgd.models import PoissonRegressor
+from amgd.visualization import plot_convergence, plot_feature_importance
+import pandas as pd
+
+# Load your ecological data
+# X: environmental features (temperature, rainfall, etc.)
+# y: species counts
+data = pd.read_csv('ecological_data.csv')
+X = data[['temperature', 'rainfall', 'elevation', 'soil_ph']].values
+y = data['species_count'].values
+
+# Cross-validation for hyperparameter tuning
+from sklearn.model_selection import cross_val_score
+
+lambda_values = np.logspace(-4, 1, 20)
+cv_scores = []
+
+for lam in lambda_values:
+    model = PoissonRegressor(optimizer='amgd', penalty='l1', lambda1=lam)
+    scores = cross_val_score(model, X, y, cv=5, scoring='neg_mean_poisson_deviance')
+    cv_scores.append(-scores.mean())
+
+best_lambda = lambda_values[np.argmin(cv_scores)]
+
+# Train final model
+model = PoissonRegressor(optimizer='amgd', penalty='l1', lambda1=best_lambda)
+model.fit(X, y)
+
+# Visualize results
+plot_convergence(model.loss_history_, title="AMGD Convergence")
+plot_feature_importance(model.coef_, feature_names=['Temperature', 'Rainfall', 'Elevation', 'Soil pH'])
+```
+
+### 2. Algorithm Benchmarking
+
+```python
+from amgd.benchmarks import compare_optimizers
+
+# Compare multiple optimizers
+results = compare_optimizers(
+    X, y,
+    optimizers=['amgd', 'adam', 'adagrad'],
+    penalties=['l1', 'elasticnet'],
+    cv_folds=5,
+    test_size=0.2,
+    random_state=42
+)
+
+# View results
+print("Cross-Validation Results:")
+print(results['cv_results'])
+print("\nTest Set Results:")
+print(results['test_results'])
+
+# Statistical significance testing
+from amgd.benchmarks import statistical_significance_test
+stats_results = statistical_significance_test(
+    X, y, 
+    optimizers=['amgd', 'adam'], 
+    n_runs=50
+)
+```
+
+### 3. Custom Penalty Functions
+
+```python
+from amgd.core.penalties import PenaltyBase
+import numpy as np
+
+class AdaptiveLassoPenalty(PenaltyBase):
+    """Adaptive Lasso with feature-specific weights."""
+    
+    def __init__(self, lambda1, weights):
+        self.lambda1 = lambda1
+        self.weights = weights
+
+    def __call__(self, x):
+        return self.lambda1 * np.sum(self.weights * np.abs(x))
+
+    def gradient(self, x):
+        return self.lambda1 * self.weights * np.sign(x)
+
+    def proximal_operator(self, x, step_size):
+        threshold = self.lambda1 * self.weights * step_size
+        return np.sign(x) * np.maximum(np.abs(x) - threshold, 0)
+
+# Use custom penalty
+initial_weights = 1.0 / (np.abs(ridge_coef) + 0.1)  # From ridge regression
+penalty = AdaptiveLassoPenalty(lambda1=0.1, weights=initial_weights)
+
+model = PoissonRegressor(optimizer='amgd', penalty=penalty)
+model.fit(X_train, y_train)
+```
+
+## 🧮 Algorithm Details
+
+AMGD combines three key innovations for superior performance:
+
+### 1. Adaptive Learning Rate with Exponential Decay
+```
+αₜ = α₀ / (1 + ηt)
+```
+- `α₀`: Initial learning rate (default: 0.01)
+- `η`: Decay rate (default: 0.0001)
+- `t`: Current iteration
+
+### 2. Bias-Corrected Momentum Updates
+```
+mₜ = β₁mₜ₋₁ + (1 - β₁)∇f(θₜ)          # First moment
+vₜ = β₂vₜ₋₁ + (1 - β₂)(∇f(θₜ))²       # Second moment
+m̂ₜ = mₜ / (1 - β₁ᵗ)                   # Bias correction
+v̂ₜ = vₜ / (1 - β₂ᵗ)                   # Bias correction
+```
+
+### 3. Adaptive Soft-Thresholding for Sparsity
+```
+θⱼ ← prox_λ(θⱼ - αₜ∇f(θⱼ))
+where prox_λ(x) = sign(x) · max(|x| - λ, 0)
+```
+
+### Why AMGD Works Better
+
+| Component | Traditional Methods | AMGD Innovation | Benefit |
+|-----------|-------------------|-----------------|---------|
+| **Learning Rate** | Fixed or simple decay | Adaptive + exponential decay | Better convergence |
+| **Momentum** | Standard momentum | Bias-corrected dual momentum | Faster escape from local minima |
+| **Regularization** | Basic soft-thresholding | Adaptive thresholding | Superior feature selection |
+
+## 🛠️ Advanced Features
+
+### Model Persistence
+
+```python
+import joblib
+
+# Save trained model
+model.fit(X_train, y_train)
+joblib.dump(model, 'amgd_model.pkl')
+
+# Load and use
+loaded_model = joblib.load('amgd_model.pkl')
+predictions = loaded_model.predict(X_new)
+```
+
+### Warm Starting for Hyperparameter Tuning
+
+```python
+model = PoissonRegressor(optimizer='amgd', warm_start=True)
+
+# Progressive training
+for lambda_val in [0.1, 0.05, 0.01]:
+    model.lambda1 = lambda_val
+    model.fit(X_train, y_train)
+    print(f"Lambda {lambda_val}: Score = {model.score(X_val, y_val):.4f}")
+```
+
+### Custom Convergence Criteria
+
+```python
+from amgd.core.convergence import RelativeChangeCriterion
+
+# Custom convergence
+criterion = RelativeChangeCriterion(tol=1e-8, patience=10)
+model = PoissonRegressor(
+    optimizer='amgd',
+    convergence_criterion=criterion,
+    max_iter=2000
+)
+```
+
+### Advanced Visualization
+
+```python
+from amgd.visualization import (
+    plot_convergence_comparison, 
+    plot_coefficient_path,
+    plot_feature_importance
+)
+
+# Compare convergence of different optimizers
+histories = {
+    'AMGD': model_amgd.loss_history_,
+    'Adam': model_adam.loss_history_,
+    'AdaGrad': model_adagrad.loss_history_
+}
+plot_convergence_comparison(histories)
+
+# Coefficient regularization path
+lambdas = np.logspace(-4, 1, 50)
+coef_path = np.array([fit_model(lam).coef_ for lam in lambdas])
+plot_coefficient_path(lambdas, coef_path, feature_names=feature_names)
+```
+
+## 📚 Use Cases
+
+### 🧬 Bioinformatics
+- Gene expression analysis
+- Variant calling
+- Protein abundance prediction
+
+### 🌍 Ecology & Environmental Science
+- Species abundance modeling
+- Biodiversity prediction
+- Climate impact assessment
+
+### 📊 Marketing & Business
+- Customer count prediction
+- Website traffic modeling
+- Demand forecasting
+
+### 🏥 Healthcare
+- Patient admission counts
+- Disease occurrence modeling
+- Treatment response analysis
+
+## 🔧 API Reference
+
+### Main Classes
+
+#### `PoissonRegressor`
+Main class for Poisson regression with AMGD optimization.
+
+```python
+PoissonRegressor(
+    optimizer='amgd',           # Optimizer type
+    penalty='l1',               # Regularization type
+    lambda1=0.0,               # L1 penalty strength
+    lambda2=0.0,               # L2 penalty strength
+    alpha=0.01,                # Learning rate
+    beta1=0.9,                 # First moment decay
+    beta2=0.999,               # Second moment decay
+    max_iter=1000,             # Maximum iterations
+    tol=1e-6,                  # Convergence tolerance
+    fit_intercept=True,        # Fit intercept term
+    warm_start=False,          # Use previous solution
+    verbose=False              # Print progress
+)
+```
+
+#### Key Methods
+
+| Method | Description | Returns |
+|--------|-------------|---------|
+| `fit(X, y)` | Train the model | `self` |
+| `predict(X)` | Make predictions | `ndarray` |
+| `score(X, y)` | Model performance | `float` |
+| `get_params()` | Get parameters | `dict` |
+| `set_params(**params)` | Set parameters | `self` |
+
+### Utility Functions
+
+```python
+from amgd.utils.metrics import poisson_deviance, mean_absolute_error
+from amgd.utils.validation import check_array, check_is_fitted
+from amgd.benchmarks import compare_optimizers, statistical_significance_test
+```
+
+## 🧪 Testing & Validation
+
+Run the test suite:
+
+```bash
+# Install test dependencies
+pip install pytest pytest-cov
+
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ --cov=amgd --cov-report=html
+
+# Run specific test categories
+pytest tests/test_models.py -v      # Model tests
+pytest tests/test_optimizers.py -v  # Optimizer tests
+pytest tests/test_benchmarks.py -v  # Benchmark tests
+```
+
+## 📈 Performance Tips
+
+### For Large Datasets (>10k samples)
+```python
+model = PoissonRegressor(
+    optimizer='amgd',
+    alpha=0.001,        # Lower learning rate
+    max_iter=500,       # Fewer iterations
+    tol=1e-4           # Relaxed tolerance
+)
+```
+
+### For High-Dimensional Data (>1k features)
+```python
+model = PoissonRegressor(
+    optimizer='amgd',
+    penalty='elasticnet',
+    lambda1=0.01,       # Stronger L1 penalty
+    lambda2=0.001,      # Light L2 penalty
+    beta1=0.95         # Higher momentum
+)
+```
+
+### Memory Optimization
+```python
+# For memory-constrained environments
+model = PoissonRegressor(
+    optimizer='amgd',
+    fit_intercept=False,    # Skip intercept if not needed
+    warm_start=True,        # Reuse computations
+    verbose=False           # Reduce memory overhead
+)
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+### Development Setup
+
+```bash
+# Fork and clone the repository
+git clone https://github.com/yourusername/amgd.git
+cd amgd
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install in development mode
+pip install -e ".[dev]"
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+### Contribution Guidelines
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Write** tests for your changes
+4. **Ensure** all tests pass (`pytest tests/`)
+5. **Follow** PEP 8 style guide (`flake8 src/`)
+6. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+7. **Push** to your branch (`git push origin feature/amazing-feature`)
+8. **Open** a Pull Request
+
+### Areas We Need Help
+
+- 🐛 **Bug fixes** and performance improvements
+- 📖 **Documentation** and examples
+- 🧪 **Test coverage** expansion
+- 🌍 **Internationalization** support
+- 📊 **New visualization** tools
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📝 Citation
+
+If you use AMGD in your research, please cite our paper:
+
+```bibtex
+@article{bakari2025amgd,
+  title={Adaptive Momentum Gradient Descent: A Novel Optimization Algorithm for Regularized Poisson Regression},
+  author={Bakari, Ibrahim and Özkale, M. Revan},
+  journal={arXiv preprint arXiv:2025.XXXXX},
+  year={2025},
+  note={Submitted for publication}
+}
+```
+
+## 🙏 Acknowledgments
+
+- **Çukurova University** - Department of Statistics
+- **Scientific Community** - For valuable feedback and contributions
+- **Open Source Libraries** - NumPy, SciPy, scikit-learn, matplotlib
+- **Beta Testers** - Early adopters who helped improve the package
+
+## 📊 Project Stats
+
+![GitHub stars](https://img.shields.io/github/stars/elbakari01/amgd?style=social)
+![GitHub forks](https://img.shields.io/github/forks/elbakari01/amgd?style=social)
+![GitHub issues](https://img.shields.io/github/issues/elbakari01/amgd)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/elbakari01/amgd)
+
+## 👤 Who Should Use This?
+
+AMGD is ideal for:
+
+- **🔬 Researchers** working with high-dimensional count data
+- **📊 Data scientists** needing feature selection in Poisson models  
+- **⚙️ ML engineers** building scalable sparse regression pipelines
+- **📈 Statisticians** exploring novel regularization techniques
+- **🧬 Bioinformaticians** analyzing gene expression or variant data
+- **🌍 Environmental scientists** modeling species abundance and biodiversity
+- **🏥 Healthcare analysts** predicting patient counts and disease occurrence
+
+### Perfect For These Scenarios:
+✅ **High-dimensional data** (p > n problems)  
+✅ **Sparse feature selection** required  
+✅ **Count/rate data** modeling  
+✅ **Correlated predictors** present  
+✅ **Interpretable models** needed  
+
+## 🚀 Roadmap
+
+Planned enhancements for future releases:
+
+### 📅 Version 1.5.0 (Q3 2025)
+- 🚀 **GPU acceleration** via CuPy support
+- 🔄 **Cross-validation wrappers** for easier hyperparameter tuning
+- 📊 **Feature importance stability** plots and analysis
+
+### 📅 Version 1.6.0 (Q4 2025)  
+- 🎯 **Bayesian priors** for adaptive regularization
+- 🔗 **Enhanced scikit-learn integration** and pipeline support
+- 📈 **Multi-task learning** extensions
+
+### 📅 Version 2.0.0 (Q1 2026)
+- 🌐 **Distributed computing** support
+- 🧠 **Neural network integration** for deep sparse models
+- 📱 **Mobile deployment** optimizations
+
+### 🆘 Help Wanted
+Vote for features or contribute:
+- 🗳️ [Feature Requests](https://github.com/elbakari01/amgd/discussions/categories/ideas)
+- 💻 [Good First Issues](https://github.com/elbakari01/amgd/labels/good%20first%20issue)
+- 📖 [Documentation Needs](https://github.com/elbakari01/amgd/labels/documentation)
+
+---
+
+## 📧 Support & Contact
+
+- 📧 **Email**: acbrhmbakari@gmail.com
+- 🐛 **Issues**: [GitHub Issues](https://github.com/elbakari01/amgd/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/elbakari01/amgd/discussions)
+- 📚 **Documentation**: [Read the Docs](https://amgd.readthedocs.io/)
+
+---
+
+<div align="center">
+
+**⭐ Star this repository if you find it useful! ⭐**
+
+
+</div>
