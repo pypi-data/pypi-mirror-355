@@ -1,0 +1,3665 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "0.2.122",
+        "title": "Symbiosis API",
+        "description": "A REST API for interacting with the Symbiosis protocol.<br/><br/>For additional information and best practices, visit the [developer documentation](https://docs.symbiosis.finance/developer-tools/symbiosis-api)."
+    },
+    "servers": [
+        {
+            "url": "https://api.symbiosis.finance/crosschain/"
+        }
+    ],
+    "paths": {
+        "/health-check": {
+            "get": {
+                "tags": [
+                    "Health check"
+                ],
+                "description": "Returns **200 OK** if the API is running.",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/swap": {
+            "post": {
+                "tags": [
+                    "Swapping"
+                ],
+                "description": "Returns calldata required to execute a swap operation, including:  <br/>  - Cross-chain    <br/>  - Cross-chain bridging  <br/>  - On-chain    <br/>  - On-chain wrapping and unwrapping (e.g. ETH -> WETH, WETH -> ETH) ",
+                "responses": {
+                    "200": {
+                        "description": "Swapping Data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SwapResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SwapResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SwapRequestSchema"
+                            },
+                            "examples": {
+                                "Crosschain swap: ETH(Ethereum) -> ETH(zkSync)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "",
+                                            "amount": "50000000000000000",
+                                            "chainId": 1,
+                                            "decimals": 18
+                                        },
+                                        "tokenOut": {
+                                            "chainId": 324,
+                                            "address": "",
+                                            "symbol": "ETH",
+                                            "decimals": 18
+                                        },
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 300
+                                    }
+                                },
+                                "Crosschain swap: USDC(BNB Chain) -> BTC(Bitcoin)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+                                            "amount": "50000000000000000000",
+                                            "chainId": 56,
+                                            "decimals": 18
+                                        },
+                                        "tokenOut": {
+                                            "chainId": 3652501241,
+                                            "address": "0xc102C66D4a1e1865Ee962084626Cf4c27D5BFc74",
+                                            "symbol": "BTC",
+                                            "decimals": 8
+                                        },
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "to": "bc1q54p8nl6aegeeqgpr2edm2awpq0vc6fvp4ln6yq",
+                                        "slippage": 300
+                                    }
+                                },
+                                "Crosschain swap: BTC(Bitcoin) -> USDC(BNB Chain)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "0xc102C66D4a1e1865Ee962084626Cf4c27D5BFc74",
+                                            "amount": "5000000",
+                                            "chainId": 3652501241,
+                                            "decimals": 8
+                                        },
+                                        "tokenOut": {
+                                            "chainId": 56,
+                                            "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+                                            "symbol": "USDC",
+                                            "decimals": 18
+                                        },
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 300,
+                                        "refundAddress": "bc1q54p8nl6aegeeqgpr2edm2awpq0vc6fvp4ln6yq"
+                                    }
+                                },
+                                "Crosschain swap: TON(USDT) -> USDC(BNB Chain)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "0x9328Eb759596C38a25f59028B146Fecdc3621Dfe",
+                                            "amount": "15000000",
+                                            "chainId": 85918,
+                                            "decimals": 6
+                                        },
+                                        "tokenOut": {
+                                            "chainId": 56,
+                                            "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+                                            "symbol": "USDT",
+                                            "decimals": 18
+                                        },
+                                        "from": "UQC6DwzE70MbAlFBZ6M7ADucHi3N4oVWRqhjNjkrwL6Vk6it",
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 300
+                                    }
+                                },
+                                "Crosschain swap: USDT(Tron) -> USDT(Polygon)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "0xa614f803b6fd780986a42c78ec9c7f77e6ded13c",
+                                            "amount": "15000000",
+                                            "chainId": 728126428,
+                                            "decimals": 6
+                                        },
+                                        "tokenOut": {
+                                            "chainId": 137,
+                                            "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+                                            "symbol": "USDT",
+                                            "decimals": 6
+                                        },
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 300
+                                    }
+                                },
+                                "Crosschain swap: ETH (Ethereum) -> BNB (BNB chain)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "amount": "50000000000000000",
+                                            "address": "",
+                                            "symbol": "ETH",
+                                            "chainId": 1,
+                                            "decimals": 18
+                                        },
+                                        "tokenOut": {
+                                            "address": "",
+                                            "symbol": "BNB",
+                                            "chainId": 56,
+                                            "decimals": 18
+                                        },
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 300
+                                    }
+                                },
+                                "Onchain swap: ETH (Ethereum) -> USDT (Ethereum)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "",
+                                            "symbol": "ETH",
+                                            "chainId": 1,
+                                            "decimals": 18,
+                                            "amount": "500000000000000000"
+                                        },
+                                        "tokenOut": {
+                                            "chainId": 1,
+                                            "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+                                            "symbol": "USDT",
+                                            "decimals": 6
+                                        },
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 50
+                                    }
+                                },
+                                "Wrap: ETH (Ethereum) -> WETH (Ethereum)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "",
+                                            "symbol": "ETH",
+                                            "chainId": 1,
+                                            "decimals": 18,
+                                            "amount": "500000000000000000"
+                                        },
+                                        "tokenOut": {
+                                            "chainId": 1,
+                                            "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                                            "symbol": "WETH",
+                                            "decimals": 18
+                                        },
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 50
+                                    }
+                                },
+                                "Unwrap: WETH (Ethereum) -> ETH (Ethereum)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                                            "symbol": "WETH",
+                                            "chainId": 1,
+                                            "decimals": 18,
+                                            "amount": "500000000000000000"
+                                        },
+                                        "tokenOut": {
+                                            "chainId": 1,
+                                            "address": "",
+                                            "symbol": "ETH",
+                                            "decimals": 18
+                                        },
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 50
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/swap-limits": {
+            "get": {
+                "tags": [
+                    "Swapping"
+                ],
+                "description": "Returns the minimum and maximum allowed swap amounts for supported blockchain networks.",
+                "responses": {
+                    "200": {
+                        "description": "Swap Limits",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SwapLimitsResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SwapLimitsResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ]
+            }
+        },
+        "/v1/swap-durations": {
+            "get": {
+                "tags": [
+                    "Swapping"
+                ],
+                "description": "Returns estimated cross-chain swap execution times for supported blockchain networks. The duration is measured in seconds and is based on historical data. <br/> **Note:** The actual cross-chain swap execution time may vary due to changing network conditions. ",
+                "responses": {
+                    "200": {
+                        "description": "Swap Estimated Durations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SwapDurationsResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SwapDurationsResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ]
+            }
+        },
+        "/v1/revert": {
+            "post": {
+                "tags": [
+                    "Revert"
+                ],
+                "description": "Returns calldata required to revert a stuck cross-chain operation, including: swapping, bridging, zapping, interchain communicating. <br/> If a cross-operation gets stuck, Symbiosis automatically reverts such swaps. ",
+                "responses": {
+                    "200": {
+                        "description": "Transaction Request Data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RevertResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RevertResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RevertRequestSchema"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/fees": {
+            "get": {
+                "tags": [
+                    "Fees"
+                ],
+                "description": "Returns the statistical transaction fees for the last hour for supported blockchain networks.",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ]
+            }
+        },
+        "/v1/stucked/{address}": {
+            "get": {
+                "tags": [
+                    "Revert"
+                ],
+                "description": "Returns a list of stuck cross-chain operations associated with the specified address.",
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tx Data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StuckedResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StuckedResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ]
+            }
+        },
+        "/v1/tx/{chainId}/{transactionHash}": {
+            "get": {
+                "tags": [
+                    "Tx"
+                ],
+                "description": "Returns the status of a cross-chain operation based on the specified source blockchain ID and transaction hash of the **source transaction**. The **source transaction** refers to the transaction submitted to the **source blockchain**. <br/>  - **-1** (Not found) The transaction was not found<br/>  - **1** (Pending) The source transaction is pending confirmation<br/>  - **0** (Success) The operation was successfully processed. The response includes the destination chain ID and transaction hash on the destination chain<br/>  - **2** (Stuck) The operation is stuck.<br/>  - **3** (Reverted) The operation was reverted.<br/> ",
+                "parameters": [
+                    {
+                        "name": "chainId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "transactionHash",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tx Data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TxResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TxResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ]
+            }
+        },
+        "/v1/chains": {
+            "get": {
+                "tags": [
+                    "Chains"
+                ],
+                "description": "Returns a list of blockchain networks supported by the Symbiosis protocol.",
+                "responses": {
+                    "200": {
+                        "description": "Chains Data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChainsResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChainsResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ]
+            }
+        },
+        "/v1/tokens": {
+            "get": {
+                "tags": [
+                    "Tokens"
+                ],
+                "description": "Returns a list of transit tokens supported by the Symbiosis protocol across all supported blockchains. <br/> Transit tokens serve as intermediary assets for routing cross-chain operations.",
+                "responses": {
+                    "200": {
+                        "description": "Tokens Data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokensResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokensResponseSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ]
+            }
+        },
+        "/v1/direct-routes": {
+            "get": {
+                "tags": [
+                    "Routes"
+                ],
+                "description": "Returns a list of cross-chain token routes where assets are bridged directly, without any intermediate on-chain swaps through third-party DEXs or aggregators. <br/> These routes are typically faster, more gas-efficient, and offer better execution rates.",
+                "responses": {
+                    "200": {
+                        "description": "Direct routes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DirectRoutesResponse"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DirectRoutesResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ]
+            }
+        },
+        "/v1/available-routes": {
+            "get": {
+                "tags": [
+                    "Routes"
+                ],
+                "description": "Returns a list of cross-chain token routes where assets are bridged directly, without any intermediate on-chain swaps through third-party DEXs or aggregators. <br/> These routes are typically faster, more gas-efficient, and offer better execution rates.",
+                "responses": {
+                    "200": {
+                        "description": "Direct routes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DirectRoutesResponse"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DirectRoutesResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ],
+                "deprecated": true
+            }
+        },
+        "/v1/batch-tx": {
+            "post": {
+                "tags": [
+                    "Tx"
+                ],
+                "description": "Returns the status of multiple cross-chain operations in a single request. <br/> Works the same way as /v1/tx, but accepts an array of { chainId, transactionHash } pairs to check the status of several operations at once.",
+                "responses": {
+                    "200": {
+                        "description": "Tx Data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchTxResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchTxResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchTxRequestSchema"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/zapping/exact_in": {
+            "post": {
+                "tags": [
+                    "Zapping"
+                ],
+                "description": "Returns calldata to execute a cross-chain zap operation. <br/> A cross-chain zap combines a cross-chain swap from the source token to the destination token with a subsequent deposit of the destination token into a liquidity pool managed by Symbiosis or a third-party DeFi protocol.",
+                "responses": {
+                    "200": {
+                        "description": "Transaction Request Data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZappingExactInResponseSchema"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZappingExactInResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Partner": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ZappingExactInRequestSchema"
+                            },
+                            "examples": {
+                                "ETH (Ethereum) -> LP USDT-sUSDC (Polygon)": {
+                                    "value": {
+                                        "tokenAmountIn": {
+                                            "address": "",
+                                            "chainId": 1,
+                                            "decimals": 18,
+                                            "amount": "50000000000000000"
+                                        },
+                                        "from": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "to": "0xf93d011544e89a28b5bdbdd833016cc5f26e82cd",
+                                        "slippage": 300
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UnprocessableEntity": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "examples": 422,
+                        "type": "integer"
+                    },
+                    "message": {
+                        "examples": "Unprocessable Entity",
+                        "type": "string"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "field": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "field",
+                                "message"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "code",
+                    "message",
+                    "errors"
+                ]
+            },
+            "BadRequest": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "examples": 400,
+                        "type": "integer"
+                    },
+                    "message": {
+                        "examples": "Bad Request",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "code",
+                    "message"
+                ]
+            },
+            "TokenSchema": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "0": {
+                            "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                            "example": "0x0000000000000000000000000000000000000000",
+                            "type": "string"
+                        },
+                        "1": {
+                            "const": "",
+                            "type": "string"
+                        }
+                    },
+                    "chainId": {
+                        "examples": 1,
+                        "type": "integer"
+                    },
+                    "chainIdFrom": {
+                        "examples": 1,
+                        "type": "integer"
+                    },
+                    "decimals": {
+                        "examples": 8,
+                        "type": "integer"
+                    },
+                    "symbol": {
+                        "type": "string"
+                    },
+                    "icon": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "address",
+                    "chainId",
+                    "decimals"
+                ]
+            },
+            "TokensResponseSchema": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "address": {
+                            "0": {
+                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                "example": "0x0000000000000000000000000000000000000000",
+                                "type": "string"
+                            },
+                            "1": {
+                                "const": "",
+                                "type": "string"
+                            }
+                        },
+                        "chainId": {
+                            "examples": 1,
+                            "type": "integer"
+                        },
+                        "chainIdFrom": {
+                            "examples": 1,
+                            "type": "integer"
+                        },
+                        "decimals": {
+                            "examples": 8,
+                            "type": "integer"
+                        },
+                        "symbol": {
+                            "type": "string"
+                        },
+                        "icon": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "address",
+                        "chainId",
+                        "decimals"
+                    ]
+                }
+            },
+            "TokenAmountSchema": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "0": {
+                            "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                            "example": "0x0000000000000000000000000000000000000000",
+                            "type": "string"
+                        },
+                        "1": {
+                            "const": "",
+                            "type": "string"
+                        }
+                    },
+                    "chainId": {
+                        "examples": 1,
+                        "type": "integer"
+                    },
+                    "chainIdFrom": {
+                        "examples": 1,
+                        "type": "integer"
+                    },
+                    "decimals": {
+                        "examples": 8,
+                        "type": "integer"
+                    },
+                    "symbol": {
+                        "type": "string"
+                    },
+                    "icon": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "examples": "1000000",
+                        "description": "Must be a positive big number as string",
+                        "isBigNumber": true,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "address",
+                    "chainId",
+                    "decimals",
+                    "amount"
+                ]
+            },
+            "RouteItemSchema": {
+                "type": "object",
+                "properties": {
+                    "provider": {
+                        "type": "string"
+                    },
+                    "tokens": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "address": {
+                                    "0": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "1": {
+                                        "const": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "chainId": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "chainIdFrom": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "decimals": {
+                                    "examples": 8,
+                                    "type": "integer"
+                                },
+                                "symbol": {
+                                    "type": "string"
+                                },
+                                "icon": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "address",
+                                "chainId",
+                                "decimals"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "provider",
+                    "tokens"
+                ]
+            },
+            "FeeItemSchema": {
+                "type": "object",
+                "properties": {
+                    "provider": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "save": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "provider",
+                    "value"
+                ]
+            },
+            "SwapRequestSchema": {
+                "type": "object",
+                "properties": {
+                    "tokenAmountIn": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "tokenOut": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals"
+                        ]
+                    },
+                    "from": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "to": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "slippage": {
+                        "type": "integer"
+                    },
+                    "middlewareCall": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                "example": "0x0000000000000000000000000000000000000000",
+                                "type": "string"
+                            },
+                            "data": {
+                                "type": "string"
+                            },
+                            "offset": {
+                                "type": "number"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "data",
+                            "offset"
+                        ]
+                    },
+                    "revertableAddresses": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "chainId": {
+                                    "type": "integer"
+                                },
+                                "address": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "chainId",
+                                "address"
+                            ]
+                        }
+                    },
+                    "selectMode": {
+                        "anyOf": [
+                            {
+                                "const": "best_return",
+                                "type": "string"
+                            },
+                            {
+                                "const": "fastest",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "partnerAddress": {
+                        "type": "string"
+                    },
+                    "refundAddress": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "tokenAmountIn",
+                    "tokenOut",
+                    "from",
+                    "to",
+                    "slippage"
+                ]
+            },
+            "EvmTxSchema": {
+                "type": "object",
+                "properties": {
+                    "chainId": {
+                        "type": "integer"
+                    },
+                    "to": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "chainId",
+                    "to",
+                    "data"
+                ]
+            },
+            "TronTxSchema": {
+                "type": "object",
+                "properties": {
+                    "chainId": {
+                        "type": "integer"
+                    },
+                    "from": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "to": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "feeLimit": {
+                        "type": "integer"
+                    },
+                    "functionSelector": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "chainId",
+                    "from",
+                    "to",
+                    "data",
+                    "feeLimit"
+                ]
+            },
+            "TonTxSchema": {
+                "type": "object",
+                "properties": {
+                    "validUntil": {
+                        "type": "integer"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "address": {
+                                    "type": "string"
+                                },
+                                "amount": {
+                                    "type": "string"
+                                },
+                                "payload": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "address",
+                                "amount",
+                                "payload"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "validUntil",
+                    "messages"
+                ]
+            },
+            "SolanaTxSchema": {
+                "type": "object",
+                "properties": {
+                    "instructions": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "instructions"
+                ]
+            },
+            "BtcDepositSchema": {
+                "type": "object",
+                "properties": {
+                    "depositAddress": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "expiresAt": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "depositAddress",
+                    "expiresAt"
+                ]
+            },
+            "SwapResponseSchema": {
+                "type": "object",
+                "properties": {
+                    "tx": {
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "chainId": {
+                                        "type": "integer"
+                                    },
+                                    "to": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "chainId",
+                                    "to",
+                                    "data"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "chainId": {
+                                        "type": "integer"
+                                    },
+                                    "from": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "to": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    },
+                                    "feeLimit": {
+                                        "type": "integer"
+                                    },
+                                    "functionSelector": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "chainId",
+                                    "from",
+                                    "to",
+                                    "data",
+                                    "feeLimit"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "validUntil": {
+                                        "type": "integer"
+                                    },
+                                    "messages": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "address": {
+                                                    "type": "string"
+                                                },
+                                                "amount": {
+                                                    "type": "string"
+                                                },
+                                                "payload": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "address",
+                                                "amount",
+                                                "payload"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "validUntil",
+                                    "messages"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "depositAddress": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "expiresAt": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "depositAddress",
+                                    "expiresAt"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "instructions": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "instructions"
+                                ]
+                            }
+                        ]
+                    },
+                    "fee": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "fees": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "provider": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "0": {
+                                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                                "example": "0x0000000000000000000000000000000000000000",
+                                                "type": "string"
+                                            },
+                                            "1": {
+                                                "const": "",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "chainId": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "chainIdFrom": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "decimals": {
+                                            "examples": 8,
+                                            "type": "integer"
+                                        },
+                                        "symbol": {
+                                            "type": "string"
+                                        },
+                                        "icon": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                            "examples": "1000000",
+                                            "description": "Must be a positive big number as string",
+                                            "isBigNumber": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "address",
+                                        "chainId",
+                                        "decimals",
+                                        "amount"
+                                    ]
+                                },
+                                "save": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "0": {
+                                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                                "example": "0x0000000000000000000000000000000000000000",
+                                                "type": "string"
+                                            },
+                                            "1": {
+                                                "const": "",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "chainId": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "chainIdFrom": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "decimals": {
+                                            "examples": 8,
+                                            "type": "integer"
+                                        },
+                                        "symbol": {
+                                            "type": "string"
+                                        },
+                                        "icon": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                            "examples": "1000000",
+                                            "description": "Must be a positive big number as string",
+                                            "isBigNumber": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "address",
+                                        "chainId",
+                                        "decimals",
+                                        "amount"
+                                    ]
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "provider",
+                                "value"
+                            ]
+                        }
+                    },
+                    "route": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "address": {
+                                    "0": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "1": {
+                                        "const": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "chainId": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "chainIdFrom": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "decimals": {
+                                    "examples": 8,
+                                    "type": "integer"
+                                },
+                                "symbol": {
+                                    "type": "string"
+                                },
+                                "icon": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "address",
+                                "chainId",
+                                "decimals"
+                            ]
+                        }
+                    },
+                    "routes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "provider": {
+                                    "type": "string"
+                                },
+                                "tokens": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "address": {
+                                                "0": {
+                                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                                    "example": "0x0000000000000000000000000000000000000000",
+                                                    "type": "string"
+                                                },
+                                                "1": {
+                                                    "const": "",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "chainId": {
+                                                "examples": 1,
+                                                "type": "integer"
+                                            },
+                                            "chainIdFrom": {
+                                                "examples": 1,
+                                                "type": "integer"
+                                            },
+                                            "decimals": {
+                                                "examples": 8,
+                                                "type": "integer"
+                                            },
+                                            "symbol": {
+                                                "type": "string"
+                                            },
+                                            "icon": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "address",
+                                            "chainId",
+                                            "decimals"
+                                        ]
+                                    }
+                                }
+                            },
+                            "required": [
+                                "provider",
+                                "tokens"
+                            ]
+                        }
+                    },
+                    "priceImpact": {
+                        "type": "string"
+                    },
+                    "tokenAmountOut": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "tokenAmountOutMin": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "amountInUsd": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "rewards": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "address": {
+                                    "0": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "1": {
+                                        "const": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "chainId": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "chainIdFrom": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "decimals": {
+                                    "examples": 8,
+                                    "type": "integer"
+                                },
+                                "symbol": {
+                                    "type": "string"
+                                },
+                                "icon": {
+                                    "type": "string"
+                                },
+                                "amount": {
+                                    "examples": "1000000",
+                                    "description": "Must be a positive big number as string",
+                                    "isBigNumber": true,
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "address",
+                                "chainId",
+                                "decimals",
+                                "amount"
+                            ]
+                        }
+                    },
+                    "approveTo": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "inTradeType": {
+                        "type": "string"
+                    },
+                    "outTradeType": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "anyOf": [
+                            {
+                                "const": "evm",
+                                "type": "string"
+                            },
+                            {
+                                "const": "tron",
+                                "type": "string"
+                            },
+                            {
+                                "const": "btc",
+                                "type": "string"
+                            },
+                            {
+                                "const": "ton",
+                                "type": "string"
+                            },
+                            {
+                                "const": "solana",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "kind": {
+                        "anyOf": [
+                            {
+                                "const": "onchain-swap",
+                                "type": "string"
+                            },
+                            {
+                                "const": "crosschain-swap",
+                                "type": "string"
+                            },
+                            {
+                                "const": "wrap",
+                                "type": "string"
+                            },
+                            {
+                                "const": "unwrap",
+                                "type": "string"
+                            },
+                            {
+                                "const": "bridge",
+                                "type": "string"
+                            },
+                            {
+                                "const": "from-btc-swap",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "estimatedTime": {
+                        "description": "Estimated swap time in seconds",
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "tx",
+                    "fees",
+                    "route",
+                    "routes",
+                    "priceImpact",
+                    "tokenAmountOut",
+                    "tokenAmountOutMin",
+                    "amountInUsd",
+                    "rewards",
+                    "inTradeType",
+                    "outTradeType",
+                    "type",
+                    "kind",
+                    "estimatedTime"
+                ]
+            },
+            "SwapLimitsResponseSchema": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "chainId": {
+                            "type": "number"
+                        },
+                        "address": {
+                            "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                            "example": "0x0000000000000000000000000000000000000000",
+                            "type": "string"
+                        },
+                        "value": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "chainId",
+                        "address",
+                        "value"
+                    ]
+                }
+            },
+            "SwapDurationsResponseSchema": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "toChainId": {
+                            "type": "number"
+                        },
+                        "min": {
+                            "type": "number"
+                        },
+                        "max": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "toChainId",
+                        "min",
+                        "max"
+                    ]
+                }
+            },
+            "ZappingExactInRequestSchema": {
+                "type": "object",
+                "properties": {
+                    "tokenAmountIn": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "to": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "from": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "slippage": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "tokenAmountIn",
+                    "to",
+                    "from",
+                    "slippage"
+                ]
+            },
+            "ZappingExactInResponseSchema": {
+                "type": "object",
+                "properties": {
+                    "tx": {
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "chainId": {
+                                        "type": "integer"
+                                    },
+                                    "to": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "chainId",
+                                    "to",
+                                    "data"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "chainId": {
+                                        "type": "integer"
+                                    },
+                                    "from": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "to": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "data": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    },
+                                    "feeLimit": {
+                                        "type": "integer"
+                                    },
+                                    "functionSelector": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "chainId",
+                                    "from",
+                                    "to",
+                                    "data",
+                                    "feeLimit"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "validUntil": {
+                                        "type": "integer"
+                                    },
+                                    "messages": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "address": {
+                                                    "type": "string"
+                                                },
+                                                "amount": {
+                                                    "type": "string"
+                                                },
+                                                "payload": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "address",
+                                                "amount",
+                                                "payload"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "validUntil",
+                                    "messages"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "depositAddress": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "expiresAt": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "depositAddress",
+                                    "expiresAt"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "instructions": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "instructions"
+                                ]
+                            }
+                        ]
+                    },
+                    "fee": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "fees": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "provider": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "0": {
+                                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                                "example": "0x0000000000000000000000000000000000000000",
+                                                "type": "string"
+                                            },
+                                            "1": {
+                                                "const": "",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "chainId": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "chainIdFrom": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "decimals": {
+                                            "examples": 8,
+                                            "type": "integer"
+                                        },
+                                        "symbol": {
+                                            "type": "string"
+                                        },
+                                        "icon": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                            "examples": "1000000",
+                                            "description": "Must be a positive big number as string",
+                                            "isBigNumber": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "address",
+                                        "chainId",
+                                        "decimals",
+                                        "amount"
+                                    ]
+                                },
+                                "save": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "0": {
+                                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                                "example": "0x0000000000000000000000000000000000000000",
+                                                "type": "string"
+                                            },
+                                            "1": {
+                                                "const": "",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "chainId": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "chainIdFrom": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "decimals": {
+                                            "examples": 8,
+                                            "type": "integer"
+                                        },
+                                        "symbol": {
+                                            "type": "string"
+                                        },
+                                        "icon": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                            "examples": "1000000",
+                                            "description": "Must be a positive big number as string",
+                                            "isBigNumber": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "address",
+                                        "chainId",
+                                        "decimals",
+                                        "amount"
+                                    ]
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "provider",
+                                "value"
+                            ]
+                        }
+                    },
+                    "route": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "address": {
+                                    "0": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "1": {
+                                        "const": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "chainId": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "chainIdFrom": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "decimals": {
+                                    "examples": 8,
+                                    "type": "integer"
+                                },
+                                "symbol": {
+                                    "type": "string"
+                                },
+                                "icon": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "address",
+                                "chainId",
+                                "decimals"
+                            ]
+                        }
+                    },
+                    "routes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "provider": {
+                                    "type": "string"
+                                },
+                                "tokens": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "address": {
+                                                "0": {
+                                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                                    "example": "0x0000000000000000000000000000000000000000",
+                                                    "type": "string"
+                                                },
+                                                "1": {
+                                                    "const": "",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "chainId": {
+                                                "examples": 1,
+                                                "type": "integer"
+                                            },
+                                            "chainIdFrom": {
+                                                "examples": 1,
+                                                "type": "integer"
+                                            },
+                                            "decimals": {
+                                                "examples": 8,
+                                                "type": "integer"
+                                            },
+                                            "symbol": {
+                                                "type": "string"
+                                            },
+                                            "icon": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "address",
+                                            "chainId",
+                                            "decimals"
+                                        ]
+                                    }
+                                }
+                            },
+                            "required": [
+                                "provider",
+                                "tokens"
+                            ]
+                        }
+                    },
+                    "priceImpact": {
+                        "type": "string"
+                    },
+                    "tokenAmountOut": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "tokenAmountOutMin": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "amountInUsd": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "rewards": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "address": {
+                                    "0": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "1": {
+                                        "const": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "chainId": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "chainIdFrom": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "decimals": {
+                                    "examples": 8,
+                                    "type": "integer"
+                                },
+                                "symbol": {
+                                    "type": "string"
+                                },
+                                "icon": {
+                                    "type": "string"
+                                },
+                                "amount": {
+                                    "examples": "1000000",
+                                    "description": "Must be a positive big number as string",
+                                    "isBigNumber": true,
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "address",
+                                "chainId",
+                                "decimals",
+                                "amount"
+                            ]
+                        }
+                    },
+                    "approveTo": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    },
+                    "inTradeType": {
+                        "type": "string"
+                    },
+                    "outTradeType": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "anyOf": [
+                            {
+                                "const": "evm",
+                                "type": "string"
+                            },
+                            {
+                                "const": "tron",
+                                "type": "string"
+                            },
+                            {
+                                "const": "btc",
+                                "type": "string"
+                            },
+                            {
+                                "const": "ton",
+                                "type": "string"
+                            },
+                            {
+                                "const": "solana",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "kind": {
+                        "anyOf": [
+                            {
+                                "const": "onchain-swap",
+                                "type": "string"
+                            },
+                            {
+                                "const": "crosschain-swap",
+                                "type": "string"
+                            },
+                            {
+                                "const": "wrap",
+                                "type": "string"
+                            },
+                            {
+                                "const": "unwrap",
+                                "type": "string"
+                            },
+                            {
+                                "const": "bridge",
+                                "type": "string"
+                            },
+                            {
+                                "const": "from-btc-swap",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "estimatedTime": {
+                        "description": "Estimated swap time in seconds",
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "tx",
+                    "fees",
+                    "route",
+                    "routes",
+                    "priceImpact",
+                    "tokenAmountOut",
+                    "tokenAmountOutMin",
+                    "amountInUsd",
+                    "rewards",
+                    "inTradeType",
+                    "outTradeType",
+                    "type",
+                    "kind",
+                    "estimatedTime"
+                ]
+            },
+            "StuckedRequestSchema": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                        "example": "0x0000000000000000000000000000000000000000",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "address"
+                ]
+            },
+            "StuckedResponseSchema": {
+                "type": "object",
+                "properties": {
+                    "hash": {
+                        "type": "string"
+                    },
+                    "chainId": {
+                        "type": "number"
+                    },
+                    "createdAt": {
+                        "type": "string"
+                    },
+                    "tokenAmount": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    }
+                },
+                "required": [
+                    "hash",
+                    "chainId",
+                    "createdAt",
+                    "tokenAmount"
+                ]
+            },
+            "RevertRequestSchema": {
+                "type": "object",
+                "properties": {
+                    "transactionHash": {
+                        "type": "string"
+                    },
+                    "chainId": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "transactionHash",
+                    "chainId"
+                ]
+            },
+            "RevertResponseSchema": {
+                "type": "object",
+                "properties": {
+                    "tx": {
+                        "type": "object",
+                        "properties": {
+                            "chainId": {
+                                "type": "integer"
+                            },
+                            "to": {
+                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                "example": "0x0000000000000000000000000000000000000000",
+                                "type": "string"
+                            },
+                            "data": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "chainId",
+                            "to",
+                            "data"
+                        ]
+                    },
+                    "fee": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    },
+                    "type": {
+                        "anyOf": [
+                            {
+                                "const": "evm",
+                                "type": "string"
+                            },
+                            {
+                                "const": "tron",
+                                "type": "string"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "tx",
+                    "fee",
+                    "type"
+                ]
+            },
+            "ChainsResponseSchema": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "number"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "explorer": {
+                            "type": "string"
+                        },
+                        "icon": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "name",
+                        "explorer",
+                        "icon"
+                    ]
+                }
+            },
+            "TxResponseSchema": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "object",
+                        "properties": {
+                            "code": {
+                                "type": "number"
+                            },
+                            "text": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "code",
+                            "text"
+                        ]
+                    },
+                    "tx": {
+                        "type": "object",
+                        "properties": {
+                            "hash": {
+                                "type": "string"
+                            },
+                            "chainId": {
+                                "type": "number"
+                            },
+                            "tokenAmount": {
+                                "type": "object",
+                                "properties": {
+                                    "address": {
+                                        "0": {
+                                            "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                            "example": "0x0000000000000000000000000000000000000000",
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "const": "",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "chainId": {
+                                        "examples": 1,
+                                        "type": "integer"
+                                    },
+                                    "chainIdFrom": {
+                                        "examples": 1,
+                                        "type": "integer"
+                                    },
+                                    "decimals": {
+                                        "examples": 8,
+                                        "type": "integer"
+                                    },
+                                    "symbol": {
+                                        "type": "string"
+                                    },
+                                    "icon": {
+                                        "type": "string"
+                                    },
+                                    "amount": {
+                                        "examples": "1000000",
+                                        "description": "Must be a positive big number as string",
+                                        "isBigNumber": true,
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "address",
+                                    "chainId",
+                                    "decimals",
+                                    "amount"
+                                ]
+                            },
+                            "time": {
+                                "type": "string"
+                            },
+                            "address": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "hash",
+                            "chainId",
+                            "tokenAmount",
+                            "time",
+                            "address"
+                        ]
+                    },
+                    "txIn": {
+                        "type": "object",
+                        "properties": {
+                            "hash": {
+                                "type": "string"
+                            },
+                            "chainId": {
+                                "type": "number"
+                            },
+                            "tokenAmount": {
+                                "type": "object",
+                                "properties": {
+                                    "address": {
+                                        "0": {
+                                            "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                            "example": "0x0000000000000000000000000000000000000000",
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "const": "",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "chainId": {
+                                        "examples": 1,
+                                        "type": "integer"
+                                    },
+                                    "chainIdFrom": {
+                                        "examples": 1,
+                                        "type": "integer"
+                                    },
+                                    "decimals": {
+                                        "examples": 8,
+                                        "type": "integer"
+                                    },
+                                    "symbol": {
+                                        "type": "string"
+                                    },
+                                    "icon": {
+                                        "type": "string"
+                                    },
+                                    "amount": {
+                                        "examples": "1000000",
+                                        "description": "Must be a positive big number as string",
+                                        "isBigNumber": true,
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "address",
+                                    "chainId",
+                                    "decimals",
+                                    "amount"
+                                ]
+                            },
+                            "time": {
+                                "type": "string"
+                            },
+                            "address": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "hash",
+                            "chainId",
+                            "tokenAmount",
+                            "time",
+                            "address"
+                        ]
+                    },
+                    "transitTokenSent": {
+                        "type": "object",
+                        "properties": {
+                            "address": {
+                                "0": {
+                                    "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                    "example": "0x0000000000000000000000000000000000000000",
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "const": "",
+                                    "type": "string"
+                                }
+                            },
+                            "chainId": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "chainIdFrom": {
+                                "examples": 1,
+                                "type": "integer"
+                            },
+                            "decimals": {
+                                "examples": 8,
+                                "type": "integer"
+                            },
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "examples": "1000000",
+                                "description": "Must be a positive big number as string",
+                                "isBigNumber": true,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "address",
+                            "chainId",
+                            "decimals",
+                            "amount"
+                        ]
+                    }
+                },
+                "required": [
+                    "status",
+                    "tx",
+                    "txIn",
+                    "transitTokenSent"
+                ]
+            },
+            "BatchTxRequestSchema": {
+                "type": "object",
+                "properties": {
+                    "txs": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "transactionHash": {
+                                    "type": "string"
+                                },
+                                "chainId": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "transactionHash",
+                                "chainId"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "txs"
+                ]
+            },
+            "BatchTxResponseSchema": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number"
+                                },
+                                "text": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "code",
+                                "text"
+                            ]
+                        },
+                        "tx": {
+                            "type": "object",
+                            "properties": {
+                                "hash": {
+                                    "type": "string"
+                                },
+                                "chainId": {
+                                    "type": "number"
+                                },
+                                "tokenAmount": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "0": {
+                                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                                "example": "0x0000000000000000000000000000000000000000",
+                                                "type": "string"
+                                            },
+                                            "1": {
+                                                "const": "",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "chainId": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "chainIdFrom": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "decimals": {
+                                            "examples": 8,
+                                            "type": "integer"
+                                        },
+                                        "symbol": {
+                                            "type": "string"
+                                        },
+                                        "icon": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                            "examples": "1000000",
+                                            "description": "Must be a positive big number as string",
+                                            "isBigNumber": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "address",
+                                        "chainId",
+                                        "decimals",
+                                        "amount"
+                                    ]
+                                },
+                                "time": {
+                                    "type": "string"
+                                },
+                                "address": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hash",
+                                "chainId",
+                                "tokenAmount",
+                                "time",
+                                "address"
+                            ]
+                        },
+                        "txIn": {
+                            "type": "object",
+                            "properties": {
+                                "hash": {
+                                    "type": "string"
+                                },
+                                "chainId": {
+                                    "type": "number"
+                                },
+                                "tokenAmount": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "0": {
+                                                "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                                "example": "0x0000000000000000000000000000000000000000",
+                                                "type": "string"
+                                            },
+                                            "1": {
+                                                "const": "",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "chainId": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "chainIdFrom": {
+                                            "examples": 1,
+                                            "type": "integer"
+                                        },
+                                        "decimals": {
+                                            "examples": 8,
+                                            "type": "integer"
+                                        },
+                                        "symbol": {
+                                            "type": "string"
+                                        },
+                                        "icon": {
+                                            "type": "string"
+                                        },
+                                        "amount": {
+                                            "examples": "1000000",
+                                            "description": "Must be a positive big number as string",
+                                            "isBigNumber": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "address",
+                                        "chainId",
+                                        "decimals",
+                                        "amount"
+                                    ]
+                                },
+                                "time": {
+                                    "type": "string"
+                                },
+                                "address": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hash",
+                                "chainId",
+                                "tokenAmount",
+                                "time",
+                                "address"
+                            ]
+                        },
+                        "transitTokenSent": {
+                            "type": "object",
+                            "properties": {
+                                "address": {
+                                    "0": {
+                                        "pattern": "(^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$)*(^0x[a-fA-F0-9]{40}$)*",
+                                        "example": "0x0000000000000000000000000000000000000000",
+                                        "type": "string"
+                                    },
+                                    "1": {
+                                        "const": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "chainId": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "chainIdFrom": {
+                                    "examples": 1,
+                                    "type": "integer"
+                                },
+                                "decimals": {
+                                    "examples": 8,
+                                    "type": "integer"
+                                },
+                                "symbol": {
+                                    "type": "string"
+                                },
+                                "icon": {
+                                    "type": "string"
+                                },
+                                "amount": {
+                                    "examples": "1000000",
+                                    "description": "Must be a positive big number as string",
+                                    "isBigNumber": true,
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "address",
+                                "chainId",
+                                "decimals",
+                                "amount"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "status",
+                        "tx",
+                        "txIn",
+                        "transitTokenSent"
+                    ]
+                }
+            },
+            "DirectRoutesResponse": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "originChainId": {
+                            "type": "number"
+                        },
+                        "originToken": {
+                            "type": "string"
+                        },
+                        "destinationChainId": {
+                            "type": "number"
+                        },
+                        "destinationToken": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "originChainId",
+                        "originToken",
+                        "destinationChainId",
+                        "destinationToken"
+                    ]
+                }
+            }
+        },
+        "securitySchemes": {
+            "Partner": {
+                "type": "apiKey",
+                "name": "X-Partner-Id",
+                "in": "header"
+            }
+        }
+    },
+    "schemes": [
+        "https"
+    ],
+    "host": "api.symbiosis.finance",
+    "basePath": "/crosschain/"
+}
