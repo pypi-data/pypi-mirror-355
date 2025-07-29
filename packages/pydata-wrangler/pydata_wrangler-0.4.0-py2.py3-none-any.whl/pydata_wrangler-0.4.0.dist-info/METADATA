@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: pydata-wrangler
+Version: 0.4.0
+Summary: Wrangle messy data into DataFrames (pandas or Polars), with a special focus on text data and natural language processing
+Home-page: https://github.com/ContextLab/data-wrangler
+Author: Contextual Dynamics Lab
+Author-email: contextualdynamics@gmail.com
+License: MIT license
+Keywords: datawrangler,pydata-wrangler,python,pandas,natural language processing,image,data science,data manipulation
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+License-File: AUTHORS.rst
+Requires-Dist: scikit-learn
+Requires-Dist: importlib-metadata
+Requires-Dist: pandas
+Requires-Dist: polars >=0.20.0
+Requires-Dist: scipy
+Requires-Dist: numpy
+Requires-Dist: requests
+Requires-Dist: six
+Requires-Dist: setuptools
+Requires-Dist: tqdm
+Requires-Dist: dill
+Requires-Dist: Pillow
+Requires-Dist: matplotlib
+Provides-Extra: dev
+Requires-Dist: pytest >=3 ; extra == 'dev'
+Provides-Extra: hf
+Requires-Dist: torch ; extra == 'hf'
+Requires-Dist: torchvision ; extra == 'hf'
+Requires-Dist: sentencepiece ; extra == 'hf'
+Requires-Dist: datasets ; extra == 'hf'
+Requires-Dist: sentence-transformers ; extra == 'hf'
+Requires-Dist: tokenizers ; extra == 'hf'
+Requires-Dist: transformers ; extra == 'hf'
+
+For more information see https://data-wrangler.readthedocs.io/en/latest/
