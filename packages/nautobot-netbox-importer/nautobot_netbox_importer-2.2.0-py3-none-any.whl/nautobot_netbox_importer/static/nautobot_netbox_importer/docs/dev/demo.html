@@ -1,0 +1,2950 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.nautobot.com/projects/netbox-importer/en/latest/dev/demo.html">
+      
+      
+        <link rel="prev" href="primary_keys.html">
+      
+      
+        <link rel="next" href="faq.html">
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Demo Execution - Nautobot NetBox Importer Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../assets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#demo-execution-of-netbox-importer" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Nautobot NetBox Importer Documentation" class="md-header__button md-logo" aria-label="Nautobot NetBox Importer Documentation" data-md-component="logo">
+      
+  <img src="../assets/nautobot_logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Nautobot NetBox Importer Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Demo Execution
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nautobot/nautobot-app-netbox-importer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../index.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../user/app_overview.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../admin/install.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Administrator Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="extending.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="https://docs.nautobot.com" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Nautobot Docs Home ↗︎
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Nautobot NetBox Importer Documentation" class="md-nav__button md-logo" aria-label="Nautobot NetBox Importer Documentation" data-md-component="logo">
+      
+  <img src="../assets/nautobot_logo.svg" alt="logo">
+
+    </a>
+    Nautobot NetBox Importer Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nautobot/nautobot-app-netbox-importer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user/app_overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    App Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user/app_getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user/app_use_cases.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Using the App
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user/summary.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Importer Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user/tagging_issues.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tagging Issues
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user/faq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Frequently Asked Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Administrator Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Administrator Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/install.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install and Configure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/upgrade.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Upgrade
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/uninstall.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Uninstall
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/compatibility_matrix.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compatibility Matrix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../admin/release_notes/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Release Notes
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            Release Notes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/release_notes/version_2.2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v2.2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/release_notes/version_2.1.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v2.1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/release_notes/version_2.0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v2.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/release_notes/version_1.4.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v1.4
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/release_notes/version_1.3.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v1.3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/release_notes/version_1.2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v1.2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/release_notes/version_1.1.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v1.1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/release_notes/version_1.0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v1.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="code_reference/fixtures/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extending.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Extending the App
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing to the App
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dev_environment.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release_checklist.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Release Checklist
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="arch_decision.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture Decision Records
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Key Concepts
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Key Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="generator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Generator Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_flow.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Flow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="import_order.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Import Order
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_flow.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Flow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="generator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Generator Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="content_types_mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Content Types Mapping
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="caching.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Understanding Caching in the NetBox Importer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="placeholders.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Placeholders
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="primary_keys.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Primary Keys
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Demo Execution
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="demo.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Demo Execution
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-nautobot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start Nautobot
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-importer-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying Importer Options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-the-importer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start the Importer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examine-the-importer-log-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examine the Importer Log Output
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examine the Importer Log Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      Starting Import
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-structure-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Structure Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importing-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importing Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diffsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      DiffSync
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON Mappings
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Frequently Asked Questions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="customizations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Customizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_11" id="__nav_4_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Diagrams
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_11">
+            <span class="md-nav__icon md-icon"></span>
+            Diagrams
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/data_flow.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Flow Diagram
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/generator_erd.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Generator erd
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/generate_primary_key.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Nautobot Primary Key Generation Flowchart
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_12" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="code_reference/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Code Reference
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_12" id="__nav_4_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_12">
+            <span class="md-nav__icon md-icon"></span>
+            Code Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="code_reference/package.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Package
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.nautobot.com" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Nautobot Docs Home ↗︎
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-nautobot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start Nautobot
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-importer-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying Importer Options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-the-importer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start the Importer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examine-the-importer-log-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examine the Importer Log Output
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examine the Importer Log Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      Starting Import
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-structure-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Structure Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importing-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importing Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diffsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      DiffSync
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON Mappings
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/nautobot/nautobot-app-netbox-importer/edit/main/docs/dev/demo.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/nautobot/nautobot-app-netbox-importer/raw/main/docs/dev/demo.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="demo-execution-of-netbox-importer">Demo Execution of NetBox Importer<a class="headerlink" href="#demo-execution-of-netbox-importer" title="Permanent link">&para;</a></h1>
+<p>This document describes the execution of the NetBox Importer against a local instance of Nautobot, using NetBox demo data available at https://github.com/netbox-community/netbox-demo-data/json. The structure of the mappings generator is described in <a href="generator.html">the generator documentation</a>.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Docker along with Docker Compose plugin</li>
+<li>Python version 3.8 or higher</li>
+<li><a href="http://www.pyinvoke.org/">Invoke</a></li>
+</ul>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>To configure the environment, execute the following commands:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/nautobot/nautobot-app-netbox-importer.git
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>nautobot-app-netbox-importer
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>cp<span class="w"> </span>development/creds.example.env<span class="w"> </span>development/creds.env
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>invoke<span class="w"> </span>build
+</code></pre></div>
+<p>These commands will clone the NetBox Importer repository, create a copy of the example credentials file, and build the Docker image for the NetBox Importer.</p>
+<p>Example output from the <code>invoke build</code> command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Building Nautobot with Python 3.11...
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Running docker compose command &quot;build&quot;
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>#0 building with &quot;default&quot; instance using docker driver
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>#1 [nautobot internal] load build definition from Dockerfile
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>#1 transferring dockerfile: 3.94kB done
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>#1 DONE 0.0s
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>#2 [nautobot internal] load metadata for ghcr.io/nautobot/nautobot-dev:2.0.6-py3.11
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>#2 DONE 0.5s
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>...
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>#15 [nautobot stage-0 11/11] COPY development/nautobot_config.py /opt/nautobot/nautobot_config.py
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>#15 DONE 0.3s
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>#16 [nautobot] exporting to image
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>#16 exporting layers
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>#16 exporting layers 3.2s done
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>#16 writing image sha256:5b25fc8b27c938dd299878bd224a9a8d5fceed83e0a0122c7b7fb82ce8ec83b4
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>#16 writing image sha256:5b25fc8b27c938dd299878bd224a9a8d5fceed83e0a0122c7b7fb82ce8ec83b4 done
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>#16 naming to docker.io/nautobot-netbox-importer/nautobot:2.0.6-py3.11 0.0s done
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>#16 DONE 3.2s
+</code></pre></div>
+<h2 id="start-nautobot">Start Nautobot<a class="headerlink" href="#start-nautobot" title="Permanent link">&para;</a></h2>
+<p>To start Nautobot, execute the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>invoke<span class="w"> </span>debug<span class="w"> </span>--service<span class="w"> </span>nautobot
+</code></pre></div>
+<p>This command will launch a local instance of Nautobot with the NetBox Importer plugin installed, operating in debug mode. The Docker Compose logs for Nautobot will be displayed in the current terminal, allowing you to monitor the activity.</p>
+<p>Example debug logs from Nautobot:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Starting nautobot in debug mode...
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Running docker compose command &quot;up&quot;
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a> Network nautobot-netbox-importer_default  Creating
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a> Network nautobot-netbox-importer_default  Created
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a> Volume &quot;nautobot-netbox-importer_postgres_data&quot;  Creating
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a> Volume &quot;nautobot-netbox-importer_postgres_data&quot;  Created
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a> Container nautobot-netbox-importer-redis-1  Creating
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a> Container nautobot-netbox-importer-db-1  Creating
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a> Container nautobot-netbox-importer-db-1  Created
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a> Container nautobot-netbox-importer-redis-1  Created
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a> Container nautobot-netbox-importer-nautobot-1  Creating
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a> Container nautobot-netbox-importer-nautobot-1  Created
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>Attaching to nautobot-netbox-importer-nautobot-1
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>nautobot-netbox-importer-nautobot-1  | 09:45:17.828 DEBUG   nautobot.core.celery __init__.py        import_jobs_as_celery_tasks() :
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>nautobot-netbox-importer-nautobot-1  |   Importing system Jobs
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>nautobot-netbox-importer-nautobot-1  | 09:45:17.830 DEBUG   nautobot.core.celery __init__.py                      register_jobs() :
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>nautobot-netbox-importer-nautobot-1  |   Registering job nautobot.core.jobs.GitRepositorySync
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>nautobot-netbox-importer-nautobot-1  | 09:45:17.833 DEBUG   nautobot.core.celery __init__.py                      register_jobs() :
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>nautobot-netbox-importer-nautobot-1  |   Registering job nautobot.core.jobs.GitRepositoryDryRun
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>nautobot-netbox-importer-nautobot-1  | Performing database migrations...
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>nautobot-netbox-importer-nautobot-1  | Operations to perform:
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>nautobot-netbox-importer-nautobot-1  |   Apply all migrations: admin, auth, circuits, contenttypes, database, dcim, django_celery_beat, django_celery_results, extras, ipam, sessions, social_django, taggit, ten
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>ancy, users, virtualization
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>nautobot-netbox-importer-nautobot-1  | Running migrations:
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>nautobot-netbox-importer-nautobot-1  |   Applying contenttypes.0001_initial... OK
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>nautobot-netbox-importer-nautobot-1  |   Applying contenttypes.0002_remove_content_type_name... OK
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>...
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>nautobot-netbox-importer-nautobot-1  |   Applying virtualization.0026_change_virtualmachine_primary_ip_fields... OK
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>...
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>nautobot-netbox-importer-nautobot-1  | Starting development server at http://0.0.0.0:8080/
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>nautobot-netbox-importer-nautobot-1  | Quit the server with CONTROL-C.
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>nautobot-netbox-importer-nautobot-1  | 09:46:22.951 INFO    nautobot             __init__.py                              setup() :
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>nautobot-netbox-importer-nautobot-1  |   Nautobot initialized!
+</code></pre></div>
+<p>After Nautobot is installed and operational, the web interface is accessible at <code>http://localhost:8080/</code> using the default username and password: <code>admin</code>.</p>
+<h2 id="verifying-importer-options">Verifying Importer Options<a class="headerlink" href="#verifying-importer-options" title="Permanent link">&para;</a></h2>
+<p>To review available options for the importer, execute:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>invoke<span class="w"> </span>import-netbox<span class="w"> </span>--help
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Usage:<span class="w"> </span>inv<span class="o">[</span>oke<span class="o">]</span><span class="w"> </span><span class="o">[</span>--core-opts<span class="o">]</span><span class="w"> </span>import-netbox<span class="w"> </span><span class="o">[</span>--options<span class="o">]</span><span class="w"> </span><span class="o">[</span>other<span class="w"> </span>tasks<span class="w"> </span>here<span class="w"> </span>...<span class="o">]</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Docstring:
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span>Import<span class="w"> </span>NetBox<span class="w"> </span>data<span class="w"> </span>into<span class="w"> </span>Nautobot.
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Options:
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span>-a<span class="w"> </span>STRING,<span class="w"> </span>--save-text-summary-path<span class="o">=</span>STRING<span class="w">   </span>File<span class="w"> </span>path<span class="w"> </span>to<span class="w"> </span>write<span class="w"> </span>the<span class="w"> </span>text<span class="w"> </span>mapping<span class="w"> </span>to.<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>generated-mappings.txt<span class="o">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span>-b,<span class="w"> </span>--bypass-data-validation<span class="w">                 </span>Bypass<span class="w"> </span>as<span class="w"> </span>much<span class="w"> </span>of<span class="w"> </span>Nautobot<span class="s1">&#39;s internal data validation logic as possible, allowing the import of data from NetBox that would be rejected as invalid if entered as-</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="s1">                                               is through the GUI or REST API. USE WITH CAUTION: it is generally more desirable to *take note* of any data validation errors, *correct* the invalid data in</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="s1">                                               NetBox, and *re-import* with the corrected data! (default: False)</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="s1">  -d STRING, --demo-version=STRING             Version of the demo data to import from `https://github.com/netbox-community/netbox-demo-data/json` instead of using the `--file` option (default: empty).</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="s1">  -f STRING, --file=STRING                     URL or path to the JSON file to import.</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="s1">  -i, --fix-powerfeed-locations                Fix panel location to match rack location based on powerfeed. (default: False)</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="s1">  -n, --[no-]unrack-zero-uheight-devices       Cleans the `position` field in `dcim.device` instances with `u_height == 0`. (default: True)</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="s1">  -p, --[no-]print-summary                     Show a summary of the import. (default: True)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="s1">  -r, --[no-]dry-run                           Do not write any data to the database. (default: False)</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="s1">  -s STRING, --save-json-summary-path=STRING   File path to write the JSON mapping to. (default: generated-mappings.json)</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="s1">  -t, --sitegroup-parent-always-region         When importing `dcim.sitegroup` to `dcim.locationtype`, always set the parent of a site group, to be a `Region` location type. This is a workaround to fix</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="s1">                                               validation errors `&#39;</span>A<span class="w"> </span>Location<span class="w"> </span>of<span class="w"> </span><span class="nb">type</span><span class="w"> </span>Location<span class="w"> </span>may<span class="w"> </span>only<span class="w"> </span>have<span class="w"> </span>a<span class="w"> </span>Location<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>same<span class="w"> </span><span class="nb">type</span><span class="w"> </span>as<span class="w"> </span>its<span class="w"> </span>parent.<span class="err">&#39;</span><span class="sb">`</span>.<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>False<span class="o">)</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">  </span>-u,<span class="w"> </span>--update-paths<span class="w">                           </span>Call<span class="w"> </span>management<span class="w"> </span><span class="nb">command</span><span class="w"> </span><span class="sb">`</span>trace_paths<span class="sb">`</span><span class="w"> </span>to<span class="w"> </span>update<span class="w"> </span>paths<span class="w"> </span>after<span class="w"> </span>the<span class="w"> </span>import.<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>False<span class="o">)</span>
+</code></pre></div>
+<p>This command displays usage information, a brief description, and a list of command-line options for the <code>import-netbox</code> invoke task.</p>
+<h2 id="start-the-importer">Start the Importer<a class="headerlink" href="#start-the-importer" title="Permanent link">&para;</a></h2>
+<p>To import public NetBox demo data into your local Nautobot instance, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>invoke<span class="w"> </span>import-netbox<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span>--no-dry-run<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span>--bypass-data-validation<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span>--sitegroup-parent-always-region<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span>--save-json-summary-path<span class="o">=</span>generated-mappings.json<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span>--save-text-summary-path<span class="o">=</span>generated-mappings.txt<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span>--demo-version<span class="o">=</span><span class="m">3</span>.6
+</code></pre></div>
+<p>This command initiates the import of the specified version of NetBox demo data into Nautobot without a dry run, meaning changes will be saved to the database.</p>
+<h2 id="examine-the-importer-log-output">Examine the Importer Log Output<a class="headerlink" href="#examine-the-importer-log-output" title="Permanent link">&para;</a></h2>
+<p>The command above will produce a significant amount of output, which constitutes the import process log. The output will look similar to what is described in the following chapters.</p>
+<h3 id="starting-import">Starting Import<a class="headerlink" href="#starting-import" title="Permanent link">&para;</a></h3>
+<p>The initial output of the import process will resemble the following:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Running docker compose command &quot;ps --services --filter status=running&quot;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Running docker compose command &quot;exec nautobot nautobot-server import_netbox --save-json-summary-path=generated-mappings.json --bypass-data-validation --dry-run --sitegroup-parent-always-region --print-summary  --no-color https://raw.githubusercontent.com/netbox-community/netbox-demo-data/master/json/netbox-demo-v3.6.json&quot;
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>11:01:05.550 DEBUG   nautobot.core.celery __init__.py        import_jobs_as_celery_tasks() :
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  Importing system Jobs
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>11:01:05.552 DEBUG   nautobot.core.celery __init__.py                      register_jobs() :
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  Registering job nautobot.core.jobs.GitRepositorySync
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>11:01:05.554 DEBUG   nautobot.core.celery __init__.py                      register_jobs() :
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  Registering job nautobot.core.jobs.GitRepositoryDryRun
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>Operations to perform:
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  Apply all migrations: admin, auth, circuits, contenttypes, database, dcim, django_celery_beat, django_celery_results, extras, ipam, sessions, social_django, taggit, tenancy, users, virtualization
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>Running migrations:
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  No migrations to apply.
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>11:01:06.464 DEBUG   nautobot.core.celery __init__.py        import_jobs_as_celery_tasks() :
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>  Importing system Jobs
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>11:01:06.484 INFO    nautobot.extras.utils utils.py        refresh_job_model_from_job_class() :
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>  Refreshed Job &quot;System Jobs: Git Repository: Sync&quot; from &lt;GitRepositorySync&gt;
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>11:01:06.492 INFO    nautobot.extras.utils utils.py        refresh_job_model_from_job_class() :
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>  Refreshed Job &quot;System Jobs: Git Repository: Dry-Run&quot; from &lt;GitRepositoryDryRun&gt;
+</code></pre></div>
+<h3 id="source-structure-setup">Source Structure Setup<a class="headerlink" href="#source-structure-setup" title="Permanent link">&para;</a></h3>
+<p>As the next step, the importer will set up the source structure. This is a process of mapping NetBox data to Nautobot data. The output will look similar to the following:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>11:01:06.541 DEBUG   nautobot-netbox-importer nautobot.py                          add_field() :
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  Adding nautobot field circuits.circuit id InternalFieldType.UUID_FIELD
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>11:01:06.541 DEBUG   nautobot-netbox-importer nautobot.py                          add_field() :
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  Adding nautobot field circuits.circuit status_id InternalFieldType.STATUS_FIELD
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>11:01:06.541 DEBUG   nautobot-netbox-importer nautobot.py                           __init__() :
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  Created NautobotModelWrapper&lt;circuits.circuit&gt;
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>11:01:06.541 DEBUG   nautobot-netbox-importer source.py                             __init__() :
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  Created SourceModelWrapper&lt;circuits.circuit -&gt; circuits.circuit&gt;
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>11:01:06.541 DEBUG   nautobot-netbox-importer nautobot.py                          add_field() :
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  Adding nautobot field circuits.circuittermination id InternalFieldType.UUID_FIELD
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>11:01:06.541 DEBUG   nautobot-netbox-importer nautobot.py                           __init__() :
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  Created NautobotModelWrapper&lt;circuits.circuittermination&gt;
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>11:01:06.541 DEBUG   nautobot-netbox-importer source.py                             __init__() :
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  Created SourceModelWrapper&lt;circuits.circuittermination -&gt; circuits.circuittermination&gt;
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>11:01:06.542 DEBUG   nautobot-netbox-importer nautobot.py                          add_field() :
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>  Adding nautobot field extras.role id InternalFieldType.UUID_FIELD
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>11:01:06.542 DEBUG   nautobot-netbox-importer nautobot.py                          add_field() :
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>  Adding nautobot field extras.role content_types InternalFieldType.MANY_TO_MANY_FIELD
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>11:01:06.542 DEBUG   nautobot-netbox-importer nautobot.py                           __init__() :
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>  Created NautobotModelWrapper&lt;extras.role&gt;
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>...
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>  Created SourceModelWrapper&lt;dcim.locationtype -&gt; dcim.locationtype&gt;
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>11:01:06.543 DEBUG   nautobot-netbox-importer source.py                         cache_record() :
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>  Cached SourceModelWrapper&lt;dcim.locationtype -&gt; dcim.locationtype&gt; 6003e66c-d3f2-5a36-9c06-5ee450898936 {&#39;id&#39;: &#39;Region&#39;, &#39;name&#39;: &#39;Region&#39;, &#39;nestable&#39;: True}
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>11:01:06.543 DEBUG   nautobot-netbox-importer source.py                         cache_record() :
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>  Cached SourceModelWrapper&lt;dcim.locationtype -&gt; dcim.locationtype&gt; 8fceb641-4563-5da8-9004-963f9ed1965a {&#39;id&#39;: &#39;Site&#39;, &#39;name&#39;: &#39;Site&#39;, &#39;nestable&#39;: False, &#39;parent&#39;: UUID(&#39;6003e66c-d3f2-5a36-9c06-5ee450898936&#39;)}
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>11:01:06.543 DEBUG   nautobot-netbox-importer source.py                         cache_record() :
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>  Cached SourceModelWrapper&lt;dcim.locationtype -&gt; dcim.locationtype&gt; 22004273-2182-50fd-b410-5e152ed9431a {&#39;id&#39;: &#39;Location&#39;, &#39;name&#39;: &#39;Location&#39;, &#39;nestable&#39;: True, &#39;parent&#39;: UUID(&#39;8fceb641-4563-5da8-9004-963f9ed1965a&#39;)}
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>...
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>11:01:06.671 DEBUG   nautobot-netbox-importer source.py                             __init__() :
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a>  Created disabled SourceModelWrapper&lt;tenancy.contactassignment -&gt; tenancy.contactassignment&gt;
+<a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a>
+<a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a>...
+<a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a>
+<a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a>11:01:06.679 DEBUG   nautobot-netbox-importer nautobot.py                          add_field() :
+<a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a>  Adding nautobot field circuits.circuit commit_rate InternalFieldType.POSITIVE_INTEGER_FIELD
+<a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a>11:01:06.679 DEBUG   nautobot-netbox-importer nautobot.py                          add_field() :
+<a id="__codelineno-7-42" name="__codelineno-7-42" href="#__codelineno-7-42"></a>  Adding nautobot field circuits.circuittermination location_id InternalFieldType.FOREIGN_KEY
+<a id="__codelineno-7-43" name="__codelineno-7-43" href="#__codelineno-7-43"></a>11:01:06.679 DEBUG   nautobot-netbox-importer nautobot.py                          add_field() :
+<a id="__codelineno-7-44" name="__codelineno-7-44" href="#__codelineno-7-44"></a>  Adding nautobot field circuits.circuittermination created InternalFieldType.DATE_TIME_FIELD
+<a id="__codelineno-7-45" name="__codelineno-7-45" href="#__codelineno-7-45"></a>
+<a id="__codelineno-7-46" name="__codelineno-7-46" href="#__codelineno-7-46"></a>...
+</code></pre></div>
+<h3 id="importing-data">Importing Data<a class="headerlink" href="#importing-data" title="Permanent link">&para;</a></h3>
+<p>The next step is to import the data. The output will look similar to the following:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>11:01:06.768 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  Importing record SourceModelWrapper&lt;contenttypes.contenttype -&gt; contenttypes.contenttype&gt; {&#39;app_label&#39;: &#39;admin&#39;, &#39;model&#39;: &#39;logentry&#39;}
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>11:01:06.770 DEBUG   nautobot-netbox-importer nautobot.py                     diffsync_class() :
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  Created DiffSync Model {&#39;__annotations__&#39;: {&#39;id&#39;: &lt;class &#39;int&#39;&gt;, &#39;app_label&#39;: typing.Optional[str], &#39;model&#39;: typing.Optional[str]}, &#39;_attributes&#39;: [&#39;app_label&#39;, &#39;model&#39;], &#39;_identifiers&#39;: [&#39;id&#39;], &#39;_modelname&#39;: &#39;contenttypes_contenttype&#39;, &#39;_wrapper&#39;: &lt;nautobot_netbox_importer.generator.nautobot.NautobotModelWrapper object at 0x7fa657dd41d0&gt;, &#39;id&#39;: FieldInfo(default=PydanticUndefined, extra={}), &#39;app_label&#39;: FieldInfo(extra={}), &#39;model&#39;: FieldInfo(extra={})}
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>11:01:06.771 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  Imported 35 {&#39;app_label&#39;: &#39;admin&#39;, &#39;model&#39;: &#39;logentry&#39;}
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>11:01:06.771 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>  Importing record SourceModelWrapper&lt;contenttypes.contenttype -&gt; contenttypes.contenttype&gt; {&#39;app_label&#39;: &#39;auth&#39;, &#39;model&#39;: &#39;permission&#39;}
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>11:01:06.772 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>  Imported 23 {&#39;app_label&#39;: &#39;auth&#39;, &#39;model&#39;: &#39;permission&#39;}
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>11:01:06.772 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>  Importing record SourceModelWrapper&lt;contenttypes.contenttype -&gt; contenttypes.contenttype&gt; {&#39;app_label&#39;: &#39;auth&#39;, &#39;model&#39;: &#39;group&#39;}
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>11:01:06.773 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>  Imported 24 {&#39;app_label&#39;: &#39;auth&#39;, &#39;model&#39;: &#39;group&#39;}
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>11:01:06.773 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>  Importing record SourceModelWrapper&lt;contenttypes.contenttype -&gt; contenttypes.contenttype&gt; {&#39;app_label&#39;: &#39;auth&#39;, &#39;model&#39;: &#39;user&#39;}
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>11:01:06.774 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>  Imported 126 {&#39;app_label&#39;: &#39;auth&#39;, &#39;model&#39;: &#39;user&#39;}
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>11:01:06.774 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>  Importing record SourceModelWrapper&lt;contenttypes.contenttype -&gt; contenttypes.contenttype&gt; {&#39;app_label&#39;: &#39;contenttypes&#39;, &#39;model&#39;: &#39;contenttype&#39;}
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>11:01:06.775 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>  Imported 26 {&#39;app_label&#39;: &#39;contenttypes&#39;, &#39;model&#39;: &#39;contenttype&#39;}
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>...
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>11:01:06.827 INFO    nautobot-netbox-importer nautobot.py                           __init__() :
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>  Skipping unknown model dcim.virtualdevicecontext
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>11:01:06.827 DEBUG   nautobot-netbox-importer nautobot.py                           __init__() :
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>  Created NautobotModelWrapper&lt;dcim.virtualdevicecontext&gt;
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>11:01:06.827 DEBUG   nautobot-netbox-importer source.py                             __init__() :
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>  Created disabled SourceModelWrapper&lt;dcim.virtualdevicecontext -&gt; dcim.virtualdevicecontext&gt;
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>...
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>  Importing record SourceModelWrapper&lt;circuits.circuit -&gt; circuits.circuit&gt; {&#39;created&#39;: &#39;2020-12-30T00:00:00Z&#39;, &#39;last_updated&#39;: &#39;2023-04-12T19:32:03.833Z&#39;, &#39;custom_field_data&#39;: {}, &#39;description&#39;: &#39;&#39;, &#39;comments&#39;: &#39;&#39;, &#39;cid&#39;: &#39;KKDG4923&#39;, &#39;provider&#39;: 5, &#39;provider_account&#39;: None, &#39;type&#39;: 2, &#39;status&#39;: &#39;active&#39;, &#39;tenant&#39;: 5, &#39;install_date&#39;: None, &#39;termination_date&#39;: None, &#39;commit_rate&#39;: None, &#39;termination_a&#39;: 48, &#39;termination_z&#39;: 1, &#39;id&#39;: 1}
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>11:01:06.861 DEBUG   nautobot-netbox-importer nautobot.py                     diffsync_class() :
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>  Created DiffSync Model {&#39;__annotations__&#39;: {&#39;id&#39;: &lt;class &#39;uuid.UUID&#39;&gt;, &#39;status_id&#39;: typing.Optional[uuid.UUID], &#39;circuit_type_id&#39;: typing.Optional[uuid.UUID], &#39;circuit_termination_a_id&#39;: typing.Optional[uuid.UUID], &#39;circuit_termination_z_id&#39;: typing.Optional[uuid.UUID], &#39;created&#39;: typing.Optional[datetime.datetime], &#39;last_updated&#39;: typing.Optional[datetime.datetime], &#39;custom_field_data&#39;: typing.Optional[typing.Any], &#39;description&#39;: typing.Optional[str], &#39;comments&#39;: typing.Optional[str], &#39;cid&#39;: typing.Optional[str], &#39;provider_id&#39;: typing.Optional[uuid.UUID], &#39;tenant_id&#39;: typing.Optional[uuid.UUID], &#39;install_date&#39;: typing.Optional[datetime.date], &#39;commit_rate&#39;: typing.Optional[int]}, &#39;_attributes&#39;: [&#39;status_id&#39;, &#39;circuit_type_id&#39;, &#39;circuit_termination_a_id&#39;, &#39;circuit_termination_z_id&#39;, &#39;created&#39;, &#39;last_updated&#39;, &#39;custom_field_data&#39;, &#39;description&#39;, &#39;comments&#39;, &#39;cid&#39;, &#39;provider_id&#39;, &#39;tenant_id&#39;, &#39;install_date&#39;, &#39;commit_rate&#39;], &#39;_identifiers&#39;: [&#39;id&#39;], &#39;_modelname&#39;: &#39;circuits_circuit&#39;, &#39;_wrapper&#39;: &lt;nautobot_netbox_importer.generator.nautobot.NautobotModelWrapper object at 0x7fa657e3ec50&gt;, &#39;id&#39;: FieldInfo(default=PydanticUndefined, extra={}), &#39;status_id&#39;: FieldInfo(extra={}), &#39;circuit_type_id&#39;: FieldInfo(extra={}), &#39;circuit_termination_a_id&#39;: FieldInfo(extra={}), &#39;circuit_termination_z_id&#39;: FieldInfo(extra={}), &#39;created&#39;: FieldInfo(extra={}), &#39;last_updated&#39;: FieldInfo(extra={}), &#39;custom_field_data&#39;: FieldInfo(extra={}), &#39;description&#39;: FieldInfo(extra={}), &#39;comments&#39;: FieldInfo(extra={}), &#39;cid&#39;: FieldInfo(extra={}), &#39;provider_id&#39;: FieldInfo(extra={}), &#39;tenant_id&#39;: FieldInfo(extra={}), &#39;install_date&#39;: FieldInfo(extra={}), &#39;commit_rate&#39;: FieldInfo(extra={})}
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>11:01:06.862 DEBUG   nautobot-netbox-importer source.py                         cache_record() :
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>  Cached SourceModelWrapper&lt;extras.status -&gt; extras.status&gt; 1801b68a-1ac3-4fe3-b88d-450662824819 {&#39;name&#39;: &#39;Active&#39;}
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a>11:01:06.862 DEBUG   nautobot-netbox-importer source.py                        add_reference() :
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>  Adding reference from: circuits.circuit to: extras.status 1801b68a-1ac3-4fe3-b88d-450662824819
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>11:01:06.862 DEBUG   nautobot-netbox-importer source.py                        add_reference() :
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a>  Adding reference from: circuits.circuit to: tenancy.tenant 80f6b934-9627-5da1-9928-fc0e5e03f2f0
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a>11:01:06.862 DEBUG   nautobot-netbox-importer source.py                        add_reference() :
+<a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a>  Adding reference from: circuits.circuit to: circuits.circuittermination f76b03e6-a853-51a6-b8f2-20c86bc424e7
+<a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a>11:01:06.862 DEBUG   nautobot-netbox-importer source.py                        add_reference() :
+<a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a>  Adding reference from: circuits.circuit to: circuits.circuittype 0c9d650f-39cd-5060-809c-8cbc291e9fbb
+<a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a>11:01:06.863 DEBUG   nautobot-netbox-importer source.py                        add_reference() :
+<a id="__codelineno-8-49" name="__codelineno-8-49" href="#__codelineno-8-49"></a>  Adding reference from: circuits.circuit to: circuits.provider 30efd662-fc9b-5892-b2be-adeb8091cb29
+<a id="__codelineno-8-50" name="__codelineno-8-50" href="#__codelineno-8-50"></a>11:01:06.863 DEBUG   nautobot-netbox-importer source.py                        add_reference() :
+<a id="__codelineno-8-51" name="__codelineno-8-51" href="#__codelineno-8-51"></a>  Adding reference from: circuits.circuit to: circuits.circuittermination a82c9a9a-678f-5c23-a73d-bb16b30eb407
+<a id="__codelineno-8-52" name="__codelineno-8-52" href="#__codelineno-8-52"></a>11:01:06.863 DEBUG   nautobot-netbox-importer source.py                        import_record() :
+<a id="__codelineno-8-53" name="__codelineno-8-53" href="#__codelineno-8-53"></a>  Imported 8037ffad-6a28-5267-9839-2e6459305d3c {&#39;status_id&#39;: UUID(&#39;1801b68a-1ac3-4fe3-b88d-450662824819&#39;), &#39;circuit_type_id&#39;: UUID(&#39;0c9d650f-39cd-5060-809c-8cbc291e9fbb&#39;), &#39;circuit_termination_a_id&#39;: UUID(&#39;f76b03e6-a853-51a6-b8f2-20c86bc424e7&#39;), &#39;circuit_termination_z_id&#39;: UUID(&#39;a82c9a9a-678f-5c23-a73d-bb16b30eb407&#39;), &#39;created&#39;: datetime.datetime(2020, 12, 30, 0, 0, tzinfo=datetime.timezone.utc), &#39;last_updated&#39;: None, &#39;custom_field_data&#39;: None, &#39;description&#39;: None, &#39;comments&#39;: None, &#39;cid&#39;: &#39;KKDG4923&#39;, &#39;provider_id&#39;: UUID(&#39;30efd662-fc9b-5892-b2be-adeb8091cb29&#39;), &#39;tenant_id&#39;: UUID(&#39;80f6b934-9627-5da1-9928-fc0e5e03f2f0&#39;), &#39;install_date&#39;: None, &#39;commit_rate&#39;: None}
+<a id="__codelineno-8-54" name="__codelineno-8-54" href="#__codelineno-8-54"></a>
+<a id="__codelineno-8-55" name="__codelineno-8-55" href="#__codelineno-8-55"></a>...
+<a id="__codelineno-8-56" name="__codelineno-8-56" href="#__codelineno-8-56"></a>
+<a id="__codelineno-8-57" name="__codelineno-8-57" href="#__codelineno-8-57"></a>11:01:10.075 INFO    nautobot-netbox-importer source.py                          post_import() :
+<a id="__codelineno-8-58" name="__codelineno-8-58" href="#__codelineno-8-58"></a>  Imported 1 extras_customfield
+<a id="__codelineno-8-59" name="__codelineno-8-59" href="#__codelineno-8-59"></a>11:01:10.075 INFO    nautobot-netbox-importer source.py                          post_import() :
+<a id="__codelineno-8-60" name="__codelineno-8-60" href="#__codelineno-8-60"></a>  Imported 6 extras_status
+<a id="__codelineno-8-61" name="__codelineno-8-61" href="#__codelineno-8-61"></a>11:01:10.075 INFO    nautobot-netbox-importer source.py                          post_import() :
+<a id="__codelineno-8-62" name="__codelineno-8-62" href="#__codelineno-8-62"></a>  Imported 18 extras_role
+<a id="__codelineno-8-63" name="__codelineno-8-63" href="#__codelineno-8-63"></a>11:01:10.075 INFO    nautobot-netbox-importer source.py                          post_import() :
+<a id="__codelineno-8-64" name="__codelineno-8-64" href="#__codelineno-8-64"></a>  Imported 6 dcim_locationtype
+<a id="__codelineno-8-65" name="__codelineno-8-65" href="#__codelineno-8-65"></a>11:01:10.075 INFO    nautobot-netbox-importer source.py                          post_import() :
+<a id="__codelineno-8-66" name="__codelineno-8-66" href="#__codelineno-8-66"></a>  Imported 95 dcim_location
+</code></pre></div>
+<h3 id="diffsync">DiffSync<a class="headerlink" href="#diffsync" title="Permanent link">&para;</a></h3>
+<p>The next step is to perform a <a href="https://diffsync.readthedocs.io/en/stable/">DiffSync</a>. The output will look similar to the following:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>2024-01-29 11:01:10 debug     Diff calculation between these two datasets will involve 6068 models dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt;
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>2024-01-29 11:01:10 info      Beginning diff calculation     dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt;
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>2024-01-29 11:01:10 debug     Skipping due to IGNORE flag on source object dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=contenttypes_contenttype src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; unique_id=35
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>2024-01-29 11:01:10 debug     Skipping due to IGNORE flag on source object dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=contenttypes_contenttype src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; unique_id=23
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>...
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>2024-01-29 11:01:10 debug     Skipping due to IGNORE flag on source object dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=contenttypes_contenttype src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; unique_id=170
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>2024-01-29 11:01:10 info      Diff calculation complete      dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt;
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>2024-01-29 11:01:10 info      Beginning sync                 dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt;
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>2024-01-29 11:01:10 debug     Attempting model create        action=create diffs={&#39;+&#39;: {&#39;content_types&#39;: {116}, &#39;key&#39;: &#39;cust_id&#39;, &#39;created&#39;: datetime.datetime(2021, 9, 9, 0, 0, tzinfo=datetime.timezone.utc), &#39;last_updated&#39;: None, &#39;type&#39;: &#39;text&#39;, &#39;label&#39;: &#39;Customer ID&#39;, &#39;description&#39;: None, &#39;required&#39;: False, &#39;filter_logic&#39;: &#39;exact&#39;, &#39;default&#39;: None, &#39;weight&#39;: 100, &#39;validation_minimum&#39;: None, &#39;validation_maximum&#39;: None, &#39;validation_regex&#39;: &#39;^[A-Z]{3}\\d{2}$&#39;}} dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=extras_customfield src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; unique_id=e4fa5680-4657-50ea-837c-604617c7fc0d
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>2024-01-29 11:01:10 info      Created successfully           action=create diffs={&#39;+&#39;: {&#39;content_types&#39;: {116}, &#39;key&#39;: &#39;cust_id&#39;, &#39;created&#39;: datetime.datetime(2021, 9, 9, 0, 0, tzinfo=datetime.timezone.utc), &#39;last_updated&#39;: None, &#39;type&#39;: &#39;text&#39;, &#39;label&#39;: &#39;Customer ID&#39;, &#39;description&#39;: None, &#39;required&#39;: False, &#39;filter_logic&#39;: &#39;exact&#39;, &#39;default&#39;: None, &#39;weight&#39;: 100, &#39;validation_minimum&#39;: None, &#39;validation_maximum&#39;: None, &#39;validation_regex&#39;: &#39;^[A-Z]{3}\\d{2}$&#39;}} dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=extras_customfield src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; status=success unique_id=e4fa5680-4657-50ea-837c-604617c7fc0d
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>2024-01-29 11:01:10 debug     Attempting model create        action=create diffs={&#39;+&#39;: {&#39;content_types&#39;: {12, 13, 14, 7}, &#39;name&#39;: &#39;Unknown&#39;}} dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=extras_status src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; unique_id=623acb70-22ce-5f69-bd7e-76bc921aa6c4
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>2024-01-29 11:01:10 info      Created successfully           action=create diffs={&#39;+&#39;: {&#39;content_types&#39;: {12, 13, 14, 7}, &#39;name&#39;: &#39;Unknown&#39;}} dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=extras_status src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; status=success unique_id=623acb70-22ce-5f69-bd7e-76bc921aa6c4
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>...
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>2024-01-29 11:01:28 debug     Attempting model create        action=create diffs={&#39;+&#39;: {&#39;created&#39;: datetime.datetime(2021, 4, 2, 0, 0, tzinfo=datetime.timezone.utc), &#39;last_updated&#39;: None, &#39;custom_field_data&#39;: None, &#39;name&#39;: &#39;South America&#39;, &#39;description&#39;: None}} dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=virtualization_clustergroup src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; unique_id=aa168442-0c73-5681-b8bd-243f5f93842f
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>2024-01-29 11:01:28 info      Created successfully           action=create diffs={&#39;+&#39;: {&#39;created&#39;: datetime.datetime(2021, 4, 2, 0, 0, tzinfo=datetime.timezone.utc), &#39;last_updated&#39;: None, &#39;custom_field_data&#39;: None, &#39;name&#39;: &#39;South America&#39;, &#39;description&#39;: None}} dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; model=virtualization_clustergroup src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt; status=success unique_id=aa168442-0c73-5681-b8bd-243f5f93842f
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>2024-01-29 11:01:28 info      Sync complete                  dst=&lt;NautobotAdapter &quot;Nautobot&quot;&gt; flags=&lt;DiffSyncFlags.NONE: 0&gt; src=&lt;NetBoxAdapter &quot;NetBox&quot;&gt;
+</code></pre></div>
+<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
+<p>The last part of the import process is to display a summary of the import <a href="../user/summary.html">described in the user documentation</a>. This summary is also saved to the file specified in the <code>--save-text-summary-path</code> option. This file can be used to compare mapping changes between different NetBox versions or during the development of the importer.</p>
+<h2 id="json-mappings">JSON Mappings<a class="headerlink" href="#json-mappings" title="Permanent link">&para;</a></h2>
+<p>To examine the mappings generated by the importer, check the <code>generated-mappings.json</code> file in the current directory. This file describes the detailed mapping from NetBox to Nautobot.</p>
+<p>JSON mappings file content example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="nt">&quot;diffsync&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">        </span><span class="nt">&quot;create&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5865</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">        </span><span class="nt">&quot;update&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">        </span><span class="nt">&quot;delete&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="nt">&quot;no-change&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">        </span><span class="nt">&quot;skip&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">119</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">    </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="nt">&quot;admin.logentry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">            </span><span class="nt">&quot;content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin.logentry&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">            </span><span class="nt">&quot;content_type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">            </span><span class="nt">&quot;extends_content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">            </span><span class="nt">&quot;nautobot_content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin.logentry&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">            </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Not directly used in Nautobot.&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">            </span><span class="nt">&quot;identifiers&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">            </span><span class="nt">&quot;disable_related_reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">            </span><span class="nt">&quot;forward_references&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">            </span><span class="nt">&quot;pre_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="w">            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AutoField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="w">                        </span><span class="s2">&quot;AUTO&quot;</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a><span class="w">            </span><span class="nt">&quot;flags&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DiffSyncModelFlags.NONE&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="w">            </span><span class="nt">&quot;default_reference_uid&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a><span class="w">            </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a><span class="w">                </span><span class="nt">&quot;first_pass_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span>
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a><span class="w">        </span><span class="nt">&quot;auth.group&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a><span class="w">            </span><span class="nt">&quot;content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auth.group&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a><span class="w">            </span><span class="nt">&quot;content_type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a><span class="w">            </span><span class="nt">&quot;extends_content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a><span class="w">            </span><span class="nt">&quot;nautobot_content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auth.group&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a><span class="w">            </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a><span class="w">            </span><span class="nt">&quot;identifiers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a><span class="w">                </span><span class="s2">&quot;name&quot;</span>
+<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a><span class="w">            </span><span class="p">],</span>
+<a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a><span class="w">            </span><span class="nt">&quot;disable_related_reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-10-52" name="__codelineno-10-52" href="#__codelineno-10-52"></a><span class="w">            </span><span class="nt">&quot;forward_references&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a><span class="w">            </span><span class="nt">&quot;pre_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-54" name="__codelineno-10-54" href="#__codelineno-10-54"></a><span class="w">            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-55" name="__codelineno-10-55" href="#__codelineno-10-55"></a><span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-56" name="__codelineno-10-56" href="#__codelineno-10-56"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-57" name="__codelineno-10-57" href="#__codelineno-10-57"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-58" name="__codelineno-10-58" href="#__codelineno-10-58"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AutoField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-59" name="__codelineno-10-59" href="#__codelineno-10-59"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-60" name="__codelineno-10-60" href="#__codelineno-10-60"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-61" name="__codelineno-10-61" href="#__codelineno-10-61"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-62" name="__codelineno-10-62" href="#__codelineno-10-62"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-63" name="__codelineno-10-63" href="#__codelineno-10-63"></a><span class="w">                        </span><span class="s2">&quot;AUTO&quot;</span>
+<a id="__codelineno-10-64" name="__codelineno-10-64" href="#__codelineno-10-64"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-65" name="__codelineno-10-65" href="#__codelineno-10-65"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-66" name="__codelineno-10-66" href="#__codelineno-10-66"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-67" name="__codelineno-10-67" href="#__codelineno-10-67"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-68" name="__codelineno-10-68" href="#__codelineno-10-68"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-69" name="__codelineno-10-69" href="#__codelineno-10-69"></a><span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-70" name="__codelineno-10-70" href="#__codelineno-10-70"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-71" name="__codelineno-10-71" href="#__codelineno-10-71"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-72" name="__codelineno-10-72" href="#__codelineno-10-72"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CharField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-73" name="__codelineno-10-73" href="#__codelineno-10-73"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-74" name="__codelineno-10-74" href="#__codelineno-10-74"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-75" name="__codelineno-10-75" href="#__codelineno-10-75"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-76" name="__codelineno-10-76" href="#__codelineno-10-76"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-77" name="__codelineno-10-77" href="#__codelineno-10-77"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-78" name="__codelineno-10-78" href="#__codelineno-10-78"></a><span class="w">                        </span><span class="s2">&quot;IDENTIFIER&quot;</span>
+<a id="__codelineno-10-79" name="__codelineno-10-79" href="#__codelineno-10-79"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-80" name="__codelineno-10-80" href="#__codelineno-10-80"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-81" name="__codelineno-10-81" href="#__codelineno-10-81"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-82" name="__codelineno-10-82" href="#__codelineno-10-82"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-10-83" name="__codelineno-10-83" href="#__codelineno-10-83"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-84" name="__codelineno-10-84" href="#__codelineno-10-84"></a><span class="w">                </span><span class="nt">&quot;permissions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-85" name="__codelineno-10-85" href="#__codelineno-10-85"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;permissions&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-86" name="__codelineno-10-86" href="#__codelineno-10-86"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-87" name="__codelineno-10-87" href="#__codelineno-10-87"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-88" name="__codelineno-10-88" href="#__codelineno-10-88"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-89" name="__codelineno-10-89" href="#__codelineno-10-89"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-90" name="__codelineno-10-90" href="#__codelineno-10-90"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-91" name="__codelineno-10-91" href="#__codelineno-10-91"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-92" name="__codelineno-10-92" href="#__codelineno-10-92"></a><span class="w">                        </span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-93" name="__codelineno-10-93" href="#__codelineno-10-93"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-94" name="__codelineno-10-94" href="#__codelineno-10-94"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-95" name="__codelineno-10-95" href="#__codelineno-10-95"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-96" name="__codelineno-10-96" href="#__codelineno-10-96"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Permissions import is not implemented yet&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-97" name="__codelineno-10-97" href="#__codelineno-10-97"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-98" name="__codelineno-10-98" href="#__codelineno-10-98"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-10-99" name="__codelineno-10-99" href="#__codelineno-10-99"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-10-100" name="__codelineno-10-100" href="#__codelineno-10-100"></a><span class="w">            </span><span class="nt">&quot;flags&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DiffSyncModelFlags.NONE&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-101" name="__codelineno-10-101" href="#__codelineno-10-101"></a><span class="w">            </span><span class="nt">&quot;default_reference_uid&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-102" name="__codelineno-10-102" href="#__codelineno-10-102"></a><span class="w">            </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-103" name="__codelineno-10-103" href="#__codelineno-10-103"></a><span class="w">                </span><span class="nt">&quot;first_pass_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-10-104" name="__codelineno-10-104" href="#__codelineno-10-104"></a><span class="w">                </span><span class="nt">&quot;second_pass_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-10-105" name="__codelineno-10-105" href="#__codelineno-10-105"></a><span class="w">                </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-10-106" name="__codelineno-10-106" href="#__codelineno-10-106"></a><span class="w">                </span><span class="nt">&quot;imported&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-10-107" name="__codelineno-10-107" href="#__codelineno-10-107"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-10-108" name="__codelineno-10-108" href="#__codelineno-10-108"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-10-109" name="__codelineno-10-109" href="#__codelineno-10-109"></a><span class="w">        </span><span class="nt">&quot;auth.permission&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-110" name="__codelineno-10-110" href="#__codelineno-10-110"></a><span class="w">            </span><span class="nt">&quot;content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auth.permission&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-111" name="__codelineno-10-111" href="#__codelineno-10-111"></a><span class="w">            </span><span class="nt">&quot;content_type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-10-112" name="__codelineno-10-112" href="#__codelineno-10-112"></a><span class="w">            </span><span class="nt">&quot;extends_content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-113" name="__codelineno-10-113" href="#__codelineno-10-113"></a><span class="w">            </span><span class="nt">&quot;nautobot_content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auth.permission&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-114" name="__codelineno-10-114" href="#__codelineno-10-114"></a><span class="w">            </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Handled via a Nautobot model and may not be a 1 to 1.&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-115" name="__codelineno-10-115" href="#__codelineno-10-115"></a><span class="w">            </span><span class="nt">&quot;identifiers&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-116" name="__codelineno-10-116" href="#__codelineno-10-116"></a><span class="w">            </span><span class="nt">&quot;disable_related_reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-10-117" name="__codelineno-10-117" href="#__codelineno-10-117"></a><span class="w">            </span><span class="nt">&quot;forward_references&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-118" name="__codelineno-10-118" href="#__codelineno-10-118"></a><span class="w">            </span><span class="nt">&quot;pre_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-119" name="__codelineno-10-119" href="#__codelineno-10-119"></a><span class="w">            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-120" name="__codelineno-10-120" href="#__codelineno-10-120"></a><span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-121" name="__codelineno-10-121" href="#__codelineno-10-121"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-122" name="__codelineno-10-122" href="#__codelineno-10-122"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-123" name="__codelineno-10-123" href="#__codelineno-10-123"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AutoField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-124" name="__codelineno-10-124" href="#__codelineno-10-124"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-125" name="__codelineno-10-125" href="#__codelineno-10-125"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-126" name="__codelineno-10-126" href="#__codelineno-10-126"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-127" name="__codelineno-10-127" href="#__codelineno-10-127"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-128" name="__codelineno-10-128" href="#__codelineno-10-128"></a><span class="w">                        </span><span class="s2">&quot;AUTO&quot;</span>
+<a id="__codelineno-10-129" name="__codelineno-10-129" href="#__codelineno-10-129"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-130" name="__codelineno-10-130" href="#__codelineno-10-130"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-131" name="__codelineno-10-131" href="#__codelineno-10-131"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-132" name="__codelineno-10-132" href="#__codelineno-10-132"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-133" name="__codelineno-10-133" href="#__codelineno-10-133"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-10-134" name="__codelineno-10-134" href="#__codelineno-10-134"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-10-135" name="__codelineno-10-135" href="#__codelineno-10-135"></a><span class="w">            </span><span class="nt">&quot;flags&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DiffSyncModelFlags.NONE&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-136" name="__codelineno-10-136" href="#__codelineno-10-136"></a><span class="w">            </span><span class="nt">&quot;default_reference_uid&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-137" name="__codelineno-10-137" href="#__codelineno-10-137"></a><span class="w">            </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-138" name="__codelineno-10-138" href="#__codelineno-10-138"></a><span class="w">                </span><span class="nt">&quot;first_pass_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">473</span>
+<a id="__codelineno-10-139" name="__codelineno-10-139" href="#__codelineno-10-139"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-10-140" name="__codelineno-10-140" href="#__codelineno-10-140"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-10-141" name="__codelineno-10-141" href="#__codelineno-10-141"></a><span class="w">        </span><span class="nt">&quot;auth.user&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-142" name="__codelineno-10-142" href="#__codelineno-10-142"></a><span class="w">            </span><span class="nt">&quot;content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auth.user&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-143" name="__codelineno-10-143" href="#__codelineno-10-143"></a><span class="w">            </span><span class="nt">&quot;content_type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<a id="__codelineno-10-144" name="__codelineno-10-144" href="#__codelineno-10-144"></a><span class="w">            </span><span class="nt">&quot;extends_content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-145" name="__codelineno-10-145" href="#__codelineno-10-145"></a><span class="w">            </span><span class="nt">&quot;nautobot_content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;users.user&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-146" name="__codelineno-10-146" href="#__codelineno-10-146"></a><span class="w">            </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-147" name="__codelineno-10-147" href="#__codelineno-10-147"></a><span class="w">            </span><span class="nt">&quot;identifiers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-148" name="__codelineno-10-148" href="#__codelineno-10-148"></a><span class="w">                </span><span class="s2">&quot;username&quot;</span>
+<a id="__codelineno-10-149" name="__codelineno-10-149" href="#__codelineno-10-149"></a><span class="w">            </span><span class="p">],</span>
+<a id="__codelineno-10-150" name="__codelineno-10-150" href="#__codelineno-10-150"></a><span class="w">            </span><span class="nt">&quot;disable_related_reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-10-151" name="__codelineno-10-151" href="#__codelineno-10-151"></a><span class="w">            </span><span class="nt">&quot;forward_references&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-152" name="__codelineno-10-152" href="#__codelineno-10-152"></a><span class="w">            </span><span class="nt">&quot;pre_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-153" name="__codelineno-10-153" href="#__codelineno-10-153"></a><span class="w">            </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-154" name="__codelineno-10-154" href="#__codelineno-10-154"></a><span class="w">                </span><span class="nt">&quot;date_joined&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-155" name="__codelineno-10-155" href="#__codelineno-10-155"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;date_joined&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-156" name="__codelineno-10-156" href="#__codelineno-10-156"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;date_joined&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-157" name="__codelineno-10-157" href="#__codelineno-10-157"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DateTimeField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-158" name="__codelineno-10-158" href="#__codelineno-10-158"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-159" name="__codelineno-10-159" href="#__codelineno-10-159"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;datetime_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-160" name="__codelineno-10-160" href="#__codelineno-10-160"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;date_joined&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-161" name="__codelineno-10-161" href="#__codelineno-10-161"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-162" name="__codelineno-10-162" href="#__codelineno-10-162"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-163" name="__codelineno-10-163" href="#__codelineno-10-163"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-164" name="__codelineno-10-164" href="#__codelineno-10-164"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-165" name="__codelineno-10-165" href="#__codelineno-10-165"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-166" name="__codelineno-10-166" href="#__codelineno-10-166"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-10-167" name="__codelineno-10-167" href="#__codelineno-10-167"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-168" name="__codelineno-10-168" href="#__codelineno-10-168"></a><span class="w">                </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-169" name="__codelineno-10-169" href="#__codelineno-10-169"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-170" name="__codelineno-10-170" href="#__codelineno-10-170"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-171" name="__codelineno-10-171" href="#__codelineno-10-171"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CharField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-172" name="__codelineno-10-172" href="#__codelineno-10-172"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-173" name="__codelineno-10-173" href="#__codelineno-10-173"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-174" name="__codelineno-10-174" href="#__codelineno-10-174"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-175" name="__codelineno-10-175" href="#__codelineno-10-175"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-176" name="__codelineno-10-176" href="#__codelineno-10-176"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-177" name="__codelineno-10-177" href="#__codelineno-10-177"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-178" name="__codelineno-10-178" href="#__codelineno-10-178"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-179" name="__codelineno-10-179" href="#__codelineno-10-179"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-180" name="__codelineno-10-180" href="#__codelineno-10-180"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-181" name="__codelineno-10-181" href="#__codelineno-10-181"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-182" name="__codelineno-10-182" href="#__codelineno-10-182"></a><span class="w">                </span><span class="nt">&quot;first_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-183" name="__codelineno-10-183" href="#__codelineno-10-183"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-184" name="__codelineno-10-184" href="#__codelineno-10-184"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-185" name="__codelineno-10-185" href="#__codelineno-10-185"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CharField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-186" name="__codelineno-10-186" href="#__codelineno-10-186"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-187" name="__codelineno-10-187" href="#__codelineno-10-187"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-188" name="__codelineno-10-188" href="#__codelineno-10-188"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-189" name="__codelineno-10-189" href="#__codelineno-10-189"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-190" name="__codelineno-10-190" href="#__codelineno-10-190"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-191" name="__codelineno-10-191" href="#__codelineno-10-191"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-192" name="__codelineno-10-192" href="#__codelineno-10-192"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-193" name="__codelineno-10-193" href="#__codelineno-10-193"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-194" name="__codelineno-10-194" href="#__codelineno-10-194"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-195" name="__codelineno-10-195" href="#__codelineno-10-195"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-196" name="__codelineno-10-196" href="#__codelineno-10-196"></a><span class="w">                </span><span class="nt">&quot;groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-197" name="__codelineno-10-197" href="#__codelineno-10-197"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;groups&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-198" name="__codelineno-10-198" href="#__codelineno-10-198"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;groups&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-199" name="__codelineno-10-199" href="#__codelineno-10-199"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ManyToManyField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-200" name="__codelineno-10-200" href="#__codelineno-10-200"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-201" name="__codelineno-10-201" href="#__codelineno-10-201"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;identifiers_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-202" name="__codelineno-10-202" href="#__codelineno-10-202"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;groups&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-203" name="__codelineno-10-203" href="#__codelineno-10-203"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-204" name="__codelineno-10-204" href="#__codelineno-10-204"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-205" name="__codelineno-10-205" href="#__codelineno-10-205"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-206" name="__codelineno-10-206" href="#__codelineno-10-206"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-207" name="__codelineno-10-207" href="#__codelineno-10-207"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-208" name="__codelineno-10-208" href="#__codelineno-10-208"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-209" name="__codelineno-10-209" href="#__codelineno-10-209"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-210" name="__codelineno-10-210" href="#__codelineno-10-210"></a><span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-211" name="__codelineno-10-211" href="#__codelineno-10-211"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-212" name="__codelineno-10-212" href="#__codelineno-10-212"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-213" name="__codelineno-10-213" href="#__codelineno-10-213"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UUIDField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-214" name="__codelineno-10-214" href="#__codelineno-10-214"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-215" name="__codelineno-10-215" href="#__codelineno-10-215"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-216" name="__codelineno-10-216" href="#__codelineno-10-216"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-217" name="__codelineno-10-217" href="#__codelineno-10-217"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-218" name="__codelineno-10-218" href="#__codelineno-10-218"></a><span class="w">                        </span><span class="s2">&quot;AUTO&quot;</span>
+<a id="__codelineno-10-219" name="__codelineno-10-219" href="#__codelineno-10-219"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-220" name="__codelineno-10-220" href="#__codelineno-10-220"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-221" name="__codelineno-10-221" href="#__codelineno-10-221"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-222" name="__codelineno-10-222" href="#__codelineno-10-222"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-10-223" name="__codelineno-10-223" href="#__codelineno-10-223"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-224" name="__codelineno-10-224" href="#__codelineno-10-224"></a><span class="w">                </span><span class="nt">&quot;is_active&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-225" name="__codelineno-10-225" href="#__codelineno-10-225"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_active&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-226" name="__codelineno-10-226" href="#__codelineno-10-226"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_active&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-227" name="__codelineno-10-227" href="#__codelineno-10-227"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BooleanField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-228" name="__codelineno-10-228" href="#__codelineno-10-228"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-229" name="__codelineno-10-229" href="#__codelineno-10-229"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-230" name="__codelineno-10-230" href="#__codelineno-10-230"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_active&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-231" name="__codelineno-10-231" href="#__codelineno-10-231"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-232" name="__codelineno-10-232" href="#__codelineno-10-232"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-233" name="__codelineno-10-233" href="#__codelineno-10-233"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-234" name="__codelineno-10-234" href="#__codelineno-10-234"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-235" name="__codelineno-10-235" href="#__codelineno-10-235"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-236" name="__codelineno-10-236" href="#__codelineno-10-236"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-10-237" name="__codelineno-10-237" href="#__codelineno-10-237"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-238" name="__codelineno-10-238" href="#__codelineno-10-238"></a><span class="w">                </span><span class="nt">&quot;is_staff&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-239" name="__codelineno-10-239" href="#__codelineno-10-239"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_staff&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-240" name="__codelineno-10-240" href="#__codelineno-10-240"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_staff&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-241" name="__codelineno-10-241" href="#__codelineno-10-241"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BooleanField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-242" name="__codelineno-10-242" href="#__codelineno-10-242"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-243" name="__codelineno-10-243" href="#__codelineno-10-243"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-244" name="__codelineno-10-244" href="#__codelineno-10-244"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_staff&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-245" name="__codelineno-10-245" href="#__codelineno-10-245"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-246" name="__codelineno-10-246" href="#__codelineno-10-246"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-247" name="__codelineno-10-247" href="#__codelineno-10-247"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-248" name="__codelineno-10-248" href="#__codelineno-10-248"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-10-249" name="__codelineno-10-249" href="#__codelineno-10-249"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-250" name="__codelineno-10-250" href="#__codelineno-10-250"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-10-251" name="__codelineno-10-251" href="#__codelineno-10-251"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-252" name="__codelineno-10-252" href="#__codelineno-10-252"></a><span class="w">                </span><span class="nt">&quot;is_superuser&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-253" name="__codelineno-10-253" href="#__codelineno-10-253"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_superuser&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-254" name="__codelineno-10-254" href="#__codelineno-10-254"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_superuser&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-255" name="__codelineno-10-255" href="#__codelineno-10-255"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BooleanField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-256" name="__codelineno-10-256" href="#__codelineno-10-256"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-257" name="__codelineno-10-257" href="#__codelineno-10-257"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-258" name="__codelineno-10-258" href="#__codelineno-10-258"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;is_superuser&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-259" name="__codelineno-10-259" href="#__codelineno-10-259"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-260" name="__codelineno-10-260" href="#__codelineno-10-260"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-261" name="__codelineno-10-261" href="#__codelineno-10-261"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-262" name="__codelineno-10-262" href="#__codelineno-10-262"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-10-263" name="__codelineno-10-263" href="#__codelineno-10-263"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-264" name="__codelineno-10-264" href="#__codelineno-10-264"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-10-265" name="__codelineno-10-265" href="#__codelineno-10-265"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-266" name="__codelineno-10-266" href="#__codelineno-10-266"></a><span class="w">                </span><span class="nt">&quot;last_login&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-267" name="__codelineno-10-267" href="#__codelineno-10-267"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;last_login&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-268" name="__codelineno-10-268" href="#__codelineno-10-268"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-269" name="__codelineno-10-269" href="#__codelineno-10-269"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-270" name="__codelineno-10-270" href="#__codelineno-10-270"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-271" name="__codelineno-10-271" href="#__codelineno-10-271"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-272" name="__codelineno-10-272" href="#__codelineno-10-272"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-273" name="__codelineno-10-273" href="#__codelineno-10-273"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-274" name="__codelineno-10-274" href="#__codelineno-10-274"></a><span class="w">                        </span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-275" name="__codelineno-10-275" href="#__codelineno-10-275"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-276" name="__codelineno-10-276" href="#__codelineno-10-276"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-277" name="__codelineno-10-277" href="#__codelineno-10-277"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-278" name="__codelineno-10-278" href="#__codelineno-10-278"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Should not be attempted to migrate&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-279" name="__codelineno-10-279" href="#__codelineno-10-279"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-280" name="__codelineno-10-280" href="#__codelineno-10-280"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-281" name="__codelineno-10-281" href="#__codelineno-10-281"></a><span class="w">                </span><span class="nt">&quot;last_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-282" name="__codelineno-10-282" href="#__codelineno-10-282"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;last_name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-283" name="__codelineno-10-283" href="#__codelineno-10-283"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;last_name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-284" name="__codelineno-10-284" href="#__codelineno-10-284"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CharField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-285" name="__codelineno-10-285" href="#__codelineno-10-285"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-286" name="__codelineno-10-286" href="#__codelineno-10-286"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-287" name="__codelineno-10-287" href="#__codelineno-10-287"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;last_name&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-288" name="__codelineno-10-288" href="#__codelineno-10-288"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-289" name="__codelineno-10-289" href="#__codelineno-10-289"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-290" name="__codelineno-10-290" href="#__codelineno-10-290"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-291" name="__codelineno-10-291" href="#__codelineno-10-291"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-292" name="__codelineno-10-292" href="#__codelineno-10-292"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-293" name="__codelineno-10-293" href="#__codelineno-10-293"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-294" name="__codelineno-10-294" href="#__codelineno-10-294"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-295" name="__codelineno-10-295" href="#__codelineno-10-295"></a><span class="w">                </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-296" name="__codelineno-10-296" href="#__codelineno-10-296"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-297" name="__codelineno-10-297" href="#__codelineno-10-297"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-298" name="__codelineno-10-298" href="#__codelineno-10-298"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-299" name="__codelineno-10-299" href="#__codelineno-10-299"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-300" name="__codelineno-10-300" href="#__codelineno-10-300"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-301" name="__codelineno-10-301" href="#__codelineno-10-301"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-302" name="__codelineno-10-302" href="#__codelineno-10-302"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-303" name="__codelineno-10-303" href="#__codelineno-10-303"></a><span class="w">                        </span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-304" name="__codelineno-10-304" href="#__codelineno-10-304"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-305" name="__codelineno-10-305" href="#__codelineno-10-305"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-306" name="__codelineno-10-306" href="#__codelineno-10-306"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-307" name="__codelineno-10-307" href="#__codelineno-10-307"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Should not be attempted to migrate&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-308" name="__codelineno-10-308" href="#__codelineno-10-308"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-309" name="__codelineno-10-309" href="#__codelineno-10-309"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-310" name="__codelineno-10-310" href="#__codelineno-10-310"></a><span class="w">                </span><span class="nt">&quot;user_permissions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-311" name="__codelineno-10-311" href="#__codelineno-10-311"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user_permissions&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-312" name="__codelineno-10-312" href="#__codelineno-10-312"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-313" name="__codelineno-10-313" href="#__codelineno-10-313"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-314" name="__codelineno-10-314" href="#__codelineno-10-314"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-315" name="__codelineno-10-315" href="#__codelineno-10-315"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-316" name="__codelineno-10-316" href="#__codelineno-10-316"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-317" name="__codelineno-10-317" href="#__codelineno-10-317"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-318" name="__codelineno-10-318" href="#__codelineno-10-318"></a><span class="w">                        </span><span class="s2">&quot;CUSTOM&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-319" name="__codelineno-10-319" href="#__codelineno-10-319"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span>
+<a id="__codelineno-10-320" name="__codelineno-10-320" href="#__codelineno-10-320"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-321" name="__codelineno-10-321" href="#__codelineno-10-321"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-322" name="__codelineno-10-322" href="#__codelineno-10-322"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Permissions import is not implemented yet&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-323" name="__codelineno-10-323" href="#__codelineno-10-323"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-10-324" name="__codelineno-10-324" href="#__codelineno-10-324"></a><span class="w">                </span><span class="p">},</span>
+<a id="__codelineno-10-325" name="__codelineno-10-325" href="#__codelineno-10-325"></a><span class="w">                </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-326" name="__codelineno-10-326" href="#__codelineno-10-326"></a><span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;username&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-327" name="__codelineno-10-327" href="#__codelineno-10-327"></a><span class="w">                    </span><span class="nt">&quot;nautobot_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;username&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-328" name="__codelineno-10-328" href="#__codelineno-10-328"></a><span class="w">                    </span><span class="nt">&quot;nautobot_internal_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CharField&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-329" name="__codelineno-10-329" href="#__codelineno-10-329"></a><span class="w">                    </span><span class="nt">&quot;nautobot_can_import&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-330" name="__codelineno-10-330" href="#__codelineno-10-330"></a><span class="w">                    </span><span class="nt">&quot;importer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value_importer&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-331" name="__codelineno-10-331" href="#__codelineno-10-331"></a><span class="w">                    </span><span class="nt">&quot;definition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;username&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-332" name="__codelineno-10-332" href="#__codelineno-10-332"></a><span class="w">                    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-333" name="__codelineno-10-333" href="#__codelineno-10-333"></a><span class="w">                        </span><span class="s2">&quot;DATA&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-334" name="__codelineno-10-334" href="#__codelineno-10-334"></a><span class="w">                        </span><span class="s2">&quot;IDENTIFIER&quot;</span>
+<a id="__codelineno-10-335" name="__codelineno-10-335" href="#__codelineno-10-335"></a><span class="w">                    </span><span class="p">],</span>
+<a id="__codelineno-10-336" name="__codelineno-10-336" href="#__codelineno-10-336"></a><span class="w">                    </span><span class="nt">&quot;default_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-337" name="__codelineno-10-337" href="#__codelineno-10-337"></a><span class="w">                    </span><span class="nt">&quot;disable_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-338" name="__codelineno-10-338" href="#__codelineno-10-338"></a><span class="w">                    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-10-339" name="__codelineno-10-339" href="#__codelineno-10-339"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-10-340" name="__codelineno-10-340" href="#__codelineno-10-340"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-10-341" name="__codelineno-10-341" href="#__codelineno-10-341"></a><span class="w">            </span><span class="nt">&quot;flags&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DiffSyncModelFlags.NONE&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-342" name="__codelineno-10-342" href="#__codelineno-10-342"></a><span class="w">            </span><span class="nt">&quot;default_reference_uid&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-10-343" name="__codelineno-10-343" href="#__codelineno-10-343"></a><span class="w">            </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-344" name="__codelineno-10-344" href="#__codelineno-10-344"></a><span class="w">                </span><span class="nt">&quot;first_pass_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<a id="__codelineno-10-345" name="__codelineno-10-345" href="#__codelineno-10-345"></a><span class="w">                </span><span class="nt">&quot;second_pass_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<a id="__codelineno-10-346" name="__codelineno-10-346" href="#__codelineno-10-346"></a><span class="w">                </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<a id="__codelineno-10-347" name="__codelineno-10-347" href="#__codelineno-10-347"></a><span class="w">                </span><span class="nt">&quot;imported&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<a id="__codelineno-10-348" name="__codelineno-10-348" href="#__codelineno-10-348"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-10-349" name="__codelineno-10-349" href="#__codelineno-10-349"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-10-350" name="__codelineno-10-350" href="#__codelineno-10-350"></a><span class="err">...</span>
+<a id="__codelineno-10-351" name="__codelineno-10-351" href="#__codelineno-10-351"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-352" name="__codelineno-10-352" href="#__codelineno-10-352"></a><span class="w">    </span><span class="nt">&quot;nautobot&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-353" name="__codelineno-10-353" href="#__codelineno-10-353"></a><span class="w">        </span><span class="nt">&quot;admin.logentry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-354" name="__codelineno-10-354" href="#__codelineno-10-354"></a><span class="w">            </span><span class="nt">&quot;content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin.logentry&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-355" name="__codelineno-10-355" href="#__codelineno-10-355"></a><span class="w">            </span><span class="nt">&quot;content_type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span>
+<a id="__codelineno-10-356" name="__codelineno-10-356" href="#__codelineno-10-356"></a><span class="w">            </span><span class="nt">&quot;flags&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DiffSyncModelFlags.SKIP_UNMATCHED_DST&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-357" name="__codelineno-10-357" href="#__codelineno-10-357"></a><span class="w">            </span><span class="nt">&quot;disabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-10-358" name="__codelineno-10-358" href="#__codelineno-10-358"></a><span class="w">            </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<a id="__codelineno-10-359" name="__codelineno-10-359" href="#__codelineno-10-359"></a><span class="w">            </span><span class="nt">&quot;issues&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<a id="__codelineno-10-360" name="__codelineno-10-360" href="#__codelineno-10-360"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-10-361" name="__codelineno-10-361" href="#__codelineno-10-361"></a><span class="w">        </span><span class="nt">&quot;auth.group&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-362" name="__codelineno-10-362" href="#__codelineno-10-362"></a><span class="w">            </span><span class="nt">&quot;content_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auth.group&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-363" name="__codelineno-10-363" href="#__codelineno-10-363"></a><span class="w">            </span><span class="nt">&quot;content_type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<a id="__codelineno-10-364" name="__codelineno-10-364" href="#__codelineno-10-364"></a><span class="w">            </span><span class="nt">&quot;flags&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DiffSyncModelFlags.SKIP_UNMATCHED_DST&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-365" name="__codelineno-10-365" href="#__codelineno-10-365"></a><span class="w">            </span><span class="nt">&quot;disabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-10-366" name="__codelineno-10-366" href="#__codelineno-10-366"></a><span class="w">            </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-367" name="__codelineno-10-367" href="#__codelineno-10-367"></a><span class="w">                </span><span class="nt">&quot;source_created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-10-368" name="__codelineno-10-368" href="#__codelineno-10-368"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-10-369" name="__codelineno-10-369" href="#__codelineno-10-369"></a><span class="w">            </span><span class="nt">&quot;issues&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<a id="__codelineno-10-370" name="__codelineno-10-370" href="#__codelineno-10-370"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-10-371" name="__codelineno-10-371" href="#__codelineno-10-371"></a><span class="err">...</span>
+<a id="__codelineno-10-372" name="__codelineno-10-372" href="#__codelineno-10-372"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-373" name="__codelineno-10-373" href="#__codelineno-10-373"></a><span class="p">}</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="primary_keys.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Primary Keys">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Primary Keys
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="faq.html" class="md-footer__link md-footer__link--next" aria-label="Next: Frequently Asked Questions">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Frequently Asked Questions
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      
+<div class="md-copyright">
+    
+    <div class="md-copyright__highlight">
+        Copyright &copy; The Authors
+    </div>
+    <a href="https://github.com/nautobot/nautobot-app-netbox-importer/blob/main/LICENSE">Apache-2.0 LICENSE</a>
+    
+</div>
+
+<div class="md-copyright">
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Made with Material for MkDocs</a>
+    | <a href="https://www.networktocode.com/community/open-source/" target="_blank" rel="noopener">Join #Nautobot on the Network to Code Slack</a>
+    
+    | <a href="https://networktocode.com" target="_blank" rel="noopener">Sponsored by <img
+            src=../assets/networktocode_bw.png class="copyright-logo"></a>
+    
+</div>
+
+<!-- RTD version flyout injected on live site -->
+<div id="readthedocs-embed-flyout"></div>
+
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://blog.networktocode.com/blog/tags/nautobot" target="_blank" rel="noopener" title="Network to Code Blog" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M0 64c0-17.7 14.3-32 32-32 229.8 0 416 186.2 416 416 0 17.7-14.3 32-32 32s-32-14.3-32-32C384 253.6 226.4 96 32 96 14.3 96 0 81.7 0 64m0 352a64 64 0 1 1 128 0 64 64 0 1 1-128 0m32-256c159.1 0 288 128.9 288 288 0 17.7-14.3 32-32 32s-32-14.3-32-32c0-123.7-100.3-224-224-224-17.7 0-32-14.3-32-32s14.3-32 32-32"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://www.youtube.com/playlist?list=PLjA0bhxgryJ2Ts4GJMDA-tPzVWEncv4pb" target="_blank" rel="noopener" title="Nautobot Videos" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305m-317.51 213.508V175.185l142.739 81.205z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://www.networktocode.com/community/" target="_blank" rel="noopener" title="Network to Code Community" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1s21.16-47.06 47.06-47.06h47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06S448 171 448 196.9s-21.16 47.06-47.06 47.06h-47.06zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06S309 480 283.1 480s-47.06-21.16-47.06-47.06v-47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06s21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/nautobot/nautobot" target="_blank" rel="noopener" title="GitHub Repo" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://twitter.com/networktocode" target="_blank" rel="noopener" title="Network to Code Twitter" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "navigation.footer", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "search.highlight", "search.share", "search.suggest"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
