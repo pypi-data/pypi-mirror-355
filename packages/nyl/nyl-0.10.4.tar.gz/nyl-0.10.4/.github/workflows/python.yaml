@@ -1,0 +1,87 @@
+name: Python
+
+on:
+  push:
+    branches: [ develop ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  test-nix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Nix flake Nixpkgs inputs
+        uses: DeterminateSystems/flake-checker-action@main
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v16
+        with:
+          name: mycache
+
+      # Ignore failures until we can fix the Nix build.
+      - run: nix flake check || true
+      - run: nix run .#test || true
+
+  test-native:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: kyverno/action-install-cli@v0.2.0
+        with:
+          release: 'v1.13.2'
+
+      - name: Install SOPS
+        run: |
+          curl -LO https://github.com/getsops/sops/releases/download/v3.9.3/sops-v3.9.3.linux.amd64
+          mv sops-v3.9.3.linux.amd64 /usr/local/bin/sops
+          chmod +x /usr/local/bin/sops
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.5.20"
+
+      - run: uv sync
+      - run: uv run pytest .
+      - run: uv run mypy .
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: test-native
+    environment: release
+    permissions:
+      id-token: write
+    if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get tags
+        run: git fetch --tags origin
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Bump version
+        run: sed 's/version = ".*"/version = "${{ github.ref_name }}"/' -i pyproject.toml && git diff
+
+      - name: Install uv
+        run: python -m pip install uv
+
+      - name: Build dist
+        run: uv build
+
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
