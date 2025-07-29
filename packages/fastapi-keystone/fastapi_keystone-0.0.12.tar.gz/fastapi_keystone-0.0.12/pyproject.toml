@@ -1,0 +1,99 @@
+[project]
+name = "fastapi-keystone"
+version = "0.0.12"
+description = "🚀 基于 FastAPI 的现代化快速开发框架，提供企业级的多租户、依赖注入、路由管理等特性"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    {name = "alpha", email = "alphaqiu@gmail.com"}
+]
+keywords = ["fastapi", "framework", "mvc", "async", "orm"]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: FastAPI",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "aiomysql>=0.2.0",
+    "aiosqlite>=0.21.0",
+    "asyncio>=3.4.3",
+    "asyncpg>=0.30.0",
+    "cachetools>=6.0.0,<7.0.0",
+    "fastapi>=0.115.12",
+    "injector>=0.22.0",
+    "pydantic>=2.11.5,<3.0.0",
+    "pydantic-settings>=2.9.1",
+    "python-ulid>=3.0.0",
+    "pyyaml>=6.0.2",
+    "redis>=6.2.0,<7.0.0",
+    "rich>=14.0.0",
+    "sqlalchemy>=2.0.41",
+]
+
+[project.urls]
+Homepage = "https://github.com/alphaqiu/fastapi-keystone"
+Documentation = "https://github.com/alphaqiu/fastapi-keystone#readme"
+Repository = "https://github.com/alphaqiu/fastapi-keystone"
+Issues = "https://github.com/alphaqiu/fastapi-keystone/issues"
+Changelog = "https://github.com/alphaqiu/fastapi-keystone/releases"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "build>=1.2.2.post1",
+    "isort>=6.0.1",
+    "pytest>=8.4.0",
+    "ruff>=0.11.13",
+    "pytest-asyncio>=1.0.0",
+    "pytest-cov>=6.1.1",
+    "twine>=6.1.0",
+    "uvicorn>=0.34.3",
+    "httpx>=0.28.1",
+    "bumpver>=2024.1130",
+    "mypy>=1.16.0",
+    "types-pyyaml>=6.0.12.20250516",
+]
+
+[bumpver]
+current_version = "0.0.12"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = true
+
+[bumpver.file_patterns]
+"VERSION" = [
+    '{version}'
+]
+"pyproject.toml" = [
+    '^version = "{version}"',
+    '^current_version = "{version}"',
+]
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["src"]
+addopts = "-s -v"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests*"]
+
+[tool.ruff]
+line-length = 100
