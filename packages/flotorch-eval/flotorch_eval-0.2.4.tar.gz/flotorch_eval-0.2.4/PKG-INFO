@@ -1,0 +1,131 @@
+Metadata-Version: 2.4
+Name: flotorch-eval
+Version: 0.2.4
+Summary: A comprehensive evaluation framework for AI systems
+Author-email: Nanda Rajashekaruni <nanda@flotorch.ai>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: agents,ai,evaluation,models,opentelemetry,ragas
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: typing-extensions>=4.7.0
+Provides-Extra: agent
+Requires-Dist: agentevals>=0.0.8; extra == 'agent'
+Requires-Dist: langchain>=0.1.0; extra == 'agent'
+Requires-Dist: opentelemetry-api>=1.0.0; extra == 'agent'
+Requires-Dist: opentelemetry-sdk>=1.0.0; extra == 'agent'
+Requires-Dist: ragas>=0.0.20; extra == 'agent'
+Provides-Extra: all
+Requires-Dist: agentevals>=0.0.8; extra == 'all'
+Requires-Dist: black>=22.0.0; extra == 'all'
+Requires-Dist: flake8>=4.0.0; extra == 'all'
+Requires-Dist: isort>=5.0.0; extra == 'all'
+Requires-Dist: langchain>=0.1.0; extra == 'all'
+Requires-Dist: mypy>=1.0.0; extra == 'all'
+Requires-Dist: opentelemetry-api>=1.0.0; extra == 'all'
+Requires-Dist: opentelemetry-sdk>=1.0.0; extra == 'all'
+Requires-Dist: pytest-asyncio>=0.14.0; extra == 'all'
+Requires-Dist: pytest-cov>=2.0.0; extra == 'all'
+Requires-Dist: pytest>=7.0.0; extra == 'all'
+Requires-Dist: ragas>=0.0.20; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: black>=22.0.0; extra == 'dev'
+Requires-Dist: flake8>=4.0.0; extra == 'dev'
+Requires-Dist: isort>=5.0.0; extra == 'dev'
+Requires-Dist: mypy>=1.0.0; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.14.0; extra == 'dev'
+Requires-Dist: pytest-cov>=2.0.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# FlotorchEval
+
+**FlotorchEval** is a comprehensive evaluation framework for AI systems. It enables analysis of LLM agents using OpenTelemetry traces, supports multiple evaluation metrics (including LangChain, Ragas, and custom metrics), and provides tooling for advanced cost and usage analysis.
+
+---
+
+## 📦 Features
+
+- **Agent Evaluation**: Evaluate LLM agents using structured trajectories
+- **Metrics Support**:
+  - LangChain metrics
+  - RAGAS metrics
+  - Custom cost, usage, and goal accuracy metrics
+- **Trace Conversion**: Convert OpenTelemetry traces to evaluation-ready formats
+- **Cost & Token Tracking**: Calculate cost and token usage across models
+
+---
+
+## 🧰 Installation
+
+Install the base package:
+
+```bash
+pip install flotorch-eval
+
+# With agent evaluation support:
+pip install "flotorch-eval[agent]"
+
+# With development tools:
+pip install "flotorch-eval[dev]"
+
+# Install everything:
+pip install "flotorch-eval[all]"
+```
+
+## Quick Start – Agent Evaluation
+
+```bash
+from flotorch_eval.agent_eval import TraceConverter, Evaluator
+from flotorch_eval.agent_eval.metrics import (
+    TrajectoryEvalWithLLMMetric,
+    TrajectoryEvalWithoutLLMMetric,
+    ToolCallAccuracyMetric,
+    AgentGoalAccuracyMetric,
+)
+from flotorch_eval.agent_eval.metrics.base import MetricConfig
+
+# Convert OpenTelemetry spans to trajectory
+converter = TraceConverter()
+trajectory = converter.from_spans(spans)
+
+# Setup evaluator with multiple metrics
+evaluator = Evaluator([
+    TrajectoryEvalWithLLMMetric(
+        llm=llm,
+        config=MetricConfig(metric_params={"reference_trajectory": reference})
+    ),
+    TrajectoryEvalWithoutLLMMetric(
+        config=MetricConfig(metric_params={"reference_trajectory": reference})
+    ),
+    ToolCallAccuracyMetric(),
+    AgentGoalAccuracyMetric(
+        llm=llm,
+        config=MetricConfig(metric_params={
+            "reference_answer": "Amazon Bedrock is a fully managed service that makes it easy to use foundation models from third-party providers and Amazon."
+        })
+    )
+])
+
+# Run evaluation
+results = await evaluator.evaluate(trajectory)
+
+results = await evaluator.evaluate(trajectory)
+```
+
+## Documentation
+Full documentation is available at https://docs.flotorch.ai
+
+## Contributing
+We welcome contributions! Please see our CONTRIBUTING.md for guidelines.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.

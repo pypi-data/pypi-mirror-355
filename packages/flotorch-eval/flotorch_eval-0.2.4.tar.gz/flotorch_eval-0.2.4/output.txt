@@ -1,0 +1,1808 @@
+./flotorch_eval\__init__.py
+"""
+FlotorchEval - A comprehensive evaluation framework for AI systems.
+"""
+
+__version__ = "0.2.2"
+
+from flotorch_eval.common.metrics import BaseMetric, MetricConfig
+from flotorch_eval.common.utils import convert_attributes
+
+__all__ = [
+    "BaseMetric",
+    "MetricConfig",
+    "convert_attributes",
+]
+
+
+------
+
+./flotorch_eval\agent_eval\__init__.py
+"""
+Agent evaluation package.
+"""
+
+from flotorch_eval.agent_eval.core.evaluator import Evaluator
+from flotorch_eval.agent_eval.core.schemas import (
+    EvaluationResult,
+    Message,
+    MetricResult,
+    Span,
+    SpanEvent,
+    ToolCall,
+    Trajectory,
+)
+from flotorch_eval.agent_eval.core.converter import TraceConverter
+from flotorch_eval.agent_eval.metrics.base import BaseMetric
+from flotorch_eval.agent_eval.metrics.langchain_metrics import TrajectoryEvalWithLLMMetric
+from flotorch_eval.agent_eval.metrics.ragas_metrics import (
+    AgentGoalAccuracyMetric,
+    ToolCallAccuracyMetric,
+)
+
+__all__ = [
+    "BaseMetric",
+    "Evaluator",
+    "EvaluationResult",
+    "Message",
+    "MetricResult",
+    "Span",
+    "SpanEvent",
+    "ToolCall",
+    "Trajectory",
+    "TraceConverter",
+    "TrajectoryEvalWithLLMMetric",
+    "AgentGoalAccuracyMetric",
+    "ToolCallAccuracyMetric",
+]
+
+
+------
+
+./flotorch_eval\agent_eval\core\converter.py
+"""
+Converter module for transforming OpenTelemetry traces into agent trajectories.
+"""
+
+from datetime import datetime
+import ast
+import json
+import re
+from typing import Dict, List, Optional, Union
+
+from opentelemetry.trace import Span as OTelSpan
+from opentelemetry.trace import SpanKind
+
+from flotorch_eval.agent_eval.core.schemas import Message, Span, SpanEvent, ToolCall, Trajectory
+from flotorch_eval.common.utils import convert_attributes
+
+
+class TraceConverter:
+    """Converts OpenTelemetry traces into agent trajectories using standardized conventions."""
+
+    def from_spans(self, spans: List[OTelSpan]) -> Trajectory:
+        sorted_spans = sorted(spans, key=lambda x: x.start_time)
+        internal_spans = []
+
+        # First convert all spans to our internal format
+        for span in sorted_spans:
+            internal_span = Span(
+                span_id=format(span.context.span_id, "016x"),
+                trace_id=format(span.context.trace_id, "032x"),
+                parent_id=format(span.parent.span_id, "016x") if span.parent else None,
+                name=span.name,
+                start_time=datetime.fromtimestamp(span.start_time / 1e9),
+                end_time=datetime.fromtimestamp(span.end_time / 1e9),
+                attributes=self._convert_attributes(span.attributes),
+                events=[
+                    SpanEvent(
+                        name=event.name,
+                        timestamp=datetime.fromtimestamp(event.timestamp / 1e9),
+                        attributes=self._convert_attributes(event.attributes),
+                    )
+                    for event in span.events
+                ],
+            )
+            internal_spans.append(internal_span)
+
+        messages: List[Message] = []
+        current_tool_calls = []  # Track all tool calls for matching with outputs
+        pending_tool_messages = []  # Store tool messages until their assistant message
+        has_assistant_message = False
+
+        # Process spans to build the conversation
+        for span in internal_spans:
+            if span.name.startswith("Model invoke"):
+                # Handle Strands format
+                prompt = span.attributes.get("gen_ai.prompt")
+                completion = span.attributes.get("gen_ai.completion")
+
+                if prompt:
+                    try:
+                        prompt_data = json.loads(prompt)
+                        if isinstance(prompt_data, list) and len(prompt_data) > 0:
+                            user_msg = prompt_data[0]
+                            if user_msg.get("role") == "user" and not any(m.role == "user" for m in messages):
+                                content = user_msg.get("content", [])
+                                if isinstance(content, list) and len(content) > 0:
+                                    user_content = content[0].get("text", "")
+                                    messages.append(
+                                        Message(
+                                            role="user",
+                                            content=user_content,
+                                            timestamp=span.start_time,
+                                            tool_calls=[],
+                                        )
+                                    )
+                    except (json.JSONDecodeError, AttributeError):
+                        pass
+
+                if completion:
+                    try:
+                        completion_data = json.loads(completion)
+                        if isinstance(completion_data, list):
+                            thought = None
+                            tool_calls = []
+                            
+                            for item in completion_data:
+                                if isinstance(item, dict):
+                                    if "text" in item:
+                                        thought = item["text"]
+                                    elif "toolUse" in item:
+                                        tool_use = item["toolUse"]
+                                        tool_calls.append(
+                                            ToolCall(
+                                                name=tool_use.get("name", ""),
+                                                arguments=tool_use.get("input", {}),
+                                                timestamp=span.start_time,
+                                                output=None
+                                            )
+                                        )
+                            
+                            if thought or tool_calls:
+                                messages.append(
+                                    Message(
+                                        role="assistant",
+                                        content=thought or "",
+                                        timestamp=span.start_time,
+                                        tool_calls=tool_calls,
+                                    )
+                                )
+                                current_tool_calls.extend(tool_calls)
+                                has_assistant_message = True
+
+                                # Add any pending tool messages now that we have an assistant message
+                                if pending_tool_messages:
+                                    messages.extend(pending_tool_messages)
+                                    pending_tool_messages = []
+
+                    except (json.JSONDecodeError, AttributeError):
+                        pass
+
+            elif span.name.startswith("Tool:"):
+                # Handle Strands tool format
+                tool_name = span.name.replace("Tool: ", "")
+                tool_result = span.attributes.get("tool.result")
+                
+                if tool_result:
+                    try:
+                        result_data = json.loads(tool_result)
+                        if isinstance(result_data, list):
+                            # Combine all text parts
+                            tool_output_parts = []
+                            for item in result_data:
+                                if isinstance(item, dict) and "text" in item:
+                                    text = item.get("text", "").strip()
+                                    if text:
+                                        tool_output_parts.append(text)
+                            
+                            tool_output = "\n".join(tool_output_parts)
+                            
+                            if tool_output:
+                                tool_message = Message(
+                                    role="tool",
+                                    content=tool_output,
+                                    timestamp=span.end_time,
+                                    tool_calls=[],
+                                )
+
+                                # Update the corresponding tool call with the output
+                                for tool_call in current_tool_calls:
+                                    if tool_call.name == tool_name:
+                                        tool_call.output = tool_output
+                                        break
+
+                                # Add message immediately if we have an assistant message, otherwise store it
+                                if has_assistant_message:
+                                    messages.append(tool_message)
+                                else:
+                                    pending_tool_messages.append(tool_message)
+
+                    except (json.JSONDecodeError, AttributeError):
+                        pass
+
+            elif span.name.startswith("chat") or span.attributes.get(
+                "gen_ai.operation.name"
+            ) in ["chat", "completion"]:
+                # Handle CrewAI format
+                prompt = self._extract_prompt_from_events(span)
+                completion = self._extract_completion_from_events(span)
+
+                if prompt:
+                    user_content = self._extract_user_content_from_prompt(prompt)
+                    if user_content and not any(m.role == "user" for m in messages):
+                        messages.append(
+                            Message(
+                                role="user",
+                                content=user_content,
+                                timestamp=span.start_time,
+                                tool_calls=[],
+                            )
+                        )
+
+                if completion:
+                    tool_calls, thought = self._parse_assistant_output(
+                        completion, span.start_time
+                    )
+                    if thought or tool_calls:
+                        messages.append(
+                            Message(
+                                role="assistant",
+                                content=thought or "",
+                                timestamp=span.start_time,
+                                tool_calls=tool_calls,
+                            )
+                        )
+                        current_tool_calls.extend(tool_calls)
+                        has_assistant_message = True
+
+                        # Add any pending tool messages now that we have an assistant message
+                        if pending_tool_messages:
+                            messages.extend(pending_tool_messages)
+                            pending_tool_messages = []
+
+            elif span.name == "Tool Usage" or span.attributes.get("gen_ai.agent.tools"):
+                # Handle CrewAI tool format
+                tool_name = None
+                tool_output = ""
+
+                # Try to get tool name from tool definition
+                if "gen_ai.agent.tools" in span.attributes:
+                    try:
+                        tools_str = span.attributes["gen_ai.agent.tools"]
+                        if isinstance(tools_str, str):
+                            tools = ast.literal_eval(tools_str)
+                            if tools and isinstance(tools, list) and len(tools) > 0:
+                                tool_name = tools[0].get("name")
+                    except (ValueError, SyntaxError, AttributeError):
+                        pass
+
+                # Get tool output from new format
+                if "gen_ai.agent.tool_results" in span.attributes:
+                    try:
+                        results_str = span.attributes["gen_ai.agent.tool_results"]
+                        if isinstance(results_str, str):
+                            results = ast.literal_eval(results_str)
+                            if (
+                                results
+                                and isinstance(results, list)
+                                and len(results) > 0
+                            ):
+                                tool_output = results[0].get("result", "")
+                    except (ValueError, SyntaxError, AttributeError):
+                        pass
+
+                if tool_output and tool_name:
+                    tool_output = tool_output.rstrip('"}')
+                    tool_message = Message(
+                        role="tool",
+                        content=tool_output,
+                        timestamp=span.end_time,
+                        tool_calls=[],
+                    )
+
+                    # Update the corresponding tool call with the output
+                    for tool_call in current_tool_calls:
+                        if tool_call.name == tool_name:
+                            tool_call.output = tool_output
+                            break
+
+                    # Add message immediately if we have an assistant message, otherwise store it
+                    if has_assistant_message:
+                        messages.append(tool_message)
+                    else:
+                        pending_tool_messages.append(tool_message)
+
+        return Trajectory(
+            trace_id=format(spans[0].context.trace_id, "032x") if spans else "",
+            messages=messages,
+            spans=internal_spans,
+        )
+
+    def _convert_attributes(
+        self, attributes: Dict[str, Union[str, int, float, bool, List[str]]]
+    ) -> Dict[str, Union[str, int, float, bool, List[str]]]:
+        """Convert span attributes to our internal format."""
+        result = {}
+        for key, value in attributes.items():
+            if isinstance(value, (str, int, float, bool)) or (
+                isinstance(value, list)
+                and all(isinstance(x, (str, int, float, bool)) for x in value)
+            ):
+                result[key] = value
+            else:
+                try:
+                    result[key] = json.dumps(value)
+                except TypeError:
+                    result[key] = str(value)
+        return result
+
+    def _extract_prompt_from_events(self, span: Span) -> Optional[str]:
+        """Extract prompt from span events."""
+        for event in span.events:
+            if "gen_ai.content.prompt" in event.name:
+                prompt_data = event.attributes["gen_ai.prompt"]
+                if isinstance(prompt_data, dict):
+                    return prompt_data.get("gen_ai.prompt", "")
+                return prompt_data
+        return None
+
+    def _extract_completion_from_events(self, span: Span) -> Optional[str]:
+        """Extract completion from span events."""
+        for event in span.events:
+            if "gen_ai.content.completion" in event.name:
+                completion_data = event.attributes["gen_ai.completion"]
+                if isinstance(completion_data, dict):
+                    return completion_data.get("gen_ai.completion", "")
+                return completion_data
+        return None
+
+    def _parse_assistant_output(
+        self, completion: str, timestamp: datetime
+    ) -> tuple[List[ToolCall], Optional[str]]:
+        """Parse the assistant output to extract tool calls and thought."""
+        tool_calls = []
+
+        # Check for Final Answer first
+        if "Final Answer:" in completion:
+            final_answer_match = re.search(r"Final Answer:(.*?)(?=\n|$)", completion, re.DOTALL)
+            if final_answer_match:
+                return [], final_answer_match.group(1).strip()
+
+        # Extract thought if present
+        thought_match = re.search(
+            r"Thought:(.*?)(?=\nAction:|Final Answer:|$)", completion, re.DOTALL
+        )
+        thought = thought_match.group(1).strip() if thought_match else None
+
+        # Extract action if present
+        action_match = re.search(r"Action:(.*?)(?=\nAction Input:|$)", completion, re.DOTALL)
+        if action_match:
+            action = action_match.group(1).strip()
+            # Extract action input
+            action_input_match = re.search(
+                r"Action Input:(.*?)(?=\nObservation:|$)", completion, re.DOTALL
+            )
+            if action_input_match:
+                action_input = action_input_match.group(1).strip()
+                # Try to parse action input as JSON
+                try:
+                    # If it's already a dictionary string, parse it
+                    if action_input.startswith("{"):
+                        arguments = json.loads(action_input)
+                    else:
+                        # If it's a quoted string, remove the quotes first
+                        if action_input.startswith('"') and action_input.endswith('"'):
+                            action_input = action_input[1:-1]
+                        # Try to find a JSON object within the string
+                        json_match = re.search(r"\{.*\}", action_input)
+                        if json_match:
+                            arguments = json.loads(json_match.group(0))
+                        else:
+                            # If no JSON found, create a simple dict with the input as a value
+                            arguments = {"input": action_input}
+                except json.JSONDecodeError:
+                    # If JSON parsing fails, create a simple dict with the input as a value
+                    arguments = {"input": action_input}
+
+                tool_calls.append(
+                    ToolCall(
+                        name=action,
+                        arguments=arguments,
+                        timestamp=timestamp,
+                        output=None,
+                    )
+                )
+
+        return tool_calls, thought
+
+    def _extract_user_content_from_prompt(self, prompt: str) -> str:
+        """Extracts the user's explicit task from the initial prompt structure."""
+        user_content = prompt.strip()
+
+        # Try to extract from gen_ai.prompt dictionary
+        if isinstance(user_content, dict) and "gen_ai.prompt" in user_content:
+            user_content = user_content["gen_ai.prompt"]
+
+        # Try to extract from JSON string
+        try:
+            data = json.loads(user_content)
+            if isinstance(data, dict) and "gen_ai.prompt" in data:
+                user_content = data["gen_ai.prompt"]
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+        # Look for task in system prompt format
+        task_match = re.search(
+            r"Current Task:\s*(.*?)(?=\n\nThis is the expected criteria|$)",
+            user_content,
+            re.DOTALL,
+        )
+        if task_match:
+            user_content = task_match.group(1).strip()
+            return user_content
+
+        # Look for direct user message format
+        if "user:" in user_content:
+            user_content = user_content.split("user:", 1)[1].strip()
+
+            # Remove any remaining system prompt parts
+            if "system:" in user_content:
+                user_content = user_content.split("system:", 1)[0].strip()
+
+            # Remove any trailing JSON artifacts
+            user_content = user_content.rstrip('"}')
+
+            # Extract just the task part if criteria is included
+            if "This is the expected criteria" in user_content:
+                user_content = user_content.split("This is the expected criteria", 1)[
+                    0
+                ].strip()
+
+            return user_content.strip()
+
+        return user_content.strip()
+
+------
+
+./flotorch_eval\agent_eval\core\evaluator.py
+"""
+Evaluator module for computing metrics on agent trajectories.
+"""
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+from flotorch_eval.agent_eval.core.schemas import EvaluationResult, Trajectory
+from flotorch_eval.agent_eval.metrics.base import BaseMetric, MetricResult
+
+
+class Evaluator:
+    """Orchestrates the evaluation of agent trajectories using multiple metrics."""
+
+    def __init__(self, metrics: Optional[List[BaseMetric]] = None):
+        """
+        Initialize evaluator with metrics.
+
+        Args:
+            metrics: List of metric instances to use for evaluation
+        """
+        self.metrics = metrics or []
+
+    def add_metric(self, metric: BaseMetric) -> None:
+        """Add a metric to the evaluator."""
+        self.metrics.append(metric)
+
+    def add_metrics(self, metrics: List[BaseMetric]) -> None:
+        """Add multiple metrics to the evaluator."""
+        self.metrics.extend(metrics)
+
+    async def evaluate(
+        self, trajectory: Trajectory, metrics: Optional[List[BaseMetric]] = None
+    ) -> EvaluationResult:
+        """
+        Evaluate a trajectory using the configured metrics.
+
+        Args:
+            trajectory: The trajectory to evaluate
+            metrics: Optional list of metrics to use instead of configured ones
+
+        Returns:
+            EvaluationResult containing scores from all metrics
+        """
+        metrics_to_use = metrics or self.metrics
+        scores = []
+
+        for metric in metrics_to_use:
+            result = await metric.compute(trajectory)
+            scores.append(result)
+
+        return EvaluationResult(trajectory_id=trajectory.trace_id, scores=scores)
+
+
+------
+
+./flotorch_eval\agent_eval\core\schemas.py
+"""
+Core schemas for agent evaluation.
+"""
+
+from datetime import datetime
+from typing import Dict, List, Optional, Union
+
+from pydantic import BaseModel, Field
+
+
+class ToolCall(BaseModel):
+    """A tool call made by an agent."""
+
+    name: str = Field(description="Name of the tool called")
+    arguments: Dict[str, Union[str, int, float, bool, List[str]]] = Field(
+        description="Arguments passed to the tool"
+    )
+    output: Optional[str] = Field(None, description="Output from the tool")
+    timestamp: Optional[datetime] = Field(None, description="When the tool was invoked")
+
+
+class Message(BaseModel):
+    """A message in an agent trajectory."""
+
+    role: str = Field(description="Role of the message sender (user/assistant/tool)")
+    content: str = Field(description="Content of the message")
+    tool_calls: Optional[List[ToolCall]] = Field(None, description="Tool calls made in this message")
+    timestamp: Optional[datetime] = Field(None, description="When the message was sent")
+
+
+class SpanEvent(BaseModel):
+    """An event in a span."""
+
+    name: str = Field(description="Name of the event")
+    timestamp: datetime = Field(description="When the event occurred")
+    attributes: Dict[str, Union[str, int, float, bool, List[str]]] = Field(
+        default_factory=dict, description="Attributes of the event"
+    )
+
+
+class Span(BaseModel):
+    """A span in a trace."""
+
+    span_id: str = Field(description="Unique identifier for the span")
+    trace_id: str = Field(description="Identifier of the trace this span belongs to")
+    parent_id: Optional[str] = Field(None, description="Identifier of the parent span")
+    name: str = Field(description="Name of the span")
+    start_time: datetime = Field(description="When the span started")
+    end_time: datetime = Field(description="When the span ended")
+    attributes: Dict[str, Union[str, int, float, bool, List[str]]] = Field(
+        default_factory=dict, description="Attributes of the span"
+    )
+    events: List[SpanEvent] = Field(default_factory=list, description="Events in the span")
+
+
+class Trajectory(BaseModel):
+    """A trajectory of agent interactions."""
+
+    trace_id: str = Field(description="Unique identifier for the trajectory")
+    messages: List[Message] = Field(description="Messages in the trajectory")
+    spans: List[Span] = Field(description="Spans in the trajectory")
+
+
+class MetricResult(BaseModel):
+    """Result from a single metric evaluation."""
+
+    name: str
+    score: float
+    details: Optional[Dict[str, Union[str, int, float, bool, List[str], List[Dict[str, Union[str, int, float]]]]]]
+
+
+class EvaluationResult(BaseModel):
+    """Complete evaluation results for a trajectory."""
+
+    trajectory_id: str
+    scores: List[MetricResult]
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    metadata: Dict[str, Union[str, int, float, bool, List[str]]] = Field(
+        default_factory=dict
+    )
+
+
+class TokenUsageRecord(BaseModel):
+    """Represents token usage details for a single span."""
+    span_name: str
+    span_id: str
+    model: str
+    input_tokens: int
+    output_tokens: int
+    total_tokens: int
+
+
+class TokenTotals(BaseModel):
+    """Aggregated totals for all token usage across spans."""
+    input_tokens: int
+    output_tokens: int
+    total_tokens: int
+
+
+class TokenUsageSummary(BaseModel):
+    """Structured response containing per-span token usage and overall totals."""
+    token_usage: List[TokenUsageRecord]
+    totals: TokenTotals
+
+class CostRecord(BaseModel):
+    """Per-span cost breakdown."""
+    span_id: str
+    model: str
+    input_tokens: int
+    output_tokens: int
+    cost: float
+
+
+class CostSummary(BaseModel):
+    """Aggregate and per-span cost results."""
+    total_cost: float
+    average_cost_per_call: float
+    cost_breakdown: List[CostRecord]
+
+class LatencyBreakdownItem:
+    def __init__(self, step_name: str, latency_ms: float):
+        self.step_name = step_name
+        self.latency_ms = latency_ms
+
+    def to_dict(self) -> Dict:
+        return {
+            "step_name": self.step_name,
+            "latency_ms": self.latency_ms,
+        }
+
+class LatencySummary:
+    def __init__(
+        self,
+        total_latency_ms: float,
+        average_step_latency_ms: float,
+        latency_breakdown: List[LatencyBreakdownItem]
+    ):
+        self.total_latency_ms = total_latency_ms
+        self.average_step_latency_ms = average_step_latency_ms
+        self.latency_breakdown = latency_breakdown
+
+    def to_dict(self) -> Dict:
+        return {
+            "total_latency_ms": self.total_latency_ms,
+            "average_step_latency_ms": self.average_step_latency_ms,
+            "latency_breakdown": [item.to_dict() for item in self.latency_breakdown],
+        }
+
+------
+
+./flotorch_eval\agent_eval\core\__init__.py
+
+
+------
+
+./flotorch_eval\agent_eval\integrations\ragas_utils.py
+"""
+Utility functions for Ragas integration.
+"""
+
+from typing import Dict, List, Optional, Tuple
+
+import ragas.messages as r
+
+from flotorch_eval.agent_eval.core.schemas import Message, ToolCall, Trajectory
+
+def convert_to_ragas_format(trajectory: Trajectory) -> List[r.Message]:
+    """
+    Convert a trajectory to Ragas message format.
+    
+    Args:
+        trajectory: The trajectory to convert
+        
+    Returns:
+        List of Ragas messages
+    """
+    ragas_messages = []
+    for msg in trajectory.messages:
+        if msg.role == "user":
+            ragas_messages.append(r.HumanMessage(content=msg.content))
+        elif msg.role == "assistant":
+            if msg.tool_calls:
+                tool_calls = []
+                for tc in msg.tool_calls:
+                    tool_calls.append(
+                        r.ToolCall(
+                            name=tc.name,
+                            arguments=tc.arguments,
+                            output=tc.output if tc.output else ""
+                        )
+                    )
+                ragas_messages.append(
+                    r.AssistantMessage(
+                        content=msg.content,
+                        tool_calls=tool_calls
+                    )
+                )
+            else:
+                ragas_messages.append(r.AssistantMessage(content=msg.content))
+        elif msg.role == "tool":
+            ragas_messages.append(r.ToolMessage(content=msg.content))
+    return ragas_messages
+
+
+------
+
+./flotorch_eval\agent_eval\integrations\__init__.py
+
+
+------
+
+./flotorch_eval\agent_eval\metrics\base.py
+"""
+Base classes and interfaces for evaluation metrics.
+"""
+
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Optional, Union
+
+from pydantic import BaseModel, Field
+
+from flotorch_eval.agent_eval.core.schemas import Trajectory, MetricResult
+from flotorch_eval.common.metrics import BaseMetric as CommonBaseMetric
+from flotorch_eval.common.metrics import MetricConfig
+
+
+class MetricConfig(BaseModel):
+    """Base configuration for metrics."""
+
+    metric_params: Dict[str, Any] = Field(
+        default_factory=dict, description="Metric-specific parameters"
+    )
+
+
+class BaseMetric(ABC):
+    """Base class for all evaluation metrics."""
+
+    requires_llm: bool = False
+
+    def __init__(
+        self, llm: Optional[Any] = None, config: Optional[MetricConfig] = None
+    ):
+        """
+        Initialize the metric.
+
+        Args:
+            llm: Language model to use for evaluation (if required)
+            config: Configuration for the metric including metric-specific parameters
+        """
+        if self.requires_llm and llm is None:
+            raise ValueError(
+                f"{self.__class__.__name__} requires an LLM for evaluation"
+            )
+
+        self.llm = llm
+        self.config = config or MetricConfig()
+        self._setup()
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        """Return the name of the metric."""
+        pass
+
+    @abstractmethod
+    def _setup(self) -> None:
+        """
+        Setup the metric with necessary components.
+        This method should be called in __init__ and when config changes.
+        """
+        pass
+
+    @abstractmethod
+    async def compute(self, trajectory: Trajectory) -> MetricResult:
+        """
+        Compute the metric for a given trajectory.
+
+        Args:
+            trajectory: The trajectory to evaluate
+
+        Returns:
+            MetricResult containing the score and optional details
+        """
+        pass
+
+    def update_config(self, config: MetricConfig) -> None:
+        """
+        Update the metric configuration.
+
+        Args:
+            config: New configuration for the metric
+        """
+        self.config = config
+        self._setup()
+
+    def update_llm(self, llm: Any) -> None:
+        """
+        Update the LLM used by the metric.
+
+        Args:
+            llm: New language model to use
+        """
+        if self.requires_llm and llm is None:
+            raise ValueError(
+                f"{self.__class__.__name__} requires an LLM for evaluation"
+            )
+
+        self.llm = llm
+        self._setup()
+
+
+------
+
+./flotorch_eval\agent_eval\metrics\langchain_metrics.py
+"""
+LangChain-based evaluation metrics.
+"""
+
+import json
+from typing import Any, Dict, List, Literal, Optional, Union
+
+from agentevals.trajectory.llm import (
+    TRAJECTORY_ACCURACY_PROMPT,
+    TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
+    create_trajectory_llm_as_judge,
+)
+from agentevals.trajectory.match import create_trajectory_match_evaluator
+from langchain.chat_models.base import BaseChatModel
+from langchain.evaluation import load_evaluator
+from langchain_core.language_models.chat_models import BaseChatModel
+
+from flotorch_eval.agent_eval.metrics.base import BaseMetric, MetricConfig
+from flotorch_eval.agent_eval.core.schemas import MetricResult, Trajectory
+
+# Define valid match modes
+TrajectoryMatchMode = Literal["strict", "unordered", "subset", "superset"]
+ToolArgsMatchMode = Literal["exact", "ignore", "subset", "superset"]
+
+
+class LangChainAgentsEvalMixin:
+    """Evaluates agent responses based on custom criteria using LangChain Agent Evals."""
+
+    def _convert_to_standard_format(
+        self, trajectory: Trajectory
+    ) -> List[Dict[str, Any]]:
+        """Convert trajectory to standard format for evaluation."""
+        outputs = []
+        for msg in trajectory.messages:
+            output = {"role": msg.role, "content": msg.content}
+
+            if hasattr(msg, "tool_calls") and msg.tool_calls:
+                output["tool_calls"] = [
+                    {
+                        "function": {
+                                                "name": tool_call.name,
+                    "arguments": json.dumps(tool_call.arguments),
+                        }
+                    }
+                    for tool_call in msg.tool_calls
+                ]
+
+            outputs.append(output)
+        return outputs
+
+
+class TrajectoryEvalWithoutLLMMetric(BaseMetric, LangChainAgentsEvalMixin):
+    """Evaluates the agent's trajectory including tool call accuracy."""
+
+    @property
+    def name(self) -> str:
+        return "trajectory_eval_without_llm"
+
+    def _setup(self) -> None:
+        """Setup the trajectory evaluator."""
+        metric_params = self.config.metric_params if self.config else {}
+
+        # Get match modes with validation
+        trajectory_match_mode = metric_params.get("trajectory_match_mode", "strict")
+        tool_args_match_mode = metric_params.get("tool_args_match_mode", "exact")
+
+        # Validate trajectory_match_mode
+        if trajectory_match_mode not in ("strict", "unordered", "subset", "superset"):
+            raise ValueError(
+                "trajectory_match_mode must be one of: strict, unordered, subset, superset. "
+                f"Got: {trajectory_match_mode}"
+            )
+
+        # Validate tool_args_match_mode
+        if tool_args_match_mode not in ("exact", "ignore", "subset", "superset"):
+            raise ValueError(
+                "tool_args_match_mode must be one of: exact, ignore, subset, superset. "
+                f"Got: {tool_args_match_mode}"
+            )
+
+        self.trajectory_match_mode = trajectory_match_mode
+        self.tool_args_match_mode = tool_args_match_mode
+
+        # Set up trajectory match evaluator
+        self.evaluator = create_trajectory_match_evaluator(
+            trajectory_match_mode=self.trajectory_match_mode,
+            tool_args_match_mode=self.tool_args_match_mode,
+        )
+
+    async def compute(self, trajectory: Trajectory) -> MetricResult:
+        """
+        Compute trajectory evaluation score including tool call accuracy.
+
+        Args:
+            trajectory: The trajectory to evaluate
+
+        Returns:
+            MetricResult with evaluation scores and details from LLM evaluation.
+            Score is 1.0 for True and 0.0 for False.
+        """
+        # Get reference trajectory if available
+        if self.config and self.config.metric_params:
+            reference_outputs = self.config.metric_params.get("reference_outputs")
+
+        if not reference_outputs:
+            return MetricResult(
+                name=self.name,
+                score=0.0,
+                details={"error": "Reference trajectory required for evaluation"},
+            )
+
+        # Convert trajectories to standard format
+        outputs = self._convert_to_standard_format(trajectory)
+
+        # Evaluate using trajectory match evaluator
+        try:
+            result = self.evaluator(
+                outputs=outputs, reference_outputs=reference_outputs
+            )
+
+            # Extract score (convert boolean to float) and details from result
+            score = 1.0 if result.get("score", False) else 0.0
+            details = {
+                "trajectory_match_mode": self.trajectory_match_mode,
+                "tool_args_match_mode": self.tool_args_match_mode,
+                "evaluation_details": result,
+            }
+
+            return MetricResult(name=self.name, score=score, details=details)
+
+        except Exception as e:
+            return MetricResult(
+                name=self.name,
+                score=0.0,
+                details={"error": f"Failed to evaluate trajectory: {str(e)}"},
+            )
+
+
+class TrajectoryEvalWithLLMMetric(BaseMetric, LangChainAgentsEvalMixin):
+    """Evaluates the agent's trajectory using LLM as judge, optionally comparing against reference outputs."""
+
+    requires_llm = True
+
+    @property
+    def name(self) -> str:
+        return "trajectory_eval_with_llm"
+
+    def _setup(self) -> None:
+        """Setup the trajectory evaluator with LLM as judge."""
+        metric_params = self.config.metric_params if self.config else {}
+
+        # Get model identifier if provided in config
+        model_identifier = metric_params.get("model")
+
+        # Determine which prompt to use based on whether reference outputs are provided
+        has_reference = bool(metric_params.get("reference_outputs"))
+        prompt = (
+            TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE
+            if has_reference
+            else TRAJECTORY_ACCURACY_PROMPT
+        )
+
+        # Create LLM-based trajectory evaluator
+        self.evaluator = create_trajectory_llm_as_judge(
+            prompt=prompt,
+            judge=self.llm,  # Can be OpenAI client, Bedrock client, or LangChain model
+            model=model_identifier,  # Optional model identifier if needed
+        )
+
+    async def compute(self, trajectory: Trajectory) -> MetricResult:
+        """
+        Compute trajectory evaluation score using LLM as judge.
+
+        Args:
+            trajectory: The trajectory to evaluate
+
+        Returns:
+            MetricResult with evaluation scores and details from LLM evaluation.
+            Score is 1.0 for True and 0.0 for False.
+        """
+        # Get reference outputs if available
+        reference_outputs = None
+        if self.config and self.config.metric_params:
+            reference_outputs = self.config.metric_params.get("reference_outputs")
+
+        # Convert trajectory to standard format
+        outputs = self._convert_to_standard_format(trajectory)
+
+        try:
+            # Evaluate trajectory with or without reference
+            if reference_outputs:
+                result = self.evaluator(
+                    outputs=outputs, reference_outputs=reference_outputs
+                )
+            else:
+                result = self.evaluator(outputs=outputs)
+
+            # Extract score (convert boolean to float) and details from result
+            score = 1.0 if result.get("score", False) else 0.0
+
+            # Extract only simple types for details
+            details = {
+                "comment": str(result.get("comment", "")),
+                "has_reference": bool(reference_outputs is not None),
+                "raw_score": bool(result.get("score", False)),
+            }
+
+            return MetricResult(name=self.name, score=score, details=details)
+
+        except Exception as e:
+            return MetricResult(
+                name=self.name,
+                score=0.0,
+                details={
+                    "error": str(e),
+                    "has_reference": bool(reference_outputs is not None),
+                },
+            )
+
+
+------
+
+./flotorch_eval\agent_eval\metrics\latency_metrics.py
+from typing import Optional
+from flotorch_eval.agent_eval.metrics.base import BaseMetric, MetricConfig
+from flotorch_eval.agent_eval.core.schemas import MetricResult, Trajectory
+from flotorch_eval.agent_eval.metrics.schema import LatencySummary
+from flotorch_eval.common.latency_utils import extract_latency_from_trajectory  # assumed moved here
+
+class LatencyMetric(BaseMetric):
+    """Metric to compute latency per step and overall for a given trajectory."""
+
+    requires_llm = False
+
+    @property
+    def name(self) -> str:
+        return "latency_summary"
+
+    def _setup(self) -> None:
+        """
+        No specific setup required for latency metric.
+        """
+        pass
+
+    async def compute(self, trajectory: Trajectory) -> MetricResult:
+        """
+        Compute latency summary across the trajectory steps.
+
+        Args:
+            trajectory: The trajectory to evaluate.
+
+        Returns:
+            MetricResult with latency summary.
+        """
+        latency_summary = extract_latency_from_trajectory(trajectory)
+
+        return MetricResult(
+            name=self.name,
+            score=0.0, 
+            details=latency_summary
+        )
+
+
+------
+
+./flotorch_eval\agent_eval\metrics\ragas_metrics.py
+"""
+Ragas-based evaluation metrics.
+"""
+
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import ragas.messages as r
+from ragas import evaluate
+from ragas.dataset_schema import MultiTurnSample
+from ragas.llms import LangchainLLMWrapper
+from ragas.metrics import (
+    AgentGoalAccuracyWithoutReference,
+    AgentGoalAccuracyWithReference,
+    ToolCallAccuracy,
+)
+
+from flotorch_eval.agent_eval.core.schemas import MetricResult, Trajectory
+from flotorch_eval.agent_eval.metrics.base import BaseMetric, MetricConfig
+from flotorch_eval.agent_eval.integrations.ragas_utils import convert_to_ragas_format
+
+
+class RagasMetricMixin:
+    """Mixin class providing common functionality for Ragas metrics."""
+
+    def _convert_trajectory_to_ragas(
+        self, trajectory: Trajectory
+    ) -> Tuple[List[r.Message], List[r.ToolCall]]:
+        """
+        Convert a trajectory to Ragas message format.
+
+        Args:
+            trajectory: The trajectory to convert
+
+        Returns:
+            Tuple of (ragas_messages, reference_tool_calls)
+        """
+        ragas_messages = []
+        reference_tool_calls = []
+
+        for msg in trajectory.messages:
+            if msg.role == "user":
+                ragas_messages.append(r.HumanMessage(content=msg.content))
+
+            elif msg.role == "assistant":
+                # Convert tool calls to Ragas format
+                tool_calls = []
+                for tc in msg.tool_calls:
+                    ragas_tool_call = r.ToolCall(name=tc.name, args=tc.arguments)
+                    tool_calls.append(ragas_tool_call)
+                    reference_tool_calls.append(ragas_tool_call)
+
+                ragas_messages.append(
+                    r.AIMessage(
+                        content=msg.content,
+                        tool_calls=tool_calls if tool_calls else None,
+                    )
+                )
+
+            elif msg.role == "tool":
+                ragas_messages.append(r.ToolMessage(content=msg.content))
+
+        return ragas_messages, reference_tool_calls
+
+
+class ToolCallAccuracyMetric(BaseMetric, RagasMetricMixin):
+    """Evaluates the agent's tool call accuracy."""
+
+    requires_llm = False
+
+    @property
+    def name(self) -> str:
+        return "tool_call_accuracy"
+
+    def _setup(self) -> None:
+        """Setup the Ragas tool call accuracy evaluator."""
+        self.evaluator = ToolCallAccuracy()
+
+    async def compute(self, trajectory: Trajectory) -> MetricResult:
+        """
+        Compute tool call accuracy score for the trajectory.
+
+        Args:
+            trajectory: The trajectory to evaluate
+
+        Returns:
+            MetricResult with tool call accuracy score
+        """
+        # Convert trajectory to Ragas format
+        ragas_messages, reference_tool_calls = self._convert_trajectory_to_ragas(
+            trajectory
+        )
+
+        # Only evaluate if we have reference tool calls
+        if not reference_tool_calls:
+            return MetricResult(
+                name=self.name,
+                score=0.0,
+                details={"error": "No tool calls found to evaluate"},
+            )
+
+        # Evaluate
+        score = await self._evaluate_interaction(
+            messages=ragas_messages, reference_tool_calls=reference_tool_calls
+        )
+
+        if not score:
+            return MetricResult(
+                name=self.name,
+                score=0.0,
+                details={"error": "Failed to evaluate interaction"},
+            )
+
+        return MetricResult(
+            name=self.name,
+            score=score,
+            details={"evaluation_type": "tool_call_accuracy"},
+        )
+
+    async def _evaluate_interaction(
+        self,
+        messages: List[r.Message],
+        reference_tool_calls: Optional[List[r.ToolCall]] = None,
+        reference_answer: Optional[str] = None,
+    ) -> Optional[float]:
+        """Evaluate interaction using Ragas."""
+        if not messages:
+            return None
+
+        # Create sample with only required parameters
+        sample_params = {"user_input": messages}
+        if reference_tool_calls:
+            sample_params["reference_tool_calls"] = reference_tool_calls
+        if reference_answer:
+            sample_params["reference"] = reference_answer
+
+        try:
+            sample = MultiTurnSample(**sample_params)
+            score = await self.evaluator.multi_turn_ascore(sample)
+            return score
+        except Exception as e:
+            print(f"Error evaluating interaction: {e}")
+            return None
+
+
+class AgentGoalAccuracyMetric(BaseMetric, RagasMetricMixin):
+    """Evaluates the agent's goal accuracy."""
+
+    requires_llm = True
+
+    @property
+    def name(self) -> str:
+        return "agent_goal_accuracy"
+
+    def _setup(self) -> None:
+        """Setup the Ragas goal accuracy evaluator."""
+        metric_params = self.config.metric_params if self.config else {}
+
+        # Determine which evaluator to use based on whether reference is provided
+        if metric_params.get("reference_answer"):
+            self.evaluator = AgentGoalAccuracyWithReference()
+            self.has_reference = True
+        else:
+            self.evaluator = AgentGoalAccuracyWithoutReference()
+            self.has_reference = False
+
+        # Set LLM for evaluator
+        if not isinstance(self.llm, LangchainLLMWrapper):
+            raise ValueError("LLM must be a LangchainLLMWrapper instance")
+        self.evaluator.llm = self.llm
+
+    async def compute(self, trajectory: Trajectory) -> MetricResult:
+        """
+        Compute goal accuracy score for the trajectory.
+
+        Args:
+            trajectory: The trajectory to evaluate
+
+        Returns:
+            MetricResult with goal accuracy score
+        """
+        # Convert trajectory to Ragas format
+        ragas_messages, _ = self._convert_trajectory_to_ragas(trajectory)
+
+        # Get reference answer if available
+        reference_answer = (
+            self.config.metric_params.get("reference_answer") if self.config else None
+        )
+
+        # Evaluate
+        score = await self._evaluate_interaction(
+            messages=ragas_messages,
+            reference_answer=reference_answer if self.has_reference else None,
+        )
+
+        if not score:
+            return MetricResult(name=self.name, score=0.0, details={})
+
+        return MetricResult(
+            name=self.name,
+            score=score,
+            details={
+                "evaluation_type": (
+                    "agent_goal_with_reference"
+                    if self.has_reference
+                    else "agent_goal_without_reference"
+                )
+            },
+        )
+
+    async def _evaluate_interaction(
+        self, messages: List[r.Message], reference_answer: Optional[str] = None
+    ) -> Optional[float]:
+        """Evaluate interaction using Ragas."""
+        if not messages:
+            return None
+
+        # Create sample with only required parameters
+        sample_params = {"user_input": messages}
+        if reference_answer:
+            sample_params["reference"] = reference_answer
+
+        try:
+            sample = MultiTurnSample(**sample_params)
+            score = await self.evaluator.multi_turn_ascore(sample)
+            return score
+        except Exception as e:
+            print(f"Error evaluating interaction: {e}")
+            return None
+
+
+------
+
+./flotorch_eval\agent_eval\metrics\tool_accuracy.py
+"""
+Tool accuracy evaluation metrics.
+"""
+
+from typing import Dict, List, Optional, Union
+
+from flotorch_eval.agent_eval.core.schemas import ToolCall, Trajectory
+from flotorch_eval.agent_eval.metrics.base import BaseMetric, MetricResult
+
+
+class ToolAccuracyMetric(BaseMetric):
+    """Measures the accuracy of tool calls in a trajectory."""
+
+    @property
+    def name(self) -> str:
+        return "tool_accuracy"
+    
+    def _setup(self) -> None:
+        """No setup needed for this metric."""
+        pass
+
+    async def compute(self, trajectory: Trajectory) -> MetricResult:
+        """
+        Compute tool accuracy score for a trajectory.
+
+        The score is calculated as the ratio of successful tool calls to total tool calls.
+        Tool calls are considered successful if:
+        1. They have success=True
+        2. They have no error
+        3. They have valid outputs
+
+        Args:
+            trajectory: The trajectory to evaluate
+
+        Returns:
+            MetricResult with the accuracy score and detailed statistics
+        """
+        tool_calls: List[ToolCall] = []
+        for message in trajectory.messages:
+            tool_calls.extend(message.tool_calls)
+
+        if not tool_calls:
+            return MetricResult(
+                name=self.name,
+                score=1.0,  # Perfect score if no tool calls (vacuous truth)
+                details={
+                    "total_calls": 0,
+                    "successful_calls": 0,
+                    "failed_calls": 0,
+                    "errors": [],
+                },
+            )
+
+        successful = 0
+        failed = 0
+        errors = []
+
+        for tool_call in tool_calls:
+            if (
+                tool_call.success
+                and not tool_call.error
+                and tool_call.output is not None
+            ):
+                successful += 1
+            else:
+                failed += 1
+                if tool_call.error:
+                    errors.append(
+                        {"tool": tool_call.name, "error": tool_call.error}
+                    )
+
+        score = successful / len(tool_calls)
+
+        return MetricResult(
+            name=self.name,
+            score=score,
+            details={
+                "total_calls": len(tool_calls),
+                "successful_calls": successful,
+                "failed_calls": failed,
+                "errors": errors,
+            },
+        )
+
+
+------
+
+./flotorch_eval\agent_eval\metrics\usage_metrics.py
+from typing import Optional
+from flotorch_eval.agent_eval.metrics.base import BaseMetric, MetricConfig
+from flotorch_eval.agent_eval.core.schemas import MetricResult, Trajectory
+from flotorch_eval.common.cost_utils import calculate_cost_from_tokens
+from flotorch_eval.common.token_utils import extract_token_usage_from_trajectory
+
+class UsageMetric(BaseMetric):
+    """Metric to compute cost/token of LLM usage per span and overall."""
+
+    requires_llm = False
+
+    @property
+    def name(self) -> str:
+        return "usage_summary"
+
+    def _setup(self) -> None:
+        """
+        Validate required configuration like AWS region.
+        """
+        if not self.config or not self.config.metric_params.get("aws_region"):
+            raise ValueError("CostMetric requires 'aws_region' in metric_params")
+        self.aws_region = self.config.metric_params["aws_region"]
+
+    async def compute(self, trajectory: Trajectory) -> MetricResult:
+        """
+        Compute cost estimation for the trajectory using Bedrock pricing.
+
+        Args:
+            trajectory: The trajectory to evaluate.
+
+        Returns:
+            MetricResult with cost summary.
+        """
+        token_summary = extract_token_usage_from_trajectory(trajectory)
+
+        cost_summary = calculate_cost_from_tokens(token_summary, aws_region=self.aws_region)
+
+        return MetricResult(
+            name=self.name,
+            score=0.0,
+            details={
+                "total_cost": cost_summary.total_cost,
+                "average_cost_per_call": cost_summary.average_cost_per_call,
+                "cost_breakdown": [
+                    {
+                        "model": record.model,
+                        "input_tokens": record.input_tokens,
+                        "output_tokens": record.output_tokens,
+                        "cost": record.cost
+                    }
+                    for record in cost_summary.cost_breakdown
+                ]
+            }
+        )
+
+
+------
+
+./flotorch_eval\agent_eval\metrics\__init__.py
+"""
+Metrics for agent evaluation.
+"""
+
+from flotorch_eval.agent_eval.metrics.base import BaseMetric
+from flotorch_eval.agent_eval.metrics.langchain_metrics import (
+    TrajectoryEvalWithLLMMetric,
+    TrajectoryEvalWithoutLLMMetric,
+)
+from flotorch_eval.agent_eval.metrics.ragas_metrics import (
+    AgentGoalAccuracyMetric,
+    ToolCallAccuracyMetric,
+)
+
+__all__ = [
+    "BaseMetric",
+    "TrajectoryEvalWithLLMMetric",
+    "TrajectoryEvalWithoutLLMMetric",
+    "AgentGoalAccuracyMetric",
+    "ToolCallAccuracyMetric",
+]
+
+
+------
+
+./flotorch_eval\common\cost_compute_utils.py
+import os
+import pandas as pd
+from typing import Dict, Any, List
+from decimal import Decimal
+from dataclasses import dataclass
+
+MILLION = 1_000_000
+THOUSAND = 1_000
+SECONDS_IN_MINUTE = 60
+MINUTES_IN_HOUR = 60
+# Read the CSV file into a pandas DataFrame
+csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "bedrock_limits_small.csv")
+print(f"Reading CSV file from: {os.path.abspath(csv_path)}")
+df = pd.read_csv(os.path.abspath(csv_path))
+
+@dataclass
+class MetricsData:
+    """Data class to store metrics information"""
+    cost: Decimal
+    latency: float
+    input_tokens: int
+    output_tokens: int
+
+def extract_metadata_metrics(metadata: Dict[str, Any]) -> MetricsData:
+    """
+    Extract metrics from metadata dictionary
+    
+    Args:
+        metadata: Dictionary containing metadata information
+    Returns:
+        MetricsData object with extracted metrics
+    """
+    return MetricsData(
+        input_tokens=metadata.get("inputTokens", 0),
+        output_tokens=metadata.get("outputTokens", 0),
+        latency=float(metadata.get("latencyMs", 0)),
+        cost=Decimal('0.0000')
+    )
+
+def calculate_bedrock_inference_cost(input_tokens,output_tokens, inference_model, aws_region):
+
+    input_price = df[
+        (df["model"] == inference_model) & (df["Region"] == aws_region)
+        ]["input_price"]
+
+    output_price = df[
+        (df["model"] == inference_model) & (df["Region"] == aws_region)
+        ]["output_price"]
+
+    input_price_per_million_tokens = float(input_price.values[0])  # Price per million tokens
+    output_price_per_million_tokens = float(output_price.values[0])  # Price per million tokens
+
+    input_actual_cost = (input_price_per_million_tokens * float(input_tokens)) / MILLION
+    output_actual_cost = (output_price_per_million_tokens * float(output_tokens)) / MILLION
+    return input_actual_cost + output_actual_cost
+
+def calculate_cost_and_latency_metrics(inference_data, inference_model, aws_region):
+    if isinstance(inference_data, list):
+        total_cost = Decimal('0.0000')
+        total_latency = 0.0
+        item_count = 0
+    
+        for item_data in inference_data:
+            if not isinstance(item_data, dict) or "metadata" not in item_data:
+                continue
+    
+            metrics = extract_metadata_metrics(item_data["metadata"])
+            
+            # Calculate cost for this item
+            item_cost = calculate_bedrock_inference_cost(
+                metrics.input_tokens,
+                metrics.output_tokens,
+                inference_model,
+                aws_region
+            )
+            
+            total_cost += Decimal(str(item_cost))
+            total_latency += metrics.latency
+            item_count += 1
+    
+        if item_count > 0:
+            return {
+                'inference_cost': float(total_cost),
+                'average_inference_cost': float(total_cost / item_count),
+                'latency': total_latency,
+                'average_latency': total_latency / item_count,
+                'processed_items': item_count
+            }
+        else:
+            return {
+                'cost': float(total_cost),
+                'average_cost': float(total_cost / item_count),
+                'latency': total_latency,
+                'average_latency': total_latency / item_count,
+                'processed_items': item_count
+            }
+
+
+
+
+------
+
+./flotorch_eval\common\cost_utils.py
+from typing import List
+from flotorch_eval.agent_eval.core.schemas import TokenUsageSummary, CostSummary, CostRecord
+from flotorch_eval.common.cost_compute_utils import calculate_bedrock_inference_cost
+
+def calculate_cost_from_tokens(token_summary: TokenUsageSummary, aws_region: str) -> CostSummary:
+    cost_breakdown = []
+    total_cost = 0.0
+
+    for record in token_summary.token_usage:
+        cost = calculate_bedrock_inference_cost(
+            record.input_tokens,
+            record.output_tokens,
+            record.model,
+            aws_region
+        )
+
+        cost_breakdown.append(CostRecord(
+            span_id=record.span_id,
+            model=record.model,
+            input_tokens=record.input_tokens,
+            output_tokens=record.output_tokens,
+            cost=round(cost, 6)
+        ))
+        total_cost += cost
+
+    average_cost = total_cost / len(cost_breakdown) if cost_breakdown else 0.0
+
+    return CostSummary(
+        total_cost=round(total_cost, 6),
+        average_cost_per_call=round(average_cost, 6),
+        cost_breakdown=cost_breakdown
+    )
+
+------
+
+./flotorch_eval\common\latency_utils.py
+from typing import List
+from flotorch_eval.agent_eval.core.schemas import Trajectory
+from flotorch_eval.agent_eval.core.schemas import LatencyBreakdownItem, LatencySummary
+
+def extract_latency_from_trajectory(trajectory: Trajectory) -> LatencySummary:
+    breakdown: List[LatencyBreakdownItem] = []
+    total_latency = 0.0
+
+    for span in trajectory.spans:
+        start = span.start_time
+        end = span.end_time
+
+        if start is not None and end is not None:
+            latency_ms = (end - start).total_seconds() * 1000
+            latency_ms = round(latency_ms, 2)
+
+            item = LatencyBreakdownItem(step_name=span.name, latency_ms=latency_ms)
+            breakdown.append(item)
+            total_latency += latency_ms
+
+    average_latency = round(total_latency / len(breakdown), 2) if breakdown else 0.0
+
+    return LatencySummary(
+        total_latency_ms=round(total_latency, 2),
+        average_step_latency_ms=average_latency,
+        latency_breakdown=breakdown
+    )
+
+
+------
+
+./flotorch_eval\common\metrics.py
+"""
+Common metrics interfaces for all evaluation types.
+"""
+
+from abc import ABC, abstractmethod
+from typing import Dict, List, Optional, Union
+
+class BaseMetric(ABC):
+    """Base class for all evaluation metrics."""
+    
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        """Return the name of the metric."""
+        pass
+    
+    @abstractmethod
+    async def compute(self, *args, **kwargs) -> Dict[str, Union[float, Dict[str, Union[str, float, bool, List[str]]]]]:
+        """
+        Compute the metric value.
+        
+        Returns:
+            Dict containing score and optional details
+        """
+        pass
+
+class MetricConfig:
+    """Configuration for metrics."""
+    
+    def __init__(self, metric_params: Optional[Dict] = None):
+        """
+        Initialize metric configuration.
+        
+        Args:
+            metric_params: Optional parameters for the metric
+        """
+        self.metric_params = metric_params or {} 
+
+------
+
+./flotorch_eval\common\token_utils.py
+from typing import List
+from flotorch_eval.agent_eval.core.schemas import (
+    TokenUsageRecord,
+    TokenUsageSummary,
+    TokenTotals,
+    Trajectory,
+)
+
+def extract_token_usage_from_trajectory(trajectory: Trajectory) -> TokenUsageSummary:
+    records = []
+    total_input = 0
+    total_output = 0
+
+    for span in trajectory.spans:
+        attributes = span.attributes
+        input_tokens = attributes.get("gen_ai.usage.input_tokens")
+        output_tokens = attributes.get("gen_ai.usage.output_tokens")
+        model = attributes.get("gen_ai.response.model") or attributes.get("gen_ai.request.model")
+
+        if input_tokens is not None and output_tokens is not None and model:
+            record = TokenUsageRecord(
+                span_name=span.name,
+                span_id=span.span_id,
+                model=model,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                total_tokens=input_tokens + output_tokens,
+            )
+            records.append(record)
+            total_input += input_tokens
+            total_output += output_tokens
+
+    return TokenUsageSummary(
+        token_usage=records,
+        totals=TokenTotals(
+            input_tokens=total_input,
+            output_tokens=total_output,
+            total_tokens=total_input + total_output
+        )
+    )
+
+
+------
+
+./flotorch_eval\common\utils.py
+"""
+Common utilities for all evaluation types.
+"""
+
+from typing import Any, Dict, List, Optional, Union
+
+def convert_attributes(attributes: Dict[str, Any]) -> Dict[str, Union[str, int, float, bool, List[str]]]:
+    """
+    Convert attributes to a standardized format.
+    
+    Args:
+        attributes: Dictionary of attributes to convert
+        
+    Returns:
+        Dictionary with standardized attribute types
+    """
+    result = {}
+    for key, value in attributes.items():
+        if isinstance(value, (str, int, float, bool)) or (
+            isinstance(value, list) and all(isinstance(x, str) for x in value)
+        ):
+            result[key] = value
+        else:
+            try:
+                if isinstance(value, (dict, list)):
+                    result[key] = str(value)
+                else:
+                    result[key] = str(value)
+            except (TypeError, ValueError):
+                result[key] = str(value)
+    return result 
+
+------
+
+./flotorch_eval\common\__init__.py
+
+
+------
+
