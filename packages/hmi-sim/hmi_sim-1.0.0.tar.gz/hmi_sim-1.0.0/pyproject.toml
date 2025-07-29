@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling>=1.15.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hmi-sim"
+dynamic = ["version"]
+description = "A Python utility for simulating human-like mouse movement and task switching — useful for automation, UI testing, and system interaction simulations."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "Apache License 2.0"}
+authors = [
+  { name = "Rohit Lal", email = "contact@rohitlal.in"}
+]
+keywords = ["automation", "mouse", "keyboard", "HMI", "simulation", "pyautogui", "input testing", "ui testing"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Utilities",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: Microsoft :: Windows",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "pyautogui>=0.9.54",
+  "pywin32>=223"
+]
+
+[tool.hatch.version]
+path = "hmi_sim/_version.py"
+
+[tool.hatch.build]
+include = [
+  "hmi_sim/**",
+  "LICENSE",
+  "NOTICE"
+]
+
+[project.urls]
+Homepage = "https://rohitlal.in/pypi/hmi-sim"
+Repository = "https://github.com/rohitlal125555/hmi-sim"
+Issues = "https://github.com/rohitlal125555/hmi-sim/issues"
+
+[project.scripts]
+hmi-sim = "hmi_sim.cli:main"
