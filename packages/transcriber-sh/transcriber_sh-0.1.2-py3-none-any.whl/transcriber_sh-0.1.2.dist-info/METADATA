@@ -1,0 +1,71 @@
+Metadata-Version: 2.4
+Name: transcriber-sh
+Version: 0.1.2
+Summary: Real-time microphone → OpenAI → text (CLI)
+Author-email: Your Name <you@example.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: certifi==2025.4.26
+Requires-Dist: cffi==1.17.1
+Requires-Dist: charset-normalizer==3.4.2
+Requires-Dist: dotenv==0.9.9
+Requires-Dist: idna==3.10
+Requires-Dist: numpy==1.26.3
+Requires-Dist: pycparser==2.22
+Requires-Dist: python-dotenv==1.1.0
+Requires-Dist: requests==2.32.4
+Requires-Dist: soundcard==0.4.4
+Requires-Dist: urllib3==2.4.0
+Requires-Dist: websocket-client==1.8.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2; extra == "dev"
+Requires-Dist: ruff>=0.4; extra == "dev"
+
+````markdown
+# Transcriber
+
+> Real-time **microphone + system-audio → OpenAI → transcript → summary** — all from a single CLI command.
+
+---
+
+**setup**  
+  ```bash
+  transcriber setup                     # prompts for API key & model – writes .env
+````
+
+– Captures the default microphone **and** the loop-back that matches your current output device.
+– Works on (Pulse/ALSA).
+– Streams 24 kHz PCM16 chunks; prints each finalized text fragment in the terminal.
+– On Ctrl-C it saves a timestamped `.txt` transcript and generates a one-paragraph summary via OpenAI Chat.
+
+
+```bash
+# 1. install
+pip install transcriber-sh          # or: pip install git+https://github.com/Dogmeat0/transcriber.git
+
+# 2. initial configuration
+transcriber setup                # enter your OpenAI API key and choose model
+
+# 3. record!
+transcriber                      # press Ctrl-C to stop & get summary
+```
+
+| Command                                         | What it does                                               |
+| ----------------------------------------------- | ---------------------------------------------------------- |
+| `transcriber list-dev`                          | Lists all microphones / loop-backs & the current defaults. |
+
+
+```dotenv
+OPENAI_API_KEY = sk-************************************
+MODEL          = gpt-4o-mini-transcribe
+
+
+```bash
+git clone https://github.com/Dogmeat0/transcriber.git
+cd transcriber
+python -m venv env && source env/bin/activate
+pip install -e ".[dev]"             # editable + dev tools
+ruff check transcriber              # lint
+pytest                               # tests (if/when added)
+```
+
