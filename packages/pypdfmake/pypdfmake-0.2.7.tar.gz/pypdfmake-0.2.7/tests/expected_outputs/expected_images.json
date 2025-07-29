@@ -1,0 +1,45 @@
+{
+    "content": [
+        "pdfmake (since it's based on pdfkit) supports JPEG and PNG format",
+        "If no width/height/fit is provided, image original size will be used",
+        {
+            "image": "sampleImage.jpg"
+        },
+        "If you specify width, image will scale proportionally",
+        {
+            "image": "sampleImage.jpg",
+            "width": 150.0
+        },
+        "If you specify both width and height - image will be stretched",
+        {
+            "image": "sampleImage.jpg",
+            "width": 150.0,
+            "height": 150.0
+        },
+        "You can also fit the image inside a rectangle",
+        {
+            "image": "sampleImage.jpg",
+            "fit": [100.0, 100.0],
+            "pageBreak": "after"
+        },
+        "Images can be also provided in dataURL format...",
+        {
+            "image": "data:image/jpeg;base64,/9j/4RC5RXhp",
+            "width": 200.0
+        },
+        "or be declared in an \"images\" dictionary and referenced by name",
+        {
+            "image": "building",
+            "width": 200.0
+        },
+        "and opacity is supported:",
+        {
+            "image": "sampleImage.jpg",
+            "width": 150.0,
+            "opacity": 0.5
+        }
+    ],
+    "images": {
+        "building": "data:image/jpeg;base64,/9j/4RC5RXhp"
+    }
+}

@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pypdfmake"
+version = "0.2.7"
+description = "A Python library for generating pdfmake document definitions using Pydantic models"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2.11.4"]
+authors = [{ name = "Jeff Bloss P.E./S.E.", email = "Jeff@prose-eng.com" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[dependency-groups]
+dev = [
+    "bump-my-version>=1.1.4",
+    "hatch>=1.14.1",
+    "poethepoet>=0.34.0",
+    "pytest>=8.3.5",
+    "pytest-codeblocks>=0.17.0",
+    "pytest-icdiff>=0.9",
+    "rich>=14.0.0",
+    "watchfiles>=1.0.5",
+]
+
+[tool.poe.tasks]
+version = "hatch version"
+test = "watchfiles pytest"
+test-no-watch = "pytest"
+patch = "bump-my-version bump patch"
+minor = "bump-my-version bump minor"
+major = "bump-my-version bump major"
+push_tags = "git push origin --tags"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-x -vv -s --codeblocks"
+
+[tool.bumpversion]
+# General settings
+allow_dirty = true
+commit = true
+tag = true
+message = "Bump version: {current_version} → {new_version}"
+
+# Tagging settings
+tag_name = "v{new_version}"
+tag_message = "Version {new_version}"
+sign_tags = false
+
+# Versioning settings
+current_version = "0.2.7"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
