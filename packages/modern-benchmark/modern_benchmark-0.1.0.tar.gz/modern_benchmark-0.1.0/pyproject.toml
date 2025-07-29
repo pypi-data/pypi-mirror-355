@@ -1,0 +1,32 @@
+[project]
+name = "modern-benchmark"
+version = "0.1.0"
+description = "A Python package for benchmarking functions on modern versions of Python."
+readme = "README.md"
+authors = [{name = "connor33341", email = "connor@connor33341.dev"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "colorama",
+    "psutil",
+]
+requires-python = ">=3.9"
+
+[project.urls]
+Homepage = "https://github.com/connor33341/modern-benchmark"
+Repository = "https://github.com/connor33341/modern-benchmark"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["modern_benchmark"]
+include = ["modern_benchmark"]
