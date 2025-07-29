@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "simless"
+version = "0.0.17"
+authors = [
+  { name="Barak Goldberg", email="goldberg.b@gmail.com" },
+]
+description = "Package for automation the process of creating simulation input files."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+  "numpy==2.2.4",
+  "pandas>=2.2.3",
+  "python-dateutil==2.9.0.post0",
+  "pytz==2025.2",
+  "six==1.17.0",
+  "tzdata==2025.2",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/goldbergb/simless"
+Issues = "https://github.com/goldbergb/simless/issues"
