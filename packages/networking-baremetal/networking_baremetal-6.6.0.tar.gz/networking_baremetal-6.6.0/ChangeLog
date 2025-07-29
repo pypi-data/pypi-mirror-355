@@ -1,0 +1,263 @@
+CHANGES
+=======
+
+6.6.0
+-----
+
+* Remove explicit use of eventlet
+* Use new syntax for neutron enablement
+* Drop redundant allowlist\_externals
+* Fix failing genconfig target
+* add pre-commit and adjust tox to utilize it
+* fix sphinx-lint issues
+* fix awkward logic that the linter didn't like
+* fix spelling mistakes
+* Update master for stable/2025.1
+
+6.5.0
+-----
+
+* reno: Update master for unmaintained/2023.1
+* prevent break on communications failure
+* Remove Python 3.8 support
+* Drop unnecessary 'x' bit from doc config file
+* add pyproject.toml to support pip 23.1
+* Update master for stable/2024.2
+* avoid attribute error on bad password or config
+
+6.4.0
+-----
+
+* Update to match latest development cycle
+* Fix codespell reported errors
+* Remove call to enable\_python3\_package
+* reno: Update master for unmaintained/zed
+* Update master for stable/2024.1
+* reno: Update master for unmaintained/xena
+* reno: Update master for unmaintained/wallaby
+* reno: Update master for unmaintained/victoria
+
+6.3.0
+-----
+
+* don't force amqp\_auto\_delete for quorum queues
+* [codespell] Adding CI target for Tox Codespell
+* [codespell] Adding Tox Target for Codespell
+* [codespell] Fixing Spelling Mistakes
+* Bump hacking to 6.1.0
+* reno: Update master for unmaintained/yoga
+* Remove deprecated pbr options
+* Do not try to bind port when we can't
+* Update master for stable/2023.2
+
+6.2.0
+-----
+
+* Bugs are now in launchpad, doc fixes
+* Update to hacking v6
+* Update master for stable/2023.1
+* [CI] Explicitly disable port security
+
+6.1.0
+-----
+
+* Fix tox4 errors
+* Fixes for tox 4.0
+* Switch to 2023.1 Python3 unit tests and generic template name
+* Update master for stable/zed
+
+6.0.0
+-----
+
+* remove unicode from code
+* Doc - network device configuration capabilities
+* Add support for pre-configured link aggregates
+* Add LACP support to Netconf OpenConfig driver
+* Add netconf-openconfig device driver
+* Device management driver iface
+* OpenConfig YANG Model, python-bindings releasenote
+* Add OpenConfig classes for LACP
+* Add OpenConfig classes for interface aggregate
+* Add OpenConfig classes for network-instance
+* Add OpenConfig classes for switch vlans
+* Add OpenConfig classes for iface vlan plugging
+* The Python 3.6 and Python 3.7 Support has been dropped since zed
+* Remove babel.cfg
+* Replace deprecated UPPER\_CONSTRAINTS\_FILE variable
+* Drop lower-constraints.txt and its testing
+* Register neutron common config options
+* Set agent\_type in tests
+* Add Python3 zed unit tests
+* Update master for stable/yoga
+
+5.1.0
+-----
+
+* Re-add python 3.6/3.7 in classifier
+* Updating yoga tested python versions in classifier
+* Add Python3 yoga unit tests
+* Update master for stable/xena
+
+5.0.0
+-----
+
+* Add lower-constraints job to current development branch
+* Increase version of hacking and pycodestyle
+* Update min version of tox to use allowlist
+* setup.cfg: Replace dashes with underscores
+* Add Python3 xena unit tests
+* Update master for stable/wallaby
+
+4.0.0
+-----
+
+* Update minversion of tox
+* Add doc/requirements
+* Fix exception handling when querying ironic ports
+* Remove lower-constraints job
+* Fix lower-constraints with the new pip resolver
+* Set safe version of hacking
+* Add Python3 wallaby unit tests
+* Update master for stable/victoria
+
+3.0.0
+-----
+
+* Fix lower-constraints for networking-baremetal
+* Add missing keystoneauth1 and oslo.service to requirements
+* Set min version of tox to 3.2.1
+* drop mock from lower-constraints
+* Use openstacksdk for ironic connection
+* Remove the unused coding style modules
+* Switch to newer openstackdocstheme and reno versions
+* Convert networking-baremetal job to dib
+* Bump hacking version to 3.0.0 and fix pep8 test
+* Update lower-constraints.txt
+* Add unit tests for \_get\_notification\_transport\_url()
+* Add py38 package metadata
+* Add Python3 victoria unit tests
+* Update master for stable/ussuri
+* Upgrade flake8-import-order version to 0.17.1
+
+2.0.0
+-----
+
+* Stop configuring install\_command in tox
+* Remove the unused oslo.i18n bits
+* BUILD\_TIMEOUT is not needed
+* Use mock from unittest
+* Cleanup py27 support
+* Explicitly set ramdisk type
+* Enforce running tox with correct python version based on env
+* Stop using six library
+* Fix region option name in documentation
+* Drop python 2.7 support and testing
+* Add genconfig env to tox
+* fixed review link
+* Drop py2 job
+* Switch jobs to python3
+* Switch to Ussuri jobs
+* Update neutron requirement
+* Add versions to release notes series
+* Update the constraints url
+* Fix unit tests with ironicclient >=3.0.0
+* Update master for stable/train
+
+1.4.0
+-----
+
+* Build pdf doc
+* Blacklist sphinx 2.1.0 (autodoc bug)
+* Fix networking-baremetal CI
+* Fix unit tests for networking-baremetal
+* Bump the openstackdocstheme extension to 1.20
+* Update api-ref location
+* Update networking-baremetal installation
+* Update Python 3 test runtimes for Train
+* Update sphinx requirements
+* Use opendev repository
+* OpenDev Migration Patch
+* Replace openstack.org git:// URLs with https://
+* Update master for stable/stein
+
+1.3.0
+-----
+
+* Supporting all py3 environments with tox
+* Zuulv3 - Use ironic-base job
+* Rename agent queue - fixes broken minor update
+* Clean up oslo.messaging listener properly
+* Ensure notifications are consumed from non-pool queue
+* Set amqp\_auto\_delete=true for notifications transport
+* Docs: Devstack quickstart guides - change drivers
+* Break out ironic client from neutron agent
+* Change networking-baremetal to zuulv3/python3
+* Correcting a typo in plugin.sh
+* Change openstack-dev to openstack-discuss
+* Restrict bashate to devstack/lib instead of lib
+* Change openstack-dev to openstack-discuss
+* Don't quote {posargs} in tox.ini
+* add python 3.6 unit test job
+* import zuul job settings from project-config
+* Changing CI job templates for python3-first
+* Update reno for stable/rocky
+
+1.2.0
+-----
+
+* Remove testrepository and .testr.conf
+* Update neutron-lib requirement for rocky
+* Add release notes link in README
+* Updating required neutron version
+* Switch to using stestr
+* fix tox python3 overrides
+* Remove the duplicated "the"
+
+1.1.0
+-----
+
+* fix tox python3 overrides
+* add lower-constraints job
+* Do not run functional (API) tests in the CI
+* ML2 Agent: Handle SIGHUP mutable config options
+* Change Launchpad references to Storyboard
+* Updated from global requirements
+* Avoid tox\_install.sh
+* use common agent topics from neutron-lib
+* Update reno for stable/queens
+
+1.0.0
+-----
+
+* Add unit tests for member manager
+* Make the agent distributed using hashring and notifications
+* Fix devstack example
+* Node state configuration - add log\_agent\_heartbeat
+* Fix nits in networking-baremetal docs
+* Add dsvm job
+* Update docs and generate config file example
+* Add support to bind type vlan networks
+* Devstack - Add ironic-neutron-agent
+* Use reporting\_interval option from neutron
+* Switch from MechanismDriver to SimpleAgentMechanismDriverBase
+* Updated from global requirements
+* start\_flag = True, only first time, or conf change
+* Add baremetal neutron agent
+* Updated from global requirements
+* Updated from global requirements
+* Updated from global requirements
+* Use constants from neutron-lib
+* Update URLs in documents according to document migration
+* Fix to use "." to source script files
+* Update reno for stable/pike
+
+0.1.0
+-----
+
+* Add initial release note
+* Add installation documentation
+* Add devstack plugin to install networking\_baremetal
+* Add baremetal ML2 driver
+* Add .gitignore
+* Initial commit from cookiecutter
+* Added .gitreview
