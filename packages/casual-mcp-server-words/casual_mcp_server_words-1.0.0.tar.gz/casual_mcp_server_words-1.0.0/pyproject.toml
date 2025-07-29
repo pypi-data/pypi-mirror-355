@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "casual-mcp-server-words"
+version = "1.0.0"
+description = "Dictionary and thesaurus utilities as a FastMCP server"
+authors = [{name = "Alex Stansfield"}]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp",
+    "pydantic",
+    "requests",
+    "casual-mcp-servers-shared",
+]
+
+[project.urls]
+Homepage = "https://github.com/casualgenius/mcp-servers"
+Issues = "https://github.com/casualgenius/mcp-servers/issues"
+Source = "https://github.com/casualgenius/mcp-servers"
+
+[project.scripts]
+casual-mcp-server-words = "casual_mcp_server_words.server:main"
+
+[tool.uv.sources]
+casual-mcp-servers-shared = { path = "../../servers_shared" }
