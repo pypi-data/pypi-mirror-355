@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gd-mmtsp"
+version = "0.1.2"
+description = "MMTSP: Automate mmt sri and push commands with commit message and prefix."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name="Glendale Designs", email="info@glendaledesigns.com" }
+]
+dependencies = []
+
+[project.scripts]
+mmtsp = "mmtsp.cli:main"
+
+[tool.setuptools]
+packages = ["mmtsp"]
