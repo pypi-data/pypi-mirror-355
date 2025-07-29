@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stage0_py_utils"
+version = "0.1.7"
+description = "A utility package for stage0 microservices"
+authors = [{name = "Mike Storey", email = "leave_me_alone@example.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "flask",
+    "pymongo",
+    "discord",
+    "ollama"
+]
+
+[project.optional-dependencies]
+dev = ["black", "pytest", "unittest"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["stage0_py_utils*"]
