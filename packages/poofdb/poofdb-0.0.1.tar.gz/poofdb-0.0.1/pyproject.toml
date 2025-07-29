@@ -1,0 +1,35 @@
+[project]
+name = "poofdb"
+version = "0.0.1"
+description = "A lightweight, file-based, encrypted NoSQL database for Python with Pydantic validation and async support."
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "MIT" }
+authors = [
+    { name = "noxzion", email = "negroid2281488ilikrilex@gmail.com" }
+]
+dependencies = [
+    "pydantic>=2.0",
+    "cryptography>=36.0"
+]
+keywords = ["database", "nosql", "encrypted", "async", "pydantic"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Database"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["poofdb"]
