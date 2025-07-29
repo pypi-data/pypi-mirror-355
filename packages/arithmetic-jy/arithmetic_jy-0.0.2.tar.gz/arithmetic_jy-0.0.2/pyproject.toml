@@ -1,0 +1,35 @@
+[project]
+name = "arithmetic_jy"
+version = "0.0.2"
+requires-python = ">=3.8"
+description = "A small example package"
+readme = "readme.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "yjiang", email = "1900812927@qq.com"},
+]
+classifiers = [
+]
+keywords = [
+    'arithmetic',
+]
+dependencies = [
+    "numpy>=1.24.3"
+]
+
+[project.urls]
+homepage = "https://gitee.com/Eason596/py-package-release-test"
+repository = "https://gitee.com/Eason596/py-package-release-test"
+
+[project.scripts]
+cal_jy = "arithmetic_jy.entry_point:calculate_entry_point"
+
+
+[build-system]
+requires = ["setuptools>=67.8.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.codespell]
+skip = '.git,*.pdf,*.svg'
+#
+# ignore-words-list = ''
