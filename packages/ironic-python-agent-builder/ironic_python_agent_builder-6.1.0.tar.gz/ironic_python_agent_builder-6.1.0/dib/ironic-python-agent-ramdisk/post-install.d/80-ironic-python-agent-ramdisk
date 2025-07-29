@@ -1,0 +1,90 @@
+#!/bin/bash
+
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+DIB_IPA_ENABLE_RESCUE=${DIB_IPA_ENABLE_RESCUE:-true}
+DIB_IPA_ENABLE_SYSTEMD_NETWORKD=${DIB_IPA_ENABLE_SYSTEMD_NETWORKD:-true}
+
+if $DIB_IPA_ENABLE_RESCUE; then
+    # Make sure rescue works
+    mkdir -p /etc/ipa-rescue-config
+fi
+
+case "$DIB_INIT_SYSTEM" in
+    upstart)
+        if [ -f /etc/init/ufw.conf ]; then
+            mv /etc/init/ufw.conf /etc/init/ufw.conf.disabled
+        fi
+        if [ -f /etc/init/tgt.conf ]; then
+            mv /etc/init/tgt.conf /etc/init/tgt.conf.disabled
+        fi
+        ;;
+    systemd)
+        if [[ $(systemctl --no-pager list-unit-files iptables) =~ 'enabled' ]]; then
+            systemctl disable iptables.service
+        fi
+        systemctl enable $(svc-map ironic-python-agent).service
+        if $DIB_IPA_ENABLE_RESCUE; then
+            systemctl enable ironic-agent-create-rescue-user.path
+        fi
+        systemctl enable ironic-agent-resolve-config-drive.service
+        # NOTE(rpittau) disable caching remote package index to prevent
+        # delays due to failures.
+        # This is a new service for dnf-based systems (e.g. Centos8) to speed
+        # up subsequent dnf commands, for example automated updates, and
+        # it's not really needed in the ipa-ramdisk as we shouldn't install
+        # anything during runtime.
+        if [[ ${IPA_DISTRO_FAMILY} == 'rh' ]]; then
+            if [[ ${YUM} == 'dnf' ]]; then
+                systemctl disable dnf-makecache.service
+                systemctl disable dnf-makecache.timer
+            fi
+        fi
+
+        # NOTE(drannou) debian by default is using networking instead of
+        # systemd-networkd. In some usecase like rescue, we need IPA to
+        # re-launch dhclient when modifications are made on the interface.
+        # The easiest way to manage that is to activate systemd-networkd.
+        if $DIB_IPA_ENABLE_SYSTEMD_NETWORKD; then
+            if [[ $DISTRO_NAME =~ debian ]] ; then
+                rm /etc/network/interfaces
+                rm -rf /etc/network/interfaces.d
+                echo "[Match]
+Name=en*
+
+[Network]
+DHCP=yes" > /etc/systemd/network/99-dhcp.network
+
+                systemctl enable systemd-networkd
+            fi
+        fi
+        if [ -e /usr/lib/systemd/system/glean-early.service ]; then
+            # Disable Glean-early start
+            # Under normal circumstances, glean-early attempts to mount a config
+            # drive, configure ssh and a hostname. We only need the mount, and we
+            # trigger that in ironic-agent-resolve-config-drive.service.
+            # This is largely because glean uses /mnt/config by default,
+            # where as cloud-init uses a random folder name.
+            systemctl disable glean-early.service || true
+            rm /usr/lib/systemd/system/glean-early.service
+        fi
+        ;;
+    sysv)
+        update-rc.d iptables disable
+        ;;
+    *)
+        echo "Unsupported init system"
+        exit 1
+        ;;
+esac
+
+# Blocks out userdata from being acted upon by cloud-init if present.
+if [[ -x /etc/cloud/cloud.cfg.d ]]; then
+    cat > /etc/cloud/cloud.cfg.d/94-ironic-python-agent-disable-userdata.cfg <<EOF
+allow_userdata: false
+EOF
+fi
