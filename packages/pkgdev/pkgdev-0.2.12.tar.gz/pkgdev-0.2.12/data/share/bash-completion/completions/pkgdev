@@ -1,0 +1,289 @@
+# bash completion for pkgdev
+
+source "/usr/share/bash-completion/helpers/gentoo-common.sh"
+
+_pkgdev() {
+    local i=1 cmd cur prev words cword split
+    _comp_initialize -n : "$@" || return
+
+    local subcommands="
+        bugs
+        commit
+        manifest
+        mask
+        push
+        showkw
+        tatt
+    "
+
+    local base_options="
+        -h --help
+        --version
+        --debug
+        -q --quiet
+        -v --verbose
+        --color
+    "
+
+    local boolean_options="
+        true
+        false
+    "
+
+    _list_repo_atoms() {
+        builtin cd "$(git rev-parse --show-toplevel)" || return
+        if [[ $cur == */* ]]; then
+            compgen -W "$(compgen -G "${cur}*" )" -- "${cur}"
+        else
+            compgen -W "$(compgen -G "${cur}*" -S / )" -- "${cur}"
+        fi
+    }
+
+    if [[ ${prev} = "--color" ]]; then
+        COMPREPLY=($(compgen -W "${boolean_options}" -- "${cur}"))
+        return
+    fi
+    COMPREPLY=($(compgen -W "${base_options}" -- "${cur}"))
+
+    # find the subcommand
+    for (( i=1; i < COMP_CWORD; i++ )); do
+        if [[ ${COMP_WORDS[i]} != -* ]]; then
+            cmd=${COMP_WORDS[i]}
+            break
+        fi
+    done
+
+    if (( i == COMP_CWORD )); then
+        COMPREPLY+=($(compgen -W "${subcommands}" -- "${cur}"))
+        return
+    fi
+
+    local subcmd_options
+    case "${cmd}" in
+        commit)
+            subcmd_options="
+                -b --bug
+                -c --closes
+                -T --tag
+                -n --dry-run
+                -s --scan
+                -A --ask
+                --mangle
+                --signoff
+                --gpg-sign --no-gpg-sign
+                -m --message
+                -M --message-template
+                -e --edit
+                -u --update
+                -a --all
+            "
+
+            case "${prev}" in
+                -c | --closes)
+                    local resolutions=(
+                        fixed
+                        obsolete
+                        pkgremoved
+                    )
+
+                    local bug="${cur%:*}"
+                    if [[ ${bug} != ${cur} && ${bug} != http?(s) ]]; then
+                        local bugres="${resolutions[*]/#/${bug}:}"
+                        COMPREPLY=($(compgen -W "${bugres}" -- "${cur}"))
+                        _comp_ltrim_colon_completions "$cur"
+                    else
+                        COMPREPLY=()
+                    fi
+                    ;;
+                -[bTm] | --bug | --tag | --message)
+                    COMPREPLY=()
+                    ;;
+                -M | --message-template)
+                    _filedir
+                    ;;
+                -s | --scan | --mangle)
+                    COMPREPLY=($(compgen -W "${boolean_options}" -- "${cur}"))
+                    ;;
+                *)
+                    COMPREPLY+=($(compgen -W "${subcmd_options}" -- "${cur}"))
+                    ;;
+            esac
+            ;;
+        manifest)
+            subcmd_options="
+                -f --force
+                -m --mirrors
+                -d --distdir
+                --if-modified
+            "
+
+            case "${prev}" in
+                -d | --distdir)
+                    _filedir -d
+                    ;;
+                *)
+                    COMPREPLY+=($(compgen -W "${subcmd_options}" -- "${cur}"))
+                    COMPREPLY+=($(_list_repo_atoms))
+                    ;;
+            esac
+            ;;
+        mask)
+            subcmd_options="
+                -r --rites
+                -b --bug
+                --email
+                --api-key
+                --file-bug
+            "
+
+            case "${prev}" in
+                -[rb] | --rites | --bugs | --api-key)
+                    COMPREPLY=()
+                    ;;
+                *)
+                    COMPREPLY+=($(compgen -W "${subcmd_options}" -- "${cur}"))
+                    COMPREPLY+=($(_list_repo_atoms))
+                    ;;
+            esac
+            ;;
+        push)
+            subcmd_options="
+                -A --ask
+                -n --dry-run
+                --pull
+            "
+
+            COMPREPLY+=($(compgen -W "${subcmd_options}" -- "${cur}"))
+            ;;
+        showkw)
+            subcmd_options="
+                -f --format
+                -c --collapse
+                -s --stable
+                -u --unstable
+                -o --only-unstable
+                -p --prefix
+                -a --arch
+                -r --repo
+            "
+
+            case "${prev}" in
+                -f | --format)
+                    format_options="
+                        fancy_grid
+                        fancy_outline
+                        github
+                        grid
+                        html
+                        jira
+                        latex
+                        latex_booktabs
+                        latex_longtable
+                        latex_raw
+                        mediawiki
+                        moinmoin
+                        orgtbl
+                        pipe
+                        plain
+                        presto
+                        pretty
+                        psql
+                        rst
+                        showkw
+                        simple
+                        textile
+                        tsv
+                        unsafehtml
+                        youtrack
+                    "
+                    COMPREPLY=($(compgen -W "${format_options}" -- "${cur}"))
+                    ;;
+                -r | --repo)
+                    COMPREPLY=($(compgen -W "$(_parsereposconf -l)" -- "${cur}"))
+                    ;;
+                -a | --arch)
+                    COMPREPLY=()
+                    ;;
+                *)
+                    COMPREPLY+=($(compgen -W "${subcmd_options}" -- "${cur}"))
+                    COMPREPLY+=($(_list_repo_atoms))
+                    ;;
+            esac
+            ;;
+        tatt)
+            subcmd_options="
+                --api-key
+                -j --job-name
+                -b --bug
+                -t --test
+                -u --use-combos
+                --ignore-prefixes
+                --use-default
+                --use-random
+                --use-expand-random
+                -p --package
+                -s --stablereq
+                -k --keywording
+                --template-file
+                --logs-dir
+                --emerge-opts
+                --extra-env-file
+            "
+
+            case "${prev}" in
+                -[jbup] | --api-key | --job-name | --bug | --use-combos | --package | --emerge-opts)
+                    COMPREPLY=()
+                    ;;
+                --template-file)
+                    _filedir
+                    ;;
+                --logs-dir)
+                    _filedir -d
+                    ;;
+                --extra-env-file)
+                    if [[ -d /etc/portage/env/ ]]; then
+                        pushd /etc/portage/env/ >& /dev/null
+                        local SETS=( * )
+                        COMPREPLY=($(compgen -W "${SETS[*]}" -- "${cur}" ))
+                        popd >& /dev/null
+                    else
+                        COMPREPLY=()
+                    fi
+                    ;;
+                *)
+                    COMPREPLY+=($(compgen -W "${subcmd_options}" -- "${cur}"))
+                    ;;
+            esac
+            ;;
+        bugs)
+            subcmd_options="
+                --api-key
+                --edit-graph
+                --auto-cc-arches
+                --find-by-maintainer
+                --projects
+                --filter-stablereqs
+                --stabletime
+                --blocks
+                --dot
+                -s --stablereq
+                -k --keywording
+            "
+
+            case "${prev}" in
+                --api-key | --auto-cc-arches | --blocks | --find-by-maintainer | --stabletime)
+                    COMPREPLY=()
+                    ;;
+                --dot)
+                    _filedir
+                    ;;
+                *)
+                    COMPREPLY+=($(compgen -W "${subcmd_options}" -- "${cur}"))
+                    ;;
+            esac
+            ;;
+    esac
+}
+complete -F _pkgdev pkgdev
+
+# vim: set ft=bash sw=4 et sts=4 :

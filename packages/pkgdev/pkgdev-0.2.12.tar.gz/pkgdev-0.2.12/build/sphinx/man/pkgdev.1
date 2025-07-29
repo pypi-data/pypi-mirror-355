@@ -1,0 +1,899 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "PKGDEV" "1" "Jun 14, 2025" "0.2.12" "pkgdev"
+.SH NAME
+pkgdev \- Wrapper for running commandline scripts.
+.SH SYNOPSIS
+.sp
+pkgdev [\-h] [\-\-version] [\-\-debug] [\-q] [\-v] [\-\-color BOOLEAN] {bugs,commit,manifest,mask,push,showkw,tatt} ...
+.SH BASE OPTIONS
+.INDENT 0.0
+.TP
+.B \fB\-h, \-\-help\fP
+show this help message and exit
+.TP
+.B \X'tty: link https://docs.python.org/3/using/cmdline.html#cmdoption-version'\fI\%\-\-version\fP\X'tty: link'
+show this program\(aqs version info and exit
+.TP
+.B \fB\-\-debug\fP
+enable debugging checks
+.TP
+.B \fB\-q, \-\-quiet\fP
+suppress non\-error messages
+.TP
+.B \fB\-v, \-\-verbose\fP
+show verbose output
+.TP
+.B \fB\-\-color BOOLEAN\fP
+enable/disable color support
+.UNINDENT
+.SH SUBCOMMANDS
+.SS pkgdev bugs \- Automatic bugs filer
+.SS Synopsis
+.sp
+pkgdev bugs [\-\-config CONFIG_FILE] [\-\-domain DOMAIN] [\-h] [\-\-debug] [\-\-color BOOLEAN] [\-\-api\-key TOKEN] [\-\-dot DOT] [\-\-edit\-graph] [\-\-auto\-cc\-arches EMAIL] [\-\-find\-by\-maintainer EMAIL] [\-\-projects] [\-\-filter\-stablereqs] [\-\-blocks BUG] [\-s | \-k] [\-a ARCH] [\-\-commits [tree\-ish] | \-\-staged [tree\-ish]] [\-\-git\-remote REMOTE] [\-p PROFILE] [\-\-stabletime DAYS] [target ...]
+.SS Positional Arguments
+.INDENT 0.0
+.TP
+.B \fBtarget\fP
+extended atom matching of packages
+.UNINDENT
+.SS Options
+.INDENT 0.0
+.TP
+.B \fB\-\-api\-key TOKEN\fP
+The Bugzilla API key to use for authentication. WARNING: using this
+option will expose your API key to other users of the same system.
+Consider instead saving your API key in a file named \fB~/.bugzrc\fP
+in an INI format like so:
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.EX
+[default]
+key = <your API key>
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Another supported option is to save your API key in a file named
+\fB~/.bugz_token\fP\&.
+.TP
+.B \fB\-\-dot DOT\fP
+path file where to save the graph in dot format
+.TP
+.B \fB\-\-edit\-graph\fP
+When this argument is passed, pkgdev will open the graph in the editor
+(either \fB$VISUAL\fP or \fB$EDITOR\fP) before filing bugs. The graph is
+represented in TOML format. After saving and exiting the editor, the
+tool would use the graph from the file to file bugs.
+.TP
+.B \fB\-\-auto\-cc\-arches EMAIL\fP
+Comma separated list of email addresses, for which automatically add
+CC\-ARCHES if one of the maintainers matches the email address. If the
+package is maintainer\-needed, always add CC\-ARCHES.
+.TP
+.B \fB\-\-find\-by\-maintainer EMAIL\fP
+Comma separated list of email addresses, for which pkgdev will collect
+all packages maintained by.
+.sp
+Note that this flag requires to go over all packages in the repository
+to find matches, which can be slow (between 1 to 3 seconds).
+.TP
+.B \fB\-\-projects\fP
+Include packages maintained by projects, whose members include the
+emails of maintainers passed to \fB\-\-find\-by\-maintainer\fP\&.
+.sp
+Note that this flag requires to fetch the \fBprojects.xml\fP file from
+\fBhttps://api.gentoo.org\fP\&.
+.TP
+.B \fB\-\-filter\-stablereqs\fP
+Filter targets passed to pkgdev (command line, stabilization groups,
+maintainer search, stdin) for packages with active \fBStableRequest\fP
+result.
+.TP
+.B \fB\-\-blocks BUG\fP
+Collection of bug ids which should be blocked by newly created bugs.
+Only bugs created for passed targets would be blockers, excluding other
+bugs which were created as dependencies.
+.TP
+.B \fB\-s, \-\-stablereq\fP
+File stable request bugs
+.TP
+.B \fB\-k, \-\-keywording\fP
+File rekeywording bugs
+.TP
+.B \fB\-\-stabletime DAYS\fP
+An integer number of days before a package version is flagged by
+StableRequestCheck. Defaults to 30 days.
+.UNINDENT
+.SS Config Options
+.INDENT 0.0
+.TP
+.B \fB\-\-config CONFIG_FILE\fP
+Load custom pkgdev scan settings from a given file.
+.sp
+Note that custom user settings override all other system and repo\-level
+settings.
+.sp
+It\(aqs also possible to disable all types of settings loading by
+specifying an argument of \(aqfalse\(aq or \(aqno\(aq.
+.TP
+.B \fB\-\-domain DOMAIN\fP
+custom pkgcore domain to use for this operation
+.UNINDENT
+.SS Base Options
+.INDENT 0.0
+.TP
+.B \fB\-h, \-\-help\fP
+Show this help message and exit. To get more
+information see the related man page.
+.TP
+.B \fB\-\-debug\fP
+Enable debug checks and show verbose debug output.
+.TP
+.B \fB\-\-color BOOLEAN\fP
+Toggle colored output support. This can be used to forcibly
+enable color support when piping output or other situations
+where stdout is not a tty.
+.UNINDENT
+.SS Arches
+.INDENT 0.0
+.TP
+.B \fB\-a, \-\-arches ARCH\fP
+Comma separated list of arches to enable and disable.
+.sp
+To specify disabled arches prefix them with \(aq\-\(aq. Note that when
+starting the argument list with a disabled arch an equals sign
+must be used, e.g. \-a=\-arch, otherwise the disabled arch
+argument is treated as an option.
+.sp
+By default all repo defined arches are used; however,
+stable\-related checks (e.g. UnstableOnly) default to the set of
+arches having stable profiles in the target repo.
+.UNINDENT
+.SS Git
+.sp
+Git repo support for various checks.
+.sp
+Pkgcheck can create virtual package repos from a given git repo\(aqs history
+in order to provide more info for checks relating to stable requests,
+outdated blockers, or local commits. These virtual repos are cached and
+updated every run if new commits are detected.
+.sp
+Git repos must have a supported config in order to work properly.
+Specifically, pkgcheck assumes that the origin branch exists and tracks
+upstream.
+.sp
+Additionally, the origin/HEAD ref must exist. If it doesn\(aqt, running \fBgit
+remote set\-head origin master\fP or similar for other branches will create
+it.
+.sp
+You can override the default git remote used for all git comparison using
+\fB\-\-git\-remote\fP\&.
+.INDENT 0.0
+.TP
+.B \fB\-\-commits [tree\-ish]\fP
+Targets are determined from the committed changes compared to a
+given reference that defaults to the repo\(aqs origin.
+.sp
+For example, to scan all the packages that have been changed in
+the current branch compared to the branch named \(aqold\(aq use
+\fBpkgcheck scan \-\-commits old\fP\&. For two separate branches
+named \(aqold\(aq and \(aqnew\(aq use \fBpkgcheck scan \-\-commits old..new\fP\&.
+.TP
+.B \fB\-\-staged [tree\-ish]\fP
+Targets are determined using all staged changes for the git
+repo. Unstaged changes and untracked files are ignored by
+temporarily stashing them during the scanning process.
+.TP
+.B \fB\-\-git\-remote REMOTE\fP
+The git remote to be used for all operations by pkgcheck. The
+default value, and the recommended value is \fBorigin\fP, but
+you can use any valid git remote name.
+.UNINDENT
+.SS Profiles
+.INDENT 0.0
+.TP
+.B \fB\-p, \-\-profiles PROFILE\fP
+Comma separated list of profiles to enable and disable for
+scanning. Any profiles specified in this fashion will be the
+only profiles that get scanned, skipping any disabled profiles.
+In addition, if no profiles are explicitly enabled, all
+profiles defined in the target repo\(aqs profiles.desc file will be
+scanned except those marked as experimental (exp).
+.sp
+To specify disabled profiles prefix them with \fB\-\fP which
+removes the from the list of profiles to be considered. Note
+that when starting the argument list with a disabled profile an
+equals sign must be used, e.g.  \fB\-p=\-path/to/profile\fP,
+otherwise the disabled profile argument is treated as an
+option.
+.sp
+The special keywords of \fBstable\fP, \fBdev\fP, \fBexp\fP, and
+\fBdeprecated\fP correspond to the lists of stable, development,
+experimental, and deprecated profiles, respectively. Therefore,
+to only scan all stable profiles pass the \fBstable\fP argument
+to \-\-profiles. Additionally the keyword \fBall\fP can be used to
+scan all defined profiles in the target repo.
+.UNINDENT
+.SS pkgdev commit \- create git commit
+.SS Synopsis
+.sp
+pkgdev commit [\-\-config CONFIG_FILE] [\-\-domain DOMAIN] [\-h] [\-\-debug] [\-q] [\-v] [\-\-color BOOLEAN] [\-b BUG] [\-c CLOSES[:RESOLUTION]] [\-T NAME:VALUE] [\-n] [\-s [BOOLEAN]] [\-A [BOOLEAN]] [\-\-mangle [BOOLEAN]] [\-\-signoff [BOOLEAN]] [\-\-gpg\-sign | \-\-no\-gpg\-sign] [\-d DISTDIR] [\-m MSG | \-M FILE] [\-e] [\-u | \-a]
+.SS Config Options
+.INDENT 0.0
+.TP
+.B \fB\-\-config CONFIG_FILE\fP
+Load custom pkgdev scan settings from a given file.
+.sp
+Note that custom user settings override all other system and repo\-level
+settings.
+.sp
+It\(aqs also possible to disable all types of settings loading by
+specifying an argument of \(aqfalse\(aq or \(aqno\(aq.
+.TP
+.B \fB\-\-domain DOMAIN\fP
+custom pkgcore domain to use for this operation
+.UNINDENT
+.SS Base Options
+.INDENT 0.0
+.TP
+.B \fB\-h, \-\-help\fP
+Show this help message and exit. To get more
+information see the related man page.
+.TP
+.B \fB\-\-debug\fP
+Enable debug checks and show verbose debug output.
+.TP
+.B \fB\-q, \-\-quiet\fP
+Suppress non\-error, informational messages.
+.TP
+.B \fB\-v, \-\-verbose\fP
+Increase the verbosity of various output.
+.TP
+.B \fB\-\-color BOOLEAN\fP
+Toggle colored output support. This can be used to forcibly
+enable color support when piping output or other situations
+where stdout is not a tty.
+.UNINDENT
+.SS Commit Options
+.INDENT 0.0
+.TP
+.B \fB\-b, \-\-bug BUG\fP
+add Bug tag for a given Gentoo or upstream bug
+.TP
+.B \fB\-c, \-\-closes CLOSES[:RESOLUTION]\fP
+Indicate that a bug or PR may be closed. The optional resolution string
+for Gentoo\(aqs Bugzilla describes what happened to a bug. It is
+case\-insensitive and must be one of FIXED, OBSOLETE or PKGREMOVED.
+.TP
+.B \fB\-T, \-\-tag NAME:VALUE\fP
+add commit tag
+.TP
+.B \fB\-n, \-\-dry\-run\fP
+Perform all actions without creating a commit.
+.TP
+.B \fB\-s, \-\-scan [BOOLEAN]\fP
+By default, \fBpkgdev commit\fP doesn\(aqt scan for QA errors. This option
+enables using pkgcheck to scan the staged changes for issues, erroring
+out if any failures are found.
+.TP
+.B \fB\-A, \-\-ask [BOOLEAN]\fP
+When running with the \-s/\-\-scan option enabled, \fBpkgdev commit\fP will
+ask for confirmation before creating a commit if it detects failure
+results.
+.TP
+.B \fB\-\-mangle [BOOLEAN]\fP
+File mangling automatically modifies the content of relevant staged
+files including updating copyright headers and fixing EOF newlines.
+.sp
+This is performed by default for the gentoo repo, but can be forcibly
+disabled or enabled as required.
+.TP
+.B \fB\-\-signoff [BOOLEAN]\fP
+Add a Signed\-off\-by trailer by the committer at the end of the commit
+log message.
+.sp
+For committing to the Gentoo repository, under GLEP\-76, the committer
+shall certify agreement to the Certificate of Origin by adding
+Signed\-off\-by line containing the committer\(aqs legal name.
+.TP
+.B \fB\-\-gpg\-sign, \-\-no\-gpg\-sign\fP
+Pass \fB\-\-gpg\-sign\fP or \fB\-\-no\-gpg\-sign\fP to the \fBgit commit\fP command.
+This option enables to override the default behavior or the behavior
+defined by \fBsign\-commits = true\fP in \fBmetadata/layout.conf\fP file.
+.TP
+.B \fB\-d, \-\-distdir DISTDIR\fP
+Use a specified target directory for downloads instead of the
+configured DISTDIR.
+.TP
+.B \fB\-m, \-\-message MSG\fP
+Use a given message as the commit message. If multiple \-m options are
+specified, their values are concatenated as separate paragraphs.
+.sp
+Note that the first value will be used for the commit summary and if
+it\(aqs empty then a generated summary will be used if available.
+.TP
+.B \fB\-M, \-\-message\-template FILE\fP
+Use content from the given file as a commit message template. The
+commit summary prefix \(aq
+.nf
+*
+.fi
+: \(aq is automatically replaced by a generated
+prefix if one exists for the related staged changes.
+.TP
+.B \fB\-e, \-\-edit\fP
+This option will ask git to open the commit message in an editor before
+commit. The git configuration is used to select the editor.
+.TP
+.B \fB\-u, \-\-update\fP
+stage all changed files
+.TP
+.B \fB\-a, \-\-all\fP
+stage all changed/new/removed files
+.UNINDENT
+.SS pkgdev manifest \- update package manifests
+.SS Synopsis
+.sp
+pkgdev manifest [\-\-config CONFIG_FILE] [\-\-domain DOMAIN] [\-h] [\-\-debug] [\-q] [\-v] [\-\-color BOOLEAN] [\-d DISTDIR] [\-f] [\-m] [\-\-if\-modified] [\-\-ignore\-fetch\-restricted] [target ...]
+.SS Positional Arguments
+.INDENT 0.0
+.TP
+.B \fBtarget\fP
+Packages matching any of these restrictions will have their manifest
+entries updated. If no target is specified a path restriction is
+created based on the current working directory. In other words, if
+\fBpkgdev manifest\fP is run within an ebuild\(aqs directory, all the
+ebuilds within that directory will be manifested.
+.UNINDENT
+.SS Config Options
+.INDENT 0.0
+.TP
+.B \fB\-\-config CONFIG_FILE\fP
+Load custom pkgdev scan settings from a given file.
+.sp
+Note that custom user settings override all other system and repo\-level
+settings.
+.sp
+It\(aqs also possible to disable all types of settings loading by
+specifying an argument of \(aqfalse\(aq or \(aqno\(aq.
+.TP
+.B \fB\-\-domain DOMAIN\fP
+custom pkgcore domain to use for this operation
+.UNINDENT
+.SS Base Options
+.INDENT 0.0
+.TP
+.B \fB\-h, \-\-help\fP
+Show this help message and exit. To get more
+information see the related man page.
+.TP
+.B \fB\-\-debug\fP
+Enable debug checks and show verbose debug output.
+.TP
+.B \fB\-q, \-\-quiet\fP
+Suppress non\-error, informational messages.
+.TP
+.B \fB\-v, \-\-verbose\fP
+Increase the verbosity of various output.
+.TP
+.B \fB\-\-color BOOLEAN\fP
+Toggle colored output support. This can be used to forcibly
+enable color support when piping output or other situations
+where stdout is not a tty.
+.UNINDENT
+.SS Manifest Options
+.INDENT 0.0
+.TP
+.B \fB\-d, \-\-distdir DISTDIR\fP
+Use a specified target directory for downloads instead of the
+configured DISTDIR.
+.TP
+.B \fB\-f, \-\-force\fP
+Force package manifest files to be rewritten. Note that this requires
+downloading all distfiles.
+.TP
+.B \fB\-m, \-\-mirrors\fP
+Enable checking Gentoo mirrors first for distfiles. This is disabled by
+default because manifest generation is often performed when adding new
+ebuilds with distfiles that aren\(aqt on Gentoo mirrors yet.
+.TP
+.B \fB\-\-if\-modified\fP
+In addition to matching the specified restriction, restrict to targets
+which are marked as modified by git, including untracked files.
+.TP
+.B \fB\-\-ignore\-fetch\-restricted\fP
+Ignore attempting to update manifest entries for ebuilds which are
+fetch restricted.
+.UNINDENT
+.SS pkgdev mask \- mask packages
+.SS Synopsis
+.sp
+pkgdev mask [\-h] [\-\-debug] [\-q] [\-v] [\-\-color BOOLEAN] [\-\-api\-key TOKEN] [\-r [DAYS]] [\-b BUGS] [\-\-email] [\-\-file\-bug] [TARGET ...]
+.SS Positional Arguments
+.INDENT 0.0
+.TP
+.B \fBTARGET\fP
+Packages matching any of these restrictions will have a mask entry in
+profiles/package.mask added for them. If no target is specified a path
+restriction is created based on the current working directory. In other
+words, if \fBpkgdev mask\fP is run within an ebuild\(aqs directory, all the
+ebuilds within that directory will be masked.
+.UNINDENT
+.SS Options
+.INDENT 0.0
+.TP
+.B \fB\-\-api\-key TOKEN\fP
+The Bugzilla API key to use for authentication. WARNING: using this
+option will expose your API key to other users of the same system.
+Consider instead saving your API key in a file named \fB~/.bugzrc\fP
+in an INI format like so:
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.EX
+[default]
+key = <your API key>
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Another supported option is to save your API key in a file named
+\fB~/.bugz_token\fP\&.
+.UNINDENT
+.SS Base Options
+.INDENT 0.0
+.TP
+.B \fB\-h, \-\-help\fP
+Show this help message and exit. To get more
+information see the related man page.
+.TP
+.B \fB\-\-debug\fP
+Enable debug checks and show verbose debug output.
+.TP
+.B \fB\-q, \-\-quiet\fP
+Suppress non\-error, informational messages.
+.TP
+.B \fB\-v, \-\-verbose\fP
+Increase the verbosity of various output.
+.TP
+.B \fB\-\-color BOOLEAN\fP
+Toggle colored output support. This can be used to forcibly
+enable color support when piping output or other situations
+where stdout is not a tty.
+.UNINDENT
+.SS Mask Options
+.INDENT 0.0
+.TP
+.B \fB\-r, \-\-rites [DAYS]\fP
+Mark a mask entry for last rites. This defaults to 30 days until
+package removal but accepts an optional argument for the number of
+days.
+.TP
+.B \fB\-b, \-\-bug, \-\-bugs BUGS\fP
+Add a reference to a bug in the mask comment. May be specified multiple
+times to reference multiple bugs.
+.TP
+.B \fB\-\-email\fP
+Spawn user\(aqs preferred email composer with a prepared email for
+sending a last rites message to Gentoo\(aqs mailing list (\fBgentoo\-dev\fP
+and \fBgentoo\-dev\-announce\fP). The user should manually set the Reply\-to
+field for the message to be accepted by \fBgentoo\-dev\-announce\fP\&.
+.sp
+For spawning the preferred email composer, the \fBxdg\-email\fP tool from
+\fBx11\-misc/xdg\-utils\fP package.
+.TP
+.B \fB\-\-file\-bug\fP
+Files a last\-rite bug for the masked package, which blocks listed
+reference bugs. \fBPMASKED\fP keyword is added all all referenced bugs.
+.UNINDENT
+.SS pkgdev push \- run QA checks on commits and push them
+.SS Synopsis
+.sp
+pkgdev push [\-\-config CONFIG_FILE] [\-\-domain DOMAIN] [\-h] [\-\-debug] [\-q] [\-v] [\-\-color BOOLEAN] [\-A [BOOLEAN]] [\-n] [\-\-pull]
+.SS Config Options
+.INDENT 0.0
+.TP
+.B \fB\-\-config CONFIG_FILE\fP
+Load custom pkgdev scan settings from a given file.
+.sp
+Note that custom user settings override all other system and repo\-level
+settings.
+.sp
+It\(aqs also possible to disable all types of settings loading by
+specifying an argument of \(aqfalse\(aq or \(aqno\(aq.
+.TP
+.B \fB\-\-domain DOMAIN\fP
+custom pkgcore domain to use for this operation
+.UNINDENT
+.SS Base Options
+.INDENT 0.0
+.TP
+.B \fB\-h, \-\-help\fP
+Show this help message and exit. To get more
+information see the related man page.
+.TP
+.B \fB\-\-debug\fP
+Enable debug checks and show verbose debug output.
+.TP
+.B \fB\-q, \-\-quiet\fP
+Suppress non\-error, informational messages.
+.TP
+.B \fB\-v, \-\-verbose\fP
+Increase the verbosity of various output.
+.TP
+.B \fB\-\-color BOOLEAN\fP
+Toggle colored output support. This can be used to forcibly
+enable color support when piping output or other situations
+where stdout is not a tty.
+.UNINDENT
+.SS Push Options
+.INDENT 0.0
+.TP
+.B \fB\-A, \-\-ask [BOOLEAN]\fP
+confirm pushing commits with QA errors
+.TP
+.B \fB\-n, \-\-dry\-run\fP
+pretend to push the commits
+.TP
+.B \fB\-\-pull\fP
+run \fIgit pull \-\-rebase\fP before scanning
+.UNINDENT
+.SS pkgdev showkw \- show package keywords
+.SS Synopsis
+.sp
+pkgdev showkw [\-\-config CONFIG_FILE] [\-\-domain DOMAIN] [\-h] [\-\-debug] [\-q] [\-v] [\-\-color BOOLEAN] [\-f FORMAT] [\-c] [\-s] [\-u] [\-o] [\-p] [\-a ARCH] [\-r REPO] [target ...]
+.SS Positional Arguments
+.INDENT 0.0
+.TP
+.B \fBtarget\fP
+extended atom matching of packages
+.UNINDENT
+.SS Config Options
+.INDENT 0.0
+.TP
+.B \fB\-\-config CONFIG_FILE\fP
+Load custom pkgdev scan settings from a given file.
+.sp
+Note that custom user settings override all other system and repo\-level
+settings.
+.sp
+It\(aqs also possible to disable all types of settings loading by
+specifying an argument of \(aqfalse\(aq or \(aqno\(aq.
+.TP
+.B \fB\-\-domain DOMAIN\fP
+custom pkgcore domain to use for this operation
+.UNINDENT
+.SS Base Options
+.INDENT 0.0
+.TP
+.B \fB\-h, \-\-help\fP
+Show this help message and exit. To get more
+information see the related man page.
+.TP
+.B \fB\-\-debug\fP
+Enable debug checks and show verbose debug output.
+.TP
+.B \fB\-q, \-\-quiet\fP
+Suppress non\-error, informational messages.
+.TP
+.B \fB\-v, \-\-verbose\fP
+Increase the verbosity of various output.
+.TP
+.B \fB\-\-color BOOLEAN\fP
+Toggle colored output support. This can be used to forcibly
+enable color support when piping output or other situations
+where stdout is not a tty.
+.UNINDENT
+.SS Output Options
+.INDENT 0.0
+.TP
+.B \fB\-f, \-\-format FORMAT\fP
+Output table using specified tabular format (defaults to compressed,
+custom format).
+.sp
+Available formats: fancy_grid, fancy_outline, github, grid, html, jira, latex, latex_booktabs, latex_longtable, latex_raw, mediawiki, moinmoin, orgtbl, pipe, plain, presto, pretty, psql, rst, showkw, simple, textile, tsv, unsafehtml, youtrack
+.TP
+.B \fB\-c, \-\-collapse\fP
+show collapsed list of arches
+.UNINDENT
+.SS Arch Options
+.INDENT 0.0
+.TP
+.B \fB\-s, \-\-stable\fP
+show stable arches
+.TP
+.B \fB\-u, \-\-unstable\fP
+show unstable arches
+.TP
+.B \fB\-o, \-\-only\-unstable\fP
+show arches that only have unstable keywords
+.TP
+.B \fB\-p, \-\-prefix\fP
+show prefix and non\-native arches
+.TP
+.B \fB\-a, \-\-arch ARCH\fP
+select arches to display
+.UNINDENT
+.SS Target Options
+.INDENT 0.0
+.TP
+.B \fB\-r, \-\-repo REPO\fP
+repo to query (defaults to all ebuild repos)
+.UNINDENT
+.SS pkgdev tatt \- package testing tool
+.SS Synopsis
+.sp
+pkgdev tatt [\-\-config CONFIG_FILE] [\-\-domain DOMAIN] [\-h] [\-\-debug] [\-\-color BOOLEAN] [\-\-api\-key TOKEN] [\-j NAME] [\-b BUG] [\-t] [\-u NUMBER] [\-\-ignore\-prefixes IGNORE_PREFIXES] [\-\-use\-default | \-\-use\-random | \-\-use\-expand\-random] [\-p TARGET [TARGET ...]] [\-s | \-k] [\-\-template\-file TEMPLATE_FILE] [\-\-logs\-dir LOGS_DIR] [\-\-emerge\-opts EMERGE_OPTS] [\-\-extra\-env\-file ENV_FILE]
+.SS Options
+.INDENT 0.0
+.TP
+.B \fB\-\-api\-key TOKEN\fP
+The Bugzilla API key to use for authentication. WARNING: using this
+option will expose your API key to other users of the same system.
+Consider instead saving your API key in a file named \fB~/.bugzrc\fP
+in an INI format like so:
+.INDENT 7.0
+.INDENT 3.5
+.sp
+.EX
+[default]
+key = <your API key>
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Another supported option is to save your API key in a file named
+\fB~/.bugz_token\fP\&.
+.TP
+.B \fB\-j, \-\-job\-name NAME\fP
+The job name to use for the job script and report. The name can use
+the variables \fB{PN}\fP (package name) and \fB{BUGNO}\fP (bug number)
+to created variable names.
+.TP
+.B \fB\-b, \-\-bug BUG\fP
+Single bug to take package list from
+.UNINDENT
+.SS Config Options
+.INDENT 0.0
+.TP
+.B \fB\-\-config CONFIG_FILE\fP
+Load custom pkgdev scan settings from a given file.
+.sp
+Note that custom user settings override all other system and repo\-level
+settings.
+.sp
+It\(aqs also possible to disable all types of settings loading by
+specifying an argument of \(aqfalse\(aq or \(aqno\(aq.
+.TP
+.B \fB\-\-domain DOMAIN\fP
+custom pkgcore domain to use for this operation
+.UNINDENT
+.SS Base Options
+.INDENT 0.0
+.TP
+.B \fB\-h, \-\-help\fP
+Show this help message and exit. To get more
+information see the related man page.
+.TP
+.B \fB\-\-debug\fP
+Enable debug checks and show verbose debug output.
+.TP
+.B \fB\-\-color BOOLEAN\fP
+Toggle colored output support. This can be used to forcibly
+enable color support when piping output or other situations
+where stdout is not a tty.
+.UNINDENT
+.SS Use Flags Options
+.INDENT 0.0
+.TP
+.B \fB\-t, \-\-test\fP
+Include a test run for packages which define \fBsrc_test\fP phase
+(in the ebuild or inherited from eclass).
+.TP
+.B \fB\-u, \-\-use\-combos NUMBER\fP
+Maximal number USE combinations to be tested
+.TP
+.B \fB\-\-ignore\-prefixes IGNORE_PREFIXES\fP
+Comma separated USE flags prefixes that won\(aqt be randomized. This is
+useful for USE flags such as \fBpython_targets_\fP\&. Note that this
+doesn\(aqt affect preference, but because of specific REQUIRED_USE will
+still be changed from defaults.
+.TP
+.B \fB\-\-use\-default\fP
+Prefer to use default use flags configuration
+.TP
+.B \fB\-\-use\-random\fP
+Turn on random use flags, with default USE_EXPAND
+.TP
+.B \fB\-\-use\-expand\-random\fP
+Turn on random use flags, including USE_EXPAND
+.UNINDENT
+.SS Manual Packages Options
+.INDENT 0.0
+.TP
+.B \fB\-p, \-\-packages TARGET [TARGET ...]\fP
+extended atom matching of packages
+.TP
+.B \fB\-s, \-\-stablereq\fP
+Test packages for stable keywording requests
+.TP
+.B \fB\-k, \-\-keywording\fP
+Test packages for keywording requests
+.UNINDENT
+.SS Template Options
+.INDENT 0.0
+.TP
+.B \fB\-\-template\-file TEMPLATE_FILE\fP
+Template file to use for the job script. The template file is a
+Jinja template file, which can use the following variables:
+.INDENT 7.0
+.TP
+.B \fBjobs\fP
+A list of jobs to be run. Each job is a tuple consisting of
+USE flags values, is a testing job, and the atom to build.
+.TP
+.B \fBreport_file\fP
+The path to the report file.
+.TP
+.B \fBemerge_opts\fP
+Options to be passed to emerge invocations. Taken from
+\fB\-\-emerge\-opts\fP\&.
+.TP
+.B \fBextra_env_files\fP
+A list of extra /etc/portage/env/ file names, to be added to
+\fBpackage.env\fP entry when testing the package. Taken from
+\fB\-\-extra\-env\-file\fP\&.
+.TP
+.B \fBlog_dir\fP
+irectory to save build logs for failing tasks. Taken from
+\fB\-\-logs\-dir\fP\&.
+.TP
+.B \fBcleanup_files\fP
+A list of files to be removed after the job script is done.
+.UNINDENT
+.TP
+.B \fB\-\-logs\-dir LOGS_DIR\fP
+Directory to save build logs for failing tasks
+.TP
+.B \fB\-\-emerge\-opts EMERGE_OPTS\fP
+Space separated single argument, consisting og options to be passed
+to \fBemerge\fP invocations.
+.TP
+.B \fB\-\-extra\-env\-file ENV_FILE\fP
+Comma separated filenames under /etc/portage/env/, which will all be
+included in the package.env entry when testing the package.
+.UNINDENT
+.SH CONFIG FILE SUPPORT
+.sp
+Config files are supported by most subcommands of \fBpkgdev\fP from any of three
+locations. Listed in order of increasing precedence these include the
+following:
+.INDENT 0.0
+.IP \(bu 2
+system config \-\- \fB/etc/pkgdev/pkgdev.conf\fP
+.IP \(bu 2
+user config \-\- \fB${XDG_CONFIG_HOME}/pkgdev/pkgdev.conf\fP
+.IP \(bu 2
+user config \-\- \fB~/.config/pkgdev/pkgdev.conf\fP
+.IP \(bu 2
+custom config \-\- specified via the \fB\-\-config\fP option
+.UNINDENT
+.sp
+Any settings from a config file with higher precedence will override matching
+settings from a config file with a lower precedence, e.g. user settings
+override system settings. Note that command line options override any matching
+config file setting.
+.sp
+In terms of file structure, basic INI formatting is required and allows
+creating a default section (DEFAULT) for system\-wide settings or repo\-specific
+sections. The INI key\-value pairs directly relate to the available
+long\-options supported by the various prefixed by the subcommand name and their
+related values. To find all possible configuration options, run:
+\fBpkgdev {subcommand} \-\-help\fP\&. See the following examples for config settings:
+.INDENT 0.0
+.IP \(bu 2
+Run \fBpkgcheck scan\fP before committing and asks for confirmation (instead of
+aborting) when creating commits with QA errors:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.EX
+[DEFAULT]
+commit.scan = true
+commit.ask = true
+.EE
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Allow pushing commits with QA errors, but only for the \(aqgentoo\(aq repository:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.EX
+[gentoo]
+push.ask = true
+.EE
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Add \fISigned\-off\-by\fP consenting to the \X'tty: link https://www.gentoo.org/glep/glep-0076.html#certificate-of-origin'\fI\%Certificate of Origin\fP\X'tty: link'
+to all commits:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.EX
+[DEFAULT]
+commit.signoff = true
+.EE
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+When committing, stage all files in current working directory (note that this
+option doesn\(aqt expect value, therefore no value is defined post equal sign):
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.EX
+[DEFAULT]
+commit.all =
+.EE
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+All previous config settings combined:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.EX
+[DEFAULT]
+commit.scan = true
+commit.ask = true
+commit.all =
+
+[gentoo]
+push.ask =
+.EE
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH REPORTING BUGS
+.sp
+Please submit an issue via github:
+.sp
+\X'tty: link https://github.com/pkgcore/pkgdev/issues'\fI\%https://github.com/pkgcore/pkgdev/issues\fP\X'tty: link'
+.SH AUTHOR
+Tim Harder <radhermit@gmail.com>, Arthur Zamarin <arthurzam@gentoo.org>
+.SH COPYRIGHT
+2021-2022, pkgdev contributors
+.\" Generated by docutils manpage writer.
+.

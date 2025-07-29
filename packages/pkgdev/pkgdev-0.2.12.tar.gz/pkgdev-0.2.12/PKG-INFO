@@ -1,0 +1,83 @@
+Metadata-Version: 2.4
+Name: pkgdev
+Version: 0.2.12
+Summary: collection of tools for Gentoo development
+Author-email: Tim Harder <radhermit@gmail.com>, Arthur Zamarin <arthurzam@gentoo.org>
+Maintainer-email: Arthur Zamarin <arthurzam@gentoo.org>
+Requires-Python: ~=3.11
+Description-Content-Type: text/x-rst
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+License-File: LICENSE
+Requires-Dist: snakeoil~=0.10.1
+Requires-Dist: pkgcore~=0.12.30
+Requires-Dist: pkgcheck~=0.10.36
+Requires-Dist: sphinx ; extra == "doc"
+Requires-Dist: nattka ; extra == "tatt"
+Requires-Dist: Jinja2 ; extra == "tatt"
+Requires-Dist: pytest>=6.0 ; extra == "test"
+Requires-Dist: pytest-cov ; extra == "test"
+Project-URL: Documentation, https://pkgcore.github.io/pkgdev/
+Project-URL: Homepage, https://github.com/pkgcore/pkgdev
+Project-URL: Source, https://github.com/pkgcore/pkgdev
+Provides-Extra: doc
+Provides-Extra: tatt
+Provides-Extra: test
+
+|pypi| |test| |coverage|
+
+======
+pkgdev
+======
+
+pkgdev provides a collection of tools for Gentoo development including:
+
+**pkgdev commit**: commit to an ebuild repository
+
+**pkgdev manifest**: update package manifests
+
+**pkgdev mask**: mask packages
+
+**pkgdev push**: scan commits for QA issues before pushing upstream
+
+**pkgdev showkw**: show package keywords
+
+Dependencies
+============
+
+pkgdev is developed alongside pkgcheck_, pkgcore_, and snakeoil_. Running
+pkgdev from git will often require them from git as well.
+
+For releases, see the required runtime dependencies_.
+
+Installing
+==========
+
+Installing latest pypi release::
+
+    pip install pkgdev
+
+Installing from git::
+
+    pip install https://github.com/pkgcore/pkgdev/archive/main.tar.gz
+
+Installing from a tarball::
+
+    pip install .
+
+
+.. _pkgcheck: https://github.com/pkgcore/pkgcheck
+.. _pkgcore: https://github.com/pkgcore/pkgcore
+.. _snakeoil: https://github.com/pkgcore/snakeoil
+.. _dependencies: https://github.com/pkgcore/pkgdev/blob/main/requirements/install.txt
+
+.. |pypi| image:: https://img.shields.io/pypi/v/pkgdev.svg
+    :target: https://pypi.python.org/pypi/pkgdev
+.. |test| image:: https://github.com/pkgcore/pkgdev/workflows/test/badge.svg
+    :target: https://github.com/pkgcore/pkgdev/actions?query=workflow%3A%22test%22
+.. |coverage| image:: https://codecov.io/gh/pkgcore/pkgdev/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/pkgcore/pkgdev
+
