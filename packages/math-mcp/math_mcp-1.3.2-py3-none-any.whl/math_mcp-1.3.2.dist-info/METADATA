@@ -1,0 +1,112 @@
+Metadata-Version: 2.4
+Name: math-mcp
+Version: 1.3.2
+Summary: Comprehensive Math calculation MCP server, providing basic arithmetic, matrix calculation, statistical analysis, calculus, optimization, regression, geometry, number theory, signal processing, financial mathematics, and probability calculations with data visualization.
+Project-URL: Homepage, https://github.com/111-test-111/math-mcp-server
+Project-URL: Repository, https://github.com/111-test-111/math-mcp-server.git
+Project-URL: Issues, https://github.com/111-test-111/math-mcp-server/issues
+Author-email: jcy <jcy646416062@outlook.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: calculation,financial-math,geometry,linear-algebra,mathematics,mcp,number-theory,probability,signal-processing,statistics
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: community>=1.0.0b1
+Requires-Dist: fastmcp>=2.7.1
+Requires-Dist: louvain>=0.8.2
+Requires-Dist: matplotlib>=3.5.0
+Requires-Dist: mcp>=1.9.3
+Requires-Dist: networkx>=3.4.2
+Requires-Dist: numpy<1.26.0,>=1.21.0
+Requires-Dist: pandas<2.2.0,>=1.5.0
+Requires-Dist: psutil>=5.8.0
+Requires-Dist: python-louvain>=0.16
+Requires-Dist: scikit-learn<1.5.0,>=1.1.0
+Requires-Dist: scipy<1.13.0,>=1.9.0
+Requires-Dist: seaborn>=0.11.0
+Requires-Dist: sympy>=1.11.0
+Description-Content-Type: text/markdown
+
+## Math MCP Server
+
+A Python-based mathematical computation MCP server, providing a suite of mathematical computation tools and plotting utilities.
+
+### Run mcp server
+```Python
+uvx math-mcp # using uvx
+
+# Or run the .py file directly (dependencies must be installed manually)
+python math_mcp/math_mcp_server.py
+```
+
+### Project Structure
+```
+math_mcp/
+├── __init__.py                      # Package initialization
+├── __main__.py                      # CLI entry point
+├── math_mcp_server.py               # Main server file (MCP tool registration)
+├── description_loader.py            # Tool description loader
+├── tool_descriptions.py             # Tool description configuration
+├── file_utils.py                    # File path utilities
+# Core computation modules
+├── basic.py                         # Basic math computation
+├── matrix.py                        # Matrix computations
+├── mstatistics.py                   # Statistical analysis (avoid conflicts)
+├── calculus.py                      # Calculus
+├── optimization.py                  # Optimization algorithms
+├── regression.py                    # Regression analysis
+├── plotting.py                      # Data visualization
+├── geometry.py                      # Geometric computations
+├── number_theory.py                 # Number theory
+├── complex_analysis.py              # Complex analysis
+├── probability.py                   # Probability and statistics
+# Extended specialized modules
+├── signal_processing.py             # Signal processing
+├── financial.py                     # Financial mathematics
+└── graph_theory.py                  # Graph theory analysis
+```
+
+### Configuration in Claude Desktop
+
+Add the following configuration to your Claude Desktop config file:
+```json
+{
+    "mcpServers": {
+        "math-calculator": {
+            "command": "uvx",
+            "args": ["math-mcp"],
+            "env": {
+                "OUTPUT_PATH": "path/to/plot_output",
+                "FONT_PATH": "path/to/font"
+            }
+        }
+    }
+}
+```
+
+Or start the server directly:
+```json
+{
+    "mcpServers": {
+        "math-calculator-local": {
+            "command": "path/to/python_interpreter",
+            "args": [
+                "path/to/math_mcp_server.py"
+            ],
+            "env": {
+                "OUTPUT_PATH": "path/to/output",
+                "FONT_PATH": "path/to/font"
+            }
+        }
+    }
+}
+```
