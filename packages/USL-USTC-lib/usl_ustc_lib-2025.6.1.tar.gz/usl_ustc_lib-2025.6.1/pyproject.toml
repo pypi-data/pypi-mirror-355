@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "numpy", "matplotlib", "pandas", "scipy", "datetime", "allantools>=2024.4", "pathlib", "sympy"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "USL_USTC_lib"    # 包名（PyPI 唯一标识）
+version = "2025.06.01"             # 版本号（每次更新需递增）
+authors = [{ name = "zxq985", email = "zxq985160104@163.com" }]
+description = "Some useful functions for USL(ultra-stable laser)"  # 简短描述
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"     # 支持的 Python 版本
+classifiers = [               # 分类标签（可选）
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ShinetingChu/USL-lib"
+"Repository" = "https://github.com/ShinetingChu/USL-lib"
+
+
+[tool.setuptools.packages]
+find = {}  # 自动查找包
