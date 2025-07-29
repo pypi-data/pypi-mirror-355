@@ -1,0 +1,34 @@
+Metadata-Version: 2.4
+Name: reduce-mem-usage
+Version: 0.1.0
+Summary: A simple utility to reduce memory usage of pandas DataFrames
+Home-page: https://github.com/yourusername/reduce-mem-usage
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.18.0
+Requires-Dist: pandas>=1.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+pip install reduce-mem-usage
+
+import pandas as pd
+from reduce_mem_usage import reduce_mem_usage
+
+# Example: load a DataFrame
+df = pd.read_csv("data.csv")
+
+# Reduce memory usage
+df = reduce_mem_usage(df)
