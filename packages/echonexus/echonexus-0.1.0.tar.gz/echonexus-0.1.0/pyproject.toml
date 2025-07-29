@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "echonexus"
+version = "0.1.0"
+description = "EchoNexus AI framework with Ava8 symphony"
+authors = [{name = "EchoNexus Team"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "click",
+    "upstash-redis",
+    "flask",
+    "numpy",
+    "sentence-transformers",
+    "faiss-cpu",
+    "pandas",
+    "causalnex",
+    "matplotlib",
+    "redis",
+    "scikit-learn",
+    "flask-cors",
+    "flask-restful",
+    "flask-socketio",
+    "coaiapy",
+    "tushell",
+    "echothreads",
+    "midiutil",
+    "fastapi",
+    "sqlalchemy",
+    "pydantic-settings",
+    "python-jose",
+    "prometheus-client"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "twine"
+]
+
+[project.scripts]
+saocc-cli = "saocc.cli:cli"
+upkeys-cli = "upkeys.cli:cli"
+cadro-cli = "cadro.cli:cli"
+ava8-cli = "ava8.cli:cli"
+main-cli = "main:main"
