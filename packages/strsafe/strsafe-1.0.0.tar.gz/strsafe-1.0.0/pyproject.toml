@@ -1,0 +1,71 @@
+[project]
+name = "strsafe"
+version = "1.0.0"
+description = "Transliterate Unicode strings to 'safe' ASCII strings."
+readme = "README.md"
+authors = [
+    { name = "Andrew LeCody", email = "348675+aceat64@users.noreply.github.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "unidecode>=1.4.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.7.13,<0.8.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.16.0",
+    "pytest>=8.4.0",
+    "pytest-cov>=6.2.1",
+    "pytest-github-actions-annotate-failures>=0.3.0",
+    "ruff>=0.11.13",
+]
+
+[tool.mypy]
+strict = true
+exclude = [".venv"]
+warn_unreachable = true
+enable_error_code = ["deprecated", "no-any-unimported", "redundant-self"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # eradicate
+    "ERA",
+    # Ruff-specific rules
+    "RUF",
+    # flake8-async
+    "ASYNC",
+    # flake8-bandit
+    "S",
+    # flake8-comprehensions
+    "C4",
+    # flake8-datetimez
+    "DTZ",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/*" = [
+    "S101",  # Use of `assert` detected
+]
+
+[tool.pytest.ini_options]
+required_plugins = "pytest-cov"
+addopts = "--cov=src/strsafe --cov-report=term-missing --cov-branch --strict-markers"
