@@ -1,0 +1,67 @@
+{
+  "version": 0,
+  "name": "{{cookiecutter.agent_name}}",
+  "runtime": "python",
+  "graph": [
+    "(Source {{cookiecutter.capability_class_name}})"
+  ],
+  "elements": [
+    {
+      "name": "Source",
+      "parameters": {
+        "source_inputs": [],
+        "read_stdin": false
+      },
+      "input": [
+        {
+          "name": "data_files",
+          "type": "List[DataFile]"
+        },
+        {
+          "name": "entities",
+          "type": "List[Dict[UUID, Entity]]"
+        }
+      ],
+      "output": [
+        {
+          "name": "data_files",
+          "type": "List[DataFile]"
+        },
+        {
+          "name": "entities",
+          "type": "List[Dict[UUID, Entity]]"
+        }
+      ],
+      "deploy": {
+        "local": {
+          {% if cookiecutter.data_type == 'text' -%}
+          "class_name": "TextDataSource",
+          {% elif cookiecutter.data_type == 'video' -%}
+          "class_name": "VideoDataSource",
+          {% elif cookiecutter.data_type == 'image' -%}
+          "class_name": "ImageDataSource",
+          {%- endif -%}
+          "module": "highlighter.agent.capabilities"
+        }
+      }
+    },
+    {
+      "name": "{{cookiecutter.capability_class_name}}",
+      "parameters": {
+      },
+      "input": [
+        {
+          "name": "data_files",
+          "type": "List[DataFile]"
+        }
+      ],
+      "output": [
+      ],
+      "deploy": {
+        "local": {
+          "module": "{{cookiecutter._scaffold_pkg_name}}.capabilities"
+        }
+      }
+    }
+  ]
+}
