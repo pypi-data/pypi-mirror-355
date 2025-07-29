@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "qcmanybody"
+dynamic = ["version"]
+authors = [
+  { name="Benjamin Pritchard", email="bpp4@vt.edu" },
+  { name="Lori A. Burns", email="lori.burns@gmail.com" },
+]
+description='QCManyBody'
+readme = "README.md"
+# license = "BSD-3-Clause"  # until setuptools gets its act together across python versions
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Framework :: Pydantic",
+]
+dependencies = [
+    "numpy",
+    "pydantic>=1.10.17,<3",  # generally v1 API; v2 API features in beta
+    "qcelemental>=0.28.0,<0.70.0",
+]
+
+[project.optional-dependencies]
+standard = [
+    # needed for continuous hi-lvl interface: `mbres = ManyBodyComputer.from_manybodyinput(mbin)`
+    "qcengine",
+]
+tests = [
+    "pytest",
+    "zstandard",
+    # qcengine & one of psi4, nwchem, cfour needed for hi-lvl interface testing
+    # qcengine & psi4 needed to regenerate test reference data
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "tabulate",
+]
+dev = [
+    "pre-commit",
+]
+
+[tool.setuptools]
+packages = ["qcmanybody"]
+
+[tool.setuptools.package-data]
+
+
+[project.urls]
+homepage = "https://github.com/MolSSI/QCManyBody"
+changelog = "https://github.com/MolSSI/QCManyBody/docs/changelog.md"
+documentation = "https://molssi.github.io/QCManyBody/"
+issues = "https://github.com/MolSSI/QCManyBody/issues"
+
+[tool.black]
+line-length = 120
+exclude = '''.*test_.*'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.setuptools_scm]
+
+
+[tool.versioningit.vcs]
+default-tag = "0.0.99" # useful for CI/shallow clones
+
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "--import-mode=importlib"
+pythonpath = [
+    "tests",
+]
+testpaths = [
+    "tests",
+]
+markers = [
+    "addon: tests require external non-required software",
+
+    "qcengine: tests using QCEngine software; skip if unavailable",
+    "cfour: tests using CFOUR software; skip if unavailable",
+    "nwchem: tests using classic NWChem software; skip if unavailable",
+    "psi4: tests using Psi4 software; skip if unavailable",
+    "geometric: tests using GeomeTRIC software; skip if unavailable",
+    "geometric_genopt: tests using GeomeTRIC software with new additions; skip if unavailable",
+    "optking: tests using OptKing software; skip if unavailable",
+    "optking_genopt: tests using OptKing software with new additions; skip if unavailable",
+]
