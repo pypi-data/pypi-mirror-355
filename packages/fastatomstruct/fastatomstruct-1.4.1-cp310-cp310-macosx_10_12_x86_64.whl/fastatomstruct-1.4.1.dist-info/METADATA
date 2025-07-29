@@ -1,0 +1,136 @@
+Metadata-Version: 2.4
+Name: fastatomstruct
+Version: 1.4.1
+Requires-Dist: ase
+Requires-Dist: numpy
+Requires-Dist: tidynamics
+License-File: LICENSE
+Summary: A Python package for the analysis of atomic structures and dynamics
+Author: Nils Cedric Holle <nils.holle@uni-muenster.de>
+Author-email: Nils Cedric Holle <nils.holle@uni-muenster.de>
+License: GPL-3.0
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+# Fast calculation of structural and dynamical parameters
+
+`fastatomstruct` is a Python package (mostly written in Rust) that includes functions to calculate atomic structural quantities.
+If possible, thread-based parallelization (using [`rayon`](https://crates.io/crates/rayon)) is employed to speed up calculations and take advantage of multicore processors.
+
+## Documentation
+
+[The documentation can be found here.](https://ag-salinga.zivgitlabpages.uni-muenster.de/fastatomstruct)
+
+## What can this package do?
+The package can currently calculate the following quantities:
+
+- Structural
+    - Atomic distances
+    - Coordination numbers
+    - Finding bonds
+    - Nearest neighbours
+    - Radial distribution function
+    - Static structure factor
+    - Bond orientational parameter (Steinhardt et al.) and Bond Order Correlation parameter
+    - Tetrahedral order parameter
+    - Three-body correlation (TBC) - simple, angular-limited, and angular-resolved
+    - Bond length ratio (BLR)
+- Dynamical
+    - Mean squared displacement
+    - Non-gaussian parameter
+    - Overlap q
+    - Four-point correlation functions
+    - Velocity autocorrelation
+    - Vibrational density of states
+    - Viscosity
+
+## Example usage
+
+This example uses the [Atomic Simulation Environment](https://wiki.fysik.dtu.dk/ase/), which can also be installed using pip (`pip install ase`) and is a dependency of `fastatomstruct`.
+
+```python
+from ase.build import bulk
+from fastatomstruct import all_distances, coordination_numbers
+
+# Lithium in the BCC phase with the unit cell repeated
+# 10x10x10 times
+atoms = bulk("Li", "bcc", 3.45).repeat((10, 10, 10))
+
+# Atomic distances
+dists = all_distances(atoms)
+
+# Coordination numbers with a cutoff of 3 A
+coordination = coordination_numbers(atoms, 3)
+```
+
+More examples can be found in the [documentation](https://ag-salinga.zivgitlabpages.uni-muenster.de/fastatomstruct/examples.html).
+
+## Example usage in Rust
+
+`fastatomstruct` can also be used in Rust projects. You can find the documentation for the Rust API [here](https://docs.rs/fastatomstruct/latest/fastatomstruct/). Examples can be found [here](https://gitlab.com/ag-salinga/fastatomstruct/rustdoc).
+
+## Installation
+
+### From PyPI
+`fastatomstruct` can be installed from the [Python Package Index](https://pypi.org/project/fastatomstruct/). **Currently, Windows (x86_64), Linux (x86_64, aarch64), and Mac OS X (x86_64, aarch64) with a Python version >= 3.8 are supported. In addition, your x86_64 processor has to support AVX2 instructions.** Most processors since 2015 should meet those criteria. If your system doesn't, you can still install `fastatomstruct` from source (see next subsection).
+
+To run the installation, use
+```
+pip install fastatomstruct
+```
+
+### Image parallelization
+
+If you want to use image parallelization with `fastatomstruct.ipar` (see documentation), you should also install [`mpi4py`](https://mpi4py.readthedocs.io/en/stable/). Please consult the corresponding documentation for installation instructions and prerequisites.
+
+### From source
+
+Installing `fastatomstruct` from source requires
+
+- Python >= 3.8
+- pip
+- a working Rust installation (1.85 and newer), including cargo (installation instructions can be found [here](https://www.rust-lang.org/tools/install))
+- `maturin`, a Python package that can e.g. be installed using `pip3 install --upgrade maturin`
+
+To build the Python wheel, run
+```
+maturin build --release
+```
+The resulting wheel will be located in `target/wheels/`. You can install it using
+```
+python3 -m pip install target/wheels/fastatomstruct-version.whl
+```
+Replace "version" with your actual Python version.
+The package can then be used in Python using e.g. `from fastatomstruct import coordination_numbers`.
+
+### Running tests
+
+You can run the tests using
+
+```
+cargo test --no-default-features --features python,rayon,time
+```
+
+Additional regression tests are implemented using the [pytest](https://docs.pytest.org/en/stable/) framework. To run them, you need to install `pytest` (e.g. using `pip install pytest`) and then run
+
+```
+pytest
+```
+
+## Contributing
+
+We welcome contributions to `fastatomstruct`. To contribute, please follow these steps:
+
+1. Fork the repository on GitLab.
+2. Create a new branch with a descriptive name for your feature or bugfix.
+3. Make your changes and commit them with clear and concise commit messages.
+4. Push your changes to your forked repository.
+5. Open a merge request on the original repository and provide a detailed description of your changes.
+
+## Reporting Issues
+
+If you encounter any issues or bugs while using `fastatomstruct`, please report them on our [GitLab issues page](https://gitlab.com/ag-salinga/fastatomstruct/-/issues). Provide as much detail as possible, including steps to reproduce the issue and any relevant error messages.
+
+## Seeking Support
+
+For support and questions, you can also use the [GitLab issues page](https://gitlab.com/ag-salinga/fastatomstruct/-/issues). We will do our best to assist you in a timely manner.
+
