@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-cursor-init"
+version = "0.2.0"
+description = "AI-powered documentation framework with intelligent code analysis, multi-provider AI support (OpenAI, Anthropic, Azure), and context-aware generation of architecture docs, ADRs, and diagrams"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "cursor-init contributors"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Documentation",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Code Generators",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "PyYAML>=6.0",
+    "openai>=1.0.0",
+    "anthropic>=0.25.0",
+    "python-dotenv>=1.0.0",
+    "rich>=13.0.0",
+    "tiktoken>=0.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "flake8>=6.0",
+    "mypy>=1.0",
+]
+sqlalchemy = [
+    "SQLAlchemy>=1.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/mgiovani/ai-cursor-init"
+Repository = "https://github.com/mgiovani/ai-cursor-init"
+Issues = "https://github.com/mgiovani/ai-cursor-init/issues"
+Documentation = "https://github.com/mgiovani/ai-cursor-init/blob/main/README.md"
+
+[project.scripts]
+ai-cursor-init = "cursor_init.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["cli"]
+
+[tool.setuptools.package-data]
+cursor_init = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"] 
