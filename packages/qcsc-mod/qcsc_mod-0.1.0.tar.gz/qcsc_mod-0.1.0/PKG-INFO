@@ -1,0 +1,166 @@
+Metadata-Version: 2.4
+Name: qcsc-mod
+Version: 0.1.0
+Summary: A Universal Content & Action Orchestrator leveraging AI for content creation and automation.
+Author-email: Your Name <your.email@example.com>
+Project-URL: Homepage, https://github.com/yourusername/qcsc-mod
+Project-URL: Bug Tracker, https://github.com/yourusername/qcsc-mod/issues
+Keywords: ai,llm,content-generation,automation,text-processing,image-generation,orchestration,utility
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: Pillow
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Dynamic: license-file
+
+qcsc-mod: Universal Content & Action Orchestrator
+🚀 Overview
+qcsc-mod is an intelligent Python library designed to empower both developers and everyday users with advanced AI capabilities for content creation and assisted automation. By leveraging the power of Large Language Models (LLMs) and Image Generation models, qcsc-mod provides a simplified interface to:
+
+Generate diverse text content: From short stories and marketing slogans to summaries and ideas.
+
+Create basic images: Turn simple descriptions into visual assets.
+
+Orchestrate actions: Interpret natural language instructions to perform file operations and other useful tasks.
+
+For developers, it acts as a robust abstraction layer, making it easy to integrate sophisticated AI features into their applications without deep knowledge of LLM APIs. For everyday users, applications built with qcsc-mod can offer intuitive, natural-language-driven ways to achieve complex tasks, simplifying their digital life.
+
+✨ Features
+Intelligent Text Generation:
+
+generate_text: Create free-form text based on any prompt.
+
+summarize: Condense long documents or texts.
+
+brainstorm_ideas: Generate lists of creative ideas for any topic.
+
+Basic Image Creation:
+
+generate_image: Produce simple images from text descriptions.
+
+Assisted Automation (via perform_action):
+
+save_text: Save generated or provided text content to a file.
+
+read_text: Read content from a specified file.
+
+Expandable: Designed to easily integrate more actions (e.g., creating directories, basic web queries).
+
+Natural Language Orchestration: A central perform_action function that understands user instructions in plain English and routes them to the appropriate underlying AI or utility function.
+
+🛠️ Installation
+You can install qcsc-mod using pip:
+
+pip install qcsc-mod
+
+Note: This package requires an API key for Google's Gemini/Imagen models to function, as it makes calls to these services.
+
+🔑 API Key Setup
+qcsc-mod requires access to the Google Gemini API (gemini-2.0-flash) for text operations and the Imagen API (imagen-3.0-generate-002) for image generation.
+
+When running your application in a Canvas environment, the API key is automatically provided. However, if you are running qcsc-mod locally or integrating it into your own application outside of Canvas, you will need to set the API_KEY in qcsc_mod/content_ai.py and qcsc_mod/image_ai.py (and potentially qcsc_mod/main.py if you run it directly).
+
+It is highly recommended to manage your API key securely, preferably using environment variables.
+
+Example of how your API_KEY variable might look in content_ai.py or image_ai.py for local development (replace YOUR_API_KEY_HERE with your actual key):
+
+import os
+
+# Get API key from environment variable, or hardcode for testing ONLY
+API_KEY = os.getenv("GEMINI_API_KEY", "YOUR_API_KEY_HERE")
+
+🚀 Usage
+The core of qcsc-mod's intelligent functionality is the perform_action function, which interprets natural language.
+
+Example 1: Generating a Short Story
+
+from qcsc_mod.main import perform_action
+
+instruction = "Write a short story about a brave space pilot exploring a new planet inhabited by friendly, coding aliens."
+result = perform_action(instruction)
+print(result)
+
+Example 2: Brainstorming Ideas
+
+from qcsc_mod.main import perform_action
+
+instruction = "Give me 4 unique ideas for a sustainable energy solution."
+result = perform_action(instruction)
+print(result)
+
+Example 3: Generating an Image
+
+from qcsc_mod.main import perform_action
+
+# Note: Image generation can take a few seconds.
+instruction = "Generate an image of a vibrant, futuristic cityscape at sunset with flying cars."
+result = perform_action(instruction)
+# The result will be a base64 data URL. In a web app, you'd embed this in an <img> tag.
+print(result) 
+
+Example 4: Saving and Reading Text Files
+
+from qcsc_mod.main import perform_action
+
+# Save text
+save_instruction = "Save 'Hello qcsc-mod! This is a test.' to my_first_note.txt"
+save_result = perform_action(save_instruction)
+print(save_result)
+
+# Read text
+read_instruction = "Read content from my_first_note.txt"
+read_result = perform_action(read_instruction)
+print(read_result)
+
+Running the Interactive CLI:
+
+You can also run main.py directly to use the interactive command-line interface:
+
+python -m qcsc_mod.main
+
+Then, type your instructions when prompted, for example:
+
+write a poem about the beauty of Python programming
+
+summarize this text: The quick brown fox jumps over the lazy dog. This sentence is a panagram and is often used to test typefaces.
+
+generate 5 catchy slogans for a new AI-powered task manager
+
+create an image of a cute robot reading a book
+
+save "This is important meeting info." to meeting_notes.md
+
+read content from meeting_notes.md
+
+quit (to exit)
+
+🤝 Contributing
+We welcome contributions! If you have ideas for new features, bug fixes, or improvements, please feel free to:
+
+Fork the repository.
+
+Create a new branch (git checkout -b feature/your-feature).
+
+Make your changes.
+
+Commit your changes (git commit -m 'Add new feature').
+
+Push to the branch (git push origin feature/your-feature).
+
+Open a Pull Request.
+
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
