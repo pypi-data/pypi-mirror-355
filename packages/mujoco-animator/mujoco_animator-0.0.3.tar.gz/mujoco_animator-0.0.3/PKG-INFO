@@ -1,0 +1,80 @@
+Metadata-Version: 2.4
+Name: mujoco-animator
+Version: 0.0.3
+Summary: The mujoco-animator project
+Home-page: https://github.com/kscalelabs/mujoco-animator
+Author: K-Scale Labs
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Provides-Extra: cli
+Requires-Dist: glfw; extra == "cli"
+Requires-Dist: mujoco; extra == "cli"
+Requires-Dist: mujoco-scenes; extra == "cli"
+Requires-Dist: PySide6==6.9.0; extra == "cli"
+Provides-Extra: dev
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Provides-Extra: all
+Requires-Dist: glfw; extra == "all"
+Requires-Dist: mujoco; extra == "all"
+Requires-Dist: mujoco-scenes; extra == "all"
+Requires-Dist: PySide6==6.9.0; extra == "all"
+Requires-Dist: mypy; extra == "all"
+Requires-Dist: pytest; extra == "all"
+Requires-Dist: ruff; extra == "all"
+Dynamic: author
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# mujoco-animator
+
+Welcome to the mujoco-animator project!
+
+This utility can be used to generate animations of Mujoco models, which in turn can be used for training robots to do bespoke behaviors.
+
+## Getting Started
+
+### File Format
+
+If you just want to use recorded animations to train your model, install the base package:
+
+```bash
+pip install mujoco-animator
+```
+
+You can then load the `MjAnim` file format, which exposes a nice helper method to get per-frame qpos targets:
+
+```python
+from mujoco_animator import MjAnim
+
+anim = MjAnim.load("/path/to/file.mjanim")
+qpos_sequence = anim.to_numpy(dt, interp="cubic", loop=True)
+```
+
+### CLI
+
+If you want to start recording animations using the CLI, install with:
+
+```bash
+pip install 'mujoco-animator[cli]'
+```
+
+Then you can run
+
+```bash
+mujoco-animator /path/to/your/robot.mjcf
+```
+
+You may provide a desired output file name with `--output`. The output is dynamic depending on the filetype. Currently supported:
+* `.mjanim` -> Condensed Binary
+* `.json` -> JSON Dictionary
