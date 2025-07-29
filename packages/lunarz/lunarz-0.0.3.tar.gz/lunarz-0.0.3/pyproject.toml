@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lunarz"
+version = "0.0.3"
+description = "农历日历工具，支持干支、节气、斋日查询"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "cnlunar>=0.2.0",
+]
+license = {text = "MIT"}
+
+[project.scripts]
+lunarz = "lunarz.lunar:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
