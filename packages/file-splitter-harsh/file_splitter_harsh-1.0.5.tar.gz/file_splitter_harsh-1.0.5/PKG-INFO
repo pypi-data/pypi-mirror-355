@@ -1,0 +1,68 @@
+Metadata-Version: 2.2
+Name: file_splitter_harsh
+Version: 1.0.5
+Summary: A simple Python library to split large text files into smaller parts.
+Home-page: https://github.com/harshh351998/filesplitter.git
+Download-URL: https://github.com/harshh351998/filesplitter/archive/refs/tags/1.0.0.tar.gz
+Author: Harsh Mendapara
+Author-email: mendapara.harsh47@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: requires-python
+Dynamic: summary
+
+# file-splitter-harsh
+
+A Python library to efficiently split large text files into smaller chunks â€” perfect for preprocessing large datasets, logs, or CSV files.
+
+---
+
+## Installation
+
+Install using pip:
+
+```bash
+pip install file-splitter-harsh
+
+
+## Example
+from filesplitter.splitter import FileSplitter
+
+# Initialize the splitter
+splitter = FileSplitter(
+    file_path="large_file.txt",     # Path to the input file
+    lines_per_file=1000,            # Number of lines per output file
+    output_dir="output",            # Directory to save split files
+    file_prefix="chunk"             # Prefix for output file names
+)
+
+# Start splitting the file
+splitter.split()
+
+| Parameter        | Type | Default        | Description                                     |
+| ---------------- | ---- | -------------- | ----------------------------------------------- |
+| `file_path`      | str  | Required       | Path to the input file                          |
+| `lines_per_file` | int  | `1000`         | Number of lines each output file should contain |
+| `output_dir`     | str  | `"output"`     | Directory where output files will be saved      |
+| `file_prefix`    | str  | `"split_part"` | Prefix to use for each generated file name      |
+
+#Example Output
+If your input file has 2500 lines and lines_per_file=1000, you'll get:
+output/
+-chunk_1.txt  (1000 lines)
+-chunk_2.txt  (1000 lines)
+-chunk_3.txt  (500 lines)
+
+Logging Example
+2025-06-12 10:00:00 - INFO - File splitting complete! 3 files created in 'output'
