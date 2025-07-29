@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: jaxrwkvkernel
+Version: 0.0.0
+Summary: RWKV Kernels for JAX
+Author-Email: Bidipta Sarkar <bidiptas13@gmail.com>
+License-Expression: GPL-3.0-only
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: jax[cuda12]<0.6.0
+Requires-Dist: jaxlib
+Requires-Dist: ninja
+Requires-Dist: scikit-build-core
+Requires-Dist: nanobind
+Description-Content-Type: text/markdown
+
+# RWKV Kernels in Jax
+
+This repo contains cuda kernels for jaxrwkv. See the [main project](https://github.com/bsarkar321/jaxrwkv) for more details.
+
+## Install Instructions
+
+Use pip to install this package.
+``` bash
+  pip install -v .
+```
