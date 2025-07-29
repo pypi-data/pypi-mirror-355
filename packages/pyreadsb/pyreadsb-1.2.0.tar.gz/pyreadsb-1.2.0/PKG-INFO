@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: pyreadsb
+Version: 1.2.0
+Summary: Python library to read and parse data from a readsb files.
+Author-email: Alexis Placet <placet.alexis+pypi@protonmail.com>
+License-File: LICENSE
+Requires-Python: >=3.12
+Requires-Dist: ijson>=3.4.0
+Requires-Dist: pytest-cov>=6.0.0
+Requires-Dist: pytest>=8.4.0
+Requires-Dist: tzdata>=2025.2
+Provides-Extra: dataframe
+Requires-Dist: polars[pyarrow,timezone]>=1.30.0; extra == 'dataframe'
+Provides-Extra: dev
+Requires-Dist: black>=24.0.0; extra == 'dev'
+Requires-Dist: isort>=5.13.0; extra == 'dev'
+Requires-Dist: mypy>=1.13.0; extra == 'dev'
+Requires-Dist: pre-commit>=4.0.0; extra == 'dev'
+Requires-Dist: ruff>=0.8.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# pyreadsb
+Python library to read readdsb files formats
