@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: openpyutils
+Version: 0.0.1
+Summary: open source of python utils.
+Author-email: YiXiaoCuoHuaiFenZi <249664317@qq.com>
+License-Expression: MIT
+Project-URL: Bug Tracker, https://github.com/YiXiaoCuoHuaiFenZi/OpenPyUtils/issues
+Project-URL: Homepage, https://github.com/YiXiaoCuoHuaiFenZi/OpenPyUtils
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: build>=0.5.1; extra == "dev"
+Requires-Dist: twine>=3.4.2; extra == "dev"
+Requires-Dist: pip-tools>=5; extra == "dev"
+Requires-Dist: pytest>=6.2.4; extra == "dev"
+Dynamic: license-file
+
+# OpenPyUtils
+Open Python Utils.
+
+## Usage:
+
+# logger
+This is local colorful log printer. It prints colorful message for different log level.
+
+## Usage:
+```python
+from openpyutils import logger
+
+logger.info("This is a info message")
+logger.suc("This is a successful message")
+logger.warn("This is a warning message")
+logger.err("This is a error message")
+logger.fatal("This is a fatal error message")
+```
