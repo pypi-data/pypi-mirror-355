@@ -1,0 +1,14 @@
+[project]
+name = "pickaxe-mcp-file-system"
+version = "0.1.0"
+description = "A simple file system MCP server."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.9.4",
+    "fastmcp>=2.7.0"
+]
+
+[project.scripts]
+pickaxe-mcp-file-system = "main:main"
