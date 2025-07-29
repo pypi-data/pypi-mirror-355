@@ -1,0 +1,90 @@
+{% set title = gettext("Playlist manager") %}
+{% set back_url = "/" %}
+{% set script = "playlists" %}
+{% extends "base_static.jinja2" %}
+
+{% block content %}
+
+{% if spotify_available %}
+    <h2>{% trans %}Compare to Spotify playlist{% endtrans %}</h2>
+    <div class="form">
+        <label for="spotify-playlist">{% trans %}Local playlist{% endtrans %}</label>
+        <select id="spotify-playlist">
+            {% for playlist in playlists %}
+                <option value="{{ playlist.name }}" {% if playlist.name == primary_playlist %}selected{% endif %}>{{ playlist.name }}</option>
+            {% endfor %}
+        </select>
+        <label for="spotify-url">{% trans %}Spotify playlist URL{% endtrans %}</label>
+        <input id="spotify-url" type="text" placeholder="https://open.spotify.com/playlist/49Fh8IQU36G28uEGJxaDcI">
+        <input id="spotify-submit" type="submit" value="{% trans %}Compare (will take a while){% endtrans %}">
+    </div>
+{% endif %}
+
+<h2>{% trans %}Playlists{% endtrans %}</h2>
+
+{% if user_is_admin %}
+    <p>{% trans %}As an administrator, you can modify tracks in all playlists even without write access.{% endtrans %}</p>
+{% endif %}
+
+<p>
+{{ icon('star') }} {% trans %}Favorite playlist. Shows in the top row and is enabled by default.{% endtrans %}<br>
+{{ icon('file-edit') }} {% trans %}You are allowed to modify files in this playlist.{% endtrans %}<br>
+{{ icon('account-star') }} {% trans %}This is your primary playlist.{% endtrans %}<br>
+</p><br>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>{% trans %}Name{% endtrans %}</th>
+            <th>{% trans %}Info{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for playlist in playlists %}
+            <tr>
+                <td>
+                    {{ playlist.name }}
+                </td>
+                <td>
+                    {% if playlist.favorite %}
+                        {{ icon('star') }}
+                    {% endif %}
+                    {% if playlist.write  %}
+                        {{ icon('file-edit') }}
+                    {% endif %}
+                    {% if playlist.name == primary_playlist  %}
+                        {{ icon('account-star') }}
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="/playlist/favorite" method="POST" class="inline">
+                        <input type="hidden" name="csrf" value="{{ user.csrf }}">
+                        <input type="hidden" name="playlist" value="{{ playlist.name }}">
+                        {% if playlist.favorite %}
+                            <input type="hidden" name="favorite" value="0">
+                            <input type="submit" value="{% trans %}Remove favorite{% endtrans %}">
+                        {% else %}
+                            <input type="hidden" name="favorite" value="1">
+                            <input type="submit" value="{% trans %}Make favorite{% endtrans %}">
+                        {% endif %}
+                    </form>
+                    {% if user_is_admin or playlist.write %}
+                        <form action="/playlist/share" method="GET" class="inline">
+                            <input type="hidden" name="csrf" value="{{ user.csrf }}">
+                            <input type="hidden" name="playlist" value="{{ playlist.name }}">
+                            <input type="submit" value="{% trans %}Give edit rights{% endtrans %}">
+                        </form>
+                    {% endif %}
+                    <form action="/share/create" method="POST" class="inline">
+                        <input type="hidden" name="csrf" value="{{ user.csrf }}">
+                        <input type="hidden" name="playlist" value="{{ playlist.name }}">
+                        <input type="submit" value="{% trans %}Create public share link{% endtrans %}">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}

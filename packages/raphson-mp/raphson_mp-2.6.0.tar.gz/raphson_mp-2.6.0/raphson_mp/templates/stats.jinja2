@@ -1,0 +1,23 @@
+{% set title = gettext("Statistics") %}
+{% set back_url = "/" %}
+{% set script = "stats" %}
+{% set styles = ["stats"] %}
+{% extends "base_static.jinja2" %}
+
+{% block content %}
+
+<div id="buttons">
+    <button id="btn-day">{% trans %}Day{% endtrans %}</button>
+    <button id="btn-week">{% trans %}Week{% endtrans %}</button>
+    <button id="btn-month">{% trans %}Month{% endtrans %}</button>
+    <button id="btn-year">{% trans %}Year{% endtrans %}</button>
+    <button id="btn-all">{% trans %}All time{% endtrans %}</button>
+</div>
+
+<br>
+
+{% for i in range(chart_count) %}
+    <div data-id="{{ i }}" class="chart"></div>
+{% endfor %}
+
+{% endblock content %}
