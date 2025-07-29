@@ -1,0 +1,46 @@
+[project]
+name = "binarymetrics"
+version = "0.0.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "David Muhr", email = "muhrdavid+github@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.17.0",
+    "safecheck>=0.5.0",
+    "scipy>=1.0.0",
+    "torch>=2.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "line-profiler>=4.2.0",
+    "matplotlib>=3.10.1",
+    "notebook>=7.3.2",
+    "pytest>=8.3.5",
+    "ruff>=0.10.0",
+]
+
+[project.urls]
+Repository = "https://github.com/davnn/binarymetrics"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = ["src/binarymetrics/**/*.py"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/binarymetrics"]
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "W", "I", "F", "NPY", "PERF", "UP", "FURB", "RUF"]
+fixable = ["ALL"]
+ignore = ["F401", "F821"]
