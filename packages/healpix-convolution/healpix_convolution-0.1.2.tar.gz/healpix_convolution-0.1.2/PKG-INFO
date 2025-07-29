@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: healpix-convolution
+Version: 0.1.2
+Summary: space-domain convolution on the healpix grid
+License: Apache-2.0
+Project-URL: Documentation, https://healpix-convolution.readthedocs.io
+Project-URL: Repository, https://github.com/iaocea/healpix-convolution
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: GIS
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: cdshealpix
+Requires-Dist: healpix-geo>=0.0.3
+Requires-Dist: xdggs
+Requires-Dist: sparse
+Requires-Dist: opt_einsum
+Provides-Extra: xarray
+Requires-Dist: xarray; extra == "xarray"
+Provides-Extra: lazy
+Requires-Dist: dask; extra == "lazy"
+Provides-Extra: plotting
+Requires-Dist: matplotlib; extra == "plotting"
+Requires-Dist: cartopy; extra == "plotting"
+Dynamic: license-file
+
+# healpix-convolution
+
+[![CI](https://github.com/IAOCEA/healpix-convolution/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/IAOCEA/healpix-convolution/actions/workflows/ci.yaml)
+[![docs](https://readthedocs.org/projects/healpix-convolution/badge/?version=latest)](https://healpix-convolution.readthedocs.io)
+[![PyPI version](https://img.shields.io/pypi/v/healpix-convolution.svg)](https://pypi.org/project/healpix-convolution)
+[![codestyle](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+
+Space-domain convolution operations on the healpix grid.
