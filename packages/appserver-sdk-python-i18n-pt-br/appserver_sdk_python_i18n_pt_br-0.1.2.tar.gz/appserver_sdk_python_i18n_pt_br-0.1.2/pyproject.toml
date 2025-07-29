@@ -1,0 +1,38 @@
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "appserver-sdk-python-i18n-pt-br"
+version = "0.1.2"
+description = "Brazilian Portuguese Utilities for Python"
+authors = ["Appserver SDK <suporte@apppserver.com.br>"]
+license = "MIT"
+readme = "README.md"
+keywords = ["validação", "cpf", "cnpj"]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13"
+]
+
+packages = [
+    { include = "appserver_sdk_python_i18n_pt_br", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+
+[tool.poetry.group.dev.dependencies]
+twine = "^6.1.0"
+
+[tool.poetry.urls]
+Homepage = "https://github.com/appserver-sdk/python-i18n-pt-br"
+Repository = "https://github.com/appserver-sdk/python-i18n-pt-br"
+Issues = "https://github.com/appserver-sdk/python-i18n-pt-br/issues"
+Documentation = "https://github.com/appserver-sdk/python-i18n-pt-br#readme"
