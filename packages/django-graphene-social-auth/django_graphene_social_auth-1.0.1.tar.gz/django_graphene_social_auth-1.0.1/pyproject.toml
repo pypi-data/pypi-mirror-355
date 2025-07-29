@@ -1,0 +1,122 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-graphene-social-auth"
+dynamic = ["version"]
+description = "Python Social Auth support for Django GraphQL"
+readme = "README.rst"
+license = { file = "LICENSE" }
+authors = [
+    {name = "Michael", email = "ademictech@gmail.com"},
+    {name = "mongkok", email = "domake.io@gmail.com"},
+]
+maintainers = [
+    {name = "Michael", email = "ademictech@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "Django>=3.2",
+    "graphene-django>=3.0.0",
+    "social-auth-app-django>=5.0.0",
+    "django-filter>=24.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/Ademic2022/django-graphene-social-auth/"
+Repository = "https://github.com/Ademic2022/django-graphene-social-auth/"
+Issues = "https://github.com/Ademic2022/django-graphene-social-auth/issues"
+
+[project.optional-dependencies]
+jwt = ["django-graphql-jwt>=0.4.0"]
+test = [
+    "coverage>=7.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-django>=4.5.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.setuptools]
+packages = ["graphql_social_auth"]
+
+[tool.setuptools.dynamic]
+version = {attr = "graphql_social_auth.__version__"}
+
+[tool.setuptools.package-data]
+graphql_social_auth = [
+    "locale/*/LC_MESSAGES/django.po",
+    "locale/*/LC_MESSAGES/django.mo",
+]
+
+[tool.pytest.ini_options]
+django_find_project = false
+DJANGO_SETTINGS_MODULE = "tests.settings"
+addopts = "--tb=short"
+python_files = "tests.py test_*.py *_tests.py"
+filterwarnings = [
+    "ignore:datetime.datetime.utcnow\\(\\) is deprecated:DeprecationWarning:graphql_jwt.utils",
+]
+
+[tool.coverage.run]
+source = ["graphql_social_auth"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+
+[tool.isort]
+profile = "django"
+line_length = 79
+multi_line_output = 5
+skip = ["migrations"]
+default_section = "THIRDPARTY"
+known_django = ["django"]
+known_first_party = ["graphql_social_auth"]
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+include_trailing_comma = true
+
+[tool.black]
+line-length = 79
+target-version = ["py38"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
