@@ -1,0 +1,163 @@
+import struct
+import codecs
+import io
+import struct
+import base64
+import ipaddress
+
+from typing import Optional
+
+from lnhistoryclient.model.Address import Address
+from lnhistoryclient.model.AddressType import AddressType
+
+from lnhistoryclient.constants import LIGHTNING_TYPES, CORE_LIGHTNING_TYPES
+
+def get_msg_type_by_raw_hex(raw_hex: bytes) -> Optional[int]:
+    """
+    Extracts the Lightning message type from the first two bytes of a raw byte sequence.
+
+    The message type is a 16-bit big-endian integer. This function checks whether the
+    extracted type exists in known message type sets (e.g., LIGHTNING_TYPES or CORE_LIGHTNING_TYPES).
+
+    Args:
+        raw_hex (bytes): A byte sequence that begins with a 2-byte message type field.
+
+    Returns:
+        Optional[int]: The decoded message type if it is recognized, otherwise None.
+
+    Raises:
+        ValueError: If the input is fewer than 2 bytes.
+    """
+    if len(raw_hex) < 2:
+        raise ValueError("Insufficient data: expected at least 2 bytes to extract message type.")
+
+    msg_type = struct.unpack(">H", raw_hex[:2])[0]
+
+    if msg_type in LIGHTNING_TYPES or msg_type in CORE_LIGHTNING_TYPES:
+        return msg_type
+
+    return None
+
+def to_base_32(addr: bytes) -> str:
+    """
+    Encodes a byte sequence using Base32 suitable for .onion addresses.
+
+    This encoding:
+    - Uses Base32 encoding without padding.
+    - Converts the result to lowercase.
+
+    Args:
+        addr (bytes): The byte sequence to encode (e.g., 10 bytes for Tor v2, 35 bytes for Tor v3).
+
+    Returns:
+        str: Base32-encoded string suitable for a .onion address.
+    """
+    return base64.b32encode(addr).decode("ascii").strip("=").lower()
+
+
+def parse_address(b: io.BytesIO) -> Address | None:
+    """
+    Parses a binary-encoded address from a BytesIO stream.
+
+    Supported address types:
+    - Type 1: IPv4 (4 bytes + 2-byte port)
+    - Type 2: IPv6 (16 bytes + 2-byte port)
+    - Type 3: Tor v2 (10 bytes Base32 + 2-byte port)
+    - Type 4: Tor v3 (35 bytes Base32 + 2-byte port)
+    - Type 5: DNS hostname (1-byte length + hostname + 2-byte port)
+
+    Rolls back the stream position and returns None if parsing fails.
+
+    Args:
+        b (io.BytesIO): A stream containing the binary address.
+
+    Returns:
+        Address | None: Parsed `Address` object or `None` if unknown type or error.
+    """
+    pos_before = b.tell()
+    try:
+        type_byte = read_exact(b, 1)
+        type_id = struct.unpack("!B", type_byte)[0]
+
+        a = Address()
+        a.typ = AddressType(type_id)
+
+        if type_id == 1:  # IPv4
+            a.addr = str(ipaddress.IPv4Address(read_exact(b, 4)))
+            (a.port,) = struct.unpack("!H", read_exact(b, 2))
+        elif type_id == 2:  # IPv6
+            raw = read_exact(b, 16)
+            a.addr = f"[{ipaddress.IPv6Address(raw)}]"
+            (a.port,) = struct.unpack("!H", read_exact(b, 2))
+        elif type_id == 3:  # Tor v2
+            raw = read_exact(b, 10)
+            a.addr = to_base_32(raw) + ".onion"
+            (a.port,) = struct.unpack("!H", read_exact(b, 2))
+        elif type_id == 4:  # Tor v3
+            raw = read_exact(b, 35)
+            a.addr = to_base_32(raw) + ".onion"
+            (a.port,) = struct.unpack("!H", read_exact(b, 2))
+        elif type_id == 5:  # DNS
+            hostname_len = struct.unpack("!B", read_exact(b, 1))[0]
+            hostname = read_exact(b, hostname_len).decode("ascii")
+            a.addr = hostname
+            (a.port,) = struct.unpack("!H", read_exact(b, 2))
+        else:
+            return None
+
+        return a
+    except Exception as e:
+        b.seek(pos_before)
+        print(f"Error parsing address: {e}")
+        return None
+
+
+
+def read_exact(b: io.BytesIO, n: int) -> bytes:
+    """
+    Reads exactly `n` bytes from a BytesIO stream or raises an error.
+
+    This ensures the requested number of bytes is available,
+    which is useful for deserializing structured binary data.
+
+    Args:
+        b (io.BytesIO): Input stream to read from.
+        n (int): Number of bytes to read.
+
+    Returns:
+        bytes: The read bytes.
+
+    Raises:
+        ValueError: If fewer than `n` bytes could be read.
+    """
+    data = b.read(n)
+    if len(data) != n:
+        raise ValueError(f"Expected {n} bytes, got {len(data)}")
+    return data
+
+
+def decode_alias(alias_bytes: bytes) -> str:
+    """
+    Attempts to decode a node alias from a byte sequence.
+
+    The function tries:
+    1. UTF-8 decoding (common case).
+    2. Punycode decoding if UTF-8 fails.
+    3. Falls back to hexadecimal representation as a last resort.
+
+    Null bytes are stripped from the result.
+
+    Args:
+        alias_bytes (bytes): Raw 32-byte alias from the node announcement.
+
+    Returns:
+        str: A human-readable string or hex-encoded fallback.
+    """
+    try:
+        return alias_bytes.decode('utf-8').strip('\x00')
+    except UnicodeDecodeError:
+        try:
+            cleaned = alias_bytes.strip(b'\x00')
+            return codecs.decode(cleaned, 'punycode')
+        except Exception:
+            return alias_bytes.hex()
