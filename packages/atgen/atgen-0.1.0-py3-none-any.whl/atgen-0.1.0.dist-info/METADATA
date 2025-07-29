@@ -1,0 +1,162 @@
+Metadata-Version: 2.4
+Name: atgen
+Version: 0.1.0
+Summary: Toolkit for Active Learning in Generative Tasks
+Author-email: "List of contributors: https://github.com/Aktsvigun/atgen/graphs/contributors" <artemshelmanov@gmail.com>
+Project-URL: Homepage, https://github.com/Aktsvigun/al-nlg
+Project-URL: Bug Tracker, https://github.com/Aktsvigun/al-nlg/issues
+Project-URL: Repository, https://github.com/Aktsvigun/al-nlg
+Keywords: NLP,deep learning,transformer,pytorch,peft,inference,active learning
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: alignscore-SpeedOfMagic
+Requires-Dist: accelerate==1.5.2
+Requires-Dist: anthropic==0.49.0
+Requires-Dist: benepar==0.2.0
+Requires-Dist: bert-score==0.3.13
+Requires-Dist: bitsandbytes==0.45.3
+Requires-Dist: ctc_score==0.1.3
+Requires-Dist: datasets==3.4.0
+Requires-Dist: deepeval==2.5.5
+Requires-Dist: evaluate==0.4.3
+Requires-Dist: hydra-core==1.3.2
+Requires-Dist: nltk==3.9.1
+Requires-Dist: kaleido==0.2.1
+Requires-Dist: omegaconf==2.3.0
+Requires-Dist: openai==1.66.3
+Requires-Dist: openpyxl==3.1.5
+Requires-Dist: peft==0.14.0
+Requires-Dist: plotly==5.23.0
+Requires-Dist: protobuf==3.20.3
+Requires-Dist: pytest==8.3.2
+Requires-Dist: pytorch_lightning==2.5.0.post0
+Requires-Dist: rake_nltk==1.0.6
+Requires-Dist: reportlab==4.3.1
+Requires-Dist: rouge==1.0.1
+Requires-Dist: rouge-score==0.1.2
+Requires-Dist: sacrebleu==2.4.1
+Requires-Dist: spacy==3.7.5
+Requires-Dist: streamlit==1.37.0
+Requires-Dist: streamlit-authenticator==0.4.2
+Requires-Dist: tabulate==0.9.0
+Requires-Dist: transformers==4.52.4
+Requires-Dist: trl==0.15.2
+Requires-Dist: torchmetrics==1.4.1
+Requires-Dist: unsloth==2025.3.17
+Requires-Dist: vllm==0.8.1
+Requires-Dist: xlrd==1.2.0
+Dynamic: license-file
+
+# ATGen: Active Learning for Natural Language Generation
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A comprehensive toolkit for applying active learning techniques to natural language generation tasks. This repository contains implementations of various active learning strategies specifically designed for text generation models, helping to reduce annotation costs while maximizing model performance.
+
+## 🌟 Features
+
+- **Multiple Active Learning Strategies**: Implementation of strategies like HUDS, HADAS, FAC-LOC, IDDS, and more
+- **Flexible Model Support**: Compatible with various language models (Qwen, Llama, etc.)
+- **Comprehensive Evaluation**: Supports multiple evaluation metrics including ROUGE, BLEU, BERTScore, AlignScore, etc.
+- **Interactive Visualization**: Streamlit dashboard for exploring results and comparing strategies
+- **Hydra Configuration**: Easily configurable experiments through Hydra's YAML-based configuration system
+- **PEFT Integration**: Efficient fine-tuning using Parameter-Efficient Fine-Tuning methods
+
+## 📋 Requirements
+
+- Python 3.10+
+- CUDA-compatible GPU (for model training)
+- Dependencies listed in `requirements.txt`
+
+## 🔧 Installation
+
+`pip install atgen`
+
+## 🚀 Usage
+
+### Running Active Learning Experiments
+
+Experiments can be launched using the `run-al` command:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 HYDRA_CONFIG_NAME=base run-al
+```
+
+Parameters:
+- `CUDA_VISIBLE_DEVICES`: Specify which GPU to use
+- `HYDRA_CONFIG_NAME`: Configuration file (e.g., `base`, `custom`, `test`)
+
+Additional parameters can be overridden via the command line following Hydra's syntax:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 HYDRA_CONFIG_NAME=base run-al al.strategy=huds model.checkpoint=Qwen/Qwen2.5-7B
+```
+
+### Interactive Dashboard
+
+Launch the Streamlit application to explore and visualize your experiments:
+
+```bash
+streamlit run Welcome.py
+```
+
+Navigate to `http://localhost:8501` in your web browser to access the dashboard.
+
+## 📁 Project Structure
+
+- `configs/`: Configuration files for experiments
+  - `al/`: Active learning strategy configurations
+  - `data/`: Dataset configurations
+  - `labeller/`: Labeller configurations
+- `src/atgen/`: Main package
+  - `strategies/`: Implementation of active learning strategies
+  - `metrics/`: Code for evaluation metrics
+  - `utils/`: Utility functions
+  - `run_scripts/`: Scripts for running experiments
+  - `labellers/`: Labelling mechanisms
+  - `visualize/`: Visualization tools
+- `pages/`: Streamlit application pages
+- `outputs/`: Experimental results storage
+- `cache/`: Cached computations to speed up repeated runs
+
+## 📚 Supported Active Learning Strategies
+
+- `huds`: Hypothetical Document Scoring
+- `hadas`: Harmonic Diversity Scoring
+- `random`: Random sampling baseline
+- `fac-loc`: Facility Location strategy
+- `idds`: Improved Diverse Density Scoring
+- And more...
+
+## 📊 Supported Datasets
+
+The toolkit comes pre-configured for several datasets including summarization, question answering, and other generative tasks. Custom datasets can be added by creating new configuration files.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 🔗 Citation
+
+If you use this toolkit in your research, please cite:
+
+```
+@software{atgen,
+  title = {ATGen: Active Learning for Natural Language Generation},
+  url = {https://github.com/Aktsvigun/atgen},
+  year = {2025},
+}
+```
