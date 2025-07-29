@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: taxmemate
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: click>=8.2.1
+Requires-Dist: datasets>=3.6.0
+Requires-Dist: faiss-cpu>=1.11.0
+Requires-Dist: numpy>=2.3.0
+Requires-Dist: pypdf2>=3.0.1
+Requires-Dist: sentence-transformers>=4.1.0
+Requires-Dist: tqdm>=4.67.1
+Requires-Dist: transformers>=4.52.4
+Requires-Dist: trl>=0.18.1
+
+## TaxMeMate CLI: A Retrieval-Augmented Generation (RAG) assistant for tax reduction strategies.
+
+Commands:
+  clean      Extract and clean raw PDF/TXT tax documents
+  chunk      Tokenize and chunk cleaned documents
+  index      Build a FAISS vector index
+  train-sft  Fine-tune the model with supervised data
+  chat       Interactively query TaxMeMate
+
+
