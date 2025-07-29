@@ -1,0 +1,78 @@
+[project]
+name = "tailwind_colors"
+version = "1.4.0"
+description = "Use the default color palette from TailwindCSS (https://tailwindcss.com/docs/customizing-colors) in your python code for plotting, image generation, etc."
+authors = [
+    { name = "Moritz Makowski", email = "moritz@dostuffthatmatters.dev" },
+]
+dependencies = []
+requires-python = ">=3.8.0,<4.0.0"
+readme = "README.md"
+keywords = [
+    "utils",
+    "utilities",
+    "plotting",
+    "design",
+    "colors",
+    "color-palette",
+    "tailwind",
+    "css",
+    "matplotlib",
+    "plotly",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Matplotlib",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+repository = "https://github.com/dostuffthatmatters/python-tailwind-colors"
+documentation = "https://github.com/dostuffthatmatters/python-tailwind-colors"
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.11.2",
+    "yapf>=0.40.2",
+]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+includes = [
+    "tailwind_colors",
+]
+excludes = [
+    "scripts",
+]
+
+[tool.yapf]
+based_on_style = "facebook"
+coalesce_brackets = true
+split_before_dict_set_generator = true
+each_dict_entry_on_separate_line = false
+spaces_around_subscript_colon = true
+column_limit = 120
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
