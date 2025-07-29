@@ -1,0 +1,30 @@
+[project]
+name = "heimdall_python_sdk"
+version = "0.1.2"
+description = "A cross-framework Python SDK to register a /__ping__ endpoint for Flask, Django, and FastAPI apps."
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "MIT" }
+authors = [
+  { name = "Shivdutt Bhadakwad", email = "shivdutt059@example.com" }
+]
+keywords = ["ping", "warmup", "server", "monitoring", "flask", "django", "fastapi", "keepalive"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+dependencies = [
+  "flask>=2.0.0",
+  "fastapi>=0.70.0",
+  "django>=3.2",
+  "uvicorn"  # used for FastAPI test/development
+]
+
+[project.urls]
+Homepage = "https://github.com/shivdutt-B/heimdall-python-sdk"
+Issues = "https://github.com/shivdutt-B/heimdall-python-sdk/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
