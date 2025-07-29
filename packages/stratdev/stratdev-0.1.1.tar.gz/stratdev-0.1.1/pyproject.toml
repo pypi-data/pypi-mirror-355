@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stratdev"
+version = "0.1.1"
+authors = [
+  { name="Alejandro Wong", email="alejandroawong@gmail.com" },
+]
+description = "Financial data aqcuisition and organization system for backtesting trading strategies"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "setuptools >= 75.8.0",
+    "alpaca-py >= 0.38.0",
+    "backtesting >= 0.3.3",
+    "bokeh >= 3.6.3",
+    "python-dotenv >= 0.0.1",
+    "matplotlib >= 3.10.0",
+    "numpy >= 2.2.3",
+    "pandas >= 2.2.3",
+    "pandas_ta >= 0.3.14b0",
+    "yfinance >= 0.2.53"
+]
+
+[project.urls]
+Homepage = "https://github.com/Alejandro-wong/stratdev"
+Issues = "https://github.com/Alejandro-wong/stratdev/issues"
