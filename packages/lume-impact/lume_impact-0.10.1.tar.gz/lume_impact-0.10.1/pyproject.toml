@@ -1,0 +1,57 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=60", "setuptools_scm[toml]>=8.0"]
+
+[project]
+authors = [{ name = "Christopher Mayes" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = [
+  # All core dependencies must be sourced from conda (conda-forge).
+  # See ``environment.yml`` for further information.
+]
+description = "Tools for using Impact-T and Impact-Z in LUME"
+dynamic = ["version"]
+keywords = []
+name = "lume-impact"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+doc = [
+  "mkdocs==1.5.2",
+  "mkdocs-jupyter==0.24.6",
+  "mkdocs-macros-plugin",
+  "mkdocs-material",
+  "mkdocstrings",
+  "mkdocstrings-python",
+]
+
+[project.urls]
+Homepage = "https://github.com/ChristopherMayes/lume-impact"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["impact*"]
+namespaces = false
+
+[project.license]
+file = "LICENSE"
+
+[tool.ruff]
+# select = []
+lint.ignore = ["E741"]
+
+[tool.pytest.ini_options]
+markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]
+addopts = "--cov=impact/"
+log_cli_level = "info"
+log_level = "debug"
+testpaths = ["impact/tests"]
+[tool.setuptools_scm]
+version_file = "impact/_version.py"

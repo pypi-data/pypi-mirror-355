@@ -1,0 +1,37 @@
+# conda env create --file=environment.yml
+name: lume-impact-dev
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - bokeh
+  - distgen
+  - impact-t=*=mpi_openmpi*
+  #- impact-t=*=mpi_mpich*
+  - impact-z=*=mpi_openmpi*
+  # - impact-z=*=mpi_mpich*
+  - jupyter_bokeh
+  - lume-base
+  - matplotlib
+  - openpmd-beamphysics
+  - polars
+  - prettytable
+  - psutil
+  - pydantic
+  - pydantic-settings
+  - rich
+  - tqdm
+  - pip
+  # Developer
+  - bmad
+  - pytao
+  - jupyterlab>=3
+  - ipywidgets
+  - pygments
+  - mkdocs==1.5.2
+  - mkdocstrings
+  - mkdocs-material
+  - mkdocs-jupyter==0.24.6
+  - mkdocstrings-python
+  - pytest-cov
+  - pytest
