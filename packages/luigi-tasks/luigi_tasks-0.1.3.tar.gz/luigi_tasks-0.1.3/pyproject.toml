@@ -1,0 +1,29 @@
+[project]
+name = "luigi-tasks"
+version = "0.1.3"
+description = "A collection of Luigi tasks for data processing"
+readme = "README.md"
+authors = [
+    { name = "urstrulyrohans", email = "urstrulyrohansd@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "luigi===3.5.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "twine",
+    "pytest",
+]
+
+[project.scripts]
+luigi-tasks = "luigi_tasks:main"
+
+[build-system]
+requires = ["hatchling", "build", "twine"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/luigi_tasks"]
