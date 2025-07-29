@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests"]
+
+[project]
+name = "ornl_presto"
+version = "0.1.25"
+description = "A Python package for privacy preservation algorithm recomendation"
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Olivera Kotevska", email = "kotevskao@ornl.gov" }
+]
+dependencies = [
+  "torch",
+  "numpy",
+  "seaborn",
+  "pandas",
+  "scipy",
+  "matplotlib",
+  "bayesian-optimization",
+  "gpytorch",
+  "scikit-learn",
+  "opacus"
+]
+
+[project.urls]
+Homepage = "https://github.com/ORNL/PRESTO/"
