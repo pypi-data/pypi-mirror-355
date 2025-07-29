@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=42", "setuptools-scm>=8", "wheel", "requests", "twine"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ticlust"
+dynamic = ["version"]
+description = "Taxonomy Informed Clustering (TIC) is a tool for clustering bacterial sequences based on their taxonomy and hypothetically complete taxonomy levels."
+authors = [
+    { name = "Mohsen Pourjam", email = "pourjam.cs@hotmial.com" },
+    { name = "Ilias Lagkouvardos", email = "ilias.lagkouvardos@gmail.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.6"
+dependencies = [
+    "pandas",
+]
+
+[tool.setuptools_scm]
+write_to = "src/ticlust/_version.py"
+
+[project.urls]
+repository = "https://github.com/MPourjam/TIClust"
+
+
+[project.scripts]
+ticlust = "ticlust.cli:main"
+
+[tool.setuptools]
+packages = { find = { where = ["src"] } }
+
+[tool.setuptools.package-data]
+"ticlust" = ["bin/vsearch"]
+
+[tool.setuptools.cmdclass]
+install = "ticlust.install_hooks.CustomInstall"
