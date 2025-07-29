@@ -1,0 +1,44 @@
+Metadata-Version: 2.3
+Name: geo-country-service
+Version: 0.4.0
+Summary: A service that provides an alpha-3 country code from given coordinates
+Author: Benas Jasikonis
+Author-email: benasjasikonis@carvertical.com
+Requires-Python: >=3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: orjson (==3.10)
+Requires-Dist: pytest (==8.4.0)
+Requires-Dist: shapely (==2.1.0)
+Description-Content-Type: text/markdown
+
+# 🌎 Geo country service API 🌎
+A service to get alpha3 country code from provided coordinate point
+
+---
+
+# Usage
+
+Pass latitude and longitude coordinates to **get_country_code** function:
+```
+{"latitude": (float), "longitude": (float)}
+```
+Result contains ```message``` and ```result```. 
+If coordinate payload is valid Alpha-3 country will be stored in ```result```.
+---
+*Example:*
+
+```python
+from geo_country_service import get_country_code
+
+
+result = get_country_code(latitude=45.123, longitude=-25.123)
+print(result)
+```
+*Result*
+```
+{"message":"success","result":"LTU"}
+```
+
