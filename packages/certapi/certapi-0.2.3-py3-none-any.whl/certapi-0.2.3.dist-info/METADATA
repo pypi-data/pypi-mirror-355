@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: certapi
+Version: 0.2.3
+Summary: Python Package for managing keys, request SSL certificates from ACME.
+Home-page: https://github.com/mesudip/certapi
+Author: Sudip Bhattarai
+Author-email: sudipbhattarai100@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: cryptography
+Requires-Dist: requests
+
+# CertApi
+
+CertApi is a Python package for requesting SSL certificates from ACME.
+This is supposed to be used as a base library for building other tools, or to integrate Certificate creation feature in you app.
+
+## Installation
+
+You can install CertApi using pip:
+
+```bash
+pip install certapi
+```
+
+## Example Usage
+
+```python
+import json
+from certapi import FileSystemChallengeStore, FilesystemKeyStore, CertAuthority
+
+key_store = FilesystemKeyStore("data")
+challenge_store = FileSystemChallengeStore("./acme-challenges")  # this should be where your web server hosts the .well-known/acme-challenges.
+
+certAuthority = CertAuthority(challenge_store, key_store)
+certAuthority.setup()
+
+(response,_) = certAuthority.obtainCert("example.com")
+
+json.dumps(response.__json__(),indent=2)
+
+```
