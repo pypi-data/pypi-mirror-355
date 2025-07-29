@@ -1,0 +1,21 @@
+[project]
+name = "mooncake-mcp-mgme"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Lu Bu", email = "bulu@microsoft.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "azure-identity>=1.23.0",
+    "azure-mgmt-resource>=23.4.0",
+    "mcp[cli]>=1.9.4",
+]
+
+[project.scripts]
+mooncake-mcp-mgme = "mooncake_mcp_mgme:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
