@@ -1,0 +1,103 @@
+
+
+@import "variables.scss";
+
+
+h1 {
+  .tags {
+    font-size: 60%;
+  }
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  a + &,
+  a + div > & {
+    margin-top: 0.5em;
+  }
+}
+
+
+.edito {
+  p {
+    &:empty {
+      display: none;
+    }
+    a[href] {
+      font-weight: $link-font-weight;
+    }
+  }
+  .links {
+    p {
+      margin-bottom: 0;
+    }
+    a {
+      margin-top: 0.25rem;
+      margin-bottom: 1.25rem;
+    }
+  }
+}
+
+
+legend {
+  font-size: 1.25rem;
+}
+
+.legend {
+  max-width: 100%;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($dark, 0.5);
+
+  &:hover {
+    background-color: rgba($dark, 0.8);
+  }
+
+  li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+
+.lead {
+  &.frame {
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+}
+
+
+ul {
+  padding-left: 1em;
+  list-style-type: ' - ';
+}
+
+
+.associations {
+  font-size: 1rem;
+
+  a::before {
+    content: '»';
+    display: inline-block;
+    padding-right: 0.35em;
+  }
+}
+
+.video-wrapper {
+  position: relative;
+  height: 0;
+  padding-bottom: 56.25%;
+
+  iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
