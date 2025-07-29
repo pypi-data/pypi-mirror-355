@@ -1,0 +1,124 @@
+Metadata-Version: 2.4
+Name: agility
+Version: 0.1.0
+Summary: Analysis tool for simulations of grain boundaries and interfaces
+Author-email: Alexander Bonkowski <alexander.bonkowski@rwth-aachen.de>
+Maintainer: Alexander Bonkowski
+License: MIT License
+        
+        Copyright (c) 2021 Alexander Bonkowski
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Repo, https://github.com/ab5424/agility
+Project-URL: Package, https://pypi.org/project/agility/
+Keywords: grain boundaries,interfaces,science,analysis
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.25
+Requires-Dist: pandas>=2
+Requires-Dist: scipy>=1.12
+Requires-Dist: seaborn>=0.13
+Provides-Extra: strict
+Requires-Dist: numpy==2.2.6; extra == "strict"
+Requires-Dist: pandas==2.3.0; extra == "strict"
+Requires-Dist: scipy==1.15.3; extra == "strict"
+Requires-Dist: seaborn==0.13.2; extra == "strict"
+Provides-Extra: tests
+Requires-Dist: pytest-cov>=5; extra == "tests"
+Requires-Dist: pytest-split>=0.9; extra == "tests"
+Requires-Dist: pytest>=8; extra == "tests"
+Provides-Extra: ovito
+Requires-Dist: ovito>=3.8; extra == "ovito"
+Provides-Extra: ase
+Requires-Dist: ase>=3.23; extra == "ase"
+Provides-Extra: pymatgen
+Requires-Dist: pymatgen>=2024; extra == "pymatgen"
+Dynamic: license-file
+
+[![Documentation Status](https://readthedocs.org/projects/agility1/badge/?version=latest)](https://agility1.readthedocs.io/en/latest/?badge=latest)
+[![code coverage](https://img.shields.io/codecov/c/gh/ab5424/agility)](https://codecov.io/gh/ab5424/agility)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ab5424/agility/main.svg)](https://results.pre-commit.ci/latest/github/ab5424/agility/main)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ab5424/agility/HEAD)
+
+# Agility
+
+**A**tomistic **G**rain Boundary and **I**nterface Uti**lity**. This is a library for pre- and postprocessing polycrystalline and grain-boundary structures to use with atomistic codes, e.g. LAMMPS and VASP. It allows top-level processing of those structures by utilizing established methods to differentiate between bulk and interface regions. This allows to extract static as well as dynamic properties of these structures.
+
+## Implementations
+
+While it is intended that `agility` can be used with different "backends" such as ase, babel, pyiron, and others, the main functionality is (currently) implemented with ovito and LAMMPS.
+
+## Installation
+
+There are different ways to install `agility`. Choose what works best with your workflow.
+
+### From source
+
+To build from source, use
+
+    pip install -r requirements.txt
+
+    python setup.py build
+
+    python setup.py install
+
+### Using `pip`
+
+    pip install agility
+
+### Using `conda`
+
+    conda skeleton pypi agility
+
+    conda build agility
+
+    conda install --use-local agility
+
+## Contributing
+
+Any contributions or even questions about the code are welcome - please use the [Issue Tracker](https://github.com/ab5424/agility/issues) or [Pull Requests](https://github.com/ab5424/agility/pulls).
+
+### Development
+
+The development takes place on the `development` branch. Python 3.9 is the minimum requirement. Some backends (like ovito) currently do not support Python 3.10.
+
+## Documentation
+
+The user documentation will be written in python sphinx. The source files should be
+stored in the `doc` directory.
+
+## Run tests
+
+After installation, in the home directory, use
+
+    pytest

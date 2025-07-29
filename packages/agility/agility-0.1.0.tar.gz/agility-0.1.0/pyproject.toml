@@ -1,0 +1,108 @@
+[build-system]
+requires = ["setuptools>=65"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agility"
+version = "0.1.0"
+description = "Analysis tool for simulations of grain boundaries and interfaces"
+authors = [{name = "Alexander Bonkowski", email = "alexander.bonkowski@rwth-aachen.de"}]
+maintainers = [{name = "Alexander Bonkowski"}]
+dependencies = ["numpy>=1.25", "pandas>=2", "scipy>=1.12", "seaborn>=0.13"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["grain boundaries", "interfaces", "science", "analysis"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Repo = "https://github.com/ab5424/agility"
+Package = "https://pypi.org/project/agility/"
+
+[project.optional-dependencies]
+strict = [
+    "numpy==2.2.6",
+    "pandas==2.3.0",
+    "scipy==1.15.3",
+    "seaborn==0.13.2",
+]
+tests = [
+    "pytest-cov>=5",
+    "pytest-split>=0.9",
+    "pytest>=8",
+]
+ovito = [
+    "ovito>=3.8",
+]
+ase = [
+    "ase>=3.23",
+]
+pymatgen = [
+    "pymatgen>=2024",
+]
+
+[tool.setuptools.packages.find]
+include = ["agility", "agility.*"]
+exclude = ["tests", "tests.*"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+lint.select = ["ALL"]
+lint.ignore = [
+  "ANN002",  # Missing type annotation for `*args`
+  "ANN003",  # Missing type annotation for `**kwargs`
+  "C901",    # Function is too complex
+  "ERA001",  # Found commented-out code
+  "FIX002",  # Line contains TODO, consider resolving the issue
+  "FBT001",  # Boolean-typed positional argument in function definition
+  "FBT002",  # Boolean default positional argument in function definition
+  "PLR0912", # too-many-branches
+  "PLR0913", # too-many-arguments
+  "PLR2004", # magic-value-comparison
+  "S101",    # Use of assert detected
+  "TD002",   # Missing author in TODO; try: `# TODO(<author_name>): ...` or `# TODO @<author_name>: ...`
+  "TD003",   # Missing issue link on the line following this TODO
+  "TD005",   # Missing issue description after `TODO`
+]
+lint.pydocstyle.convention = "google"
+lint.isort.required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["S", "T201"]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.pyright]
+typeCheckingMode = "off"
+reportPossiblyUnboundVariable = true
+reportUnboundVariable = true
+reportMissingImports = false
+reportMissingModuleSource = false
+reportInvalidTypeForm = false
+exclude = ["**/tests"]
+
+[tool.codespell]
+ignore-words-list = [
+    "cna",
+]
+check-filenames = true
+
+[tool.coverage.report]
+exclude_lines = [
+    'if TYPE_CHECKING:',
+]
