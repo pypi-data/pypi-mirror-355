@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: dev-observer
+Version: 0.0.1
+Author-email: Anton Safonov <anton@devplan.com>
+Requires-Python: <4.0,>=3.12
+Requires-Dist: alembic>=1.16.1
+Requires-Dist: asyncpg>=0.30.0
+Requires-Dist: beautifulsoup4>=4.13.4
+Requires-Dist: boto3>=1.34.0
+Requires-Dist: clerk-backend-api>=3.0.2
+Requires-Dist: colorama>=0.4.6
+Requires-Dist: dotenv>=0.9.9
+Requires-Dist: fastapi[all]<1,>=0.115.12
+Requires-Dist: greenlet>=3.2.2
+Requires-Dist: grpcio-tools>=1.71.0
+Requires-Dist: grpcio<2.0.0,>=1.71.0
+Requires-Dist: langchain-community<0.4.0,>=0.3.23
+Requires-Dist: langchain-core<0.4.0,>=0.3.59
+Requires-Dist: langchain-google-genai>=2.1.4
+Requires-Dist: langchain-google-vertexai<3.0.0,>=2.0.23
+Requires-Dist: langchain-groq>=0.3.2
+Requires-Dist: langchain-openai<0.4.0,>=0.3.16
+Requires-Dist: langfuse<3.0.0,>=2.60.4
+Requires-Dist: langgraph-checkpoint-postgres<3.0.0,>=2.0.21
+Requires-Dist: langgraph<0.5.0,>=0.4
+Requires-Dist: load-dotenv>=0.1.0
+Requires-Dist: openai<2.0.0,>=1.78.0
+Requires-Dist: protobuf>=5.29.4
+Requires-Dist: psycopg2>=2.9.10
+Requires-Dist: pydantic-settings>=2.9.1
+Requires-Dist: pydantic<3.0.0,>=2.11.4
+Requires-Dist: pygithub>=2.6.1
+Requires-Dist: python-dotenv>=1.1.0
+Requires-Dist: scrapy>=2.11.0
+Requires-Dist: sqlalchemy>=2.0.40
+Requires-Dist: tiktoken>=0.7.0
+Requires-Dist: uvicorn>=0.34.2
+Description-Content-Type: text/markdown
+
+## Setup
+
+Create file [.env.local.secrets](.env.local.secrets) and add following there:
+```
+DEV_OBSERVER__GIT__GITHUB__PERSONAL_TOKEN=<Github personal token, use `gh auth token` to get>
+DEV_OBSERVER__GIT__GITHUB__PRIVATE_KEY=<GH private key if app auth is used>
+DEV_OBSERVER__GIT__GITHUB__APP_ID="<GH APP ID if app auth is used>"
+GOOGLE_API_KEY=<GOOGLE_API_TOKEN to use for google-genai>
+DEV_OBSERVER__USERS_MANAGEMENT__CLERK__SECRET_KEY=<get key from Clerk>
+```
+
+## Testing
+
+```bash
+uv run scripts/self_analysis/main.py
+```
