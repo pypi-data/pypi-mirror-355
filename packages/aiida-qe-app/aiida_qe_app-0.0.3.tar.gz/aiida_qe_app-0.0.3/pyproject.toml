@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aiida-qe-app"
+dynamic = ["version"]  # read from aiida_qe_app/__init__.py
+description = "Design flexible node-based workflow for AiiDA calculation."
+authors = [{name = "Xing Wang", email = "xingwang1991@gmail.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Framework :: AiiDA",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering"
+]
+keywords = ["aiida", "workflows"]
+requires-python = ">=3.9"
+dependencies = [
+    "ase",
+    "aiida-core>=2.6",
+    "aiida-gui-apps",
+]
+
+[project.urls]
+Documentation = "https://aiida-qe-app.readthedocs.io"
+Source = "https://github.com/superstar54/aiida-qe-app"
+
+[project.optional-dependencies]
+docs = [
+    "sphinx_rtd_theme",
+    "sphinx~=7.2",
+    "sphinx-copybutton~=0.5.0",
+    "sphinx-design~=0.5.0",
+    "sphinx-notfound-page~=1.0",
+    "sphinxext-rediraffe~=0.2.4",
+    "sphinx-intl~=2.1.0",
+    "sphinx-gallery",
+    "myst-nb~=1.0.0",
+    "nbsphinx",
+]
+
+pre-commit = [
+    "pre-commit~=2.2",
+    "pylint~=2.17.4",
+]
+
+[project.entry-points."aiida_gui_apps.plugins"]
+qeapp = "aiida_qe_app:qeapp"
+
+[project.scripts]
+qeapp = "aiida_qe_app.cli:cli"
+
+[project.entry-points.'aiida.workflows']
+"qeapp.workchain" = "aiida_qe_app.workflows.qeapp_workchain:QeAppWorkChain"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aiida_qe_app", "aiida_qe_app.*"]
+
+[tool.setuptools.package-data] # Corrected from [tool.uptools.package-data]
+aiida_qe_app = ["static/*", "static/**/*"]
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.setuptools.dynamic]
+version = { attr = "aiida_qe_app.__version__" }
