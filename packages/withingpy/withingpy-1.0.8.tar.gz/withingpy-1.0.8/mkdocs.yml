@@ -1,0 +1,78 @@
+site_name: Withingspy - Withings Public API Integration
+#site_url: https://iandday.github.io/withingpy/
+repo_url: https://github.com/iandday/withingpy
+repo_name: iandday/withingpy
+theme:
+  name: material
+  palette:
+    scheme: slate
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - toc.integrate
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+    - search.share
+plugins:
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: datetime
+  - git-committers:
+      repository: iandday/withingpy
+      branch: main
+  - git-authors
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          load_external_modules: true
+          options:
+            docstring_section_style: table
+            allow_inspection: true
+            annotations_path: brief
+            show_bases: true
+            extensions:
+              - griffe_pydantic:
+                  schema: false
+              - griffe_fieldz
+  - mkdocs-typer2:
+      pretty: true
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+nav:
+  - Home: index.md
+  - Setup:
+      - Withings App Creation: setup/app_creation.md
+      - Authorization: setup/authorize.md
+  - Usage: usage.md
+  - CLI Tool: cli.md
+  - Reference:
+      - WithingsAPIClient: ref/client.md
+      - Models: ref/models.md
+  - Changelog: changelog.md
