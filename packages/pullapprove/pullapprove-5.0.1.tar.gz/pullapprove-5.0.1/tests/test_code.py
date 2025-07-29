@@ -1,0 +1,57 @@
+from pullapprove.config import ConfigModels
+from pullapprove.matches import match_diff
+
+
+def test_code_match():
+    # Technically there is a space missing here on the empty line
+    diff = """diff --git a/LICENSE b/LICENSE
+index fdddb29..314ba5d 100644
+--- a/LICENSE
++++ b/LICENSE
+@@ -6,7 +6,7 @@ binary, for any purpose, commercial or non-commercial, and by any
+ means.
+
+ In jurisdictions that recognize copyright laws, the author or authors
+-of this software dedicate any and all copyright interest in the
++of this software dedicate any and all copyright interest! in the
+ software to the public domain. We make this dedication for the benefit
+ of the public at large and to the detriment of our heirs and
+ successors. We intend this dedication to be an overt act of"""
+
+    # Matches the context line above, and the +/- lines
+    configs = ConfigModels.from_configs_data(
+        {
+            "CODEREVIEW.toml": {
+                "scopes": [
+                    {
+                        "name": "legal",
+                        "paths": ["LICENSE"],
+                        "code": [
+                            ".*copyright.*",
+                        ],
+                    }
+                ]
+            }
+        }
+    )
+    matches, _ = match_diff(configs, diff)
+    assert len(matches.code.keys()) == 3
+
+    # Matches the +/- lines only
+    configs = ConfigModels.from_configs_data(
+        {
+            "CODEREVIEW.toml": {
+                "scopes": [
+                    {
+                        "name": "legal",
+                        "paths": ["LICENSE"],
+                        "code": [
+                            r"^(\+|-).*copyright.*",
+                        ],
+                    }
+                ]
+            }
+        }
+    )
+    matches, _ = match_diff(configs, diff)
+    assert len(matches.code.keys()) == 2

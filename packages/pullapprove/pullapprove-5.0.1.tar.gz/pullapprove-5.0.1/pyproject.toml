@@ -1,0 +1,29 @@
+[project]
+name = "pullapprove"
+version = "5.0.1"
+description = "CLI for PullApprove5"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2",
+    "click>=8",
+    "pydantic>=2",
+    "wcmatch>=8.0",
+]
+[project.scripts]
+pullapprove = "pullapprove.cli:cli"
+git-review = "pullapprove.cli:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+    "pytest-cov>=6.1.1",
+    "pytest-insta>=0.3.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "--cov=pullapprove --cov-report=html"
