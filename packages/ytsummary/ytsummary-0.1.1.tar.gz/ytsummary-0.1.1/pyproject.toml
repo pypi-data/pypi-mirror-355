@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ytsummary"
+version = "0.1.1"
+description = "YouTube video summary generator"
+readme = "README.md"
+authors = [
+    {name = "Sangwon Chae", email = "your.email@example.com"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.25.0",
+    "beautifulsoup4>=4.9.3",
+    "youtube_transcript_api>=0.4.4",
+    "transformers>=4.30.0",
+    "torch>=2.0.0",
+    "pytube>=12.1.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/ytsummary"
+"Bug Tracker" = "https://github.com/yourusername/ytsummary/issues" 
