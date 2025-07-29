@@ -1,0 +1,21 @@
+[build-system]
+requires = [ "poetry-core",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "openclaudecode"
+version = "0.1.29"
+description = "Claude Code - An AI-powered code assistant with comprehensive tools"
+authors = [ "OpenClaudeCode Team",]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/openclaudecode/openclaudecode"
+keywords = [ "ai", "code-assistant", "llm", "claude", "development",]
+[[tool.poetry.packages]]
+include = "claude_code"
+
+[tool.poetry.scripts]
+openclaude = "claude_code.cli_entry:entry_point"
+
+[tool.poetry.dependencies]
+python = "^3.11"
