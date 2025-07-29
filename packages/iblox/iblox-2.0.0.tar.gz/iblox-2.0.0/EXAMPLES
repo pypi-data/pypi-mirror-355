@@ -1,0 +1,70 @@
+#!/usr/bin/env python
+# coding=utf-8
+from __future__ import print_function
+import iblox
+
+# GLOBALS
+uri = 'https://infoblox.example.com/wapi/v1.7.1/'
+user = 'admin'
+passwd = 'infoblox'
+
+# Build new API object for Infoblox
+iblox_conn = iblox.Infoblox(uri, username=user, password=passwd)
+
+# Performing Queries - Returns Lists of Dictionaries
+print(iblox_conn.get(objtype='record:txt', name='host.example.com'))
+print(iblox_conn.get(objtype='record:host', name='host.example.com'))
+
+# When performing a search for extra fields (using _return_fields+), configure your 
+# named arguments like:
+print(iblox_conn.get(objtype='record:host', name='host.example.com', _return_fields_plus='aliases'))
+
+# When performing a regular expression search (using key~=value), configure your
+# named arguments like:
+print(iblox_conn.get(objtype='record:host', name_regex='.*\.example\.com'))
+
+# Performing Add - Returns _ref if successful, dictionary if not
+host = iblox_conn.add_host('myhost.example.com', '192.168.0.10', comment='This is a test')
+print(host)
+txt = iblox_conn.add(objtype='record:txt', name='myhost.example.com', text='This is a test')
+print(txt)
+
+# Performing Modify - NOTE: txt records _ref changes as result of modify
+host = iblox_conn.modify(host, comment='I did this as a modify')
+print(host)
+txt = iblox_conn.modify(txt, text='I did this as a modify')
+print(txt)
+
+# Calling a function on an object (e.g. get the next 3 available IPs from a network object)
+network = iblox_conn.get(objtype='network', network='192.168.0.0/24')[0]
+print(iblox_conn.call(network['_ref'], 'next_available_ip', num=3))
+
+# Adding and deleting aliases
+host = iblox_conn.get_host_by_name('host.example.com')
+print(iblox_conn.add_alias(host['name'], 'myalias.example.com'))
+print(iblox_conn.delete_alias(host['name'], 'myalias.example.com'))
+
+# Add a service record
+iblox_conn.add(objtype='record:srv', name='_kerberos._tcp.dc._msdcs.example.com',
+          target='mydc.example.com', port=88, priority=0, weight=100)
+
+# Adding an IP to a host record
+print(iblox_conn.add_host_ip('host.example.com', '192.168.0.11'))
+
+# Performing paging (in case the results of your get statement returns more than 1000 results)
+pages = []
+paging = True
+ips = iblox_conn.get(objtype='record:host_ipv4addr', ipv4addr_regex="192\.168\..*",
+                _paging=1, _return_as_object=1, _max_results=1000)
+while paging:
+    if 'next_page_id' in ips.keys():
+        pages.extend(ips['result'])
+        ips = iblox_conn.get(objtype='record:host_ipv4addr', _page_id=ips['next_page_id'])
+    else:
+        pages.extend(ips['result'])
+        paging = False
+
+
+# Performing Delete - Returns _ref deleted
+print(iblox_conn.delete(host))
+print(iblox_conn.delete(txt))

@@ -1,0 +1,80 @@
+image: python:latest
+
+pipelines:
+  default:
+    - step: &lint
+        name: Lint using Ruff
+        script:
+          - pip install uv
+          - uv run --group test ruff check --exit-zero src/iblox/
+        caches:
+            - pip
+    - step: &py39
+        name: Python 3.9 Tests
+        image: python:3.9
+        script:
+          - pip install uv
+          - uv run --group test python -m unittest discover test/
+        caches:
+          - pip
+    - step: &py310
+        name: Python 3.10 Tests
+        image: python:3.10
+        script:
+          - pip install uv
+          - uv run --group test python -m unittest discover test/
+        caches:
+          - pip
+    - step: &py311
+        name: Python 3.11 Tests
+        image: python:3.11
+        script:
+          - pip install uv
+          - uv run --group test python -m unittest discover test/
+        caches:
+          - pip
+    - step: &py312
+        name: Python 3.12 Tests
+        image: python:3.12
+        script:
+          - pip install uv
+          - uv run --group test python -m unittest discover test/
+        caches:
+          - pip
+    - step: &py313
+        name: Python 3.13 Tests
+        image: python:3.13
+        script:
+          - pip install uv
+          - uv run --group test python -m unittest discover test/
+        caches:
+          - pip
+  branches:
+    release/*:
+      - step: *lint
+      - step: *py39
+      - step: *py310
+      - step: *py311
+      - step: *py312
+      - step: *py313
+      - step:
+          name: Deploy To Test PyPi
+          trigger: manual
+          script:
+            - pip install uv
+            - uv build && uv publish --index test-pypi --username __token__ --password ${TEST_PYPI_PASSWORD}
+          caches:
+            - pip
+    master:
+      - step: *lint
+      - step: *py310
+      - step: *py311
+      - step: *py312
+      - step: *py313
+      - step:
+          name: Deploy To PyPi
+          script:
+            - pip install uv
+            - uv build && uv publish --username __token__ --password ${PYPI_PASSWORD}
+          caches:
+            - pip
