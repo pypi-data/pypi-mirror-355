@@ -1,0 +1,23 @@
+{%- set m = spec.module %}
+
+{%- if m.type == "Predict" %}
+{{ m.name }} = dspy.Predict(
+    {{ m.use }}{% if m.callbacks %},
+    callbacks={{ m._cbs() | tojson }}{% endif %}
+    {%- set cfg = m.config.model_dump(exclude_none=True) %}
+    {%- if cfg %}
+    , **{{ cfg | tojson }}{% endif %}
+
+)
+{%- elif m.type == "ReAct" %}
+{{ m.name }} = dspy.ReAct(
+    signature={{ m.use }}
+    {%- if m.tools %}
+    , tools={{ m.tools | tojson }}{% endif %}
+    {%- if m.max_iters is not none %}
+    , max_iters={{ m.max_iters }}{% endif %}
+    {%- if m.callbacks %}
+    , callbacks={{ m._cbs() | tojson }}{% endif %}
+
+)
+{%- endif %}

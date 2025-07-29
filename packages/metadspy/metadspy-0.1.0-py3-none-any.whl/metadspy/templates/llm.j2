@@ -1,0 +1,13 @@
+llm = dspy.LM(
+    model={{ spec.llm.name | tojson }},
+    model_type={{ spec.llm.model_type | tojson }},
+    {% if spec.llm.api_base_url %}
+    api_base={{ spec.llm.api_base_url | tojson }},
+    {% endif %}
+    temperature={{ spec.llm.temperature }},
+    max_tokens={{ spec.llm.max_tokens }},
+    **{{ spec.llm.extra | tojson }}
+)
+
+dspy.configure(lm=llm)
+
