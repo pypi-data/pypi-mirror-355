@@ -1,0 +1,132 @@
+[project]
+name = 'python-scap'
+version = '0.0.3'
+description = 'Python library for working with NVD SCAP content'
+readme = 'readme.md'
+requires-python = '>=3.10'
+license = {text = 'BSD-3-Clause'}
+authors = [
+    {name = 'Nuno André', email = 'mail@nunoand.re'}
+]
+keywords = [
+    'cpe',
+    'cve',
+    'nvd',
+    'nist',
+    'mitre',
+    'pydantic',
+    'scap',
+    'vulnerability',
+]
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'Intended Audience :: System Administrators',
+    'License :: OSI Approved :: BSD License',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Topic :: Security',
+    'Typing :: Typed'
+]
+dependencies = [
+    'fastapi>=0.115.12',
+    'httpx>=0.26.0',
+    'pydantic>=2.11.5',
+    'sqlmodel>=0.0.24',
+]
+
+[project.urls]
+Homepage = 'https://github.com/nuno-andre/python-scap#readme'
+Source = 'https://github.com/nuno-andre/python-scap'
+BugTracker = 'https://github.com/nuno-andre/python-scap/issues'
+
+[dependency-groups]
+dev = [
+    'mypy>=1.16.0',
+    'pytest>=8.4.0',
+    'ruff>=0.11.13',
+]
+
+# --- PYTEST ---
+# ^ https://docs.pytest.org/en/stable/reference/reference.html#ini-options-ref
+
+[tool.pytest.ini_options]
+log_cli = 'true'
+log_cli_level = 'INFO'
+log_format = '%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)'
+log_cli_format = '%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)'
+log_date_format = '%Y-%m-%d %H:%M:%S'
+log_cli_date_format = '%Y-%m-%d %H:%M:%S'
+norecursedirs = [
+    '.venv',
+    '.git',
+    '.mypy_cache',
+    '.pytest_cache',
+]
+# asyncio_mode = 'strict'
+
+
+# --- RUFF ---
+# ^ https://docs.astral.sh/ruff/settings/
+
+[tool.ruff]
+target-version = 'py311'
+exclude = [
+    '.git',
+    '__pycache__',
+    '.mypy_cache',
+    '.pytest_cache',
+    '.venv',
+    '.eggs',
+    'build',
+    'test*.py',
+]
+ignore = [
+    'E115',
+    'E221',
+    'E241',
+    'E402',
+    'E731',
+    'Q001',  # double quotes for multiline strings
+    'Q002',  # double quotes for doctstrings
+]
+line-length = 99
+select = [
+    'C9',
+    'E',
+    'F',
+    'Q',
+    'W',
+]
+
+[tool.ruff.flake8-quotes]
+inline-quotes = 'single'
+multiline-quotes = 'single'
+docstring-quotes = 'single'
+
+[tool.ruff.format]
+line-ending = 'lf'
+quote-style = 'single'
+
+# TODO: https://stackoverflow.com/a/72894624
+[tool.ruff.isort]
+combine-as-imports = true
+
+[tool.ruff.mccabe]
+max-complexity = 15
+
+[tool.ruff.per-file-ignores]
+'./src/scap/_core/sql_patch.py' = [ 'C901', 'Q000' ]
+
+
+# --- MYPY ---
+# ^ https://mypy.readthedocs.io/en/stable/config_file.html
+
+[tool.mypy]
+ignore_missing_imports = true
