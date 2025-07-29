@@ -1,0 +1,98 @@
+# GD MMT
+
+GDMMT: Extended version of mmt cli. Handles SRI generation, prefix management, versioning, and commit message generation.
+
+## Installation
+> [!NOTE]
+> Installation requires Python and pip to be installed and thats it. No need to set up any environment variables or anything like that.
+
+```bash
+pip install gdmmt
+```
+
+After installation, you should run the following command to set the prefix:
+```bash
+gdmmt push --set-prefix "GD**: "
+```
+
+## Upgrade
+
+```bash
+pip install gdmmt --upgrade
+```
+
+## Usage
+
+### Push command
+
+```bash
+gdmmt push --set-prefix "GD**: "
+```
+
+```bash
+gdmmt push -n "Commit message"
+```
+or 
+```bash
+gdmmt push -note "Commit message"
+```
+
+Use prefix from argument
+```bash
+gdmmt push --prefix "GD**: "
+```
+
+Skip SRI generation
+```bash
+gdmmt push --no-sri
+```
+
+Disable SRI generations (default True)
+```bash
+gdmmt push --sha512=False --sha256=False --sha384=False
+```
+
+### Pull command
+
+```bash
+gdmmt pull
+```
+
+### Checkout command
+
+```bash
+gdmmt checkout <remote>
+```
+
+### Info command
+
+```bash
+gdmmt info
+```
+
+### Status command
+
+```bash
+gdmmt status
+```
+
+
+## Upload to PyPI
+
+1. Clone this repository locally
+2. Do some changes
+3. Run tests (optional) or create a new tests
+4. Build the package
+```bash
+python3 -m build
+```
+
+5. Upload the package to PyPI
+```bash
+python3 -m twine upload dist/*
+```
+
+Note: You need to have a ~/.pypirc file with your PyPI credentials.
+
+Also login to PyPI with your credentials. Find credentials in notebook TW.
+[PyPI Package Index](https://pypi.org/project/gdmmt/)
