@@ -1,0 +1,119 @@
+Metadata-Version: 2.4
+Name: pyxecm
+Version: 2.0.4
+Summary: A Python library to interact with Opentext Extended ECM REST API
+Author-email: Kai Gatzweiler <kgatzweiler@opentext.com>, "Dr. Marc Diefenbruch" <mdiefenb@opentext.com>
+Project-URL: Homepage, https://github.com/opentext/pyxecm
+Keywords: opentext,extendedecm,contentserver,otds,appworks,archivecenter
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Content Management System
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests<3
+Requires-Dist: requests_toolbelt
+Requires-Dist: setuptools
+Requires-Dist: kubernetes
+Requires-Dist: zipfile36
+Requires-Dist: suds
+Requires-Dist: python-hcl2
+Requires-Dist: xmltodict
+Requires-Dist: lxml
+Requires-Dist: openpyxl
+Requires-Dist: pandas
+Requires-Dist: python-magic
+Requires-Dist: websockets
+Requires-Dist: pydantic-settings
+Requires-Dist: fastapi>=0.115.12
+Requires-Dist: uvicorn
+Requires-Dist: python-multipart
+Requires-Dist: aiofiles
+Requires-Dist: asyncio
+Requires-Dist: jinja2
+Requires-Dist: prometheus-fastapi-instrumentator
+Requires-Dist: psycopg[binary,pool]>=3.2.6
+Requires-Dist: playwright>=1.52.0
+Provides-Extra: dataloader
+Requires-Dist: pandas; extra == "dataloader"
+Requires-Dist: pyyaml; extra == "dataloader"
+Requires-Dist: python-hcl2; extra == "dataloader"
+Requires-Dist: tropycal; extra == "dataloader"
+Requires-Dist: shapely; extra == "dataloader"
+Requires-Dist: cartopy; extra == "dataloader"
+Requires-Dist: psycopg; extra == "dataloader"
+Provides-Extra: sap
+Requires-Dist: pyrfc==3.3.1; extra == "sap"
+Provides-Extra: profiling
+Requires-Dist: pyinstrument; extra == "profiling"
+Dynamic: license-file
+
+# PYXECM
+
+A python library to interact with Opentext Extended ECM REST API.
+The product API documentation is available on [OpenText Developer](https://developer.opentext.com/ce/products/extendedecm)
+Detailed documentation of this package is available [here](https://opentext.github.io/pyxecm/).
+
+# Quick start
+
+Install pyxecm with the desired extras into your python environment, extra options are:
+
+    - dataloader
+    - sap
+
+```bash
+pip install pyxecm
+```
+
+## Start using the Customizer
+
+Create an `.env` file as described here: [sample-environment-variables](customizerapisettings/#sample-environment-variables)
+
+```bash
+python -m pyxecm.customizer.api
+```
+
+
+Access the Customizer API at [http://localhost:8000/api](http://localhost:8000/api)
+
+
+## Start using the package libraries
+```python
+from pyxecm import OTCS
+
+otcs_object = OTCS(
+    protocol="https",
+    hostname="otcs.domain.tld",
+    port="443",
+    public_url="otcs.domain.tld",
+    username="admin",
+    password="********",
+    base_path="/cs/llisapi.dll",
+)
+
+otcs_object.authenticate()
+
+nodes = otcs_object.get_subnodes(2000)
+
+for node in nodes["results"]:
+    print(node["data"]["properties"]["id"], node["data"]["properties"]["name"])
+```
+
+
+# Disclaimer
+
+!!! quote ""
+    Copyright © 2025 Open Text Corporation, All Rights Reserved.
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
