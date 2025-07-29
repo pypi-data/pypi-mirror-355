@@ -1,0 +1,41 @@
+dist: jammy
+language: python
+cache: pip
+
+matrix:
+  fast_finish: true
+  include:
+    - python: 3.8
+      env: TOXENV=flake8
+    - python: 3.8
+      env: TOXENV=py38-django32
+    - python: 3.9
+      env: TOXENV=py39-django32
+    - python: 3.9
+      env: TOXENV=py39-django40
+    - python: 3.10
+      env: TOXENV=py310-django40
+    - python: 3.10
+      env: TOXENV=py310-django41
+    - python: 3.11
+      env: TOXENV=py311-django41
+    - python: 3.11
+      env: TOXENV=py311-django42
+    - python: 3.12
+      env: TOXENV=py312-django42
+    - python: 3.12
+      env: TOXENV=py312-django50
+    - python: 3.13
+      env: TOXENV=py313-django50
+    - python: 3.13
+      env: TOXENV=py313-django51
+
+install:
+  - pip install tox
+
+script:
+  - tox
+
+after_success:
+  - pip install codecov
+  - codecov
