@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: nautobot-netbox-importer
+Version: 2.2.0
+Summary: Data importer from NetBox 3.x to Nautobot 2.x.
+Home-page: https://github.com/nautobot/nautobot-app-netbox-importer
+License: Apache-2.0
+Keywords: nautobot,nautobot-app,nautobot-plugin
+Author: Network to Code, LLC
+Author-email: opensource@networktocode.com
+Requires-Python: >=3.9.2,<3.13
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides-Extra: all
+Requires-Dist: Markdown (>=3.6,<4.0)
+Requires-Dist: colorama (>=0.4.6,<0.5.0)
+Requires-Dist: diffsync (>=2.1.0,<3.0.0)
+Requires-Dist: ijson (>=3.2.3,<4.0.0)
+Requires-Dist: nautobot (>=2.4.9,<3.0.0)
+Requires-Dist: netaddr (>=0.10.1)
+Requires-Dist: packaging (>=24.1,<25.0)
+Requires-Dist: pydantic (>=2.11.5,<3.0.0)
+Requires-Dist: python-dateutil (>=2.9.0,<3.0.0)
+Project-URL: Documentation, https://docs.nautobot.com/projects/netbox-importer/en/latest/
+Project-URL: Repository, https://github.com/nautobot/nautobot-app-netbox-importer
+Description-Content-Type: text/markdown
+
+# Nautobot NetBox Importer
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/nautobot/nautobot-plugin-netbox-importer/develop/docs/images/icon-nautobot-netbox-importer.png" class="logo" height="200px">
+  <br>
+  <a href="https://github.com/nautobot/nautobot-app-netbox-importer/actions"><img src="https://github.com/nautobot/nautobot-app-netbox-importer/actions/workflows/ci.yml/badge.svg?branch=main"></a>
+  <a href="https://docs.nautobot.com/projects/netbox-importer/en/latest/"><img src="https://readthedocs.org/projects/nautobot-plugin-netbox-importer/badge/"></a>
+  <a href="https://pypi.org/project/nautobot-netbox-importer/"><img src="https://img.shields.io/pypi/v/nautobot-netbox-importer"></a>
+  <a href="https://pypi.org/project/nautobot-netbox-importer/"><img src="https://img.shields.io/pypi/dm/nautobot-netbox-importer"></a>
+  <br>
+  An <a href="https://networktocode.com/nautobot-apps/">App</a> for <a href="https://nautobot.com/">Nautobot</a>.
+</p>
+
+## Overview
+
+This application's sole purpose is to facilitate data migration from NetBox to Nautobot, performing the proper data conversion through the process.
+
+## Documentation
+
+Full documentation for this App can be found over on the [Nautobot Docs](https://docs.nautobot.com) website:
+
+- [User Guide](https://docs.nautobot.com/projects/netbox-importer/en/latest/user/app_overview/) - Overview, Using the App, Getting Started.
+- [Administrator Guide](https://docs.nautobot.com/projects/netbox-importer/en/latest/admin/install/) - How to Install, Configure, Upgrade, or Uninstall the App.
+- [Developer Guide](https://docs.nautobot.com/projects/netbox-importer/en/latest/dev/contributing/) - Extending the App, Code Reference, Contribution Guide.
+- [Release Notes / Changelog](https://docs.nautobot.com/projects/netbox-importer/en/latest/admin/release_notes/).
+- [Frequently Asked Questions](https://docs.nautobot.com/projects/netbox-importer/en/latest/user/faq/).
+
+### Contributing to the Documentation
+
+You can find all the Markdown source for the App documentation under the [`docs`](https://github.com/nautobot/nautobot-app-netbox-importer/tree/develop/docs) folder in this repository. For simple edits, a Markdown capable editor is sufficient: clone the repository and edit away.
+
+If you need to view the fully-generated documentation site, you can build it with [MkDocs](https://www.mkdocs.org/). A container hosting the documentation can be started using the `invoke` commands (details in the [Development Environment Guide](https://docs.nautobot.com/projects/netbox-importer/en/latest/dev/dev_environment/#docker-development-environment)) on [http://localhost:8001](http://localhost:8001). Using this container, as your changes to the documentation are saved, they will be automatically rebuilt and any pages currently being viewed will be reloaded in your browser.
+
+Any PRs with fixes or improvements are very welcome!
+
+## Questions
+
+For any questions or comments, please check the [FAQ](https://docs.nautobot.com/projects/netbox-importer/en/latest/user/faq/) first. Feel free to also swing by the [Network to Code Slack](https://networktocode.slack.com/) (channel `#nautobot`), sign up [here](http://slack.networktocode.com/) if you don't have an account.
+
