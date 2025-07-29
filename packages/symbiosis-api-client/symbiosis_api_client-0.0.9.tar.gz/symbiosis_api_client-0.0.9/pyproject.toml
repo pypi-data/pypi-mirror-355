@@ -1,0 +1,96 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "symbiosis-api-client"
+dynamic = ["version"]
+description = 'Python client for api.symbiosis.finance'
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = []
+authors = [{ name = "garootman", email = "dksg87@gmail.com" }]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "httpx>=0.28.1",
+  "pydantic>=2.10.6",
+  "ratelimit>=2.2.1",
+  "sphinx>=7.1.2",
+]
+
+[project.urls]
+Documentation = "https://symbiosis-api-client.readthedocs.io/en/latest/"
+Issues = "https://github.com/garootman/symbiosis-api-client/issues"
+Source = "https://github.com/garootman/symbiosis-api-client"
+
+
+[tool.hatch.version]
+path = "src/symbiosis_api_client/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = ["mypy>=1.0.0"]
+
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/symbiosis_api_client tests}"
+
+[tool.coverage.run]
+source_pkgs = ["symbiosis_api_client", "tests"]
+branch = true
+parallel = true
+omit = ["src/symbiosis_api_client/__about__.py"]
+
+[tool.setuptools.package-data]
+"symbiosis_client" = ["py.typed"]
+
+[tool.coverage.paths]
+symbiosis_api_client = [
+  "src/symbiosis_api_client",
+  "*/symbiosis-api-client/src/symbiosis_api_client",
+]
+tests = ["tests", "*/symbiosis-api-client/tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+[project.optional-dependencies]
+dev = [
+  "bandit>=1.7.10",
+  "black>=24.8.0",
+  "mypy>=1.14.1",
+  "pre-commit>=3.5.0",
+  "pytest>=8.3.5",
+  "ruff>=0.11.4",
+  "sphinx>=7.1.2",
+  "tox>=4.25.0",
+  "twine>=6.1.0",
+]
+
+[dependency-groups]
+dev = [
+  "bandit>=1.7.10",
+  "black>=24.8.0",
+  "mypy>=1.14.1",
+  "pre-commit>=3.5.0",
+  "pytest>=8.3.5",
+  "ruff>=0.11.4",
+  "sphinx>=7.1.2",
+  "tox>=4.25.0",
+  "twine>=6.1.0",
+]
+
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"

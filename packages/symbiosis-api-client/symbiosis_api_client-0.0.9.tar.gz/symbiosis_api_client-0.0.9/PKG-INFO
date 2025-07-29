@@ -1,0 +1,87 @@
+Metadata-Version: 2.4
+Name: symbiosis-api-client
+Version: 0.0.9
+Summary: Python client for api.symbiosis.finance
+Project-URL: Documentation, https://symbiosis-api-client.readthedocs.io/en/latest/
+Project-URL: Issues, https://github.com/garootman/symbiosis-api-client/issues
+Project-URL: Source, https://github.com/garootman/symbiosis-api-client
+Author-email: garootman <dksg87@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.10
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: pydantic>=2.10.6
+Requires-Dist: ratelimit>=2.2.1
+Requires-Dist: sphinx>=7.1.2
+Provides-Extra: dev
+Requires-Dist: bandit>=1.7.10; extra == 'dev'
+Requires-Dist: black>=24.8.0; extra == 'dev'
+Requires-Dist: mypy>=1.14.1; extra == 'dev'
+Requires-Dist: pre-commit>=3.5.0; extra == 'dev'
+Requires-Dist: pytest>=8.3.5; extra == 'dev'
+Requires-Dist: ruff>=0.11.4; extra == 'dev'
+Requires-Dist: sphinx>=7.1.2; extra == 'dev'
+Requires-Dist: tox>=4.25.0; extra == 'dev'
+Requires-Dist: twine>=6.1.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+[![PyPI - Version](https://img.shields.io/pypi/v/symbiosis-api-client.svg)](https://pypi.org/project/symbiosis-api-client) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/symbiosis-api-client.svg)](https://pypi.org/project/symbiosis-api-client)
+
+
+# Symbiosis API Client
+
+### Installation
+
+```console
+pip install symbiosis-api-client
+```
+
+## Some Info
+
+- Python syncronous client for [Symbiosis Finance](https://symbiosis.finance/) REST API
+- Client relies on [JS SDK ](https://github.com/symbiosis-finance/js-sdk) in part of  [configuration file](https://github.com/symbiosis-finance/js-sdk/blob/main/src/crosschain/config/mainnet.ts). If there is a new commit, Client will raise `InvalidCommit`
+- Partial [Symbiosis Swagger](https://api.symbiosis.finance/crosschain/docs/), not much info
+- [Symbiosis API Docs](https://docs.symbiosis.finance/developer-tools/symbiosis-api), what and why
+
+
+## ToDo Plan:
+
+- [ ] Cover routes:
+  - [X] Eth USDT -> Tron USDT
+  - [X] Eth USDT -> TON USDT
+  - [ ] BSC DAI -> Tron TRX
+  - [ ] TON TON -> BSC BNB
+- [ ] Make BaseSwap full logic replica
+- [X] Main functionality
+- [X] Rate limit + Singleton
+- [X] Exception Codes
+- [X] tox for Python versions
+- [X] Pydantic models
+- [ ] Test Stuck transactions functionality, [docs here](https://docs.symbiosis.finance/crosschain-liquidity-engine/symbiosis-and-emergencies)
+- [ ] Testnet – when there are tokens available on Symbiosis
+- [ ] Async client maybe?
+
+
+-----
+
+## Table of Contents
+
+- [Symbiosis API Client](#symbiosis-api-client)
+    - [Installation](#installation)
+  - [Some Info](#some-info)
+  - [ToDo Plan:](#todo-plan)
+  - [Table of Contents](#table-of-contents)
+  - [License](#license)
+
+
+## License
+
+`symbiosis-api-client` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
