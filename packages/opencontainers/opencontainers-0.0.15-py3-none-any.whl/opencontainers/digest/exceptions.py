@@ -1,0 +1,32 @@
+# Copyright (C) 2019-2022 Vanessa Sochat.
+
+# This Source Code Form is subject to the terms of the
+# Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+# with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+class ErrDigestInvalidFormat(Exception):
+    """
+    ErrDigestInvalidFormat returned when digest format invalid.
+    """
+
+    def __init__(self):
+        super().__init__("invalid checksum digest format")
+
+
+class ErrDigestInvalidLength(Exception):
+    """
+    ErrDigestInvalidLength returned when digest has invalid length.
+    """
+
+    def __init__(self):
+        super().__init__("invalid checksum digest length")
+
+
+class ErrDigestUnsupported(Exception):
+    """
+    Returned when the digest algorithm is unsupported.
+    """
+
+    def __init__(self):
+        super().__init__("unsupported digest algorithm")
