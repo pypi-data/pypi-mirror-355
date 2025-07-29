@@ -1,0 +1,110 @@
+# README
+
+[![PyPI](https://img.shields.io/pypi/v/delimux.svg)](https://pypi.org/project/delimux/)
+
+
+
+## Installation
+
+`pip install mumobo`
+
+## Help
+
+```python
+        
+    class MuMoBo(builtins.object)
+     |  MuMoBo(host, port=80, timeout=20.0, verbose=False)
+     |  
+     |  Client for MuMoBo microcontroller communication via TCP socket.
+     |  
+     |  Methods defined here:
+     |  
+     |  Step_Mode(self, AXIS, SERVO_ID)
+     |      Method: Step mode.
+     |  
+     |  __init__(self, host, port=80, timeout=20.0, verbose=False)
+     |      Initialize the client 
+     |      
+     |      Parameters
+     |      ==========
+     |      host : str
+     |          hostname or ip address of the mumobo
+     |      port : int
+     |          port on which the socket server is running
+     |      timeout : float
+     |          timeout for socket communication
+     |      verbose : bool
+     |          how talkative the API will be   
+     |      
+     |      ToDo
+     |      ====
+     |      Implement persistant socket connection with failsafe checking of connection. Currently
+     |      each command opens and closes a socket.
+     |  
+     |  changeID(self, AXIS, SERVO_ID, NEW_ID)
+     |      Change the motor ID
+     |      
+     |      Parameters
+     |      ==========
+     |      AXIS : int
+     |          which axis to address
+     |      SERVO_ID : int
+     |          which servo to address
+     |      NEW_ID : int
+     |          new servo ID
+     |  
+     |  getID(self, AXIS)
+     |      Method: Getid.
+     |  
+     |  move_motor_by(self, AXIS, SERVO_ID, STEPS)
+     |      Move a motor.
+     |      
+     |      Parameters
+     |      ==========
+     |      AXIS : int
+     |          which axis to address
+     |      SERVO_ID : int
+     |          which servo to address
+     |      STEPS : int
+     |          how many steps to turn
+     |  
+     |  move_motor_zero(self, AXIS, SERVO_ID)
+     |      Method: Move motor by zero steps.
+     |  
+     |  ping_1(self, AXIS, SERVO_ID)
+     |      Method: Ping 1.
+```
+
+
+## Usage
+
+The mumobo infrastructure allows to control a set of servos via a socket server running on a microcontroller. This python API facilitates the setup and communication with the servo motors. Currently, the microcontroller can operate two independent sets of motors, each of these sets are called an axis, where the intention is that each axis will operate two to three motors on one mirror mount. For each axis there is a patch cable jack available to route the communication from the mumobo to the mirror mount. At the site of the mirror mount, a small breakout board is used to hook up the servos. 
+
+### How to take servos into operation
+
+Servos are adressed by their unique ID. Before the communication with more than one servo over a shared line can be used they have to be given a unique address. Moreover, one typically wants to operate those servos in step mode, i.e., one wants to tell the servo motor to move by a given number of steps. To stage those motors for operation, the following procedure is foreseen
+```python
+import mumobo
+mmb=mumobo.MuMoBoClient()
+# 1. Plug ONLY ONE motor at a time into the breakout board connected to AXIS=1 or 2.
+# 2. Find servo-ID: 
+mmb.getID(AXIS)
+# 3. Change ID from old ID to new ID if the it already exists
+mmb.changeID(AXIS, SERVO_ID, NEW_ID)
+# 4. Check if the renaming worked 
+mmb.ping_1(AXIS, SERVO_ID)
+# 5. Switch the motor to Step-mode (this will. like the SERVO_ID be persistantly stored on the servo) 
+mmb.Step_Mode(AXIS, SERVO_ID)
+```
+This step is to be repeated for all motors in use. After this, they can be adressed with their AXIS and newly assigned ID.
+
+## How to turn the servo
+
+```python
+AXIS = 1 
+Servo_ID = 1
+step = 100 
+# Number from -10000 (anticlockwise) to  10000 (clockwise). A step of 4096 corresponds to a 360° turn
+
+mmb.move_moto_by_(AXIS, Servo_ID, step)
+```
