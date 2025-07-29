@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: AFL-automation
+Version: 1.0.1
+Summary: Hardware interfacing code for the Autonomous Formulation Lab
+Author: Peter A. Beaucage
+Author-email: "Tyler B. Martin" <tyler.martin@nist.gov>
+License-Expression: NIST-PD-fallback
+License-File: LICENSE
+Requires-Python: >=3.8
+Requires-Dist: bokeh
+Requires-Dist: entrypoints
+Requires-Dist: flask-cors
+Requires-Dist: flask-jwt-extended>=4.0
+Requires-Dist: flask<2.3
+Requires-Dist: h5py
+Requires-Dist: ipython
+Requires-Dist: ipywidgets
+Requires-Dist: lazy-loader
+Requires-Dist: matplotlib
+Requires-Dist: numpy<2
+Requires-Dist: pandas
+Requires-Dist: periodictable
+Requires-Dist: pillow
+Requires-Dist: pint
+Requires-Dist: plotly
+Requires-Dist: pyparsing
+Requires-Dist: pytest
+Requires-Dist: requests
+Requires-Dist: scikit-image
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: setuptools
+Requires-Dist: six
+Requires-Dist: tiled
+Requires-Dist: tqdm
+Requires-Dist: werkzeug
+Requires-Dist: xarray
+Requires-Dist: zeroconf
+Provides-Extra: docs
+Requires-Dist: myst-parser>=2.0.0; extra == 'docs'
+Requires-Dist: nbsphinx>=0.9.3; extra == 'docs'
+Requires-Dist: pydata-sphinx-theme; extra == 'docs'
+Requires-Dist: sphinx-autodoc-typehints>=1.25.2; extra == 'docs'
+Requires-Dist: sphinx-autosummary-accessors; extra == 'docs'
+Requires-Dist: sphinx-copybutton>=0.5.2; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme>=2.0.0; extra == 'docs'
+Requires-Dist: sphinx>=7.1.0; extra == 'docs'
+Requires-Dist: sphinxcontrib-apidoc; extra == 'docs'
+Requires-Dist: sphinxcontrib-napoleon; extra == 'docs'
+Provides-Extra: geometry
+Requires-Dist: alphashape; extra == 'geometry'
+Requires-Dist: shapely; extra == 'geometry'
+Provides-Extra: labjack
+Requires-Dist: labjack-ljm; extra == 'labjack'
+Provides-Extra: ml
+Requires-Dist: gpflow; extra == 'ml'
+Requires-Dist: tensorflow; extra == 'ml'
+Provides-Extra: neutron-scattering
+Requires-Dist: epics; extra == 'neutron-scattering'
+Requires-Dist: mantid; extra == 'neutron-scattering'
+Requires-Dist: sans; extra == 'neutron-scattering'
+Provides-Extra: opentrons
+Requires-Dist: opentrons; extra == 'opentrons'
+Provides-Extra: piplates
+Requires-Dist: piplates; extra == 'piplates'
+Provides-Extra: pyspec
+Requires-Dist: certif-pyspec; extra == 'pyspec'
+Provides-Extra: remote-access
+Requires-Dist: paramiko; extra == 'remote-access'
+Provides-Extra: rpi-gpio
+Requires-Dist: rpi-gpio; extra == 'rpi-gpio'
+Provides-Extra: sas-analysis
+Requires-Dist: sasdata; extra == 'sas-analysis'
+Requires-Dist: sasmodels; extra == 'sas-analysis'
+Provides-Extra: scattering-processing
+Requires-Dist: fabio; extra == 'scattering-processing'
+Requires-Dist: pyfai; extra == 'scattering-processing'
+Provides-Extra: seabreeze
+Requires-Dist: seabreeze; extra == 'seabreeze'
+Provides-Extra: serial
+Requires-Dist: pyserial; extra == 'serial'
+Provides-Extra: vision
+Requires-Dist: opencv-python; extra == 'vision'
+Provides-Extra: win32
+Requires-Dist: pywin32; extra == 'win32'
+Description-Content-Type: text/markdown
+
+NIST Autonomous Formulation Laboratory - Automation Software
+
+This package contains the core laboratory automation software used in the NIST AFL platform.
+
+Its core is the 'DeviceServer' API, a simple way of exposing functionality in simple Python classes to the outside world via HTTP servers.  It includes robust item queueing support, output rendering, and hooks to allow for 'smart' generation of user interfaces automatically.
+
+Specific deviceserver instances are provided for a variety of hardware used in the AFL platform: syringe pumps, valves, multiposition flow selectors, UV-Vis spectrometers, x-ray and neutron scattering instruments/beamlines.  There are further deviceserver classes that integrate these base devices to perform higher-level functions, e.g. "loading".  These classes aim to specify instructions for running a particular protocol in a hardware-agnostic way.
+
