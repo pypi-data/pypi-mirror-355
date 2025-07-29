@@ -1,0 +1,32 @@
+from setuptools import find_packages, setup
+
+setup(
+    name="synth-sdk",
+    packages=find_packages(),
+    install_requires=[
+        "opentelemetry-api",
+        "opentelemetry-sdk",
+        "pydantic",
+        "requests",
+        "asyncio",
+        "build>=1.2.2.post1",
+        "pypi",
+        "twine>=4.0.0",
+        "keyring>=24.0.0",
+        "python-dotenv>=1.0.1",
+        "langfuse>=2.53.9",
+        "pytest>=8.3.3",
+        "pydantic-openapi-schema>=1.5.1",
+        "pytest-asyncio>=0.24.0",
+        "boto3>=1.35.71",
+        "botocore>=1.35.71",
+        "tqdm>=4.66.4",
+    ],
+    author="Synth AI",
+    author_email="josh@usesynth.ai",
+    description="",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    python_requires=">=3.10",
+    classifiers=[],
+)

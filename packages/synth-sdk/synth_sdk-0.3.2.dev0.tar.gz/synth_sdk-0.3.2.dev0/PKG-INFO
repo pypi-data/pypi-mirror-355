@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: synth-sdk
+Version: 0.3.2.dev0
+Summary: SDK for Synth
+Author: Synth AI
+Author-email: Synth AI <josh@usesynth.ai>
+License: MIT
+Project-URL: Homepage, https://github.com/synth-laboratories/synth-sdk
+Project-URL: Repository, https://github.com/synth-laboratories/synth-sdk
+Project-URL: Issues, https://github.com/synth-laboratories/synth-sdk/issues
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: langfuse>=2.53.9
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pydantic-openapi-schema>=1.5.1
+Requires-Dist: requests>=2.32.3
+Requires-Dist: anthropic>=0.42.0
+Requires-Dist: typing-inspect>=0.9.0
+Requires-Dist: jsonschema>=4.23.0
+Requires-Dist: openai==1.63.0
+Requires-Dist: boto3>=1.35.71
+Requires-Dist: botocore>=1.35.71
+Requires-Dist: tqdm>=4.66.4
+Requires-Dist: urllib3>=2.3.0
+Provides-Extra: dev
+Requires-Dist: build>=1.2.2.post1; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"
+Requires-Dist: keyring>=24.0.0; extra == "dev"
+Requires-Dist: pytest>=8.3.3; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.24.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: pyright>=1.1.350; extra == "dev"
+Requires-Dist: coverage[toml]>=7.3.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Provides-Extra: google
+Requires-Dist: google-api-core>=2.0.0; extra == "google"
+Requires-Dist: google-generativeai>=0.8.0; extra == "google"
+Requires-Dist: google-genai>=1.0.0; extra == "google"
+Provides-Extra: mistral
+Requires-Dist: mistralai>=1.0.0; extra == "mistral"
+Dynamic: author
+Dynamic: requires-python
+
+# Synth Python SDK
+
+Python SDK for Synth
+

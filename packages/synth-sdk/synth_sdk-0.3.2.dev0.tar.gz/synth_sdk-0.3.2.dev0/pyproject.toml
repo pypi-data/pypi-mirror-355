@@ -1,0 +1,88 @@
+[project]
+name = "synth-sdk"
+version = "0.3.2.dev0"
+description = "SDK for Synth"
+authors = [{name = "Synth AI", email = "josh@usesynth.ai"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "python-dotenv>=1.0.1",
+    "langfuse>=2.53.9",
+    "pydantic>=2.0.0",
+    "pydantic-openapi-schema>=1.5.1",
+    "requests>=2.32.3",
+    "anthropic>=0.42.0",
+    "typing-inspect>=0.9.0",
+    "jsonschema>=4.23.0",
+    "openai==1.63.0",
+    "boto3>=1.35.71",
+    "botocore>=1.35.71",
+    "tqdm>=4.66.4",
+    "urllib3>=2.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.2.post1",
+    "twine>=4.0.0",
+    "keyring>=24.0.0",
+    "pytest>=8.3.3",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=4.1.0",
+    "pyright>=1.1.350",
+    "coverage[toml]>=7.3.0",
+    "ruff>=0.1.0",
+]
+google = [
+    "google-api-core>=2.0.0",
+    "google-generativeai>=0.8.0",
+    "google-genai>=1.0.0",
+]
+mistral = [
+    "mistralai>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/synth-laboratories/synth-sdk"
+Repository = "https://github.com/synth-laboratories/synth-sdk"
+Issues = "https://github.com/synth-laboratories/synth-sdk/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["synth_sdk*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["synth_sdk"]
+omit = ["*/tests/*", "*/test_*"]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+
+[tool.pyright]
+include = ["synth_sdk", "tests"]
+exclude = ["**/__pycache__"]
+pythonVersion = "3.10"
+typeCheckingMode = "standard"
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "I", "N", "UP", "YTT", "B", "C4", "T10", "SIM"]
+ignore = ["E501", "B008"]
+
+[tool.uv.sources]
