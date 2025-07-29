@@ -1,0 +1,2 @@
+NEWLINE = "\n"
+TAB = "\t"
