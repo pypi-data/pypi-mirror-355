@@ -1,0 +1,180 @@
+Metadata-Version: 2.2
+Name: np_log
+Version: 0.2.3
+Summary: 日志管理器
+Home-page: https://github.com/Liu670/np_log
+Author: 刘金林
+Author-email: 2558949748@qq.com
+License: MIT
+Keywords: logging custom log configuration
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-python
+Dynamic: summary
+
+# np_log 智能日志系统 使用手册
+
+## 简介
+
+np_log 是一个功能强大的 Python 日志系统，提供智能调用者识别、彩色终端输出、自动日志管理和多平台通知等功能。
+
+## 安装
+
+```bash
+pip install np_log
+```
+
+## 快速开始
+
+```python
+from np_log import log, setup_logging
+
+# 简单使用
+log("Debug message")  # 默认DEBUG级别
+log("Info message", "INFO")  # 指定级别
+log("Error with bot", "ERROR", {"bot": True})  # 触发机器人通知
+
+# 高级配置
+logger = setup_logging(
+    name="my_app",          # 自定义日志名称
+    console_level="INFO",   # 控制台日志级别
+    file_level="DEBUG",     # 文件日志级别
+    log_max_days=30,        # 日志保留天数
+    log_max_size=100        # 单个日志文件大小(MB)
+)
+logger.info("Custom logger message")
+```
+
+## 核心功能
+
+### 1. 智能调用追踪
+- 自动识别真实调用源文件位置
+- 准确显示文件名和行号
+- 跳过logging模块内部调用
+
+### 2. 彩色终端输出
+- DEBUG: 青色
+- INFO: 绿色  
+- WARNING: 黄色
+- ERROR: 红色
+- CRITICAL: 紫色
+
+### 3. 自动日志管理
+- 按日期分目录存储
+- 支持日志轮转(默认50MB/文件)
+- 可设置保留天数(默认7天)
+- UTF-8编码保证兼容性
+
+### 4. 机器人通知
+- 支持企业微信和飞书
+- 通过`.env`文件配置
+- 按需发送关键日志
+
+## 配置说明
+
+### setup_logging 参数
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `name` | str | None | 自动检测调用文件 |
+| `is_logfile` | bool | True | 是否启用文件日志 |
+| `console_level` | str | "DEBUG" | 控制台日志级别 |
+| `file_level` | str | "DEBUG" | 文件日志级别 |
+| `log_max_days` | int | 7 | 日志保留天数 |
+| `log_max_size` | int | 50 | 单个日志文件大小(MB) |
+
+### 机器人配置
+
+在项目根目录创建`.env`文件：
+
+```ini
+# 企业微信机器人(完整URL或KEY)
+WECHAT_WEBHOOK_URL=your_wechat_key
+
+# 飞书机器人 
+FEISHU_WEBHOOK_URL=your_feishu_key
+```
+
+## 最佳实践
+
+1. **项目初始化配置**：
+```python
+# app.py
+from np_log import setup_logging
+logger = setup_logging()
+```
+
+2. **模块中使用**：
+```python
+# module.py
+from np_log import log
+
+def my_function():
+    log("Function started")
+```
+
+3. **关键错误通知**：
+```python
+try:
+    critical_operation()
+except Exception as e:
+    log(f"操作失败: {str(e)}", "ERROR", {"bot": True})
+```
+
+## 问题排查
+
+### 常见问题
+
+1. **看不到颜色输出**：
+   - 检查终端是否支持ANSI颜色
+   - 确保未重定向输出到文件
+
+2. **机器人不工作**：
+   - 检查`.env`文件配置
+   - 确认网络可访问
+   - 检查是否设置了`{"bot": True}`
+
+3. **行号显示不正确**：
+   - 确保未使用`from np_log import *`
+   - 检查是否有中间包装函数
+
+## 版本信息
+
+- **当前版本**：0.1.9
+- **更新日期**：2025-05-20
+
+## 联系方式
+
+如果您在使用过程中遇到任何问题，或者有任何建议和反馈，可以通过以下方式联系我们：
+
+- **邮箱**：2558949748@qq.com
+- **GitHub**：https://github.com/Liu670/np_log
+
+## 参与贡献
+
+欢迎提交Issue或PR，请包含：
+- 问题描述/功能建议
+- 重现步骤
+- 预期与实际行为
+
+## 许可证
+
+MIT License
