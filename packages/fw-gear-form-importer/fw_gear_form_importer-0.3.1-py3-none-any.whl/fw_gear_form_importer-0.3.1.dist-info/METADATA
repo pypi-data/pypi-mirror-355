@@ -1,0 +1,206 @@
+Metadata-Version: 2.3
+Name: fw-gear-form-importer
+Version: 0.3.1
+Summary: Extract data from input form to Flywheel.
+License: MIT
+Author: Flywheel
+Author-email: support@flywheel.io
+Requires-Python: >=3.12,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: flywheel-gear-toolkit (>=0.6,<0.7)
+Requires-Dist: flywheel-sdk (>=20,<21)
+Requires-Dist: fw-file (>=1,<2)
+Description-Content-Type: text/markdown
+
+# form-importer Form importer
+
+## Overview
+
+*[Usage](https://gitlab.com/flywheel-io/flywheel-apps/form-importer#usage)*
+
+*[FAQ](FAQ.md)*
+
+### Summary
+
+Import form metadata into Flywheel. Metadata is stored under file.info.forms.<form_type>. Supports
+json.
+
+### License
+
+*License:* *MIT*
+
+### Classification
+
+*Category:* *converter*
+
+*Gear Level:*
+
+- [ ] Project
+- [ ] Subject
+- [X] Session
+- [X] Acquisition
+- [ ] Analysis
+
+----
+
+[[*TOC*]]
+
+----
+
+### Inputs
+
+- *input-file*
+  - __Name__: *input-file*
+  - __Type__: *file*
+  - __Optional__: *false*
+  - __Description__: *Input file containing form values.*
+
+### Config
+
+- *debug*
+  - __Name__: *debug*
+  - __Type__: *bool*
+  - __Description__: *log debug messages*
+  - __Default__: *false*
+
+- *tag*
+  - __Name__: *tag*
+  - __Type__: *string*
+  - __Description__: *The tag to be added on input file upon run completion.*
+  - __Default__: *"form-importer"*
+
+- *metadata_location*
+  - __Name__: *metadata_location*
+  - __Type__: *string*
+  - __Description__: *Where the json contents get exported to in the file's custom information*
+  - __Default__: *"forms.json"*
+
+### Outputs
+
+#### Files
+
+None
+
+#### Metadata
+
+The contents of the form responses, as key:value pairs.
+
+### Pre-requisites
+
+#### Prerequisite Gear Runs
+
+None
+
+#### Prerequisite Files
+
+None
+
+#### Prerequisite Metadata
+
+Optional metadata for allow or deny form keys can be specified at the project level.
+
+To modify which keys are imported, metadata can be added to the project level under a "context"
+metadata object. You can specify keys to ALLOW, or keys to DENY, but not both. ALLOW keys take
+precedent over DENY keys, meaning if both ALLOW and DENY keys are specified, only the ALLOW keys
+will be ingested, and all DENY key rules will be ignored.
+
+To add or remove keys on that list, specific key/value must be set on the project custom information
+(`project.info`) like below:
+
+```json
+context:
+   forms:
+      json:
+         <JSON-key>: True|False
+```
+
+`Key: value` should take the form of `Tag: bool`, where "True" means the key is ALLOWED, and "False"
+means the key is DENIED.  In practice, all the keys should have the same value, as stated above, you
+can only either allow or deny, not both at the same time.
+
+To specify nested metadata keys, use standard dotty notation: `parent_key.child_key1`
+
+By default, all form key/value pairs are imported to the file metadata, under the metadata key:
+`file.info.forms.<file_type>`, (currently only 'json' is supported)
+
+## Usage
+
+### Description
+
+Flywheel gear for importing metadata header of file to Flywheel. Metadata is stored under
+`file.info.forms`.
+
+#### File Specifications
+
+Currently, supporting the following file types:
+
+- json
+
+##### *{Input-File}*
+
+The input file should be a file containing form responses (question/answer as key:value pairs).
+
+### Workflow
+
+A picture and description of the workflow
+
+```mermaid
+graph LR;
+    A[Input-File]:::input --> G;
+    A-- get parent project --> B;
+    B[Parent Project <br> context.forms.json]:::container --> C;
+    C{Has ALLOW Keys?}:::decide -- yes --> G;
+    C -- No --> D;
+    D{Has DENY keys?}:::decide -- yes --> G;
+    D -- No --> E;
+    E[Allow All Keys]:::decide -->G;
+    G[Parse Form]:::gear --> H;
+    H[Create info.forms.file_type <br> metadata]:::gear -->A;
+
+
+
+    classDef container fill:#57d,color:#fff
+    classDef input fill:#7a9,color:#fff
+    classDef gear fill:#659,color:#fff
+    classDef decide fill:#aaa,color:#fff
+```
+
+Description of workflow
+
+1. An input file is provided
+2. the parent project is examined for allow or deny keys in the specified metadata location
+3. the file is parsed, allowing or denying keys depending on the project's metadata
+4. the parsed keys are converted to a flywheel-compatible metadata dictionary
+5. the metadata is uploaded to the input file under `file.info.forms.<file_type>`
+
+### Use Cases
+
+#### Use Case 1
+
+__Conditions__:
+
+- [x] A .json file containing form responses is ingested into flywheel
+- [ ] Project.info.context.forms.json is empty
+- [x] Project.info.context.forms.json has ALLOW keys
+- [ ] Project.info.context.forms.json has DENY keys
+
+a .json format file containing form responses is ingested into flywheel.  The researcher has
+determined that they only want a subset of these responses indexed for searching in flywheel, so
+they have specified those keys by adding them to `project.info.context.forms.json` as boolean
+variables, and set their values to "True".
+
+The gear will ingest the file, find the allow keys, and extract ONLY those keys to the file's
+metadata.
+
+### Logging
+
+The log prints the name of the file being processed, and an output of the metadata created by the
+process.
+
+## FAQ
+
+[FAQ.md](FAQ.md)
+
