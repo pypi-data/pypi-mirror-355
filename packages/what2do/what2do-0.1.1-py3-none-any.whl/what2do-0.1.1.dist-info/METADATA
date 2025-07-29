@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: what2do
+Version: 0.1.1
+Summary: Find TODO comments in code files
+Project-URL: Homepage, https://github.com/urineri/what2do
+Project-URL: Repository, https://github.com/urineri/what2do
+Project-URL: Issues, https://github.com/urineri/what2do/issues
+Author-email: Uri Neri <uri.neri@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: analysis,code,comments,development,todo
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# WhatToDo
+
+command-line tool that scans directories for TODO comments in code files and generates a report.
+
+## Features
+
+- Searches for TODO comments in specified file types
+- Collects context, scope, and metadata for each TODO
+- Outputs results to console, TSV, or Markdown format
+
+** _Note: this script is not intended to be a full-featured code analysis tool, it's just some regexs - the scope identification is very basic and could be improved._
+
+## Usage
+
+```
+python whattodo.py [path] [--extensions EXT [EXT ...]] [--output OUTPUT]
+```
+
+### Arguments
+
+- `-p` or `--path`: Directory to search (default: current directory)
+- `-e` or `--extensions`: File extensions to search (default: .py .R .sh .c .cpp .pl)
+- `-o` or `--output`: Output file path (optional, .tsv or .md)
+
+### Examples
+
+1. Search current directory with default settings:
+   ```
+   python whattodo.py
+   ```
+
+2. Search a specific directory:
+   ```
+   python whattodo.py /path/to/project
+   ```
+
+3. Specify custom file extensions:
+   ```
+   python whattodo.py --extensions .py .js .html
+   ```
+
+4. Output to a TSV file:
+   ```
+   python whattodo.py --output todos.tsv
+   ```
+
+5. Output to a Markdown file:
+   ```
+   python whattodo.py --output todos.md
+   ```
+
+6. Combine options:
+   ```
+   python whattodo.py /path/to/project --extensions .py .js --output todos.md
+   ```
+
+## Requirements
+
+- Python 
+
+## Installation
+
+1. Clone this repository or download the `whattodo.py` file.
+2. write `python whattodo.py` to the command line.
+3. success!
+
+## License
+[MIT License](LICENSE)
