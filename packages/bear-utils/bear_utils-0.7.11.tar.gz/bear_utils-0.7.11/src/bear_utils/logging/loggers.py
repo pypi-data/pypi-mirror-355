@@ -1,0 +1,76 @@
+from ..constants.date_related import DATE_TIME_FORMAT
+from .logger_manager._common import FIVE_MEGABYTES, SIMPLE_FORMAT, VERBOSE_CONSOLE_FORMAT, VERBOSE_FORMAT, ExecValues
+from .logger_manager._console_junk import ConsoleBuffering, ConsoleFormatter, ConsoleHandler
+from .logger_manager._styles import DEFAULT_THEME, LOGGER_METHODS, VERBOSE, LoggerExtraInfo, get_method
+from .logger_manager.loggers._base_logger import BaseLogger
+from .logger_manager.loggers._buffer_logger import BufferLogger
+from .logger_manager.loggers._console_logger import ConsoleLogger
+from .logger_manager.loggers._file_logger import FileLogger
+from .logger_manager.loggers._sub_logger import SubConsoleLogger
+
+AllLoggers = BaseLogger | ConsoleLogger | SubConsoleLogger
+Loggers = BaseLogger | ConsoleLogger
+
+
+def get_logger(
+    console: bool = True,
+    file: bool = False,
+    queue_handler: bool = False,
+    buffering: bool = False,
+    **kwargs,
+) -> BaseLogger | ConsoleLogger | BufferError | FileLogger:
+    """Get a logger instance based on the specified parameters.
+
+    Args:
+        name (str): The name of the logger.
+        level (int): The logging level.
+        console (bool): Whether to enable console logging.
+        file (bool): Whether to enable file logging.
+        queue_handler (bool): Whether to use a queue handler.
+        buffering (bool): Whether to enable buffering.
+        style_disabled (bool): Whether to disable styling.
+        logger_mode (bool): Whether the logger is in logger mode.
+        **kwargs: Additional keyword arguments for customization.
+    Returns:
+        BaseLogger | ConsoleLogger | BufferLogger| FileLogger: An instance of the appropriate logger.
+    """
+    if (not console and not file) and buffering:
+        return BufferLogger(queue_handler=queue_handler, **kwargs)
+    elif (console and file) or (console and buffering):
+        return ConsoleLogger(queue_handler=queue_handler, buffering=buffering, **kwargs)
+    elif not console and not buffering and file:
+        return FileLogger(queue_handler=queue_handler, **kwargs)
+    else:
+        return BaseLogger(**kwargs)
+
+
+def get_console(namespace: str) -> tuple[BaseLogger, SubConsoleLogger]:
+    """
+    Get a console logger and a sub-logger for a specific namespace.
+
+    Args:
+        namespace (str): The namespace for the sub-logger.
+
+    Returns:
+        tuple[BaseLogger, SubConsoleLogger]: A tuple containing the base logger and the sub-logger.
+    """
+    base_logger = BaseLogger.get_instance(init=True)
+    sub_logger = SubConsoleLogger(logger=base_logger, namespace=namespace)
+    return base_logger, sub_logger
+
+
+def get_sub_logger(logger: BaseLogger | ConsoleLogger, namespace: str) -> SubConsoleLogger[BaseLogger | ConsoleLogger]:
+    """
+    Get a sub-logger for a specific namespace.
+
+    Args:
+        logger (BaseLogger): The parent logger.
+        namespace (str): The namespace for the sub-logger.
+
+    Returns:
+        SubConsoleLogger: A sub-logger instance.
+    """
+    if not isinstance(logger, (BaseLogger, ConsoleLogger)):
+        raise TypeError("Expected logger to be an instance of BaseLogger or ConsoleLogger")
+
+    return SubConsoleLogger(logger=logger, namespace=namespace)
