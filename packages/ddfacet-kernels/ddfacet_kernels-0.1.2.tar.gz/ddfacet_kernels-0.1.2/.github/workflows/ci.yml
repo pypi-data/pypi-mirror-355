@@ -1,0 +1,134 @@
+name: Ubuntu CI
+
+on:
+  pull_request:
+  push:
+    tags:
+      - '*'
+    branches:
+      - main
+  schedule:
+    - cron: '30 2 * * 1,4' # Every Monday and Thursday @ 2h30am UTC
+
+jobs:
+  check_skip:
+    runs-on: ubuntu-latest
+    if: |
+      !contains(format('{0} {1} {2}', github.event.head_commit.message, github.event.pull_request.title, github.event.pull_request.body), '[skip ci]')
+    steps:
+      - run: |
+          cat <<'MESSAGE'
+          github.event_name: ${{ toJson(github.event_name) }}
+          github.event:
+          ${{ toJson(github.event) }}
+          MESSAGE
+  test:
+    needs: check_skip
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.11", "3.13"]
+
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5.6.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install virtualenv
+        run: python -m pip install virtualenv
+
+      - name: Checkout ddfacet-kernels
+        uses: actions/checkout@v4
+
+      - name: Checkout the DDfacet
+        uses: actions/checkout@v4
+        with:
+          repository: saopicc/DDFacet
+          path: DDFacet
+
+      # Consider pinning the python version to 3.8
+      - name: Generate DDFacet test data
+        run: |
+          python -m virtualenv -p ${{ matrix.python-version }} ${{ runner.temp }}/ddf-venv
+          source ${{ runner.temp }}/ddf-venv/bin/activate
+          pip install -r gen-test-data/test-requirements.txt
+          PYTHONPATH=DDFacet python gen-test-data/gen_test_data.py \
+            -lm "[(0, 0), (1e-5, 2e-5)]" \
+            --npix 101,1025 \
+            --nw 5,11 \
+            -f "0.856e9" \
+            -s 15,21 \
+            -o 11,15,21
+          ls -lh *.xz
+          rm -rf DDFacet
+
+      - name: Install the project with testing support
+        run: python -m pip install -e .[tests]
+
+      - name: Run the test cases
+        run: py.test -s -vvv --ddf-test-data test-data.pickle.xz
+
+      - name: Install the project with testing and numba support
+        run: python -m pip install -e .[tests,numba]
+
+      - name: Run the test cases
+        run: py.test -s -vvv --ddf-test-data test-data.pickle.xz
+
+  test-pypi-publish:
+    needs: [test]
+    runs-on: ubuntu-latest
+    # Run on a push to a tag or main
+    if: >
+      github.event_name == 'push' && (startsWith(github.event.ref, 'refs/tags') ||
+      github.event.ref == 'refs/heads/main')
+    environment:
+      name: testpypi
+      url: https://pypi.org/p/ddfacet-kernels
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5.6.0
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install build
+        run: python -m pip install --upgrade build
+
+      - name: Build distributions
+        run: python -m build --sdist --wheel
+
+      - name: Publish package distributions to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+
+  pypi-publish:
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+    environment:
+      name: pypi
+      url: https://pypi.org/p/ddfacet-kernels
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5.6.0
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install build
+        run: python -m pip install --upgrade build
+
+      - name: Build distributions
+        run: python -m build --sdist --wheel
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
