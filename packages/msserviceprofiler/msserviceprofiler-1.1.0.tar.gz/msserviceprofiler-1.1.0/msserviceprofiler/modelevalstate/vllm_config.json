@@ -1,0 +1,46 @@
+{
+    "n_particles": 30,
+    "iters": 100,
+    "prefill_lam": 0,
+    "decode_lam": 0,
+    "prefill_constrain": 0.5,
+    "decode_constrain": 0.05,
+    "server": ["http://127.0.0.1:8080"],
+    "benchmark": {
+        "command": "/usr/bin/bash ./run_vllm_benchmark.sh"
+    },
+    "simulator": {
+        "process_name": "vllm",
+        "command": "/usr/bin/bash ./run_vllm.sh"
+    },
+    "target_field": [
+        {
+            "name": "MAX_NUM_BATCHED_TOKENS",
+            "config_position": "env",
+            "min": 32768,
+            "max": 65536,
+            "dtype": "int"
+        },
+        {
+            "name": "MAX_NUM_SEQS",
+            "config_position": "env",
+            "min": 32,
+            "max": 512,
+            "dtype": "int"
+        },
+        {
+            "name": "MAXCONCURRENCY",
+            "config_position": "env",
+            "min": 10,
+            "max": 1000,
+            "dtype": "int"
+        },
+        {
+            "name": "REQUESTRATE",
+            "config_position": "env",
+            "min": 10,
+            "max": 10000,
+            "dtype": "int"
+        }
+    ]
+}
