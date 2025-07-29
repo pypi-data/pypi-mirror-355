@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools==75.3.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "huckle"
+dynamic = ["version", "dependencies"]
+description = "A CLI, and python library, that can act as an impostor for any CLI expressed through hypertext command line interface (HCLI) semantics."
+readme = "README.rst"
+authors = [{name = "Jeff Michaud", email = "cometaj2@proton.me"}]
+license = { file = "LICENSE.txt" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+keywords = ["cli", "client", "hypermedia", "rest", "generic", "development"]
+
+[project.urls]
+Homepage = "https://github.com/cometaj2/huckle"
+
+[project.scripts]
+huckle = "huckle.__main__:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "huckle.package.__version__"}
+dependencies = {file = "requirements.txt"}
+
+[tool.setuptools]
+packages = ["huckle",
+            "huckle.data",
+            "huckle.auth"
+           ]
+package-data = {"huckle" = ["**/*"]}
+
+[tool.setuptools.exclude-package-data]
+"*" = ["*.pyc", "*.pyo", "*.pyd", "__pycache__"]
