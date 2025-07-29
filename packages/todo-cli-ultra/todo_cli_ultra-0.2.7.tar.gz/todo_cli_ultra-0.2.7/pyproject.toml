@@ -1,0 +1,20 @@
+[project]
+name = "todo-cli-ultra"
+version = "0.2.7"
+description = "CLI tool for todo app"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "typer>=0.16.0",
+]
+
+[project.scripts]
+todo-cli-ultra = "todo_cli_ultra.main:app"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["todo_cli_ultra"]
