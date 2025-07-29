@@ -1,0 +1,25 @@
+[project]
+name = "xuanxi-621-xhs-bailian-mcp-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "bs4>=0.0.2",
+    "dashscope>=1.23.4",
+    "dotenv>=0.9.9",
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.9.4",
+]
+
+[project.scripts]
+xhs-bailian-mcp-server = "xhs_bailian_mcp_server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# 在 pyproject.toml 文件中添加以下内容
+[tool.hatch.build.targets.wheel]
+# 这里的 "src/xhs_bailian_mcp_server" 是你实际的源代码文件夹路径
+packages = ["src/xhs_bailian_mcp_server"]
