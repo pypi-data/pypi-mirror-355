@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hyper-aidev" # <--- CHANGED TO 'hyper-aidev'
+version = "0.1.1"
+authors = [
+  { name="3rror_py", email="your.email@example.com" },
+]
+description = "A Python library to simplify model learning, training, and creation for powerful AI models across the ML lifecycle."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: General",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+keywords = [
+    "ai", "machine-learning", "deep-learning", "fine-tuning", "transformers",
+    "huggingface", "nlp", "model-training", "data-preprocessing", "feature-engineering",
+    "evaluation", "explainability", "model-deployment", "utility", "knowledge-distillation",
+    "hyperparameter-optimization", "model-compression", "quantization", "pruning",
+    "memory-efficiency", "debugging", "profiling", "checkpointing", "resource-monitoring",
+    "model-ensembling", "data-drift", "gradient-accumulation", "tensorboard", "callbacks",
+    "model-card", "experiment-management", "rule-based-ai", "adaptive-prediction",
+    "learning-rate-scheduling", "autopilot-ai", "auto-ml-dl", "resource-aware-training",
+    "data-profiling", "data-quality", "model-monitoring", "production-ml",
+    "human-in-the-loop", "active-learning", "feedback-systems", "iterative-ai",
+    "mlops",
+    # New keywords from f18.py to f25.py
+    "edge-ai", "onnx", "tflite", "openvino", "tensorrt", "coreml", "model-compilation",
+    "performance-estimation", "code-generation", "ml-workflow-automation",
+    "boilerplate-generation", "api-stub-generation", "ai-reasoning",
+    "causal-inference", "constraint-solving", "forward-chaining",
+    "nuance-understanding", "contextual-sentiment", "anomaly-detection",
+    "text-vectorization", "semantic-similarity", "intent-recognition",
+    "named-entity-recognition", "data-pipelines", "data-loading",
+    "dl-data-prep", "pytorch-dataloaders", "tensorflow-tf.data",
+    "reinforcement-learning", "continual-learning", "adaptive-ai",
+    "experience-replay", "catastrophic-forgetting", "model-reliability",
+    "uncertainty-quantification", "model-calibration", "out-of-distribution-detection",
+    "model-assurance",
+]
+
+dependencies = [
+    "transformers>=4.30.0",
+    "datasets>=2.0.0",
+    "torch>=1.10.0",
+    "accelerate>=0.20.0",
+    "scikit-learn>=1.0.0",
+    "numpy>=1.20.0",
+    "pandas>=1.0.0",
+    "matplotlib>=3.0.0",
+    "seaborn>=0.11.0",
+    "nltk>=3.6.0",
+    "optuna>=3.0.0",
+    "psutil>=5.0.0",
+    "scipy>=1.0.0", # Added for f20.py (wasserstein), f21.py (entropy), f25.py (entropy, mahalanobis)
+]
+
+[project.optional-dependencies]
+peft = ["peft>=0.3.0"]
+optimization = ["onnx>=1.10.0", "onnxruntime>=1.10.0"]
+automl = ["xgboost>=1.5.0"]
+xai = ["lime>=0.2.0", "shap>=0.40.0"]
+api-serving = ["fastapi>=0.80.0", "uvicorn[standard]>=0.17.0", "flask>=2.0.0", "pydantic>=1.9.0", "joblib>=1.0.0"] # Added pydantic, joblib
+dev = ["pytest>=7.0.0", "flake8>=4.0.0", "mypy>=0.900"]
+# New optional dependencies for recent modules (conceptual)
+tensorflow = ["tensorflow>=2.0.0"] # For f18.py TensorFlow Lite, f19.py TF/Keras boilerplate, f23.py TF pipelines
+torchvision = ["torchvision>=0.11.0"] # For f23.py image transforms
+openai-gym = ["gymnasium>=0.28.0"] # For f24.py RL environments (standardized envs)
