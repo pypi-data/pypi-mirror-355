@@ -1,0 +1,28 @@
+.slidecontainer { background: $panel; align: center middle;
+    &.leftright {width: 24; height: 1fr; background: $surface;}
+    &.top {width: 1fr; height: 6;}
+    &.bottom {
+        width: 60; height: 6;
+        border: outer $secondary; 
+    }
+}
+
+#right_slidecontainer {
+    border-left: heavy blue;        /* These demonstrate how it can handle borders */
+    border-right: heavy blue;       /* You can disable or change any of these. */
+    border-top: heavy blue;         /* It also supports dynamically modifying the CSS */
+    border-bottom: heavy blue;      /* through Python or dev mode hot reloading. */
+}   
+
+/* The CSS below is just styling for the demo app. Not used by the SlideContainers. */
+RichLog {width: 37; height: 12; border: tall $primary;}  
+.top_docked {dock: top;}         
+.bottom_docked {dock: bottom;}  
+.right_docked {dock: right;}   
+.w_1fr {width: 1fr;}
+#main_content {align: center middle; border: heavy red;}
+Static {width: auto;}
+Button { &:focus {
+    text-style: none;
+    background-tint: $foreground 10%;
+}}    
