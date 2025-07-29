@@ -1,0 +1,31 @@
+[project]
+name = "vibe-automation"
+version = "0.1.4"
+description = "Vibe Automation"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=0.53.0",
+    "playwright>=1.52.0",
+    "pydantic>=2.11.5",
+]
+keywords = ["automation", "workflow"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["va"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.12",
+    "pytest>=8.0.0",
+]
