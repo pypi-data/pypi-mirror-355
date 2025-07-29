@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="js/main.js" type="module" defer></script>
+        <title></title>
+        <link rel="stylesheet"  type="text/css"  href="css/style.css">
+        <link href="libs/bootstrap5.3.5/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body> 
+        <nav class="navbar bg-dark border-bottom bg-body-tertiary" data-bs-theme="dark">
+            <div class="d-flex navbar-expand container-fluid">
+                <img src="logo.png" style="height: 3em;" alt="logo">
+                <a href="/" class="navbar-brand mx-2">Vizitig</a>
+                <a class="navbar-link" id="refresh"></a>
+                <form class="navbar-nav ms-auto" id="save_state">
+                        <input type="text" name="save" placeholder="Name of current viz" class="form-control form-control-dark">
+                        <input type="submit" class="btn btn-primary mx-2" value="Save">
+                        </button>
+                </form>
+                <ul class="navbar-nav ms-auto"> 
+                    <li class="navbar-item">
+                        <span class="navbar-text mx-2"> Version: <span id="version"></span></span>
+                    </li>
+                    <li class="navbar-item">
+                        <a href="https://gitlab.inria.fr/pydisk/examples/vizitig" class="navbar-link mx-2">git</a>
+                    </li>
+                    <li class="navbar-item">
+                        <span id="fetched_nodes_badge" class="badge text-bg-secondary">
+                            Loaded nodes:
+                            <span id="fetched_nodes">0</span>/<span id="total_size"></span>
+                            (<span id="discovered">0</span> with neighbors)
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-dark w-100 p-1 d-flex bg-body-tertiary" id="navbarToggleExternalContent">
+                <span class="dropdown mx-2 navbar-item">
+                  <a class="dropdown-toggle navbar-brand" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Select a visualisation</a>
+                  <ul class="dropdown-menu" id="vizlist_holder">
+                  </ul>
+                </span>
+ 
+                <form id="fetch_node" class="w-75 mx-2 d-flex">
+                    <textarea id="queryField" name="query" placeholder="Query (e.g. NodeId(123) and Color(blue))" rows="1" class="form-control form-control-dark me-2 w-75" required></textarea>
+                    <div class="spinner-border text-success d-none mx-auto" role="status" id="loading">
+                    </div>
+                    <div class="btn-group" style="max-height: 3em;" id="main_ctl">
+                        <button class="btn btn-success btn-sm" type="submit" name="action" value="fetch">Fetch nodes</button>
+                        <button id="addasfilter" class="btn btn-success btn-sm" data-bs-toggle="collapse" data-bs-target="#filternameinput"  name="action" value="filter">Add as filter</button>
+                        <button class="btn btn-success btn-sm" data-bs-toggle="collapse" data-bs-target="#expand_param"  name="action" value="expand"> Expand </button>
+                    </div>
+                </form>
+
+                <div class="btn-group" style="max-height: 3em">
+                    <button id="metadata_manager_button" class="btn btn-primary" style="max-height:3em;" type="button">Metadata</button>
+                    <button id="filter_manager_button" class="btn btn-primary" style="max-height:3em;" type="button">Filters</button>
+                    <button id="export_button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#exportmanagerholder" style="max-height:3em;" type="button">Export</button>
+                </div>
+
+            </div>
+            <div class="navbar w-100 p-1 bg-dark bg-body-tertiary container-fluid" data-bs-theme="dark">
+                <div id="expand_param" class="collapse col">
+                    <div class="row container-fluid">
+                        <div class="col-2 form-floating p-0 mx-2">
+                            <input type="number" id="expand_nb" value=1 min=1  class="form-control form-control-dark">
+                            <label for="#expand_nb" class="form-label"> Max nodes</label>
+                         </div>
+
+                          <!-- Ajouter -->
+
+                         <div class="col-2 p-0 mx-2 my-auto">
+                            <div class="form-check">
+                                <input class="form-check-input form-control-dark" type="checkbox" value="" id="expand_selection_only">
+                                <label class="form-check-label text-white-50" for="expand-selection-only">Expand selected nodes</label>
+                            </div>
+                         </div>
+
+                         <div class="col-2 p-0 mx-2 my-auto">
+                            <select class="form-select" id="select_expand_filter">
+                                <!-- Here we add all the filters as options in the ui.js-->
+                            </select>
+                         </div>
+
+                        <button id="expand_button" type="button" class="col-1 my-2 btn btn-primary">Expand</button>
+                    </div>
+                </div>
+                <div id="filternameinput" class="collapse col">
+                    <div class="row container-fluid">
+                        <input type="text" id="filterName" placeholder="FilterName" class="col mx-2 form-control form-control-dark">
+                        <button id="add_filter_button" type="button" class="col-1 btn btn-primary">Add</button>
+                    </div>
+                </div>
+                <div id="exportmanagerholder" class="col collapse">
+                    <form id="export_form" class="form row">
+                        <div class="row container-fluid">
+                            <div class="col-2">
+                                <div class="form-floating">
+                                    <select id="export_format_list" class="form-select" name="format"></select>
+                                    <label for="#export_format_list" class="form-label"> Export format</label>
+                                </div>
+                            </div> 
+                            <div class="col-2">
+                                <div class="form-floating">
+                                    <select id="export_filter_list" class="form-select" name="filter"></select>
+                                    <label for="#export_filter_list" class="form-label"> Filter</label>
+                                </div> 
+                            </div>
+                            <div class="col d-flex">
+                                <input type="submit" class="btn btn-primary me-auto my-auto">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            
+
+        </nav>
+
+        <main class="container-fluid py-2 mx-0 px-0">
+            <div class="row w-100 mx-0 px-1 gx-3" id="main">
+            </div>
+        </main>
+    </body>
+    <script src="libs/bootstrap5.3.5/bootstrap.bundle.min.js"></script>
+</html>
