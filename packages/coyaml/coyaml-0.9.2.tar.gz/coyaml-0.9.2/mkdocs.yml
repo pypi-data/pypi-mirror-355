@@ -1,0 +1,23 @@
+site_name: Coyaml Docs
+docs_dir: docs
+use_directory_urls: false
+theme:
+  name: material
+  font:
+    text: Roboto
+    code: Roboto Mono
+plugins:
+  - search
+  - mkdocstrings
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.highlight
+extra_css:
+  - assets/extra.css
+
+nav:
+  - About Coyaml: index.md
+  - Installation: 1_installation.md
+  - Quickstart: 2_quickstart.md
+  - API Reference: api/modules.md
+  - Changelog: CHANGELOG.md

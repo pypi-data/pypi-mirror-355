@@ -1,0 +1,50 @@
+name: Tests and linting
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: |
+          uv sync
+
+      - name: Run pre-commit
+        run: |
+          uv run pre-commit run --all-files
+
+      - name: Run tests
+        run: |
+          uv run pytest --maxfail=1 --disable-warnings -q
+
+      - name: Run tests and collect lcov
+        run: |
+          uv run pytest --cov=coyaml --cov-report=lcov:coverage/lcov.info
+
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          path-to-lcov: ./coverage/lcov.info
+
