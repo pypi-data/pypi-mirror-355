@@ -1,0 +1,32 @@
+[project]
+name = "nocp"
+version = "0.2.0"
+description = "Navidrome On Console Player"
+readme = "README.md"
+authors = [{ name="fraoustin", email="fraoustin@gmail.com" }]
+license = "MIT AND (Apache-2.0 OR BSD-2-Clause)"
+requires-python = ">=3.7"
+dependencies = [
+    "python-vlc",
+    "urwid",
+    "click",
+    "requests"
+]
+
+[project.urls]
+Homepage = "https://github.com/fraoustin/nocp"
+Repository = "https://github.com/fraoustin/nocp"
+Issues = "https://github.com/fraoustin/nocp/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+nocp = "nocp.__main__:main"
+
+[tool.setuptools.packages.find]
+exclude = ["locales", "locales.*"]
+
+[tool.setuptools.package-data]
+nocp = ["locales/*/LC_MESSAGES/*.mo"]
