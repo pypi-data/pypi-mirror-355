@@ -1,0 +1,144 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "AFL/double_agent/_version.py"
+
+[project]
+name = "AFL-agent"
+dynamic = ["version"]
+description = "Agent code for the Autonomous Formulation Lab"
+readme = "README.md"
+authors = [
+    { name = "Tyler B. Martin", email = "tyler.martin@nist.gov" },
+    { name = "Peter A. Beaucage" },
+    { name = "Duncan R. Sutherland" }
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "numpy",
+    "xarray",
+    "tqdm",
+    "netcdf4",
+    "pandas",
+    "scipy",
+    "matplotlib",
+    "plotly",
+    "kaleido",
+    "seaborn",
+    "pint",
+    "periodictable",
+    "pillow",
+    "scikit-image",
+    "scikit-learn",
+    "bottleneck",
+    "shapely",
+    "sympy",
+    "tiled[all]",
+    "sasmodels",
+    "sasdata",
+    "bumps",
+    "mpltern",
+    "anywidget",
+    "zeroconf",
+    "pyepics"
+]
+
+[project.optional-dependencies]
+jupyter = [
+    "jupyter",
+    "jupyterlab",
+    "ipywidgets",
+    "ipympl",
+    "nodejs",
+]
+
+graph = [
+    "pygraphviz"
+]
+
+tensorflow = [
+    "tensorflow>=2.7",
+    "gpflow",
+]
+
+pytorch = [
+    "torch",
+    "torchvision",
+]
+
+automation = [
+    "flask<2.3",  # before_first request is removed in 2.3
+    "flask-jwt-extended>=4.0",
+    "flask_cors",
+    "watchdog",
+    "markupsafe",
+    "pyserial",
+    "bokeh",
+    "requests",
+]
+
+dev = [
+    "black",
+    "isort",
+    "mypy",
+    "pytest",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinxcontrib-apidoc",
+    "sphinxcontrib-napoleon",
+    "sphinx-copybutton",
+    "pydata-sphinx-theme",
+    "sphinx-autosummary-accessors",
+]
+
+all = [
+    "jupyter",
+    "jupyterlab", 
+    "ipywidgets",
+    "ipympl",
+    "nodejs",
+    "tensorflow>=2.7",
+    "gpflow",
+    "torch",
+    "torchvision",
+    "flask<2.3",
+    "flask-jwt-extended>=4.0", 
+    "flask_cors",
+    "watchdog",
+    "markupsafe",
+    "pyserial",
+    "bokeh",
+    "requests",
+    "black",
+    "isort",
+    "mypy",
+    "pytest",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinxcontrib-apidoc",
+    "sphinxcontrib-napoleon",
+    "pydata-sphinx-theme",
+    "sphinx-copybutton",
+    "sphinx-autosummary-accessors",
+]
+
+[tool.hatch.build]
+packages = ["AFL"]
+include-package-data = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["AFL"]
+
+[tool.hatch.build.targets.sdist]
+packages = ["AFL"]

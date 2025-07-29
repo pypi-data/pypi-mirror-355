@@ -1,0 +1,230 @@
+Metadata-Version: 2.4
+Name: AFL-agent
+Version: 1.3.1
+Summary: Agent code for the Autonomous Formulation Lab
+Author: Peter A. Beaucage, Duncan R. Sutherland
+Author-email: "Tyler B. Martin" <tyler.martin@nist.gov>
+License: NIST License
+        
+        This software was developed by employees of the National Institute of Standards
+        and Technology (NIST), an agency of the Federal Government and is being made
+        available as a public service. Pursuant to title 17 United States Code Section
+        105, works of NIST employees are not subject to copyright protection in the
+        United States.  This software may be subject to foreign copyright.  Permission
+        in the United States and in foreign countries, to the extent that NIST may hold
+        copyright, to use, copy, modify, create derivative works, and distribute this
+        software and its documentation without fee is hereby granted on a non-exclusive
+        basis, provided that this notice and disclaimer of warranty appears in all
+        copies. 
+        
+        THE SOFTWARE IS PROVIDED 'AS IS' WITHOUT ANY WARRANTY OF ANY KIND, EITHER
+        EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY
+        THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY IMPLIED WARRANTIES OF
+        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND FREEDOM FROM
+        INFRINGEMENT, AND ANY WARRANTY THAT THE DOCUMENTATION WILL CONFORM TO THE
+        SOFTWARE, OR ANY WARRANTY THAT THE SOFTWARE WILL BE ERROR FREE.  IN NO EVENT
+        SHALL NIST BE LIABLE FOR ANY DAMAGES, INCLUDING, BUT NOT LIMITED TO, DIRECT,
+        INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES, ARISING OUT OF, RESULTING FROM, OR
+        IN ANY WAY CONNECTED WITH THIS SOFTWARE, WHETHER OR NOT BASED UPON WARRANTY,
+        CONTRACT, TORT, OR OTHERWISE, WHETHER OR NOT INJURY WAS SUSTAINED BY PERSONS OR
+        PROPERTY OR OTHERWISE, AND WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT
+        OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
+License-File: LICENSE
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.11
+Requires-Dist: anywidget
+Requires-Dist: bottleneck
+Requires-Dist: bumps
+Requires-Dist: kaleido
+Requires-Dist: matplotlib
+Requires-Dist: mpltern
+Requires-Dist: netcdf4
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: periodictable
+Requires-Dist: pillow
+Requires-Dist: pint
+Requires-Dist: plotly
+Requires-Dist: pyepics
+Requires-Dist: sasdata
+Requires-Dist: sasmodels
+Requires-Dist: scikit-image
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: seaborn
+Requires-Dist: shapely
+Requires-Dist: sympy
+Requires-Dist: tiled[all]
+Requires-Dist: tqdm
+Requires-Dist: xarray
+Requires-Dist: zeroconf
+Provides-Extra: all
+Requires-Dist: black; extra == 'all'
+Requires-Dist: bokeh; extra == 'all'
+Requires-Dist: flask-cors; extra == 'all'
+Requires-Dist: flask-jwt-extended>=4.0; extra == 'all'
+Requires-Dist: flask<2.3; extra == 'all'
+Requires-Dist: gpflow; extra == 'all'
+Requires-Dist: ipympl; extra == 'all'
+Requires-Dist: ipywidgets; extra == 'all'
+Requires-Dist: isort; extra == 'all'
+Requires-Dist: jupyter; extra == 'all'
+Requires-Dist: jupyterlab; extra == 'all'
+Requires-Dist: markupsafe; extra == 'all'
+Requires-Dist: mypy; extra == 'all'
+Requires-Dist: nodejs; extra == 'all'
+Requires-Dist: pydata-sphinx-theme; extra == 'all'
+Requires-Dist: pyserial; extra == 'all'
+Requires-Dist: pytest; extra == 'all'
+Requires-Dist: requests; extra == 'all'
+Requires-Dist: sphinx; extra == 'all'
+Requires-Dist: sphinx-autosummary-accessors; extra == 'all'
+Requires-Dist: sphinx-copybutton; extra == 'all'
+Requires-Dist: sphinx-rtd-theme; extra == 'all'
+Requires-Dist: sphinxcontrib-apidoc; extra == 'all'
+Requires-Dist: sphinxcontrib-napoleon; extra == 'all'
+Requires-Dist: tensorflow>=2.7; extra == 'all'
+Requires-Dist: torch; extra == 'all'
+Requires-Dist: torchvision; extra == 'all'
+Requires-Dist: watchdog; extra == 'all'
+Provides-Extra: automation
+Requires-Dist: bokeh; extra == 'automation'
+Requires-Dist: flask-cors; extra == 'automation'
+Requires-Dist: flask-jwt-extended>=4.0; extra == 'automation'
+Requires-Dist: flask<2.3; extra == 'automation'
+Requires-Dist: markupsafe; extra == 'automation'
+Requires-Dist: pyserial; extra == 'automation'
+Requires-Dist: requests; extra == 'automation'
+Requires-Dist: watchdog; extra == 'automation'
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: isort; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: pydata-sphinx-theme; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: sphinx; extra == 'dev'
+Requires-Dist: sphinx-autosummary-accessors; extra == 'dev'
+Requires-Dist: sphinx-copybutton; extra == 'dev'
+Requires-Dist: sphinx-rtd-theme; extra == 'dev'
+Requires-Dist: sphinxcontrib-apidoc; extra == 'dev'
+Requires-Dist: sphinxcontrib-napoleon; extra == 'dev'
+Provides-Extra: graph
+Requires-Dist: pygraphviz; extra == 'graph'
+Provides-Extra: jupyter
+Requires-Dist: ipympl; extra == 'jupyter'
+Requires-Dist: ipywidgets; extra == 'jupyter'
+Requires-Dist: jupyter; extra == 'jupyter'
+Requires-Dist: jupyterlab; extra == 'jupyter'
+Requires-Dist: nodejs; extra == 'jupyter'
+Provides-Extra: pytorch
+Requires-Dist: torch; extra == 'pytorch'
+Requires-Dist: torchvision; extra == 'pytorch'
+Provides-Extra: tensorflow
+Requires-Dist: gpflow; extra == 'tensorflow'
+Requires-Dist: tensorflow>=2.7; extra == 'tensorflow'
+Description-Content-Type: text/markdown
+
+# AFL-agent: Autonomous Active Learning Agent for Material Science
+
+[![Documentation](https://img.shields.io/badge/docs-pages.nist.gov-blue)](https://pages.nist.gov/AFL-agent/en/latest/index.html) 
+
+AFL-agent is a Python library that implements the autonomous active learning agent described in the manuscript *"Autonomous Small-Angle Scattering for Accelerated Soft Material Formulation Optimization"*. The library is designed to autonomously guide experimental measurement campaigns to efficiently map phase boundaries in soft material formulations using advanced machine learning techniques.
+
+## Overview
+The AFL-agent library offers robust tools for building autonomous active learning agents tailored for material science applications. It integrates machine learning techniques with experimental design strategies to optimize experimental campaigns and efficiently map phase boundaries and optimize material properties in soft material formulations.
+
+**Key Features:**
+
+- Library of machine learning operations that can be composed into pipelines
+- Pipelines are modular, visualizable, serializable, and self-documenting
+- Trivial support for multimodal data processing
+- All intermediate pipeline operations are stored in a xarray-based data model
+- Rich visualization tools for analyzing calculations
+
+## Installation
+
+```
+pip install git+https://github.com/usnistgov/afl-agent
+```
+
+## Quick Start
+
+Below is an example showcasing how to build a pipeline for choosing a sample composition
+
+
+```python
+from AFL.double_agent import *
+import numpy as np
+import xarray as xr
+
+with Pipeline() as pipeline:
+
+    SavgolFilter(
+        input_variable='measurement', 
+        output_variable='derivative', 
+        dim='x', 
+        derivative=1
+        )
+
+    Similarity(
+        input_variable='derivative', 
+        output_variable='similarity', 
+        params={'metric': 'cosine'}
+        )
+
+    SpectralClustering(
+        input_variable='similarity',
+        output_variable='labels',
+        )
+
+    GaussianProcessClassifier(
+        feature_input_variable='composition',
+        predictor_input_variable='labels',
+        output_prefix='extrap',
+    )
+
+    MaxValueAF(
+        input_variable='extrap_variance',
+        output_variable='next_sample'
+    )
+
+
+
+# Generate synthetic data
+n_samples = 10
+n_points = 100
+x = np.linspace(0, 10, n_points)
+measurements = ... # data from your measurement
+compositions = ... # composition of your samples
+
+# Create dataset
+ds = xr.Dataset(
+    data_vars={
+        'measurement': (['sample', 'x'], measurements),
+        'composition': (['sample', 'components'], compositions)
+    },
+    coords={
+        'x': x,
+        'components': ['A', 'B', 'C']
+    }
+)
+
+# Run the pipeline
+ds_out = pipeline.calculate(ds)
+
+#ds_out contains the following variables:
+# - measurement: the original measurement data
+# - derivative: the first derivative of the measurement data
+# - similarity: the similarity between the samples
+# - labels: the labels assigned to the samples
+# - extrap_variance: the variance of the Gaussian process prediction
+# - next_sample: the next sample to measure
+```
+
+## Citation
+
+If you use AFL-agent in your research, please cite the manuscript:
+
+*"Autonomous Small-Angle Scattering for Accelerated Soft Material Formulation Optimization"* (under review)
+
