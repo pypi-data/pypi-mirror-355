@@ -1,0 +1,46 @@
+Metadata-Version: 2.4
+Name: poppy-inference
+Version: 0.1.0a1
+Summary: Bayesian Posterior Post-processing in Python
+Author-email: "Michael J. Williams" <michaeljw1@googlemail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/mj-will/poppy
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: array-api-compat
+Requires-Dist: wrapt
+Requires-Dist: h5py
+Provides-Extra: jax
+Requires-Dist: jax; extra == "jax"
+Requires-Dist: jaxlib; extra == "jax"
+Requires-Dist: flowjax; extra == "jax"
+Provides-Extra: torch
+Requires-Dist: torch; extra == "torch"
+Requires-Dist: zuko; extra == "torch"
+Provides-Extra: minipcn
+Requires-Dist: minipcn; extra == "minipcn"
+Provides-Extra: emcee
+Requires-Dist: emcee; extra == "emcee"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-requires; extra == "test"
+Dynamic: license-file
+
+# poppy
+
+Posterior post-processing in python.
+
+## Installation
+
+Poppy can be installed from PyPI using `pip`
+
+```
+pip install poppy-inference
+```
+
+**Important:** the name of `poppy` on PyPI is `poppy-inference` but once installed
+the package can be imported and used as `poppy`.
