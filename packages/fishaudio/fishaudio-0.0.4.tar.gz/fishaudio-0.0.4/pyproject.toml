@@ -1,0 +1,17 @@
+[build-system]
+requires = ["flit_core"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "fishaudio"
+authors = [{name = "calcuis", email = "info@calcu.io"}]
+description = "text-to-speech synthesis 2"
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version"]
+dependencies = ["loguru", "lightning", "hydra-core", "kui", "loralib", "tiktoken"]
+
+[project.urls]
+GitHub = "https://github.com/calcuis/text-to-speech-synthesis-2"
+Issues = "https://github.com/calcuis/text-to-speech-synthesis-2/issues"
