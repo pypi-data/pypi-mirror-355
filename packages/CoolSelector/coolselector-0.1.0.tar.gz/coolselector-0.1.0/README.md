@@ -1,0 +1,2 @@
+# CoolSelector
+CoolSelector python library
