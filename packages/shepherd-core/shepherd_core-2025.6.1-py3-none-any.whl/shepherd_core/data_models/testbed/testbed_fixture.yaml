@@ -1,0 +1,36 @@
+- datatype: testbed
+  parameters:
+    id: 1337
+    name: shepherd_tud_nes
+    description: "Shepherd Testbed of the NES Lab Group at TU Dresden, Germany"
+    shared_storage: true
+    data_on_server: /var/shepherd/
+    data_on_observer: /var/shepherd/
+    # ./content as read-only for the sheep, shared with server
+    # ./experiments on the sheep map to ./experiments/sheep##/ on the server
+    observers:
+      - name: sheep01
+      - name: sheep02
+#      - name: sheep03
+      - name: sheep04
+      - name: sheep05
+      - name: sheep06
+      - name: sheep07
+#      - name: sheep08
+      - name: sheep09
+      - name: sheep10
+#      - name: sheep11
+      - name: sheep12
+      - name: sheep13
+      - name: sheep14
+
+- datatype: testbed
+  parameters:
+    id: 42
+    name: unit_testing_testbed
+    description: "Artificial Testbed used in unit testing"
+    shared_storage: true
+    data_on_server: /tmp/
+    data_on_observer: /tmp/
+    observers:
+      - name: unit_testing_sheep
