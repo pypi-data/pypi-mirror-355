@@ -1,0 +1,137 @@
+Metadata-Version: 2.3
+Name: eta-ctrl
+Version: 0.1.0
+Summary: A framework for researching energy optimization of factory operations.
+License: BSD-2-Clause
+Keywords: rolling horizon optimization,simulators,industrial energy optimization
+Author: Technical University of Darmstadt, Institute for Production Management, Technology and Machine Tools (PTW)
+Author-email: info@ptw.tu-darmstadt.de
+Maintainer: Andreas Clement
+Maintainer-email: A.Clement@PTW.TU-Darmstadt.de
+Requires-Python: >=3.10.16,<3.13
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Manufacturing
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Provides-Extra: docs
+Provides-Extra: examples
+Requires-Dist: attrs (>=25.3.0,<26.0.0)
+Requires-Dist: eta-nexus (>=0.0.1,<0.1.0)
+Requires-Dist: fmpy (>=0.3.5,<0.4.0)
+Requires-Dist: gymnasium (==1.0.0)
+Requires-Dist: julia (>=0.6.2,<0.7.0)
+Requires-Dist: keyboard (>=0.13.5,<0.14.0) ; extra == "examples"
+Requires-Dist: matplotlib (>=3.9.2,<3.10.0) ; extra == "examples"
+Requires-Dist: numpy (>=2.0.0,<3.0.0)
+Requires-Dist: onnxruntime (==1.21.0) ; extra == "examples"
+Requires-Dist: pandas (>=2.2.2,<2.3.0)
+Requires-Dist: pygame (>=2.5.2,<2.6.0) ; extra == "examples"
+Requires-Dist: pyglet (<2.0.0) ; extra == "examples"
+Requires-Dist: pyomo (>=6.9.2,<6.10.0)
+Requires-Dist: python-dateutil (>=2.8.2,<3.0.0)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: sphinx (>=7.1.2,<8.0.0) ; extra == "docs"
+Requires-Dist: sphinx-copybutton (>=0.5.2,<1.0.0) ; extra == "docs"
+Requires-Dist: sphinx-rtd-theme (>=1.3.0,<2.0.0) ; extra == "docs"
+Requires-Dist: stable-baselines3 (>=2.4.0,<3.0.0)
+Requires-Dist: tensorboard (>=2.14.0,<2.15.0)
+Requires-Dist: toml (>=0.10.2,<0.11.0)
+Requires-Dist: torch (>=2.4.0,<2.5.0)
+Project-URL: Documentation, https://eta-ctrl.readthedocs.io/
+Project-URL: Homepage, https://www.ptw.tu-darmstadt.de
+Project-URL: Issues, https://git.ptw.maschinenbau.tu-darmstadt.de/eta-fabrik/public/eta-ctrl/-/issues
+Project-URL: Repository, https://github.com/PTW-TUDa/eta_ctrl/
+Description-Content-Type: text/x-rst
+
+ETA Ctrl Framework
+######################
+
+The `ETA Ctrl` framework provides a standardized interface for developing digital twins of factories or machines in a factory. It is designed to facilitate rolling horizon optimization, simulation, and interaction with factory systems. The framework is based on the Gymnasium environment and integrates seamlessly with tools like FMUs, Julia, Pyomo models, and live connections to real-world assets.
+
+Documentation
+*****************
+
+Full Documentation can be found on the
+`Documentation Page <https://eta-ctrl.readthedocs.io/>`_. (TODO: Make this a link as soon as first docs version is released.)
+
+.. warning::
+    This is beta software. APIs and functionality might change without prior notice. Please fix the version you
+    are using in your requirements to ensure your software will not be broken by changes in *ETA Ctrl*.
+
+Utilities Overview
+********************
+
+Optimization Utilities
+==========================
+
+- **`ETA Ctrl`**: Central controller for managing optimization workflows, including learning and execution processes.
+
+Configuration Utilities
+==========================
+
+- **`ConfigOpt`**: Represents the configuration for an optimization run.
+- **`ConfigOptSetup`**: Defines setup configurations for optimization runs.
+- **`ConfigOptSettings`**: Represents settings for optimization runs.
+- **`ConfigOptRun`**: Handles paths and metadata for optimization runs.
+
+Environment Utilities
+==========================
+
+- **Base Classes**:
+
+  - **`BaseEnv`**: Abstract base class for creating custom environments.
+  - **`BaseEnvLive`**: Extends `BaseEnv` for live environments interacting with real-world systems.
+  - **`BaseEnvMPC`**: Extends `BaseEnv` for environments using Model Predictive Control (MPC).
+  - **`BaseEnvSim`**: Extends `BaseEnv` for environments using FMU-based simulations.
+  - **`JuliaEnv`**: Environment class for interacting with Julia-based simulation models.
+
+- **Vectorization**:
+
+  - **`NoVecEnv`**: Custom vectorizer for environments that handle multithreading internally.
+
+Simulation Utilities
+==========================
+
+- **`FMUSimulator`**: Provides functionality for simulating FMUs (Functional Mock-up Units).
+
+Time Series Utilities
+==========================
+
+- **`scenario_from_csv`**: Imports and processes scenario data from CSV files.
+- **`df_from_csv`**: Reads time series data from a CSV file and returns it as a pandas DataFrame.
+- **`df_resample`**: Resamples the time index of a DataFrame to a specified frequency.
+- **`df_interpolate`**: Interpolates missing values in a DataFrame with a specified frequency.
+
+State Management Utilities
+==========================
+
+- **`StateVar`**: Represents a single variable in the state of an environment.
+- **`StateConfig`**: Configures the action and observation spaces based on `StateVar` instances.
+
+Contributing
+*****************
+
+Please read the `development guide <https://eta-utility.readthedocs.io/en/main/guide/development.html>`_ before starting development on *ETA Ctrl*
+
+
+Citing this Project / Authors
+******************************
+
+See `AUTHORS.rst` for a full list of contributors.
+
+Please cite this repository as:
+
+  .. code-block::
+
+    Grosch, B., Ranzau, H., Dietrich, B., Kohne, T., Fuhrländer-Völker, D., Sossenheimer, J., Lindner, M., Weigold, M.
+    A framework for researching energy optimization of factory operations.
+    Energy Inform 5 (Suppl 1), 29 (2022). https://doi.org/10.1186/s42162-022-00207-6
+
