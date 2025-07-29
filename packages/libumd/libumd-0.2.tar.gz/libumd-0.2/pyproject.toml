@@ -1,0 +1,28 @@
+[project]
+name = "libumd"
+version = "0.2"
+description = "A simple on-runtime module loader"
+readme = "README.md"
+#requires_python = ">=3.7"
+license = { text = "MIT" }
+authors = [
+  { name = "juanvel400", email = "juanvel400@proton.me" }
+]
+keywords = ["module-loader", "plugin", "runtime", "manifest", "dynamic-modules"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/juanvel4000/libumd"
+Repository = "https://github.com/juanvel4000/libumd"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools.packages.find]
+exclude = ["greeter"]
+
