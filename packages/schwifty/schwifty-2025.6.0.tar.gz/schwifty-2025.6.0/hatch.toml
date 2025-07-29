@@ -1,0 +1,40 @@
+[envs.default]
+installer = "uv"
+features = ["pydantic"]
+
+[envs.hatch-static-analysis]
+dependencies = ["ruff==0.6.*"]
+config-path = ".ruff_defaults.toml"
+
+[envs.hatch-test]
+extra-dependencies = [
+  "freezegun==1.5.*",
+]
+features = ["pydantic"]
+
+[envs.coverage]
+detached = true
+dependencies = [
+  "coverage[toml]>=6.2",
+  "lxml",
+]
+
+[envs.coverage.scripts]
+combine = "coverage combine {args}"
+xml = "coverage xml"
+
+[envs.types]
+extra-dependencies = [
+  "mypy==1.11.*",
+  "pytest==8.2.*",
+]
+features = ["pydantic"]
+scripts = { check = "mypy {args:schwifty tests}" }
+
+[envs.docs]
+extra-dependencies = [
+  "doc8==1.1.*",
+  "pygments==2.16.*",
+]
+scripts = { check = "doc8 docs/source" }
+
