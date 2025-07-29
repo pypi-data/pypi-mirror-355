@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: kg_utils_v0.1.0
+Version: 2025.6.13
+Summary: GPT Utils
+Author: VCA
+Author-email: tq.vca@list.alibaba-inc.com
+License: Apache License 2.0
+Keywords: LLM GPT Utils
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/markdown
+Requires-Dist: pytest
+Requires-Dist: yapf==0.31.0
+Requires-Dist: typing_extensions
+Requires-Dist: pyyaml
+Requires-Dist: jsonlines
+Requires-Dist: json5
+Requires-Dist: ijson
+Requires-Dist: orjson
+Requires-Dist: munch
+Requires-Dist: zstandard
+Requires-Dist: joblib
+Requires-Dist: msgpack
+Requires-Dist: python-ulid
+Requires-Dist: pandas
+Requires-Dist: numpy<2,>=1.19
+Requires-Dist: scipy
+Requires-Dist: boto3
+Requires-Dist: minio
+Requires-Dist: tiktoken
+Requires-Dist: pyarrow
+Requires-Dist: pypandoc
+Requires-Dist: tqdm
+Requires-Dist: alive_progress
+Requires-Dist: pyahocorasick
+Requires-Dist: openai>=1.47.1
+Requires-Dist: aiohttp
+Requires-Dist: tldextract
+Requires-Dist: langdetect
+Requires-Dist: nltk
+Requires-Dist: spacy==3.8.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: summary
+
+# GPT 工具代码
+## 文档
+[GPT-Utils 钉钉知识库](https://alidocs.dingtalk.com/i/nodes/a9E05BDRVQRkezKGC9eLaq9QJ63zgkYA)
+
+## 安装
+环境要求 python>=3.10
+```
+conda create -n py310_gpt python=3.10
+```
+
+安装代码库
+```
+pip install -e .
+```
+
+额外配置 setup.sh
+
+## 更新日志
+
+### 2024.08
+- 添加了 `datatrove` 的 reader writer
+
+
+https://help.aliyun.com/zh/model-studio/developer-reference/embedding-interfaces-compatible-with-openai?spm=a2c4g.11186623.help-menu-2400256.d_3_9_4.49cd19ceVYVJf1&scm=20140722.H_2846066._.OR_help-V_1
