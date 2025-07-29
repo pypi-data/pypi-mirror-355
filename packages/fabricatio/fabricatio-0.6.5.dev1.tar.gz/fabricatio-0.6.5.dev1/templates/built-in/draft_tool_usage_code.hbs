@@ -1,0 +1,37 @@
+## Available Resources
+
+**Dependencies:**
+{{deps}}
+
+**Available Data:**
+{{#each data }}
+{{ block this @key }}
+{{/each }}
+
+**Available Tools:**
+{{ls tools}}
+
+**Task Briefing:**
+{{ task }}
+
+
+**ResultCollector:**
+{{collector_help}}
+
+
+## Constrain
+
+```python
+{{fn_header}}
+
+    # -----
+
+    #TODO: fill in the function body that can finish the task, submit all required result to the collector.
+
+    # -----
+
+    return None
+
+```
+Your response SHALL only contain the body of the function, no signature or return statement.
+Your code will be placed between `# -----`
