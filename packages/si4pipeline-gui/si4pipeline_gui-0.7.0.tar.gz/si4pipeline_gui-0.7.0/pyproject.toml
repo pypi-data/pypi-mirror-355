@@ -1,0 +1,42 @@
+[build-system]
+requires      = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name            = "si4pipeline-gui"
+version         = "0.7.0"
+description     = "A Streamlit-based GUI for statistical test for feature selection pipeline via selective inference"
+readme          =  { file = "README.md", content-type = "text/markdown" }
+authors         = [{ name = "Takeuchi Lab"}]
+maintainers     = [{ name = "Shuichi NISHINO", email = "nishino.shuichi.nagoyaml@gmail.com" }]
+license         = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies    = [
+  "si4pipeline==1.0.1",
+  "streamlit>=1.45.0",
+  "barfi==1.1.0",
+]
+
+[project.urls]
+repository = "https://github.com/Takeuchi-Lab-SI-Group/si4pipeline-gui"
+
+[project.scripts]
+si4pipeline-gui = "si4pipeline_gui.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"si4pipeline_gui" = [
+  "dataset/*",
+  "schemas.barfi"
+]
+
+[tool.setuptools.exclude-package-data]
+"si4pipeline_gui" = ["demo_csv/**"]
+
