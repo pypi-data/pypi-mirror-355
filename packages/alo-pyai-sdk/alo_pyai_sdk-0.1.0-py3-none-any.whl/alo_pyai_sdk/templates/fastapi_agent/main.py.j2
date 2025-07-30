@@ -1,0 +1,151 @@
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
+from typing import Any, Dict, List, Optional
+from pydantic import BaseModel
+import httpx # For registry communication
+import asyncio
+
+from .agent_definition import agent as pydantic_ai_agent # The Pydantic-AI agent instance
+from .config import settings # Agent-specific settings
+
+app = FastAPI(
+    title=f"{{ agent_name }} - Agent Service",
+    version="{{ agent_version | default('0.1.0') }}",
+    description="{{ agent_description | default('An AI Agent service.') }}",
+)
+
+# --- Registry Communication ---
+class AgentRegistrationPayload(BaseModel):
+    service_id: str
+    service_url: str # Using str here as HttpUrl might not be easily configurable for dynamic ports
+    name: Optional[str] = None
+    description: Optional[str] = None
+    skills: List[str] = []
+    metadata: Dict[str, Any] = {}
+
+async def register_with_registry():
+    """Registers this agent service with the central Agent Registry."""
+    if not settings.REGISTRY_URL:
+        print("REGISTRY_URL not set. Skipping registration.")
+        return
+
+    payload = AgentRegistrationPayload(
+        service_id=settings.SERVICE_ID,
+        service_url=f"http://{settings.AGENT_HOST}:{settings.AGENT_PORT}", # Construct self URL
+        name=settings.AGENT_NAME,
+        description=app.description,
+        # skills= ["skill1", "skill2"] # TODO: Make skills configurable
+    )
+    try:
+        async with httpx.AsyncClient() as client:
+            print(f"Attempting to register with registry at {settings.REGISTRY_URL}...")
+            response = await client.post(f"{settings.REGISTRY_URL.rstrip('/')}/register", json=payload.model_dump())
+            response.raise_for_status()
+            print(f"Agent '{settings.SERVICE_ID}' registered successfully with registry.")
+    except Exception as e:
+        print(f"Failed to register with Agent Registry: {e}")
+
+async def unregister_from_registry():
+    """Unregisters this agent service from the central Agent Registry."""
+    if not settings.REGISTRY_URL:
+        return
+    try:
+        async with httpx.AsyncClient() as client:
+            print(f"Attempting to unregister from registry at {settings.REGISTRY_URL}...")
+            await client.post(f"{settings.REGISTRY_URL.rstrip('/')}/unregister", json={"service_id": settings.SERVICE_ID})
+            print(f"Agent '{settings.SERVICE_ID}' unregistered successfully.")
+    except Exception as e:
+        print(f"Failed to unregister from Agent Registry: {e}")
+
+
+@app.on_event("startup")
+async def startup_event():
+    print(f"Agent Service '{settings.AGENT_NAME}' (ID: {settings.SERVICE_ID}) starting up...")
+    # TODO: Load LLM config based on settings.LLM_CONFIG_NAME from global alo_config.yaml
+    # This requires access to the global config, which might be passed via env or a shared volume.
+    # For now, the agent_definition.py template will use a default or expect env vars.
+    print(f"Using LLM config: {settings.LLM_CONFIG_NAME}")
+    
+    # Register with the central registry in the background
+    # Using a small delay to ensure the server is fully up before trying to register
+    async def delayed_registration():
+        await asyncio.sleep(2) # Small delay
+        await register_with_registry()
+    
+    asyncio.create_task(delayed_registration())
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    print(f"Agent Service '{settings.AGENT_NAME}' (ID: {settings.SERVICE_ID}) shutting down...")
+    await unregister_from_registry()
+    # Potentially close any resources held by the Pydantic-AI agent if necessary
+
+# --- API Models ---
+class AgentRunRequest(BaseModel):
+    prompt: str
+    # user_id: Optional[str] = None # Example: for user-specific context
+    # session_id: Optional[str] = None # Example: for conversation history
+    # message_history: Optional[List[Dict[str, Any]]] = None # Pydantic-AI message format
+    # model_settings: Optional[Dict[str, Any]] = None # To override agent's default model settings
+    # deps: Optional[Dict[str, Any]] = None # To pass dependencies if agent uses them
+
+class AgentRunResponse(BaseModel):
+    output: Any
+    usage: Optional[Dict[str, Any]] = None # Pydantic-AI Usage model
+    # error: Optional[str] = None
+
+# --- Agent Endpoints ---
+@app.post("/run", response_model=AgentRunResponse)
+async def run_agent_task(request_data: AgentRunRequest):
+    """
+    Runs the agent with the given prompt and returns the output.
+    """
+    try:
+        # TODO: Implement dependency injection if agent_definition.py requires it
+        # For now, assuming agent.run_sync can be called directly or deps are handled within agent_definition
+        
+        # Example: If your agent uses dependencies, you might load/prepare them here
+        # agent_deps = prepare_dependencies_for_agent(request_data.deps)
+
+        # For simplicity, using run_sync. For async tool calls, agent.run() would be needed.
+        # If agent.run() is used, this endpoint must be async and properly awaited.
+        # result = await pydantic_ai_agent.run(request_data.prompt, deps=agent_deps)
+        
+        # Assuming synchronous run for now for the template
+        # This will need to be async if the agent's tools are async
+        # For a truly async endpoint with async tools:
+        # result = await pydantic_ai_agent.run(request_data.prompt)
+        
+        # Placeholder for synchronous execution, adapt if your agent is async
+        # This is a simplified call. Real implementation might need to handle
+        # message history, custom model settings, and dependencies.
+        print(f"Agent '{settings.AGENT_NAME}' received prompt: {request_data.prompt}")
+        
+        # This is a blocking call if agent.run_sync is used and tools are synchronous.
+        # If tools are async, agent.run() should be used and this endpoint made fully async.
+        # For the template, we'll assume a simple case.
+        # The actual agent_definition.py will determine if run_sync or run is appropriate.
+        
+        # Let's assume the agent instance itself handles async tool execution if needed.
+        # The Pydantic-AI Agent's run_sync can handle async tools internally.
+        result = pydantic_ai_agent.run_sync(request_data.prompt)
+
+        return AgentRunResponse(output=result.output, usage=result.usage().model_dump() if result.usage() else None)
+    except Exception as e:
+        print(f"Error during agent run: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# TODO: Add /run_stream endpoint if streaming is desired
+
+@app.get("/health")
+async def health_check() -> Dict[str, str]:
+    return {"status": "ok", "service_id": settings.SERVICE_ID, "agent_name": settings.AGENT_NAME}
+
+if __name__ == "__main__":
+    import uvicorn
+    print(f"Starting agent service '{settings.AGENT_NAME}' (ID: {settings.SERVICE_ID}) on port {settings.AGENT_PORT}...")
+    uvicorn.run(
+        app,
+        host=settings.AGENT_HOST,
+        port=settings.AGENT_PORT
+    )
