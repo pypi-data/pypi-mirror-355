@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dharitri-sdk-cli"
+version = "0.0.2"
+authors = [{ name = "DharitrI" }]
+license = "MIT"
+description = "DharitrI Smart Contracts Tools"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+]
+
+dependencies = [
+  "toml>=0.10.2",
+  "requests>=2.32.0,<3.0.0",
+  "ledgercomm[hid]",
+  "rich==13.3.4",
+  "argcomplete==3.2.2",
+  "dharitri-py-sdk[ledger]==0.0.2",
+]
+
+[project.scripts]
+drtpy = "dharitri_sdk_cli.cli:main"
+
+[tool.hatch.build]
+include = ["dharitri_sdk_cli/**"]
+exclude = [".github", "dharitri_sdk_cli/tests/**"]
+
+[project.urls]
+"Homepage" = "https://github.com/TerraDharitri/drt-py-sdk-cli"
