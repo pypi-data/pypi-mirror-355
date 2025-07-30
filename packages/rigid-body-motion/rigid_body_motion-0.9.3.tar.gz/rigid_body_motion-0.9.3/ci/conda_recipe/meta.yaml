@@ -1,0 +1,58 @@
+{% set data = load_file_data('pyproject.toml') %}
+
+package:
+  name: rigid-body-motion
+  version: {{ data['project']['version'] }}
+
+source:
+  path: ../..
+
+build:
+  noarch: python
+  number: 0
+  ignore_run_exports:
+    - python_abi
+
+requirements:
+  host:
+    - python >=3.8
+    - hatchling
+  run:
+    - python >=3.8
+    - numpy
+    - scipy
+    - quaternion
+    - anytree
+
+test:
+  source_files:
+    - tests
+  requires:
+    - python 3.8
+    - pandas
+    - xarray
+    - netcdf4
+    - pooch
+    - numba
+    - matplotlib
+    - ipywidgets
+    - ros-noetic-rospy
+    - ros-noetic-tf
+    - ros-noetic-tf2-ros
+    - ros-noetic-tf2-geometry-msgs
+    - ros-noetic-geometry-msgs
+    - ros-noetic-visualization-msgs
+    - python-orocos-kdl
+    - boost=1.74
+    - pytest
+    - pytest-cov
+  commands:
+    - pytest --cov=rigid_body_motion
+
+about:
+  home: https://github.com/phausamann/rigid-body-motion
+  summary: Python utilities for estimating and transforming rigid body motion.
+
+extra:
+  recipe-maintainers:
+    - phausamann
