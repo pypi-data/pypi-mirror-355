@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "zeroeval"
+version = "0.1.7"
+description = "ZeroEval SDK"
+repository = "https://github.com/zeroeval"
+keywords = ["evaluation", "LLM", "observability"]
+authors = [
+    "Sebastian Crossa <seb@zeroeval.com>"
+]
+readme = "README.md"
+
+# This is important so Poetry can find your package in the src/ folder.
+packages = [
+    { include = "zeroeval", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+rich = "^13.9.4"
+opentelemetry-api = "^1.30.0"
+opentelemetry-sdk = "^1.30.0"
+requests = "^2.32.3"
+openai = "^1.82.0"
+pillow = "^9.5.0"
+langchain-openai = "^0.3.21"
+langgraph = "^0.4.8"
+langchain = "^0.3.25"
+
+[tool.poetry.scripts]
+zeroeval = "zeroeval.cli:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
