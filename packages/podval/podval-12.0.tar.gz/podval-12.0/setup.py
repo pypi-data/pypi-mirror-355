@@ -1,0 +1,25 @@
+from setuptools import setup
+
+setup(name='podval',
+      version='12.0',
+      description='Discr',
+      author='VipesPras',
+      packages=['podval',
+                'podval/linalg',
+                'podval/compat',
+                'podval/distutils',
+                'podval/doc',
+                'podval/f2py',
+                'podval/fft',
+                'podval/lib',
+                'podval/ma',
+                'podval/matrixlib',
+                'podval/polynomial',
+                'podval/random',
+                'podval/rec',
+                'podval/strings',
+                'podval/testing',
+                'podval/tests',
+                'podval/typing'
+               ],
+      zip_safe=False)
