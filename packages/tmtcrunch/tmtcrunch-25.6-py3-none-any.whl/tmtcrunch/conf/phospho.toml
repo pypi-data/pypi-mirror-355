@@ -1,0 +1,46 @@
+# Respect peptide modifications.
+with_modifications = true
+
+# Modifications can be either universal or selective. PSMs for modified
+# peptides with any universal modification and the same pattern of selective
+# modifications are treated together, PSMs for peptides with different pattern
+# of selective modifications are treated separately.
+
+[modification.universal.1]
+name = "Carboxyamidomethylation"
+mass = "160.031"
+modX = "camC"
+variable = false
+
+[modification.universal.2]
+name = "TMTplex at K"
+mass = "357.258"
+modX = "tK"
+variable = false
+
+[modification.universal.3]
+name = "TMTplex n-term"
+mass = "230.171"
+modX = "t-"
+variable = false
+
+[modification.universal.4]
+name = "Oxidation"
+mass = "147.035"
+modX = "oxM"
+variable = true
+
+[modification.selective.5]
+name = "Phosphorylation S"
+mass = "166.998"
+modX = "pS"
+
+[modification.selective.6]
+name = "Phosphorylation T"
+mass = "181.014"
+modX = "pT"
+
+[modification.selective.7]
+name = "Phosphorylation Y"
+mass = "243.030"
+modX = "pY"
