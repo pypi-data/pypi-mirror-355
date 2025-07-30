@@ -1,0 +1,1 @@
+api = 'https://mastodon.social/api'
