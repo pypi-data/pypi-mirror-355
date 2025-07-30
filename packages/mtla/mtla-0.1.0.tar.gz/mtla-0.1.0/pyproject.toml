@@ -1,0 +1,46 @@
+[build-system]
+# Minimum requirements for the build system
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# Package metadata
+name = "mtla"
+version = "0.1.0"
+authors = [
+    {name = "Keqi Deng", email = "kd502@cam.ac.uk"}
+]
+description = "Multihead Temporal Latent Attention implementation"
+readme = "README.md"
+requires-python = ">=3.7"
+
+# Apache-2.0 license declaration (matches your GitHub project)
+license = {text = "Apache-2.0"}  # This is the correct SPDX identifier
+
+# Project dependencies (modify according to MTLA.py requirements)
+dependencies = [
+    "torch",
+]
+
+# PyPI classifiers (recommended)
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",  # Matches Apache-2.0
+    "Programming Language :: Python :: 3"
+]
+
+[project.urls]
+# Important project links (will appear on PyPI)
+Homepage = "https://github.com/D-Keqi/mtla"
+Repository = "https://github.com/D-Keqi/mtla"
+BugTracker = "https://github.com/D-Keqi/mtla/issues"
+Documentation = "https://github.com/D-Keqi/mtla#readme"  # Link to your README
+
+# Single-file module configuration
+[tool.setuptools]
+py-modules = ["MTLA"]  # Case-sensitive match to your filename
+
+# Optional: exclude non-packaged directories
+[tool.setuptools.exclude-package-data]
+"*" = ["experiments/*", "assets/*"]
