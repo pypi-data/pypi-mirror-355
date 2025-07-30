@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "emaremes"
+version = "0.0.7"
+authors = [
+    { name = "Edwin Saavedra C.", email = "esaavedrac@u.northwestern.edu" },
+]
+description = "Various tools for dealing with MRMS data"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "geopandas",
+    "requests",
+    "xarray",
+    "cfgrib",
+    "shapely",
+    "cartopy",
+    "cmocean",
+]
+keywords = ["MRMS", "Precipitation", "CONUS", "data"]
+
+[project.urls]
+Homepage = "https://github.com/edsaac/emaremes"
+Documentation = "https://edsaac.github.io/emaremes/"
+Issues = "https://github.com/edsaac/emaremes/issues"
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/tests", "/carpentry", "/examples", "/docs"]
