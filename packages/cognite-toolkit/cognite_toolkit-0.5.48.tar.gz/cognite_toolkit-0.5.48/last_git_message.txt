@@ -1,0 +1,97 @@
+[CDF-24989, CDF-24988] 😅 Group unfortunate diffs (#1635)
+
+# Description
+
+## Problem
+
+The following group configuration two problems
+
+1. The metadata values should be strings, but the yaml parser will parse
+`true`, `0123`, and `.inf` as bool, `0123` as octal returning int `83`.
+2. The `tableScope` is given as an empty dict. That will look like the
+group has changed each time the user runs `cdf deploy` as Toolkit
+expects `db_complete_org: []` and not `db_complete_org: {}`. Note that
+this is a result of an unfortunate flexibility in a table scope that can
+be defined either as an array or a mapping.
+
+```yaml
+name: gp_table_scoped_complete_org
+sourceId: '1234567890123456789'
+metadata:
+  origin: cognite-toolkit
+  governed: true
+  groupNo: 0123
+  maxUsers: .inf
+  description: foo:bar
+capabilities:
+- rawAcl:
+    actions:
+    - READ
+    - WRITE
+    scope:
+      tableScope:
+        dbsToTables:
+          db_complete_org: {}
+```
+
+## Solution 1 (discarded)
+
+Part 1: Create a special YAML parser that reads values as strings. ->
+This turned out to be non-trivial.
+
+Part 2: Evaluate empty array to equal empty mapping {} -> This is
+complex as we must either deal with arbitrary capability ordering, or
+assume same order and compare the local definition to the CDF one.
+
+## Solution 2 (implemented)
+
+Instead we want to encourage the user to use the following standardized
+format and fixing their poorly defined YAML
+
+```yaml
+name: gp_table_scoped_complete_org
+sourceId: '1234567890123456789'
+metadata:
+  origin: cognite-toolkit
+  governed: "true"
+  groupNo: "0123"
+  maxUsers: ".inf"
+  description: foo:bar
+capabilities:
+- rawAcl:
+    actions:
+    - READ
+    - WRITE
+    scope:
+      tableScope:
+        dbsToTables:
+          db_complete_org: []
+```
+
+We do this by improving the validation done in the `cdf build` command
+informing the user to comply with the format above:
+
+![image](https://github.com/user-attachments/assets/80a366ad-4163-4e40-8954-a8355a6f0cb1)
+
+**Note** This means that Toolkit reduces the flexibility in `rawAcl`
+tableScope to always use an array format. I consider this is a desirable
+standardization.
+
+## Changelog
+
+- [x] Patch
+- [ ] Minor
+- [ ] Skip
+
+## cdf
+
+### Fixed
+
+- Standardization of the Group configuration format. This will help
+avoid unchanged groups to be redeployed when running `cdf deploy`. The
+old format is still allowed, but will produce a warning when running
+`cdf build`.
+
+## templates
+
+No changes.
