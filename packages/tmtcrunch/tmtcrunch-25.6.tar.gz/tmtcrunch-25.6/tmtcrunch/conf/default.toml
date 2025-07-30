@@ -1,0 +1,65 @@
+# TMT labels used in Identipy.
+# tmt10plex_tags = ['126', '127C', '127N', '128C', '128N', '129C', '129N', '130C', '130N', '131']
+# tmt11plex_tags = ['126', '127C', '127N', '128C', '128N', '129C', '129N', '130C', '130N', '131', '131C']
+
+# Specimen columns.
+specimen_columns = []
+# Global internal standard (GIS) columns (for multi batch experiments).
+gis_columns = []
+# Simulate GIS via selected specimen columns.
+# Intended for singe batch experiments only!
+simulate_gis = []
+
+# Prefix of decoy proteins.
+decoy_prefix = 'DECOY_'
+
+# Path to protein fasta file for mapping protein to gene symbol.
+fasta_file = ''
+
+# List of column names from input files to save in the output.
+keep_columns = []
+
+# If true, perform PSM groupwise analysis.
+groupwise = true
+
+# Global false discovery rate. Can be overwritten per PSM group.
+global_fdr = 0.01
+
+# If true, respect peptide modifications and terminate analysis at peptide level.
+with_modifications = false
+
+# No modifications by default. Run TMTCrunch with --phospho argument
+# to enable common modifications for phospho-proteomics.
+[modification.universal]
+[modification.selective]
+
+# Keys below are only applicable if groupwise analysis is requested.
+# Prefixes of target proteins. If not set, `target_prefixes` will be deduced
+# from the prefixes of PSM groups.
+# target_prefixes = ['alt_', 'canon_']
+
+# Each PSM group is named after its subkey and defined by three keys:
+# `descr` - group description
+# `prefixes` - prefixes of target proteins
+# `fdr` - groupwise false discovery rate. If not set, global FDR will be used.
+
+# Isoform PSMs: protein group of each PSM consists of target proteins
+# with 'alt_' prefix only and any decoy proteins.
+[psm_group.isoform]
+descr = 'Isoform PSMs'
+prefixes = [['alt_']]
+fdr = 0.05
+
+# Canonical PSMs: protein group of each PSM consists of target proteins
+# with 'canon_' prefix only and any decoy proteins.
+[psm_group.canon]
+descr = 'Canonical PSMs'
+prefixes = [['canon_']]
+fdr = 0.01
+
+# Shared PSMs: protein group of each PSM consists both of
+# 'canon_' and 'alt_' target proteins and any decoy proteins.
+[psm_group.shared]
+descr = 'Shared PSMs'
+prefixes = [['canon_', 'alt_']]
+fdr = 0.01
