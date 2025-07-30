@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: gvotp
+Version: 0.1.0
+Summary: A lightweight in-memory OTP generator and verifier with external record support
+Author-email: Bittu Singh <bittusinghtech@gmail.com>
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# GVOTP
+
+A lightweight in-memory OTP (One-Time Password) generator and verifier with external record support.
+
+## Installation
+
+```bash
+pip install gvotp
+```
+
+---
+## Usage
+```commandline
+from gvotp import GVOTP
+
+otp_manager = GVOTP()
+
+result = otp_manager.generate_otp("email", "user@example.com")
+
+(Optional step only if otp to be stored externally but preferred mode)
+'''
+otp_doc = result["otp_record"]
+# Example otp record to be stored in DB
+{
+    'kind': 'email', 
+    'receiver': 'user@example.com', 
+    'otp_hash': '4d300c1f42ba868c8a279c4b232de487f8012a7a76384b79173bc22b08351d8f', 
+    'attempts': 0, 
+    'create_time': 1750093088, 
+    'ttl': 900
+}
+'''
+
+otp = result["otp"]
+# With in-memory store
+otp_manager.verify_otp("email", "user@example.com", otp)
+
+# If record stored externally
+otp_doc = 
+otp_service.verify_otp("email", "user@example.com", response["otp"], document=otp_doc)
+
+```
