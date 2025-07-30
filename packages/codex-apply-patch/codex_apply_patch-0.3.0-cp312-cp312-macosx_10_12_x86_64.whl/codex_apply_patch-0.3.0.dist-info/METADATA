@@ -1,0 +1,129 @@
+Metadata-Version: 2.4
+Name: codex-apply-patch
+Version: 0.3.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Rust
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Utilities
+License-File: LICENSE
+Summary: A CLI tool and Python library for applying patches using a custom patch format designed for AI coding assistants
+Keywords: patch,apply,cli,diff,ai
+Author: OpenAI <support@openai.com>
+Author-email: OpenAI <support@openai.com>
+License: Apache-2.0
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Homepage, https://github.com/openai/codex-apply-patch
+Project-URL: Repository, https://github.com/openai/codex-apply-patch
+Project-URL: Documentation, https://github.com/openai/codex-apply-patch
+Project-URL: Bug Reports, https://github.com/openai/codex-apply-patch/issues
+Project-URL: Source, https://github.com/openai/codex-apply-patch
+
+# Codex Apply Patch
+
+A CLI tool and Python library for applying patches using a custom patch format designed for AI coding assistants.
+
+This project is based on [OpenAI's original codex apply-patch tool](https://github.com/openai/codex/tree/main/codex-rs/apply-patch) and extends it with additional functionality.
+
+## Changes from Original
+
+This fork adds the following enhancements to the original OpenAI tool:
+
+1. **In-Memory Patch Application**: New functionality to apply patches to files in memory without touching the filesystem, useful for testing and preview scenarios.
+
+2. **Python Library Support**: Complete Python bindings using PyO3, allowing the patch functionality to be used directly from Python code.
+
+3. **PyPI Distribution**: The library is packaged and distributed via PyPI for easy installation.
+
+## Installation
+
+### Python Package
+
+```bash
+pip install codex-apply-patch
+```
+
+### From Source
+
+```bash
+# Install Rust if you haven't already
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Clone and build
+git clone https://github.com/openai/codex-apply-patch
+cd codex-apply-patch
+cargo build --release
+
+# For Python development
+pip install maturin
+maturin develop --release
+```
+
+## Usage
+
+### Command Line
+
+```bash
+# Apply patch from stdin
+echo "*** Begin Patch
+*** Add File: hello.txt
++Hello, World!
+*** End Patch" | codex_apply_patch
+```
+
+### Python Library
+
+```python
+import codex_apply_patch as cap
+
+# Apply patch to files on disk
+patch = """*** Begin Patch
+*** Add File: hello.py
++print("Hello, World!")
+*** End Patch"""
+
+result = cap.apply_patch(patch)
+print(result)
+
+# Apply patch in memory (new feature)
+files = {
+    "main.py": "def main():\n    print('old version')\n"
+}
+
+patch = """*** Begin Patch
+*** Update File: main.py
+@@
+ def main():
+-    print('old version')
++    print('new version')
+*** End Patch"""
+
+result = cap.apply_patch_in_memory(patch, files)
+print("Modified files:", result.files)
+print("Summary:", f"Added: {len(result.added)}, Modified: {len(result.modified)}, Deleted: {len(result.deleted)}")
+```
+
+### Python API Reference
+
+- `apply_patch(patch_str)` - Apply patch to files on disk
+- `apply_patch_in_memory(patch_str, files_dict)` - Apply patch to in-memory files 
+- `parse_patch(patch_str)` - Parse patch and return structure information
+- `get_tool_instructions()` - Get the CLI tool instructions for AI assistants
+- `get_api_instructions()` - Get the patch format instructions (without CLI specifics)
+
+## License
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
+
+This project extends the original OpenAI codex apply-patch tool, which is also licensed under Apache-2.0.
+
