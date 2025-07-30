@@ -1,0 +1,355 @@
+---
+title: -_{{report_title}}_-
+author: ~~your name here~~
+date: last-modified
+format:
+    html:
+        code-fold: true
+        embed-resources: true
+        toc: true
+        toc-location: left
+        grid:
+            body-width: 1000px
+            margin-width: 50px
+jupyter: python3
+editor: source
+execute: 
+  warning: false
+  message: false
+---
+# {{report_title}}
+
+## Introduction
+
+Add some introductory test stating the purpose and context of the data as well as introducing the report.
+
+The dimensions of data quality listed below are explained on more detail in the [DQHub website](https://www.gov.uk/government/publications/the-government-data-quality-framework/the-government-data-quality-framework#Data-quality-dimensions).
+
+Any additional information about processes that will resolve issues reported in this document can go here at a high-level. Specific actions to address particular issues may be better placed with the analysis reported below.
+
+It is a good idea to reference organsiational goals at this point. Use visualisations to relate the quality of the data being reported on back to those goals. These don't have to be charts, but make use of being able to include pngs, or generate mermaid diagrams. The example below was taken from [mermaid.js.org](https://mermaid.js.org/syntax/gantt.html).
+
+```{mermaid}
+gantt
+    dateFormat  YYYY-MM-DD
+    title       Adding GANTT diagram functionality to mermaid
+    excludes    weekends
+    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+
+    section A section
+    Completed task            :done,    des1, 2014-01-06,2014-01-08
+    Active task               :active,  des2, 2014-01-09, 3d
+    Future task               :         des3, after des2, 5d
+    Future task2              :         des4, after des3, 5d
+
+    section Critical tasks
+    Completed task in the critical line :crit, done, 2014-01-06,24h
+    Implement parser and jison          :crit, done, after des1, 2d
+    Create tests for parser             :crit, active, 3d
+    Future task in critical line        :crit, 5d
+    Create tests for renderer           :2d
+    Add to mermaid                      :until isadded
+    Functionality added                 :milestone, isadded, 2014-01-25, 0d
+
+    section Documentation
+    Describe gantt syntax               :active, a1, after des1, 3d
+    Add gantt diagram to demo page      :after a1  , 20h
+    Add another diagram to demo page    :doc1, after a1  , 48h
+
+    section Last section
+    Describe gantt syntax               :after doc1, 3d
+    Add gantt diagram to demo page      :20h
+    Add another diagram to demo page    :48h
+
+```
+
+```{python}
+#| label: tbl-org-goals
+#| echo: False
+
+
+from dfeqa import status_summary
+status_summary([
+    "Improve the skills pipeline",
+    "Level up education standards",
+    "Support the most disadvantaged and vulnerable children",
+    "High quality early education and childcare"],
+    ['grey', 'green', 'grey', 'grey'])
+
+```
+
+```{python}
+#| echo: false
+    # load data and import any modules required
+    import numpy as np
+    import pandas as pd
+    import seaborn as sns
+    from dfeqa import fd, barchart, valid_upn, valid_name_regex
+
+    mpg = sns.load_dataset('mpg')
+    seaice = sns.load_dataset('seaice')
+
+```
+
+
+## Data Quality Reporting
+
+### Completeness
+
+Completeness describes the degree to which records are present.
+
+```{python}
+#| label: fig-completeness
+#| fig-cap: "Completeness of data: comparison with data from previous years"
+
+barchart(seaice['Date'].dt.year.value_counts(), x_rescale=5)
+
+```
+
+### Uniqueness
+
+Uniqueness describes the degree to which there is no duplication in records. This means that the data contains only one record for each entity it represents, and each value is stored once.
+
+```{python}
+#| label: fig-uniqueness
+#| fig-cap: "Uniqueness of data: comparison across groups"
+
+chartdata = mpg.groupby('origin')['name'].agg([pd.Series.nunique,'size'])
+chartdata['proportion unique'] = chartdata['nunique'] / chartdata['size']
+chartdata.reset_index(drop=False, inplace=True)
+
+barchart(chartdata, cats = 'origin',values= 'proportion unique', groups = 'origin')
+
+```
+
+It may be more helpful to see the number of records that _aren't_ unique.
+
+```{python}
+#| label: fig-not-uniqueness
+#| tbl-cap: "Duplicated car names compared across origin"
+
+uniq_count = mpg.groupby(['origin','name'])['name'].agg(n_u = 'size')
+chartdata = uniq_count.groupby('origin')['n_u'].agg(nuniq = lambda x: np.count_nonzero(x > 1)).rename(columns={'nuniq': 'Not unique values'})
+
+barchart(chartdata, cats = 'origin',values = 'Not unique values',groups='origin')
+
+```
+
+
+### Consistency
+
+Consistency describes the degree to which values in a data set do not contradict other values representing the same entity. For example, a mother’s date of birth should be before her child’s.
+
+In this example we are looking for consistency within the same dataset, but if we were doing this for real we could include previous year or mutliple census in the same year, as well as other datasets entirely where the same data items were collected - National Curriculum assessments for example.
+
+We'd probably expect the weight of a vehicle to be the same for a given model of car regardless of the region (it's a bit contrived, but let's go with it...). Let's see if it's the case...
+
+```{python}
+#| label: fig-inconsistent-weight
+#| fig-cap: "Number of vehicles with records with conflicting weight"
+
+car_weight_consistency = mpg.groupby(['name','model_year'])['weight'].nunique().reset_index(drop=False).rename(columns={'weight':'Num. records with same weight'})
+car_weight_consistency['model/year'] = car_weight_consistency['name'] + '/' + car_weight_consistency['model_year'].astype(str)
+
+barchart(car_weight_consistency[car_weight_consistency['Num. records with same weight']>1], cats = 'model/year',values = 'Num. records with same weight',groups='model/year')
+
+```
+
+That's odd... maybe they had different sized engines? We can check that...
+
+```{python}
+#| label: fig-inconsistent-weight-inc_engine
+#| fig-cap: "Number of vehicles with records with conflicting weight but same engine"
+
+car_weight_consistency = mpg.groupby(['name','model_year','cylinders'])['weight'].nunique().reset_index(drop=False).rename(columns={'weight':'Num. records with same weight'})
+car_weight_consistency['model/year/engine'] = car_weight_consistency['name'] + '/' + car_weight_consistency['model_year'].astype(str) + '/' + car_weight_consistency['cylinders'].astype(str)
+
+barchart(car_weight_consistency[car_weight_consistency['Num. records with same weight']>1], cats = 'model/year/engine',values = 'Num. records with same weight',groups='model/year/engine')
+
+```
+
+
+So that's strange! What are these records?
+
+```{python}
+#| label: tbl-label
+#| tbl-cap: "caption"
+
+inconsistents = car_weight_consistency[car_weight_consistency['Num. records with same weight']>1]
+mpg.merge(inconsistents, left_on=['name','model_year','cylinders'], right_on=['name','model_year','cylinders'])
+
+```
+
+Ah, so there were two models with the same engine, but different weight & performance - that explains it!
+
+So the dataset *is* consistent in the way we would expect, with just one model of vehicle with what would appear to be different editions, with different chassis or bodywork.
+
+### Timeliness
+
+Timeliness describes the degree to which the data is an accurate reflection of the period that they represent, and that the data and its values are up to date.
+
+Some datasets such as a census are a record of a point in time - even if those variables change in real time, the census values should not change. Other datasets will benefit from analyses to monitor change or reference datasets collected at different times.
+
+It might be helpful to include a gantt here if there are timeframes where the data should be used with confidence, and times when an alternative should be used - for example.
+
+```{mermaid}
+gantt
+    dateFormat  YYYY-MM-DD
+    title       Availability of data
+    excludes    weekends
+    axisFormat %Y-%m
+    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+
+    section Interim data
+    Data processing           :done,    interim1, 2014-06-21, 4d
+    Quality assurance         :done,    3d
+    Signoff                   :milestone,    1d
+    Published                 :milestone,    1d
+    Active usage              :active,  2014-09-02
+
+    section Provisional data
+    Data processing           :         prov1, 2014-08-21, 4d
+    Quality assurance         :         3d
+    Signoff                   :milestone,    1d
+    Published                 :milestone,    1d
+    Active usage              :         9w
+
+    section Revised data
+    Data processing           :         rev1, 2014-11-21, 4d
+    Quality assurance         :         3d
+    Signoff                   :milestone,    1d
+    Published                 :milestone,    1d
+    Active usage              :         5w
+
+    section Final data
+    Data processing           :         fin1, 2015-01-21, 4d
+    Quality assurance         :         fin2, after fin1, 3d
+    Signoff                   :milestone,    fin3, after fin2, 1d
+    Published                 :milestone,    fin4, after fin3, 1d
+    Active usage              :         fin5, after fin4, 16w
+
+```
+
+
+### Validity
+
+Validity describes the degree to which the data is in the range and format expected. For example, date of birth does not exceed the present day and is within a reasonable range.
+
+This could easily be the biggest section of the report if handled badly. Ideally this section should report by exception - the failures, or an overview (all 500 columns contain values within specified range) and refer to appendices for detail.
+
+It is instructive to include some high-level summaries here where they are particularly important. A more complete breakdown of low-level detail can be provided in an appendix, but a summary should be included here.
+
+```{python}
+#| label: fig-label
+#| fig-cap: "caption"
+
+penguins = sns.load_dataset('penguins')
+
+split_species = [penguins[penguins['sex'].eq(s)]['species'].rename(s) for s in penguins['sex'].value_counts(dropna=False).index]
+chartdata = fd(split_species, ids=[g.name for g in split_species], long=True).fillna('Unknown')
+barchart(chartdata, cats = 'value', values='count', groups='group')
+```
+
+One approach is to create a matrix of flags that show whether each value is valid or not, which can then be summarised by column, and could be reported by exception. Functions like `dfeqa.valid_upn()` are helpful here. They don't have to be limited to single column checks either - you could add a totals_check column which checks the sum of multiple columns is the same as some `total` column for example.
+
+
+```{python}
+#| label: tbl-validity
+#| tbl-cap: "all the Records failing validation"
+
+
+validity_flags = pd.DataFrame()
+validity_flags = validity_flags.assign(
+    mpg = mpg['mpg'].between(5,50),
+    cylinders = mpg['cylinders'].isin([3,4,5,6,8]),
+    displacement = mpg['displacement'].between(65,455),
+    horsepower = mpg['horsepower'].between(46,230),
+    weight = mpg['weight'].between(1600,5200),
+    acceleration = mpg['acceleration'].between(8,25),
+    model_year = mpg['model_year'].between(70,82),
+    origin = mpg['origin'].isin(['usa', 'japan', 'europe']),
+    name = mpg['name'].str.match(valid_name_regex)
+)
+
+mpg[~validity_flags.all(axis=1)]
+
+```
+
+... and you could add formatting to highlight the cells where validation has failed too.
+
+These particular records failed validation mostly because they don't have a horsepower value, but there's one record with a character in `name` which isn't allowed.
+
+This level of detail is fine to put here, but more than half-a-dozen or a dozen, and the table should go in the appendix.
+
+### Accuracy
+
+Accuracy describes the degree to which data matches reality.
+
+In the case of a census it may  be difficult to determine accuracy beyond validity and consistency. One approach to gaining some measure of assurance of accuracy is to consider what an aggregate measure might look like if the data were accurate or inaccurate.
+
+For example, dates of birth might all be valid and consistent, but if they were all in January we would be concerned over the accuracy of the data, as might happen if there were an issue recording the correct month in the data collection.
+
+In a dataset covering most children in the country of a certain age, we would expect there to be similar numbers of pupils born in each month of the year, with a few more in months with 31 days and a few less in february. It doesn't quite work out that way, so using the previous year as a comparison is better. Some variables might have a uniform distribution and can be presented along with a straight line to show where the expected distribution would lie, but other variables are better presented with a reference dataset.
+
+For the purposes of our demo here, I'm going to assume that:
+- there should be an increase in horsepower as engine size increases, which should also be closely related to the number of cylinders
+- there should be a decrease in mpg for bigger cars with more cylinders
+- there should be an increase in acceleratin for bigger cars with more cylinders
+
+We could do a regression analysis and compare with a reference, but for now I'm going to check whether the logic above plays out in the data.
+
+```{python}
+#| label: fig-cc-hp-cyl
+#| fig-cap: "Accuracy 1: displacement x HP x cylinders"
+
+sns.scatterplot(data=mpg, x='displacement', y='horsepower', hue='cylinders')
+
+```
+
+```{python}
+#| label: fig-cc-mpg-cyl
+#| fig-cap: "Accuracy 2: displacement x MPG x cylinders"
+
+sns.scatterplot(data=mpg, x='displacement', y='mpg', hue='cylinders')
+
+```
+
+
+```{python}
+#| label: fig-cc-acc-cyl
+#| fig-cap: "Accuracy 3: displacement x Acceleration x cylinders"
+
+sns.scatterplot(data=mpg, x='displacement', y='acceleration', hue='cylinders')
+
+```
+
+So broadly speaking, the data reflects our expectations. In @fig-cc-hp-cyl we can see horsepower increasing with engine size, and we can see that cylinder number is closely related to engine size too.
+
+MPG relation to engine size is shown as negatively related to engine size in @fig-cc-mpg-cyl, again as we expected.
+
+Finally, acceleration is negatively related to engine size, which sounds like it's round the wrong way, but this is a measure of the time taken to reach a target, so it's the inverse of acceleration. That relationship wouldn't be as clear without the big 8 cylinder engine cars, so we won't rely on it as much when assessing quality, but it looks sensible.
+
+
+### User needs and trade-offs
+
+Are there any hot-topics or issues which have occurred in the past which require monitoring?
+
+## Interpretation, conclusion and recommendation
+
+In summary, what does it all mean? What purposes can the data be used for?
+
+## Appendices
+
+Lists of columns, tables, metadata, etc.
+
+### column names in table
+
+If you're accessing SQL Server, you can use `dfeqa.get_table_metadata()` to list table columns and datatypes.
+
+```{python}
+#| label: tbl-mpg-dtypes
+#| tbl-cap: "Columns and data types in MPG dataset"
+
+pd.DataFrame(mpg.dtypes).rename(columns={0:'data type'})
+
+```

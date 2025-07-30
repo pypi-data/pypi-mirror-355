@@ -1,0 +1,43 @@
+---
+title: Quality Assurance Report
+author: ~~your name here~~
+date: last-modified
+format:
+    html:
+        code-fold: true
+        embed-resources: true
+        toc: true
+        toc-location: left
+        grid:
+            body-width: 1000px
+            margin-width: 50px
+jupyter: python3
+editor: source
+execute: 
+  warning: false
+  message: false
+---
+# Quality Assurance Report
+
+## Introduction
+
+|Have you checked that…|This could look like…|
+|---|---|
+|the data is according to **specification**?|Specification with the data provider of what validation is applied at data input stage (e.g. validation on COLLECT); Change control on the specification   (e.g. new metrics, new data source)|
+|you understand what **upstream checks** have been done by the data provider?|An automated report from data provider (e.g. Data Directorate) telling you what checks have been done (including logic checks on related fields and inclusion criteria); Any changes as per spec have been tested Business rules for LAs that they confirm they have followed|
+|the data has been **transferred** as expected?|Automated checks on numbers of rows/columns/file size compared to previous files, or what the provider tells you it should be|
+|you can **replicate**  essential checks the provider has done?|This is not about double checking all the provider’s work, but  assuring that you agree with validation of the most essential fields. e.g. reintroducing measures after a pause due to pandemic|
+|there is no **missing or duplicated** data?|Automated checks on NULL values for variables you are using Automated checks on unique identifiers compared to row counts|
+|the data is in a **range** you expect?|Automated checks on   minimum/maximum/average/top X/bottom X values for variables you are using Plot of distribution of values for key variables and look at outliers, including scatterplots to see changes cross years, e.g. LA level data in current vs previous year|
+
+## The data is according to specification
+
+## Checks performed upstream by the data provider
+
+## Checks after data transfer
+
+## Replication of checks performed by providers
+
+## Checks for missing or duplicated data
+
+## The data are in a range you expect
