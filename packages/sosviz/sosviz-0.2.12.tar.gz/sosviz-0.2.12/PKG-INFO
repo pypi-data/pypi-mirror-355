@@ -1,0 +1,76 @@
+Metadata-Version: 2.4
+Name: sosviz
+Version: 0.2.12
+Summary: Information extractor from sos reports
+Author-email: Robin Jarry <rjarry@redhat.com>
+License: Copyright 2024 Robin Jarry
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+        
+            http://www.apache.org/licenses/LICENSE-2.0
+        
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+        
+Project-URL: Repository, https://github.com/rjarry/sosviz
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: graphviz
+Dynamic: license-file
+
+# sosviz
+
+Extract information from [`sos`](https://github.com/sosreport/sos) reports and
+export it in other formats.
+
+## Installation
+
+```
+pip install --user sosviz
+```
+
+System dependency to [`dot`](https://command-not-found.com/dot) from the
+[`graphviz`](https://graphviz.org/) package.
+
+## Usage
+
+```
+usage: sosviz [-h] [-V] [-d] [-f {dot,text,json,svg}] PATH
+
+Collect information from an sos report folder and export it in other formats
+on standard output.
+
+positional arguments:
+  PATH                  Path to an uncompressed sos report folder.
+
+options:
+  -h, --help            show this help message and exit
+  -V, --version         Show version and exit.
+  -d, --debug           Show debug info.
+  -f {dot,text,json,svg}, --format {dot,text,json,svg}
+                        Output format (default: svg).
+```
+
+Examples:
+
+```
+sosviz ~/tmp/sosreport > example.svg
+```
+
+```
+sosviz -f dot ~/tmp/sosreport | dot -Tpng > example.png
+```
+
+```
+sosviz --debug -f json ~/tmp/sosreport | jq -C | less -R
+```
+
+## Example SVG output
+
+![example.svg](https://raw.githubusercontent.com/rjarry/sosviz/main/example.svg)
