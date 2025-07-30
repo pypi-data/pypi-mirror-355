@@ -1,0 +1,21 @@
+[project]
+name = "ivoryos-mcp"
+version = "0.1.0"
+description = "MCP server for ivoryOS. "
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "build>=1.2.2.post1",
+    "mcp[cli]>=1.9.2",
+]
+
+[project.scripts]
+ivoryos-mcp = "ivoryos_mcp.server:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project.urls]
+"Homepage" = "https://gitlab.com/heingroup/ivoryos-suite/ivoryos-mcp"
