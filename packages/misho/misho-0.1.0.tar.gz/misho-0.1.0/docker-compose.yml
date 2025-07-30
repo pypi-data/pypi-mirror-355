@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  misho:
+    env_file: ".env"
+    environment:
+      - TZ=Europe/Berlin
+    image: mojo28/misho
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MISHO_MAIL_USERNAME: ${MISHO_MAIL_USERNAME}
+        MISHO_MAIL_PASSWORD: ${MISHO_MAIL_PASSWORD}
+        MISHO_ENVIRONMENT: ${MISHO_ENVIRONMENT}
+    volumes:
+      - ./db:/root/db
+    ports:
+      - "8000:8000"
