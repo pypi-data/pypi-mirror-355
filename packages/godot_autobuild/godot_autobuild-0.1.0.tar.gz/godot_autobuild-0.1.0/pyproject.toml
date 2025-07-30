@@ -1,0 +1,53 @@
+[project]
+name = "godot_autobuild"
+version = "0.1.0"
+description = "A tool for building godot projects."
+homepage = "https://github.com/nofuncoding/godot-autobuild"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "rich>=14.0.0",
+    "typer>=0.15.3",
+]
+authors = [
+    { name = "NoFun", email = "nofuncoding@qq.com" },
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.scripts]
+gdbuild = "godot_autobuild.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.0",
+]
+
+# [tool.uv]
+# package = true
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/docs",
+  "/tests",
+  "/examples"
+]
