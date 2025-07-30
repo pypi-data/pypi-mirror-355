@@ -1,0 +1,58 @@
+[build-system]
+build-backend = "hatchling.build"
+
+requires = [ "hatchling" ]
+
+[project]
+name = "mlflow-sweep"
+version = "0.0.3"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+  { name = "Nicki Skafte", email = "skaftenicki@gmail.com" },
+]
+requires-python = ">=3.11"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+  "click>=8.2.1",
+  "mlflow>=3.1",
+  "pydantic>=2.11.5",
+  "pyyaml>=6.0.2",
+  "rich>=14",
+  "sweeps>=0.2",
+]
+
+scripts.mlflow = "mlflow_sweep.__init__:cli"
+
+entry-points."mlflow.run_context_provider".sweep = "mlflow_sweep.runcontext:SweepContextProvider"
+
+[dependency-groups]
+dev = [
+  "coverage>=7.9.1",
+  "invoke>=2.2",
+  "ipython>=9.3",
+  "pre-commit>=4.2",
+  "pytest>=8.4",
+  "python-semantic-release>=9.21.1",
+  "ruff>=0.11.13",
+  "ty>=0.0.1a10",
+  "typer>=0.16",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.semantic_release]
+version_toml = [ "pyproject.toml:project.version" ]
+version_variables = [ "src/mlflow_sweep/__init__.py:__version__" ]
+branch = "main"
+changelog_file = "CHANGELOG.md"
+build_command = "uv build"
+upload_to_release = true
+upload_to_pypi = false
