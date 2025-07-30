@@ -1,0 +1,32 @@
+[project]
+name = "tdsaas-mcp"
+version = "0.1.2"
+description = "Tongda’s SaaS product displays operational data via the Model Context Protocol (MCP)"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    {name = "Liu Hao", email = "liu.hao1443@gmail.com"}
+]
+license = "Apache-2.0"
+dependencies = [
+    "bs4==0.0.2",
+    "fastmcp==0.4.1",
+    "loguru==0.7.3",
+    "markdown==3.7",
+    "pyyaml==6.0.2",
+    "requests==2.32.3"
+]
+
+[project.scripts]
+tdsaas-mcp = "src.server:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[project.urls]
+"Homepage" = "https://github.com/LiuHao-1443/tdsaas-mcp"
+"Bug Tracker" = "https://github.com/LiuHao-1443/tdsaas-mcp/issues"
