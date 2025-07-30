@@ -1,0 +1,54 @@
+name: Code Formatting Check and Commit (macOS)
+
+on:
+  push:
+    branches:
+      - '**'
+
+permissions:
+  contents: write  
+
+jobs:
+  format-check:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Setup for C++ and Objective-C++ (clang-format)
+      - name: Install clang-format
+        run: brew install clang-format
+
+      - name: Run clang-format (C++/Objective-C++)
+        run: |
+            clang-format -i $(find . -name '*.cpp' -o -name '*.h' -o -name '*.mm' -o -name '*.m' -o -name '*.metal')
+
+      # Setup for Python (Black)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install Black
+        run: pip install black
+
+      - name: Run Black (Python)
+        run: black .
+        
+      - name: Check for changes and commit if any
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      
+          if ! git diff --quiet; then
+            git add .
+            git commit -m 'Automated code formatting'
+            BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+            git push origin "HEAD:$BRANCH_NAME"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+

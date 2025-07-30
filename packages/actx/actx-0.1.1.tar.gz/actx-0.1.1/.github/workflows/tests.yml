@@ -1,0 +1,28 @@
+name: Build and Test on Mac
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure and Build with CMake
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=Test -S . -B build
+        cmake --build build
+
+    - name: Run Tests
+      run: |
+          cd build
+          if [ "$RUN_METAL_TESTS" = "true" ]; then
+            ctest --output-on-failure
+          else
+            echo "Skipping Metal tests on GitHub Actions runner"
+          fi
