@@ -1,0 +1,64 @@
+[project]
+name = "stpreview"
+description = "build downsampled previews of space telescope products"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Zach Burnett", email = "zburnett@stsci.edu" }]
+license-files = ["LICENSE"]
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Astronomy",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python :: 3",
+]
+dependencies = [
+  "asdf",
+  "astropy",
+  "gwcs",
+  "matplotlib",
+  "numpy",
+  "scikit-image",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = ["pytest", "roman_datamodels"]
+
+[project.urls]
+repository = "https://github.com/spacetelescope/stpreview.git"
+
+[project.scripts]
+stpreview = "stpreview.__main__:command"
+
+[build-system]
+requires = ["setuptools >=60", "setuptools_scm[toml] >=3.4", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 88
+exclude = [".tox", ".eggs", "build"]
+ignore = []
+
+[tool.pytest.ini_options]
+markers = ["shareddata: run tests with shared data"]
+
+[tool.coverage.run]
+omit = ["**/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "if self.debug:",
+  "except ImportError",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == \"__main__\":",
+]
