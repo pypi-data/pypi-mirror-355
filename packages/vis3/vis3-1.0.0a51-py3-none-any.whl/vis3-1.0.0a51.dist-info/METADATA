@@ -1,0 +1,146 @@
+Metadata-Version: 2.3
+Name: vis3
+Version: 1.0.0a51
+Summary: Visualize s3 data
+License: Apache 2.0
+Author: shenguanlin
+Author-email: shenguanlin@pjlab.org.cn
+Requires-Python: >=3.9.2
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: alembic (>=1.15.2,<2.0.0)
+Requires-Dist: appdirs (>=1.4.4,<2.0.0)
+Requires-Dist: beautifulsoup4 (>=4.13.4,<5.0.0)
+Requires-Dist: boto3 (>=1.38.14,<2.0.0)
+Requires-Dist: cchardet (==2.2.0a2)
+Requires-Dist: cryptography (>=44.0.3,<45.0.0)
+Requires-Dist: ebooklib (>=0.19,<0.20)
+Requires-Dist: fastapi (>=0.115.12,<0.116.0)
+Requires-Dist: fastwarc (>=0.15.2,<0.16.0)
+Requires-Dist: httpx (>=0.28.1,<0.29.0)
+Requires-Dist: loguru (>=0.6.0,<0.7.0)
+Requires-Dist: mobi (>=0.3.3,<0.4.0)
+Requires-Dist: orjson (>=3.10.18,<4.0.0)
+Requires-Dist: passlib[bcrypt] (>=1.7.4,<2.0.0)
+Requires-Dist: pydantic (>=2.11.4,<3.0.0)
+Requires-Dist: pydantic-settings (>=2.9.1,<3.0.0)
+Requires-Dist: python-jose (>=3.4.0,<4.0.0)
+Requires-Dist: python-multipart (>=0.0.20,<0.0.21)
+Requires-Dist: sqlalchemy (>=2.0.40,<3.0.0)
+Requires-Dist: typer[all] (>=0.15.3,<0.16.0)
+Requires-Dist: uvicorn (>=0.34.2,<0.35.0)
+Requires-Dist: warcio (>=1.7.5,<2.0.0)
+Project-URL: Repository, https://github.com/OpenDataLab/VisU
+Description-Content-Type: text/markdown
+
+<div align="center">
+  <article style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <p align="center"><img width="300" src="./web/app/src/assets/logo.svg" /></p>
+    <h1 style="width: 100%; text-align: center;"></h1>
+    <p align="center">
+        English | <a href="./README_zh-CN.md" >简体中文</a>
+    </p>
+  </article>
+</div>
+
+> OSS browser based on s3
+
+A visualization tool designed for large language models and machine learning data. It supports cloud storage platforms with S3 protocol (AWS, Alibaba Cloud) and handles various data formats (json, jsonl.gz, warc.gz, md, etc.). Interactive visualization through JSON, Html, Markdown, and image views for efficient data analysis.
+
+## Features
+
+- Supports multiple formats such as JSON, JSONL, WARC, intelligently recognizes data structures and visually presents key information, making data clear at a glance.
+
+- One-click preview of any field, supports free switching between multiple view modes such as web pages, Markdown, images, simple and intuitive operation.
+
+- Seamlessly connects with mainstream cloud storage platforms (Alibaba Cloud, AWS, Tencent Cloud, and other cloud storage platforms that support the S3 protocol), supports local file parsing, making data access easy.
+
+https://github.com/user-attachments/assets/aa8ee5e8-c6d3-4b20-ae9d-2ceeb2eb2c41
+
+
+## Getting Started
+
+```bash
+# python >= 3.9.2
+pip install vis3
+```
+
+Or create a Python environment using conda:
+
+> Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+```bash
+# 1. Create Python 3.11 environment using conda
+conda create -n vis3 python=3.11
+
+# 2. Activate environment
+conda activate vis3
+
+# 3. Install vis3
+pip install vis3
+
+# 4. Launch
+vis3
+
+# ----------------
+
+# Default launch doesn't require authentication, if you want to enable authentication to distinguish users
+vis3 --auth
+
+# Specify database (sqlite) directory
+BASE_DATA_DIR=your/database/path vis3
+
+# Enable authentication through ENABLE_AUTH
+ENABLE_AUTH=true vis3
+```
+
+## Local Development
+
+```bash
+conda create -n vis3-dev python=3.11
+
+# Activate virtual environment
+conda activate vis3-dev
+
+# Install poetry
+# https://python-poetry.org/docs/#installing-with-the-official-installer
+
+# Install Python dependencies
+poetry install
+
+# Install frontend dependencies (install pnpm: https://pnpm.io/installation)
+cd web && pnpm install
+
+# Build frontend assets (in web directory)
+pnpm build
+
+# Start vis3
+uvicorn vis3.main:app --reload
+```
+
+## React Component
+
+We provide a [standalone React component](./web/packages/vis3-kit/) via npm for customizing your data preview ui.
+
+## Community
+
+Welcome to join the Opendatalab official WeChat group!
+
+<p align="center">
+<img style="width: 400px" src="https://user-images.githubusercontent.com/25022954/208374419-2dffb701-321a-4091-944d-5d913de79a15.jpg">
+</p>
+
+## Related Projects
+
+- [LabelU-kit](https://github.com/opendatalab/labelU-Kit) Web frontend annotation kit (LabelU is developed based on this kit)
+- [LabelLLM](https://github.com/opendatalab/LabelLLM) Open-source LLM dialogue annotation platform
+- [Miner U](https://github.com/opendatalab/MinerU) One-stop high-quality data extraction tool
+
+## License
+
+This project is licensed under the [Apache 2.0 license](./LICENSE).
+
