@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: gsr
+Version: 1.0.0
+Summary: Google Sheet Downloader
+Project-URL: Homepage, https://github.com/ritonun/gsr
+Project-URL: Issues, https://github.com/ritonun/gsr/issues
+Author-email: ritonun <73615644+ritonun@users.noreply.github.com>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.12
+Requires-Dist: google-api-python-client==2.172.0
+Requires-Dist: google-auth-httplib2==0.2.0
+Requires-Dist: google-auth-oauthlib==1.2.2
+Description-Content-Type: text/markdown
+
+# Google Sheet Reader
+
+Connect to your google sheet and export data.
+
+To get your API token:
+[Google Sheet Python quickstart](https://developers.google.com/workspace/sheets/api/quickstart/python)
+
+## Install
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+```
+
+## Example
+```python
+import gsr
+
+if __name__ == '__main__':
+    SHEET_ID = 'YOUR_SHEET_ID'
+    creds = gsr.get_credentials()   # your creds should be name `credentials.json` and put in your working folder
+
+    for range in ["Sheet1", "Sheet2", "Sheet3"]: # your sheet name
+        print(f"GET {range}")
+
+        values = gsr.connect_to_sheet(creds, SHEET_ID, range)
+
+        if values is None:
+            print(f"Error getting {range}, check your SHEET_ID or range")
+        else:
+            filename = 'csv_' + range + '.csv'
+            with open(filename, 'w') as f:
+                for row in values:
+                    text = str(row) + '\n'
+                    f.write(text)
+```
