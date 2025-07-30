@@ -1,0 +1,249 @@
+Metadata-Version: 2.4
+Name: frequenz-client-reporting
+Version: 0.18.0
+Summary: Reporting API client for Python
+Author-email: Frequenz Energy-as-a-Service GmbH <floss@frequenz.com>
+License: MIT
+Project-URL: Documentation, https://frequenz-floss.github.io/frequenz-client-reporting-python/
+Project-URL: Changelog, https://github.com/frequenz-floss/frequenz-client-reporting-python/releases
+Project-URL: Issues, https://github.com/frequenz-floss/frequenz-client-reporting-python/issues
+Project-URL: Repository, https://github.com/frequenz-floss/frequenz-client-reporting-python
+Project-URL: Support, https://github.com/frequenz-floss/frequenz-client-reporting-python/discussions/categories/support
+Keywords: frequenz,python,lib,library,client-reporting,client,reporting,api
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Typing :: Typed
+Requires-Python: <4,>=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typing_extensions<5,>=4.6.1
+Requires-Dist: grpc-stubs==1.53.0.6
+Requires-Dist: frequenz-api-reporting<0.8,>=0.7.0
+Requires-Dist: frequenz-client-common<0.4,>=0.3.0
+Requires-Dist: grpcio<2,>=1.70.0
+Requires-Dist: protobuf<7,>=5.29.3
+Requires-Dist: frequenz-client-base<0.12.0,>=0.11.0
+Provides-Extra: dev-flake8
+Requires-Dist: flake8==7.2.0; extra == "dev-flake8"
+Requires-Dist: flake8-docstrings==1.7.0; extra == "dev-flake8"
+Requires-Dist: flake8-pyproject==1.2.3; extra == "dev-flake8"
+Requires-Dist: pydoclint==0.6.6; extra == "dev-flake8"
+Requires-Dist: pydocstyle==6.3.0; extra == "dev-flake8"
+Provides-Extra: dev-formatting
+Requires-Dist: black==25.1.0; extra == "dev-formatting"
+Requires-Dist: isort==6.0.1; extra == "dev-formatting"
+Provides-Extra: dev-mkdocs
+Requires-Dist: black==25.1.0; extra == "dev-mkdocs"
+Requires-Dist: Markdown==3.8; extra == "dev-mkdocs"
+Requires-Dist: mike==2.1.3; extra == "dev-mkdocs"
+Requires-Dist: mkdocs-gen-files==0.5.0; extra == "dev-mkdocs"
+Requires-Dist: mkdocs-literate-nav==0.6.2; extra == "dev-mkdocs"
+Requires-Dist: mkdocs-macros-plugin==1.3.7; extra == "dev-mkdocs"
+Requires-Dist: mkdocs-material==9.6.14; extra == "dev-mkdocs"
+Requires-Dist: mkdocstrings[python]==0.29.1; extra == "dev-mkdocs"
+Requires-Dist: mkdocstrings-python==1.16.11; extra == "dev-mkdocs"
+Requires-Dist: frequenz-repo-config[lib]==0.13.4; extra == "dev-mkdocs"
+Provides-Extra: dev-mypy
+Requires-Dist: mypy==1.16.0; extra == "dev-mypy"
+Requires-Dist: types-Markdown==3.8.0.20250415; extra == "dev-mypy"
+Requires-Dist: types-protobuf==6.30.2.20250516; extra == "dev-mypy"
+Requires-Dist: frequenz-client-reporting[dev-mkdocs,dev-noxfile,dev-pytest]; extra == "dev-mypy"
+Requires-Dist: pandas-stubs<3,>=2; extra == "dev-mypy"
+Provides-Extra: dev-noxfile
+Requires-Dist: nox==2025.5.1; extra == "dev-noxfile"
+Requires-Dist: frequenz-repo-config[lib]==0.13.4; extra == "dev-noxfile"
+Provides-Extra: dev-pylint
+Requires-Dist: pylint==3.3.7; extra == "dev-pylint"
+Requires-Dist: frequenz-client-reporting[dev-mkdocs,dev-noxfile,dev-pytest]; extra == "dev-pylint"
+Requires-Dist: pandas<3,>=2; extra == "dev-pylint"
+Provides-Extra: dev-pytest
+Requires-Dist: pytest==8.4.0; extra == "dev-pytest"
+Requires-Dist: frequenz-repo-config[extra-lint-examples]==0.13.4; extra == "dev-pytest"
+Requires-Dist: pytest-mock==3.14.1; extra == "dev-pytest"
+Requires-Dist: pytest-asyncio==0.26.0; extra == "dev-pytest"
+Requires-Dist: async-solipsism==0.7; extra == "dev-pytest"
+Provides-Extra: dev
+Requires-Dist: frequenz-client-reporting[dev-flake8,dev-formatting,dev-mkdocs,dev-mypy,dev-noxfile,dev-pylint,dev-pytest]; extra == "dev"
+Provides-Extra: examples
+Requires-Dist: pandas<3,>=2; extra == "examples"
+Dynamic: license-file
+
+# Frequenz Reporting API Client
+
+[![Build Status](https://github.com/frequenz-floss/frequenz-client-reporting-python/actions/workflows/ci.yaml/badge.svg)](https://github.com/frequenz-floss/frequenz-client-reporting-python/actions/workflows/ci.yaml)
+[![PyPI Package](https://img.shields.io/pypi/v/frequenz-client-reporting)](https://pypi.org/project/frequenz-client-reporting/)
+[![Docs](https://img.shields.io/badge/docs-latest-informational)](https://frequenz-floss.github.io/frequenz-client-reporting-python/)
+
+## Introduction
+
+Reporting API client for Python
+
+## Supported Platforms
+
+The following platforms are officially supported (tested):
+
+- **Python:** 3.11
+- **Operating System:** Ubuntu Linux 20.04
+- **Architectures:** amd64, arm64
+
+## Contributing
+
+If you want to know how to build this project and contribute to it, please
+check out the [Contributing Guide](CONTRIBUTING.md).
+
+
+## Usage
+
+Please also refer to [examples](https://github.com/frequenz-floss/frequenz-client-reporting-python/tree/HEAD/examples) for more detailed usage.
+
+### Installation
+
+```bash
+# Choose the version you want to install
+VERSION=0.17.1
+pip install frequenz-client-reporting==$VERSION
+```
+
+
+### Initialize the client
+
+```python
+from datetime import datetime, timedelta
+import os
+
+from frequenz.client.common.metric import Metric
+from frequenz.client.reporting import ReportingApiClient
+
+# Change server address
+SERVER_URL = "grpc://replace-this-with-your-server-url:port"
+AUTH_KEY = os.environ['REPORTING_API_AUTH_KEY'].strip()
+# It is recommended to use a proper secret store to get the secret
+# For local development, make sure not to leave it in the shell history
+SIGN_SECRET= os.environ['REPORTING_API_SIGN_SECRET'].strip()
+client = ReportingApiClient(server_url=SERVER_URL, auth_key=AUTH_KEY, sign_secret=SIGN_SECRET)
+```
+
+Besides the `microgrid_id`, `component_id`s, `metrics`, start, and end time,
+you can also set the sampling period for resampling using the `resampling_period`
+parameter. For example, to resample data every 15 minutes, use
+`resampling_period=timedelta(minutes=15)`.
+
+### Query metrics for a single microgrid and component:
+
+```python
+data = [
+    sample async for sample in
+    client.list_single_component_data(
+        microgrid_id=1,
+        component_id=100,
+        metrics=[Metric.AC_ACTIVE_POWER, Metric.AC_REACTIVE_POWER],
+        start_time=datetime.fromisoformat("2024-05-01T00:00:00"),
+        end_time=datetime.fromisoformat("2024-05-02T00:00:00"),
+        resampling_period=timedelta(seconds=1),
+    )
+]
+```
+
+### Query metrics for a single microgrid and sensor:
+
+```python
+data = [
+    sample async for sample in
+    client.receive_single_sensor_data(
+        microgrid_id=1,
+        sensor_id=100,
+        metrics=[Metric.SENSOR_IRRADIANCE],
+        start_time=datetime.fromisoformat("2024-05-01T00:00:00"),
+        end_time=datetime.fromisoformat("2024-05-02T00:00:00"),
+        resampling_period=timedelta(seconds=1),
+    )
+]
+```
+
+
+### Query metrics for multiple microgrids and components
+
+```python
+# Set the microgrid ID and the component IDs that belong to the microgrid
+# Multiple microgrids and components can be queried at once
+microgrid_id1 = 1
+component_ids1 = [100, 101, 102]
+microgrid_id2 = 2
+component_ids2 = [200, 201, 202]
+microgrid_components = [
+    (microgrid_id1, component_ids1),
+    (microgrid_id2, component_ids2),
+]
+
+data = [
+    sample async for sample in
+    client.list_microgrid_components_data(
+        microgrid_components=microgrid_components,
+        metrics=[Metric.AC_ACTIVE_POWER, Metric.AC_REACTIVE_POWER],
+        start_time=datetime.fromisoformat("2024-05-01T00:00:00"),
+        end_time=datetime.fromisoformat("2024-05-02T00:00:00"),
+        resampling_period=timedelta(seconds=1),
+        include_states=False, # Set to True to include state data
+        include_bounds=False, # Set to True to include metric bounds data
+    )
+]
+```
+
+### Query metrics for multiple microgrids and sensors
+
+```python
+# Set the microgrid ID and the sensor IDs that belong to the microgrid
+# Multiple microgrids and sensors can be queried at once
+microgrid_id1 = 1
+sensor_ids1 = [100, 101, 102]
+microgrid_id2 = 2
+sensor_ids2 = [200, 201, 202]
+microgrid_sensors = [
+    (microgrid_id1, sensor_ids1),
+    (microgrid_id2, sensor_ids2),
+]
+
+data = [
+    sample async for sample in
+    client.receive_microgrid_sensors_data(
+        microgrid_sensors=microgrid_sensors,
+        metrics=[Metric.SENSOR_IRRADIANCE],
+        start_time=datetime.fromisoformat("2024-05-01T00:00:00"),
+        end_time=datetime.fromisoformat("2024-05-02T00:00:00"),
+        resampling_period=timedelta(seconds=1),
+        include_states=False, # Set to True to include state data
+    )
+]
+```
+
+### Optionally convert the data to a pandas DataFrame
+
+```python
+import pandas as pd
+df = pd.DataFrame(data)
+print(df)
+```
+
+## Command line client tool
+
+The package contains a command-line tool that can be used to request 
+microgrid component data from the reporting API.
+```bash
+reporting-cli \
+    --url localhost:4711 \
+    --auth_key=$AUTH_KEY
+    --sign_secret=$SIGN_SECRET
+    --mid 42 \
+    --cid 23 \
+    --metrics AC_ACTIVE_POWER AC_REACTIVE_POWER \
+    --start 2024-05-01T00:00:00 \
+    --end 2024-05-02T00:00:00 \
+    --format csv \
+    --states \
+    --bounds
+```
+In addition to the default CSV format the data can be output as individual samples or in `dict` format.
