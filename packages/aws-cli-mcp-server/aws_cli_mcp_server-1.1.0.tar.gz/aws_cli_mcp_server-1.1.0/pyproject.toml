@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aws-cli-mcp-server"
+version = "1.1.0"
+description = "A simple implementation of an AWS CLI MCP server with read/write tools for executing AWS CLI commands"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastmcp>=2.7.1",
+]
+
+[project.scripts]
+aws-cli-mcp-server = "aws_cli_mcp_server.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aws_cli_mcp_server"]
