@@ -1,0 +1,69 @@
+{
+  "users": [
+    {
+      "email": "minh@mail.com",
+      "name": "Minh",
+      "password": "123",
+      "is_active": true,
+      "is_superuser": true,
+      "role": "admin",
+      "flows": [
+        {
+          "flow_id": "workflow-1",
+          "description": "A flow for testing the Dolphin project.",
+          "group_id": "group1",
+          "flow_versions": [
+            {
+              "version": "v1.0",
+              "structure": {"nodes":[{"id":"1","type":"customNode","position":{"x":75,"y":26},"data":{"label":"Start","type":"trigger","description":"Begins the workflow","inputs":[],"outputs":[{"id":"out-1","label":"Output"}],"config":{}},"width":180,"height":72,"selected":false,"positionAbsolute":{"x":75,"y":26},"dragging":false},{"id":"node_1746457267935","type":"customNode","position":{"x":322.09464839355013,"y":26.339325695951914},"data":{"label":"Connect","description":"Connect to a remote system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{"connectionType":"ssh"},"type":"connection"},"width":180,"height":72,"selected":false,"positionAbsolute":{"x":322.09464839355013,"y":26.339325695951914},"dragging":false},{"id":"node_1746457268349","type":"customNode","position":{"x":-296.3908839830618,"y":262.67588631843984},"data":{"label":"Command","description":"Execute a command on connected system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{"command":"ls -la && mkdir test_1 && mkdir test_2"},"type":"connection"},"width":254,"height":72,"selected":false,"positionAbsolute":{"x":-296.3908839830618,"y":262.67588631843984},"dragging":false},{"id":"node_1746457268800","type":"customNode","position":{"x":486.51639731893613,"y":268.4781483348736},"data":{"label":"Disconnect","description":"Disconnect from remote system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{},"type":"connection"},"width":197,"height":72,"selected":false,"positionAbsolute":{"x":486.51639731893613,"y":268.4781483348736},"dragging":false},{"id":"node_1746675451839","type":"customNode","position":{"x":86.95568180743993,"y":256.64045981988784},"data":{"label":"Command","description":"Execute a command on connected system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{"command":"history"},"type":"connection"},"width":254,"height":72,"selected":false,"positionAbsolute":{"x":86.95568180743993,"y":256.64045981988784},"dragging":false},{"id":"node_1746675494240","type":"customNode","position":{"x":183.6359415317342,"y":514.3815006996826},"data":{"label":"Command","description":"Execute a command on connected system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{"command":"echo 'he he he'"},"type":"connection"},"width":254,"height":72,"selected":false,"positionAbsolute":{"x":183.6359415317342,"y":514.3815006996826},"dragging":false}],"edges":[{"source":"1","sourceHandle":"out-1","target":"node_1746457267935","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-1out-1-node_1746457267935in-1"},{"source":"node_1746457267935","sourceHandle":"out-1","target":"node_1746457268349","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1746457267935out-1-node_1746457268349in-1"},{"source":"node_1746457268349","sourceHandle":"out-1","target":"node_1746675451839","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1746457268349out-1-node_1746675451839in-1"},{"source":"node_1746675451839","sourceHandle":"out-1","target":"node_1746675494240","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1746675451839out-1-node_1746675494240in-1"},{"source":"node_1746675494240","sourceHandle":"out-1","target":"node_1746457268800","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1746675494240out-1-node_1746457268800in-1"}]},
+              "description": "",
+              "parameters": ["param1", "param2"],
+              "flow_runs": [
+                {
+                  "device_set_id": "set-1",
+                  "description": "",
+                  "args": "",
+                  "run_type": "manual"
+                }
+              ]
+            },
+            {
+              "version": "v2",
+              "structure": {"nodes":[{"id":"1","type":"customNode","position":{"x":-373.31446272667756,"y":-52.954166512593005},"data":{"label":"Start","type":"trigger","description":"Begins the workflow","inputs":[],"outputs":[{"id":"out-1","label":"Output"}],"config":{}},"width":180,"height":72,"selected":false,"positionAbsolute":{"x":-373.31446272667756,"y":-52.954166512593005},"dragging":false},{"id":"node_1747821891575","type":"customNode","position":{"x":-302.4056839997894,"y":56.41824857121611},"data":{"label":"Connect","description":"Connect to a remote system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{"connectionType":"ssh"},"type":"connection"},"width":180,"height":72,"selected":false,"positionAbsolute":{"x":-302.4056839997894,"y":56.41824857121611},"dragging":false},{"id":"node_1747821909863","type":"customNode","position":{"x":-232.67079483270626,"y":153.4637571618207},"data":{"label":"Command","description":"Execute a command on connected system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{"command":"ls -la"},"type":"connection"},"width":254,"height":72,"selected":false,"positionAbsolute":{"x":-232.67079483270626,"y":153.4637571618207},"dragging":false},{"id":"node_1747821920032","type":"customNode","position":{"x":88.97742203882012,"y":104.63249361200647},"data":{"label":"Decision","description":"Route based on multiple conditions","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"True"},{"id":"out-2","label":"False"}],"config":{"condition":"\"test_formica\" in \"\"\"{{ node_1747821909863[\"output\"] }}\"\"\""},"type":"operation"},"width":215,"height":72,"selected":false,"positionAbsolute":{"x":88.97742203882012,"y":104.63249361200647},"dragging":false},{"id":"node_1747821926568","type":"customNode","position":{"x":383.53443277568067,"y":44.538269089557275},"data":{"label":"Command","description":"Execute a command on connected system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{"command":"rm -rf test_formica"},"type":"connection"},"width":254,"height":72,"selected":false,"positionAbsolute":{"x":383.53443277568067,"y":44.538269089557275},"dragging":false},{"id":"node_1747821982361","type":"customNode","position":{"x":383.4118052540798,"y":161.14343919704493},"data":{"label":"Command","description":"Execute a command on connected system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{"command":"mkdir test_formica"},"type":"connection"},"width":254,"height":72,"selected":false,"positionAbsolute":{"x":383.4118052540798,"y":161.14343919704493},"dragging":false},{"id":"node_1747821995938","type":"customNode","position":{"x":698.7824542437704,"y":96.94711516849426},"data":{"label":"Disconnect","description":"Disconnect from remote system","inputs":[{"id":"in-1","label":"Input"}],"outputs":[{"id":"out-1","label":"Output"}],"config":{},"type":"connection"},"width":197,"height":72,"selected":false,"positionAbsolute":{"x":698.7824542437704,"y":96.94711516849426},"dragging":false}],"edges":[{"source":"1","sourceHandle":"out-1","target":"node_1747821891575","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-1out-1-node_1747821891575in-1"},{"source":"node_1747821891575","sourceHandle":"out-1","target":"node_1747821909863","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1747821891575out-1-node_1747821909863in-1"},{"source":"node_1747821909863","sourceHandle":"out-1","target":"node_1747821920032","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1747821909863out-1-node_1747821920032in-1"},{"source":"node_1747821920032","sourceHandle":"out-1","target":"node_1747821926568","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1747821920032out-1-node_1747821926568in-1"},{"source":"node_1747821920032","sourceHandle":"out-2","target":"node_1747821982361","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1747821920032out-2-node_1747821982361in-1"},{"source":"node_1747821926568","sourceHandle":"out-1","target":"node_1747821995938","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1747821926568out-1-node_1747821995938in-1"},{"source":"node_1747821982361","sourceHandle":"out-1","target":"node_1747821995938","targetHandle":"in-1","type":"smoothstep","animated":true,"id":"reactflow__edge-node_1747821982361out-1-node_1747821995938in-1"}]},
+              "description": "",
+              "parameters": ["param1", "param2"],
+              "flow_runs": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "email": "duc@mail.com",
+      "name": "Duc",
+      "password": "123",
+      "is_active": true,
+      "is_superuser": false,
+      "role": "operator",
+      "flows": []
+    },
+    {
+      "email": "quynh@mail.com",
+      "name": "Quynh",
+      "password": "123",
+      "is_active": true,
+      "is_superuser": false,
+      "role": "admin",
+      "flows": []
+    },
+    {
+      "email": "hoang@mail.com",
+      "name": "Hoang",
+      "password": "123",
+      "is_active": true,
+      "is_superuser": false,
+      "role": "admin",
+      "flows": []
+    }
+  ]
+}
