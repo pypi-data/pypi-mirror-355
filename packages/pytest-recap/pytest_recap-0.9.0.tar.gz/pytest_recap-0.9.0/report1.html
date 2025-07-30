@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pytest-recap Test Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+    th, td { border: 1px solid #ccc; padding: 0.5em; overflow-wrap: break-word; word-break: break-word; }
+    th { background: #f4f4f4; cursor: pointer; text-align: left; }
+    .test-title-cell { cursor: pointer; text-decoration: underline; color: #1976d2; width: 27em; min-width: 18em; }
+    .test-title-cell:hover { background: #f0f7ff; }
+    .col-outcome, .col-duration { width: 6em; min-width: 4em; }
+
+    .details-row td { max-width: 800px; word-break: break-word; }
+    .details-row pre { white-space: pre-wrap; word-break: break-word; max-width: 800px; overflow-x: auto; }
+    tr.passed { background: #e8f5e9; }
+    tr.failed { background: #ffebee; }
+    tr.skipped { background: #fff8e1; }
+    tr.error { background: #f3e5f5; }
+    tr.xfailed { background: #e3f2fd; }
+    tr.xpassed { background: #e0f7fa; }
+    tr.rerun { background: #eceff1; }
+    tr.unknown { background: #f5f5f5; }
+    .outcome-dot { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:6px; }
+    .expand-btn { cursor: pointer; color: #1976d2; text-decoration: underline; }
+    .details-row { display: none; background: #f9f9f9; }
+    .summary-stats { margin-bottom: 2em; }
+    .pie-chart-container { width: 320px; margin: 1em 0; }
+  </style>
+</head>
+<body>
+  <h1>pytest-recap Test Report</h1>
+  <div class="summary-stats" style="display: flex; align-items: flex-start; gap: 2em;">
+    <div>
+      <h2>Summary</h2>
+      <div style="margin-bottom: 0.5em; font-size: 1.1em;">
+        12 tests ran in 0.000 seconds (0s)
+      </div>
+      <ul>
+        <li><strong>Total:</strong> 12</li>
+        <li><span class="outcome-dot" style="background:#4CAF50"></span> <strong>Passed:</strong> 2</li>
+        <li><span class="outcome-dot" style="background:#F44336"></span> <strong>Failed:</strong> 2</li>
+        <li><span class="outcome-dot" style="background:#FF9800"></span> <strong>Skipped:</strong> 1</li>
+        <li><span class="outcome-dot" style="background:#9C27B0"></span> <strong>Error:</strong> 2</li>
+        <li><span class="outcome-dot" style="background:#2196F3"></span> <strong>XFailed:</strong> 2</li>
+        <li><span class="outcome-dot" style="background:#00BCD4"></span> <strong>XPassed:</strong> 1</li>
+        <li><span class="outcome-dot" style="background:#607D8B"></span> <strong>Rerun:</strong> 2</li>
+      </ul>
+    </div>
+    <div class="pie-chart-container">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+  <details>
+    <summary><strong>Session Metadata</strong></summary>
+    <ul>
+      <li><strong>Session start:</strong> 2025-05-28T05:47:14.637005+00:00</li>
+      <li><strong>Session stop:</strong> 2025-05-28T05:47:14.675832+00:00</li>
+      <li><strong>Duration:</strong> 0.000 seconds</li>
+      <li><strong>System Under Test:</strong> pytest-recap</li>
+      <li><strong>Host:</strong> GPYVQ4KGXY.local</li>
+      <li><strong>Platform:</strong> macOS-15.5-x86_64-i386-64bit</li>
+      <li><strong>Python:</strong> 3.9.16</li>
+      <li><strong>Pytest:</strong> 8.3.5</li>
+      <li><strong>Environment:</strong> test</li>
+    </ul>
+  </details>
+
+  <h2>Test Results</h2>
+  <div id="outcome-filters" style="margin-bottom: 1em;">
+    <strong>Show outcomes:</strong>
+    <label><input type="checkbox" id="filter-all" checked> All</label>
+    <label><input type="checkbox" class="filter-checkbox" value="passed" checked> Passed</label>
+    <label><input type="checkbox" class="filter-checkbox" value="failed" checked> Failed</label>
+    <label><input type="checkbox" class="filter-checkbox" value="skipped" checked> Skipped</label>
+    <label><input type="checkbox" class="filter-checkbox" value="error" checked> Error</label>
+    <label><input type="checkbox" class="filter-checkbox" value="xfailed" checked> XFailed</label>
+    <label><input type="checkbox" class="filter-checkbox" value="xpassed" checked> XPassed</label>
+    <label><input type="checkbox" class="filter-checkbox" value="rerun" checked> Rerun</label>
+    <label><input type="checkbox" class="filter-checkbox" value="unknown" checked> Unknown</label>
+  </div>
+  <table id="results-table">
+    <thead>
+    <tr>
+      <th>Test</th>
+      <th class="col-outcome">Outcome</th>
+      <th class="col-duration">Duration (s)</th>
+      <th>Start</th>
+      <th>Stop</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="failed">
+      <td class="test-title-cell" onclick="toggleDetails('details-0')">demo-tests/orig/test_0.py::test0_1_fail_capturing</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#F44336"></span>failed</td>
+      <td class="col-duration">0.001</td>
+      <td>2025-05-28T05:47:14.638547+00:00</td>
+      <td>2025-05-28T05:47:14.639152+00:00</td>
+    </tr>
+    <tr id="details-0" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>FAIL this stdout is captured
+FAIL this stdout is also captured
+</pre>
+        <strong>Captured stderr:</strong><pre>FAIL this stderr is captured
+FAIL this stderr is also captured
+</pre>
+        <strong>Captured log:</strong><pre>[32mINFO    [0m conftest:test_0.py:39 ​​​
+[33mWARNING [0m conftest:test_0.py:42 FAIL this log is captured
+[33mWARNING [0m conftest:test_0.py:46 FAIL is this log captured?
+[33mWARNING [0m conftest:test_0.py:49 FAIL this log is also captured
+[31mCRITICAL[0m conftest:test_0.py:50 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum;
+[1m[31mERROR   [0m conftest:test_0.py:51 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum;
+[32mINFO    [0m conftest:test_0.py:53 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum;</pre>
+        <strong>Error/Traceback:</strong><pre>capsys = <_pytest.capture.CaptureFixture object at 0x10c3071c0>
+fake_data = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, ...ariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum;'
+logger = <Logger conftest (DEBUG)>
+
+    def test0_1_fail_capturing(capsys, fake_data, logger):
+        logger.info(ZWS_X3)
+        print("FAIL this stdout is captured")
+        print("FAIL this stderr is captured", file=sys.stderr)
+        logger.warning("FAIL this log is captured")
+        with capsys.disabled():
+            print("FAIL stdout not captured, going directly to sys.stdout")
+            print("FAIL stderr not captured, going directly to sys.stderr", file=sys.stderr)
+            logger.warning("FAIL is this log captured?")
+        print("FAIL this stdout is also captured")
+        print("FAIL this stderr is also captured", file=sys.stderr)
+        logger.warning("FAIL this log is also captured")
+        logger.critical(fake_data)
+        logger.error(fake_data)
+        # logger.warning(fake_data)
+        logger.info(fake_data)
+        # logger.debug(fake_data)
+        # logger.info(ZWJ_X3)
+>       assert False
+E       assert False
+
+demo-tests/orig/test_0.py:56: AssertionError</pre>
+      </td>
+    </tr>
+    <tr class="failed">
+      <td class="test-title-cell" onclick="toggleDetails('details-1')">demo-tests/orig/test_0.py::test_always_rerun</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#F44336"></span>failed</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.675488+00:00</td>
+      <td>2025-05-28T05:47:14.675832+00:00</td>
+    </tr>
+    <tr id="details-1" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>tmp_path = PosixPath('/private/var/folders/pd/fvjgwfx97wb95q5t2k168sxr0000gn/T/pytest-of-jwr003/pytest-118/test_always_rerun2')
+
+    @pytest.mark.flaky(reruns=2)
+    def test_always_rerun(tmp_path):
+        state_file = tmp_path / "rerun_state.txt"
+        if not state_file.exists():
+            state_file.write_text("fail")
+>           assert False, "Fail first run"
+E           AssertionError: Fail first run
+E           assert False
+
+demo-tests/orig/test_0.py:144: AssertionError</pre>
+      </td>
+    </tr>
+    <tr class="error">
+      <td class="test-title-cell" onclick="toggleDetails('details-2')">demo-tests/orig/test_0.py::test0_warning</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#9C27B0"></span>error</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.654700+00:00</td>
+      <td>2025-05-28T05:47:14.654801+00:00</td>
+    </tr>
+    <tr id="details-2" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>file /Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py, line 122
+  def test0_warning(capstdlog):
+E       fixture 'capstdlog' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, doctest_namespace, error_fixture, fake_data, include_metadata_in_junit_xml, json_metadata, logger, metadata, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, random_sleep, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, test_data, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py:122</pre>
+      </td>
+    </tr>
+    <tr class="error">
+      <td class="test-title-cell" onclick="toggleDetails('details-3')">demo-tests/orig/test_0.py::test_flaky_3</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#9C27B0"></span>error</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.658394+00:00</td>
+      <td>2025-05-28T05:47:14.658502+00:00</td>
+    </tr>
+    <tr id="details-3" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>file /Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py, line 131
+  @pytest.mark.flaky(reruns=3)
+  def test_flaky_3(capstderr):
+E       fixture 'capstderr' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, doctest_namespace, error_fixture, fake_data, include_metadata_in_junit_xml, json_metadata, logger, metadata, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, random_sleep, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, test_data, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py:131</pre>
+      </td>
+    </tr>
+    <tr class="xfailed">
+      <td class="test-title-cell" onclick="toggleDetails('details-4')">demo-tests/orig/test_0.py::test0_xfail</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#2196F3"></span>xfailed</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.651410+00:00</td>
+      <td>2025-05-28T05:47:14.651561+00:00</td>
+    </tr>
+    <tr id="details-4" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>file /Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py, line 82
+  @pytest.mark.xfail()
+  def test0_xfail(logger, capstderr):
+E       fixture 'capstderr' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, doctest_namespace, error_fixture, fake_data, include_metadata_in_junit_xml, json_metadata, logger, metadata, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, random_sleep, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, test_data, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py:82</pre>
+      </td>
+    </tr>
+    <tr class="xfailed">
+      <td class="test-title-cell" onclick="toggleDetails('details-5')">demo-tests/orig/test_0.py::test0_xpass</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#2196F3"></span>xfailed</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.653573+00:00</td>
+      <td>2025-05-28T05:47:14.653733+00:00</td>
+    </tr>
+    <tr id="details-5" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>file /Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py, line 104
+  @pytest.mark.xfail()
+  def test0_xpass(logger, capstdout):
+E       fixture 'capstdout' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, doctest_namespace, error_fixture, fake_data, include_metadata_in_junit_xml, json_metadata, logger, metadata, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, random_sleep, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, test_data, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py:104</pre>
+      </td>
+    </tr>
+    <tr class="xpassed">
+      <td class="test-title-cell" onclick="toggleDetails('details-6')">demo-tests/orig/test_0.py::test0_xpass_demo</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#00BCD4"></span>xpassed</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.653101+00:00</td>
+      <td>2025-05-28T05:47:14.653214+00:00</td>
+    </tr>
+    <tr id="details-6" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="rerun">
+      <td class="test-title-cell" onclick="toggleDetails('details-7')">demo-tests/orig/test_0.py::test_always_rerun</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#607D8B"></span>rerun</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.666805+00:00</td>
+      <td>2025-05-28T05:47:14.667215+00:00</td>
+    </tr>
+    <tr id="details-7" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>tmp_path = PosixPath('/private/var/folders/pd/fvjgwfx97wb95q5t2k168sxr0000gn/T/pytest-of-jwr003/pytest-118/test_always_rerun0')
+
+    @pytest.mark.flaky(reruns=2)
+    def test_always_rerun(tmp_path):
+        state_file = tmp_path / "rerun_state.txt"
+        if not state_file.exists():
+            state_file.write_text("fail")
+>           assert False, "Fail first run"
+E           AssertionError: Fail first run
+E           assert False
+
+demo-tests/orig/test_0.py:144: AssertionError</pre>
+      </td>
+    </tr>
+    <tr class="rerun">
+      <td class="test-title-cell" onclick="toggleDetails('details-8')">demo-tests/orig/test_0.py::test_always_rerun</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#607D8B"></span>rerun</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.671333+00:00</td>
+      <td>2025-05-28T05:47:14.671757+00:00</td>
+    </tr>
+    <tr id="details-8" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>tmp_path = PosixPath('/private/var/folders/pd/fvjgwfx97wb95q5t2k168sxr0000gn/T/pytest-of-jwr003/pytest-118/test_always_rerun1')
+
+    @pytest.mark.flaky(reruns=2)
+    def test_always_rerun(tmp_path):
+        state_file = tmp_path / "rerun_state.txt"
+        if not state_file.exists():
+            state_file.write_text("fail")
+>           assert False, "Fail first run"
+E           AssertionError: Fail first run
+E           assert False
+
+demo-tests/orig/test_0.py:144: AssertionError</pre>
+      </td>
+    </tr>
+    <tr class="skipped">
+      <td class="test-title-cell" onclick="toggleDetails('details-9')">demo-tests/orig/test_0.py::test0_skip</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#FF9800"></span>skipped</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.650800+00:00</td>
+      <td>2025-05-28T05:47:14.650965+00:00</td>
+    </tr>
+    <tr id="details-9" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>('/Users/jwr003/coding/pytest-recap/demo-tests/orig/test_0.py', 74, 'Skipped: Skipping this test with decorator.')</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-10')">demo-tests/orig/test_0.py::test0_1_pass_capturing</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.001</td>
+      <td>2025-05-28T05:47:14.637005+00:00</td>
+      <td>2025-05-28T05:47:14.637661+00:00</td>
+    </tr>
+    <tr id="details-10" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>FAIL this stdout is captured
+FAIL this stdout is also captured
+</pre>
+        <strong>Captured stderr:</strong><pre>FAIL this stderr is captured
+FAIL this stderr is also captured
+</pre>
+        <strong>Captured log:</strong><pre>[32mINFO    [0m conftest:test_0.py:18 ​​​
+[33mWARNING [0m conftest:test_0.py:21 FAIL this log is captured
+[33mWARNING [0m conftest:test_0.py:25 FAIL is this log captured?
+[33mWARNING [0m conftest:test_0.py:28 FAIL this log is also captured
+[32mINFO    [0m conftest:test_0.py:32 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo;</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-11')">demo-tests/orig/test_0.py::test_with_warning</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.000</td>
+      <td>2025-05-28T05:47:14.650280+00:00</td>
+      <td>2025-05-28T05:47:14.650409+00:00</td>
+    </tr>
+    <tr id="details-11" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <script>
+    // Pie chart
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ["passed", "failed", "skipped", "xfailed", "xpassed", "error", "rerun"],
+        datasets: [{
+          data: [2, 2, 1, 2, 1, 2, 2],
+          backgroundColor: ["#4CAF50", "#F44336", "#FF9800", "#2196F3", "#00BCD4", "#9C27B0", "#607D8B"]
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+
+    // Expand/collapse details
+    function toggleDetails(rowId) {
+      var row = document.getElementById(rowId);
+      if (!row) return;
+      // Optionally, close others for clarity
+      document.querySelectorAll('.details-row').forEach(r => {
+        if (r.id !== rowId) r.style.display = 'none';
+      });
+      if (row.style.display === 'table-row') {
+        row.style.display = 'none';
+      } else {
+        row.style.display = 'table-row';
+      }
+    }
+
+    // Sortable table (click headers)
+    document.querySelectorAll('#results-table th').forEach((header, idx) => {
+      header.addEventListener('click', () => sortTable(idx));
+    });
+    function sortTable(colIdx) {
+      var table = document.getElementById('results-table');
+      var rows = Array.from(table.tBodies[0].rows).filter(r => !r.classList.contains('details-row'));
+      var detailsRows = Array.from(table.tBodies[0].rows).filter(r => r.classList.contains('details-row'));
+      rows.sort((a, b) => {
+        var aText = a.cells[colIdx].innerText;
+        var bText = b.cells[colIdx].innerText;
+        if (colIdx === 2) { // duration numeric
+          return parseFloat(bText) - parseFloat(aText);
+        }
+        return aText.localeCompare(bText);
+      });
+      // Remove all rows
+      while (table.tBodies[0].firstChild) table.tBodies[0].removeChild(table.tBodies[0].firstChild);
+      // Re-add in sorted order, pairing each data row with its details
+      for (const row of rows) {
+        table.tBodies[0].appendChild(row);
+        var rowId = row.querySelector('.expand-btn')?.getAttribute('onclick')?.match(/'([^']+)'/);
+        if (rowId) {
+          var details = document.getElementById(rowId[1]);
+          if (details) table.tBodies[0].appendChild(details);
+        }
+      }
+    }
+
+    // Outcome filter checkboxes
+    const allBox = document.getElementById('filter-all');
+    const filterBoxes = Array.from(document.querySelectorAll('.filter-checkbox'));
+    function updateAllBox() {
+      allBox.checked = filterBoxes.every(cb => cb.checked);
+      allBox.indeterminate = !allBox.checked && filterBoxes.some(cb => cb.checked);
+    }
+    allBox.addEventListener('change', function() {
+      filterBoxes.forEach(cb => { cb.checked = allBox.checked; });
+      filterRows();
+    });
+    filterBoxes.forEach(cb => {
+      cb.addEventListener('change', function() {
+        updateAllBox();
+        filterRows();
+      });
+    });
+    function filterRows() {
+      var show = {};
+      filterBoxes.forEach(box => { show[box.value] = box.checked; });
+      document.querySelectorAll('#results-table tbody tr').forEach(row => {
+        if (row.classList.contains('details-row')) {
+          var prev = row.previousElementSibling;
+          row.style.display = (prev && prev.style.display !== 'none') ? row.style.display : 'none';
+        } else {
+          row.style.display = show[row.className] ? '' : 'none';
+        }
+      });
+    }
+    updateAllBox(); // initialize
+    filterRows(); // initialize
+
+  </script>
+</body>
+</html>

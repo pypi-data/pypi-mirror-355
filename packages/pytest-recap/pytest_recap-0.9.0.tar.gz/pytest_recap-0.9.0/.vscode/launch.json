@@ -1,0 +1,43 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+            ],
+        },
+        {
+            "name": "Pytest -v tests",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/pytest",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "-v",
+                "${workspaceFolder}/tests/"
+            ]
+        },
+        {
+            "name": "Pytest --recap",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/pytest",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "subProcess": true,
+            "args": [
+                "-s",
+                "--recap", "--recap-pretty", "--recap-destination", "${workspaceFolder}/recap.json",
+                "demo-tests/orig/"
+            ]
+        }
+    ]
+}
