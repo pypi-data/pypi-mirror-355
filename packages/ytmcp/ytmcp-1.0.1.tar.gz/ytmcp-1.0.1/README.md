@@ -1,0 +1,400 @@
+# YTMcp - YouTube Transcript MCP Server
+
+[![PyPI version](https://badge.fury.io/py/ytmcp.svg)](https://badge.fury.io/py/ytmcp)
+[![Python Support](https://img.shields.io/pypi/pyversions/ytmcp.svg)](https://pypi.org/project/ytmcp/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A Model Context Protocol (MCP) server that enables AI assistants like Claude to fetch YouTube video transcripts with precise timestamps. Built on top of the excellent [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) by @jdepoix.
+
+## 🎯 Features
+
+- 🎥 **Fetch YouTube transcripts** with start/end timestamps
+- 🌍 **Multi-language support** with automatic fallback
+- ⏱️ **Time-range filtering** for specific video segments  
+- 📋 **List available languages** for any video
+- 🔍 **Smart URL parsing** - works with any YouTube URL format
+- 🤖 **MCP compatible** - works with Claude Desktop and other MCP clients
+- 🚀 **Zero external dependencies** - bundled with transcript API
+- 🛡️ **Comprehensive error handling** for robust operation
+
+## 📦 Installation
+
+```bash
+pip install ytmcp
+```
+
+## 🚀 Quick Start
+
+### 1. Run as MCP Server
+
+```bash
+ytmcp
+```
+
+The server will start and listen for MCP requests via stdio.
+
+### 2. Configure with Claude Desktop
+
+Add to your Claude Desktop configuration file:
+
+**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**Windows:** `%APPDATA%/Claude/claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "youtube-transcript": {
+      "command": "ytmcp"
+    }
+  }
+}
+```
+
+### 3. Test Installation
+
+```bash
+# Test the server functionality
+ytmcp --test
+
+# Test with a specific video
+ytmcp --test --video-id dQw4w9WgXcQ
+
+# Check version
+ytmcp --version
+```
+
+### 4. Use with Claude
+
+Once configured, you can ask Claude natural language questions like:
+
+- *"Get the transcript for this YouTube video: https://www.youtube.com/watch?v=dQw4w9WgXcQ"*
+- *"What transcript languages are available for this video?"*
+- *"Get me the transcript from 2:30 to 5:00 in this video"*
+- *"Summarize the key points from this YouTube video's transcript"*
+
+## 🛠️ Available Tools
+
+### `get_transcript`
+Fetch complete video transcript with timestamps.
+
+**Parameters:**
+- `video_url_or_id` (required): YouTube URL or video ID
+- `languages` (optional): Array of language codes in priority order (default: ["en"])
+- `preserve_formatting` (optional): Keep HTML formatting (default: false)
+- `include_timestamps` (optional): Include start/end times (default: true)
+
+**Example Usage:**
+```json
+{
+  "name": "get_transcript",
+  "arguments": {
+    "video_url_or_id": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "languages": ["en", "es"],
+    "include_timestamps": true
+  }
+}
+```
+
+**Example Response:**
+```json
+{
+  "video_id": "dQw4w9WgXcQ",
+  "language": "English",
+  "language_code": "en",
+  "is_generated": true,
+  "transcript_count": 142,
+  "transcript": [
+    {
+      "text": "We're no strangers to love",
+      "start": 15.5,
+      "duration": 2.3,
+      "end": 17.8
+    },
+    {
+      "text": "You know the rules and so do I",
+      "start": 17.8,
+      "duration": 2.1,
+      "end": 19.9
+    }
+  ]
+}
+```
+
+### `list_available_transcripts`
+List all available transcript languages for a video.
+
+**Parameters:**
+- `video_url_or_id` (required): YouTube URL or video ID
+
+**Example Usage:**
+```json
+{
+  "name": "list_available_transcripts",
+  "arguments": {
+    "video_url_or_id": "dQw4w9WgXcQ"
+  }
+}
+```
+
+**Example Response:**
+```json
+{
+  "video_id": "dQw4w9WgXcQ",
+  "manually_created_transcripts": [
+    {
+      "language": "English",
+      "language_code": "en",
+      "is_translatable": true
+    }
+  ],
+  "auto_generated_transcripts": [
+    {
+      "language": "English (auto-generated)",
+      "language_code": "en",
+      "is_translatable": true
+    }
+  ],
+  "total_transcripts": 2
+}
+```
+
+### `get_transcript_with_time_range`
+Get transcript for specific time range.
+
+**Parameters:**
+- `video_url_or_id` (required): YouTube URL or video ID
+- `start_time` (required): Start time in seconds
+- `end_time` (required): End time in seconds
+- `languages` (optional): Language preferences (default: ["en"])
+- `preserve_formatting` (optional): Keep HTML formatting (default: false)
+
+**Example Usage:**
+```json
+{
+  "name": "get_transcript_with_time_range",
+  "arguments": {
+    "video_url_or_id": "dQw4w9WgXcQ",
+    "start_time": 30.0,
+    "end_time": 90.0,
+    "languages": ["en"]
+  }
+}
+```
+
+**Example Response:**
+```json
+{
+  "video_id": "dQw4w9WgXcQ",
+  "language": "English",
+  "language_code": "en",
+  "is_generated": true,
+  "time_range": {
+    "start": 30.0,
+    "end": 90.0
+  },
+  "filtered_transcript": [
+    {
+      "text": "Never gonna give you up",
+      "start": 32.1,
+      "duration": 1.8,
+      "end": 33.9
+    }
+  ],
+  "snippet_count": 15
+}
+```
+
+## 🔧 Configuration Options
+
+### Language Codes
+YTMcp supports all language codes that YouTube provides. Common ones include:
+
+- `en` - English
+- `es` - Spanish  
+- `fr` - French
+- `de` - German
+- `it` - Italian
+- `pt` - Portuguese
+- `ru` - Russian
+- `ja` - Japanese
+- `ko` - Korean
+- `zh` - Chinese
+
+### URL Format Support
+YTMcp automatically extracts video IDs from various YouTube URL formats:
+
+- `https://www.youtube.com/watch?v=VIDEO_ID`
+- `https://youtu.be/VIDEO_ID`
+- `https://www.youtube.com/embed/VIDEO_ID`
+- `https://www.youtube.com/watch?v=VIDEO_ID&t=120s`
+- Or just the video ID directly: `VIDEO_ID`
+
+## ⚠️ Error Handling
+
+YTMcp provides comprehensive error handling for various scenarios:
+
+### Common Error Types
+- **Invalid Video ID**: Invalid URL or video ID format
+- **No Transcript Found**: No transcripts available in requested languages
+- **Transcripts Disabled**: Video has disabled subtitles/captions
+- **Video Unavailable**: Video is private, deleted, or restricted
+- **Request Blocked**: IP blocked by YouTube (consider using proxies)
+- **Age Restricted**: Video requires authentication
+
+### Error Response Format
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Error: No transcript found for languages: ['de']"
+    }
+  ]
+}
+```
+
+## 🔄 Advanced Usage
+
+### Running as Python Module
+```bash
+python -m ytmcp
+```
+
+### Development Mode
+```bash
+# Install in development mode
+pip install -e .
+
+# Run tests
+ytmcp --test
+
+# Test with verbose output
+ytmcp --test --video-id dQw4w9WgXcQ
+```
+
+### Proxy Support
+If you encounter IP blocking issues, you can extend the server by modifying the YouTube API configuration to use proxies. See the [youtube-transcript-api documentation](https://github.com/jdepoix/youtube-transcript-api) for proxy configuration options.
+
+## 📚 Use Cases
+
+### Content Analysis
+- **Video Summarization**: Extract transcripts for AI-powered summaries
+- **Content Research**: Analyze video content programmatically
+- **Educational Tools**: Create study materials from lecture videos
+
+### Accessibility
+- **Transcript Generation**: Provide text alternatives for video content
+- **Translation**: Use with translation APIs for multilingual access
+- **Search & Discovery**: Make video content searchable
+
+### Development
+- **API Integration**: Embed transcript functionality in applications
+- **Data Pipeline**: Process video transcripts in bulk
+- **AI Training**: Use transcripts as training data
+
+## 🐛 Troubleshooting
+
+### Installation Issues
+```bash
+# If you get import errors
+pip install --upgrade ytmcp
+
+# If command not found
+pip install --force-reinstall ytmcp
+
+# Check installation
+ytmcp --version
+```
+
+### Common Problems
+
+**1. Video Not Found**
+- Verify the video ID/URL is correct
+- Check if the video is public and available
+- Ensure the video has captions enabled
+
+**2. Language Not Available**
+- Use `list_available_transcripts` to see available languages
+- Try fallback languages like `["en", "auto"]`
+- Some videos only have auto-generated transcripts
+
+**3. Rate Limiting**
+- YouTube may temporarily block requests from your IP
+- Consider using proxy configuration for high-volume usage
+- Space out your requests to avoid hitting rate limits
+
+**4. Permission Errors**
+- Check file permissions if running on Unix systems
+- Ensure Python has permission to execute the script
+- Try running with appropriate user privileges
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+### Development Setup
+```bash
+git clone https://github.com/shubhamshnd/ytmcp.git
+cd ytmcp
+pip install -e ".[dev]"
+```
+
+### Running Tests
+```bash
+pytest tests/
+```
+
+### Code Style
+```bash
+black ytmcp/
+flake8 ytmcp/
+mypy ytmcp/
+```
+
+### Submitting Changes
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Credits
+
+This project is built on top of the excellent [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) by [@jdepoix](https://github.com/jdepoix). All core transcript fetching functionality is provided by this library.
+
+**Key Dependencies:**
+- **[youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api)** - Core YouTube transcript fetching (bundled)
+- **[requests](https://requests.readthedocs.io/)** - HTTP library for API calls
+- **[defusedxml](https://github.com/tiran/defusedxml)** - Secure XML parsing
+
+## 🔗 Related Projects
+
+- **[Model Context Protocol](https://modelcontextprotocol.io/)** - The protocol specification
+- **[Claude Desktop](https://claude.ai/)** - AI assistant that supports MCP
+- **[youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api)** - Original transcript API
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/shubhamshnd/ytmcp/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/shubhamshnd/ytmcp/discussions)
+- **Documentation**: [README](https://github.com/shubhamshnd/ytmcp#readme)
+
+## 🚀 Roadmap
+
+- [ ] **Translation Support**: Automatic transcript translation
+- [ ] **Batch Processing**: Handle multiple videos simultaneously  
+- [ ] **Caching**: Cache transcripts for improved performance
+- [ ] **WebSocket Support**: Real-time transcript streaming
+- [ ] **Export Formats**: SRT, VTT, and other subtitle formats
+- [ ] **Search**: Full-text search within transcripts
+- [ ] **Webhooks**: Notification system for transcript updates
+
+---
+
+**Made with ❤️ for the MCP and AI community**
+
+*If you find this project useful, please consider giving it a ⭐ on GitHub!*
