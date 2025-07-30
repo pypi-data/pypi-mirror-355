@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "datadock"
+version = "0.1.2"
+description = "Datadock is a PySpark-based data interoperability library. It automatically detects schemas from heterogeneous files (CSV, JSON, Parquet), groups them by structural similarity, and performs standardized batch reads. Designed for pipelines handling non-uniform large-scale data, enabling robust integration and reuse in distributed environments."
+authors = ["Otavio Oliveira <datadock.sup@gmail.com>"]
+readme = "README.md"
+packages = [{include = "datadock", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyspark = "^3.5.5"
+loguru = "^0.7.3"
+pyarrow = "^20.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+black = "^25.1.0"
+mypy = "^1.15.0"
+flake8 = "^7.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
