@@ -1,0 +1,54 @@
+name: Run checks
+run-name: Triggered on push from ${{ github.actor }} to branch/tag ${{ github.ref_name }}
+on: push
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: pre-commit/action@v3.0.1
+  test:
+    name: Create project environment, run all checks
+    needs:
+      - validate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.12"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca # v6
+        with:
+          version: "latest"
+
+      - name: Create project environment
+        run: uv sync
+
+      - name: Install IPFS
+        uses: oduwsdl/setup-ipfs@e92fedca9f61ab9184cb74940254859f4d7af4d9 # v0.6.3
+        with:
+          ipfs_version: "0.35.0"
+          run_daemon: true
+
+      - name: Run pytest with coverage
+        run: uv run pytest --ipfs --cov=py_hamt tests/ --cov-report=xml -s
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Check coverage
+        run: uv run coverage report --fail-under=100 --show-missing
