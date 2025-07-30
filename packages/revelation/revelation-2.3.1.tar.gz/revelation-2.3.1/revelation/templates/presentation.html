@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- Metadata about the presentation -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>{{ meta.title }}</title>
+
+    <meta name="description" content="{{ meta.description }}">
+    <meta name="author" content="{{ meta.author }}">
+
+    <!-- Presentation Styles -->
+    <link rel="stylesheet" href="static/revealjs/dist/reset.css">
+    <link rel="stylesheet" href="static/revealjs/dist/reveal.css">
+
+    {% for name, plugin in plugins.items() %}
+    {%   for style in plugin.styles |d([]) %}
+    <!-- Plugin Style {{name}} -->
+        <link rel="stylesheet" href="static/revealjs/plugin/{{ style }}" id="plugin-style-{{name}}">
+    {%   endfor %}
+    {% endfor %}
+
+    {% if theme %}
+    <!-- Theme Style -->
+      <link rel="stylesheet" href="{{ theme }}" id="theme">
+    {% endif %}
+
+    {% if style %}
+    <!-- Custom Style -->
+      <link rel="stylesheet" href="{{ style }}" id="style">
+    {% endif %}
+  </head>
+
+  <body>
+    <!-- Presentation body -->
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        {% for section in slides %}
+          {% if section|length > 1 %}
+            <section>
+              {% for slide in section %}
+                <section data-markdown>
+                  <textarea data-template>
+                    {{ slide|safe }}
+                  </textarea>
+                </section>
+              {% endfor %}
+            </section>
+          {% else %}
+            {% for slide in section %}
+              <section data-markdown>
+                <textarea data-template>
+                  {{ slide|safe }}
+                </textarea>
+              </section>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+    </div>
+
+    <!-- Reveal.js script -->
+    <script src="static/revealjs/dist/reveal.js"></script>
+
+    {% for name, plugin in plugins.items() %}
+    <!-- Reveal.js plugin {{name}} -->
+    {%   for script in plugin.scripts |d([]) %}
+    <script src="static/revealjs/plugin/{{ script }}"></script>
+    {%   endfor %}
+    {% endfor %}
+
+    <script>
+      Reveal.initialize({
+    {% for name, plugin in plugins.items() %}
+        // Config for {{ name }}
+    {%   for k,v in (plugin.config |d({})).items() %}
+        {{ k }}: {{ v|tojson }},
+    {%   endfor %}
+    {% endfor %}
+        plugins: [
+    {% for plugin in plugins.values() %}
+    {%   if plugin.initialize_as |d(False) %}
+            // Enabled by {{ name }}
+            {{ plugin.initialize_as }}{{ "," if not loop.last else "" }}
+    {%   endif %}
+    {% endfor %}
+        ]
+      });
+
+      Reveal.configure({{ config|tojson }});
+    </script>
+  </body>
+</html>
