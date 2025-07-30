@@ -1,0 +1,132 @@
+[1m================================================= test session starts ==================================================[0m
+platform darwin -- Python 3.9.16, pytest-7.4.4, pluggy-1.5.0 -- /Users/jwr003/coding/pytest-recap/.venv/bin/python3
+cachedir: .pytest_cache
+metadata: {'Python': '3.9.16', 'Platform': 'macOS-15.5-x86_64-i386-64bit', 'Packages': {'pytest': '7.4.4', 'pluggy': '1.5.0'}, 'Plugins': {'Faker': '18.3.1', 'json-report': '1.5.0', 'recap': '0.9.1', 'rerunfailures': '15.0', 'metadata': '2.0.4', 'tui': '2.1.0', 'mock': '3.14.0', 'cov': '6.1.1'}, 'JAVA_HOME': '/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home'}
+rootdir: /Users/jwr003/coding/pytest-recap
+configfile: pyproject.toml
+plugins: Faker-18.3.1, json-report-1.5.0, recap-0.9.1, rerunfailures-15.0, metadata-2.0.4, tui-2.1.0, mock-3.14.0, cov-6.1.1
+[1mcollecting ... 
+[0m[1mcollected 10 items                                                                                                     [0m
+
+demo-tests/test_realistic_minimal.py::test_pass [32mPASSED[0m[32m                                                           [ 10%][0m
+demo-tests/test_realistic_minimal.py::test_fail [31mFAILED[0m[31m                                                           [ 20%][0m
+demo-tests/test_realistic_minimal.py::test_skip [33mSKIPPED[0m (demonstrate skip)[31m                                       [ 30%][0m
+demo-tests/test_realistic_minimal.py::test_xfail [33mXFAIL[0m (expected fail)[31m                                           [ 40%][0m
+demo-tests/test_realistic_minimal.py::test_xpass [33mXPASS[0m (unexpected pass)[31m                                         [ 50%][0m
+demo-tests/test_realistic_minimal.py::test_rerun [33mRERUN[0m[31m                                                           [ 60%][0m
+demo-tests/test_realistic_minimal.py::test_rerun [32mPASSED[0m[31m                                                          [ 60%][0m
+demo-tests/test_realistic_minimal.py::test_error [31mERROR[0m[31m                                                           [ 70%][0m
+demo-tests/test_realistic_minimal.py::test_warning [32mPASSED[0m[31m                                                        [ 80%][0m
+demo-tests/test_realistic_minimal.py::test_long_output [32mPASSED[0m[31m                                                    [ 90%][0m
+demo-tests/test_realistic_minimal.py::test_stdout_stderr [32mPASSED[0m[31m                                                  [100%][0m
+
+======================================================== ERRORS ========================================================
+[31m[1m_____________________________________________ ERROR at setup of test_error _____________________________________________[0m
+file /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py, line 59
+  def test_error(error_fixture):
+file /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py, line 55
+  @pytest.fixture
+  def error_fixture(logger):
+[31mE       fixture 'logger' not found[0m
+[31m>       available fixtures: _session_faker, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, doctest_namespace, error_fixture, faker, include_metadata_in_junit_xml, json_metadata, metadata, mocker, module_mocker, monkeypatch, no_cover, noisy_fixture, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory[0m
+[31m>       use 'pytest --fixtures [testpath]' for help on them.[0m
+
+/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:55
+======================================================= FAILURES =======================================================
+[31m[1m______________________________________________________ test_fail _______________________________________________________[0m
+
+noisy_fixture = None
+
+    [94mdef[39;49;00m[90m [39;49;00m[92mtest_fail[39;49;00m(noisy_fixture):[90m[39;49;00m
+        [96mprint[39;49;00m([33m"[39;49;00m[33mfailing stdout[39;49;00m[33m"[39;49;00m)[90m[39;49;00m
+        logger.info([33m"[39;49;00m[33mfailing log[39;49;00m[33m"[39;49;00m)[90m[39;49;00m
+        warnings.warn([33m"[39;49;00m[33mfailing warning[39;49;00m[33m"[39;49;00m, [96mUserWarning[39;49;00m)[90m[39;49;00m
+        time.sleep([94m0.3[39;49;00m)[90m[39;49;00m
+>       [94massert[39;49;00m [94mFalse[39;49;00m, [33m"[39;49;00m[33mIntentional failure[39;49;00m[33m"[39;49;00m[90m[39;49;00m
+[1m[31mE       AssertionError: Intentional failure[0m
+[1m[31mE       assert False[0m
+
+[1m[31mdemo-tests/test_realistic_minimal.py[0m:29: AssertionError
+------------------------------------------------ Captured stdout setup -------------------------------------------------
+fixture stdout
+------------------------------------------------- Captured stdout call -------------------------------------------------
+failing stdout
+----------------------------------------------- Captured stdout teardown -----------------------------------------------
+teardown stdout
+[33m=================================================== warnings summary ===================================================[0m
+demo-tests/test_realistic_minimal.py::test_pass
+demo-tests/test_realistic_minimal.py::test_fail
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:12: UserWarning: fixture warning
+    warnings.warn("fixture warning", UserWarning)
+
+demo-tests/test_realistic_minimal.py::test_pass
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:20: UserWarning: passing warning
+    warnings.warn("passing warning", UserWarning)
+
+demo-tests/test_realistic_minimal.py::test_fail
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:27: UserWarning: failing warning
+    warnings.warn("failing warning", UserWarning)
+
+demo-tests/test_realistic_minimal.py::test_warning
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:67: UserWarning: explicit test warning
+    warnings.warn("explicit test warning", UserWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================================================== PASSES ========================================================
+[32m[1m______________________________________________________ test_pass _______________________________________________________[0m
+------------------------------------------------ Captured stdout setup -------------------------------------------------
+fixture stdout
+------------------------------------------------- Captured stdout call -------------------------------------------------
+passing stdout
+----------------------------------------------- Captured stdout teardown -----------------------------------------------
+teardown stdout
+[32m[1m___________________________________________________ test_long_output ___________________________________________________[0m
+------------------------------------------------- Captured stdout call -------------------------------------------------
+Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...
+-------------------------------------------------- Captured log call ---------------------------------------------------
+[33mWARNING [0m demo:test_realistic_minimal.py:71 Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...
+[32m[1m__________________________________________________ test_stdout_stderr __________________________________________________[0m
+------------------------------------------------- Captured stdout call -------------------------------------------------
+some stdout
+------------------------------------------------- Captured stderr call -------------------------------------------------
+some stderr
+--------------------------- generated xml file: /Users/jwr003/coding/pytest-recap/report.xml ---------------------------
+----------------------------------------------------- JSON report ------------------------------------------------------
+report saved to: report.json
+==================================================== tests coverage ====================================================
+___________________________________ coverage: platform darwin, python 3.9.16-final-0 ___________________________________
+
+Name                       Stmts   Miss  Cover   Missing
+--------------------------------------------------------
+pytest_recap/__init__.py       0      0   100%
+pytest_recap/cloud.py         37     37     0%   1-49
+pytest_recap/models.py       166    166     0%   1-439
+pytest_recap/plugin.py       212    198     7%   1-90, 102, 108-109, 117-118, 121-125, 147-320, 328-514
+pytest_recap/storage.py       72     72     0%   1-133
+--------------------------------------------------------
+TOTAL                        487    473     3%
+Coverage HTML written to dir htmlcov
+=============================================== rerun test summary info ================================================
+RERUN demo-tests/test_realistic_minimal.py::test_rerun
+---------------------------------------- Recap: 5 warnings, 0 errors collected -----------------------------------------
+
+Warnings:
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:12 [UserWarning] fixture warning
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:20 [UserWarning] passing warning
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:12 [UserWarning] fixture warning
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:27 [UserWarning] failing warning
+  /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:67 [UserWarning] explicit test warning
+===================================================== pytest-recap =====================================================
+Recap JSON written to: [34m/Users/jwr003/coding/pytest-recap/recap.json[0m
+[36m[1m=============================================== short test summary info ================================================[0m
+[32mPASSED[0m demo-tests/test_realistic_minimal.py::[1mtest_pass[0m
+[32mPASSED[0m demo-tests/test_realistic_minimal.py::[1mtest_rerun[0m
+[32mPASSED[0m demo-tests/test_realistic_minimal.py::[1mtest_warning[0m
+[32mPASSED[0m demo-tests/test_realistic_minimal.py::[1mtest_long_output[0m
+[32mPASSED[0m demo-tests/test_realistic_minimal.py::[1mtest_stdout_stderr[0m
+[33mSKIPPED[0m [1] demo-tests/test_realistic_minimal.py:31: demonstrate skip
+[33mXFAIL[0m demo-tests/test_realistic_minimal.py::[1mtest_xfail[0m - expected fail
+[33mXPASS[0m demo-tests/test_realistic_minimal.py::[1mtest_xpass[0m unexpected pass
+[31mERROR[0m demo-tests/test_realistic_minimal.py::[1mtest_error[0m
+[31mFAILED[0m demo-tests/test_realistic_minimal.py::[1mtest_fail[0m - AssertionError: Intentional failure
+[31m============== [31m[1m1 failed[0m, [32m5 passed[0m, [33m1 skipped[0m, [33m1 xfailed[0m, [33m1 xpassed[0m, [33m5 warnings[0m, [31m[1m1 error[0m, [33m1 rerun[0m[31m in 2.03s[0m[31m ==============[0m

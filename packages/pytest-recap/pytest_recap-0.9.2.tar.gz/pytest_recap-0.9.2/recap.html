@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pytest-recap Test Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+    th, td { border: 1px solid #ccc; padding: 0.5em; overflow-wrap: break-word; word-break: break-word; }
+    th { background: #f4f4f4; cursor: pointer; text-align: left; }
+    .test-title-cell { cursor: pointer; text-decoration: underline; color: #1976d2; width: 27em; min-width: 18em; }
+    .test-title-cell:hover { background: #f0f7ff; }
+    .col-outcome, .col-duration { width: 6em; min-width: 4em; }
+    .details-row td { max-width: none; word-break: break-word; }
+    .details-row pre { white-space: pre-wrap; word-break: break-word; max-width: none; overflow-x: auto; }
+    tr.passed  {}
+    tr.failed  {}
+    tr.skipped {}
+    tr.error   {}
+    tr.xfailed {}
+    tr.xpassed {}
+    tr.rerun   {}
+    /* tr.unknown {} */
+    .outcome-dot { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:6px; }
+    .expand-btn { cursor: pointer; color: #1976d2; text-decoration: underline; }
+    .details-row { display: none; background: #f9f9f9; }
+    .summary-stats { margin-bottom: 2em; }
+    .pie-chart-container { width: 320px; margin: 1em 0; }
+  </style>
+</head>
+<body>
+  <h1>pytest-recap Test Report</h1>
+  <div class="summary-stats" style="display: flex; align-items: flex-start; gap: 2em;">
+    <div>
+      <h2>Summary</h2>
+      <div style="margin-bottom: 0.5em; font-size: 1.1em;">
+        11 tests ran in 1.481359s
+      </div>
+      <ul>
+        
+          
+            <li><span class="outcome-dot" style="background:#aed581"></span> <strong>Passed:</strong> 5 (45%)</li>
+          
+        
+          
+            <li><span class="outcome-dot" style="background:#ef9a9a"></span> <strong>Failed:</strong> 1 (9%)</li>
+          
+        
+          
+            <li><span class="outcome-dot" style="background:#ffcc80"></span> <strong>Skipped:</strong> 1 (9%)</li>
+          
+        
+          
+            <li><span class="outcome-dot" style="background:#ce93d8"></span> <strong>Error:</strong> 1 (9%)</li>
+          
+        
+          
+            <li><span class="outcome-dot" style="background:#90caf9"></span> <strong>Xfailed:</strong> 1 (9%)</li>
+          
+        
+          
+            <li><span class="outcome-dot" style="background:#80deea"></span> <strong>Xpassed:</strong> 1 (9%)</li>
+          
+        
+          
+            <li><span class="outcome-dot" style="background:#b0bec5"></span> <strong>Rerun:</strong> 1 (9%)</li>
+          
+        
+          
+        
+      </ul>
+    </div>
+    <div class="pie-chart-container">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+
+  <details>
+    <summary><strong>Session Metadata</strong></summary>
+    <ul>
+      <li><strong>Session start:</strong> 2025-06-04T21:35:08.678943+00:00</li>
+      <li><strong>Session stop:</strong> 2025-06-04T21:35:10.160302+00:00</li>
+      <li><strong>Duration:</strong> 1.481359s</li>
+      <li><strong>System Under Test:</strong> pytest-recap</li>
+      <li><strong>Host:</strong> GPYVQ4KGXY.local</li>
+      <li><strong>Platform:</strong> macOS-15.5-x86_64-i386-64bit</li>
+      <li><strong>Python:</strong> 3.9.16</li>
+      <li><strong>Pytest:</strong> 7.4.4</li>
+      <li><strong>Environment:</strong> test</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary><strong>Warnings (5)</strong></summary>
+    
+    <table id="warnings-table" class="sortable">
+      <thead>
+        <tr>
+          <th>Test Node Id</th>
+          <th>When</th>
+          <th>Category</th>
+          <th>Filename</th>
+          <th>Line</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        
+        <tr>
+          <td>demo-tests/test_realistic_minimal.py::test_pass</td>
+          <td>runtest</td>
+          <td>UserWarning</td>
+          <td>/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py</td>
+          <td>12</td>
+          <td>fixture warning</td>
+        </tr>
+        
+        <tr>
+          <td>demo-tests/test_realistic_minimal.py::test_pass</td>
+          <td>runtest</td>
+          <td>UserWarning</td>
+          <td>/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py</td>
+          <td>20</td>
+          <td>passing warning</td>
+        </tr>
+        
+        <tr>
+          <td>demo-tests/test_realistic_minimal.py::test_fail</td>
+          <td>runtest</td>
+          <td>UserWarning</td>
+          <td>/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py</td>
+          <td>12</td>
+          <td>fixture warning</td>
+        </tr>
+        
+        <tr>
+          <td>demo-tests/test_realistic_minimal.py::test_fail</td>
+          <td>runtest</td>
+          <td>UserWarning</td>
+          <td>/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py</td>
+          <td>27</td>
+          <td>failing warning</td>
+        </tr>
+        
+        <tr>
+          <td>demo-tests/test_realistic_minimal.py::test_warning</td>
+          <td>runtest</td>
+          <td>UserWarning</td>
+          <td>/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py</td>
+          <td>67</td>
+          <td>explicit test warning</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    <script>
+      // Make Warnings table sortable by any column
+      document.addEventListener("DOMContentLoaded", function () {
+        var table = document.getElementById("warnings-table");
+        if (!table) return;
+        var thead = table.querySelector("thead");
+        thead.addEventListener("click", function (e) {
+          const th = e.target.closest("th");
+          if (!th) return;
+          const tbody = table.querySelector("tbody");
+          const colIndex = Array.from(th.parentNode.children).indexOf(th);
+          const rows = Array.from(tbody.querySelectorAll("tr:not(.details-row)"));
+          const isNumeric = !isNaN(rows[0].cells[colIndex]?.innerText.trim());
+          const sorted = rows.sort((a, b) => {
+            const aVal = a.cells[colIndex].innerText.trim();
+            const bVal = b.cells[colIndex].innerText.trim();
+            return isNumeric
+              ? parseFloat(aVal) - parseFloat(bVal)
+              : aVal.localeCompare(bVal);
+          });
+          tbody.innerHTML = "";
+          sorted.forEach((row) => tbody.appendChild(row));
+        });
+      });
+    </script>
+    
+  </details>
+
+  <details>
+    <summary><strong>Errors (1)</strong></summary>
+    
+    <table id="errors-table" class="sortable">
+      <thead>
+        <tr>
+          <th>Test Node Id</th>
+          <th>When</th>
+          <th>Outcome</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>demo-tests/test_realistic_minimal.py::test_error</td>
+          <td>setup</td>
+          <td>failed</td>
+          <td>@pytest.fixture
+    def error_fixture():
+>       raise Exception("Error in fixture")
+E       Exception: Error in fixture
+
+demo-tests/test_realistic_minimal.py:57: Exception</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    <script>
+      // Make Errors table sortable by any column
+      document.addEventListener("DOMContentLoaded", function () {
+        var table = document.getElementById("errors-table");
+        if (!table) return;
+        var thead = table.querySelector("thead");
+        var lastSort = { col: null, dir: 1 };
+        thead.addEventListener("click", function (e) {
+          const th = e.target.closest("th");
+          if (!th) return;
+          const colIndex = Array.from(th.parentNode.children).indexOf(th);
+          const tbody = table.querySelector("tbody");
+          const rows = Array.from(tbody.querySelectorAll("tr:not(.details-row)"));
+          const isNumeric = rows.every(row => !isNaN(row.cells[colIndex]?.innerText.trim()));
+          lastSort.dir = (lastSort.col === colIndex) ? -lastSort.dir : 1;
+          lastSort.col = colIndex;
+          const sorted = rows.sort((a, b) => {
+            const aVal = a.cells[colIndex].innerText.trim();
+            const bVal = b.cells[colIndex].innerText.trim();
+            if (isNumeric) {
+              return lastSort.dir * (parseFloat(aVal) - parseFloat(bVal));
+            } else {
+              return lastSort.dir * aVal.localeCompare(bVal);
+            }
+          });
+          tbody.innerHTML = "";
+          sorted.forEach(row => tbody.appendChild(row));
+        });
+      });
+    </script>
+    
+  </details>
+
+  <details class="rerun-group">
+    <summary><strong>Rerun Test Groups (1)</strong></summary>
+    
+      <style>
+        table.rerun-groups th {
+          cursor: pointer;
+        }
+
+        .outcome-passed  { background-color: #e6f4e6; }
+        .outcome-failed  { background-color: #fdd; }
+        .outcome-skipped { background-color: #fff4e0; }
+        .outcome-error   { background-color: #f3e6f7; }
+        .outcome-xfailed { background-color: #e5f2fd; }
+        .outcome-xpassed { background-color: #ddf8f9; }
+        .outcome-rerun   { background-color: #eef0f1; }
+        .outcome-unknown { background-color: #e9e9e9; }
+
+        .narrow-col {
+          min-width: 70px;
+          white-space: nowrap;
+        }
+
+        .group-header {
+          background-color: #f0f0f0;
+          border-top: 2px solid #999;
+        }
+      </style>
+
+      <table class="rerun-groups" style="width: 100%; border-collapse: collapse; margin-top: 1em; font-size: 0.95em;">
+        <thead>
+          <tr style="border-bottom: 2px solid #000;">
+            <th>Test Node ID</th>
+            <th class="narrow-col">#</th>
+            <th class="narrow-col">Duration (s)</th>
+            <th class="narrow-col">Start Time</th>
+            <th class="narrow-col">Stop Time</th>
+            <th>Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr class="group-header">
+              <td colspan="6">demo-tests/test_realistic_minimal.py::test_rerun (2 runs)</td>
+            </tr>
+            
+            <tr class="test-row outcome-rerun">
+              <td>demo-tests/test_realistic_minimal.py::test_rerun</td>
+              <td>1</td>
+              <td>0.105344</td>
+              <td>2025-06-04 21:35:09.530000+00:00</td>
+              <td>2025-06-04 21:35:09.635344+00:00</td>
+              <td>RERUN</td>
+            </tr>
+            
+            <tr class="test-row outcome-passed">
+              <td>demo-tests/test_realistic_minimal.py::test_rerun</td>
+              <td>2</td>
+              <td>0.105125</td>
+              <td>2025-06-04 21:35:09.638332+00:00</td>
+              <td>2025-06-04 21:35:09.743457+00:00</td>
+              <td>PASSED</td>
+            </tr>
+            
+          
+        </tbody>
+      </table>
+    
+  </details>
+
+
+  <h2>Test Results</h2>
+  <table id="results-table" class="sortable">
+    <thead>
+      <tr><th>Test</th><th class="col-outcome">Outcome</th><th class="col-duration">Duration</th><th>Start</th><th>Stop</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      <tr class="error">
+        <td class="test-title-cell" onclick="toggleDetails('details-0')">demo-tests/test_realistic_minimal.py::test_error</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#ce93d8"></span>error</td>
+        <td class="col-duration">0.000191s</td>
+        <td>2025-06-04T21:35:09.744115+00:00</td>
+        <td>2025-06-04T21:35:09.744306+00:00</td>
+      </tr>
+      <tr id="details-0" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>@pytest.fixture
+    def error_fixture():
+>       raise Exception("Error in fixture")
+E       Exception: Error in fixture
+
+demo-tests/test_realistic_minimal.py:57: Exception</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="failed">
+        <td class="test-title-cell" onclick="toggleDetails('details-1')">demo-tests/test_realistic_minimal.py::test_fail</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#ef9a9a"></span>failed</td>
+        <td class="col-duration">0.306730s</td>
+        <td>2025-06-04T21:35:08.885233+00:00</td>
+        <td>2025-06-04T21:35:09.191963+00:00</td>
+      </tr>
+      <tr id="details-1" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>noisy_fixture = None
+
+    def test_fail(noisy_fixture):
+        print("failing stdout")
+        logger.info("failing log")
+        warnings.warn("failing warning", UserWarning)
+        time.sleep(0.3)
+>       assert False, "Intentional failure"
+E       AssertionError: Intentional failure
+E       assert False
+
+demo-tests/test_realistic_minimal.py:29: AssertionError</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="passed">
+        <td class="test-title-cell" onclick="toggleDetails('details-2')">demo-tests/test_realistic_minimal.py::test_pass</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#aed581"></span>passed</td>
+        <td class="col-duration">0.204486s</td>
+        <td>2025-06-04T21:35:08.678943+00:00</td>
+        <td>2025-06-04T21:35:08.883429+00:00</td>
+      </tr>
+      <tr id="details-2" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>(none)</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="passed">
+        <td class="test-title-cell" onclick="toggleDetails('details-3')">demo-tests/test_realistic_minimal.py::test_rerun</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#aed581"></span>passed</td>
+        <td class="col-duration">0.105125s</td>
+        <td>2025-06-04T21:35:09.638332+00:00</td>
+        <td>2025-06-04T21:35:09.743457+00:00</td>
+      </tr>
+      <tr id="details-3" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>(none)</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="passed">
+        <td class="test-title-cell" onclick="toggleDetails('details-4')">demo-tests/test_realistic_minimal.py::test_warning</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#aed581"></span>passed</td>
+        <td class="col-duration">0.100586s</td>
+        <td>2025-06-04T21:35:09.747461+00:00</td>
+        <td>2025-06-04T21:35:09.848047+00:00</td>
+      </tr>
+      <tr id="details-4" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>(none)</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="passed">
+        <td class="test-title-cell" onclick="toggleDetails('details-5')">demo-tests/test_realistic_minimal.py::test_long_output</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#aed581"></span>passed</td>
+        <td class="col-duration">0.203785s</td>
+        <td>2025-06-04T21:35:09.848905+00:00</td>
+        <td>2025-06-04T21:35:10.052690+00:00</td>
+      </tr>
+      <tr id="details-5" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>[33mWARNING [0m demo:test_realistic_minimal.py:71 Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...</pre>
+          <strong>Error/Traceback:</strong><pre>(none)</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="passed">
+        <td class="test-title-cell" onclick="toggleDetails('details-6')">demo-tests/test_realistic_minimal.py::test_stdout_stderr</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#aed581"></span>passed</td>
+        <td class="col-duration">0.104607s</td>
+        <td>2025-06-04T21:35:10.055695+00:00</td>
+        <td>2025-06-04T21:35:10.160302+00:00</td>
+      </tr>
+      <tr id="details-6" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>(none)</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="rerun">
+        <td class="test-title-cell" onclick="toggleDetails('details-7')">demo-tests/test_realistic_minimal.py::test_rerun</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#b0bec5"></span>rerun</td>
+        <td class="col-duration">0.105344s</td>
+        <td>2025-06-04T21:35:09.530000+00:00</td>
+        <td>2025-06-04T21:35:09.635344+00:00</td>
+      </tr>
+      <tr id="details-7" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>@pytest.mark.flaky(reruns=1)
+    def test_rerun():
+        # Fails first, passes second
+        if not hasattr(test_rerun, "called"):
+            test_rerun.called = True
+            time.sleep(0.1)
+>           assert False, "fail for rerun"
+E           AssertionError: fail for rerun
+E           assert False
+
+demo-tests/test_realistic_minimal.py:51: AssertionError</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="skipped">
+        <td class="test-title-cell" onclick="toggleDetails('details-8')">demo-tests/test_realistic_minimal.py::test_skip</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#ffcc80"></span>skipped</td>
+        <td class="col-duration">0.000133s</td>
+        <td>2025-06-04T21:35:09.210618+00:00</td>
+        <td>2025-06-04T21:35:09.210751+00:00</td>
+      </tr>
+      <tr id="details-8" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>('/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py', 31, 'Skipped: demonstrate skip')</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="xfailed">
+        <td class="test-title-cell" onclick="toggleDetails('details-9')">demo-tests/test_realistic_minimal.py::test_xfail</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#90caf9"></span>xfailed</td>
+        <td class="col-duration">0.155583s</td>
+        <td>2025-06-04T21:35:09.211422+00:00</td>
+        <td>2025-06-04T21:35:09.367005+00:00</td>
+      </tr>
+      <tr id="details-9" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>@pytest.mark.xfail(reason="expected fail", strict=True)
+    def test_xfail():
+        time.sleep(0.15)
+>       assert False
+E       assert False
+
+demo-tests/test_realistic_minimal.py:38: AssertionError</pre>
+        </td>
+      </tr>
+      
+      
+      <tr class="xpassed">
+        <td class="test-title-cell" onclick="toggleDetails('details-10')">demo-tests/test_realistic_minimal.py::test_xpass</td>
+        <td class="col-outcome"><span class="outcome-dot" style="background:#80deea"></span>xpassed</td>
+        <td class="col-duration">0.152843s</td>
+        <td>2025-06-04T21:35:09.375671+00:00</td>
+        <td>2025-06-04T21:35:09.528514+00:00</td>
+      </tr>
+      <tr id="details-10" class="details-row">
+        <td colspan="5">
+          <strong>Captured stdout:</strong><pre>(none)</pre>
+          <strong>Captured stderr:</strong><pre>(none)</pre>
+          <strong>Captured log:</strong><pre>(none)</pre>
+          <strong>Error/Traceback:</strong><pre>(none)</pre>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+
+  <script>
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ["passed", "failed", "skipped", "error", "xfailed", "xpassed", "rerun"],
+        datasets: [{ data: [5, 1, 1, 1, 1, 1, 1], backgroundColor: ["#aed581", "#ef9a9a", "#ffcc80", "#ce93d8", "#90caf9", "#80deea", "#b0bec5"] }]
+      },
+      options: { plugins: { legend: { position: 'right' } } }
+    });
+
+    function toggleDetails(rowId) {
+      var row = document.getElementById(rowId);
+      if (!row) return;
+      document.querySelectorAll('.details-row').forEach(r => { if (r.id !== rowId) r.style.display = 'none'; });
+      row.style.display = row.style.display === 'table-row' ? 'none' : 'table-row';
+    }
+  </script>
+
+
+<script>
+  // Make Test Results and Warnings tables sortable by any column, toggling asc/desc on repeat click
+  document.addEventListener("DOMContentLoaded", function () {
+    function makeTableSortable(tableId) {
+      var table = document.getElementById(tableId);
+      if (!table) return;
+      var thead = table.querySelector("thead");
+      var lastSort = { col: null, dir: 1 };
+      thead.addEventListener("click", function (e) {
+        const th = e.target.closest("th");
+        if (!th) return;
+        const colIndex = Array.from(th.parentNode.children).indexOf(th);
+        const tbody = table.querySelector("tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr:not(.details-row)"));
+        const isNumeric = rows.every(row => !isNaN(row.cells[colIndex]?.innerText.trim()));
+        // Toggle direction if sorting same column
+        lastSort.dir = (lastSort.col === colIndex) ? -lastSort.dir : 1;
+        lastSort.col = colIndex;
+        const sorted = rows.sort((a, b) => {
+          const aVal = a.cells[colIndex].innerText.trim();
+          const bVal = b.cells[colIndex].innerText.trim();
+          if (isNumeric) {
+            return lastSort.dir * (parseFloat(aVal) - parseFloat(bVal));
+          } else {
+            return lastSort.dir * aVal.localeCompare(bVal);
+          }
+        });
+        tbody.innerHTML = "";
+        sorted.forEach(row => tbody.appendChild(row));
+      });
+    }
+    makeTableSortable("results-table");
+    makeTableSortable("warnings-table");
+  });
+</script>
+
+<style>
+  table th {
+    cursor: pointer;
+  }
+
+  /* Pale/lighter background colors for table rows */
+  .outcome-passed    { background-color: #d4edc9; } /* pale green */
+  .outcome-failed    { background-color: #fde2e2; } /* pale red */
+  .outcome-skipped   { background-color: #fff1db; } /* pale orange */
+  .outcome-error     { background-color: #f3e6f7; } /* pale violet */
+  .outcome-xfailed   { background-color: #e5f2fd; } /* pale blue */
+  .outcome-xpassed   { background-color: #ddf8f9; } /* pale cyan */
+  .outcome-rerun     { background-color: #d6d9db; } /* pale gray */
+  .outcome-unknown   { background-color: #e9e9e9; } /* pale gray */
+</style>
+
+
+</body>
+</html>

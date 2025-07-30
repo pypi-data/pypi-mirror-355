@@ -1,0 +1,269 @@
+{
+  "session_id": "20250604-213508-efff8d34",
+  "session_tags": {},
+  "session_start_time": "2025-06-04T21:35:08.678943+00:00",
+  "session_stop_time": "2025-06-04T21:35:10.160302+00:00",
+  "system_under_test": {
+    "name": "pytest-recap"
+  },
+  "testing_system": {
+    "hostname": "GPYVQ4KGXY.local",
+    "platform": "macOS-15.5-x86_64-i386-64bit",
+    "python_version": "3.9.16",
+    "pytest_version": "7.4.4",
+    "environment": "test"
+  },
+  "test_results": [
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_pass",
+      "outcome": "passed",
+      "start_time": "2025-06-04T21:35:08.678943+00:00",
+      "stop_time": "2025-06-04T21:35:08.883429+00:00",
+      "duration": 0.204486,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": ""
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_rerun",
+      "outcome": "passed",
+      "start_time": "2025-06-04T21:35:09.638332+00:00",
+      "stop_time": "2025-06-04T21:35:09.743457+00:00",
+      "duration": 0.105125,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": ""
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_warning",
+      "outcome": "passed",
+      "start_time": "2025-06-04T21:35:09.747461+00:00",
+      "stop_time": "2025-06-04T21:35:09.848047+00:00",
+      "duration": 0.100586,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": ""
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_long_output",
+      "outcome": "passed",
+      "start_time": "2025-06-04T21:35:09.848905+00:00",
+      "stop_time": "2025-06-04T21:35:10.052690+00:00",
+      "duration": 0.203785,
+      "caplog": "\u001b[33mWARNING \u001b[0m demo:test_realistic_minimal.py:71 Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": ""
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_stdout_stderr",
+      "outcome": "passed",
+      "start_time": "2025-06-04T21:35:10.055695+00:00",
+      "stop_time": "2025-06-04T21:35:10.160302+00:00",
+      "duration": 0.104607,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": ""
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_fail",
+      "outcome": "failed",
+      "start_time": "2025-06-04T21:35:08.885233+00:00",
+      "stop_time": "2025-06-04T21:35:09.191963+00:00",
+      "duration": 0.30673,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": "noisy_fixture = None\n\n    def test_fail(noisy_fixture):\n        print(\"failing stdout\")\n        logger.info(\"failing log\")\n        warnings.warn(\"failing warning\", UserWarning)\n        time.sleep(0.3)\n>       assert False, \"Intentional failure\"\nE       AssertionError: Intentional failure\nE       assert False\n\ndemo-tests/test_realistic_minimal.py:29: AssertionError"
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_skip",
+      "outcome": "skipped",
+      "start_time": "2025-06-04T21:35:09.210618+00:00",
+      "stop_time": "2025-06-04T21:35:09.210751+00:00",
+      "duration": 0.000133,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": "('/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py', 31, 'Skipped: demonstrate skip')"
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_xfail",
+      "outcome": "xfailed",
+      "start_time": "2025-06-04T21:35:09.211422+00:00",
+      "stop_time": "2025-06-04T21:35:09.367005+00:00",
+      "duration": 0.155583,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": "@pytest.mark.xfail(reason=\"expected fail\", strict=True)\n    def test_xfail():\n        time.sleep(0.15)\n>       assert False\nE       assert False\n\ndemo-tests/test_realistic_minimal.py:38: AssertionError"
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_xpass",
+      "outcome": "xpassed",
+      "start_time": "2025-06-04T21:35:09.375671+00:00",
+      "stop_time": "2025-06-04T21:35:09.528514+00:00",
+      "duration": 0.152843,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": ""
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_rerun",
+      "outcome": "rerun",
+      "start_time": "2025-06-04T21:35:09.530000+00:00",
+      "stop_time": "2025-06-04T21:35:09.635344+00:00",
+      "duration": 0.105344,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": "@pytest.mark.flaky(reruns=1)\n    def test_rerun():\n        # Fails first, passes second\n        if not hasattr(test_rerun, \"called\"):\n            test_rerun.called = True\n            time.sleep(0.1)\n>           assert False, \"fail for rerun\"\nE           AssertionError: fail for rerun\nE           assert False\n\ndemo-tests/test_realistic_minimal.py:51: AssertionError"
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_error",
+      "outcome": "error",
+      "start_time": "2025-06-04T21:35:09.744115+00:00",
+      "stop_time": "2025-06-04T21:35:09.744306+00:00",
+      "duration": 0.000191,
+      "caplog": "",
+      "capstderr": "",
+      "capstdout": "",
+      "longreprtext": "@pytest.fixture\n    def error_fixture():\n>       raise Exception(\"Error in fixture\")\nE       Exception: Error in fixture\n\ndemo-tests/test_realistic_minimal.py:57: Exception"
+    }
+  ],
+  "rerun_test_groups": [
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_rerun",
+      "tests": [
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_rerun",
+          "outcome": "rerun",
+          "start_time": "2025-06-04T21:35:09.530000+00:00",
+          "stop_time": "2025-06-04T21:35:09.635344+00:00",
+          "duration": 0.105344,
+          "caplog": "",
+          "capstderr": "",
+          "capstdout": "",
+          "longreprtext": "@pytest.mark.flaky(reruns=1)\n    def test_rerun():\n        # Fails first, passes second\n        if not hasattr(test_rerun, \"called\"):\n            test_rerun.called = True\n            time.sleep(0.1)\n>           assert False, \"fail for rerun\"\nE           AssertionError: fail for rerun\nE           assert False\n\ndemo-tests/test_realistic_minimal.py:51: AssertionError"
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_rerun",
+          "outcome": "passed",
+          "start_time": "2025-06-04T21:35:09.638332+00:00",
+          "stop_time": "2025-06-04T21:35:09.743457+00:00",
+          "duration": 0.105125,
+          "caplog": "",
+          "capstderr": "",
+          "capstdout": "",
+          "longreprtext": ""
+        }
+      ]
+    }
+  ],
+  "warnings": [
+    {
+      "event_type": "warning",
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_pass",
+      "when": "runtest",
+      "outcome": null,
+      "message": "fixture warning",
+      "category": "UserWarning",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 12,
+      "longrepr": null,
+      "sections": [],
+      "keywords": [],
+      "location": null
+    },
+    {
+      "event_type": "warning",
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_pass",
+      "when": "runtest",
+      "outcome": null,
+      "message": "passing warning",
+      "category": "UserWarning",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 20,
+      "longrepr": null,
+      "sections": [],
+      "keywords": [],
+      "location": null
+    },
+    {
+      "event_type": "warning",
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_fail",
+      "when": "runtest",
+      "outcome": null,
+      "message": "fixture warning",
+      "category": "UserWarning",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 12,
+      "longrepr": null,
+      "sections": [],
+      "keywords": [],
+      "location": null
+    },
+    {
+      "event_type": "warning",
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_fail",
+      "when": "runtest",
+      "outcome": null,
+      "message": "failing warning",
+      "category": "UserWarning",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 27,
+      "longrepr": null,
+      "sections": [],
+      "keywords": [],
+      "location": null
+    },
+    {
+      "event_type": "warning",
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_warning",
+      "when": "runtest",
+      "outcome": null,
+      "message": "explicit test warning",
+      "category": "UserWarning",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 67,
+      "longrepr": null,
+      "sections": [],
+      "keywords": [],
+      "location": null
+    }
+  ],
+  "errors": [
+    {
+      "event_type": "warning",
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_error",
+      "when": "setup",
+      "outcome": "failed",
+      "message": null,
+      "category": null,
+      "filename": null,
+      "lineno": null,
+      "longrepr": "@pytest.fixture\n    def error_fixture():\n>       raise Exception(\"Error in fixture\")\nE       Exception: Error in fixture\n\ndemo-tests/test_realistic_minimal.py:57: Exception",
+      "sections": [],
+      "keywords": [
+        "test_error",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "location": null
+    }
+  ],
+  "session_stats": {
+    "passed": 5,
+    "failed": 1,
+    "skipped": 1,
+    "xfailed": 1,
+    "xpassed": 1,
+    "rerun": 1,
+    "error": 1
+  }
+}

@@ -1,0 +1,424 @@
+{
+  "created": 1748991401.769871,
+  "duration": 2.021116018295288,
+  "exitcode": 1,
+  "root": "/Users/jwr003/coding/pytest-recap",
+  "environment": {
+    "Python": "3.9.16",
+    "Platform": "macOS-15.5-x86_64-i386-64bit",
+    "Packages": {
+      "pytest": "7.4.4",
+      "pluggy": "1.5.0"
+    },
+    "Plugins": {
+      "Faker": "18.3.1",
+      "json-report": "1.5.0",
+      "recap": "0.9.1",
+      "rerunfailures": "15.0",
+      "metadata": "2.0.4",
+      "tui": "2.1.0",
+      "mock": "3.14.0",
+      "cov": "6.1.1"
+    },
+    "JAVA_HOME": "/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home"
+  },
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "skipped": 1,
+    "xfailed": 1,
+    "xpassed": 1,
+    "rerun": 1,
+    "error": 1,
+    "total": 10,
+    "collected": 10
+  },
+  "collectors": [
+    {
+      "nodeid": "",
+      "outcome": "passed",
+      "result": [
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py",
+          "type": "Module"
+        }
+      ]
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py",
+      "outcome": "passed",
+      "result": [
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_pass",
+          "type": "Function",
+          "lineno": 16
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_fail",
+          "type": "Function",
+          "lineno": 23
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_skip",
+          "type": "Function",
+          "lineno": 30
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_xfail",
+          "type": "Function",
+          "lineno": 34
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_xpass",
+          "type": "Function",
+          "lineno": 39
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_rerun",
+          "type": "Function",
+          "lineno": 44
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_error",
+          "type": "Function",
+          "lineno": 58
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_warning",
+          "type": "Function",
+          "lineno": 64
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_long_output",
+          "type": "Function",
+          "lineno": 68
+        },
+        {
+          "nodeid": "demo-tests/test_realistic_minimal.py::test_stdout_stderr",
+          "type": "Function",
+          "lineno": 74
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_pass",
+      "lineno": 16,
+      "outcome": "passed",
+      "keywords": [
+        "test_pass",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.13465595800000008,
+        "outcome": "passed",
+        "stdout": "fixture stdout\n"
+      },
+      "call": {
+        "duration": 0.20254949999999994,
+        "outcome": "passed",
+        "stdout": "passing stdout\n"
+      },
+      "teardown": {
+        "duration": 0.0006789160000000294,
+        "outcome": "passed",
+        "stdout": "teardown stdout\n"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_fail",
+      "lineno": 23,
+      "outcome": "failed",
+      "keywords": [
+        "test_fail",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.000550541000000182,
+        "outcome": "passed",
+        "stdout": "fixture stdout\n"
+      },
+      "call": {
+        "duration": 0.30196829199999997,
+        "outcome": "failed",
+        "crash": {
+          "path": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+          "lineno": 29,
+          "message": "AssertionError: Intentional failure\nassert False"
+        },
+        "traceback": [
+          {
+            "path": "demo-tests/test_realistic_minimal.py",
+            "lineno": 29,
+            "message": "AssertionError"
+          }
+        ],
+        "stdout": "failing stdout\n",
+        "longrepr": "noisy_fixture = None\n\n    def test_fail(noisy_fixture):\n        print(\"failing stdout\")\n        logger.info(\"failing log\")\n        warnings.warn(\"failing warning\", UserWarning)\n        time.sleep(0.3)\n>       assert False, \"Intentional failure\"\nE       AssertionError: Intentional failure\nE       assert False\n\ndemo-tests/test_realistic_minimal.py:29: AssertionError"
+      },
+      "teardown": {
+        "duration": 0.0003212499999998286,
+        "outcome": "passed",
+        "stdout": "teardown stdout\n"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_skip",
+      "lineno": 30,
+      "outcome": "skipped",
+      "keywords": [
+        "test_skip",
+        "skip",
+        "pytestmark",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.00022333399999996395,
+        "outcome": "skipped",
+        "longrepr": "('/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py', 31, 'Skipped: demonstrate skip')"
+      },
+      "teardown": {
+        "duration": 0.0001385420000001858,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_xfail",
+      "lineno": 34,
+      "outcome": "xfailed",
+      "keywords": [
+        "test_xfail",
+        "xfail",
+        "pytestmark",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.00019629099999995958,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.15555795900000002,
+        "outcome": "skipped",
+        "crash": {
+          "path": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+          "lineno": 38,
+          "message": "assert False"
+        },
+        "traceback": [
+          {
+            "path": "demo-tests/test_realistic_minimal.py",
+            "lineno": 38,
+            "message": "AssertionError"
+          }
+        ],
+        "longrepr": "@pytest.mark.xfail(reason=\"expected fail\", strict=True)\n    def test_xfail():\n        time.sleep(0.15)\n>       assert False\nE       assert False\n\ndemo-tests/test_realistic_minimal.py:38: AssertionError"
+      },
+      "teardown": {
+        "duration": 0.00036445799999995643,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_xpass",
+      "lineno": 39,
+      "outcome": "xpassed",
+      "keywords": [
+        "test_xpass",
+        "xfail",
+        "pytestmark",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.0002905419999998937,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.15299029099999983,
+        "outcome": "passed"
+      },
+      "teardown": {
+        "duration": 0.0006199590000002253,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_rerun",
+      "lineno": 44,
+      "outcome": "rerun",
+      "keywords": [
+        "test_rerun",
+        "flaky",
+        "pytestmark",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.0005506250000002488,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.1058179589999999,
+        "outcome": "passed"
+      },
+      "teardown": {
+        "duration": 0.00040733299999962114,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_error",
+      "lineno": 58,
+      "outcome": "error",
+      "keywords": [
+        "test_error",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.0005521669999999368,
+        "outcome": "failed",
+        "longrepr": "file /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py, line 59\n  def test_error(error_fixture):\nfile /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py, line 55\n  @pytest.fixture\n  def error_fixture(logger):\nE       fixture 'logger' not found\n>       available fixtures: _session_faker, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, doctest_namespace, error_fixture, faker, include_metadata_in_junit_xml, json_metadata, metadata, mocker, module_mocker, monkeypatch, no_cover, noisy_fixture, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory\n>       use 'pytest --fixtures [testpath]' for help on them.\n\n/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:55"
+      },
+      "teardown": {
+        "duration": 0.0004292079999999032,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_warning",
+      "lineno": 64,
+      "outcome": "passed",
+      "keywords": [
+        "test_warning",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.0004770000000000607,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.10563070800000007,
+        "outcome": "passed"
+      },
+      "teardown": {
+        "duration": 0.0004835000000000811,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_long_output",
+      "lineno": 68,
+      "outcome": "passed",
+      "keywords": [
+        "test_long_output",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.0005184170000003263,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.20656383400000022,
+        "outcome": "passed",
+        "stdout": "Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...Long output the first...\n",
+        "log": [
+          {
+            "name": "demo",
+            "msg": "Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...Long output the second...",
+            "args": null,
+            "levelname": "WARNING",
+            "levelno": 30,
+            "pathname": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+            "filename": "test_realistic_minimal.py",
+            "module": "test_realistic_minimal",
+            "exc_info": null,
+            "exc_text": null,
+            "stack_info": null,
+            "lineno": 71,
+            "funcName": "test_long_output",
+            "created": 1748991401.266198,
+            "msecs": 266.19791984558105,
+            "relativeCreated": 2202.3839950561523,
+            "thread": 8596009472,
+            "threadName": "MainThread",
+            "processName": "MainProcess",
+            "process": 56259
+          }
+        ]
+      },
+      "teardown": {
+        "duration": 0.0007081250000000594,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "demo-tests/test_realistic_minimal.py::test_stdout_stderr",
+      "lineno": 74,
+      "outcome": "passed",
+      "keywords": [
+        "test_stdout_stderr",
+        "demo-tests/test_realistic_minimal.py",
+        "pytest-recap"
+      ],
+      "setup": {
+        "duration": 0.0005439590000002603,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.1034701250000003,
+        "outcome": "passed",
+        "stdout": "some stdout\n",
+        "stderr": "some stderr\n"
+      },
+      "teardown": {
+        "duration": 0.000798833999999804,
+        "outcome": "passed"
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "message": "fixture warning",
+      "category": "UserWarning",
+      "when": "runtest",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 12
+    },
+    {
+      "message": "passing warning",
+      "category": "UserWarning",
+      "when": "runtest",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 20
+    },
+    {
+      "message": "fixture warning",
+      "category": "UserWarning",
+      "when": "runtest",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 12
+    },
+    {
+      "message": "failing warning",
+      "category": "UserWarning",
+      "when": "runtest",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 27
+    },
+    {
+      "message": "explicit test warning",
+      "category": "UserWarning",
+      "when": "runtest",
+      "filename": "/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py",
+      "lineno": 67
+    }
+  ]
+}
