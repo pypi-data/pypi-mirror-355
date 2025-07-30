@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "image-processing-package-robelio"
+version = "0.1.0"  
+authors = [{name = "Robélio Barreto", email = "robeliobasantos@gmail.com"}]
+description = "Pacote para processamento de imagens"
+readme = "README.md"
+license = {text = "MIT"}  # Formato moderno
+requires-python = ">=3.8"
+dependencies = [
+    "Pillow>=9.0.0",
+    "numpy>=1.21.0",
+    "matplotlib>=3.5.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/robellio/image-processing-package"
+
+[tool.setuptools]
+packages = ["image_package"]
