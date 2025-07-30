@@ -1,0 +1,27 @@
+large-image>=1.32.10.dev8
+
+[all]
+rawpy
+pillow-heif
+
+[all:python_version < "3.13"]
+pillow-jpls
+
+[all:python_version < "3.9"]
+pillow-jxl-plugin<1.3
+
+[all:python_version >= "3.9"]
+pillow-jxl-plugin
+
+[common]
+rawpy
+pillow-heif
+
+[common:python_version < "3.9"]
+pillow-jxl-plugin<1.3
+
+[common:python_version >= "3.9"]
+pillow-jxl-plugin
+
+[girder]
+girder-large-image>=1.32.10.dev8
