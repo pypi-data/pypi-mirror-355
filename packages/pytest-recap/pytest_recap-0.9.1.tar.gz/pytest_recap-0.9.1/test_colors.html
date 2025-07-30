@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Row Color Comparison</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 2em;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5em;
+      text-align: left;
+    }
+
+    caption {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-bottom: 0.5em;
+    }
+
+    /* === ORIGINAL COLORS === */
+    .original .passed  { background: #e8f5e9; }
+    .original .failed  { background: #ffebee; }
+    .original .skipped { background: #fff8e1; }
+    .original .error   { background: #f3e5f5; }
+
+    /* === SOFT-MID COLORS (50% toned-down) === */
+    .softmid .passed  { background: #e6f0db; }
+    .softmid .failed  { background: #ffe5e7; }
+    .softmid .skipped { background: #ffeed9; }
+    .softmid .error   { background: #edd9f0; }
+
+    /* === BOLD COLORS === */
+    .bold .passed  { background: #c8e6c9; }
+    .bold .failed  { background: #ef9a9a; }
+    .bold .skipped { background: #ffcc80; }
+    .bold .error   { background: #ce93d8; }
+  </style>
+</head>
+<body>
+
+  <table class="original">
+    <caption>Original (Very Pale)</caption>
+    <tr class="passed"><td>passed</td><td>Test passes normally</td></tr>
+    <tr class="failed"><td>failed</td><td>Test assertion failed</td></tr>
+    <tr class="skipped"><td>skipped</td><td>Test was skipped</td></tr>
+    <tr class="error"><td>error</td><td>Test raised error during setup</td></tr>
+  </table>
+
+  <table class="softmid">
+    <caption>Soft-Mid (50% Toned Down)</caption>
+    <tr class="passed"><td>passed</td><td>Test passes normally</td></tr>
+    <tr class="failed"><td>failed</td><td>Test assertion failed</td></tr>
+    <tr class="skipped"><td>skipped</td><td>Test was skipped</td></tr>
+    <tr class="error"><td>error</td><td>Test raised error during setup</td></tr>
+  </table>
+
+  <table class="bold">
+    <caption>Bold</caption>
+    <tr class="passed"><td>passed</td><td>Test passes normally</td></tr>
+    <tr class="failed"><td>failed</td><td>Test assertion failed</td></tr>
+    <tr class="skipped"><td>skipped</td><td>Test was skipped</td></tr>
+    <tr class="error"><td>error</td><td>Test raised error during setup</td></tr>
+  </table>
+
+</body>
+</html>

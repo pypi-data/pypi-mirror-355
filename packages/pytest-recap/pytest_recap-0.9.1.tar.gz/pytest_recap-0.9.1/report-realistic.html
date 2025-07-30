@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pytest-recap Test Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+    th, td { border: 1px solid #ccc; padding: 0.5em; overflow-wrap: break-word; word-break: break-word; }
+    th { background: #f4f4f4; cursor: pointer; text-align: left; }
+    .test-title-cell { cursor: pointer; text-decoration: underline; color: #1976d2; width: 27em; min-width: 18em; }
+    .test-title-cell:hover { background: #f0f7ff; }
+    .col-outcome, .col-duration { width: 6em; min-width: 4em; }
+
+    .details-row td { max-width: 800px; word-break: break-word; }
+    .details-row pre { white-space: pre-wrap; word-break: break-word; max-width: 800px; overflow-x: auto; }
+    tr.passed { background: #e8f5e9; }
+    tr.failed { background: #ffebee; }
+    tr.skipped { background: #fff8e1; }
+    tr.error { background: #f3e5f5; }
+    tr.xfailed { background: #e3f2fd; }
+    tr.xpassed { background: #e0f7fa; }
+    tr.rerun { background: #eceff1; }
+    tr.unknown { background: #f5f5f5; }
+    .outcome-dot { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:6px; }
+    .expand-btn { cursor: pointer; color: #1976d2; text-decoration: underline; }
+    .details-row { display: none; background: #f9f9f9; }
+    .summary-stats { margin-bottom: 2em; }
+    .pie-chart-container { width: 320px; margin: 1em 0; }
+  </style>
+</head>
+<body>
+  <h1>pytest-recap Test Report</h1>
+  <div class="summary-stats" style="display: flex; align-items: flex-start; gap: 2em;">
+    <div>
+      <h2>Summary</h2>
+      <div style="margin-bottom: 0.5em; font-size: 1.1em;">
+        51 tests ran in 77.000 seconds (0s)
+      </div>
+      <ul>
+        <li><strong>Total:</strong> 51</li>
+        <li><span class="outcome-dot" style="background:#4CAF50"></span> <strong>Passed:</strong> 46</li>
+        <li><span class="outcome-dot" style="background:#F44336"></span> <strong>Failed:</strong> 4</li>
+        <li><span class="outcome-dot" style="background:#FF9800"></span> <strong>Skipped:</strong> 0</li>
+        <li><span class="outcome-dot" style="background:#9C27B0"></span> <strong>Error:</strong> 0</li>
+        <li><span class="outcome-dot" style="background:#2196F3"></span> <strong>XFailed:</strong> 0</li>
+        <li><span class="outcome-dot" style="background:#00BCD4"></span> <strong>XPassed:</strong> 0</li>
+        <li><span class="outcome-dot" style="background:#607D8B"></span> <strong>Rerun:</strong> 1</li>
+      </ul>
+    </div>
+    <div class="pie-chart-container">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+  <details>
+    <summary><strong>Session Metadata</strong></summary>
+    <ul>
+      <li><strong>Session start:</strong> 2025-05-29T15:47:19.928509+00:00</li>
+      <li><strong>Session stop:</strong> 2025-05-29T15:48:36.818450+00:00</li>
+      <li><strong>Duration:</strong> 77.000 seconds</li>
+      <li><strong>System Under Test:</strong> pytest-recap</li>
+      <li><strong>Host:</strong> GPYVQ4KGXY.local</li>
+      <li><strong>Platform:</strong> macOS-15.5-x86_64-i386-64bit</li>
+      <li><strong>Python:</strong> 3.9.16</li>
+      <li><strong>Pytest:</strong> 8.3.5</li>
+      <li><strong>Environment:</strong> test</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary><strong>Warnings (13)</strong></summary>
+    
+<table>
+  <thead><tr><th>Nodeid</th><th>When</th><th>Message</th><th>Category</th><th>Filename</th><th>Lineno</th><th>Outcome</th><th>Longrepr</th></tr></thead>
+  <tbody>
+    <tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_api/test_user_endpoints.py</td><td>251</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_api/test_user_endpoints.py</td><td>261</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_api/test_user_endpoints.py</td><td>269</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_db/test_data_operations.py</td><td>399</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_db/test_data_operations.py</td><td>413</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_db/test_data_operations.py</td><td>435</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_integration/test_service_workflows.py</td><td>446</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_integration/test_service_workflows.py</td><td>454</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_integration/test_service_workflows.py</td><td>466</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_performance/test_load_scenarios.py</td><td>412</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_performance/test_load_scenarios.py</td><td>421</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_ui/test_web_interface.py</td><td>302</td><td>None</td><td>None</td></tr>
+<tr><td></td><td>collect</td><td>Unknown pytest.mark.dependency - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html</td><td>PytestUnknownMarkWarning</td><td>/Users/jwr003/coding/pytest-recap/demo-tests/realistic/realistic_ui/test_web_interface.py</td><td>317</td><td>None</td><td>None</td></tr>
+
+  </tbody>
+</table>
+
+  </details>
+  <details>
+    <summary><strong>Errors (0)</strong></summary>
+    <p>No errors.</p>
+  </details>
+
+  <details>
+    <summary><strong>Rerun Test Groups (1)</strong></summary>
+    <table><thead><tr><th>Group Id</th><th>Final Outcome</th><th>Num Reruns</th><th>Test Nodeids</th></tr></thead><tbody><tr><td>demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_user_login</td><td>passed</td><td>1</td><td>demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_user_login</td></tr>
+</tbody></table>
+  </details>
+
+  <h2>Test Results</h2>
+  <div id="outcome-filters" style="margin-bottom: 1em;">
+    <strong>Show outcomes:</strong>
+    <label><input type="checkbox" id="filter-all" checked> All</label>
+    <label><input type="checkbox" class="filter-checkbox" value="passed" checked> Passed</label>
+    <label><input type="checkbox" class="filter-checkbox" value="failed" checked> Failed</label>
+    <label><input type="checkbox" class="filter-checkbox" value="skipped" checked> Skipped</label>
+    <label><input type="checkbox" class="filter-checkbox" value="error" checked> Error</label>
+    <label><input type="checkbox" class="filter-checkbox" value="xfailed" checked> XFailed</label>
+    <label><input type="checkbox" class="filter-checkbox" value="xpassed" checked> XPassed</label>
+    <label><input type="checkbox" class="filter-checkbox" value="rerun" checked> Rerun</label>
+    <label><input type="checkbox" class="filter-checkbox" value="unknown" checked> Unknown</label>
+  </div>
+  <table id="results-table">
+    <thead>
+    <tr>
+      <th>Test</th>
+      <th class="col-outcome">Outcome</th>
+      <th class="col-duration">Duration (s)</th>
+      <th>Start</th>
+      <th>Stop</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="failed">
+      <td class="test-title-cell" onclick="toggleDetails('details-0')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_batch_operations</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#F44336"></span>failed</td>
+      <td class="col-duration">0.186</td>
+      <td>2025-05-29T15:47:20.534883+00:00</td>
+      <td>2025-05-29T15:47:20.720527+00:00</td>
+    </tr>
+    <tr id="details-0" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>api_client = <requests.sessions.Session object at 0x10c2db250>
+
+    def test_api_batch_operations(api_client):
+        """Test batch operations that might hit rate limits."""
+        # Simulate rate limiting errors randomly (about 20% of the time)
+        if random.random() < 0.2:
+            with patch.object(api_client, "post") as mock_post:
+                mock_post.return_value.status_code = 429
+                mock_post.return_value.json.return_value = {
+                    "error": "Too Many Requests",
+                    "message": "Rate limit exceeded. Try again in 30 seconds.",
+                }
+    
+                time.sleep(0.18)
+    
+                batch_data = {
+                    "operations": [{"type": "create", "data": {"username": f"batch_user_{i}"}} for i in range(10)]
+                }
+                response = api_client.post(f"{API_BASE_URL}/batch", json=batch_data)
+    
+                # This should fail with rate limit error
+>               assert response.status_code != 429, "Rate limit exceeded"
+E               AssertionError: Rate limit exceeded
+E               assert 429 != 429
+E                +  where 429 = <MagicMock name='post()' id='4498399536'>.status_code
+
+demo-tests/realistic/realistic_api/test_user_endpoints.py:160: AssertionError</pre>
+      </td>
+    </tr>
+    <tr class="failed">
+      <td class="test-title-cell" onclick="toggleDetails('details-1')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_resource_utilization</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#F44336"></span>failed</td>
+      <td class="col-duration">10.177</td>
+      <td>2025-05-29T15:47:51.804817+00:00</td>
+      <td>2025-05-29T15:48:01.981330+00:00</td>
+    </tr>
+    <tr id="details-1" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>mock_system = <test_load_scenarios.MockSystem object at 0x10c798fd0>
+performance_tester = <test_load_scenarios.PerformanceTester object at 0x10c5fb040>
+
+    def test_resource_utilization(mock_system, performance_tester):
+        """Test system resource utilization under load."""
+        # Execute operations that consume resources
+        for _ in range(20):
+            operation = random.choice(["compute", "io"])
+            complexity = random.uniform(1.0, 2.0)
+            performance_tester.execute_operation(operation, complexity)
+    
+        # Check resource usage
+        resource_usage = mock_system.resource_usage
+    
+        # This test will fail if resource usage is too high
+        if resource_usage > 0.8 and random.random() < 0.3:
+>           pytest.fail(f"Resource utilization too high: {resource_usage:.2f}")
+E           Failed: Resource utilization too high: 0.94
+
+demo-tests/realistic/realistic_performance/test_load_scenarios.py:360: Failed</pre>
+      </td>
+    </tr>
+    <tr class="failed">
+      <td class="test-title-cell" onclick="toggleDetails('details-2')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_form_submission_flow</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#F44336"></span>failed</td>
+      <td class="col-duration">3.924</td>
+      <td>2025-05-29T15:48:27.254511+00:00</td>
+      <td>2025-05-29T15:48:31.178277+00:00</td>
+    </tr>
+    <tr id="details-2" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>logged_in_browser = <test_web_interface.MockWebDriver object at 0x10c1edb50>
+
+    def test_form_submission_flow(logged_in_browser):
+        """Test a multi-step form submission process."""
+        browser = logged_in_browser
+        browser.get("https://example.com/dashboard/new-project")
+    
+        # Step 1: Fill out basic information
+        project_name = browser.find_element("id", "project-name")
+        project_name.send_keys("Test Project")
+    
+        description = browser.find_element("id", "project-description")
+        description.send_keys("This is a test project created by automated UI tests.")
+    
+        # Click next button
+        next_button = browser.find_element("id", "step-1-next")
+        next_button.click()
+    
+        # Step 2: Project settings
+        # Simulate slow page transition
+        time.sleep(0.08)  # Shortened for speed
+    
+        # Select project type dropdown
+        project_type = browser.find_element("id", "project-type")
+        project_type.click()
+    
+        # Select an option
+        option = browser.find_element("css", "#project-type-options li:nth-child(2)")
+        option.click()
+    
+        # Click next button
+        next_button = browser.find_element("id", "step-2-next")
+        next_button.click()
+    
+        # Step 3: Confirmation
+        # Another slow page transition
+        time.sleep(0.5)
+    
+        # Submit form
+        submit_button = browser.find_element("id", "submit-project")
+        submit_button.click()
+    
+        # Verify success message
+        success_message = browser.find_element("class", "success-message")
+>       assert "Project created successfully" in success_message.text
+E       AssertionError: assert 'Project created successfully' in 'Text for success-message'
+E        +  where 'Text for success-message' = <test_web_interface.MockWebElement object at 0x10c1ed910>.text
+
+demo-tests/realistic/realistic_ui/test_web_interface.py:298: AssertionError</pre>
+      </td>
+    </tr>
+    <tr class="failed">
+      <td class="test-title-cell" onclick="toggleDetails('details-3')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_edit_user_profile</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#F44336"></span>failed</td>
+      <td class="col-duration">0.566</td>
+      <td>2025-05-29T15:48:34.814257+00:00</td>
+      <td>2025-05-29T15:48:35.380525+00:00</td>
+    </tr>
+    <tr id="details-3" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>logged_in_browser = <test_web_interface.MockWebDriver object at 0x10c638130>
+
+    @pytest.mark.dependency(depends=["test_user_profile_page_loads"])
+    def test_edit_user_profile(logged_in_browser):
+        """Test editing user profile (depends on profile page loading)."""
+        browser = logged_in_browser
+        browser.get("https://example.com/profile/edit")
+    
+        # Find edit form elements
+>       display_name = browser.find_element("id", "display-name")
+
+demo-tests/realistic/realistic_ui/test_web_interface.py:324: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_web_interface.MockWebDriver object at 0x10c638130>, by = 'id', value = 'display-name'
+
+    def find_element(self, by, value):
+        # Always find login elements on login page
+        if self.current_url.endswith("/login") and by == "id" and value in ("username", "password", "login-button"):
+            return MockWebElement(value, by, driver=self)
+        # Always find dashboard widgets on dashboard
+        if self.current_url.endswith("/dashboard") and by == "class" and value == "dashboard-widget":
+            return MockWebElement("dashboard-widget", by, driver=self)
+        # Always find profile elements on profile page
+        if self.current_url.endswith("/profile") and by == "id" and value == "profile-header":
+            return MockWebElement(value, by, driver=self)
+        # Simulate element not found occasionally (except for above patches)
+        if random.random() < 0.08:
+            time.sleep(0.3)
+>           raise Exception(f"No such element: {by}={value}")
+E           Exception: No such element: id=display-name
+
+demo-tests/realistic/realistic_ui/test_web_interface.py:81: Exception</pre>
+      </td>
+    </tr>
+    <tr class="rerun">
+      <td class="test-title-cell" onclick="toggleDetails('details-4')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_user_login</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#607D8B"></span>rerun</td>
+      <td class="col-duration">0.001</td>
+      <td>2025-05-29T15:47:20.903821+00:00</td>
+      <td>2025-05-29T15:47:20.904919+00:00</td>
+    </tr>
+    <tr id="details-4" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>@pytest.mark.flaky(reruns=2)
+    @pytest.mark.dependency()
+    def test_api_user_login():
+        """Test user login endpoint."""
+        # This test will pass 70% of the time (flaky)
+        if random.random() < 0.3:
+>           pytest.fail("Random login failure (simulated flakiness)")
+E           Failed: Random login failure (simulated flakiness)
+
+demo-tests/realistic/realistic_api/test_user_endpoints.py:256: Failed</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-5')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_get_user</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.056</td>
+      <td>2025-05-29T15:47:19.928509+00:00</td>
+      <td>2025-05-29T15:47:19.984615+00:00</td>
+    </tr>
+    <tr id="details-5" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-6')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_list_users</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.127</td>
+      <td>2025-05-29T15:47:19.985840+00:00</td>
+      <td>2025-05-29T15:47:20.112371+00:00</td>
+    </tr>
+    <tr id="details-6" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-7')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_search_users</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.256</td>
+      <td>2025-05-29T15:47:20.115529+00:00</td>
+      <td>2025-05-29T15:47:20.371321+00:00</td>
+    </tr>
+    <tr id="details-7" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-8')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_create_user_auth</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.158</td>
+      <td>2025-05-29T15:47:20.374093+00:00</td>
+      <td>2025-05-29T15:47:20.531795+00:00</td>
+    </tr>
+    <tr id="details-8" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-9')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_update_user</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.076</td>
+      <td>2025-05-29T15:47:20.755683+00:00</td>
+      <td>2025-05-29T15:47:20.831707+00:00</td>
+    </tr>
+    <tr id="details-9" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-10')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_delete_user</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.067</td>
+      <td>2025-05-29T15:47:20.833410+00:00</td>
+      <td>2025-05-29T15:47:20.900070+00:00</td>
+    </tr>
+    <tr id="details-10" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-11')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_user_login</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.056</td>
+      <td>2025-05-29T15:47:20.916164+00:00</td>
+      <td>2025-05-29T15:47:20.972065+00:00</td>
+    </tr>
+    <tr id="details-11" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-12')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_user_profile</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.056</td>
+      <td>2025-05-29T15:47:20.974937+00:00</td>
+      <td>2025-05-29T15:47:21.030798+00:00</td>
+    </tr>
+    <tr id="details-12" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-13')">demo-tests/realistic/realistic_api/test_user_endpoints.py::test_api_user_preferences</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.075</td>
+      <td>2025-05-29T15:47:21.034151+00:00</td>
+      <td>2025-05-29T15:47:21.108816+00:00</td>
+    </tr>
+    <tr id="details-13" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-14')">demo-tests/realistic/realistic_db/test_data_operations.py::test_db_connection</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.001</td>
+      <td>2025-05-29T15:47:21.113763+00:00</td>
+      <td>2025-05-29T15:47:21.114365+00:00</td>
+    </tr>
+    <tr id="details-14" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-15')">demo-tests/realistic/realistic_db/test_data_operations.py::test_simple_query</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.077</td>
+      <td>2025-05-29T15:47:21.133733+00:00</td>
+      <td>2025-05-29T15:47:21.210546+00:00</td>
+    </tr>
+    <tr id="details-15" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-16')">demo-tests/realistic/realistic_db/test_data_operations.py::test_successful_transaction</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.244</td>
+      <td>2025-05-29T15:47:21.232990+00:00</td>
+      <td>2025-05-29T15:47:21.476885+00:00</td>
+    </tr>
+    <tr id="details-16" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-17')">demo-tests/realistic/realistic_db/test_data_operations.py::test_transaction_rollback</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.268</td>
+      <td>2025-05-29T15:47:21.494268+00:00</td>
+      <td>2025-05-29T15:47:21.762592+00:00</td>
+    </tr>
+    <tr id="details-17" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-18')">demo-tests/realistic/realistic_db/test_data_operations.py::test_connection_stability</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.097</td>
+      <td>2025-05-29T15:47:21.787378+00:00</td>
+      <td>2025-05-29T15:47:21.883903+00:00</td>
+    </tr>
+    <tr id="details-18" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-19')">demo-tests/realistic/realistic_db/test_data_operations.py::test_query_performance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.122</td>
+      <td>2025-05-29T15:47:21.903058+00:00</td>
+      <td>2025-05-29T15:47:22.025428+00:00</td>
+    </tr>
+    <tr id="details-19" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-20')">demo-tests/realistic/realistic_db/test_data_operations.py::test_data_integrity</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.100</td>
+      <td>2025-05-29T15:47:22.047374+00:00</td>
+      <td>2025-05-29T15:47:22.146892+00:00</td>
+    </tr>
+    <tr id="details-20" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-21')">demo-tests/realistic/realistic_db/test_data_operations.py::test_db_specific_features</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.321</td>
+      <td>2025-05-29T15:47:22.173661+00:00</td>
+      <td>2025-05-29T15:47:22.494981+00:00</td>
+    </tr>
+    <tr id="details-21" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-22')">demo-tests/realistic/realistic_db/test_data_operations.py::test_create_schema</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.142</td>
+      <td>2025-05-29T15:47:22.519015+00:00</td>
+      <td>2025-05-29T15:47:22.660552+00:00</td>
+    </tr>
+    <tr id="details-22" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-23')">demo-tests/realistic/realistic_db/test_data_operations.py::test_create_table</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.805</td>
+      <td>2025-05-29T15:47:22.687891+00:00</td>
+      <td>2025-05-29T15:47:23.492921+00:00</td>
+    </tr>
+    <tr id="details-23" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-24')">demo-tests/realistic/realistic_db/test_data_operations.py::test_insert_data</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.210</td>
+      <td>2025-05-29T15:47:23.514107+00:00</td>
+      <td>2025-05-29T15:47:23.723963+00:00</td>
+    </tr>
+    <tr id="details-24" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-25')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_product_availability</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.099</td>
+      <td>2025-05-29T15:47:23.746995+00:00</td>
+      <td>2025-05-29T15:47:23.845553+00:00</td>
+    </tr>
+    <tr id="details-25" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-26')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_authentication_flow</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.258</td>
+      <td>2025-05-29T15:47:23.850872+00:00</td>
+      <td>2025-05-29T15:47:24.108443+00:00</td>
+    </tr>
+    <tr id="details-26" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-27')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_complete_order_workflow</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">1.644</td>
+      <td>2025-05-29T15:47:24.293829+00:00</td>
+      <td>2025-05-29T15:47:25.938263+00:00</td>
+    </tr>
+    <tr id="details-27" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-28')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_order_with_inventory_failure</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.255</td>
+      <td>2025-05-29T15:47:26.053784+00:00</td>
+      <td>2025-05-29T15:47:26.309246+00:00</td>
+    </tr>
+    <tr id="details-28" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-29')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_inventory_consistency</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.822</td>
+      <td>2025-05-29T15:47:26.313833+00:00</td>
+      <td>2025-05-29T15:47:27.135346+00:00</td>
+    </tr>
+    <tr id="details-29" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-30')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_concurrent_orders</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">1.503</td>
+      <td>2025-05-29T15:47:27.260121+00:00</td>
+      <td>2025-05-29T15:47:28.762798+00:00</td>
+    </tr>
+    <tr id="details-30" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-31')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_user_registration</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.247</td>
+      <td>2025-05-29T15:47:28.767652+00:00</td>
+      <td>2025-05-29T15:47:29.015061+00:00</td>
+    </tr>
+    <tr id="details-31" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-32')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_user_login</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.246</td>
+      <td>2025-05-29T15:47:29.019737+00:00</td>
+      <td>2025-05-29T15:47:29.265766+00:00</td>
+    </tr>
+    <tr id="details-32" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-33')">demo-tests/realistic/realistic_integration/test_service_workflows.py::test_user_purchases</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.525</td>
+      <td>2025-05-29T15:47:29.378145+00:00</td>
+      <td>2025-05-29T15:47:29.903540+00:00</td>
+    </tr>
+    <tr id="details-33" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-34')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_read_performance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.267</td>
+      <td>2025-05-29T15:47:29.907132+00:00</td>
+      <td>2025-05-29T15:47:30.173975+00:00</td>
+    </tr>
+    <tr id="details-34" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-35')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_write_performance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">1.282</td>
+      <td>2025-05-29T15:47:30.177405+00:00</td>
+      <td>2025-05-29T15:47:31.459425+00:00</td>
+    </tr>
+    <tr id="details-35" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-36')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_concurrent_read_performance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.159</td>
+      <td>2025-05-29T15:47:31.464671+00:00</td>
+      <td>2025-05-29T15:47:31.624148+00:00</td>
+    </tr>
+    <tr id="details-36" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-37')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_concurrent_write_performance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.117</td>
+      <td>2025-05-29T15:47:31.628140+00:00</td>
+      <td>2025-05-29T15:47:31.744689+00:00</td>
+    </tr>
+    <tr id="details-37" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-38')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_system_under_stress</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">20.051</td>
+      <td>2025-05-29T15:47:31.748447+00:00</td>
+      <td>2025-05-29T15:47:51.799195+00:00</td>
+    </tr>
+    <tr id="details-38" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-39')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_system_recovery</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">15.020</td>
+      <td>2025-05-29T15:48:02.008572+00:00</td>
+      <td>2025-05-29T15:48:17.028272+00:00</td>
+    </tr>
+    <tr id="details-39" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-40')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_sustained_performance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.505</td>
+      <td>2025-05-29T15:48:17.032239+00:00</td>
+      <td>2025-05-29T15:48:17.537319+00:00</td>
+    </tr>
+    <tr id="details-40" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-41')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_baseline_performance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.153</td>
+      <td>2025-05-29T15:48:17.539569+00:00</td>
+      <td>2025-05-29T15:48:17.692214+00:00</td>
+    </tr>
+    <tr id="details-41" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-42')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_comparative_performance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.255</td>
+      <td>2025-05-29T15:48:17.695381+00:00</td>
+      <td>2025-05-29T15:48:17.950678+00:00</td>
+    </tr>
+    <tr id="details-42" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-43')">demo-tests/realistic/realistic_performance/test_load_scenarios.py::test_scalability</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.399</td>
+      <td>2025-05-29T15:48:17.953834+00:00</td>
+      <td>2025-05-29T15:48:18.353207+00:00</td>
+    </tr>
+    <tr id="details-43" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-44')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_login_page_loads</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">1.578</td>
+      <td>2025-05-29T15:48:18.357677+00:00</td>
+      <td>2025-05-29T15:48:19.935771+00:00</td>
+    </tr>
+    <tr id="details-44" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-45')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_login_with_valid_credentials</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">1.094</td>
+      <td>2025-05-29T15:48:19.939962+00:00</td>
+      <td>2025-05-29T15:48:21.033754+00:00</td>
+    </tr>
+    <tr id="details-45" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-46')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_dashboard_widgets_load</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.193</td>
+      <td>2025-05-29T15:48:22.516555+00:00</td>
+      <td>2025-05-29T15:48:22.709404+00:00</td>
+    </tr>
+    <tr id="details-46" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-47')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_responsive_design</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.882</td>
+      <td>2025-05-29T15:48:22.713741+00:00</td>
+      <td>2025-05-29T15:48:23.595489+00:00</td>
+    </tr>
+    <tr id="details-47" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-48')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_interactive_chart</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.783</td>
+      <td>2025-05-29T15:48:25.191493+00:00</td>
+      <td>2025-05-29T15:48:25.974108+00:00</td>
+    </tr>
+    <tr id="details-48" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-49')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_user_profile_page_loads</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">0.403</td>
+      <td>2025-05-29T15:48:32.638139+00:00</td>
+      <td>2025-05-29T15:48:33.041588+00:00</td>
+    </tr>
+    <tr id="details-49" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    <tr class="passed">
+      <td class="test-title-cell" onclick="toggleDetails('details-50')">demo-tests/realistic/realistic_ui/test_web_interface.py::test_accessibility_compliance</td>
+      <td class="col-outcome"><span class="outcome-dot" style="background:#4CAF50"></span>passed</td>
+      <td class="col-duration">1.417</td>
+      <td>2025-05-29T15:48:35.401802+00:00</td>
+      <td>2025-05-29T15:48:36.818450+00:00</td>
+    </tr>
+    <tr id="details-50" class="details-row">
+      <td colspan="5">
+        <strong>Captured stdout:</strong><pre>(none)</pre>
+        <strong>Captured stderr:</strong><pre>(none)</pre>
+        <strong>Captured log:</strong><pre>(none)</pre>
+        <strong>Error/Traceback:</strong><pre>None</pre>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <script>
+    // Pie chart
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ["passed", "failed", "rerun"],
+        datasets: [{
+          data: [46, 4, 1],
+          backgroundColor: ["#4CAF50", "#F44336", "#607D8B"]
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+
+    // Expand/collapse details
+    function toggleDetails(rowId) {
+      var row = document.getElementById(rowId);
+      if (!row) return;
+      // Optionally, close others for clarity
+      document.querySelectorAll('.details-row').forEach(r => {
+        if (r.id !== rowId) r.style.display = 'none';
+      });
+      if (row.style.display === 'table-row') {
+        row.style.display = 'none';
+      } else {
+        row.style.display = 'table-row';
+      }
+    }
+
+    // Sortable table (click headers)
+    document.querySelectorAll('#results-table th').forEach((header, idx) => {
+      header.addEventListener('click', () => sortTable(idx));
+    });
+    function sortTable(colIdx) {
+      var table = document.getElementById('results-table');
+      var rows = Array.from(table.tBodies[0].rows).filter(r => !r.classList.contains('details-row'));
+      var detailsRows = Array.from(table.tBodies[0].rows).filter(r => r.classList.contains('details-row'));
+      rows.sort((a, b) => {
+        var aText = a.cells[colIdx].innerText;
+        var bText = b.cells[colIdx].innerText;
+        if (colIdx === 2) { // duration numeric
+          return parseFloat(bText) - parseFloat(aText);
+        }
+        return aText.localeCompare(bText);
+      });
+      // Remove all rows
+      while (table.tBodies[0].firstChild) table.tBodies[0].removeChild(table.tBodies[0].firstChild);
+      // Re-add in sorted order, pairing each data row with its details
+      for (const row of rows) {
+        table.tBodies[0].appendChild(row);
+        var rowId = row.querySelector('.expand-btn')?.getAttribute('onclick')?.match(/'([^']+)'/);
+        if (rowId) {
+          var details = document.getElementById(rowId[1]);
+          if (details) table.tBodies[0].appendChild(details);
+        }
+      }
+    }
+
+    // Outcome filter checkboxes
+    const allBox = document.getElementById('filter-all');
+    const filterBoxes = Array.from(document.querySelectorAll('.filter-checkbox'));
+    function updateAllBox() {
+      allBox.checked = filterBoxes.every(cb => cb.checked);
+      allBox.indeterminate = !allBox.checked && filterBoxes.some(cb => cb.checked);
+    }
+    allBox.addEventListener('change', function() {
+      filterBoxes.forEach(cb => { cb.checked = allBox.checked; });
+      filterRows();
+    });
+    filterBoxes.forEach(cb => {
+      cb.addEventListener('change', function() {
+        updateAllBox();
+        filterRows();
+      });
+    });
+    function filterRows() {
+      var show = {};
+      filterBoxes.forEach(box => { show[box.value] = box.checked; });
+      document.querySelectorAll('#results-table tbody tr').forEach(row => {
+        if (row.classList.contains('details-row')) {
+          var prev = row.previousElementSibling;
+          row.style.display = (prev && prev.style.display !== 'none') ? row.style.display : 'none';
+        } else {
+          row.style.display = show[row.className] ? '' : 'none';
+        }
+      });
+    }
+    updateAllBox(); // initialize
+    filterRows(); // initialize
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="1" failures="1" skipped="2" tests="10" time="2.027" timestamp="2025-06-03T16:56:39.748751" hostname="GPYVQ4KGXY.local"><testcase classname="demo-tests.test_realistic_minimal" name="test_pass" time="0.338" /><testcase classname="demo-tests.test_realistic_minimal" name="test_fail" time="0.303"><failure message="AssertionError: Intentional failure&#10;assert False">noisy_fixture = None
+
+    def test_fail(noisy_fixture):
+        print("failing stdout")
+        logger.info("failing log")
+        warnings.warn("failing warning", UserWarning)
+        time.sleep(0.3)
+&gt;       assert False, "Intentional failure"
+E       AssertionError: Intentional failure
+E       assert False
+
+demo-tests/test_realistic_minimal.py:29: AssertionError</failure></testcase><testcase classname="demo-tests.test_realistic_minimal" name="test_skip" time="0.000"><skipped type="pytest.skip" message="demonstrate skip">/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:31: demonstrate skip</skipped></testcase><testcase classname="demo-tests.test_realistic_minimal" name="test_xfail" time="0.156"><skipped type="pytest.xfail" message="expected fail" /></testcase><testcase classname="demo-tests.test_realistic_minimal" name="test_xpass" time="0.154" /><testcase classname="demo-tests.test_realistic_minimal" name="test_rerun" time="0.214" /><testcase classname="demo-tests.test_realistic_minimal" name="test_error" time="0.001"><error message="failed on setup with &quot;file /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py, line 59&#10;  def test_error(error_fixture):&#10;file /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py, line 55&#10;  @pytest.fixture&#10;  def error_fixture(logger):&#10;E       fixture 'logger' not found&#10;&gt;       available fixtures: _session_faker, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, doctest_namespace, error_fixture, faker, include_metadata_in_junit_xml, json_metadata, metadata, mocker, module_mocker, monkeypatch, no_cover, noisy_fixture, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory&#10;&gt;       use 'pytest --fixtures [testpath]' for help on them.&#10;&#10;/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:55&quot;">file /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py, line 59
+  def test_error(error_fixture):
+file /Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py, line 55
+  @pytest.fixture
+  def error_fixture(logger):
+E       fixture 'logger' not found
+&gt;       available fixtures: _session_faker, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, doctest_namespace, error_fixture, faker, include_metadata_in_junit_xml, json_metadata, metadata, mocker, module_mocker, monkeypatch, no_cover, noisy_fixture, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+&gt;       use 'pytest --fixtures [testpath]' for help on them.
+
+/Users/jwr003/coding/pytest-recap/demo-tests/test_realistic_minimal.py:55</error></testcase><testcase classname="demo-tests.test_realistic_minimal" name="test_warning" time="0.107" /><testcase classname="demo-tests.test_realistic_minimal" name="test_long_output" time="0.208" /><testcase classname="demo-tests.test_realistic_minimal" name="test_stdout_stderr" time="0.105" /></testsuite></testsuites>
