@@ -1,0 +1,143 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "layer-peel"
+version = "0.1.0"
+description = "一个用于递归解压缩多层嵌套压缩文件的Python库"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Layer Peel Contributors" },
+]
+maintainers = [
+    { name = "Layer Peel Contributors" },
+]
+keywords = [
+    "archive",
+    "compression",
+    "extraction",
+    "zip",
+    "tar",
+    "7z",
+    "rar",
+    "nested",
+    "recursive"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Archiving :: Compression",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "chardet>=5.2.0",
+    "py7zr>=1.0.0",
+    "python-magic>=0.4.27; sys_platform != 'win32'",
+    "python-magic-bin>=0.4.14; sys_platform == 'win32'",
+    "rarfile>=4.2",
+    "stream-unzip>=0.0.99",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+docs = [
+    "sphinx>=6.0.0",
+    "sphinx-rtd-theme>=1.2.0",
+    "myst-parser>=1.0.0",
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/layer-peel"
+Documentation = "https://layer-peel.readthedocs.io/"
+Repository = "https://github.com/yourusername/layer-peel.git"
+"Bug Tracker" = "https://github.com/yourusername/layer-peel/issues"
+Changelog = "https://github.com/yourusername/layer-peel/blob/main/CHANGELOG.md"
+
+[project.scripts]
+layer-peel = "layer_peel.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/layer_peel"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/docs",
+    "/README.md",
+    "/LICENSE",
+    "/CHANGELOG.md",
+]
+
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+known-first-party = ["layer_peel"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["PLR2004", "S101", "TID252"]
+
+[[tool.mypy.overrides]]
+module = [
+    "magic.*",
+    "chardet.*",
+    "py7zr.*",
+    "rarfile.*",
+    "stream_unzip.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["src/layer_peel"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
