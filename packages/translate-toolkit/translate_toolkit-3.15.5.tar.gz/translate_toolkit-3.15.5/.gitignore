@@ -1,0 +1,55 @@
+# /
+/LICENSE
+
+# /docs/
+/docs/_build/
+
+# Python
+*.py[cod]
+*.egg-info
+
+# pytest
+.cache/
+.pytest_cache/
+
+# vim
+.*.swp
+*~
+
+# PyCharm
+.idea/
+
+# distutils
+/build/
+/dist/
+MANIFEST
+
+
+# Coverage
+.coverage*
+
+# Common virtualenv locations
+.venv
+venv
+uv.lock
+
+##############################
+# translate/ specific excludes
+##############################
+
+translate/storage/properties.class
+
+# Testing
+# #######
+# Roundtrip testing noise
+translate/convert/diff_*.diff
+translate/convert/mozilla-l10n/
+translate/convert/mozilla-gaia/
+translate/convert/rewritten-po/
+translate/convert/templates-recreated/
+
+# other
+tests/xliff_conformance/af-pootle.xlf
+
+# cli testing
+tests/cli/results
