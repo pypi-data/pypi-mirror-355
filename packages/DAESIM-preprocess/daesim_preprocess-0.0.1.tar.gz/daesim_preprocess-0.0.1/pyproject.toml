@@ -1,0 +1,38 @@
+[project]
+name = "DAESIM_preprocess"
+version = "0.0.1"
+authors = [
+  { name="Christopher Bradley", email="christopher.bradley@anu.edu.au" },
+]
+description = "Harvesting environmental forcing data for running the Dynamic Agro-Ecosystem Simulator (DAESIM)"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+dependencies = [
+    "rioxarray",
+    "pandas",
+    "scipy",
+    "requests",
+    "pysheds",
+    "owslib",
+    "pyproj",
+    "matplotlib"
+]
+
+[project.optional-dependencies]
+dev = [
+    "jupyter",
+    "jupytext",
+    "pytest",
+    "twine",
+    "build"
+]
+
+[project.urls]
+Homepage = "https://github.com/ChristopherBradley/DAESIM_preprocess"
