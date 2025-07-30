@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: tvolib
+Version: 0.5.3
+Summary: A personal collection of Python and IDL tools for research in Space Plasma Physics
+Home-page: https://github.com/tien-vo/tvolib
+License: GPL-3.0-only
+Author: Tien Vo
+Author-email: tvo.work@proton.me
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Dist: astropy (>=6.1.0,<7.0.0)
+Requires-Dist: cdflib (>=1.3.1,<2.0.0)
+Requires-Dist: colorcet (>=3.1.0,<4.0.0)
+Requires-Dist: dask (>=2024.5.1,<2025.0.0)
+Requires-Dist: matplotlib (>=3.9.0,<4.0.0)
+Requires-Dist: numpy (==2.0.0)
+Requires-Dist: pathos (>=0.3.2,<0.4.0)
+Requires-Dist: scipy (>=1.13.0,<2.0.0)
+Requires-Dist: tqdm (>=4.66.4,<5.0.0)
+Requires-Dist: xarray (>=2024.5.0,<2025.0.0)
+Requires-Dist: zarr (>=2.18.2,<3.0.0)
+Project-URL: Repository, https://github.com/tien-vo/tvolib
+Description-Content-Type: text/markdown
+
+# About
+
+This is a personal collection of Python and IDL routines for my research
+in Space Plasma Physics, organized into packages. Some are more
+well-documented than others. Please use them at your discretion.
+
+## Installation
+
+The Python codes are published on PyPI. For installation run
+```
+pip install tvolib
+```
+
+To use the IDL code, run
+```
+source bin/init_idl.sh
+```
+to put `src/idl` into `IDL_PATH`.
+
