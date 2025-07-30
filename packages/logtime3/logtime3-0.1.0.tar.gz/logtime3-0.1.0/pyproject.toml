@@ -1,0 +1,22 @@
+[project]
+name = "logtime3"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "zmf96",email = "zmf96@qq.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+[tool.poetry]
+packages = [{include = "logtime", from = "src"}]
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
