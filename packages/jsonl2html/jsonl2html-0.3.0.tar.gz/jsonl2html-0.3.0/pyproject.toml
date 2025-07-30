@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jsonl2html"
+license = "MIT"
+version = "0.3.0"
+description = "A tool to convert JSONL to HTML"
+readme = "README.md"
+requires-python = ">=3.6"
+authors = [
+    {name = "Adamenko Pavel", email = "padamenko@gmail.com"},
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+
+[project.scripts]
+jsonl2html = "jsonl2html.convert:main_bash_entry_point"
+
+[project.urls]
+"Homepage" = "https://github.com/padap/jsonl2html"
+"Bug Tracker" = "https://github.com/padap/jsonl2html/issues"
+
+[tool.setuptools]
+package-data = {"jsonl2html" = ["html_template.html", "config.json"]}
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "pylint",
+    "pytest",
+    "fire",
+    "tabulate",
+    "build",
+    "pandas"
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.black]
+line-length = 88
+target-version = ['py36']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
