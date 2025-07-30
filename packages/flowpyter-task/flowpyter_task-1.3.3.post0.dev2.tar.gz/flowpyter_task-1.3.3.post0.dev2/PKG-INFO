@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: flowpyter-task
+Version: 1.3.3.post0.dev2
+Home-page: https://github.com/Flowminder/flowpyter-task
+Author: Flowminder Foundation
+Author-email: flowkit@flowminder.org
+Keywords: mobile telecommunications analysis
+Platform: MacOS X
+Platform: Linux
+Classifier: License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: apache_airflow<3,>=2.9.2
+Requires-Dist: apache-airflow-providers-docker
+Requires-Dist: psycopg2-binary
+Provides-Extra: dev
+Requires-Dist: versioneer; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: approvaltests; extra == "test"
+Requires-Dist: pytest-docker; extra == "test"
+Requires-Dist: flowkit_jwt_generator; extra == "test"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: platform
+Dynamic: provides-extra
+Dynamic: requires-dist
+
+# flowpyter-task
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/Flowminder/flowpyter-task/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Flowminder/flowpyter-task/tree/main)  [![License: MPL 2.0](https://img.shields.io/github/license/Flowminder/flowpyter-task.svg?style=flat-square)](https://opensource.org/licenses/MPL-2.0) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/python/black)
+
+flowpyter-task is a Python package which provides [Airflow](https://airflow.apache.org) operators for executing Jupyter notebooks using [papermill](https://github.com/nteract/papermill), running in a Docker container. It is designed for use with Flowminder's FlowKit toolkit for CDR analysis, and in particular the FlowETL container. We also provide a Docker image, [flowminder/flowbot](https://hub.docker.com/repository/docker/flowminder/flowbot), which extends the FlowETL image to include flowpyter-task.
+
+## Installation
+
+Install with pip:
+
+`pip install flowpyter-task`
+
+## Documentation
+
+Documentation is available [here](https://flowminder.github.io/flowpyter-task/).
