@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: hack4u_test02726
+Version: 5.1.0
+Summary: Una biblioteca para consultar cursos de hack4u
+Home-page: https://hack4u.io
+Author: Pablo Valero Martinez
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: summary
+
+# Hack4u Academy Courses Library
+
+Una biblioteca Python pra consultar cursos de la academia Hack4u.
+
+## Cursos disponibles:
+
+- Introduccion a Linux
+- Personalizacion de Linux
+- Introduccion al Hacking
+
+## Instalacion
+
+Instala el paquete usando `pip3`:
+
+```python3
+pip3 install hack4u
+```
+
+## Uso Basico
+
+### Listar todos los cursos
+
+```python3
+from hack4u import list_courses
+
+for course in list_courses():
+    print(course)
+```
+
+### Obtener un curso por nombre
+
+```python3
+from hack4u import get_course_by_name
+
+course = get_course_by_name("Introduccion a Linux")
+print(course)
+```
+
+### Calcular duracion total de los cursos
+
+```python3
+from hack4u import total_duration
+
+print(f"Duracion total: {total_duration()} horas")
+```
