@@ -1,0 +1,61 @@
+# EDA Profiler
+
+A lightweight yet comprehensive Python package for performing Exploratory Data Analysis (EDA) on a pandas DataFrame.
+
+`eda_profiler` quickly generates a detailed profile report for each column in your dataset, providing essential statistics for data cleaning, feature engineering, and initial data understanding.
+
+## Features
+
+-   Calculates counts and percentages of missing values.
+-   Differentiates between numerical and categorical columns to provide relevant stats.
+-   For **numerical** columns, it computes:
+    -   Standard descriptive stats (mean, std, min, max).
+    -   A full range of percentiles (1%, 5%, 10%, 25%, 50%, 75%, 90%, 95%, 99%).
+    -   Distribution shape metrics: Skewness and Kurtosis.
+    -   Dispersion metrics: IQR and Coefficient of Variation.
+    -   Count of zero values.
+-   For **categorical** columns, it computes:
+    -   Cardinality (unique value count).
+    -   Mode (most frequent value), its frequency, and percentage.
+
+## Installation
+
+You will be able to install this package via pip once it is published to PyPI. For now, you can install it locally from the project directory:
+
+```bash
+pip install .
+```
+
+## How to Use
+
+The package provides a single, easy-to-use function: `profile_df`.
+
+```python
+import pandas as pd
+import numpy as np
+from eda_profiler import profile_df
+
+# 1. Create a sample DataFrame
+data = {
+    'numeric_col': np.random.randn(100) * 100,
+    'categorical_col': np.random.choice(['A', 'B', 'C'], 100, p=[0.6, 0.3, 0.1]),
+    'mixed_col_with_nan': [1, 2, np.nan, 4, 5, 1, 2, np.nan] * 12 + [1,2,np.nan, 4]
+}
+df = pd.DataFrame(data)
+
+# 2. Generate the EDA profile
+eda_summary = profile_df(df)
+
+# 3. Print the summary
+# Transposing (.T) is often useful for readability
+print(eda_summary.T)
+
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
