@@ -1,0 +1,46 @@
+Metadata-Version: 2.3
+Name: justernetes
+Version: 0.1.6
+Summary: 
+Author: knspar
+Author-email: knspar@proton.me
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: dynaconf (>=3.2.11,<4.0.0)
+Requires-Dist: kopf (>=1.38.0,<2.0.0)
+Requires-Dist: kubernetes (>=33.1.0,<34.0.0)
+Requires-Dist: loguru (>=0.7.3,<0.8.0)
+Requires-Dist: pydantic (>=2.11.5,<3.0.0)
+Requires-Dist: requests (>=2.32.4,<3.0.0)
+Requires-Dist: typer (>=0.16.0,<0.17.0)
+Description-Content-Type: text/markdown
+
+# Justernetes
+
+Justernetes is a Kubernetes operator designed to manage and orchestrate Justniffer-powered network monitoring pipelines via Custom Resource Definitions (CRDs). It automates lifecycle operations (create, update, delete), ensures runtime consistency across distributed environments, and integrates seamlessly with a Justniffer proxy API.
+
+## Features
+
+- 🌀 Declarative control of network sniffing configurations through CRDs
+- ⚙️ Automated lifecycle reconciliation with status tracking
+- 🔁 Debounced sync for efficient resource alignment
+- 🔍 Runtime validation of active Justniffer processes
+- 📦 Pydantic-powered schema validation
+
+## CRD Overview
+
+Each `Justniffer` custom resource includes:
+
+- Target network interface
+- Optional filters and log formatting
+- Runtime control flags (e.g., truncation, encoding, activation)
+- Status and condition tracking with lifecycle phase updates
+
+## Getting Started
+
+1. **Deploy the Operator**
+   ```bash
+   kubectl apply -f deploy/operator.yaml
+
