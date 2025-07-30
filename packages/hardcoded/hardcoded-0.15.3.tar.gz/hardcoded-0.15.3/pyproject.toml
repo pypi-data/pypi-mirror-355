@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "hardcoded"
+version = "0.15.3"
+description = "For everything that you really should not be hardcoding."
+license = "LGPL-3.0-or-later"
+authors = ["moizuo <no_spam@example.com>"]
+readme = "README.md"
+repository = "https://gitlab.com/zeroconfig/hardcoded"
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+Click = ">= 8.0.1"
+pyyaml = "*"
+python-gnupg = "*"
+cryptography = {version = ">= 39.0.0", optional = true}
+cffi = {version = "^1.15.1", optional = true}
+python-dotenv = ">=1.0.1"
+
+[tool.poetry.extras]
+encryption_without_pgp = ["cryptography", "cffi"]
+
+[tool.poetry.scripts]
+hardcoded = "hardcoded:cli"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
