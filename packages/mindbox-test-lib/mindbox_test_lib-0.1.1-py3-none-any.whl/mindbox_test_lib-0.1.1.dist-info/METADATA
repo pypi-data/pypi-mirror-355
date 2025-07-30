@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: mindbox-test-lib
+Version: 0.1.1
+Summary: Тестовое задание для Mindbox (№1).
+Author: SivikGosh
+Author-email: sivik@protonmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Dynamic: license-file
+
+# test_mindbox_lib
+
+### Модули пакета 'share'
+
+| Название        | Описание                                                                                        |
+| --------------- | ----------------------------------------------------------------------------------------------- |
+| interfaces.py   | Интерфейс всех наследуемых фигур.                                                               |
+| сircle.py       | Класс Круг, получение площади по заданному радиусу.                                             |
+| triangle.py     | Класс Треугольник, получение площади по заданным сторонам. Проверка, является ли прямоугольным. |
+
+
+### Тесты
+
+- Тест на валидность радиуса круга;
+- Тест вычисления площади круга по случайно сгенерированным значениям;
+- Параметризованный тест на валидность сторон треугольника;
+- Параметризованный тест на прямоугольность треугольника;
+- Тест вычисления площади треугольника по случайно сгенерированным значениям;
