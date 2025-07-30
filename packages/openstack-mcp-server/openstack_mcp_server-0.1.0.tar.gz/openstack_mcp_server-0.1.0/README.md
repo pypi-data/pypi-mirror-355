@@ -1,0 +1,98 @@
+# OpenStack MCP Server
+
+基于MCP（Multimodal Capability Protocol）的OpenStack资源查询服务，提供API接口查询OpenStack云平台的计算、存储、网络、镜像等资源信息。
+
+## 功能特性
+
+- **实时资源查询**：通过API获取OpenStack集群的最新资源状态
+- **多维度信息**：支持查询计算、存储、网络、镜像等多种资源
+- **灵活过滤**：支持按名称、ID等条件筛选资源
+- **详细程度控制**：支持基础、详细、完整三种信息展示级别
+- **标准MCP接口**：完全兼容MCP协议，可与大语言模型无缝集成
+
+## 技术架构
+
+- 基于Starlette和Uvicorn的高性能异步HTTP服务
+- 使用OpenStack SDK与OpenStack API交互
+- 通过MCP协议将OpenStack资源信息结构化提供给大语言模型
+- 支持SSE流式输出，提供实时反馈
+
+## 安装
+
+### 环境要求
+
+- Python 3.10+
+- OpenStack环境
+
+### 通过pip安装
+
+```bash
+pip install openstack-mcp-server
+```
+
+## 使用方法
+
+### 启动服务
+
+```bash
+mcp-openstack-http --port 8000 --log-level INFO --auth-url 'http://<OpenStack-API-Endpoint>:5000/v3' --username '<OpenStack-Admin-User>' --password '<OpenStack-Admin-Password>'
+```
+
+服务启动后，将在`http://localhost:8000/openstack`提供MCP接口。
+
+### 参数说明
+
+- `--port`: 服务监听端口，默认为8000
+- `--log-level`: 日志级别，可选值为DEBUG、INFO、WARNING、ERROR、CRITICAL，默认为INFO
+- `--json-response`: 使用JSON响应代替SSE流，默认为False
+
+### 接口示例
+
+通过MCP协议，可以使用以下工具查询OpenStack资源：
+
+#### 获取OpenStack虚拟机实例
+
+```json
+{
+  "name": "get-openstack-instances",
+  "arguments": {
+    "filter": "web-server",
+    "limit": 10,
+    "detail_level": "detailed"
+  }
+}
+```
+
+参数说明：
+- `filter`: 筛选条件，如实例名称或ID（可选）
+- `limit`: 返回结果的最大数量（可选，默认100）
+- `detail_level`: 返回信息的详细程度，可选值为basic、detailed、full（可选，默认basic）
+
+## 配置说明
+
+服务默认使用以下OpenStack认证配置：
+
+```python
+conn = connection.Connection(
+    auth_url='http://<OpenStack-API-Endpoint>:5000/v3',
+    username='<OpenStack-Admin-User>',
+    password='<OpenStack-Admin-Password>',
+    project_name='<OpenStack-Admin-Project>',
+    user_domain_name='<OpenStack-User-Domain>',
+    project_domain_name='<OpenStack-Project-Domain>'
+)
+```
+
+如需修改认证信息，请编辑`src/mcp_openstack_http/server.py`文件中的相关配置。
+
+## 扩展开发
+
+### 添加新的资源查询工具
+
+1. 在`src/mcp_openstack_http/server.py`中添加相应的资源获取函数
+2. 在`list_tools`方法中注册新工具
+3. 在`call_tool`方法中实现工具的处理逻辑
+
+## 许可证
+
+MIT
