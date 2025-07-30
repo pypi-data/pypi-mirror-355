@@ -1,0 +1,57 @@
+[tool.poetry]
+name = "asrbench"
+version = "0.1.0"
+description = "Extensible, easy to use Python framework for evaluation of audio transcription systems."
+license = "MIT"
+authors = ["ASRBench <asrbenchmark@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "asrbench" }]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Benchmark",
+]
+
+[tool.poetry.urls]
+"Documentation" = "https://asrbench.github.io/asrbench"
+"Source" = "https://github.com/ASRBench/asrbench"
+"Bug Tracker" = "https://github.com/ASRBench/asrbench/issues"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+jiwer = "^3.0.4"
+pandas = "^2.2.3"
+seaborn = "^0.13.2"
+jinja2 = "^3.1.4"
+weasyprint = "^62.3"
+num2words = "^0.5.13"
+pydub = "^0.25.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-cov = "^6.0.0"
+isort = "^5.13.2"
+
+[tool.poetry.group.doc.dependencies]
+mkdocs-material = "^9.5.44"
+mkdocstrings = "^0.27.0"
+mkdocstrings-python = "^1.12.2"
+pymdown-extensions = "^10.12"
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = "--doctest-modules"
+markers = [
+    "errors: tests to match raises errors.",
+    "configloader: tests for config loader class."
+]
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

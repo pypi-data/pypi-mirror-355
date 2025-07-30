@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ templates_dir }}/styles.css" rel="stylesheet"/>
+    <title>ASR Benchmark Report</title>
+</head>
+<body>
+    <header>
+        <h1>ASRBenchmark Report</h1>
+    </header>
+    <main>
+        {% include "./infos.html" %}
+        {% include "./plot.html" %}
+        {% include "./mean_table.html" %}
+        {% include "./configs.html" %}
+    </main>
+</body>
+</html>
