@@ -1,0 +1,3 @@
+_A=None
+from pydantic import BaseModel,Field
+class ReaderColsMetricsConfig(BaseModel):name:str|_A=Field(default=_A,description='Nom de la métrique.');col:int|str|_A=Field(default=_A,description="Index de la colonne pour la métrique (index `1` pour la première colonne). Si `String`, nom de la colonne pour la métrique. Si la colonne n'existe pas, il n'y aura pas de parsing. (Valide seulement si la première ligne est les en-têtes)");aggregation:str=Field(default='sum',description="Méthode d'agrégation pour la métrique. Peut être `mean`, `sum`, `min`, `max`.")
