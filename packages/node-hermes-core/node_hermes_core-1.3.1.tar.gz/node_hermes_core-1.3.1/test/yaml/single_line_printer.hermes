@@ -1,0 +1,81 @@
+modules:
+  - node_hermes_core.built_in.test_nodes
+  - node_hermes_core.built_in.operation_nodes
+  - node_hermes_core.built_in.output
+
+nodes:
+  worker1:
+    type: worker
+    interval: 0.01
+
+    nodes:
+      sine_1:
+        type: sine
+        amplitude: 1
+        frequency: 1
+        offset: 0
+
+  worker2:
+    type: worker
+    interval: 0.11
+
+    nodes:
+      sine_2:
+        type: sine
+        amplitude: 1
+        frequency: 0.9
+        offset: 0
+
+  worker3:
+    type: worker
+    interval: 0.03
+
+    nodes:
+      sine_3:
+        type: sine
+        amplitude: 1
+        frequency: 1.1
+        offset: 0
+
+  worker4:
+    type: worker
+    interval: 1
+
+    nodes:
+      sine_4:
+        type: sine
+        amplitude: 1
+        frequency: 0.1
+        offset: 0
+  worker:
+    type: worker
+    interval: 0.1
+    nodes:
+      
+      aggregator:
+        type: aggregator
+
+        interpolation:
+          mode: linear
+
+        resampling:
+          interval: 50ms
+
+        source: 
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker1.sine_1
+            - worker2.sine_2
+            - worker3.sine_3
+            - worker4.sine_4
+            
+      logger:
+        type: single_line_print
+        add_prefix: false
+        float_precision: 3
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker.aggregator

@@ -1,0 +1,81 @@
+modules:
+  - hermes_core.built_in.test_nodes
+  - hermes_core.built_in.operation_nodes
+  - hermes_core.built_in.output
+
+nodes:
+  fast_worker:
+    type: worker
+    interval: 0.01
+
+    nodes:
+      sine_fast:
+        type: sine
+        amplitude: 1
+        frequency: 4
+        offset: 0
+
+  worker:
+    type: worker
+    interval: 1
+
+    nodes:
+      sine_slow:
+        type: sine
+        amplitude: 1
+        frequency: 1
+        offset: 21
+
+      aggregator_next:
+        type: aggregator
+
+        interpolation:
+          mode: next
+
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker.sine_slow
+            - fast_worker.sine_fast
+
+      aggregator_last:
+        type: aggregator
+
+        interpolation:
+          mode: last
+
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker.sine_slow
+            - fast_worker.sine_fast
+
+      aggregator_interpolated:
+        type: aggregator
+
+        interpolation:
+          mode: linear
+
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker.sine_slow
+            - fast_worker.sine_fast
+
+      csv_writer:
+        type: csv_writer
+        filename: "test_data.csv"
+        startup_delay: 2
+        separator: ";"
+        add_prefix: true
+        time_format: relative
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - worker.aggregator_next
+            - worker.aggregator_last
+            - worker.aggregator_interpolated

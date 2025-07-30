@@ -1,0 +1,41 @@
+modules:
+  - hermes_core.built_in.test_nodes
+  - hermes_core.built_in.operation_nodes
+  - hermes_core.built_in.output
+
+nodes:
+  fast_worker:
+    type: worker
+    interval: 0.01
+
+    nodes:
+      sine_fast:
+        type: sine
+        amplitude: 1
+        frequency: 10
+        offset: 0
+
+  worker:
+    type: worker
+    interval: 1
+
+    nodes:
+      sine_slow:
+        type: sine
+        amplitude: 1
+        frequency: 1
+        offset: 21
+
+      csv_writer:
+        type: csv_writer
+        filename: "lvdt_data.csv"
+        startup_delay: 2
+        separator: ";"
+        add_prefix: true
+
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - fast_worker.sine_fast
+            - worker.sine_slow
