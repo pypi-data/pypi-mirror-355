@@ -1,0 +1,53 @@
+# pyproject.toml
+
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pergamos"
+version = "0.0.7"
+description = "A lightweight dynamic module for automatic HTML reporting"
+readme = "README.md"
+authors = [{ name = "Manu B Valentin", email = "manuel.blanco.valentin@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: HTML"
+]
+keywords = ["html", "markdown", "reporting", "automation", "dynamic", "syntax-highlighting"]
+requires-python = ">=3.10"
+
+dependencies = [
+    "feedparser >= 5.2.0",
+    "html2text",
+    "markdown>=3.3",
+    "pygments",  # Needed for syntax highlighting in Markdown
+    "numpy",     # Needed for rendering Numpy data structures
+    "pandas",    # Needed for DataFrame rendering
+    "matplotlib", # Needed for plots and interactive plots
+    "mpld3",     # Needed for interactive Matplotlib plots
+    'tomli; python_version < "3.11"',
+]
+
+[project.optional-dependencies]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/manuelblancovalentin/pergamos"
+Repository = "https://github.com/manuelblancovalentin/pergamos"
+Issues = "https://github.com/manuelblancovalentin/pergamos/issues"
+
+[project.scripts]
+pergamos = "pergamos.__main__:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+pergamos = ["css/*"]
