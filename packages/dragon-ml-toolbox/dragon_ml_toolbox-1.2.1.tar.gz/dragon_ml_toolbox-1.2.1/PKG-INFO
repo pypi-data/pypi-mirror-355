@@ -1,0 +1,141 @@
+Metadata-Version: 2.4
+Name: dragon-ml-toolbox
+Version: 1.2.1
+Summary: A collection of tools for data science and machine learning projects
+Author-email: Karl Loza <luigiloza@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/DrAg0n-BoRn/ML_tools
+Project-URL: Changelog, https://github.com/DrAg0n-BoRn/ML_tools/blob/master/CHANGELOG.md
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: LICENSE-THIRD-PARTY.md
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: scikit-learn
+Provides-Extra: data-exploration
+Requires-Dist: pandas; extra == "data-exploration"
+Requires-Dist: numpy; extra == "data-exploration"
+Requires-Dist: matplotlib; extra == "data-exploration"
+Requires-Dist: seaborn; extra == "data-exploration"
+Requires-Dist: statsmodels; extra == "data-exploration"
+Requires-Dist: ipython; extra == "data-exploration"
+Provides-Extra: datasetmaster
+Requires-Dist: torch; extra == "datasetmaster"
+Requires-Dist: pandas; extra == "datasetmaster"
+Requires-Dist: numpy; extra == "datasetmaster"
+Requires-Dist: scikit-learn; extra == "datasetmaster"
+Requires-Dist: imblearn; extra == "datasetmaster"
+Requires-Dist: Pillow; extra == "datasetmaster"
+Requires-Dist: matplotlib; extra == "datasetmaster"
+Provides-Extra: ensemble-learning
+Requires-Dist: pandas; extra == "ensemble-learning"
+Requires-Dist: numpy; extra == "ensemble-learning"
+Requires-Dist: seaborn; extra == "ensemble-learning"
+Requires-Dist: matplotlib; extra == "ensemble-learning"
+Requires-Dist: joblib; extra == "ensemble-learning"
+Requires-Dist: imblearn; extra == "ensemble-learning"
+Requires-Dist: scikit-learn; extra == "ensemble-learning"
+Requires-Dist: xgboost; extra == "ensemble-learning"
+Requires-Dist: lightgbm; extra == "ensemble-learning"
+Requires-Dist: shap; extra == "ensemble-learning"
+Provides-Extra: handle-excel
+Requires-Dist: openpyxl; extra == "handle-excel"
+Requires-Dist: pandas; extra == "handle-excel"
+Provides-Extra: logger
+Requires-Dist: pandas; extra == "logger"
+Requires-Dist: openpyxl; extra == "logger"
+Provides-Extra: mice-imputation
+Requires-Dist: pandas; extra == "mice-imputation"
+Requires-Dist: miceforest; extra == "mice-imputation"
+Requires-Dist: matplotlib; extra == "mice-imputation"
+Requires-Dist: numpy; extra == "mice-imputation"
+Provides-Extra: particle-swarm-optimization
+Requires-Dist: numpy; extra == "particle-swarm-optimization"
+Requires-Dist: joblib; extra == "particle-swarm-optimization"
+Requires-Dist: xgboost; extra == "particle-swarm-optimization"
+Requires-Dist: lightgbm; extra == "particle-swarm-optimization"
+Requires-Dist: scikit-learn; extra == "particle-swarm-optimization"
+Requires-Dist: polars; extra == "particle-swarm-optimization"
+Provides-Extra: pytorch-models
+Requires-Dist: torch; extra == "pytorch-models"
+Provides-Extra: trainer
+Requires-Dist: numpy; extra == "trainer"
+Requires-Dist: torch; extra == "trainer"
+Requires-Dist: matplotlib; extra == "trainer"
+Requires-Dist: scikit-learn; extra == "trainer"
+Provides-Extra: vision-helpers
+Requires-Dist: Pillow; extra == "vision-helpers"
+Requires-Dist: torch; extra == "vision-helpers"
+Requires-Dist: torchvision; extra == "vision-helpers"
+Provides-Extra: full
+Requires-Dist: pandas; extra == "full"
+Requires-Dist: numpy; extra == "full"
+Requires-Dist: matplotlib; extra == "full"
+Requires-Dist: seaborn; extra == "full"
+Requires-Dist: statsmodels; extra == "full"
+Requires-Dist: ipython; extra == "full"
+Requires-Dist: torch; extra == "full"
+Requires-Dist: scikit-learn; extra == "full"
+Requires-Dist: imblearn; extra == "full"
+Requires-Dist: Pillow; extra == "full"
+Requires-Dist: joblib; extra == "full"
+Requires-Dist: xgboost; extra == "full"
+Requires-Dist: lightgbm; extra == "full"
+Requires-Dist: shap; extra == "full"
+Requires-Dist: openpyxl; extra == "full"
+Requires-Dist: miceforest; extra == "full"
+Requires-Dist: polars; extra == "full"
+Requires-Dist: torchvision; extra == "full"
+Dynamic: license-file
+
+# dragon-ml-tools
+
+A collection of Python utilities and machine learning tools, structured as a modular package for easy reuse and installation.
+
+## Features
+
+- Modular scripts for data exploration, logging, machine learning, and more.
+- Optional dependencies grouped by functionality for lightweight installs.
+- Designed for seamless integration as a Git submodule or installable Python package.
+
+
+## Installation
+
+Python 3.9+ recommended.
+
+### Via PyPI (Stable Releases)
+
+Install the latest stable release from PyPI with optional dependencies:
+
+```bash
+pip install dragon-ml-tools[logger,trainer]
+```
+
+To install dependencies from all modules
+
+```bash
+pip install dragon-ml-tools[full]
+```
+
+### Via GitHub (Editable)
+
+Clone the repository and install in editable mode with optional dependencies:
+
+```bash
+git clone https://github.com/DrAg0n-BoRn/ML_tools.git
+cd ML_tools
+pip install -e '.[logger]'
+```
+
+## Usage
+
+After installation, import modules like this:
+
+```python
+from ml_tools.utilities import sanitize_filename
+from ml_tools.logger import custom_logger
+```
