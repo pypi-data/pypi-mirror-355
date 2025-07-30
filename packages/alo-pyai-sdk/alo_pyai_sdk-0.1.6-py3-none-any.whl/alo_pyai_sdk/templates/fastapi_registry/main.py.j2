@@ -1,0 +1,97 @@
+from fastapi import FastAPI, HTTPException, status
+from typing import Dict, List, Optional
+from datetime import datetime, timezone
+
+from .models import AgentInfo, AgentRegistrationPayload, AgentUnregisterPayload
+
+app = FastAPI(
+    title="{{ project_name }} - Agent Registry",
+    version="{{ sdk_version }}",
+    description="A central registry for discovering and managing AI agents.",
+)
+
+# In-memory database for simplicity. For production, use a persistent database.
+# The key is the agent's service_id.
+agents_db: Dict[str, AgentInfo] = {}
+
+@app.on_event("startup")
+async def startup_event():
+    # Placeholder for any startup logic, e.g., loading from a persistent store
+    print("Agent Registry started.")
+    # Example: Load from a config file or DB if needed
+    # global agents_db
+    # agents_db = load_agents_from_persistent_storage()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    print("Agent Registry shutting down.")
+    # Placeholder for cleanup, e.g., saving to a persistent store
+
+@app.post("/register", response_model=AgentInfo, status_code=status.HTTP_201_CREATED)
+async def register_agent(payload: AgentRegistrationPayload) -> AgentInfo:
+    """
+    Registers an agent with the registry.
+    If an agent with the same service_id already exists, it will be updated.
+    """
+    print(f"Received registration request for agent: {payload.service_id}")
+    agent_info = AgentInfo(
+        **payload.model_dump(),
+        last_seen=datetime.now(timezone.utc).isoformat()
+    )
+    agents_db[payload.service_id] = agent_info
+    print(f"Agent '{payload.service_id}' registered/updated at {agent_info.service_url}")
+    return agent_info
+
+@app.post("/unregister", status_code=status.HTTP_200_OK)
+async def unregister_agent(payload: AgentUnregisterPayload) -> Dict[str, str]:
+    """
+    Unregisters an agent from the registry.
+    """
+    print(f"Received unregistration request for agent: {payload.service_id}")
+    if payload.service_id in agents_db:
+        del agents_db[payload.service_id]
+        print(f"Agent '{payload.service_id}' unregistered.")
+        return {"message": f"Agent '{payload.service_id}' unregistered successfully."}
+    else:
+        print(f"Agent '{payload.service_id}' not found for unregistration.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Agent '{payload.service_id}' not found."
+        )
+
+@app.get("/agents", response_model=List[AgentInfo])
+async def list_agents() -> List[AgentInfo]:
+    """
+    Lists all currently registered agents.
+    """
+    print(f"Listing {len(agents_db)} registered agents.")
+    return list(agents_db.values())
+
+@app.get("/agents/{service_id}", response_model=AgentInfo)
+async def get_agent_info(service_id: str) -> AgentInfo:
+    """
+    Retrieves information about a specific registered agent.
+    """
+    print(f"Fetching info for agent: {service_id}")
+    agent = agents_db.get(service_id)
+    if not agent:
+        print(f"Agent '{service_id}' not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Agent '{service_id}' not found."
+        )
+    return agent
+
+@app.get("/health")
+async def health_check() -> Dict[str, str]:
+    """
+    Simple health check endpoint.
+    """
+    return {"status": "ok"}
+
+if __name__ == "__main__":
+    import uvicorn
+    # This is for local development/testing of the registry itself.
+    # The SDK's 'run registry' command would typically handle this.
+    print("Running Agent Registry (template example) via uvicorn...")
+    uvicorn.run(app, host="0.0.0.0", port={{ registry_port | default(8000) }})
