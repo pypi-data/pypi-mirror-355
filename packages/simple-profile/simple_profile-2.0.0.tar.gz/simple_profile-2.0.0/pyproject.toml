@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "simple-profile"
+version = "2.0.0"
+description = "Simple decorators to profile the memory usage and execution time."
+authors = ["João Brilhante"]
+license = "GPL-3.0-only"
+readme = "README.md"
+homepage="https://github.com/JoaoBrlt/simple-profile"
+repository="https://github.com/JoaoBrlt/simple-profile"
+packages = [{include = "simple_profile"}]
+keywords = ["profiler", "profiling", "timer", "timing", "timeit", "tracemalloc", "memory", "execution", "decorator"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: Software Development :: Testing",
+    "Topic :: System :: Monitoring",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed"
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
