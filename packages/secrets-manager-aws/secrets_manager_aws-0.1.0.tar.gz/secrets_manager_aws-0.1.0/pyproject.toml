@@ -1,0 +1,21 @@
+[project]
+name = "secrets-manager-aws"
+version = "0.1.0"
+description = "A tool to manage AWS Secrets Manager secrets using a temporary .env file edited in vim"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Arun Karthi Mani", email = "developer.makk@gmail.com"}
+]
+dependencies = [
+    "boto3>=1.28.0"
+]
+
+[project.scripts]
+secrets-manager = "secrets_manager.secrets_manager:main"
+asm = "secrets_manager.secrets_manager:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
