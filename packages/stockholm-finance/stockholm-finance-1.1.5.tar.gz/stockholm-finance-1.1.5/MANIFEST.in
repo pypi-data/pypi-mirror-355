@@ -1,0 +1,52 @@
+# MANIFEST.in - Controls what gets included in the distribution package
+# This ensures only production-ready files are packaged, excluding dev/test files
+
+# Include essential documentation
+include README.md
+include LICENSE
+include requirements.txt
+
+# Include source code only (src/ directory)
+recursive-include src *.py
+recursive-include src/config *.py
+
+# Exclude development and testing files
+exclude .coverage
+exclude .gitignore
+exclude .dockerignore
+exclude docker-compose.yml
+exclude Dockerfile
+
+# Exclude entire development directories
+prune tests/
+prune tools/
+prune docs/
+prune scripts/
+prune .github/
+prune .trunk/
+prune .pytest_cache/
+prune .mypy_cache/
+prune htmlcov/
+prune cache/
+prune __pycache__/
+prune *.egg-info/
+prune build/
+prune dist/
+
+# Exclude development configuration files
+exclude *.yml
+exclude *.yaml
+exclude .trunk.yaml
+exclude pyproject.toml
+
+# Exclude any temporary or cache files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .DS_Store
+global-exclude Thumbs.db
+global-exclude *.log
+global-exclude *.tmp
+global-exclude *.cache
