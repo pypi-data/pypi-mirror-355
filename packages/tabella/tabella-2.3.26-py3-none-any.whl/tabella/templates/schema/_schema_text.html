@@ -1,0 +1,148 @@
+{# Any #}
+{% if is_any(schema) %}
+    <span class="text-sky-600 dark:text-sky-500">any</span>
+
+    {# Const #}
+{% elif schema.const or "const" in schema.__fields_set__ %}
+    <span class="text-sky-600 dark:text-sky-500">constant</span>
+    {% with value=schema.const %}
+        = {% include "schema/_value.html" %}
+    {% endwith %}
+
+    {# Enum #}
+{% elif schema.enum %}
+    <span class="text-sky-600 dark:text-sky-500">enum</span>
+    {% if not minimalize %}
+        [
+        {% for option in schema.enum %}
+            {{ option }}
+            {% if loop.index < len(schema.enum) %}
+                ,
+            {% endif %}
+        {% endfor %}
+        ]
+    {% endif %}
+
+{% elif schema.title and schema.type == "object" and schema.properties %}
+    <span class="text-sky-600 dark:text-sky-500">{{ schema.title }}</span>
+
+    {# Schema Type #}
+{% elif schema.type %}
+    {% if schema.type == "null" %}
+        <span class="text-orange-700 dark:text-orange-500">{{ schema.type }}</span>
+    {% else %}
+        <span class="text-sky-600 dark:text-sky-500">{{ schema.type }}</span>
+    {% endif %}
+
+    {% if schema.type == "array" %}
+        {# Schema Prefix Items #}
+        {% if schema.prefix_items %}
+            [
+            {% for prefix_schema in schema.prefix_items %}
+                {% with schema=prefix_schema,
+                        schema_id=schema_id + id(loop.index0) + "-prefix-items" %}
+                    {% include "schema/schema.html" %}
+                {% endwith %}
+                {% if loop.index < len(schema.prefix_items) %}
+                    <span class="pl-1 pr-1">,</span>
+                {% endif %}
+            {% endfor %}
+            ]
+        {% endif %}
+
+        {# Schema Items #}
+        {% if schema.items %}
+            {% with schema=schema.items, schema_id=schema_id + "-items" %}
+                [{% include "schema/schema.html" %}]
+            {% endwith %}
+
+        {% endif %}
+
+        {# Max/Min Items #}
+        {% if not minimalize %}
+            {% if "min_items" in schema.__fields_set__ and "max_items" in schema.__fields_set__ %}
+                {% if schema.min_items == schema.max_items %}
+                    <span class="ml-2 text-neutral-500 dark:text-neutral-400">
+                        {{ schema.min_items }} {{ "item" if schema.max_items == 1 else "items" }}
+                    </span>
+                {% else %}
+                    <span class="ml-2 text-neutral-500 dark:text-neutral-400">
+                        {{ schema.min_items }}-{{ schema.max_items }} items
+                    </span>
+                {% endif %}
+            {% elif "min_items" in schema.__fields_set__ %}
+                <span class="ml-2 text-neutral-500 dark:text-neutral-400">>={{ schema.min_items }} items</span>
+            {% elif "max_items" in schema.__fields_set__ %}
+                <span class="ml-2 text-neutral-500 dark:text-neutral-400"><={{ schema.max_items }} items</span>
+            {% endif %}
+        {% endif %}
+
+    {% endif %}
+
+    {# Schema Additional Properties #}
+    {% if schema.additional_properties %}
+        {% with schema=schema.additional_properties,
+                schema_id=schema_id + "additional-properties" %}
+            [{% include "schema/schema.html" %}]
+        {% endwith %}
+    {% elif schema.type == "object" and not schema.properties %}
+        {% with schema=None, schema_id=schema_id + "-properties" %}
+            [{% include "schema/schema.html" %}]
+        {% endwith %}
+    {% endif %}
+
+    {# Schema Format/Pattern/Unique #}
+    {% if schema.format %}
+        <span class="ml-2 text-neutral-500 dark:text-neutral-400">{{ schema.format }}</span>
+    {% endif %}
+    {% if schema.pattern %}
+        <span class="ml-2 text-neutral-500 dark:text-neutral-400">{{ schema.pattern }}</span>
+    {% endif %}
+    {% if schema.unique_items %}
+        <span class="ml-2 text-neutral-500 dark:text-neutral-400">unique</span>
+    {% endif %}
+    {% if schema.pattern %}
+        <span class="ml-2 text-neutral-500 dark:text-neutral-400">{{ schema.pattern }}</span>
+    {% endif %}
+
+    {# Max/Min #}
+    {% if "minimum" in schema.__fields_set__ %}
+        <span class="ml-2 text-neutral-500 dark:text-neutral-400">>={{ schema.minimum }}</span>
+    {% endif %}
+    {% if "maximum" in schema.__fields_set__ %}
+        <span class="ml-2 text-neutral-500 dark:text-neutral-400"><={{ schema.maximum }}</span>
+    {% endif %}
+    {% if "multiple_of" in schema.__fields_set__ %}
+        <span class="ml-2 text-neutral-500 dark:text-neutral-400">% {{ schema.multiple_of }} == 0</span>
+    {% endif %}
+
+    {# Schema Any Of #}
+{% elif schema.any_of %}
+    {% for any_of_schema in schema.any_of %}
+        {% with  schema=any_of_schema, schema_id=schema_id + id(loop.index0) + "-any" %}
+            {% include "schema/schema.html" %}
+        {% endwith %}
+        {% if loop.index < len(schema.any_of) %}
+            <span class="pl-1 pr-1">|</span>
+        {% endif %}
+    {% endfor %}
+
+    {# Schema All Of #}
+{% elif schema.all_of %}
+    {% for any_of_schema in schema.all_of %}
+        {% with  schema=any_of_schema, schema_id=schema_id + id(loop.index0) + "-all" %}
+            {% include "schema/schema.html" %}
+        {% endwith %}
+        {% if loop.index < len(schema.all_of) %}
+            <span class="pl-1 pr-1">&</span>
+        {% endif %}
+    {% endfor %}
+
+{% endif %}
+
+{# If ref is still populated that indicates recursive schema. #}
+{% if schema.ref and not minimalize%}
+    <span class="ml-1">
+        (<span class="text-amber-700 dark:text-amber-400">Recursive</span>)
+    </span>
+{% endif %}

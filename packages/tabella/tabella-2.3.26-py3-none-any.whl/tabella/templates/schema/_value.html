@@ -1,0 +1,11 @@
+{% if is_str(value) %}
+    <span class="text-green-700 dark:text-green-600">{{ value }}</span>
+{% elif is_(value, None) %}
+    <span class="text-orange-700 dark:text-orange-500">null</span>
+{% elif is_(value, True) %}
+    <span class="text-orange-700 dark:text-orange-500">true</span>
+{% elif is_(value, False) %}
+    <span class="text-orange-700 dark:text-orange-500">false</span>
+{% else %}  {# Is number #}
+    <span class="text-purple-700 dark:text-purple-500">{{ value }}</span>
+{% endif %}

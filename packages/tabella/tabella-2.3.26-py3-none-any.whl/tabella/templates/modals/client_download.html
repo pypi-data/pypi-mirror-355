@@ -1,0 +1,58 @@
+<dialog id="client-download-modal" class="modal-primary w-1/4 top-52">
+    {# Close Button #}
+    {% with title="Download Client", modal_id="client-download-modal" %}
+        {% include "modals/_title_bar.html" %}
+    {% endwith %}
+    {# Language Input #}
+    <div class="pr-8 pl-8 flex justify-center">
+        <p class="mt-4 text-xl mr-4">Language:</p>
+        <label>
+            <select id="language-input" name="language" class="select-primary mt-2 mb-4">
+                <option>TypeScript</option>
+                <option>Python</option>
+            </select>
+        </label>
+    </div>
+    {# Submit Button #}
+    <div class="flex rounded-b-lg pb-4 pt-2">
+        <button class="ml-8 mr-8 p-1 rounded-lg w-full submit-button"
+                onclick="downloadClient('{{ te.rpc.info.version }}');">Download</button>
+    </div>
+</dialog>
+<script>
+    function downloadClient(version) {
+        const apiUrlInput = document.getElementById("api-url-input");
+        const languageInput = document.getElementById("language-input");
+        const url = `download-client/${version}?api-url=${apiUrlInput.value}&language=${languageInput.value}`;
+
+        // Fetch the file.
+        fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
+                }
+                response.blob()
+                    .then((blob) => {
+                        // Create a URL for the blob data
+                        const blobUrl = URL.createObjectURL(blob);
+
+                        // Create a link element to download the file.
+                        const link = document.createElement("a");
+                        link.href = blobUrl;
+                        link.download = response.headers.get("content-disposition");
+                        link.style.display = "none";
+
+                        // Add the link to the document and trigger a click
+                        // event to start the download.
+                        document.body.appendChild(link);
+                        link.click();
+
+                        // Clean up.
+                        link.remove();
+                        URL.revokeObjectURL(blobUrl);
+                    });
+            });
+
+        closeModal("client-download-modal");
+    }
+</script>

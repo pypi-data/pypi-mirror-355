@@ -1,0 +1,32 @@
+<div id="active-filters-div" class="flex ml-auto">
+    {% for tag in te.tags %}
+        <div id="tag-{{ loop.index0 }}-div"
+             class="group flex hidden mr-2 pl-1 pt-1 mt-1 text-lg rounded-lg
+                    bg-neutral-200 text-neutral-500 dark:bg-neutral-700 dark:text-neutral-400
+                    cursor-pointer hover:shadow"
+             onclick="toggleTag({{ loop.index0 }});">
+            <p>{{ tag.name }}</p>
+            <p id="filter-close-btn-{{ loop.index0 }}"
+               class="material-symbols-outlined pt-[0.2rem] group-hover:text-neutral-900
+                      group-hover:dark:text-neutral-50">
+                close
+            </p>
+        </div>
+    {% endfor %}
+</div>
+
+<label class="mr-2">
+    <select id="tag-filter-select"
+            class="select-primary"
+            autocomplete="off"
+            onchange="onTagSelectChange()">
+        <option id="default-filter-option">
+            Tag Filters
+        </option>
+        {% for tag in te.tags %}
+            <option id="tag-{{ loop.index0 }}-option" value="{{ loop.index0 }}">
+                {{ tag.name }}
+            </option>
+        {% endfor %}
+    </select>
+</label>

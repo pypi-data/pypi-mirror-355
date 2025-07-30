@@ -1,0 +1,73 @@
+{% macro color_value(value, expand, depth=1) %}
+
+    {% set type = get_type(value) %}
+
+    {% if type == "null" %}
+        <span class="text-orange-700 dark:text-orange-400">null</span>
+    {% elif type == "bool" %}
+        <span class="text-orange-700 dark:text-orange-400">{{ str(value).lower() }}</span>
+    {% elif type == "number" %}
+        <span class="text-black dark:text-white">{{ value }}</span>
+    {% elif type == "string" %}
+        <span class="text-green-900 dark:text-green-500">"{{ value }}"</span>
+    {% elif type == "object" %}
+
+        {% set expand_recursive = value_length(value) > 80 %}
+        {
+        {% for k, v in value.items() %}
+            {# Open Indent #}
+            {{ open_indent(expand_recursive, depth) }}
+
+            {# Key, Value #}
+            <span class="text-cyan-900 dark:text-cyan-500">{{ k }}</span>
+            <span class="mr-1">:</span>
+            {{ color_value(v, expand, depth) }}
+            {% if not loop.last %}
+                <span class="mr-1">,</span>
+            {% endif %}
+
+            {# Close Indent #}
+            {{ close_indent(expand_recursive, depth) }}
+        {% endfor %}
+        }
+
+    {% elif type == "array" %}
+        {% set expand_recursive = value_length(value) > 80 %}
+        [
+        {% for item in value %}
+            {# Open Indent #}
+            {{ open_indent(expand_recursive, depth) }}
+
+            {# Value #}
+            {{ color_value(item, expand, depth) }}
+            {% if not loop.last %}
+                <span class="mr-1">,</span>
+            {% endif %}
+
+            {# Close Indent #}
+            {{ close_indent(expand_recursive, depth) }}
+        {% endfor %}
+        ]
+
+    {% else %}
+        <span>{{ value }}</span>
+    {% endif %}
+
+{% endmacro %}
+
+
+{% macro open_indent(expand, depth) %}
+    {% if expand %}
+        {% for i in range(depth) %}
+            <div class="{{ "ml-4" if expand else "" }}">
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro close_indent(expand, depth) %}
+    {% if expand %}
+        {% for i in range(depth) %}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}

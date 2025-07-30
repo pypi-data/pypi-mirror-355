@@ -1,0 +1,43 @@
+<div class="rounded-2xl p-1 mb-1
+            {% if is_even %}
+                bg-neutral-200 dark:bg-neutral-700
+            {% else %}
+                bg-neutral-100 dark:bg-neutral-800
+            {% endif %}">
+
+    {# Item Counter #}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <input id="item-{{ input_id }}-counter"
+           name="item-count"
+           class="hidden"
+           type="number"
+           value="0">
+
+    {# Child Input Holder Div #}
+    <div id="object-items-{{ input_id }}"></div>
+
+    {# Item Buttons #}
+    {% with item_type="object" %}
+        {% include "schema_form/_item_buttons.html" %}
+    {% endwith %}
+
+</div>
+
+<script>
+    function get{{ input_id }}() {
+        return getInputFunction('{{ input_id }}', _get{{ input_id }});
+    }
+
+    function _get{{ input_id }}() {
+        let param = {};
+        const counter = document.getElementById("item-{{ input_id }}-counter");
+
+        for (let i = 1; i <= Number(counter.value); i++) {
+            param[formFunctions[`key_{{ input_id }}_item${i}`]()] = formFunctions[`item{{ input_id }}_item${i}`]();
+        }
+        return param;
+    }
+
+    determineItemButtonDisabled("{{ input_id }}", {{schema.min_items or 0 }}, {{schema.max_items or "null" }});
+    formFunctions["{{ input_id }}"] = get{{ input_id }};
+</script>

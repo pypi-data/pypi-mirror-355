@@ -1,0 +1,20 @@
+<div class="flex mt-1">
+    {# Add Item Button #}
+    <div class="flex mt-1 mr-4 ml-auto">
+        <button id="{{ input_id }}-add-item-btn"
+                class="material-symbols-outlined array-item-button {% if is_even %} hover:bg-neutral-100 hover:dark:bg-neutral-800 {% else %} hover:bg-neutral-200 hover:dark:bg-neutral-700 {% endif %}"
+                onclick="upItemCounter('{{ input_id }}', {{ schema.min_items or 0 }}, {{ schema.max_items or "null" }})"
+                hx-get="/docs/add-{{ item_type }}-item/{{ method_id }}/{{ param_id }}/{{ input_id }}/{{ is_even }}"
+                hx-target="#{{ item_type }}-items-{{ input_id }}"
+                hx-swap="beforeend"
+                hx-include="#api-url-input, #item-{{ input_id }}-counter">add</button>
+    </div>
+    {# Remove Item Button #}
+    <div class="flex mt-1 ml-4 mr-auto">
+        <button id="{{ input_id }}-remove-item-btn"
+                class="material-symbols-outlined array-item-button {% if is_even %} hover:bg-neutral-100 hover:dark:bg-neutral-800 {% else %} hover:bg-neutral-200 hover:dark:bg-neutral-700 {% endif %}"
+                onclick="removeItem('{{ input_id }}', {{ schema.min_items or 0 }}, {{ schema.max_items or "null" }});">
+            remove
+        </button>
+    </div>
+</div>

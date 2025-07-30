@@ -1,0 +1,132 @@
+{# Title #}
+<p class="text-5xl">{{ te.rpc.info.title }}</p>
+<p class="m-4 text-xl">{{ te.rpc.info.description or "" }}</p>
+<div class="flex">
+    {# Version #}
+    <p class="p-1 text-xl rounded-lg bg-neutral-800 text-neutral-300 dark:bg-neutral-300 dark:text-neutral-950">
+        {{ te.rpc.info.version }}
+    </p>
+    {# License #}
+    {% if te.rpc.info.license_ %}
+        <a class="ml-6 p-1 text-xl rounded-lg text-neutral-900 bg-sky-400 hover:shadow hover:bg-sky-500 hover:dark:bg-sky-800 dark:text-neutral-200 dark:bg-sky-700 hover:dark:text-neutral-50"
+           {% if te.rpc.info.license_.url %}href="{{ te.rpc.info.license_.url }}" target="_blank"{% endif %}>
+            {{ te.rpc.info.license_.name }}
+        </a>
+    {% endif %}
+    {# Terms of Service #}
+    {% if te.rpc.info.terms_of_service %}
+        <a class="ml-6 p-1 text-xl rounded-lg text-neutral-900 bg-cyan-400 hover:shadow hover:bg-cyan-500 hover:dark:bg-cyan-800 dark:text-neutral-200 dark:bg-cyan-700 hover:dark:text-neutral-50"
+           href="{{ te.rpc.info.terms_of_service }}"
+           target="_blank">Terms of Service</a>
+    {% endif %}
+</div>
+<div class="flex">
+    {# Contact #}
+    {% if te.rpc.info.contact and (te.rpc.info.contact.email or te.rpc.info.contact.url) %}
+        <div class="ml-2 mt-4">
+            <span>Contact</span>
+            {# Name #}
+            {% if not is_(te.rpc.info.contact.name, None) %}<p class="ml-4">{{ te.rpc.info.contact.name }}</p>{% endif %}
+            {# URL #}
+            {% if not is_(te.rpc.info.contact.url, None) %}
+                <p class="ml-4">
+                    <a class="text-blue-500 hover:underline"
+                       href="{{ te.rpc.info.contact.url }}"
+                       target="_blank">{{ te.rpc.info.contact.url }}</a>
+                </p>
+            {% endif %}
+            {# Email #}
+            {% if not is_(te.rpc.info.contact.email, None) %}
+                <p class="ml-4">
+                    <a class="text-blue-500 hover:underline"
+                       href="mailto:{{ te.rpc.info.contact.email }}">{{ te.rpc.info.contact.email }}</a>
+                </p>
+            {% endif %}
+        </div>
+    {% endif %}
+    <div class="flex flex-col ml-auto mt-auto">
+        {# Download Client Button #}
+        {% if not disable_client_gen %}
+            <button class="flex p-1 ml-auto mt-auto mr-4 rounded-lg border-2 hover:shadow border-sky-600 text-sky-600 hover:border-sky-800 hover:text-sky-800 dark:border-sky-500 dark:text-sky-500 hover:dark:border-sky-300 hover:dark:text-sky-300 hover:dark:bg-neutral-800 hover:bg-neutral-50"
+                    onclick="openModal('client-download-modal', 'language-input');">
+                <span class="ml-1 mr-1">Get Client</span>
+                <span class="material-symbols-outlined ml-1">download</span>
+            </button>
+            {% include "modals/client_download.html" %}
+        {% endif %}
+        {# Authorize Button #}
+        {% if te.rpc.components.x_security_schemes %}
+            <div>
+                <button class="group flex p-1 ml-auto mt-2 mr-4 rounded-lg border-2 border-green-500 text-green-500 hover:border-green-700 hover:text-green-700 hover:bg-neutral-50 hover:shadow hover:dark:border-green-400 hover:dark:text-green-400 hover:dark:bg-neutral-800"
+                        onclick="openModal('auth-modal', 'auth-input-0');">
+                    <span class="ml-1 mr-1">Authorize</span>
+                    <span id="auth-lock-icon"
+                          class="material-symbols-outlined ml-1 text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-700 group-hover:dark:text-neutral-300">
+                        lock_open
+                    </span>
+                </button>
+                {% include "modals/auth.html" %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{# Methods Label and Tag Filter #}
+<div class="flex mt-6 p-1">
+    <p class="text-4xl">Methods</p>
+    {# Tag Filter #}
+    {% if te.tags %}
+        {% include "tag_filter.html" %}
+    {% endif %}
+</div>
+{# Methods #}
+<div class="mt-2 pr-4 pl-4 pb-4 rounded-2xl">
+    {% for method in te.rpc.methods %}
+        {% with method_id=str(loop.index0) %}
+            {# Hidden List of Tags for Filter #}
+            <div id="method-tags-{{ method_id }}" class="hidden">
+                {% for tag in te.get_tags(method) %}<p>{{ tag }}</p>{% endfor %}
+            </div>
+            {# Method Details #}
+            <div id="method-list-entry-{{ method_id }}" class="rounded-xl pb-[1px]">
+                <div class="ml-1 mr-1 border-t border-neutral-200 dark:border-neutral-900"></div>
+                <a id="method-{{ method_id }}-title-bar"
+                   href="#method-{{ method_id }}"
+                   class="flex cursor-pointer p-4 hover:dark:text-neutral-50"
+                   onmouseover="onMethodTitleBarOver('{{ method_id }}');"
+                   onmouseleave="onMethodTitleBarLeave('{{ method_id }}');"
+                   onclick="toggleMethodDetails('{{ method_id }}');">
+                    {# Expand/Collapse Symbol #}
+                    <p class="flex mb-auto mt-auto">
+                        <span id="method-{{ method_id }}-symbol" class="p-1 w-4">⮞</span>
+                        <span class="pl-4 text-2xl">{{ method.name }}</span>
+                    </p>
+                    {# Summary and Security Icon #}
+                    <p class="ml-auto text-lg">{{ method.summary or "" }}</p>
+                    {% if method.x_security %}
+                        {% with locked=te.is_locked(method_id, enabled_scheme, enabled_scopes) %}
+                            <span id="security-{{ te.get_security_id(method.x_security) }}-{{ method_id }}"
+                                  class="material-symbols-outlined ml-1 security-{{ "locked" if locked else "unlocked" }}">
+                                {{ "lock_open" if locked else "lock" }}
+                            </span>
+                        {% endwith %}
+                    {% endif %}
+                </a>
+                <div id="method-{{ method_id }}-div"
+                     class="m-1 pl-16 pr-16 pt-4 mb-2 hidden rounded-2xl bg-neutral-200 dark:bg-neutral-900">
+                    {% include "method_details.html" %}
+                </div>
+            </div>
+        {% endwith %}
+    {% endfor %}
+</div>
+<!--suppress JSUnresolvedReference -->
+<script>
+    hljs.highlightAll();
+    {% if not enabled_scheme %}
+        toggleMethodFromHash();
+        filterFromQueryParams();
+        for (let key in headers) {
+            delete headers[key];
+        }
+    {% endif %}
+</script>

@@ -1,0 +1,60 @@
+{# Input #}
+<div id="auth-input-div-{{ loop.index0 }}" class="pr-8 pl-8 mt-1">
+    <div class="flex">
+        <label class="mb-1 w-full">
+            <span class="text-xl">Client ID</span>
+            <input id="auth-input-{{ loop.index0 }}"
+                   class="input-primary form-input"
+                   autocomplete="off">
+        </label>
+    </div>
+
+    {# Scopes #}
+    <ul class="ml-4 mb-4">
+        {% with auth_idx=loop.index0 %}
+            {% for scope in scheme.flows[0].scopes %}
+                <li>
+                    {# Scope Slider #}
+                    <label class="mt-1 relative inline-flex items-center cursor-pointer">
+                        <input id="scope-{{ auth_idx }}-{{ loop.index0 }}"
+                               type="checkbox"
+                               class="sr-only peer"
+                               autocomplete="off">
+                        <span class="peer slider"></span>
+                    </label>
+                    <span id="scope-value-{{ auth_idx }}-{{ loop.index0 }}"
+                          class="text-lg align-top">
+                        {{ scope }}
+                    </span>
+                </li>
+            {% endfor %}
+        {% endwith %}
+    </ul>
+</div>
+
+{# Signed In Display #}
+<div id="auth-signed-in-div-{{ loop.index0 }}" class="hidden mr-6 ml-6">
+    <p class="text-xl">Client ID</p>
+    <p class="ml-4">{{ client_id }}</p>
+    <ul class="ml-8 text-lg">
+        {% for scope in enabled_scopes %}
+            <li>
+                • <span class="text-green-700 dark:text-green-500">{{ scope }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{# Submit Button #}
+<div class="flex rounded-b-lg pb-4 pt-2">
+    <button id="auth-button-{{ loop.index0 }}"
+            class="ml-8 mr-8 p-1 rounded-lg w-full submit-button"
+            onclick="oauthHref({{ loop.index0 }});"
+            disabled>
+        Authorize
+    </button>
+    <a id="oauth-{{ loop.index0 }}-authorization_url"
+       class="hidden"
+       href="{{ scheme.flows[0].authorization_url }}">
+    </a>
+</div>

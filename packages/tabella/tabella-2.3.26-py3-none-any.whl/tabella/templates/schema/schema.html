@@ -1,0 +1,36 @@
+{% if minimalize or schema.ref or not schema.properties %}
+    {% include "schema/_schema_text.html" %}
+{% else %}
+    <span class="rounded-lg p-1 w-fit cursor-pointer hover:shadow hover:bg-neutral-50 hover:dark:bg-neutral-700 hover:dark:text-neutral-50 select-none"
+          onclick="toggleSchemaProperties('{{ schema_id }}')">
+        <span id="toggle-{{ schema_id }}">⮞</span>
+        <span class="ml-2">{% include "schema/_schema_text.html" %}</span>
+    </span>
+    {# Properties #}
+    <div id="props-{{ schema_id }}" class="hidden">
+        {% for property in schema.properties %}
+            <div class="m-4">
+                {{ property }}
+                {# Show Default #}
+                {% if "default" in schema.properties[property].__fields_set__ %}
+                    <i class="ml-2">
+                        {% with value=schema.properties[property].default %}
+                            =
+                            {% include "schema/_value.html" %}
+                        {% endwith %}
+                    </i>
+                {% endif %}
+                {# Required #}
+                {% if property in (schema.required or []) %}<i class="ml-2 text-red-600 dark:text-red-500">required</i>{% endif %}
+                {% if schema.properties[property].description %}
+                    <span class="ml-2 dark:text-neutral-500 text-neutral-700">{{ schema.properties[property].description }}</span>
+                {% endif %}
+                <div class="ml-4">
+                    {% with schema=schema.properties[property], schema_id=schema_id + id(loop.index0) %}
+                        {% include "schema/schema.html" %}
+                    {% endwith %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

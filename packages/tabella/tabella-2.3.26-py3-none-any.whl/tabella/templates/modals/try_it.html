@@ -1,0 +1,64 @@
+<div class="flex max-h-[40rem] overflow-auto pr-8 pl-8">
+    <div class="{{ "w-1/2" if method.params else "" }} mb-2">
+        {# Request Form #}
+        {% for param in method.params %}
+            {% with schema=param.schema_,
+                minimalize=True,
+                param_id=loop.index0,
+                input_id=method_id + id(loop.index0),
+                label=param.name,
+                required=param.required or is_(method.param_structure, ParamStructure.BY_POSITION),
+                is_even=1 %}
+                <div class="mt-4">{% include "schema_form/form.html" %}</div>
+            {% endwith %}
+        {% endfor %}
+        {# Get Form Value Function #}
+        <script>
+            function getFormValue{{ method_id }}() {
+                let params;
+                let inputSpan;
+                {% if is_(method.param_structure, ParamStructure.BY_POSITION) %}
+                    params = [];
+                    {% for param in method.params %}
+                        inputSpan = document.getElementById("{{method_id + id(loop.index0)}}-input-span");
+                        if (!inputSpan.classList.contains("hidden")) {
+                            params.push(get{{ method_id + id(loop.index0) }}());
+                        }
+                    {% endfor %}
+                {% else %}
+                    params = {};
+                    {% for param in method.params %}
+                        inputSpan = document.getElementById("{{method_id + id(loop.index0)}}-input-span");
+                        if (!inputSpan.classList.contains("hidden")) {
+                            params[document.getElementById("param-{{ method_id + id(loop.index0) }}").innerHTML] = get{{ method_id + id(loop.index0) }}();
+                        }
+                    {% endfor %}
+                {% endif %}
+                return params;
+            }
+        </script>
+    </div>
+    {# Response Display #}
+    <div class="{{ "w-1/2" if method.params else "w-11/12 ml-8" }} ml-2">
+        <div id="{{ method_id }}-response-div">
+            <p id="{{ method_id }}-response-label" class="text-lg mt-4 ml-2">Response</p>
+            <div class="ml-2 mb-2 rounded-lg">
+                <pre><code id="{{ method_id }}-response" class="h-fit language-json"></code></pre>
+            </div>
+        </div>
+        {# Loading Spinner #}
+        <div id="{{ method_id }}-spinner" class="hidden h-full pb-4">
+            <div class="flex justify-center h-full">
+                <div class="animate-spin mt-auto mb-auto select-none">
+                    <p class="text-5xl">• •</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Submit Button #}
+<div class="flex rounded-b-lg pb-4 pt-2">
+    <button id="{{ method_id }}-call-btn"
+            class="w-full ml-8 mr-8 p-1 rounded-lg submit-button"
+            onclick="callMethod('{{ method_id }}', getFormValue{{ method_id }}());">Call Method</button>
+</div>
