@@ -1,0 +1,42 @@
+<interface name="page.codeberg.JakobDev.jdDesktopEntryEdit">
+    <method name="OpenFile">
+        <arg direction="in" type="s" name="path"/>
+    </method>
+    <method name="SaveFile">
+        <arg direction="in" type="s" name="path"/>
+    </method>
+    <method name="GetDesktopEntry">
+        <arg direction="out" type="s" name="entry"/>
+    </method>
+    <method name="Reset"/>
+    <method name="Quit"/>
+    <property type="s" name="Name" access="readwrite"/>
+    <property type="s" name="GenericName" access="readwrite"/>
+    <property type="s" name="Comment" access="readwrite"/>
+    <property type="s" name="Icon" access="readwrite"/>
+    <property type="s" name="Exec" access="readwrite"/>
+    <property type="s" name="TryExec" access="readwrite"/>
+    <property type="s" name="Path" access="readwrite"/>
+    <property type="s" name="StartupWMClass" access="readwrite"/>
+    <property type="s" name="URL" access="readwrite"/>
+    <property type="b" name="NoDisplay" access="readwrite"/>
+    <property type="b" name="Hidden" access="readwrite"/>
+    <property type="b" name="DBusActivatable" access="readwrite"/>
+    <property type="b" name="Terminal" access="readwrite"/>
+    <property type="b" name="StartupNotify" access="readwrite"/>
+    <property type="b" name="PrefersNonDefaultGPU" access="readwrite"/>
+    <property type="b" name="SingleMainWindow" access="readwrite"/>
+    <property type="as" name="Categories" access="readwrite"/>
+    <property type="as" name="MimeType" access="readwrite"/>
+    <property type="as" name="Keywords" access="readwrite"/>
+    <property type="as" name="Implements" access="readwrite"/>
+    <property type="as" name="OnlyShowIn" access="readwrite"/>
+    <property type="as" name="NotShowIn" access="readwrite"/>
+    <property type="s" name="Version" access="read"/>
+    <signal name="FileOpened">
+        <arg name="path" type="b"/>
+    </signal>
+    <signal name="FileSaved">
+        <arg name="path" type="b"/>
+    </signal>
+</interface>
