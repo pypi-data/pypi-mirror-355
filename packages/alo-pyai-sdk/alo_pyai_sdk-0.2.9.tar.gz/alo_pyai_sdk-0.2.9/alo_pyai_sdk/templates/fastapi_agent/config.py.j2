@@ -1,0 +1,32 @@
+from pathlib import Path
+from typing import Optional # Keep Optional if used in AgentSettings
+
+# --- Agent Specific Settings ---
+# These values are templated from the `alo-pyai-sdk generate agent` command.
+class AgentSettings:
+    LLM_CONFIG_NAME: str = "{{ llm_config_name }}"
+    LLM_MODEL_IDENTIFIER_FALLBACK: str = "{{ llm_model_identifier_fallback }}" # e.g., "openai:gpt-4o"
+    AGENT_RETRIES: int = {{ agent_retries | default(1) }} # Default retries for the agent
+    
+    # Settings needed for registry communication
+    SERVICE_ID: str = "{{ agent_service_id }}"
+    AGENT_NAME: str = "{{ agent_name }}"
+    AGENT_DESCRIPTION: str = "{{ agent_description }}"
+    AGENT_HOST: str = "{{ agent_host | default('0.0.0.0') }}"
+    AGENT_PORT: int = {{ agent_port | default(8001) }}
+    REGISTRY_URL: str = "{{ registry_url }}"
+    
+    # PROJECT_ROOT_PATH is useful for agent_definition.py to find alo_config.yaml
+    # It assumes the agent's config.py is at: project_root/agents/{agent_id}/config.py
+    PROJECT_ROOT_PATH: Path = Path(__file__).resolve().parent.parent.parent
+
+settings = AgentSettings()
+# --- End Agent Specific Settings ---
+
+# PROJECT_ROOT is deprecated in favor of settings.PROJECT_ROOT_PATH,
+# but kept for a short while for any existing user code that might reference it.
+# Users should migrate to settings.PROJECT_ROOT_PATH.
+PROJECT_ROOT = settings.PROJECT_ROOT_PATH
+
+# The get_pydantic_ai_model function has been moved into agent_definition.py.j2
+# for more direct and self-contained LLM configuration within the agent's definition.

@@ -1,0 +1,42 @@
+# This file is a placeholder for your agent's custom tools.
+# You would typically import `RunContext` from `pydantic_ai`
+# and the agent instance from `.agent_definition`.
+
+# from pydantic_ai import RunContext
+# from .agent_definition import agent
+# from .config import settings # If tools need access to agent-specific settings
+
+# Example Tool Structure:
+# -----------------------
+# @agent.tool
+# async def get_current_time(ctx: RunContext[Any]) -> str: # Replace Any with your DepsType if used
+#     """
+#     Returns the current date and time.
+#     """
+#     from datetime import datetime, timezone
+#     return datetime.now(timezone.utc).isoformat()
+
+# @agent.tool_plain # For tools that don't need RunContext (and thus no deps)
+# def simple_math(a: int, b: int, operation: str = "add") -> float:
+#     """
+#     Performs simple arithmetic (add, subtract, multiply, divide).
+#     """
+#     if operation == "add":
+#         return float(a + b)
+#     elif operation == "subtract":
+#         return float(a - b)
+#     elif operation == "multiply":
+#         return float(a * b)
+#     elif operation == "divide":
+#         if b == 0:
+#             return float('inf') # Or raise an error
+#         return float(a / b)
+#     else:
+#         raise ValueError(f"Unknown operation: {operation}")
+
+# Remember to uncomment the import in agent_definition.py:
+# # from . import tools
+# And add your tools to the agent's tool list:
+# # tools=[tools.get_current_time, tools.simple_math],
+
+print("Agent tools file ({{ agent_name }}/tools.py) created. Define your tools here.")
