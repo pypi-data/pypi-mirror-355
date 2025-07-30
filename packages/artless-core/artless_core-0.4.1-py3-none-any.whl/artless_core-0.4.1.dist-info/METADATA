@@ -1,0 +1,254 @@
+Metadata-Version: 2.4
+Name: artless-core
+Version: 0.4.1
+Summary: The artless and ultralight web framework for building minimal APIs and apps.
+Author-email: Peter Bro <p3t3rbr0@gmail.com>
+Maintainer-email: Peter Bro <p3t3rbr0@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://git.peterbro.su/peter/py3-artless-core
+Project-URL: Repository, https://git.peterbro.su/peter/py3-artless-core.git
+Project-URL: Issues, https://git.peterbro.su/peter/py3-artless-core/issues
+Project-URL: Documentation, https://pages.peterbro.su/py3-artless-core/
+Project-URL: Changelog, https://pages.peterbro.su/py3-artless-core/changelog.html
+Keywords: artless,ultralight,asgi,wsgi,web,library,framework
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI :: Application
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Typing :: Typed
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: build
+Requires-Dist: build==1.2.2.post1; extra == "build"
+Requires-Dist: twine==6.1.0; extra == "build"
+Provides-Extra: dev
+Requires-Dist: black==25.1.0; extra == "dev"
+Requires-Dist: coverage==7.8.2; extra == "dev"
+Requires-Dist: flake8==7.2.0; extra == "dev"
+Requires-Dist: isort==6.0.1; extra == "dev"
+Requires-Dist: mypy==1.16.0; extra == "dev"
+Provides-Extra: benchmarks
+Requires-Dist: Django==5.2.2; extra == "benchmarks"
+Requires-Dist: Flask==3.1.1; extra == "benchmarks"
+Requires-Dist: blacksheep==2.3.1; extra == "benchmarks"
+Requires-Dist: bottle==0.13.3; extra == "benchmarks"
+Requires-Dist: falcon==4.0.2; extra == "benchmarks"
+Requires-Dist: fastapi==0.115.12; extra == "benchmarks"
+Requires-Dist: gunicorn==23.0.0; extra == "benchmarks"
+Requires-Dist: uvicorn==0.34.3; extra == "benchmarks"
+Dynamic: license-file
+
+# artless-core
+
+![PyPI Version](https://img.shields.io/pypi/v/artless-core)
+![Development Status](https://img.shields.io/badge/status-3%20--%20Beta-blue)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/artless-core)
+[![Downloads](https://static.pepy.tech/badge/artless-core)](https://pepy.tech/project/artless-core)
+![PyPI - License](https://img.shields.io/pypi/l/artless-core)
+
+The artless and ultralight web framework for building minimal APIs and apps.
+
+## Motivation
+
+An extremely minimalistic framework was needed to create the same minimalistic applications. Those "micro" frameworks like `Flask`, `Pyramid`, `CherryPie`, etc - turned out to be not micro at all). Even a single-module `Bottle` turned out to be a "monster" of 4 thousand LOC and supporting compatibility with version 2.7.
+
+Therefore, it was decided to sketch out our own simple, minimally necessary implementation of the WSGI and ASGI library for building simple APIs and apps.
+
+## Why artless-core?
+
+* 🪶 Tiny: Single module, no dependencies, less then 500 LOC
+* ⚡ Fast: Optimized pure Python with async support
+* 🧩 Simple: Intuitive API with type hints
+* ✅ Tested: 100% coverage
+* 🐍 Modern: Python 3.11+ only
+
+## Quickstart
+
+### Installation
+
+``` shellsession
+$ pip install artless-core
+```
+
+### WSGI Example
+
+``` python
+from artless_core import WSGIApp, Request, Response, plain
+
+
+def say_hello(request: Request, name: str) -> Response:
+    return plain(f"Hello, {name}!")
+
+
+def create_application() -> WSGIApp:
+    app = WSGIApp()
+    app.routes = [("GET", r"^/hello/(?P<name>\w+)$", say_hello)]
+    return app
+
+
+application = create_application()
+```
+
+Run with Gunicorn:
+
+``` shellsession
+$ gunicorn app
+[2025-01-11 16:34:19 +0300] [62111] [INFO] Starting gunicorn 23.0.0
+[2025-01-11 16:34:19 +0300] [62111] [INFO] Listening at: http://127.0.0.1:8000 (62111)
+[2025-01-11 16:34:19 +0300] [62111] [INFO] Using worker: sync
+[2025-01-11 16:34:19 +0300] [62155] [INFO] Booting worker with pid: 62155
+```
+
+Check it:
+
+``` shellsession
+$ curl http://127.0.0.1:8000/hello/Bro
+Hello, Bro!
+```
+
+Need more? See [wsgi examples](https://git.peterbro.su/peter/py3-artless-core/src/branch/master/examples/wsgi).
+
+### ASGI Example
+
+``` python
+from artless_core import ASGIApp, Request, Response, plain
+
+
+async def say_hello(request: Request, name: str) -> Response:
+    return plain(f"Hello, {name}!")
+
+
+def create_application() -> ASGIApp:
+    app = ASGIApp()
+    app.routes = [("GET", r"^/hello/(?P<name>\w+)$", say_hello)]
+    return app
+
+
+application = create_application()
+```
+
+Run with Uvicorn:
+
+``` shellsession
+$ uvicorn app:application
+INFO:     Started server process [62683]
+INFO:     Waiting for application startup.
+INFO:     ASGI 'lifespan' protocol appears unsupported.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+```
+
+Check it:
+
+``` shellsession
+$ curl http://127.0.0.1:8000/hello/Bro
+Hello, Bro!
+```
+
+Need more? See [asgi examples](https://git.peterbro.su/peter/py3-artless-core/src/branch/master/examples/asgi).
+
+## Limitations
+
+* ❌ No `WebSockets`
+* ❌ No `multipart/form-data` support.
+* ❌ No `Cookies` support.
+* ❌ No builtin models, ORM, template engine, form serialisation and other.
+* ❌ No built-in protections, such as: `CSRF`, `XSS`, `clickjacking` and other.
+
+## Benchmarks results
+
+See more details in [benchmarks/README.md](benchmarks/README.md).
+
+## WSGI application
+
+Single worker:
+
+| Framework   | RPS (mean)  |
+|-------------|-------------|
+| Falcon      | 1839.46     |
+| **Artless** | **1803.65** |
+| Bottle      | 1516.69     |
+| Flask       | 1549.90     |
+| Django      | 1386.77     |
+
+
+Multiple workers:
+
+| Framework   | RPS (mean)  |
+|-------------|-------------|
+| **Artless** | **3461.03** |
+| Falcon      | 3458.39     |
+| Bottle      | 3331.41     |
+| Flask       | 3018.25     |
+| Django      | 2240.39     |
+
+## ASGI application
+
+Single worker:
+
+| Framework   | RPS (mean)  |
+|-------------|-------------|
+| Blacksheep  | 3456.86     |
+| Falcon      | 3338.41     |
+| **Artless** | **3320.35** |
+| FastAPI     | 2191.76     |
+| Django      | 1160.94     |
+| Flask       | 777.81      |
+
+Multiple workers:
+
+| Framework   | RPS (mean)  |
+|-------------|-------------|
+| Falcon      | 5393.27     |
+| Blacksheep  | 5382.32     |
+| **Artless** | **5332.50** |
+| FastAPI     | 3594.12     |
+| Django      | 2050.55     |
+| Flask       | 1627.59     |
+
+## Memory usage
+
+WSGI application:
+
+| Patient     | RSS Mem (MB) |
+|-------------|--------------|
+| **Artless** | **10.668**   |
+| Bottle      | 14.8164      |
+| Falcon      | 26.9219      |
+| Flask       | 31.6406      |
+| Django      | 43.5742      |
+
+ASGI application:
+
+| Patient     | RSS Mem (MB) |
+|-------------|--------------|
+| **Artless** | **25.6797**  |
+| Flask       | 34.1367      |
+| Falcon      | 35.2461      |
+| Blacksheep  | 40.4883      |
+| Django      | 47.0352      |
+| Fastapi     | 53.1992      |
+
+## Roadmap
+
+- [x] Add benchmarks.
+- [x] Add Async/ASGI support.
+- [ ] Add plugins support.
+- [ ] Add middlewares support.
+- [ ] Add more complex examples.
+- [ ] Add test clients (for WSGI and ASGI).
+
+## Related projects
+
+* [artless-template](https://pypi.org/project/artless-template/) - the artless and minimalist templating for Python server-side rendering.
