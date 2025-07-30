@@ -1,0 +1,21 @@
+{
+  "$id": "immerschema/schemas/profiles/plan.schema.json",
+  "title": "Profile – Plan (tech lock)",
+  "type": "object",
+  "additionalProperties": true,
+  "allOf": [
+    { "$ref": "./review.schema.json" },
+    { "$ref": "../slices/software.slice.schema.json" },
+    { "$ref": "../slices/bottleneck.slice.json" },
+    { "$ref": "../slices/workload.slice.json" },
+    { "$ref": "../slices/risks.prop.slice.json" }
+  ],
+  "required": [
+    "softwarePipeline",
+    "technique",
+    "voice",
+    "workloadBreakdown",
+    "risks",
+    "description"
+  ]
+}

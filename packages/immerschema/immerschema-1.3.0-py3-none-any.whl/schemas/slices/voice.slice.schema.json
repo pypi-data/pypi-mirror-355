@@ -1,0 +1,29 @@
+{
+  "$id": "immerschema/schemas/slices/voice.slice.schema.json",
+  "title": "Voice slice",
+  "type": "object",
+  "required": ["voice"],
+  "properties": {
+    "voice": {
+      "type": "object",
+      "required": ["lang", "text"],
+      "additionalProperties": false,
+      "properties": {
+        "lang": {
+          "type": "string",
+          "pattern": "^[a-z]{2}$",
+          "description": "ISO-639-1 language code"
+        },
+        "text": {
+          "type": "string",
+          "description": "Narration line for this shot"
+        }
+      }
+    },
+    "voiceLinesNotes": {
+      "type": "string",
+      "description": "note about the voice lines"
+    }
+  },
+  "additionalProperties": true
+} 

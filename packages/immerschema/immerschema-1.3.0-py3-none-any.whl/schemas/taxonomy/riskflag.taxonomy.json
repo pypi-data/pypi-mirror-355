@@ -1,0 +1,45 @@
+{
+  "$id": "immerschema/schemas/taxonomy/riskflag.taxonomy.json",
+  "title": "Risk flag taxonomy (UI helper)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "Technical": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "render_overrun",
+          "software_failure",
+          "infrastructure_issue",
+          "realtime_sync"
+        ]
+      },
+      "minItems": 1
+    },
+    "Production": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "asset_block",
+          "schedule_scope",
+          "creative_alignment",
+          "talent_gap"
+        ]
+      },
+      "minItems": 1
+    },
+    "Compliance": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "compliance_delay",
+          "data_breach"
+        ]
+      },
+      "minItems": 1
+    }
+  }
+} 

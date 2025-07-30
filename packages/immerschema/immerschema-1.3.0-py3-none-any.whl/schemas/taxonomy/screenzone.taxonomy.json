@@ -1,0 +1,54 @@
+{
+  "$id": "immerschema/schemas/taxonomy/screenzone.taxonomy.json",
+  "title": "Screen zone taxonomy (UI helper)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "Vertical": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["zenith", "upper", "horizon", "lower", "nadir"]
+      },
+      "minItems": 1
+    },
+    "Cardinal": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["front", "rear", "left", "right"]
+      },
+      "minItems": 1
+    },
+    "Quadrants-Upper": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "upper_front_left", "upper_front_right",
+          "upper_rear_left", "upper_rear_right"
+        ]
+      },
+      "minItems": 1
+    },
+    "Quadrants-Lower": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "lower_front_left", "lower_front_right",
+          "lower_rear_left", "lower_rear_right"
+        ]
+      },
+      "minItems": 1
+    },
+    "Full": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["full_dome"]
+      },
+      "minItems": 1
+    }
+  }
+} 

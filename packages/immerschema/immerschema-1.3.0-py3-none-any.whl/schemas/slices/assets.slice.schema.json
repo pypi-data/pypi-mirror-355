@@ -1,0 +1,30 @@
+{
+  "$id": "immerschema/schemas/slices/assets.slice.schema.json",
+  "title": "Assets array slice",
+  "type": "array",
+
+  "items": {
+    "type": "object",
+    "required": ["path", "kind", "role"],
+    "additionalProperties": false,
+
+    "properties": {
+      "path":  { "type": "string", "pattern": "^(https?://|/|\\./).+" },
+      "kind":  { "$ref": "../enum/assetkind.enum.json" },
+      "role":  { "$ref": "../enum/assetrole.enum.json" },
+      "sourcePath": { "type": "string", "pattern": "^(https?://|/|\\./).+" },
+      "visualDescription": { "type": "string" },
+      "motionDescription": { "type": "string" },
+      "audioDescription":  { "type": "string" },
+      "lang": { "type": "string", "pattern": "^[a-z]{2}$" },
+      "note": { "type": "string" }
+    },
+
+    "allOf": [
+      { "if": { "properties": { "role": { "const": "preview" } } },
+        "then": { "required": ["sourcePath"] } }
+    ]
+  },
+
+  "default": []
+}

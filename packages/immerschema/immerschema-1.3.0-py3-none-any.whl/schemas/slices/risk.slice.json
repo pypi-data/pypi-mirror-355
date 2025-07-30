@@ -1,0 +1,23 @@
+{
+  "$id": "immerschema/schemas/slices/risk.slice.json",
+  "title": "Risk flags + mitigation slice",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["flag"],
+    "properties": {
+      "flag":        { "$ref": "../enum/riskflag.enum.json" },
+      "assignedTo":       { "type": "string" },
+      "mitigation":  { "type": "string" },
+      "status":      { "type": "string",
+                       "enum": ["raised","planned","in_progress","done"],
+                       "default": "raised" },
+      "raisedBy":    { "type": "string" },
+      "raisedOn":    { "type": "string", "format": "date" },
+      "note":        { "type": "string" }
+    },
+    "additionalProperties": false
+  },
+  "default": [],
+  "unevaluatedItems": false
+}

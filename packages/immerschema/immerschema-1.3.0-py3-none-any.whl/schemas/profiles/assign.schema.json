@@ -1,0 +1,19 @@
+{
+  "$id": "immerschema/schemas/profiles/assign.schema.json",
+  "title": "Profile – Assign (crew & tasks)",
+  "type": "object",
+  "additionalProperties": true,
+  "allOf": [
+    { "$ref": "./plan.schema.json" },
+    { "$ref": "../slices/tasks.prop.slice.json" },
+    { "$ref": "../slices/crew.prop.slice.json" },
+    { "$ref": "../slices/audio.slice.schema.json" }
+  ],
+  "required": [
+    "tasks",
+    "crew",
+    "voice",
+    "audio",
+    "description"
+  ]
+}

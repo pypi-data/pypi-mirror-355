@@ -1,0 +1,112 @@
+{
+  "$id": "immerschema/schemas/slices/tasks.slice.schema.json",
+  "$schema": "http://json-schema.org/draft/2020-12/schema",
+  "title": "Tasks array slice",
+  "description": "Production tasks with hour tracking and lifecycle timestamps.",
+  "type": "array",
+
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "task",
+      "dept",
+      "prio",
+      "assignedTo",
+      "status",
+      "hoursPlanned",
+      "timestamps"
+    ],
+    "additionalProperties": false,
+
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique task identifier."
+      },
+
+      "task": {
+        "type": "string",
+        "description": "Human-readable summary of the work."
+      },
+
+      "dept": {
+        "$ref": "../enum/dept.enum.json",
+        "description": "High-level department (e.g., CG, FX, EDIT)."
+      },
+
+      "prio": {
+        "type": "string",
+        "enum": ["low", "med", "high"],
+        "description": "Priority."
+      },
+
+      "assignedTo": {
+        "type": "string",
+        "description": "Name or role responsible."
+      },
+
+      "status": {
+        "type": "string",
+        "enum": ["todo", "in_progress", "blocked", "done"],
+        "description": "Pipeline state."
+      },
+
+      "note": {
+        "type": "string",
+        "description": "Supplementary notes."
+      },
+
+
+      "hoursPlanned": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Estimated person-hours."
+      },
+
+      "hoursActual": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Logged person-hours."
+      },
+
+
+      "timestamps": {
+        "type": "object",
+        "description": "Lifecycle markers (ISO-8601 with timezone).",
+        "required": ["created"],
+        "additionalProperties": false,
+
+        "properties": {
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Task created."
+          },
+          "started": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Work started."
+          },
+          "due": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Deadline."
+          },
+          "completed": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Work finished."
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Last field change."
+          }
+        }
+      }
+    }
+  },
+
+  "default": []
+}

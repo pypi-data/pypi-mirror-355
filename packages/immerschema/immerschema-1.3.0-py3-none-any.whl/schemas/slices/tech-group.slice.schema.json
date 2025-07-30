@@ -1,0 +1,25 @@
+{
+  "$id": "immerschema/schemas/slices/tech-group.slice.schema.json",
+  "title": "Top-level technique group (UI tokens)",
+  "type": "object",
+  "properties": {
+    "techGroup": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "3D",
+          "2D",
+          "SIM",
+          "GEN",
+          "AI",
+          "CAM"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "High-level bucket for primaryTechnique"
+    }
+  },
+  "additionalProperties": true
+}
