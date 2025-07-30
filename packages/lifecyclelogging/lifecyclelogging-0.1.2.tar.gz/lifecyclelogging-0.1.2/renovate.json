@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "description": "Group all non-major Python dependencies",
+      "groupName": "python non-major",
+      "matchManagers": ["pip_requirements"],
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Group all non-major GitHub Actions updates",
+      "groupName": "github-actions non-major",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"]
+    }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^pyproject\\.toml$"],
+      "matchStrings": [
+        "version\\s*=\\s*\"(?<currentValue>.*?)\""
+      ],
+      "depNameTemplate": "hatch",
+      "datasourceTemplate": "pypi"
+    }
+  ],
+  "schedule": ["before 5am on Monday"],
+  "prConcurrentLimit": 5,
+  "automerge": true
+}

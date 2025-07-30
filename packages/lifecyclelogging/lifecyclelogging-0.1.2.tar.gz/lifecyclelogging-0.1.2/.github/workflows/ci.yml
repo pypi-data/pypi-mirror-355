@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-package:
+    name: Build & verify package
+    runs-on: ubuntu-24.04
+    outputs:
+      python-versions: ${{ steps.baipp.outputs.supported_python_classifiers_json_array }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: hynek/build-and-inspect-python-package@v2
+        id: baipp
+
+  tests:
+    name: Tests on ${{ matrix.python-version }}
+    runs-on: ubuntu-24.04
+    needs: build-package
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJson(needs.build-package.outputs.python-versions) }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          pyproject-file: "pyproject.toml"
+          enable-cache: true
+          cache-dependency-glob: "**/pyproject.toml"
+      - name: Download pre-built packages
+        uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: dist
+      - name: Run tests
+        env:
+          PYTHON: ${{ matrix.python-version }}
+        run: uvx --with tox-uv tox run --installpkg dist/*.whl -f py${PYTHON//./}
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data-${{ matrix.python-version }}
+          path: .coverage.*
+          include-hidden-files: true
+          if-no-files-found: error
+
+  typechecking:
+    name: Typechecking
+    runs-on: ubuntu-24.04
+    needs: build-package
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          pyproject-file: "pyproject.toml"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "**/pyproject.toml"
+      - name: Run pyright
+        run: uvx --with tox-uv tox run -e pyright
+
+  linting:
+    name: Lint checks
+    runs-on: ubuntu-24.04
+    needs: build-package
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          pyproject-file: "pyproject.toml"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "**/pyproject.toml"
+      - name: Run pre-commit
+        run: uvx --with tox-uv tox run -e pre-commit
+
+  coverage:
+    name: Coverage Report
+    runs-on: ubuntu-24.04
+    needs: tests
+    permissions:
+      contents: read
+      pull-requests: write  # Needed for writing to step summary
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          pyproject-file: "pyproject.toml"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "**/pyproject.toml"
+      - name: Download coverage data
+        uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-data-*
+          merge-multiple: true
+      - name: Generate coverage report
+        run: |
+          uv tool install coverage
+
+          coverage combine
+          coverage html --skip-covered --skip-empty
+
+          echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+          coverage report
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: htmlcov
+          if-no-files-found: error
