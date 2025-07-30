@@ -1,0 +1,56 @@
+[project]
+name = "laufband"
+version = "0.1.5"
+description = "Parallel Iteration with File-Based Coordination"
+authors = [
+    { name = "Fabian Zills", email = "fzills@icp.uni-stuttgart.de" },
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "tqdm>=4.67.1",
+    "flufl-lock>=8.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "ruff>=0.11.7",
+    "pytest-cov>=6.1.1",
+    "pytest-xdist>=3.6.1",
+]
+
+atomic = [
+    "ase>=3.25.0",
+    "mace-torch>=0.3.12",
+    "rdkit2ase>=0.1.4",
+    "znh5md>=0.4.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.urls]
+Repository = "https://github.com/zincware/laufband"
+Releases = "https://github.com/zincware/zntrack/laufband"
+Discord = "https://discord.gg/7ncfwhsnm4"
+
+[tool.codespell]
+skip = "LICENSE"
+
+[tool.ruff.lint]
+select = ["E", "F", "N", "C", "I"] #, "ANN"]
+extend-ignore = [
+    "D213", "D203",
+    "D401",
+    "N802", "N801",
+    "C901", # for now
+]
+
+exclude = [
+    "tmp",
+    "tests",
+    "docs",
+]
