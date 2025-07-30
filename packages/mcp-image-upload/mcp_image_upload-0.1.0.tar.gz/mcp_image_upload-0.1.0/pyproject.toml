@@ -1,0 +1,20 @@
+[project]
+name = "mcp-image-upload"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "洛水", email = "857762910@qq.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "mcp[cli]>=1.9.4",
+    "requests>=2.31.0",
+]
+
+[project.scripts]
+mcp-image-upload = "mcp_image_upload:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
