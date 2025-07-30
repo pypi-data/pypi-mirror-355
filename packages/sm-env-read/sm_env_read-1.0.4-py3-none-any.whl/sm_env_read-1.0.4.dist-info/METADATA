@@ -1,0 +1,249 @@
+Metadata-Version: 2.4
+Name: sm_env_read
+Version: 1.0.4
+Summary: read env secrets from aws secrets manager
+Author: Deepak M S
+Author-email: deepakcoder80@gmail.com
+Description-Content-Type: text/markdown
+Requires-Dist: boto3
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: summary
+
+# AWS Secrets Manager Helper
+
+A Python package that provides a simple and robust way to retrieve secrets from AWS Secrets Manager with automatic fallback to role-based authentication.
+
+## Features
+
+- **Dual Authentication Strategy**: Attempts direct access first, then falls back to STS role-based authentication
+- **Async Support**: Built with async/await for non-blocking operations
+- **Flexible Secret Handling**: Supports both JSON string and binary secret formats
+- **Error Handling**: Comprehensive error handling with meaningful error messages
+- **Easy Integration**: Simple function interface that works with existing AWS configurations
+
+## Installation
+
+```bash
+pip install sm_env_read
+
+```
+
+## Requirements
+
+- Python 3.7+
+- Valid AWS credentials (either through environment variables, IAM roles, or AWS CLI configuration)
+
+## Usage
+
+### Basic Usage
+
+```python
+import asyncio
+from sm_env_read import get_env_secrets_from_sm
+
+async def main():
+    secrets = await get_env_secrets_from_sm(
+        account_id="123456789012",
+        region="us-east-1",
+        role_name="MySecretsRole",
+        secret_name="my-app/prod/secrets"
+    )
+    
+    # Access your secrets
+    db_password = secrets.get("database_password")
+    api_key = secrets.get("api_key")
+    
+    print(f"Retrieved {len(secrets)} secrets")
+
+# Run the async function
+asyncio.run(main())
+```
+
+### Django Integration
+
+```python
+# settings.py
+import asyncio
+from sm_env_read import get_env_secrets_from_sm
+
+async def load_secrets():
+    return await get_env_secrets_from_sm(
+        account_id="123456789012",
+        region="us-east-1",
+        role_name="DjangoSecretsRole",
+        secret_name="django/prod/secrets"
+    )
+
+# Load secrets synchronously in Django settings
+secrets = asyncio.run(load_secrets())
+
+# Use secrets in your Django settings
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': secrets.get('db_name'),
+        'USER': secrets.get('db_user'),
+        'PASSWORD': secrets.get('db_password'),
+        'HOST': secrets.get('db_host'),
+        'PORT': secrets.get('db_port', '5432'),
+    }
+}
+
+SECRET_KEY = secrets.get('django_secret_key')
+```
+
+### FastAPI Integration
+
+```python
+from fastapi import FastAPI
+from sm_env_read import get_env_secrets_from_sm
+import asyncio
+
+app = FastAPI()
+
+# Load secrets at startup
+@app.on_event("startup")
+async def startup_event():
+    app.state.secrets = await get_env_secrets_from_sm(
+        account_id="123456789012",
+        region="us-east-1",
+        role_name="FastAPISecretsRole",
+        secret_name="fastapi/prod/secrets"
+    )
+
+@app.get("/")
+async def root():
+    # Access secrets from app state
+    api_key = app.state.secrets.get("external_api_key")
+    return {"message": "Hello World", "api_configured": bool(api_key)}
+```
+
+### Error Handling
+
+```python
+import asyncio
+from sm_env_read import get_env_secrets_from_sm
+from botocore.exceptions import ClientError
+
+async def safe_get_secrets():
+    try:
+        secrets = await get_env_secrets_from_sm(
+            account_id="123456789012",
+            region="us-east-1",
+            role_name="MySecretsRole",
+            secret_name="my-app/prod/secrets"
+        )
+        return secrets
+    except ClientError as e:
+        error_code = e.response['Error']['Code']
+        if error_code == 'SecretNotFound':
+            print("Secret not found")
+        elif error_code == 'AccessDenied':
+            print("Access denied - check IAM permissions")
+        else:
+            print(f"AWS error: {error_code}")
+        return {}
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return {}
+
+secrets = asyncio.run(safe_get_secrets())
+```
+
+## Authentication Methods
+
+The function uses a linear approach to authentication:
+
+1. **Direct Access**: Uses default AWS credentials (environment variables, IAM instance profile, or AWS CLI configuration)
+2. **Role-Based Access**: If direct access fails, assumes the specified IAM role using STS
+
+### Required IAM Permissions
+
+For the executing environment:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetSecretValue"
+            ],
+            "Resource": "arn:aws:secretsmanager:REGION:ACCOUNT:secret:SECRET_NAME*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": "arn:aws:iam::ACCOUNT:role/ROLE_NAME"
+        }
+    ]
+}
+```
+
+For the assumed role:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetSecretValue"
+            ],
+            "Resource": "arn:aws:secretsmanager:REGION:ACCOUNT:secret:SECRET_NAME*"
+        }
+    ]
+}
+```
+
+## Secret Format
+
+The function expects secrets to be stored as JSON in AWS Secrets Manager:
+
+```json
+{
+    "database_password": "super_secret_password",
+    "api_key": "your_api_key_here",
+    "encryption_key": "base64_encoded_key"
+}
+```
+
+## Parameters
+
+- **account_id** (str): AWS account ID where the secret is stored
+- **region** (str): AWS region where the secret is located
+- **role_name** (str): IAM role name to assume if direct access fails
+- **secret_name** (str): Name of the secret in AWS Secrets Manager
+
+## Return Value
+
+Returns a dictionary containing the secret key-value pairs parsed from the JSON stored in AWS Secrets Manager.
+
+
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+## Third-Party Licenses
+This package uses the following open source libraries:
+boto3: Licensed under the (Apache License 2.0)[https://github.com/boto/boto3/blob/develop/LICENSE]. Copyright Amazon.com, Inc. or its affiliates.
+
+
+
+## Support
+
+For issues and questions, please create an issue on the GitHub repository.
+
+## Changelog
+
+### v1.0.0
+- Initial release
+- Support for dual authentication strategy
+- Async/await support
+- Comprehensive error handling
