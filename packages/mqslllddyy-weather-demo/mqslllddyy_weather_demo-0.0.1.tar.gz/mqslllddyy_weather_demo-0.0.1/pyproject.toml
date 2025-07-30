@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "mqslllddyy_weather_demo"
+version = "0.0.1"
+description = "mqslllddyy_weather_demo for test."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp>=1.9.4",
+    "openai>=1.87.0",
+    "python-dotenv>=1.1.0",
+]
+[project.scripts]
+mqslllddyy_weather_demo = "weather: main"
+[tool.setuptools]
+package-dir = {"" = "src"}
+[tool.setuptools.packages.find]
+where = ["src"]
