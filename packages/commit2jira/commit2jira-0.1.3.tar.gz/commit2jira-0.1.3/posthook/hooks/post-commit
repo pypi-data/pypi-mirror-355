@@ -1,0 +1,25 @@
+#!/bin/sh
+
+echo " Running post-commit hook..." >> .git/hooks/hook.log
+
+commit_message=$(git log -1 --pretty=%B)
+ticket=$(echo "$commit_message" | grep -oE '([A-Z]+-[0-9]+)' | head -n 1)
+clean_message=$(echo "$commit_message" | sed -E "s/^$ticket[[:space:]]+//")
+
+
+# If no ticket found, skip
+[ -z "$ticket" ] && echo " No ticket found, skipping." >> .git/hooks/hook.log && exit 0
+
+# Debug
+echo " Ticket: $ticket" >> .git/hooks/hook.log
+echo " Message: $clean_message" >> .git/hooks/hook.log
+
+# Send comment to Jira
+curl -s -u "Dumitru.Nirca@Sony.com:Dumitras54321@" \
+  -X POST "https://jira.sie.sony.com/rest/api/2/issue/$ticket/comment" \
+  -H "Content-Type: application/json" \
+  -d "{\"body\": \"$clean_message\"}" \
+  >> .git/hooks/hook.log
+
+
+echo " Hook finished." >> .git/hooks/hook.log

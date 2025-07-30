@@ -1,0 +1,98 @@
+#!/bin/bash
+# ==============================================================================
+# GIT HOOK: prepare-commit-msg (Final Production Version - Concise Logging)
+#
+# Fetches a commit message summary from Jenkins. This version is optimized
+# for minimal console output during normal operation.
+# ==============================================================================
+
+set -e # Exit immediately if a command fails
+
+# --- 1. Pre-flight Checks (run silently) ---
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+if [ "$COMMIT_SOURCE" == "message" ] || [ "$COMMIT_SOURCE" == "commit" ]; then exit 0; fi
+if [ -z "$(git diff --cached --name-only)" ]; then exit 0; fi
+
+echo "[HOOK] Staged changes found. Requesting AI summary from Jenkins..."
+
+# --- 2. Load Configuration ---
+GIT_ROOT=$(git rev-parse --show-toplevel)
+ENV_FILE="$GIT_ROOT/.env"
+if [ ! -f "$ENV_FILE" ]; then echo "ERROR: .env file not found." >&2; exit 1; fi
+export $(grep -v '^#' "$ENV_FILE" | xargs)
+
+if [ -z "$JENKINS_USER" ] || [ -z "$JENKINS_TOKEN" ] || [ -z "$JENKINS_JOB" ] || [ -z "$JENKINS_URL" ]; then
+    echo "ERROR: Jenkins credentials/URL not set in .env." >&2; exit 1
+fi
+
+# --- 3. Jenkins Interaction ---
+JENKINS_URL_CLEAN="${JENKINS_URL%/}"
+DIFF_CONTENT=$(git diff --cached)
+CRUMB_JSON=$(curl -s --fail --user "$JENKINS_USER:$JENKINS_TOKEN" "$JENKINS_URL_CLEAN/crumbIssuer/api/json")
+CRUMB_FIELD=$(echo "$CRUMB_JSON" | sed -n 's/.*"crumbRequestField":"\([^"]*\)".*/\1/p')
+CRUMB_VALUE=$(echo "$CRUMB_JSON" | sed -n 's/.*"crumb":"\([^"]*\)".*/\1/p')
+if [ -z "$CRUMB_FIELD" ] || [ -z "$CRUMB_VALUE" ]; then
+    echo "ERROR: Failed to parse Jenkins crumb." >&2; exit 1
+fi
+CRUMB_HEADER="$CRUMB_FIELD: $CRUMB_VALUE"
+
+HEADERS=$(curl -s --fail -X POST "$JENKINS_URL_CLEAN/job/$JENKINS_JOB/buildWithParameters" \
+    --user "$JENKINS_USER:$JENKINS_TOKEN" -H "$CRUMB_HEADER" --data-urlencode "DIFF=$DIFF_CONTENT" -D -)
+QUEUE_URL=$(echo "$HEADERS" | grep -i Location | tr -d '\r' | awk '{print $2}')
+if [ -z "$QUEUE_URL" ]; then echo "ERROR: Failed to get Jenkins queue URL." >&2; exit 1; fi
+
+# --- 4. Wait for Job Start & Completion (Silent Loops) ---
+echo -n "[HOOK] Waiting for Jenkins... " # Print message without a newline
+
+# Find the build number
+BUILD_NUMBER=""
+TIMEOUT_SECONDS=60; end_time=$((SECONDS + TIMEOUT_SECONDS))
+while [ $SECONDS -lt $end_time ]; do
+    QUEUE_DATA=$(curl -s --fail --user "$JENKINS_USER:$JENKINS_TOKEN" "$QUEUE_URL/api/json")
+    BUILD_NUMBER=$(echo "$QUEUE_DATA" | sed -n 's/.*"executable":{"number":\([0-9]*\).*/\1/p')
+    if [ -z "$BUILD_NUMBER" ]; then BUILD_NUMBER=$(echo "$QUEUE_DATA" | sed -n 's/.*,"number":\([0-9]*\),.*/\1/p'); fi
+    if [ -n "$BUILD_NUMBER" ]; then break; fi
+    sleep 2
+done
+if [ -z "$BUILD_NUMBER" ]; then echo -e "\nERROR: Timed out waiting for job to start." >&2; exit 1; fi
+
+# Wait for the build to finish
+BUILD_URL="$JENKINS_URL_CLEAN/job/$JENKINS_JOB/$BUILD_NUMBER"
+IS_BUILDING="true"
+TIMEOUT_SECONDS=300; end_time=$((SECONDS + TIMEOUT_SECONDS))
+while [ $SECONDS -lt $end_time ]; do
+    BUILD_DATA=$(curl -s --fail --user "$JENKINS_USER:$JENKINS_TOKEN" "$BUILD_URL/api/json")
+    IS_BUILDING=$(echo "$BUILD_DATA" | sed -n 's/.*"building":\([^,]*\).*/\1/p')
+    if [ "$IS_BUILDING" != "true" ]; then
+        BUILD_RESULT=$(echo "$BUILD_DATA" | sed -n 's/.*"result":"\([^"]*\)".*/\1/p')
+        break
+    fi
+    sleep 5
+done
+if [ "$IS_BUILDING" == "true" ]; then echo -e "\nERROR: Timed out waiting for build to finish." >&2; exit 1; fi
+
+# --- 5. Process the Result ---
+if [ "$BUILD_RESULT" = "SUCCESS" ]; then
+    echo "Build #$BUILD_NUMBER finished: $BUILD_RESULT." # Concise success message
+    ARTIFACT_URL="$BUILD_URL/artifact/summary.txt"
+    GPT_SUMMARY=$(curl -s --fail --user "$JENKINS_USER:$JENKINS_TOKEN" "$ARTIFACT_URL")
+
+    EXISTING_CONTENT=$(cat "$COMMIT_MSG_FILE")
+    {
+        echo "$GPT_SUMMARY"
+        echo ""
+        echo "# Please review the AI-generated summary above."
+        echo "# --------------------------------------------"
+        echo "$EXISTING_CONTENT"
+    } > "$COMMIT_MSG_FILE"
+    echo "[SUCCESS] Commit message prepared. Editor will open for review."
+else
+    echo "Build #$BUILD_NUMBER finished: $BUILD_RESULT." # Concise failure message
+    echo "ERROR: Jenkins build failed." >&2
+    echo "Please check the build log for details: $BUILD_URL" >&2
+    exit 1
+fi
+
+exit 0
