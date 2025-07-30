@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest tests/test_tldr_formatter.py -v)",
+      "Bash(python -m pytest tests/test_tldr_formatter.py::TestTLDRFormatter::test_tldr_formatter_with_hardcoded_file -v -s)",
+      "Bash(python3:*)",
+      "Bash(python -m pytest tests/test_tldr_formatter.py::TestTLDRFormatter::test_tldr_formatter_with_hardcoded_file -s --log-cli-level=DEBUG)"
+    ],
+    "deny": []
+  }
+}
