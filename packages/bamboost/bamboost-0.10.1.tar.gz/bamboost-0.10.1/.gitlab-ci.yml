@@ -1,0 +1,53 @@
+stages:
+  - test
+  - docs
+
+test:
+  stage: test
+  image: python:$PYTHON_VERSION
+  variables:
+    UV_VERSION: latest
+  before_script:
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - mv $HOME/.local/bin/uv /usr/local/bin
+    - uv sync --active --group test
+  script:
+    - uv run pytest --cov=bamboost tests
+  cache:
+    key: "$CI_JOB_NAME-$PYTHON_VERSION"
+    paths:
+      - .venv/
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.10"]
+  coverage: /(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "next"'
+
+build_doc_source:
+  stage: docs
+  image: python:3
+  variables:
+    GIT_DEPTH: 0 # Ensures all tags are fetched, needed for versioningit
+  before_script:
+    - "which ssh-agent || ( apt-get update -qy && apt-get install openssh-client -qqy )"
+    - eval `ssh-agent -s`
+    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add - > /dev/null
+    # Setup known ssh hosts
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - pip install .
+    # Clone docs repo and update reference docs
+    - git clone git@gitlab.com:zrlf/bamboost-docs.git
+    - cd bamboost-docs/
+    - bash ./generateAPIdoc.sh
+    # Push to docs repo
+    - git config --global user.email "${CI_EMAIL}" && git config --global user.name "${CI_USERNAME}"
+    - git add .
+    - git commit -m "CI_REF_GUIDE_UPDATE:$(python -c "import bamboost; print(bamboost.__version__)")"
+    - git push
+  only:
+    - tags
