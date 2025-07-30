@@ -1,0 +1,91 @@
+Metadata-Version: 2.4
+Name: dircomply
+Version: 0.5.0
+Summary: A small package to compare the files between two project folders.
+Author: Benevant Mathew
+Author-email: benevantmathewv@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: requires-python
+Dynamic: summary
+
+# 📁 dircomply - Folder Comparison Tool
+`dircomply` is a lightweight tool to compare files between two directories.It highlights files that differ and those that are unique to each folder.Supports both CLI mode and GUI mode for ease of use.
+
+## ✅ Features
+- Compare files between two folders
+- Detect differences in file contents
+- List unique files in each folder
+- Supports the following file types:
+    .txt, .py, .bat, .html
+- GUI mode for interactive comparison
+- CLI mode for quick terminal use
+
+## 💾 Installation
+Install dircomply using pip:
+```sh
+pip install dircomply
+```
+
+## 🧪 Example Usage
+Compare two folders via CLI:
+```sh
+dircomply /path/to/folder1 /path/to/folder2
+```
+Launch GUI mode:
+```sh
+dircomply
+```
+Show version info:
+```sh
+dircomply --version
+```
+Display author details:
+```sh
+dircomply --author
+```
+
+## 📌 Supported CLI Options
+Option	Description
+--help, -h	Show help message and exit
+--version, -v	Show version number and exit
+--author, -a	Show author name and exit
+--email, -e	Show author email and exit
+If no arguments are passed, GUI mode will be launched.
+
+## 🔎 What Gets Compared?
+dircomply compares only files with the following extensions:
+.txt
+.py
+.bat
+.html
+
+All other file types are ignored during the comparison.
+
+# Changelog
+## Version 0.5.0 - 17-06-2025
+- Added file support on .json,.ts,.scss for angular dev
+## Version 0.4.0 - 08-04-2025
+- Report shows both foler paths in top for quick reference.
+## Version 0.3.0 - 08-04-2025
+- Show Folder Paths dynamically in report.
+## Version 0.2.0 - 07-04-2025
+- Added sort feature in all output files list. (Path)
+- Updated readme and changelog.
+- Added compare on cli mode.
+## Version 0.1 - 18-12-2024
+- The app will compare two folders and show the difference in .txt, .py, .bat, .html files in both repo.
+- Along with app will display unique files for each repo.
