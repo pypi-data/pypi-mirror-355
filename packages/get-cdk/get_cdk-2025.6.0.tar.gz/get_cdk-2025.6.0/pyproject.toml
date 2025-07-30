@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "get-cdk"
+version = "2025.6.0"
+description = "Helper script for installing shinnytech cdk"
+authors = ["shinny-taojiachun <taojiachun@shinnytech.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+get-cdk = 'get_cdk.main:main'
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+oss2 = "^2.18.0"
+shinny-structlog = "^0.0.4"
+gitpython = "3.1.18"
+packaging = "^24.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
