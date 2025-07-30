@@ -1,0 +1,38 @@
+[version]
+path = "src/pyawaitable/__init__.py"
+
+[build.targets.wheel]
+packages = ["src/pyawaitable"]
+
+[build.targets.sdist]
+only-include = ["src/pyawaitable", "include/", "src/_pyawaitable"]
+
+[build.targets.wheel.hooks.autorun]
+dependencies = ["hatch-autorun~=1.1"]
+code = """
+import pyawaitable
+import os
+
+os.environ['PYAWAITABLE_INCLUDE'] = pyawaitable.include(suppress_error=True)
+"""
+
+[build.hooks.custom]
+enable-by-default = true
+dependencies = ["typing_extensions~=4.14"]
+
+[envs.hatch-test]
+dependencies = ["pyawaitable_test @ {root:uri}/tests", "pytest~=8.4"]
+default-args = ["--verbose"]
+
+[[envs.hatch-test.matrix]]
+python = ["3.13", "3.12", "3.11", "3.10", "3.9"]
+
+[envs.test-build]
+dependencies = [
+    "pyawaitable_test_meson @ {root:uri}/tests/builds/meson",
+    "pyawaitable_test_sbc @ {root:uri}/tests/builds/scikit-build-core",
+]
+
+[envs.test-build.scripts]
+meson = "python3 tests/builds/ensure_build_worked.py _meson_module"
+scikit-build-core = "python3 tests/builds/ensure_build_worked.py _sbc_module"
