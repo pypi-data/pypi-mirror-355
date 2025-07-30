@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "syn_data_csv"
+version = "0.1.6"
+description = "Synthetic data generation using LLMs"
+readme = "README.md"
+authors = [
+    { name = "Shyam Kota", email = "shyamsundar.kota@infoservices.com" }
+]
+
+maintainers = [
+    { name = "Shyam Kota", email = "shyamsundar.kota@infoservices.com" }
+]
+
+license = {file = "LICENSE.txt"}
+
+requires-python = ">=3.11"
+dependencies = [
+    "groq>=0.25.0",
+    "pandas>=2.2.3",
+    "python-dotenv>=1.1.0",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "twine",
+    "build"
+]
+
+[project.urls]
+Homepage = "https://github.com/Shyamkotainfo/Syn_data_gen/tree/shyam/syn_data_csv"
+Documentation = "https://github.com/Shyamkotainfo/Syn_data_gen/blob/shyam/syn_data_csv/README.md"
+
+
+[tool.setuptools]
+packages = ["app", "app.adapters"]
+include-package-data = true
+
+[project.scripts]
+get_data = "app.main:main"
