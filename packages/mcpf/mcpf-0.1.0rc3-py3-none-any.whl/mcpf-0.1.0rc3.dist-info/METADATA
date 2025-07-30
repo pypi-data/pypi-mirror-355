@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: mcpf
+Version: 0.1.0rc3
+Summary: Minimalist Configurable Pipelining Framework
+Author: Karoly Bosa
+Author-email: karoly.bosa@risc-software.at
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: influx
+Provides-Extra: io
+Provides-Extra: postgres
+Provides-Extra: xform
+Provides-Extra: xql
+Requires-Dist: mcpf-db-influx (>=0.1.0-rc3,<0.2.0) ; extra == "influx"
+Requires-Dist: mcpf-db-postgres (>=0.1.0-rc3,<0.2.0) ; extra == "postgres"
+Requires-Dist: mcpf-io (>=0.1.0-rc3,<0.2.0) ; extra == "io"
+Requires-Dist: mcpf-io-pandas (>=0.1.0-rc3,<0.2.0) ; extra == "io"
+Requires-Dist: mcpf-xform (>=0.1.0-rc3,<0.2.0) ; extra == "xform"
+Requires-Dist: mcpf-xform-pandas (>=0.1.0-rc3,<0.2.0) ; extra == "xform"
+Requires-Dist: mcpf-xform-sql (>=0.1.0-rc3,<0.2.0) ; extra == "xql"
