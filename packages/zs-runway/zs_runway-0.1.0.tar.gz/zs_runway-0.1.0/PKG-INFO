@@ -1,0 +1,217 @@
+Metadata-Version: 2.4
+Name: zs-runway
+Version: 0.1.0
+Summary: 智熵视频 Runway 插件 - 用于生成图片和视频的 Python 库
+Home-page: https://github.com/yourusername/zs-runway
+Author: 智熵视频技术团队
+Author-email: your.email@example.com
+License: Proprietary
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.31.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pillow>=9.0.0
+Requires-Dist: python-dotenv>=0.19.0
+Provides-Extra: dev
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: isort>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=0.900; extra == "dev"
+Requires-Dist: bump2version>=1.0.0; extra == "dev"
+Requires-Dist: build>=0.7.0; extra == "dev"
+Requires-Dist: twine>=3.4.0; extra == "dev"
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: requires-python
+
+# 智熵视频 Runway 插件 (ZS Runway)
+
+这是一个智熵视频内部使用的 Python 库，用于与 Runway 服务进行交互，提供了生成图片和视频的便捷接口。
+
+## 功能特点
+
+- 图片生成：支持高质量图片生成
+- Gen-4 视频生成：最新的视频生成模型
+- Gen-3 视频生成：稳定的视频生成模型
+- 简单易用的 API 接口
+- 异步操作支持
+- 内部服务集成
+- 批量处理支持
+
+## 安装
+
+```bash
+# 从内部 PyPI 服务器安装
+pip install zs-runway
+```
+
+## 使用方法
+
+### 初始化客户端
+
+```python
+from zs_runway import RunwayClient
+
+# 初始化客户端，无需认证
+client = RunwayClient()
+```
+
+### 生成图片
+
+```python
+# 生成单张图片
+result = await client.generate_image(
+    prompt="一只可爱的猫咪",
+    negative_prompt="模糊的, 低质量的",
+    width=1024,
+    height=768,
+    num_inference_steps=30,  # 推理步数
+    guidance_scale=7.5      # 提示词引导强度
+)
+
+# 保存图片
+result.save("output.png")
+
+# 批量生成
+results = await client.generate_images(
+    prompts=["猫咪", "狗狗", "兔子"],
+    width=1024,
+    height=768
+)
+```
+
+### 生成视频 (Gen-4)
+
+```python
+# 使用 Gen-4 生成视频
+result = await client.generate_video_gen4(
+    prompt="一只奔跑的猫咪",
+    negative_prompt="模糊的, 低质量的",
+    width=1024,
+    height=576,
+    duration=4,            # 视频时长（秒）
+    fps=24,               # 帧率
+    motion_scale=1.0,     # 运动幅度
+    noise_aug_strength=0.1 # 噪声增强强度
+)
+
+# 保存视频
+result.save("output.mp4")
+```
+
+### 生成视频 (Gen-3)
+
+```python
+# 使用 Gen-3 生成视频
+result = await client.generate_video_gen3(
+    prompt="一只奔跑的猫咪",
+    negative_prompt="模糊的, 低质量的",
+    width=1024,
+    height=576,
+    duration=4,           # 视频时长（秒）
+    fps=24,              # 帧率
+    quality="high"       # 质量设置：'draft', 'normal', 'high'
+)
+
+# 保存视频
+result.save("output.mp4")
+```
+
+## API 文档
+
+### RunwayClient
+
+主要的客户端类，用于与内部 Runway 服务交互。
+
+#### 方法
+
+##### 图片生成
+- `generate_image()`: 生成单张图片
+- `generate_images()`: 批量生成多张图片
+
+##### 视频生成
+- `generate_video_gen4()`: 使用 Gen-4 模型生成视频
+- `generate_video_gen3()`: 使用 Gen-3 模型生成视频
+
+### 参数说明
+
+#### 通用参数
+
+- `prompt` (str): 生成提示词
+- `negative_prompt` (str, optional): 负面提示词
+- `width` (int): 输出宽度
+- `height` (int): 输出高度
+- `num_inference_steps` (int, optional): 推理步数，默认 30
+- `guidance_scale` (float, optional): 提示词引导强度，默认 7.5
+
+#### 视频特定参数
+
+- `duration` (int): 视频时长（秒）
+- `fps` (int): 帧率，默认 24
+- `motion_scale` (float): 运动幅度（仅 Gen-4）
+- `noise_aug_strength` (float): 噪声增强强度（仅 Gen-4）
+- `quality` (str): 质量设置（仅 Gen-3）：'draft', 'normal', 'high'
+
+### 返回值
+
+#### ImageResult
+- `image`: PIL.Image 对象
+- `save(path)`: 保存图片方法
+- `get_bytes()`: 获取图片字节数据
+
+#### VideoResult
+- `video_path`: 生成的视频路径
+- `save(path)`: 保存视频方法
+- `get_bytes()`: 获取视频字节数据
+- `duration`: 视频时长
+- `fps`: 帧率
+
+## 错误处理
+
+库提供了详细的错误处理机制：
+
+- `RunwayError`: 基础错误类
+- `ServiceError`: 服务端错误
+- `ValidationError`: 参数验证错误
+- `ResourceError`: 资源不可用错误
+
+## 内部服务配置
+
+服务配置可以通过环境变量或配置文件进行设置：
+
+```python
+# 环境变量
+ZS_RUNWAY_SERVICE_URL="http://internal-runway-service"
+ZS_RUNWAY_TIMEOUT=30  # 请求超时时间（秒）
+ZS_RUNWAY_MAX_RETRIES=3  # 最大重试次数
+```
+
+## 性能优化
+
+- 支持异步并发请求
+- 内置请求池管理
+- 自动重试机制
+- 资源释放管理
+
+## 使用建议
+
+1. 对于批量任务，优先使用 `generate_images()` 而不是多次调用 `generate_image()`
+2. 视频生成时，建议先使用较低质量进行测试
+3. 根据实际需求调整 `num_inference_steps` 和 `guidance_scale`
+4. 合理设置超时时间和重试次数
+
+## 调试
+
+库提供了详细的日志记录：
+
+```python
+import logging
+logging.getLogger('zs_runway').setLevel(logging.DEBUG)
+```
+
+## 贡献
+
+这是一个内部项目，如有问题或建议请通过内部渠道反馈。
+
+## 许可证
+
+仅供智熵视频内部使用 
