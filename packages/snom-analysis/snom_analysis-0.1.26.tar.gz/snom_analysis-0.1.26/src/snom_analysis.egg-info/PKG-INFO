@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: snom_analysis
+Version: 0.1.26
+Summary: Package for displaying and manipulating SNOM and AFM data
+Author-email: "H.-J. Schill" <hajo.schill@acetovit.de>
+Maintainer-email: "H.-J. Schill" <hajo.schill@acetovit.de>
+License: GPL-3.0-or-later
+Project-URL: Source, https://github.com/Hajo376/SNOM_AFM_analysis/
+Project-URL: Documentation, https://snom-analysis.readthedocs.io/en/latest/index.html
+Keywords: snom,afm,near-field,atomic force microscopy
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+Requires-Dist: scipy>=1.15.2
+Requires-Dist: matplotlib>=3.10.1
+Requires-Dist: mpl_point_clicker>=0.4.1
+Requires-Dist: matplotlib-scalebar>=0.9.0
+Requires-Dist: imageio>=2.37.0
+Requires-Dist: colorcet>=3.1.0
+Requires-Dist: scikit-image>=0.25.2
+Dynamic: license-file
+
+A package to load, manipulate and visualize SNOM and AFM data.
+
+Overview
+--------
+
+The package contains several classes, one for each implemented measurement type (so far: SNOM/AFM images, approach/deproach curves and 3D scans (2D approach curves)). 
+These classes need the path to the measurement folder as well as the channels as input. 
+The classes will then load the data of all specified channels as well as the measurement parameters and the header information of the measurement files. 
+The data can then be manipulated and plotted. Each manipulation changes the data in the memory and also the parameter dictionaries if necessary. 
+The data can then also be saved with the changes.
+
+The package will also create a folder in the users home directory to store several files like a config file, a plot memory, a matplotlib style file and a general 
+plotting parameters file. Making it easier to adjust the package to your needs.
+
+Installation
+------------
+
+The package can be installed via ``pip``::
+
+    pip install snom-analysis
+
+If you install via pip all dependencies will be installed automatically. I recommend to use a virtual environment.
+
+Documentation
+-------------
+
+The documentation can be found at https://snom-analysis.readthedocs.io/en/latest/index.html
