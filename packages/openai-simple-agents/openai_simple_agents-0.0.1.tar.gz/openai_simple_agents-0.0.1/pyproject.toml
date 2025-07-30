@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openai-simple-agents"
+version = "0.0.1"
+description = "Асинхронная архитектура памяти для OpenAI-агентов на базе ChromaDB и SQLite"
+authors = [
+  { name = "Платановский Дмитрий Алексеевич", email = "platanovskiydmitriy@gmail.com" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = [
+  "openai>=1.14.2",
+  "chromadb>=0.4.22",
+  "tiktoken>=0.6.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/simple-agents"
+Repository = "https://github.com/your-username/simple-agents"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests", "tests.*"]
+
+[tool.mypy]
+strict = true
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4.0",
+  "pytest-asyncio>=0.21.0",
+  "sentence-transformers>=2.2.2",
+  "mypy>=1.7.0",
+  "black>=24.3.0",
+  "isort>=5.12.0"
+]
