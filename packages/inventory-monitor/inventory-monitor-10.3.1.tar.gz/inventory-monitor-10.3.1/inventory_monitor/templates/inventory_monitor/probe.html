@@ -1,0 +1,122 @@
+{% extends "generic/object.html" %}
+{% load render_table from django_tables2 %}
+{% load plugins %}
+{% block content %}
+    <div class="row mb-3">
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">Probed Item</h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        <tr>
+                            <th scope="row">Time</th>
+                            <td>{{ object.time }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Creation Time</th>
+                            <td>{{ object.creation_time }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Name</th>
+                            <td>{{ object.name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Serial</th>
+                            <td>{{ object.serial }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>{{ object.description }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Part</th>
+                            <td>{{ object.part }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Class</th>
+                            <td>{{ object.category }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Class</th>
+                            <td>{{ object.category }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Device descriptor</th>
+                            <td>{{ object.device_descriptor }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Device</th>
+                            <td>
+                                {% if object.device %}
+                                    <a href="{{ object.device.get_absolute_url }}">{{ object.device.name }}</a>
+                                {% else %}
+                                    {{ ''|placeholder }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Site descriptor</th>
+                            <td>{{ object.site_descriptor }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Site</th>
+                            <td>
+                                {% if object.site %}
+                                    <a href="{{ object.site.get_absolute_url }}">{{ object.site.name }}</a>
+                                {% else %}
+                                    {{ ''|placeholder }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Location descriptor</th>
+                            <td>{{ object.location_descriptor }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Location</th>
+                            <td>
+                                {% if object.location %}
+                                    <a href="{{ object.location.get_absolute_url }}">{{ object.location.name }}</a>
+                                {% else %}
+                                    {{ ''|placeholder }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Discovered Data</th>
+                            <td>
+                                <pre>{{ object.discovered_data|json }}</pre>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            {% include "inc/panels/custom_fields.html" %}
+            {% plugin_left_page object %}
+        </div>
+        <div class="col col-md-6">
+            {% include "inc/panels/tags.html" %}
+            {% include "inc/panels/comments.html" %}
+            {% plugin_right_page object %}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col col-md-12">
+            <div class="card">
+                <h5 class="card-header">Inventory Items</h5>
+                {% htmx_table 'dcim:inventoryitem_list' cf_inventory_monitor_probe=object.pk %}
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col col-md-12">
+            <div class="card">
+                <h5 class="card-header">History</h5>
+                {% htmx_table 'plugins:inventory_monitor:probe_list' serial=object.serial %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">{% plugin_full_width_page object %}</div>
+    </div>
+{% endblock content %}
