@@ -1,0 +1,89 @@
+modules:
+  - node_hermes_core.built_in.test_nodes
+  - node_hermes_core.built_in.operation_nodes
+  - node_hermes_core.built_in.output
+  - node_hermes_qt.nodes
+  - system_nodes
+  - hermes_storage_nodes
+
+nodes:
+  read_worker:
+    type: worker
+    interval: 0.5
+
+    nodes:
+      cpu_info:
+        type: cpu_info
+
+      ping_uk:
+        type: pingv2
+        target: 35.242.177.6
+
+      ping_united_states:
+        type: pingv2
+        target: 34.21.9.50
+
+      ping_australia:
+        type: pingv2
+        target: 34.40.137.12
+
+      ping_router:
+        type: pingv2
+        target: 192.168.1.1
+
+  ui:
+    type: worker
+    interval: 0.1
+
+    nodes:
+      tracker_node:
+        type: data_tracker
+
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - read_worker.*
+
+        value_tracking:
+          cache_size: 5000
+
+      influxdb_node:
+        type: influxdb
+        url: https://influxdb.artemis.vernieuwe.dev #Internal influxdb instance, for testing
+        bucket: test_bucket
+        org: vernieuwe
+        token: Bsa_n1g0qe_FXbfnQMUIWNyVy7qJchHIGn5aYJ9KRjuMBPeAN2Cn-s-e2dfeH7zuGXKXvX4LlC58nXj---rs1g==  #Write only token on a test bucket
+        
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - read_worker.*
+
+  data_explorer:
+    type: data_explorer
+    tracker: ui.tracker_node
+
+    interface:
+      type: dock
+      name: "Data Explorer"
+      position: right
+
+
+  histogram:
+    type: histogram
+
+    interface:
+      type: dock
+      name: "Histogram"
+      position: right
+
+    tracker: ui.tracker_node
+
+    traces:
+      australia:
+        source: ping_australia.avg_rtt
+        line:
+          line_width: 2
+          color: auto
