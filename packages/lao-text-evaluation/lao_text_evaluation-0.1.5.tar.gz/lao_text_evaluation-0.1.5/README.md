@@ -1,0 +1,111 @@
+# Lao Text Evaluation
+
+A lightweight command-line tool to evaluate Lao OCR outputs using CER (Character Error Rate), WER (Word Error Rate), and detailed error breakdowns. Supports both single prediction evaluation and batch evaluation with visualization and CSV export.
+
+---
+
+## 📌 Features
+
+- ✅ CER & WER evaluation (grapheme-aware for Lao script)
+- ✅ Character-level breakdown by category (consonant, vowels, tones)
+- ✅ Inserted, deleted, replaced character analysis
+- ✅ CSV export for individual or batch evaluations
+- ✅ Alignment visualization (GT vs Prediction)
+- ✅ Bar chart and summary analysis of batch results
+
+---
+
+## 🚀 Installation
+
+```bash
+pip install lao_text_evaluation
+```
+
+---
+
+## 🛠️ Command Line Usage
+
+### ▶️ Single Prediction Evaluation
+
+```bash
+lao-eval "ສະບາຍດີ" "ສະບາຍດື" -d
+```
+
+### ▶️ Batch Evaluation
+
+```bash
+lao-eval sample/data/gt sample/data/pred --batch --outdir result.csv
+```
+
+### ▶️ Options
+
+| Option / Flag       | Description                                      |
+|---------------------|--------------------------------------------------|
+| `"GT" "PRED"`       | Ground truth and prediction text (in quotes)     |
+| `--batch`           | Evaluate pairs of files from 2 directories       |
+| `--outdir`          | Output CSV filename                              |
+| `-d`, `--detail`    | Show detailed error breakdown                    |
+| `-a`, `--all`       | Show all (plot + breakdown)                      |
+| `-r`, `--replaced`  | Show replaced characters                         |
+| `-I`, `--inserted`  | Show inserted characters                         |
+| `-e`, `--errors`    | Show missing (deleted) characters                |
+| `-p`, `--plot`      | Plot GT vs Prediction alignment                  |
+| `--analyze`         | Print average CER, WER, insertions, deletions    |
+| `-b`, `--bar`       | Show bar chart of batch statistics               |
+| `-l`, `--line`      | Visualize N random alignment plots (default=4)   |
+
+---
+
+## 🧪 Example Output
+
+### Single Evaluation
+
+```bash
+Ground Truth: ສະບາຍດີຫຼວງພະບາງ
+Prediction  : ສະບາຍດືຫວງພ:ບາງ
+CER: 0.2143
+WER: 1.0
+
+===== Detailed Error Breakdown =====
+Consonant                     - Total: 0, Errors: 0, Error Rate: 0.0000
+Vowel Upper                  - Total: 1, Errors: 1, Error Rate: 1.0000
+...
+```
+
+### Batch CSV Output
+
+| filename    | gt               | pred             | cer   | wer   | missing     | inserted   | replacements     |
+|-------------|------------------|------------------|--------|--------|-------------|------------|------------------|
+| file1.txt   | ສະບາຍດີ...       | ສະບາຍດື...       | 0.2143 | 1.0000 | vowel_upper | consonant | ີ→ື, ະ→:        |
+
+---
+
+## 📊 Visualization
+
+Use `--plot` or `--line` to show aligned visual comparisons between ground truth and prediction.
+
+---
+
+## 📂 Directory Structure for Batch
+
+```
+data/
+├── gt/
+│   ├── file1.txt
+│   ├── file2.txt
+├── pred/
+│   ├── file1.txt
+│   ├── file2.txt
+```
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 👨‍💻 Author
+
+**Khonepaseuth Sounakhen**
