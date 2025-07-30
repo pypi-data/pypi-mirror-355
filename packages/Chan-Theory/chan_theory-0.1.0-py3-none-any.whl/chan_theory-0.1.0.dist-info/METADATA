@@ -1,0 +1,106 @@
+Metadata-Version: 2.4
+Name: Chan-Theory
+Version: 0.1.0
+Summary: This Package implements K-line data processing based on the Chan Theory.
+Author-email: Yuhao Lian <lianyuhao@ieee.org>
+License: GNU GENERAL PUBLIC LICENSE
+        Version 3, 29 June 2007
+        
+        Copyright (C) [2025] [Yuhao Lian]
+        
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+        
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+        
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+        
+Project-URL: Homepage, https://github.com/YuhaoLian/Chan-Theory
+Keywords: Chan Theory,K-line
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: numpy>=1.18
+Requires-Dist: pandas>=1.5.0
+Dynamic: license-file
+
+# K线分型处理工具 V2.0 KLineProcessor 类：K线数据处理与分型、笔识别
+
+## 🌟 简介
+`KLineProcessor` 类是一个用于处理K线数据的工具，它可以对输入的K线数据进行预处理、去除K线包含关系、识别分型以及确定笔的端点。该类主要用于金融市场K线数据的技术分析，为后续的交易策略制定提供基础数据支持。
+
+## 📦 安装依赖
+在使用该类之前，需要确保已经安装了以下依赖库：
+```bash
+pip install pandas numpy
+```
+
+## 📦 具体说明
+
+对一个时间序列k线进行打标：顶分型，底分型
+
+```bash
+Fmark：0：顶分型， 1底分型  2 上升 3下降
+
+Fval：顶分型为high值，底分型为low值
+```
+## 使用说明
+```
+df = pd.read_csv('your_path.csv')
+L = KLineProcessor(df)
+df1 = L.get_data()
+```
+
+## 更新说明
+
+### 主要优化点
+
+#### 1. 性能提升优化 🚀
+- **合并处理流程**：将K线合并处理与分型识别整合为单次遍历
+  - 原V1.0需进行两次完整遍历（合并处理 + 分型识别）
+  - V2.0采用实时识别策略，在合并K线时同步检测分型
+  - 处理速度提升约40%（实测数据集处理时间从58ms降至34ms）
+
+#### 2. 内存优化 💾
+- **减少深拷贝操作**：
+  - 优化前：每次处理都需要deepcopy全部K线数据
+  - 优化后：采用增量式处理，仅保留必要处理节点
+- **内存占用降低**约30%
+
+#### 3. 算法改进 🔍
+- **分型检测策略优化**：
+  ```python
+  # 合并处理与分型识别同步进行
+  for i, k in enumerate(kline[2:], start=2):
+      # 合并处理...
+      # 实时分型检测
+      if i >= 2 and i <= len(kline) -1:
+          k1, k2, k3 = new_kline[-3:]
+          # 顶分型检测
+          # 底分型检测
+
+
+## 功能特性
+
+| 功能         | V1.0 | V2.0 | 改进说明         |
+|--------------|------|------|------------------|
+| 合并K线处理  | √    | √    | 算法优化         |
+| 实时分型识别 | ×    | √    | 新增功能         |
+| 多线程支持   | ×    | △    | 部分模块支持     |
+| 无效分型过滤 | △    | √    | 增强校验逻辑     |
+| 内存监控     | ×    | √    | 新增内存优化机制 |
+
+## 性能特性
+| 指标     | V1.0 | V2.0 | 提升    |
+|----------|------|------|---------|
+| 处理时间14400长度 | 271.423s | 2.172s | ↑12396%  |
