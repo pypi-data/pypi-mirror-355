@@ -1,0 +1,32 @@
+repos:
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.14.1
+    hooks:
+      - id: mypy
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.19.1
+    hooks:
+      - id: pyupgrade
+        # SEE pyproject.toml FOR py{min-support}-plus.
+        args: [--py39-plus, --keep-runtime-typing]
+        # THIS FILE NEEDS TO STAY python27 COMPATIBLE "ABOVE" __main__ AND py{min-support} "BELOW" __main__.
+        exclude: ^examples/
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.8.6
+    hooks:
+      # FIXING CODE RULES.
+      - id: ruff
+        args: [--config=pyproject.toml, --fix]
+
+      # PURELY STYLE FORMATTING RULES.
+      - id: ruff-format
+        args: [--config=pyproject.toml]

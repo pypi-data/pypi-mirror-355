@@ -1,0 +1,193 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "thoughtspot_tml"
+dynamic = ["version"]
+description = "Library for manipulating ThoughtSpot Modeling Language (TML) files"
+readme = "README.md"
+requires-python = ">= 3.9 , < 3.14"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Bryant Howell", email = "bryant.howell@thoughtspot.com"},
+    {name = "Bill B", email = "bill.back@thoughtspot.com"},
+    {name = "boonhapus", email = "nicholas.cooper@thoughtspot.com"},
+]
+maintainers = [
+    {name = "Bryant Howell", email = "bryant.howell@thoughtspot.com"},
+    {name = "boonhapus", email = "nicholas.cooper@thoughtspot.com"},
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+dependencies = [
+    "PyYAML >= 6.0.0",
+
+    # PINNED DUE TO thoughtspot_tml#24
+    "betterproto[compiler] == 2.0.0b6",
+
+    # VERSION SPECIFIC
+    "zipp >= 3.11.0; python_version < '3.10.0'",
+    "typing_extensions >= 4.4.0; python_version < '3.11.0'",
+]
+
+[project.urls]
+repository = "https://github.com/thoughtspot/thoughtspot_tml"
+bug_tracker = "https://github.com/thoughtspot/thoughtspot_tml/issues"
+
+# eventual plans for a jq-like utility for TML
+# [project.scripts]
+# tml = "thoughtspot_tml.cli.main:run"
+
+[project.optional-dependencies]
+dev = [
+    "rich",
+
+    # code quality
+    "hatch",
+    "pre-commit",
+    "mypy",
+    "types-PyYAML",
+    "ruff",
+    "vulture",
+
+    # tests
+    "coverage[toml]",
+    # TODO.. switch from nox + ward --> hatch + pytest
+    # "pytest",
+    "nox",
+    "ward",
+]
+
+
+[tool.hatch.envs.default.scripts]
+# https://hatch.pypa.io/latest/how-to/environment/select-installer/#enabling-uv
+installer = "uv"
+
+[tool.hatch.build.targets.wheel]
+where = ["src/thoughtspot_tml"]
+
+[tool.hatch.version]
+path = "src/thoughtspot_tml/__project__.py"
+
+[tool.hatch.envs.dev.scripts]
+setup = [
+    "pre-commit install",
+    "mypy --install-types --non-interactive",
+]
+compile = [
+    "uv run python {root:}/_generate/__main__.py"
+]
+test = "ward test --test-output-style=dots-global --order=standard"
+clean = "vulture --min-confidence 100"
+lint = [
+    "ruff check --config pyproject.toml",
+    "ruff format --config pyproject.toml",
+]
+typecheck = "mypy src/"
+
+
+[tool.mypy]
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+check_untyped_defs = true
+strict_equality = true
+strict_concatenate = true
+exclude = '''
+(?x)(
+      _scriptability.py$  # IGNORE AUTO-GENERATED FILES
+    | _compat.py$         # IGNORE COMPAT FILES
+)
+'''
+
+
+[tool.ruff]
+target-version = "py39"
+line-length = 120
+src = ["src/thoughtspot_tml"]
+exclude = [
+    # PROJECT SPECIFIC IGNORES
+    "__init__.py",        # ignore __init__.py
+    "__project__.py",     # ignore project metadata
+    "_compat.py",         # ignore compatibles
+    "_scriptability.py",  # ignore auto-generated files
+
+    "examples/*",
+
+    # CODE QUALITY FILES
+    "noxfile.py",
+    ".vulture*",
+]
+
+[tool.ruff.lint]
+select = [
+    "A",     # flake8-builtins: https://pypi.org/project/flake8-builtins/
+    "ARG",   # flake8-unused-arguments: https://pypi.org/project/flake8-unused-arguments/
+    "B",     # flake8-bugbear: https://pypi.org/project/flake8-bugbear/
+    "C4",    # flake8-comprehensions: https://pypi.org/project/flake8-comprehensions/
+    "COM",   # flake8-commas: https://pypi.org/project/flake8-commas/
+    "DTZ",   # flake8-datetimez: https://pypi.org/project/flake8-datetimez/
+    "E",     # pycodestyle: https://pypi.org/project/pycodestyle/
+    "F",     # pyflakes: https://pypi.org/project/pyflakes/
+    "FA",    # flake8-future-annotations: https://pypi.org/project/flake8-future-annotations/
+    "I",     # isort: https://pypi.org/project/isort/
+    "Q",     # flake8-quotes: https://pypi.org/project/flake8-quotes/
+    "RUF",   # ruff-specific: https://beta.ruff.rs/docs/rules/#ruff-specific-rules-ruf
+    "T20",   # flake8-print: https://pypi.org/project/flake8-print/
+    "TCH",   # flake8-type-checking: https://pypi.org/project/flake8-type-checking/
+]
+ignore = [
+    "A002",   # Function argument `<variable>` is shadowing a Python builtin
+    "B008",   # Checks for function calls in default function arguments.
+    "COM812", # Checks for the absence of trailing commas.
+    "TC001",  # Moves imports into the TYPE_CHECKING block, hurting Pydantic, SQLModel
+    "TC002",  # Moves imports into the TYPE_CHECKING block, hurting Pydantic, SQLModel
+    "TC003",  # Moves imports into the TYPE_CHECKING block, hurting Pydantic, SQLModel
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+from-first = true
+required-imports = ["from __future__ import annotations"]
+
+
+[tool.vulture]
+paths = ["src/thoughtspot_tml"]
+
+
+[tool.ward]
+path = "tests/"
+
+
+[tool.coverage.run]
+branch = true
+include = [
+    "src/**.py",
+]
+omit = [
+    "src/thoughtspot_tml/_scriptability.py",
+    "src/thoughtspot_tml/_compat.py",
+    "__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "# pragma: no cover",
+    "# pragma: peephole optimzer",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "if typing.TYPE_CHECKING:",
+]
