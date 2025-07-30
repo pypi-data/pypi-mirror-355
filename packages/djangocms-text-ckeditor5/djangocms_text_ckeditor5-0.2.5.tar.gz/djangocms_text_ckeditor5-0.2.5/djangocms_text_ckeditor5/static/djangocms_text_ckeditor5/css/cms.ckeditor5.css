@@ -1,0 +1,89 @@
+.cms-structure-mode-content, .cms-structure-mode-structure {
+    .ck.ck-editor__editable_inline {
+        padding: 0;
+        & > :first-child {
+            margin-top: 0;
+        }
+    }
+}
+
+.cms-editor-inline-wrapper.ck a {
+    pointer-events: none;
+}
+
+.cms-admin.app-djangocms_text.model-text .ck-editor {
+    border: none;
+    background: var(--dca-white);
+    .ck-editor__editable {
+        max-height: unset;
+    }
+    button {
+        width: auto  !important;
+        padding: var(--ck-spacing-tiny)  !important;
+        border: 1px solid transparent  !important;
+    }
+    .ck.ck-list button {
+        width: 100%  !important;
+    }
+    textarea {
+        max-height: unset;
+    }
+}
+
+.ck-powered-by {
+    display: none  !important;
+}
+
+form .form-row>div:not([class])>.flex-container>div:not(.related-widget-wrapper,.cke,.widget) {
+    width: 100%;
+    max-width: unset;
+}
+
+.field-body .flex-container {
+    margin: 0;
+    background-color: var(--dca-white, var(--body-bg, #fff));
+}
+
+body {
+    --ck-color-toolbar-background: var(--dca-white);
+    --ck-color-base-background: var(--dca-white);
+    --ck-color-toolbar-border: var(--dca-gray-lighter);
+    --ck-color-base-border: var(--dca-gray-lighter);
+    --ck-color-text: var(--dca-black);
+    --ck-color-dropdown-panel-background: var(--dca-white);
+    --ck-color-dropdown-panel-border: var(--dca-gray-lighter);
+}
+
+body.change-form .ck-editor__main {
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+    }
+    h1, h2, h3, h4, h5, h6, p {
+        margin: 0;
+        margin-bottom: 1em;
+        border: none;
+        padding: 0;
+        line-height: 1.5;
+        color: inherit;
+        background: inherit;
+    }
+
+    h1 {
+        font-size: 1.7rem !important;
+    }
+    h2 {
+        font-size: 1.42rem !important;
+    }
+    h3 {
+        font-size: 1.2rem !important;
+    }
+    h4, p {
+        font-size: 1rem !important;
+    }
+    h5 {
+        font-size: 0.83rem !important;
+    }
+    h6 {
+        font-size: 0.7rem !important;
+    }
+}
