@@ -1,0 +1,77 @@
+[project]
+name = "space_collector"
+version = "1.2.0"
+description = "Space collector programming game"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Utilities",
+    "Topic :: Games/Entertainment :: Real Time Strategy",
+]
+authors = [{ name = "Vincent Poulailleau", email = "vpoulailleau@gmail.com" }]
+readme = "README.md"
+keywords = ["space", "collector", "game"]
+license = "BSD-3-Clause"
+requires-python = ">=3.11"
+dependencies = ["arcade>=3", "pyserial==3.5", "psutil>=7.0"]
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "pytest",
+    "pytest-cov",
+    "python-dev-tools >= 2023",
+    "pre-commit >=3,<4",
+    "pyinstrument",
+    "twine",
+]
+
+[project.urls]
+"Source code" = "https://github.com/vpoulailleau/space_collector"
+Repository = "https://github.com/vpoulailleau/space_collector"
+Documentation = "https://github.com/vpoulailleau/space_collector/README.md"
+
+[tool.setuptools.packages.find]
+include = ["space_collector*"]
+
+[tool.bandit.assert_used]
+skips = ["*_test.py", "*test_*.py"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
+
+[tool.flake8]
+no-accept-encodings = true
+max-line-length = 88
+extend-ignore = ["AAA05", "ANN101", "ANN102", "PLC116", "SCS108"]
+
+[tool.interrogate]
+fail-under = 100
+verbose = 2
+ignore-init-module = true
+ignore-regex = ["^test_.*$"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q  -s -vv --cov=space_collector.game --cov-branch --cov-report=term-missing --cov-fail-under=100"
+testpaths = ["tests"]
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+# Enable D400 on top of the Google convention for docstrings.
+extend-select = ["D400"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
