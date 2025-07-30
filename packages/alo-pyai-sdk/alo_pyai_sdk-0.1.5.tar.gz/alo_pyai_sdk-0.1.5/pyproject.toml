@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "alo_pyai_sdk"
+version = "0.1.5"
+description = "SDK to facilitate the creation of AI agentic applications using Pydantic-AI, A2A, and MCP."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Daniele Ligorio", email = "dl@alomana.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License", # Assuming MIT
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "pydantic-ai>=0.0.47", # Using a recent version that includes A2A and MCP features
+    "pydantic>=2.0",
+    "typer[all]>=0.9.0",
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.20.0",
+    "jinja2>=3.0",
+    "pyyaml>=6.0",
+    "httpx>=0.25.0", # For registry client and A2A communication
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+    "mypy",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/alo_pyai_sdk" # Placeholder
+Repository = "https://github.com/yourusername/alo_pyai_sdk" # Placeholder
+
+[project.scripts]
+alo-pyai-sdk = "alo_pyai_sdk.cli.main:app"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/alo_pyai_sdk",
+    "/pyproject.toml",
+    "/README.md",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["alo_pyai_sdk"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
