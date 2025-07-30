@@ -1,0 +1,2 @@
+DEFAULT_DIR = 'log'
+MAX_ERR_COUNT = 10
