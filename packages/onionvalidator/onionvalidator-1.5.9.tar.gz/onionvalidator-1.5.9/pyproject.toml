@@ -1,0 +1,22 @@
+[project]
+name = "onionvalidator"
+version = "1.5.09"
+description = "Validate .onion addresses using public darknet sources"
+authors = [
+  { name="Zero", email="zero@example.com" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "MIT" }
+
+dependencies = [
+  "requests",
+  "beautifulsoup4"
+]
+
+[project.scripts]
+onionvalidator = "onionvalidator.core:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
