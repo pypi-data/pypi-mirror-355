@@ -1,0 +1,22 @@
+# TODO: List for the project
+
+- [x] Add support for passing a `.gitignore` file using custom ignore patterns in the ignore handler.
+- [x] Implement a feature to handle `.gitignore` files in the ignore handler.
+- [x] Add output features beyond just basic plaintext output.
+- [x] Markdown output format
+- [x] HTML output format
+- [x] JSON output format
+- [x] Add SVG output format support
+- [ ] Options to sort by: name,version,size,mtime,ctime
+- [ ] Finish adding icons
+- [ ] Need to add "plain" icons
+- [ ] Clean up the html output, it is very messy but very awesome!
+- [ ] Add XML output format support
+- [ ] Add YAML output format support
+- [ ] Add TOML output format support (Toml support partially added, but needs a lot of work)
+- [ ] Add a Directory only option
+- [ ] Add a `--no-report` option to disable the report at the end of the output
+- [ ] Add a `--file-limit` option to limit the number of files displayed in the output
+- [ ] Add symbolic link following support
+- [ ] Finish adding output replacement support (where content in between tags is replaced with the output of the command)
+- [ ] Improve how outputs are structured (to minimize the amount of places where things need to be updated to add new output formats)
