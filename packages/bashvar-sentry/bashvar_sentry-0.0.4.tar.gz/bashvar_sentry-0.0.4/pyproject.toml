@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bashvar_sentry"
+version = "0.0.4"
+authors = [{ name = "envolution", email = "involution@gmail.com" }]
+description = "A robust Python module to safely source a bash script in a sandboxed environment and collect its variables."
+readme = "README.md"
+requires-python = ">=3.7"
+license = "Apache-2.0"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Shells",
+  "Development Status :: 4 - Beta",
+  "Topic :: Utilities",
+]
+dependencies = ["importlib-resources; python_version<'3.9'"]
+
+[project.urls]
+Homepage = "https://github.com/envolution/bashvar-sentry"
+Issues = "https://github.com/envolution/bashvar-sentry/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"bashvar_sentry.resources" = ["*.sh"]
+
+[project.optional-dependencies]
+test = ["pytest"]
