@@ -1,0 +1,35 @@
+const float inputScale = in->params.scale == 0 ? 1 : in->params.scale;
+const float inputOffset = in->params.zero_point;
+const float outputScale = out->params.scale == 0 ? 1 : out->params.scale;
+const float outputOffset = out->params.zero_point;
+const size_t startedAt = millis();
+
+if (model == nullptr && !begin())
+    return false;
+
+if (failed())
+    return false;
+
+// set (quantized) input
+if (isFloatInput())
+  for (uint16_t i = 0; i < numInputs; i++)
+      in->data.f[i] = x[i];
+else
+  for (uint16_t i = 0; i < numInputs; i++)
+      in->data.int8[i] = static_cast<int8_t>((float) x[i] / inputScale + inputOffset);
+
+if (interpreter->Invoke() != kTfLiteOk)
+    return fail("Invoke() failed");
+
+// get (quantized) output
+if (isFloatOutput())
+    for (uint16_t i = 0; i < numOutputs; i++)
+      outputs[i] = out->data.f[i];
+else
+  for (uint16_t i = 0; i < numOutputs; i++)
+      outputs[i] = ((float) out->data.int8[i] - outputOffset) * outputScale;
+
+getClassificationResult();
+runtime_ms = millis() - startedAt;
+
+return fail();

@@ -1,0 +1,17 @@
+class {{ class_name or "Select" }} {
+    public:
+
+        /**
+         * Perform feature selection
+         */
+        void operator()(Input& input, Output& output) {
+            // nothing to do, feature selection is only needed in Python
+        }
+
+        /**
+         * Always ready
+         */
+        bool isReady() {
+            return true;
+        }
+};

@@ -1,0 +1,16 @@
+/**
+ * {{ this }}
+ */
+class {{ class_name or "DecisionTree" }} {
+    public:
+
+        void operator()(Input& input, Output& output) {
+            {% with i = 0 %}
+                {% include "./_tree" %}
+            {% endwith %}
+        }
+
+        bool isReady() {
+            return true;
+        }
+};

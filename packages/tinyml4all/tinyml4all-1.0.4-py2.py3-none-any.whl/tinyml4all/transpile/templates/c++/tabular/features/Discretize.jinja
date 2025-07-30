@@ -1,0 +1,28 @@
+/**
+ * {{ this }}
+ */
+class {{ class_name }} {
+    public:
+
+        void operator()(Input& input, Output& output) {
+            {% if this.threshold is not none %}
+                input.{{ output_column | var }} = (input.{{ input_column | var }} {{ cmp }} {{ this.threshold }});
+            {% else %}
+                const float value = input.{{ input_column | var }};
+
+                {% for i, edge in enumerate(edges) %}
+                    if (value <= {{ edge }}f) {
+                        input.{{ output_column | var }} = {{ i }};
+                        return;
+                    }
+                {% endfor %}
+            {% endif %}
+        }
+
+        /**
+         * Always ready
+         */
+        bool isReady() {
+            return true;
+        }
+};

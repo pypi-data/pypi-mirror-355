@@ -1,0 +1,20 @@
+/**
+ * Transform Input
+ */
+bool operator()(const Input& input) {
+    return operator()({% for v in variables.inputs %}input.{{ v | var }}{% if not loop.last %}, {% endif %}{% endfor %});
+}
+
+/**
+ * Transform array input
+ */
+bool operator()(float *inputs) {
+    return operator()({% for var in variables.inputs %}inputs[{{ loop.index0 }}]{% if not loop.last %}, {% endif %}{% endfor %});
+}
+
+/**
+ * Transform const array input
+ */
+bool operator()(const float *inputs) {
+    return operator()({% for var in variables.inputs %}inputs[{{ loop.index0 }}]{% if not loop.last %}, {% endif %}{% endfor %});
+}

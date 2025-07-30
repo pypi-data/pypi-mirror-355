@@ -1,0 +1,230 @@
+#pragma once
+#include <Arduino.h>
+#include <tensorflow-runtime-universal.h>
+
+#ifdef __has_attribute
+#define HAVE_ATTRIBUTE(x) __has_attribute(x)
+#else
+#define HAVE_ATTRIBUTE(x) 0
+#endif
+#if HAVE_ATTRIBUTE(aligned) || (defined(__GNUC__) && !defined(__clang__))
+#define DATA_ALIGN_ATTRIBUTE __attribute__((aligned(4)))
+#else
+#define DATA_ALIGN_ATTRIBUTE
+#endif
+
+namespace tinyml4all {
+    template<size_t tensorArenaSize>
+    class {{ class_name or "Sequential" }} {
+        public:
+            const size_t numInputs = {{ io["num_inputs"] }};
+            const size_t numOutputs = {{ io["num_outputs"] }};
+            const size_t numOps = {{ layers | length }};
+            {% if len(target_names) %}
+                const String targetNames[{{ target_names | length }}] = { {{ target_names | join(", ") }} };
+            {% endif %}
+
+            const Model *model;
+            MicroMutableOpResolver<{{ layers | length }}> resolver;
+            MicroInterpreter *interpreter;
+            TfLiteTensor *in;
+            TfLiteTensor *out;
+            uint8_t arena[tensorArenaSize];
+            float outputs[{{ io["num_outputs"] }}];
+            float confidence;
+            String label;
+            size_t runtime_ms;
+
+            /**
+             * Constructor
+             */
+            {{ class_name or "Sequential" }}() :
+                model(nullptr),
+                interpreter(nullptr),
+                in(nullptr),
+                out(nullptr),
+                label(""),
+                _registered(false),
+                _error("") {
+
+                for (uint8_t i = 0; i < numOutputs; i++)
+                    outputs[i] = 0;
+            }
+
+            /**
+             * Test if model failed
+             */
+            inline bool failed() {
+                return _error.length() > 0;
+            }
+
+            /**
+             * Get error message
+             */
+            inline String error() {
+                return _error;
+            }
+
+            /**
+             * Test if input is float
+             */
+            inline bool isFloatInput() const {
+                return in->type == kTfLiteFloat32;
+            }
+
+            /**
+             * Test if input is int8
+             */
+            inline bool isInt8Input() const {
+                return in->type == kTfLiteInt8;
+            }
+
+            /**
+             * Test if output is float
+             */
+            inline bool isFloatOutput() const {
+                return out->type == kTfLiteFloat32;
+            }
+
+            /**
+             * Test if output is int8
+             */
+            inline bool isInt8Output() const {
+                return out->type == kTfLiteInt8;
+            }
+
+            /**
+             * Get i-th output
+             */
+            float output(uint16_t i = 0) {
+                if (outputs == NULL || i >= numOutputs)
+                    return sqrt(-1);
+
+                return outputs[i];
+            }
+
+            /**
+             * Init model
+             */
+            bool begin() {
+                registerOps();
+                model = tflite::GetModel(data);
+
+                if (model->version() != TFLITE_SCHEMA_VERSION)
+                    return fail(String("Model version mismatch. Expected ") + TFLITE_SCHEMA_VERSION + ", got " + model->version());
+
+                interpreter = tf::newInterpreter<{{ layers | length }}>(&resolver, model, arena, tensorArenaSize);
+
+                if (interpreter->AllocateTensors() != kTfLiteOk)
+                    return fail("AllocateTensors() failed");
+
+                in = interpreter->input(0);
+                out = interpreter->output(0);
+
+                if (!isFloatInput() && !isInt8Input())
+                    return fail("Only float and int8 inputs are supported");
+
+                if (!isFloatOutput() && !isInt8Output())
+                    return fail("Only float and int8 outputs are supported");
+
+                return fail();
+            }
+
+            /**
+             * Predict float input
+             */
+            bool predict(float *x) {
+                {% include "./predict.jinja" indent content %}
+            }
+
+            /**
+             * Predict int8 input
+             */
+            bool predict(int8_t *x) {
+                {% include "./predict.jinja" indent content %}
+            }
+
+            /**
+             * Predict uint8 (mainly images)
+             */
+             bool predict(uint8_t *x) {
+                {% include "./predict.jinja" indent content %}
+             }
+
+             /**
+             * Predict uint8 (mainly images)
+             */
+             bool predict(const uint8_t *x) {
+                {% include "./predict.jinja" indent content %}
+             }
+
+            /**
+             * Convert results to String for debug
+             */
+            String outputsAsString() {
+              String result = "";
+              result.reserve(numOutputs * 6);
+
+              for (int i = 0; i < numOutputs; i++) {
+                if (i > 0)
+                  result += ", ";
+
+                result += outputs[i];
+              }
+
+              return result;
+            }
+
+        protected:
+            bool _registered;
+            String _error;
+
+            /**
+             * Register ops in resolver
+             */
+            void registerOps() {
+                if (_registered)
+                    return;
+
+                {% for layer in layers %}resolver.Add{{ layer }}();
+                {% endfor %}
+                _registered = true;
+            }
+
+            /**
+             * Set error message, if any
+             */
+            bool fail(String message = "") {
+                _error = message;
+
+                // return true if error is empty (success)
+                return _error.length() == 0;
+            }
+
+            /**
+             * If classification, get most probable class
+             */
+            void getClassificationResult() {
+                if (numOutputs < 2)
+                    return;
+
+                confidence = outputs[0];
+                uint8_t ix = 0;
+
+                for (uint16_t i = 1; i < numOutputs; i++) {
+                    if (outputs[i] > confidence) {
+                        ix = i;
+                        confidence = outputs[i];
+                    }
+                }
+
+                {% if len(target_names) %}
+                    label = targetNames[ix];
+                {% else %}
+                    label = String(ix);
+                {% endif %}
+            }
+
+            const unsigned char data[{{ model["length"] }}] DATA_ALIGN_ATTRIBUTE = { {{ model["data"] }} };
+    };
+}

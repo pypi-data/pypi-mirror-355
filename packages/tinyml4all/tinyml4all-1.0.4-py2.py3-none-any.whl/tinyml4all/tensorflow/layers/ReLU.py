@@ -1,0 +1,21 @@
+from tinyml4all.tensorflow.layers.Layer import Layer
+
+
+class ReLU(Layer):
+    """
+    Proxy to tf.ReLU
+    """
+
+    def __init__(self, *args, **kwargs):
+        """
+        Constructor
+        :param args:
+        :param kwargs:
+        """
+        from tensorflow.keras.layers import ReLU as Base
+
+        self.base = lambda **_: Base(*args, **kwargs)
+
+    @property
+    def tflm_name(self):
+        return "Relu"

@@ -1,0 +1,116 @@
+#include <cmath>
+#include <iostream>
+#include <unistd.h>
+
+
+{% include "/math.jinja" %}
+{% include "/np.jinja" %}
+
+{% if pre is not none %}
+// pre-processing chain
+namespace internals {
+    {{ pre.convert_to("c++", class_name="PreprocessingChain") }}
+}
+{% endif %}
+
+namespace tinyml4all {
+    {% include "/Input.jinja" with context %}
+    {% include "/Output.jinja" with context %}
+    {% include "/Classmap.jinja" with context %}
+
+    // windowing
+    {% include "./Window.jinja" with context %}
+
+    // ovr
+    {% for chain in chains %}{{ chain.convert_to("c++", class_name=chain | var()) }}{% endfor %}
+
+    /**
+     * Chain class
+     * {{ this }}
+     */
+     class {{ class_name or "Chain" }} {
+        public:
+            Input input;
+            Output output;
+            String label;
+            Input inputs[{{ chains | length }}];
+            Output outputs[{{ chains | length }}];
+            Classmap classmap;
+
+            {% include "/ChainCall.jinja" %}
+
+
+            /**
+             * Transform input
+             */
+            bool operator()({{ variables.inputs | spread_signature(const=True) }}) {
+                // assign variables to input
+                {% for var in variables.inputs %}
+                    input.{{ var.name | var() }} = {{ var.name | var() }};
+                {% endfor %}
+
+                {% if pre is not none %}
+                    // run pre-processing blocks
+                    if (!pre({% for v in variables.inputs %}input.{{ v | var }}{% if not loop.last %}, {% endif %}{% endfor %}))
+                        return false;
+
+                    // copy pre.input to input
+                    {% for var in variables.inputs %}
+                        input.{{ var.name | var() }} = pre.input.{{ var.name | var() }};
+                    {% endfor %}
+                {% endif %}
+
+
+                // windowing
+                window(input);
+
+                if (!window.isReady())
+                    return false;
+
+                // feature extraction + ovr for each binary classification chain
+                {% for chain in chains %}
+                    inputs[{{ loop.index0 }}].copyFrom(input);
+                    chain{{ loop.index }}(window, inputs[{{ loop.index0 }}], outputs[{{ loop.index0 }}]);
+                {% endfor %}
+
+                // get positive classification with highest confidence
+                int8_t idx = -1;
+                float confidence = 0;
+
+                for (uint8_t i = 0; i < {{ chains | length }}; i++) {
+                    if (outputs[i].classification.idx > 0 && outputs[i].classification.confidence > confidence) {
+                        idx = i;
+                        confidence = outputs[i].classification.confidence;
+                    }
+                }
+
+                output.classification.prevIdx = output.classification.idx;
+                output.classification.prevConfidence = output.classification.confidence;
+                output.classification.idx = idx;
+                output.classification.confidence = confidence;
+                output.classification.label = classmap.get(idx);
+                label = output.classification.label;
+
+                return true;
+            }
+
+        protected:
+            {% if pre is not none %}
+            internals::tinyml4all::PreprocessingChain pre;
+            {% endif %}
+            Window window;
+            {% for chain in chains %}
+                // {{ chain }}
+                {{ chain | var() }} chain{{ loop.index }};
+            {% endfor %}
+
+            String getLabel(int8_t idx) {
+                switch (idx) {
+                    {% for label in labels %}
+                        case {{ loop.index0 }}: return "{{ label }}";
+                    {% endfor %}
+                    default: return "unknown";
+                }
+            }
+     };
+}

@@ -1,0 +1,19 @@
+class Classmap {
+    public:
+
+        /**
+         * Get label for index
+         */
+        String get(int8_t idx) {
+            {% if classmap is not none %}
+                switch (idx) {
+                    {% for label, idx in classmap.items() %}
+                        case {{ idx }}: return "{{ label }}";
+                    {% endfor %}
+                    default: return "Unknown";
+                }
+            {% endif %}
+
+            return String(idx);
+        }
+};
