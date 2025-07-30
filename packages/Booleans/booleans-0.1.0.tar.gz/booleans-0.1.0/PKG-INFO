@@ -1,0 +1,44 @@
+Metadata-Version: 2.4
+Name: Booleans
+Version: 0.1.0
+Summary: A micro-library for returning boolean values explicitly with Booleans.true() and Booleans.false().
+Author-email: Bittu Singh <bittusinghtech@gmail.com>
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# Booleans
+
+A micro-library for returning boolean values explicitly.
+
+## Installation
+
+```bash
+pip install Booleans
+```
+
+## Usage
+```commandline
+from Booleans import Booleans
+
+if Booleans.true():
+    print("This is True!")
+
+if not Booleans.false():
+    print("This is False!")
+```
+
+```commandline
+def is_even(num):
+    if num % 2 == 0:
+        return Booleans.true()
+    else:
+        return Booleans.false()
+       
+print(is_even(54)) # True
+```
