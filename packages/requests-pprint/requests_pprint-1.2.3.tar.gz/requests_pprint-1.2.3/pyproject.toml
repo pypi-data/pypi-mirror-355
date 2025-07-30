@@ -1,0 +1,28 @@
+[project]
+name = "requests-pprint"
+version = "1.2.3"
+description = "Pretty print your python HTTP requests"
+license = "GPL-3.0-only"
+authors = [{ name = "YisusChrist", email = "agelrenorenardo@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.8,<4.0"
+dependencies = [
+    "requests (>=2.31.0,<3.0.0)",
+    "rich>=13.7.1",
+    "aiohttp (>=3.9.5,<4.0.0)",
+]
+
+[project.urls]
+repository = "https://github.com/yisuschrist/requests-pprint"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.1.0"
+pytest = "^8.1.1"
+pytest-asyncio = ">=0.23.8"
+
+[tool.poetry.group.types.dependencies]
+types-requests = "^2.31.0.20240311"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
