@@ -1,0 +1,28 @@
+Metadata-Version: 2.3
+Name: pyqoiv
+Version: 0.3.0
+Summary: A python implementation of QOIV, an video format based on QOI
+License: MIT
+Author: Mark Goodall
+Author-email: mark.goodall@gmail.com
+Requires-Python: >=3.12,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: ffmpeg-python (>=0.2.0,<0.3.0)
+Requires-Dist: numpy (>=2.2.6,<3.0.0)
+Requires-Dist: tqdm (>=4.67.1,<5.0.0)
+Requires-Dist: typer (>=0.16.0,<0.17.0)
+Description-Content-Type: text/markdown
+
+# pyqoiv
+
+A python implementation of the QOV video format, based on the QOI image format.
+Contains a number of opcode modifications to allow for inter frame comparisons.
+When post processed with zstd to further compress, the resulting file is
+comparable to FFV1 in terms of compression ratio. It is not as good as H265
+lossless.
+
+The implementation is horribly slow, but it works.
+
