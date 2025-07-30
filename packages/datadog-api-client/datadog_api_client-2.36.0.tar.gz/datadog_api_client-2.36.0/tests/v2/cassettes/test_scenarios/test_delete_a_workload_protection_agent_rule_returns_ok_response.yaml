@@ -1,0 +1,93 @@
+interactions:
+- request:
+    body: '{"data":{"attributes":{"description":"My agent policy","enabled":true,"hostTags":["env:staging"],"name":"testdeleteaworkloadprotectionagentrulereturnsokresponse1748341502"},"type":"policy"}}'
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/policy
+  response:
+    body:
+      string: '{"data":{"id":"ney-zeu-tex","type":"policy","attributes":{"blockingRulesCount":0,"datadogManaged":false,"description":"My
+        agent policy","disabledRulesCount":1,"enabled":true,"hostTags":["env:staging"],"monitoringRulesCount":225,"name":"testdeleteaworkloadprotectionagentrulereturnsokresponse1748341502","policyVersion":"1","priority":1000000011,"ruleCount":226,"updateDate":1748341502642,"updater":{"name":"frog","handle":"frog@datadoghq.com"}}}}'
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"data":{"attributes":{"actions":[{"set":{"name":"test_set","scope":"process","value":"test_value"}}],"description":"My
+      Agent rule","enabled":true,"expression":"exec.file.name == \"sh\"","name":"testdeleteaworkloadprotectionagentrulereturnsokresponse1748341502","policy_id":"ney-zeu-tex","product_tags":["security:attack","technique:T1059"]},"type":"agent_rule"}}'
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/agent_rules
+  response:
+    body:
+      string: '{"data":{"id":"gys-bzk-zs4","type":"agent_rule","attributes":{"actions":[{"set":{"name":"test_set","value":"test_value","scope":"process"},"disabled":false}],"category":"Process
+        Activity","creationDate":1748341503254,"creator":{"name":"frog","handle":"frog@datadoghq.com"},"defaultRule":false,"description":"My
+        Agent rule","enabled":true,"expression":"exec.file.name == \"sh\"","filters":["os
+        == \"linux\""],"monitoring":["ney-zeu-tex"],"name":"testdeleteaworkloadprotectionagentrulereturnsokresponse1748341502","product_tags":["security:attack","technique:T1059"],"updateDate":1748341503254,"updater":{"name":"frog","handle":"frog@datadoghq.com"}}}}'
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      accept:
+      - '*/*'
+    method: DELETE
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/agent_rules/gys-bzk-zs4?policy_id=ney-zeu-tex
+  response:
+    body:
+      string: ''
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 204
+      message: No Content
+- request:
+    body: null
+    headers:
+      accept:
+      - '*/*'
+    method: DELETE
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/agent_rules/gys-bzk-zs4
+  response:
+    body:
+      string: '{"errors":[{"title":"failed to delete rule"}]}
+
+        '
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      accept:
+      - '*/*'
+    method: DELETE
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/policy/ney-zeu-tex
+  response:
+    body:
+      string: ''
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 204
+      message: No Content
+version: 1

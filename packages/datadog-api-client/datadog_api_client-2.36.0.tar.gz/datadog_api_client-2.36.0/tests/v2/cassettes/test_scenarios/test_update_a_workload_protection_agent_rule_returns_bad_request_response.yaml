@@ -1,0 +1,96 @@
+interactions:
+- request:
+    body: '{"data":{"attributes":{"description":"My agent policy","enabled":true,"hostTags":["env:staging"],"name":"testupdateaworkloadprotectionagentrulereturnsbadrequestresponse1748341517"},"type":"policy"}}'
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/policy
+  response:
+    body:
+      string: '{"data":{"id":"3f2-3l2-9wi","type":"policy","attributes":{"blockingRulesCount":0,"datadogManaged":false,"description":"My
+        agent policy","disabledRulesCount":1,"enabled":true,"hostTags":["env:staging"],"monitoringRulesCount":225,"name":"testupdateaworkloadprotectionagentrulereturnsbadrequestresponse1748341517","policyVersion":"1","priority":1000000011,"ruleCount":226,"updateDate":1748341517477,"updater":{"name":"frog","handle":"frog@datadoghq.com"}}}}'
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"data":{"attributes":{"actions":[{"set":{"name":"test_set","scope":"process","value":"test_value"}}],"description":"My
+      Agent rule","enabled":true,"expression":"exec.file.name == \"sh\"","name":"testupdateaworkloadprotectionagentrulereturnsbadrequestresponse1748341517","policy_id":"3f2-3l2-9wi","product_tags":["security:attack","technique:T1059"]},"type":"agent_rule"}}'
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/agent_rules
+  response:
+    body:
+      string: '{"data":{"id":"rhm-wzc-6qu","type":"agent_rule","attributes":{"actions":[{"set":{"name":"test_set","value":"test_value","scope":"process"},"disabled":false}],"category":"Process
+        Activity","creationDate":1748341518091,"creator":{"name":"frog","handle":"frog@datadoghq.com"},"defaultRule":false,"description":"My
+        Agent rule","enabled":true,"expression":"exec.file.name == \"sh\"","filters":["os
+        == \"linux\""],"monitoring":["3f2-3l2-9wi"],"name":"testupdateaworkloadprotectionagentrulereturnsbadrequestresponse1748341517","product_tags":["security:attack","technique:T1059"],"updateDate":1748341518091,"updater":{"name":"frog","handle":"frog@datadoghq.com"}}}}'
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"data":{"attributes":{"description":"My Agent rule","enabled":true,"expression":"exec.file.name
+      == \"sh\"","policy_id":"3f2-3l2-9wi","product_tags":[]},"id":"invalid-agent-rule-id","type":"agent_rule"}}'
+    headers:
+      accept:
+      - application/json
+      content-type:
+      - application/json
+    method: PATCH
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/agent_rules/rhm-wzc-6qu
+  response:
+    body:
+      string: '{"errors":[{"title":"failed to update rule"}]}
+
+        '
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: null
+    headers:
+      accept:
+      - '*/*'
+    method: DELETE
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/agent_rules/rhm-wzc-6qu
+  response:
+    body:
+      string: ''
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 204
+      message: No Content
+- request:
+    body: null
+    headers:
+      accept:
+      - '*/*'
+    method: DELETE
+    uri: https://api.datadoghq.com/api/v2/remote_config/products/cws/policy/3f2-3l2-9wi
+  response:
+    body:
+      string: ''
+    headers:
+      content-type:
+      - application/json
+    status:
+      code: 204
+      message: No Content
+version: 1
