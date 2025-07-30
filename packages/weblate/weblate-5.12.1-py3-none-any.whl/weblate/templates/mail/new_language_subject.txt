@@ -1,0 +1,8 @@
+{% load i18n %}
+{% autoescape off %}
+{% if was_added %}
+{% blocktranslate %}New language added to {{ component }}{% endblocktranslate %}
+{% else %}
+{% blocktranslate %}New language request in {{ component }}{% endblocktranslate %}
+{% endif %}
+{% endautoescape %}

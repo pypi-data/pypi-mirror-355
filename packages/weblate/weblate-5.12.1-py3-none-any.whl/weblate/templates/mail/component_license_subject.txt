@@ -1,0 +1,8 @@
+{% load i18n %}
+{% autoescape off %}
+{% if change.action == 55 %}
+  {% blocktranslate %}{{ component }} was re-licensed to {{ target }}{% endblocktranslate %}
+{% else %}
+  {% blocktranslate %}Contributor license agreement for {{ component }} was changed{% endblocktranslate %}
+{% endif %}
+{% endautoescape %}
