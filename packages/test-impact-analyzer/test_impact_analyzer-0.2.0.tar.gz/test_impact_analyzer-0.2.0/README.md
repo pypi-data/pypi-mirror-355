@@ -1,0 +1,169 @@
+# Test Impact Analyzer Agent
+
+A smart GitHub webhook service that analyzes pull requests to determine which tests should be run based on code changes. The agent uses AI to understand code dependencies and suggest relevant tests.
+
+## Features
+
+- GitHub webhook integration for pull request events
+- Intelligent test impact analysis
+- Automatic PR comments with analysis results
+- Support for multiple programming languages
+- Configurable via environment variables
+
+## Overall Architecture 
+```
++------------------+    +------------------+    +------------------+
+|  GitHub Webhook  |--->|    AI Agent      |--->|   Test Runner    |
+|   (PR Events)    |    |(Direct Git API)  |    |  (pytest/jest)   |
++------------------+    +------------------+    +------------------+
+                               |
+                       +------------------+
+                       |   Local Git +    |
+                       |   GitHub API     |
+                       +------------------+
+                               |
+                       +------------------+
+                       |  Ollama (Local   |
+                       |      LLM)        |
+                       +------------------+
+```
+
+## Prerequisites
+### System Requirements
+- Python 3.8 or higher
+- Git 2.x or higher
+- Node.js 16+ (for JavaScript/TypeScript projects)
+- Docker (optional, for containerized deployment)
+- 8GB RAM minimum (16GB recommended for Ollama LLM)
+- Operating System:
+  - Linux (Ubuntu 20.04+, CentOS 7+)
+  - macOS (Big Sur or newer)
+  - Windows 10/11 with WSL2
+- Disk Space:
+  - 5GB for base installation
+  - 4GB+ for Ollama models
+  - Additional space for analyzed repositories
+
+### Ollama Setup
+
+1. Install Ollama:
+```bash
+# macOS and Linux
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Windows
+# Download from https://ollama.com/download/windows
+```
+
+2. Pull the required model:
+```bash
+ollama pull qwen2.5-coder:7b
+```
+
+3. Update your `.env` file with Ollama configuration:
+```env
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=qwen2.5-coder:7b
+```
+
+4. Verify Ollama is running:
+```bash
+curl http://localhost:11434/api/health
+```
+
+Note: Ensure Ollama is running before starting the webhook server.
+
+## Agent Installation and Configurations
+
+1. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+2. Set up environment variables in `.env`:
+```env
+# GitHub token with minimal scope (pull_request:write) for PR comments
+GITHUB_TOKEN=your_github_token
+
+# Server configuration (optional, defaults shown)
+PORT=5043
+HOST=0.0.0.0
+DEBUG=False
+```
+```none
+Note: For security best practices, limit the GitHub token scope to only `pull_request:write` access. Here's how to create a token with minimal permissions:
+
+1. Go to GitHub Settings > Developer Settings > Personal access tokens > Fine-grained tokens
+2. Click "Generate new token"
+3. Set token name (e.g., "Test Impact Analyzer")
+4. Set expiration date
+5. Select the specific repository you want to analyze
+6. Under "Repository permissions":
+   - Pull requests: Access level "Write"
+   - Leave all other permissions unchecked
+7. Click "Generate token"
+8. Copy the token and add it to your `.env` file
+```
+3. Install agent from PyPI (Recommended)
+```bash
+pip install test-impact-analyzer
+```
+4. Install ngrok (this is required for configuring Github Webhook for listening to PR events):
+```bash
+# macOS with Homebrew
+brew install ngrok
+
+# Windows with Chocolatey
+choco install ngrok
+
+# Or download from https://ngrok.com/download
+```
+
+5. In a new terminal, create a public URL with ngrok (note down the public URL):
+```bash
+ngrok http 5043
+```
+6. **Configure your GitHub repository webhook**:
+   - Copy the ngrok URL from previous step (e.g., `https://a1b2-c3d4.ngrok.io`)
+   - Navigate to your Github Repo => Settings => Webhooks
+   - Webhook URL: `https://your-ngrok-url/webhook`
+   - Events: Select "Pull requests"
+   - Content type: `application/json`
+   - Secret: Leave empty for testing
+   ```
+   💡 Want to know more about creating Github Webhooks, refer official documentation here: https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks
+   ```
+
+Note: The ngrok URL changes each time you restart ngrok. Update your webhook URL in GitHub repository settings accordingly.
+
+## Usage
+Following the instructions given in **Agent Installation and Configurations** section, AI Agent is ready to use
+
+### Running as a Webhook Server
+
+1. Start the server:
+```bash
+test-impact-analyzer
+```
+
+The server will automatically:
+- Analyze new pull requests (created/reopened in your project in Github)
+- Comment with test recommendations
+- Update analysis when PRs are updated
+
+## Limitations/Upcoming Features
+- Currently it Supports Python and Node JS projects only.
+- For Node JS projects the Runner for tests is configured as npm test. More will be added soon
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+MIT License - see LICENSE file for details

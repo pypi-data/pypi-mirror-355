@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "test-impact-analyzer"
+dynamic = ["version", "dependencies"]
+description = "A smart GitHub webhook service that analyzes PRs to determine test impact"
+readme = "README.md"
+authors = [
+    {name = "Raj Uppadhyay", email = "uppadhyayraj@gmail.com"}
+]
+license = "MIT"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/uppadhyayraj/test-impact-analyzer"
+Repository = "https://github.com/uppadhyayraj/test-impact-analyzer.git"
+
+[tool.setuptools]
+packages = ["src", "src.analyzer", "src.services", "src.utils"]
+package-dir = {"" = "."}
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.txt"}
+
+[project.scripts]
+test-impact-analyzer = "src.app:main"
