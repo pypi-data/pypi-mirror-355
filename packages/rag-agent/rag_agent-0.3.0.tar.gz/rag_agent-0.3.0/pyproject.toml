@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-agent"
+version = "0.3.0"
+description = "RAG (Retrieval-Augmented Generation) pipeline implementation"
+requires-python = ">=3.12"
+authors = [
+    { name="Dawid Ciepiela", email="71898979+sarumaj@users.noreply.github.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "aiohttp==3.11.18",
+    "asyncio==3.4.3",
+    "beautifulsoup4==4.13.4",
+    "langchain==0.3.25",
+    "langchain-chroma==0.2.3",
+    "langchain-community==0.3.23",
+    "langchain-core==0.3.58",
+    "langchain-huggingface==0.1.2",
+    "langchain-ollama==0.3.2",
+    "langchain-text-splitters==0.3.8",
+    "langgraph==0.4.1",
+    "nest-asyncio==1.6.0",
+    "pydantic==2.11.4",
+    "pydantic-settings==2.9.1",
+    "tqdm==4.67.1"
+]
+
+[project.scripts]
+rag-agent-ui = "rag_agent.ui.__main__:main"
+rag-agent-pipeline = "rag_agent.pipeline.__main__:main"
+rag-agent-scraper-ix = "rag_agent.scrapers.ix.__main__:main"
+rag-agent-pdf-merge = "rag_agent.utils.merge.__main__:main"
+
+[project.optional-dependencies]
+loaders  = [
+    "pymupdf==1.25.5",
+    "unstructured==0.17.2"
+]
+scraper = [
+    "selenium==4.32.0",
+    "webdriver_manager==4.0.2"
+]
+test = [
+    "pytest==8.0.0",
+    "pytest-asyncio==0.23.5"
+]
+ui = [
+    "panel==1.7.0",
+    "Pygments==2.19.1"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src/rag_agent"]
+testpaths = ["tests"]
+addopts = [
+    "-v",
+    "--asyncio-mode=auto"
+]
