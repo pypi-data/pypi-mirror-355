@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "steadytext"
+version = "0.1.0"
+description = "Deterministic text generation and embedding with zero configuration"
+readme = "README.md"
+authors = [
+  { name="SteadyText Community", email="singh@diwank.name" },
+]
+license = { file="LICENSE" }
+requires-python = ">=3.10"
+# AIDEV-NOTE: Only Python 3.10-3.12 are supported for now
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "llama-cpp-python>=0.3.9",
+    "numpy>=1.21.0,<2.0.0",
+    "huggingface-hub>=0.32.0",
+    "requests",
+    "tqdm>=4"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/steadytext/steadytext"
+"Bug Tracker" = "https://github.com/steadytext/steadytext/issues"
+
+[tool.poe.tasks]
+test = "pytest"
+test-fast = "pytest -m 'not slow'"
+test-parallel = "pytest -n auto -m 'not slow'"
+test-cov = "pytest --cov=steadytext --cov-report=xml"
+lint = "ruff check --fix"
+format = "ruff format"
+check = "ty check"
+pre-commit = "pre-commit run --all-files"
+[tool.poe.tasks.test-models]
+shell = "STEADYTEXT_ALLOW_MODEL_DOWNLOADS=true pytest"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.13",
+    "ty>=0.0.1a8",
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+    "pre-commit",
+    "poethepoet",
+    "ipython>=8.37.0",
+]
