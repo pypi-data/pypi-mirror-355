@@ -1,0 +1,24 @@
+[project]
+name = "fastbackfilter"
+version = "1.3.8"
+description = ""
+requires-python = ">=3.9"
+dependencies = [
+  "pydantic>=2.7",
+  "cachetools>=5.3",
+  "platformdirs>=4.2",
+  "olefile>=0.46"
+]
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+[project.scripts]
+fastbackfilter = "fastbackfilter.cli:main"
+[tool.setuptools]
+package-dir = {"" = "."}
+[tool.setuptools.packages.find]
+where    = ["."]
+include  = ["fastbackfilter", "fastbackfilter.*"]
+
+[tool.setuptools.package-data]
+fastbackfilter = ["detection_schema.json"]
