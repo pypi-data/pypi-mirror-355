@@ -1,0 +1,137 @@
+Metadata-Version: 2.3
+Name: simple_aws_redshift
+Version: 0.3.1
+Summary: Objective Oriented Python SDK for AWS Redshift
+License: MIT
+Author: Sanhe Hu
+Author-email: husanhe@email.com
+Maintainer: Sanhe Hu
+Maintainer-email: husanhe@email.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: auto
+Provides-Extra: connnect
+Provides-Extra: dev
+Provides-Extra: doc
+Provides-Extra: test
+Requires-Dist: Sphinx (>=7.4.7,<8.0.0) ; extra == "doc"
+Requires-Dist: aws-cdk-lib (>=2.179.0,<2.180.0) ; extra == "test"
+Requires-Dist: boto3 (>=1.37.38,<2.0.0) ; extra == "test"
+Requires-Dist: boto3-stubs[redshift,redshift-data,redshift-serverless] (>=1.37.38,<2.0.0) ; extra == "dev"
+Requires-Dist: boto_session_manager (>=1.8.1,<2.0.0) ; extra == "test"
+Requires-Dist: build (>=1.2.1,<2.0.0) ; extra == "dev"
+Requires-Dist: cdk_mate (>=0.1.6,<0.2.0) ; extra == "test"
+Requires-Dist: cdkit (>=0.1.3,<0.2.0) ; extra == "test"
+Requires-Dist: docfly (==3.0.0) ; extra == "doc"
+Requires-Dist: enum_mate (>=0.1.1,<1.0.0)
+Requires-Dist: func_args (>=1.0.1,<2.0.0)
+Requires-Dist: furo (==2024.8.6) ; extra == "doc"
+Requires-Dist: home_secret (>=0.1.1,<1.0.0) ; extra == "test"
+Requires-Dist: ipython (>=8.18.1,<8.19.0) ; extra == "doc"
+Requires-Dist: iterproxy (>=0.3.1,<1.0.0)
+Requires-Dist: moto (>=5.1.5,<6.0.0) ; extra == "test"
+Requires-Dist: nbsphinx (>=0.8.12,<1.0.0) ; extra == "doc"
+Requires-Dist: pandas (>=2.0.0,<3.0.0) ; extra == "test"
+Requires-Dist: polars (>=1.0.0,<2.0.0) ; extra == "test"
+Requires-Dist: psycopg2-binary (>=2.9.10,<3.0.0) ; extra == "test"
+Requires-Dist: pygments (>=2.18.0,<3.0.0) ; extra == "doc"
+Requires-Dist: pytest (>=8.2.2,<9.0.0) ; extra == "test"
+Requires-Dist: pytest-cov (>=6.0.0,<7.0.0) ; extra == "test"
+Requires-Dist: python-dateutil (>=2.9.0,<3.0.0) ; python_version < "3.11"
+Requires-Dist: redshift-connector (>=2.1.0,<3.0.0) ; extra == "connnect"
+Requires-Dist: redshift-connector (>=2.1.0,<3.0.0) ; extra == "test"
+Requires-Dist: rich (>=13.8.1,<14.0.0) ; extra == "dev"
+Requires-Dist: rich (>=13.8.1,<14.0.0) ; extra == "test"
+Requires-Dist: rstobj (==1.2.1) ; extra == "doc"
+Requires-Dist: sphinx-copybutton (>=0.5.2,<1.0.0) ; extra == "doc"
+Requires-Dist: sphinx-design (>=0.6.1,<1.0.0) ; extra == "doc"
+Requires-Dist: sphinx-jinja (>=2.0.2,<3.0.0) ; extra == "doc"
+Requires-Dist: sqlalchemy (>=2.0.33,<3.0.0) ; extra == "test"
+Requires-Dist: twine (>=6.0.0,<7.0.0) ; extra == "dev"
+Requires-Dist: wheel (>=0.45.0,<1.0.0) ; extra == "dev"
+Project-URL: Changelog, https://github.com/MacHu-GWU/simple_aws_redshift-project/blob/main/release-history.rst
+Project-URL: Documentation, https://simple-aws-redshift.readthedocs.io/en/latest/
+Project-URL: Download, https://pypi.org/pypi/simple-aws-redshift#files
+Project-URL: Homepage, https://github.com/MacHu-GWU/simple_aws_redshift-project
+Project-URL: Issues, https://github.com/MacHu-GWU/simple_aws_redshift-project/issues
+Project-URL: Repository, https://github.com/MacHu-GWU/simple_aws_redshift-project
+Description-Content-Type: text/x-rst
+
+
+.. image:: https://readthedocs.org/projects/simple-aws-redshift/badge/?version=latest
+    :target: https://simple-aws-redshift.readthedocs.io/en/latest/
+    :alt: Documentation Status
+
+.. image:: https://github.com/MacHu-GWU/simple_aws_redshift-project/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/MacHu-GWU/simple_aws_redshift-project/actions?query=workflow:CI
+
+.. image:: https://codecov.io/gh/MacHu-GWU/simple_aws_redshift-project/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/MacHu-GWU/simple_aws_redshift-project
+
+.. image:: https://img.shields.io/pypi/v/simple-aws-redshift.svg
+    :target: https://pypi.python.org/pypi/simple-aws-redshift
+
+.. image:: https://img.shields.io/pypi/l/simple-aws-redshift.svg
+    :target: https://pypi.python.org/pypi/simple-aws-redshift
+
+.. image:: https://img.shields.io/pypi/pyversions/simple-aws-redshift.svg
+    :target: https://pypi.python.org/pypi/simple-aws-redshift
+
+.. image:: https://img.shields.io/badge/✍️_Release_History!--None.svg?style=social&logo=github
+    :target: https://github.com/MacHu-GWU/simple_aws_redshift-project/blob/main/release-history.rst
+
+.. image:: https://img.shields.io/badge/⭐_Star_me_on_GitHub!--None.svg?style=social&logo=github
+    :target: https://github.com/MacHu-GWU/simple_aws_redshift-project
+
+------
+
+.. image:: https://img.shields.io/badge/Link-API-blue.svg
+    :target: https://simple-aws-redshift.readthedocs.io/en/latest/py-modindex.html
+
+.. image:: https://img.shields.io/badge/Link-Install-blue.svg
+    :target: `install`_
+
+.. image:: https://img.shields.io/badge/Link-GitHub-blue.svg
+    :target: https://github.com/MacHu-GWU/simple_aws_redshift-project
+
+.. image:: https://img.shields.io/badge/Link-Submit_Issue-blue.svg
+    :target: https://github.com/MacHu-GWU/simple_aws_redshift-project/issues
+
+.. image:: https://img.shields.io/badge/Link-Request_Feature-blue.svg
+    :target: https://github.com/MacHu-GWU/simple_aws_redshift-project/issues
+
+.. image:: https://img.shields.io/badge/Link-Download-blue.svg
+    :target: https://pypi.org/pypi/simple-aws-redshift#files
+
+
+Welcome to ``simple_aws_redshift`` Documentation
+==============================================================================
+.. image:: https://simple-aws-redshift.readthedocs.io/en/latest/_static/simple_aws_redshift-logo.png
+    :target: https://simple-aws-redshift.readthedocs.io/en/latest/
+
+``simple_aws_redshift`` is a Pythonic library that provides a simplified, high-level interface for AWS Redshift operations. Built on top of boto3, it offers intuitive data models, property-based access patterns, and comprehensive type hints to make working with Redshift resources more developer-friendly and maintainable.
+
+
+.. _install:
+
+Install
+------------------------------------------------------------------------------
+
+``simple_aws_redshift`` is released on PyPI, so all you need is to:
+
+.. code-block:: console
+
+    $ pip install simple-aws-redshift
+
+To upgrade to latest version:
+
+.. code-block:: console
+
+    $ pip install --upgrade simple-aws-redshift
+
