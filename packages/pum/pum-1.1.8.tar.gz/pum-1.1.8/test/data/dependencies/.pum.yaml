@@ -1,0 +1,17 @@
+
+parameters:
+  - name: my_comment
+    type: text
+    default: "This is a comment"
+
+dependencies:
+  - name: pirogue
+    minimum_version: 3.0.0
+
+migration_hooks:
+  pre:
+    - file: pre/drop_view.sql
+
+  post:
+    - file: post/create_schema.sql
+    - file: post/create_view.py
