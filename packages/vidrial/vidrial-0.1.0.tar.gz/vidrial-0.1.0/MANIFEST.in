@@ -1,0 +1,39 @@
+# Include all Python files in vidrial
+recursive-include vidrial *.py
+
+# Include all CUDA header files in vidrial
+recursive-include vidrial *.cuh
+
+# Include all CUDA source files in vidrial
+recursive-include vidrial *.cu
+
+# Include all files in the release directory
+recursive-include vidrial/release *
+
+# Exclude cache for source
+prune vidrial/jit/.jit_cache
+prune vidrial/jit/.timing_cache
+
+# Include any additional configuration files
+include pyproject.toml
+include README.md
+include LICENSE
+include requirements.txt
+
+# Include CMake files if needed for building
+include CMakeLists.txt
+
+# Exclude cache directories and build artifacts
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude *.o
+global-exclude *.a
+global-exclude .git*
+global-exclude .DS_Store
+prune build
+prune dist
+prune *.egg-info
+prune .pytest_cache
+prune __pycache__
