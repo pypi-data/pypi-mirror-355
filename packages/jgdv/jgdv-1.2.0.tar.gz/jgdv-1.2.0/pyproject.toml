@@ -1,0 +1,213 @@
+## pyproject.toml -*- mode: toml -*-
+
+[project]
+name            = "jgdv"
+version         = "1.2.0"
+description     = ""
+readme          = "README.md"
+requires-python = ">=3.12"
+license-files   = ["LICENSE"]
+keywords        = []
+authors         = [
+  {name  = "John Grey", email = "jgrey.n.plus.one+jgdv@gmail.com"},
+]
+classifiers     = [
+  "Programming Language :: Python"
+]
+
+dependencies   = [
+    "pyparsing",
+    "networkx",
+    "pydantic >= 2.9.0",
+    "python-statemachine >= 2.5.0",
+    "sh >= 2.1.0",
+    "stackprinter >= 0.2.0",
+    "sty >= 1.0.6",
+    "packaging>=24.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "myst-parser>=4.0.1",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "sphinx>=8.2.3",
+    "sphinx-autoapi>=3.6.0",
+    "sphinx-rtd-theme>=3.0.2",
+]
+
+##-- urls
+[project.urls]
+homepage      = "https://github.com/jgrey4296/jgdv"
+documentation = "https://jgdv.readthedocs.io/en/latest"
+repository    = "https://github.com/jgrey4296/jgdv"
+changelog     = "https://github.com/jgrey4296/jgdv/blob/master/CHANGELOG.md"
+
+##-- end urls
+
+##-- scripts
+[project.scripts]
+
+[project.gui-scripts]
+# spam-gui      = "spam:main_gui"
+
+[project.entry-points."nothing"]
+# tomatoes      = "spam:main_tomatoes"
+
+##-- end scripts
+
+##-- build-system
+[build-system]
+requires = [
+    "setuptools >= 63.1.0",
+    "wheel >= 0.37.1"
+]
+
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+namespaces = true
+where      = ["."]
+include    = ["jgdv*"]
+exclude    = ["jgdv._docs*"]
+
+[tool.setuptools.package-data]
+"*" = ["*"]
+"jgdv.__data"    = ["*.so"]
+
+[tool.setuptools.exclude-package-data]
+jgdv = ["**.rst"]
+
+[tool.distutils.egg_info]
+# from https://github.com/pypa/setuptools/discussions/3348#discussioncomment-6556887
+egg_base = ".temp/egg-info"
+
+##-- end build-system
+
+# Tools #######################################################################
+
+##-- mypy
+# https://mypy.readthedocs.io/en/stable/config_file.html#config-file
+[tool.mypy]
+python_version          = "3.12"
+follow_imports          = "silent"
+cache_dir               = ".temp/mypy_cache"
+exclude                = [] 
+warn_return_any         = false
+ignore_missing_imports  = true
+# warn_unused_configs     = true
+# warn_redundant_casts    = true
+# warn_unused_ignores     = true
+# warn_return_any         = true
+# warn_unreachable        = true
+
+##-- end mypy
+
+##-- pytest
+# https://docs.pytest.org/en/stable/reference/reference.html#ini-options-ref
+[tool.pytest.ini_options]
+addopts          = [
+  # "--cov=",
+  # "--ignore-glob=related_/*"
+]
+cache_dir       = ".temp/pytest_cache"
+log_file        = ".temp/logs/pytest.log"
+
+log_cli         = false
+log_level       = "DEBUG"
+log_cli_level   = "INFO"
+log_format      = "%(levelname)s %(name)s : %(message)s"
+log_file_level  = "DEBUG"
+log_file_format = "%(asctime)s %(levelname)s %(name)s : %(message)s"
+
+##-- end pytest
+
+##-- sphinx
+[tool.sphinx]
+author     = "John Grey"
+copyright  = "2024-03-04"
+extensions = ['sphinx.ext.doctest', 'sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'sphinx.ext.napoleon']
+templates  = ['_templates']
+exclude    = ['**/flycheck_*.py']
+
+[tool.sphinx.autosummary]
+generate = true
+
+[tool.sphinx.autodoc]
+add_module_names   = false
+inherit_docstrings = true
+
+[tool.sphinx.autodoc.defaults]
+members           = true
+undoc-members     = true
+private-members   = false
+special-members   = false
+inherited-members = true
+show-inheritance  = true
+
+[tool.sphinx.html]
+theme       = 'alabaster'
+static      = ['_static']
+
+[tool.sphinx.html.options]
+
+##-- end sphinx
+
+##-- bumpver
+[tool.bumpver]
+current_version    = "1.2.0"
+version_pattern    = "MAJOR.MINOR.PATCH"
+commit_message     = "[bump]: version {old_version} -> {new_version}"
+tag_message        = "{new_version}"
+tag_scope          = "default"
+commit             = true
+tag                = false
+# pre_commit_hook  = ""
+# post_commit_hook = ""
+# push             = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml"   = [
+                   '^version\s+=\s+"{version}"',
+                   '^current_version\s+=\s+"{version}"'
+]
+"jgdv/__init__.py" = ['^__version__\s+=\s+"{version}"']
+"jgdv/_docs/conf.py" = ['^release\s+=\s+"{version}"']
+
+##-- end bumpver
+
+##-- isort
+
+##-- isort
+# https://pycqa.github.io/isort/docs/configuration/config_files.html
+[tool.isort]
+color_output           = false
+py_version             = 312
+comment_prefix         = "# "
+sections               = [
+"FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"
+]
+default_section        = "THIRDPARTY"
+lines_after_imports    = -1
+lines_between_sections = 1
+lines_between_types    = 0
+
+add_imports            = []
+
+import_heading_future      = "Imports:"
+import_heading_stdlib      = "##-- stdlib imports"
+import_heading_thirdparty  = "##-- 3rd party imports"
+import_heading_firstparty  = "##-- 1st party imports"
+import_heading_localfolder = ""
+
+import_footer_future      = ""
+import_footer_stdlib      = "##-- end stdlib imports"
+import_footer_thirdparty  = "##-- end 3rd party imports"
+import_footer_firstparty  = "##-- end 1st party imports"
+import_footer_localfolder = ""
+
+##-- end isort
