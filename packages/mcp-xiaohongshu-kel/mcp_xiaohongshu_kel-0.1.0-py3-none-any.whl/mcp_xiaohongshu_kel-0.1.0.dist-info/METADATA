@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: mcp-xiaohongshu-kel
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Requires-Dist: build>=1.2.2.post1
+Requires-Dist: mcp[cli]>=1.9.4
+Requires-Dist: twine>=6.1.0
+Description-Content-Type: text/markdown
+
+## 计算器 MCP
+基于 Model Context Protocol (MCP) 的小红书笔记获取器。
+
+
+# Tools
+```
+{
+  "tools": [
+    {
+      "name": "generate_xiaohongshu_notes",
+      "description": "生成小红书笔记",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": "美妆"
+        },
+        "required": [
+          "text"
+        ],
+        "title": "xiaohongshu_text"
+      }
+    }
+  ]
+}
+```
+
+## MCP 服务器配置
+```
+[
+  {
+    "mcpServers": {
+        "xiaohongshu": {
+        "command": "uvx",
+        "args": [
+            "mcp-xiaohongshu-kel@latest"
+            ]
+        }
+    }
+  }
+]
+```
