@@ -1,0 +1,71 @@
+[project]
+name = "corehr-pdf-split"
+version = "1.0.3"
+description = "Split a CoreHR PDF application pack into multiple individual PDF applications."
+authors = [{name = "Luc Rocher", email = "luc@rocher.lc"}]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">= 3.10"
+dependencies = [
+    "click>=8.1.7",
+    "PyPDF2>=3.0.1",
+]
+keywords = ["pdf", "split", "corehr", "applications"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+    "Topic :: Utilities",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "reportlab>=4.0.0",
+]
+
+[project.scripts]
+corehr-pdf-split = "corehr_pdf_split.main:main"
+
+[project.urls]
+Homepage = "https://github.com/synthetic-society/corehr-pdf-split"
+Repository = "https://github.com/synthetic-society/corehr-pdf-split"
+Issues = "https://github.com/synthetic-society/corehr-pdf-split/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 120
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+src = ["corehr_pdf_split", "tests"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "N", "W"]
+
+ignore = [
+    "D101", "D102", "D103", "D104", "D105", "D106", "D107",  # Docstring issues
+    "TRY003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S", "T201"]
+
+
+
+[tool.mypy]
+ignore_missing_imports = true
+enable_error_code = [
+  "ignore-without-code",
+  "redundant-expr",
+  "truthy-bool",
+]
+strict = true
