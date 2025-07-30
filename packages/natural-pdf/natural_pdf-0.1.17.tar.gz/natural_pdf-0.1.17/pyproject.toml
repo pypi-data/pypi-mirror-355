@@ -1,0 +1,163 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools-scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+# --- Project Metadata (PEP 621) ---
+[project]
+name = "natural-pdf"
+# Version is now managed dynamically by setuptools-scm based on Git tags
+dynamic = ["version"]
+authors = [
+    { name = "Jonathan Soma", email = "jonathan.soma@gmail.com" },
+]
+description = "A more intuitive interface for working with PDFs"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pdfplumber",
+    "colormath2",
+    "pillow",
+    "colour",
+    "numpy",
+    "urllib3",
+    "tqdm",
+    "pydantic",
+    "jenkspy",
+    "pikepdf>=9.7.0",
+    "scipy",
+    "torch",
+    "torchvision",
+    "transformers[sentencepiece]<=4.34.1",
+    "huggingface_hub>=0.29.3",
+    "sentence-transformers",
+    "timm",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-xdist",
+    "setuptools",
+]
+
+search = [
+    "lancedb",
+    "pyarrow",
+]
+
+favorites = [
+    "natural-pdf[deskew]",
+    "natural-pdf[ocr-export]",
+    "natural-pdf[search]",
+    "ipywidgets",
+    "surya-ocr"
+]
+
+dev = [
+    "black",
+    "isort",
+    "mypy",
+    "pytest",
+    "pytest-xdist",
+    "nox",
+    "nox-uv",
+    "build",
+    "uv",
+    "pipdeptree",
+    "nbformat",
+    "jupytext",
+    "nbclient",
+    "ipykernel",
+    "pre-commit",
+    "setuptools",
+]
+
+deskew = [
+    "deskew>=1.5",
+    "img2pdf"
+]
+
+addons = [
+    "surya-ocr",
+    "doclayout_yolo",
+    "paddlepaddle>=3.0.0",
+    "paddleocr>=3.0.0",
+    "ipywidgets>=7.0.0",
+    "easyocr",
+    "surya-ocr",
+    "doclayout_yolo",
+    "python-doctr[torch]",
+    "docling",
+]
+
+all = [
+    "natural-pdf[ocr-export]",
+    "natural-pdf[deskew]",
+    "natural-pdf[test]",
+    "natural-pdf[search]",
+    "natural-pdf[addons]",
+]
+
+ocr-export = [
+    "pikepdf", 
+]
+
+export-extras = [
+    "jupytext",
+    "nbformat",
+]
+
+[project.urls]
+Homepage = "https://github.com/jsoma/natural-pdf"
+Repository = "https://github.com/jsoma/natural-pdf"
+
+# --- Tool Configurations ---
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+
+[tool.black]
+line-length = 100
+target-version = ['py37']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+filterwarnings = [
+    # Ignore specific deprecation warnings from dependencies
+    "ignore:The distutils package is deprecated:DeprecationWarning",
+    "ignore:Support for class-based `config` is deprecated",
+    "ignore:deprecated:DeprecationWarning:docling_core.types.doc.document",
+]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.package-data]
+"natural_pdf.exporters" = ["data/*.ttf", "data/*"]
+"natural_pdf" = ["templates/*.html"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = [
+    "tests", "tests.*",
+    "build", "dist", "*.egg-info",
+    "docs", "docs.*",
+    ".nox", ".venv", "env", "venv"
+]
