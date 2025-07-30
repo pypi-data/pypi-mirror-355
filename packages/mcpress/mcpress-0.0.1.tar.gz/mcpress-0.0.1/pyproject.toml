@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcpress"
+version = "0.0.1"
+description = "MCPress"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "Apache-2.0"}
+license-files = ["LICEN[CS]E*"]
+authors = [
+    {name = "Shiva Kaul", email = "shiva.kaul@mcpress.xyz"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "fastapi",
+    "uvicorn"
+]
+
+[project.urls]
+Homepage = "https://github.com/mcpress/mcpress"
+Repository = "https://github.com/mcpress/mcpress"
+Issues = "https://github.com/mcpress/mcpress/issues"
+
+[project.scripts]
+# Uncomment and modify if you have CLI commands
+mcpress = "mcpress.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mcpress"]
