@@ -1,0 +1,609 @@
+Metadata-Version: 2.4
+Name: fast-serve-api
+Version: 1.0.0
+Summary: Transform services in default endpoints integrated by FastAPI and Pydantic.
+Requires-Python: >=3.10.0
+Requires-Dist: fastapi>=0.115.12
+Requires-Dist: pydantic>=2.11.5
+Provides-Extra: test
+Requires-Dist: coverage>=7.0.0; extra == 'test'
+Requires-Dist: httpx>=0.27.0; extra == 'test'
+Requires-Dist: pytest-asyncio>=0.24.0; extra == 'test'
+Requires-Dist: pytest>=8.0.0; extra == 'test'
+Description-Content-Type: text/markdown
+
+# fast-serve-api
+
+Transform your Python functions into production-ready REST APIs with minimal code. FastServeApi automatically generates FastAPI endpoints from static methods, handling request/response models, validation, and error handling for you.
+
+## Key Benefits
+
+- **Zero Boilerplate**: Convert static methods to REST endpoints with a single inheritance
+- **Type Safety**: Automatic validation using Python type hints and Pydantic
+- **Flexible Input**: Accept both wrapped JSON objects and raw values for single-parameter endpoints
+- **Standardized Responses**: Built-in response models for consistency
+- **Error Handling**: Automatic exception catching with detailed error responses
+- **FastAPI Compatible**: Seamlessly integrates with existing FastAPI applications
+
+## Installation
+
+```bash
+pip install fast-serve-api
+```
+
+Or using [uv](https://github.com/astral-sh/uv):
+
+```bash
+uv add fast-serve-api
+```
+
+## Quick Start
+
+```python
+from fastapi import FastAPI
+from fast_serve_api import FastServeApi
+
+class CalculatorService(FastServeApi):
+    @staticmethod
+    def add(a: int, b: int) -> int:
+        return a + b
+    
+    @staticmethod
+    def multiply(a: int, b: int) -> int:
+        return a * b
+
+app = FastAPI()
+CalculatorService.initialize(app)
+
+# That's it! You now have:
+# POST /calculator/add
+# POST /calculator/multiply
+```
+
+## How It Works
+
+FastServeApi automatically:
+1. Converts your class name to snake_case for the URL path
+2. Creates POST endpoints for each static method
+3. Generates Pydantic models from method signatures
+4. Handles request parsing and response formatting
+5. Catches exceptions and returns standardized error responses
+
+## Architectural Decisions
+
+### POST-Only Endpoints
+All endpoints are **POST methods** by design. This ensures:
+- Consistent parameter handling across all endpoints
+- Support for complex request bodies
+- No URL length limitations
+- Uniform API interface
+
+### JSON Format
+- **Input**: All endpoints receive JSON payloads
+- **Output**: All endpoints return JSON responses
+- **Content-Type**: Always `application/json`
+
+### Response Models and Reserved Fields
+To guarantee consistent response formats, all Pydantic model responses must inherit from our base models, which include reserved fields:
+
+**FastServeApiModel** (single object responses):
+- `success` (bool): Indicates if the operation succeeded
+- `message` (str): Human-readable response message
+- `status_code` (int | None): Custom status code (see below)
+
+**FastServeApiListModel** (list responses) includes all above plus:
+- `page` (int): Current page number
+- `size` (int): Page size
+- `total` (int | None): Total number of items
+- `last_page` (bool): Whether this is the last page
+
+**FastServeApiErrorModel** (error responses):
+- `success` (bool): Always `false` for errors
+- `message` (str): Error description
+- `stack_trace` (str): Full exception traceback
+- `status_code` (int): HTTP status code
+
+### Status Code Philosophy
+Only **3 status codes** are automatically set by the framework:
+- **200 OK**: Successful request
+- **422 Unprocessable Entity**: Invalid request parameters
+- **500 Internal Server Error**: Unhandled exceptions
+
+The `status_code` field in response models is **independent** of the HTTP status code. This allows you to:
+- Define application-specific status codes
+- Provide detailed error codes while maintaining HTTP 200
+- Include both success and error codes in responses
+
+Example:
+```python
+class UserResponse(FastServeApiModel):
+    user_id: int
+    username: str
+    
+# Can return with custom status_code
+return UserResponse(
+    success=True,
+    message="User created but email verification pending",
+    status_code=1001,  # Custom app code, HTTP will still be 200
+    user_id=123,
+    username="john"
+)
+```
+
+## Examples
+
+### Basic Usage
+
+```python
+from typing import List, Dict, Optional
+from fast_serve_api import FastServeApi
+
+class UserService(FastServeApi):
+    @staticmethod
+    def get_user(user_id: int) -> Dict[str, any]:
+        return {"id": user_id, "name": "John Doe"}
+    
+    @staticmethod
+    def create_user(name: str, email: str, age: Optional[int] = None) -> Dict[str, any]:
+        return {"name": name, "email": email, "age": age}
+    
+    @staticmethod
+    def list_users(limit: int = 10, offset: int = 0) -> List[Dict[str, any]]:
+        return [{"id": i, "name": f"User {i}"} for i in range(offset, offset + limit)]
+```
+
+### Using Pydantic Models
+
+```python
+from pydantic import BaseModel
+from fast_serve_api import FastServeApi, FastServeApiModel
+
+class UserInput(BaseModel):
+    name: str
+    email: str
+    age: Optional[int] = None
+
+class UserResponse(FastServeApiModel):
+    user_id: int
+    username: str
+
+class UserService(FastServeApi):
+    @staticmethod
+    def create_user(user: UserInput) -> UserResponse:
+        # FastServeApiModel requires success and message fields
+        return UserResponse(
+            success=True,
+            message="User created successfully",
+            user_id=123,
+            username=user.name
+        )
+```
+
+### Single Parameter Flexibility
+
+For endpoints with a single parameter, fast-serve-api accepts both wrapped and raw values:
+
+```python
+class GreetingService(FastServeApi):
+    @staticmethod
+    def say_hello(name: str) -> str:
+        return f"Hello, {name}!"
+
+# Both request formats work:
+# {"name": "Alice"}  "Hello, Alice!"
+# "Alice"            "Hello, Alice!"
+```
+
+### List Responses with Pagination
+
+```python
+from fast_serve_api import FastServeApiListModel
+
+class ProductListResponse(FastServeApiListModel):
+    products: List[Dict[str, any]]
+
+class ProductService(FastServeApi):
+    @staticmethod
+    def list_products(page: int = 1, size: int = 20) -> ProductListResponse:
+        products = [{"id": i, "name": f"Product {i}"} for i in range(size)]
+        return ProductListResponse(
+            success=True,
+            message="Products retrieved",
+            page=page,
+            size=size,
+            last_page=page >= 5,
+            total=100,
+            products=products
+        )
+```
+
+### Complex Types and Nested Models
+
+```python
+from typing import Set, Tuple, Literal
+
+class DataService(FastServeApi):
+    @staticmethod
+    def process_tags(tags: Set[str]) -> List[str]:
+        # Sets are automatically converted from JSON arrays
+        return sorted(tags)
+    
+    @staticmethod
+    def get_coordinates(location: str) -> Tuple[float, float]:
+        # Return tuples for fixed-size data
+        return (40.7128, -74.0060)
+    
+    @staticmethod
+    def set_status(status: Literal["active", "inactive", "pending"]) -> str:
+        # Literal types for constrained values
+        return f"Status set to: {status}"
+```
+
+### Error Handling
+
+Exceptions are automatically caught and returned as standardized error responses:
+
+```python
+class SafeService(FastServeApi):
+    @staticmethod
+    def divide(a: float, b: float) -> float:
+        if b == 0:
+            raise ValueError("Division by zero is not allowed")
+        return a / b
+
+# POST /safe/divide {"a": 10, "b": 0}
+# HTTP Status: 500
+# Response: {
+#   "success": false,
+#   "message": "Division by zero is not allowed",
+#   "stack_trace": "...",
+#   "status_code": 500
+# }
+```
+
+Note: The HTTP status code is automatically set to 500 for unhandled exceptions. The `status_code` field in the response body mirrors this for consistency.
+
+### Custom Status Codes
+
+Use the `status_code` field to communicate application-specific statuses:
+
+```python
+class OrderService(FastServeApi):
+    @staticmethod
+    def process_order(order_id: int) -> OrderResponse:
+        order = get_order(order_id)
+        
+        if order.status == "pending_payment":
+            return OrderResponse(
+                success=True,
+                message="Order awaiting payment",
+                status_code=201,  # Custom: Payment pending
+                order_id=order_id,
+                status="pending_payment"
+            )
+        elif order.status == "backordered":
+            return OrderResponse(
+                success=True,
+                message="Order processed but items backordered",
+                status_code=202,  # Custom: Backordered
+                order_id=order_id,
+                status="backordered"
+            )
+        else:
+            return OrderResponse(
+                success=True,
+                message="Order processed successfully",
+                status_code=199,  # Custom: Success
+                order_id=order_id,
+                status="completed"
+            )
+
+# All above responses return HTTP 200, but with different status_code values
+```
+
+## Advanced Features
+
+### Type Validation
+
+fast-serve-api validates return types at runtime:
+
+```python
+class TypedService(FastServeApi):
+    @staticmethod
+    def get_numbers(count: int) -> List[int]:
+        return list(range(count))  # Valid
+        # return ["a", "b", "c"]   # Would raise TypeError
+
+    @staticmethod
+    def get_user_data() -> Dict[str, str]:
+        return {"name": "John", "email": "john@example.com"}  # Valid
+        # return {"name": "John", "age": 30}  # Would raise TypeError (age is int)
+```
+
+### Optional Parameters
+
+All-optional endpoints can be called without a request body:
+
+```python
+class SearchService(FastServeApi):
+    @staticmethod
+    def search(query: str = "", limit: int = 10, offset: int = 0) -> List[str]:
+        return [f"Result {i}" for i in range(offset, offset + limit)]
+
+# POST /search/search (no body) Uses all defaults
+# POST /search/search {"query": "test"} Uses provided query, other defaults
+```
+
+### Endpoint Naming Convention
+
+Class names are converted from CamelCase to snake_case:
+
+- `UserService` - `/user/...`
+- `ProductAPIService` - `/product_api/...`
+- `MultiWordServiceName` - `/multi_word_service_name/...`
+
+The "Service" suffix is automatically removed if present.
+
+## API Reference
+
+### Response Models
+
+All Pydantic model responses must inherit from:
+
+- `FastServeApiModel`: For single object responses
+  ```python
+  class MyResponse(FastServeApiModel):
+      success: bool  # Required
+      message: str   # Required
+      status_code: Optional[int] = None
+      # ... your fields
+  ```
+
+- `FastServeApiListModel`: For list responses with pagination
+  ```python
+  class MyListResponse(FastServeApiListModel):
+      success: bool  # Required
+      message: str   # Required
+      page: int      # Required
+      size: int      # Required
+      last_page: bool # Required
+      total: Optional[int] = None
+      # ... your list field
+  ```
+
+### Reserved Field Names
+
+The following field names are reserved and used by the framework:
+- `success` - Operation success indicator
+- `message` - Response message
+- `status_code` - Custom application status code
+- `stack_trace` - Error stack trace (error responses only)
+- `page` - Current page number (list responses)
+- `size` - Page size (list responses)
+- `total` - Total items count (list responses)
+- `last_page` - Last page indicator (list responses)
+
+Avoid using these names for your custom fields to prevent conflicts.
+
+### Supported Types
+
+- **Primitives**: `str`, `int`, `float`, `bool`, `None`
+- **Collections**: `List[T]`, `Dict[K, V]`, `Set[T]`, `Tuple[T, ...]`
+- **Optional**: `Optional[T]`, `Union[T, None]`
+- **Literal**: `Literal["option1", "option2", ...]`
+- **Pydantic Models**: Any `BaseModel` subclass
+
+## Comparison: Traditional vs fast-serve-api
+
+### Traditional FastAPI Approach
+
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import Optional
+
+app = FastAPI()
+
+class AddRequest(BaseModel):
+    a: int
+    b: int
+
+class MultiplyRequest(BaseModel):
+    x: float
+    y: float
+
+class DivideRequest(BaseModel):
+    dividend: float
+    divisor: float
+
+class CalculatorResponse(BaseModel):
+    result: float
+    operation: str
+
+@app.post("/calculator/add", response_model=CalculatorResponse)
+async def add_numbers(request: AddRequest):
+    try:
+        result = request.a + request.b
+        return CalculatorResponse(result=result, operation="addition")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/calculator/multiply", response_model=CalculatorResponse)
+async def multiply_numbers(request: MultiplyRequest):
+    try:
+        result = request.x * request.y
+        return CalculatorResponse(result=result, operation="multiplication")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/calculator/divide", response_model=CalculatorResponse)
+async def divide_numbers(request: DivideRequest):
+    try:
+        if request.divisor == 0:
+            raise ValueError("Cannot divide by zero")
+        result = request.dividend / request.divisor
+        return CalculatorResponse(result=result, operation="division")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+```
+
+### With fast-serve-api
+
+```python
+from fast_serve_api import FastServeApi
+
+class CalculatorService(FastServeApi):
+    @staticmethod
+    def add(a: int, b: int) -> float:
+        return a + b
+    
+    @staticmethod
+    def multiply(x: float, y: float) -> float:
+        return x * y
+    
+    @staticmethod
+    def divide(dividend: float, divisor: float) -> float:
+        if divisor == 0:
+            raise ValueError("Cannot divide by zero")
+        return dividend / divisor
+
+app = FastAPI()
+CalculatorService.initialize(app)
+```
+
+**Result**: less code, automatic error handling, and consistent API structure!
+
+## Contributing
+
+We welcome contributions! Here's how to set up your development environment and contribute to fast-serve-api.
+
+### Development Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ygorhora/fast-serve-api.git
+   cd fast-serve-api
+   ```
+
+2. **Install uv** (recommended package manager)
+   ```bash
+   # On macOS/Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # On Windows
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   ```
+
+3. **Create virtual environment and install dependencies**
+   ```bash
+   # Install all dependencies including dev/test dependencies
+   uv sync --extra test
+   ```
+
+4. **Run tests**
+   ```bash
+   # Run all tests
+   uv run pytest
+   
+   # Run with coverage
+   uv run pytest --cov=src/fast_serve_api --cov-report=term-missing
+   
+   # Run specific test file
+   uv run pytest tests/test_basic_endpoints.py
+   
+   # Run with verbose output
+   uv run pytest -v
+   ```
+
+5. **Run the example server** (if you create a test file)
+   ```bash
+   # Create a test.py file with your service
+   uvicorn test:app --reload
+   ```
+
+### Project Structure
+
+```
+fast-serve-api/
+├── src/
+│   └── fast_serve_api/
+│       ├── __init__.py
+│       ├── fast_serve_api.py      # Main class implementation
+│       └── models/                # Response model classes
+│           ├── fast_serve_api_model.py
+│           ├── fast_serve_api_list_model.py
+│           └── fast_serve_api_error_model.py
+├── tests/                         # Test suite
+│   ├── conftest.py               # Pytest fixtures
+│   ├── models.py                 # Test models
+│   ├── services.py               # Test services
+│   └── test_*.py                 # Test files
+├── pyproject.toml                # Project configuration
+└── README.md                     # This file
+```
+
+### Development Guidelines
+
+1. **Code Style**
+   - Code is automatically formatted with Ruff
+   - Follow PEP 8 conventions (enforced by Ruff)
+   - Use type hints for all function parameters and returns
+   - Keep methods focused and single-purpose
+
+2. **Testing**
+   - Write tests for any new functionality
+   - Ensure all tests pass before submitting PR
+   - Aim for high test coverage (currently at 98%)
+
+3. **Adding New Features**
+   - Check existing issues/PRs to avoid duplicates
+   - Discuss major changes in an issue first
+   - Update documentation and tests
+
+4. **Commit Messages**
+   - Use clear, descriptive commit messages
+   - Follow conventional commits format (optional but appreciated)
+   - Example: `feat: add support for async methods`
+
+### Running Common Development Tasks
+
+```bash
+# Install new dependency
+uv add <package-name>
+
+# Install dev dependency
+uv add --dev <package-name>
+
+# Clean up
+rm -rf dist build *.egg-info
+```
+
+### Submitting a Pull Request
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run linting and formatting:
+   ```bash
+   uv run ruff check --fix .
+   uv run ruff format .
+   ```
+5. Run tests to ensure everything works:
+   ```bash
+   uv run pytest
+   ```
+6. Commit your changes
+7. Push to your fork (`git push origin feature/amazing-feature`)
+8. Open a Pull Request with a clear description
+
+### Need Help?
+
+- Check the [issues](https://github.com/ygorhora/fast-serve-api/issues) page
+- Read through the test files for usage examples
+- Feel free to ask questions in issues or discussions
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
