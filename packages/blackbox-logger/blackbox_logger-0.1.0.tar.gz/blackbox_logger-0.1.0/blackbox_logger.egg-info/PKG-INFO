@@ -1,0 +1,172 @@
+Metadata-Version: 2.4
+Name: blackbox_logger
+Version: 0.1.0
+Summary: Framework-agnostic HTTP logger with payload masking
+Home-page: https://github.com/avi9r/blackbox_logger
+Author: Avinash Ranjan
+Author-email: avinashranjan633@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-python
+Dynamic: summary
+
+# blackbox_logger
+
+![PyPI](https://img.shields.io/pypi/v/blackbox-logger)
+![License](https://img.shields.io/github/license/avi9r/blackbox_logger)
+
+A framework-agnostic HTTP logger for Python apps. Logs requests and responses while masking sensitive data like passwords and tokens.
+
+## Features
+
+- Request/response logging
+- Payload masking (e.g. passwords, secrets)
+- Works with any Python HTTP framework (Flask, Django, FastAPI, WSGI)
+
+## Install
+
+```bash
+pip install git+https://github.com/yourusername/blackbox_logger.git
+
+```
+
+
+# 📘 Usage Examples for Each Framework
+## 🔹 Flask
+```bash
+from flask import Flask, request, g
+from blackbox_logger import HTTPLogger
+
+app = Flask(__name__)
+logger = HTTPLogger(get_user=lambda headers: headers.get("X-User", "Anonymous"))
+
+@app.before_request
+def before():
+    g.request_body = request.get_data()
+    logger.log_request(
+        method=request.method,
+        path=request.path,
+        headers=request.headers,
+        body=g.request_body,
+        request=request,
+    )
+
+@app.after_request
+def after(response):
+    logger.log_response(
+        method=request.method,
+        path=request.path,
+        headers=request.headers,
+        response_body=response.get_data(),
+        status_code=response.status_code,
+        request=request,
+    )
+    return response
+```
+## 🔹 Django
+```bash
+from django.utils.deprecation import MiddlewareMixin
+from blackbox_logger import HTTPLogger
+
+logger = HTTPLogger(get_user=lambda request: request.user.username if request.user.is_authenticated else "Anonymous")
+
+class BlackboxLoggerMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        request._body_payload = request.body
+        logger.log_request(
+            method=request.method,
+            path=request.get_full_path(),
+            headers=request.headers,
+            body=request.body,
+            request=request,
+        )
+
+    def process_response(self, request, response):
+        logger.log_response(
+            method=request.method,
+            path=request.get_full_path(),
+            headers=request.headers,
+            response_body=response.content,
+            status_code=response.status_code,
+            request=request,
+        )
+        return response
+```
+## 🔹 FastAPI
+```bash
+from fastapi import FastAPI, Request
+from blackbox_logger import HTTPLogger
+
+app = FastAPI()
+logger = HTTPLogger(get_user=lambda headers: headers.get("X-User", "Anonymous"))
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    body = await request.body()
+    logger.log_request(
+        method=request.method,
+        path=request.url.path,
+        headers=request.headers,
+        body=body,
+        request=request,
+    )
+    response = await call_next(request)
+    logger.log_response(
+        method=request.method,
+        path=request.url.path,
+        headers=request.headers,
+        response_body=response.body,
+        status_code=response.status_code,
+        request=request,
+    )
+    return response
+
+```
+## 🔹 WSGI (e.g., Gunicorn)
+## For WSGI applications, you can use the WSGIRequestLogger middleware:
+```bash
+from blackbox_logger import HTTPLogger
+
+class WSGIRequestLogger:
+    def __init__(self, app, get_user=None, get_client_ip=None):
+        self.app = app
+        self.logger = HTTPLogger(get_user=get_user, get_client_ip=get_client_ip)
+
+    def __call__(self, environ, start_response):
+        method = environ.get('REQUEST_METHOD')
+        path = environ.get('PATH_INFO')
+        headers = {key: value for key, value in environ.items() if key.startswith('HTTP_')}
+        body = environ.get('wsgi.input').read()
+        client_ip = environ.get('REMOTE_ADDR')
+
+        self.logger.log_request(
+            method=method,
+            path=path,
+            headers=headers,
+            body=body,
+            request=environ,
+        )
+
+        def custom_start_response(status, response_headers, exc_info=None):
+            self.logger.log_response(
+                method=method,
+                path=path,
+                headers=headers,
+                response_body=status,
+                status_code=status.split()[0],
+                request=environ,
+            )
+            return start_response(status, response_headers, exc_info)
+
+        return self.app(environ, custom_start_response)
+```
