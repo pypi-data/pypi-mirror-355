@@ -1,0 +1,40 @@
+[package]
+name = "codex-apply-patch"
+version = "0.3.0"
+edition = "2024"
+authors = ["OpenAI <support@openai.com>"]
+license = "Apache-2.0"
+description = "A CLI tool and library for applying patches."
+repository = "https://github.com/openai/codex-apply-patch"
+documentation = "https://docs.rs/codex-apply-patch"
+keywords = ["patch", "apply", "cli"]
+categories = ["command-line-utilities"]
+
+[lib]
+name = "codex_apply_patch"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "codex_apply_patch"
+path = "src/bin/codex_apply_patch.rs"
+
+[features]
+default = []
+python = ["dep:pyo3", "dep:pyo3-build-config"]
+
+[dependencies]
+anyhow = "1"
+serde_json = "1.0.110"
+similar = "2.7.0"
+thiserror = "2.0.12"
+tree-sitter = "0.25.3"
+tree-sitter-bash = "0.25.0"
+pyo3 = { version = "0.25.1", features = ["extension-module"], optional = true }
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
+tempfile = "3.13.0"
+
+[build-dependencies]
+pyo3-build-config = { version = "0.25.1", optional = true }
