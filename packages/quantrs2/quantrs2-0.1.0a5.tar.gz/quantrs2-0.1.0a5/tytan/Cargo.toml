@@ -1,0 +1,70 @@
+[package]
+name = "quantrs2-tytan"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "High-level quantum annealing interface inspired by Tytan for the QuantRS2 framework"
+readme = "README.md"
+
+[dependencies]
+quantrs2-core.workspace = true
+quantrs2-anneal.workspace = true
+num-complex.workspace = true
+thiserror.workspace = true
+rand.workspace = true
+rand_chacha.workspace = true
+rand_distr.workspace = true
+ndarray.workspace = true
+num-bigint.workspace = true
+num-integer.workspace = true
+num.workspace = true
+chrono.workspace = true
+symengine = { workspace = true, optional = true }
+symengine-sys = { workspace = true, optional = true }
+num-traits.workspace = true
+regex = { workspace = true, optional = true }
+serde.workspace = true
+serde_json.workspace = true
+num_cpus.workspace = true
+plotters = { workspace = true, optional = true }
+colored.workspace = true
+
+# SciRS2 dependencies for performance optimization
+scirs2-core = { version = "0.1.0-alpha.4", default-features = false, features = ["gpu"], optional = true }
+scirs2-linalg = { version = "0.1.0-alpha.4", default-features = false, optional = true }
+scirs2-optimize = { version = "0.1.0-alpha.4", default-features = false, optional = true }
+scirs2-cluster = { path = "../../scirs/scirs2-cluster", optional = true }
+# Add scirs2 metacrate for backward compatibility
+scirs2 = { path = "../../scirs/scirs2", optional = true }
+
+# Optional dependencies
+rayon = { workspace = true, optional = true }
+ocl = { workspace = true, optional = true }
+
+[features]
+default = ["parallel"]
+parallel = ["dep:rayon"]
+gpu = ["dep:ocl"]
+# The dwave feature is optional and requires symengine to be installed
+dwave = ["dep:symengine", "dep:symengine-sys", "dep:regex"]
+scirs = ["dep:scirs2-core", "dep:scirs2-linalg", "dep:scirs2-optimize", "dep:scirs2-cluster", "dep:scirs2"]
+advanced_optimization = ["scirs", "dep:scirs2-optimize"]
+clustering = ["dep:scirs2-cluster"]
+# Combined accelerated features
+gpu_accelerated = ["gpu", "scirs", "parallel"]
+plotters = ["dep:plotters"]
+
+[dev-dependencies]
+criterion.workspace = true
+ndarray-rand.workspace = true
+rand_chacha.workspace = true
+colored.workspace = true
+
+# [[bench]]
+# name = "performance_benchmark"
+# harness = false

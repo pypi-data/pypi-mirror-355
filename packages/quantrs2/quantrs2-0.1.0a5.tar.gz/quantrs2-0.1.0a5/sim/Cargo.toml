@@ -1,0 +1,71 @@
+[package]
+name = "quantrs2-sim"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Quantum circuit simulators for the QuantRS2 framework"
+readme = "README.md"
+
+[dependencies]
+quantrs2-core.workspace = true
+quantrs2-circuit.workspace = true
+num-complex.workspace = true
+ndarray.workspace = true
+rayon.workspace = true
+thiserror.workspace = true
+# Optional dependencies disabled by default to avoid OpenBLAS issues on macOS ARM
+scirs2-core = { workspace = true, features = ["simd", "memory_management", "parallel", "linalg", "gpu"], optional = true }
+scirs2-linalg = { workspace = true, default-features = false, optional = true }
+scirs2-optimize = { workspace = true, default-features = false, optional = true }
+pyo3.workspace = true
+
+# For GPU support (optional)
+wgpu = { workspace = true, optional = true }
+bytemuck = { workspace = true, features = ["derive"], optional = true }
+tokio = { workspace = true, features = ["rt", "rt-multi-thread"], optional = true }
+futures = { workspace = true, optional = true }
+rand.workspace = true
+rand_distr.workspace = true
+rand_chacha.workspace = true
+rand_xoshiro.workspace = true
+wide.workspace = true
+fastrand.workspace = true
+nalgebra-sparse.workspace = true
+dashmap.workspace = true
+half.workspace = true
+ndarray-linalg.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+chrono.workspace = true
+num_cpus.workspace = true
+ndrustfft = { workspace = true, optional = true }
+sprs = { workspace = true, optional = true }
+nalgebra = { workspace = true, optional = true }
+md5.workspace = true
+regex.workspace = true
+tempfile.workspace = true
+
+[dev-dependencies]
+approx.workspace = true
+
+[features]
+default = ["optimize"]
+gpu = ["dep:wgpu", "dep:bytemuck", "dep:tokio", "dep:futures"]
+simd = []
+optimize = ["simd"] # Enable optimized implementations
+memory_efficient = [] # Enable memory-efficient algorithms for large state vectors
+advanced_math = ["dep:scirs2-core", "dep:scirs2-linalg", "dep:scirs2-optimize", "dep:ndrustfft", "dep:sprs", "dep:nalgebra"] # Enable advanced math using external libs
+mps = [] # Enable MPS simulator
+
+[[bin]]
+name = "test_stabilizer"
+path = "src/bin/test_stabilizer.rs"
+
+[[bin]]
+name = "debug_holographic_matrix"
+path = "debug_holographic_matrix.rs"

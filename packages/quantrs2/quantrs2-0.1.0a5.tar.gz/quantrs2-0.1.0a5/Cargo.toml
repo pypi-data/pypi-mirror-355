@@ -1,0 +1,144 @@
+[workspace]
+resolver = "2"
+members = ["py"]
+exclude = [
+    "symengine-fork",
+]
+
+# Exclude the Python bindings when publishing to crates.io
+[workspace.metadata.cargo-released]
+exclude-members = ["py", "examples"]
+
+[patch.crates-io]
+symengine-sys = { git = "https://github.com/cool-japan/symengine-sys.git", branch = "fixed-macos" }
+symengine = { git = "https://github.com/cool-japan/symengine-rs.git", branch = "fixed-macos" }
+
+[workspace.lints.rust]
+nonstandard_style = "warn"
+missing_debug_implementations = "warn"
+missing_docs = "warn"
+rust_2018_idioms = { level = "deny", priority = -1 }
+
+[workspace.lints.clippy]
+enum_glob_use = "warn"
+pedantic = "warn"
+nursery = "warn"
+unwrap_used = "warn"
+cast_possible_truncation = "warn"
+cast_sign_loss = "warn"
+cast_possible_wrap = "warn"
+dbg_macro = "warn"
+
+[workspace.package]
+version = "0.1.0-alpha.5"
+authors = ["QuantRS2 Contributors"]
+edition = "2021"
+rust-version = "1.86.0"
+repository = "https://github.com/cool-japan/quantrs"
+license = "MIT OR Apache-2.0"
+keywords = ["quantum", "computing", "simulator", "annealing", "gate"]
+categories = ["science", "simulation"]
+
+[workspace.dependencies]
+# Core quantum computing dependencies
+quantrs2-core = { path = "core", version = "0.1.0-alpha.5" }
+quantrs2-circuit = { path = "circuit", version = "0.1.0-alpha.5" }
+quantrs2-sim = { path = "sim", version = "0.1.0-alpha.5" }
+quantrs2-anneal = { path = "anneal", version = "0.1.0-alpha.5" }
+quantrs2-device = { path = "device", version = "0.1.0-alpha.5" }
+quantrs2-ml = { path = "ml", version = "0.1.0-alpha.5" }
+quantrs2-tytan = { path = "tytan", version = "0.1.0-alpha.5" }
+
+# Common math and linear algebra dependencies
+num-complex = "0.4.6"
+ndarray = { version = "0.16.1", features = ["rayon"] }
+nalgebra = "0.33.2"
+ndarray-linalg = { version = "0.17", default-features = false, features = ["openblas-system"] }
+ndarray-rand = "0.15"
+ndarray-stats = "0.6"
+num-traits = "0.2"
+num-bigint = "0.4"
+num-integer = "0.1"
+num = "0.4"
+approx = "0.5"
+wide = "0.7.32"
+
+# SciRS2 ecosystem dependencies
+scirs2-core = { version = "0.1.0-alpha.4", default-features = false }
+scirs2-optimize = { version = "0.1.0-alpha.4", default-features = false }
+scirs2-linalg = { version = "0.1.0-alpha.4", default-features = false }
+scirs2-sparse = { version = "0.1.0-alpha.4" }
+
+# Performance and parallel computing
+rayon = "1.10.0"
+smallvec = { version = "1.15", features = ["const_generics"] }
+rustc-hash = "2.1"
+fastrand = "2.3.0"
+num_cpus = "1.17.0"
+dashmap = "5.5"
+half = { version = "2.6", features = ["num-traits"] }
+
+# Error handling
+thiserror = "2.0.12"
+
+# Random number generation
+rand = "0.9.1"
+rand_chacha = "0.9.0"  
+rand_distr = "0.5"
+rand_xoshiro = "0.6"
+
+# Serialization and data formats
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = "1.3"
+zstd = "0.13"
+flate2 = "1.1"
+md5 = "0.7"
+
+# GPU computing support
+wgpu = { version = "25.0.2" }
+bytemuck = { version = "1.23.1", features = ["derive"] }
+ocl = "0.19.7"
+
+# Async and networking
+reqwest = { version = "0.12.20", features = ["json"] }
+tokio = { version = "1.45.1", features = ["full"] }
+futures = "0.3"
+async-trait = "0.1"
+
+# Python bindings and FFI
+pyo3 = { version = "0.25.1", features = ["extension-module"] }
+numpy = "0.25"
+
+# Utility libraries
+uuid = { version = "1.17.0", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+regex = "1.11.1"
+colored = "2.2"
+tempfile = "3.0"
+
+# Cryptographic functions
+hmac = "0.12.1"
+sha2 = "0.10.9"
+hex = "0.4.3"
+
+# Symbolic computation (patched versions)
+symengine = { git = "https://github.com/cool-japan/symengine-rs.git", branch = "fixed-macos" }
+symengine-sys = { git = "https://github.com/cool-japan/symengine-sys.git", branch = "fixed-macos" }
+
+# Advanced math libraries
+ndrustfft = "0.5"
+sprs = "0.11"  
+nalgebra-sparse = "0.9"
+
+# Visualization and plotting
+plotters = "0.3"
+
+# Development and testing
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+opt-level = 3

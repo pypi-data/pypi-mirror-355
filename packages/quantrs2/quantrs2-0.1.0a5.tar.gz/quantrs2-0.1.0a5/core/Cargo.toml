@@ -1,0 +1,54 @@
+[package]
+name = "quantrs2-core"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Core types and traits for the QuantRS2 quantum computing framework"
+readme = "README.md"
+
+[dependencies]
+num-complex.workspace = true
+thiserror.workspace = true
+ndarray.workspace = true
+scirs2-core = { workspace = true, features = ["types", "memory_management", "simd", "serialization"] }
+scirs2-linalg.workspace = true
+scirs2-optimize.workspace = true
+scirs2-sparse.workspace = true
+smallvec.workspace = true
+rustc-hash.workspace = true
+rand.workspace = true
+rand_chacha.workspace = true
+rayon.workspace = true
+ndarray-linalg.workspace = true
+serde.workspace = true
+tokio.workspace = true
+uuid.workspace = true
+zstd.workspace = true
+bincode.workspace = true
+serde_json.workspace = true
+num_cpus.workspace = true
+flate2.workspace = true
+# Symbolic computation with SymEngine
+symengine = { workspace = true, optional = true }
+symengine-sys = { workspace = true, optional = true }
+num-traits.workspace = true
+pyo3 = { workspace = true, features = ["extension-module", "abi3-py38"], optional = true }
+numpy = { workspace = true, optional = true }
+chrono.workspace = true
+# numrs2 = { version = "0.1.0-alpha.4", optional = true }  # Temporarily disabled due to ARM64 platform compilation issues
+
+[features]
+default = []
+simd = ["scirs2-core/simd"]
+cuda = []
+metal = []
+vulkan = []
+mps = []
+compression = []
+symbolic = ["dep:symengine", "dep:symengine-sys"]  # Enable symbolic computation with SymEngine
+python = ["dep:pyo3", "dep:numpy"]  # Enable Python bindings with PyO3 and NumPy (NumRS2 integration ready but disabled due to ARM64 compilation issues)
