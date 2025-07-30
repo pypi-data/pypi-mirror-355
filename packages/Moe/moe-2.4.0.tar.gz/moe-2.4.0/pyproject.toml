@@ -1,0 +1,94 @@
+[tool.poetry]
+name = "Moe"
+version = "2.4.0"
+description = "The ultimate tool for managing your music library."
+authors = ["Jacob Pavlock <jtpavlock@gmail.com>"]
+repository = "https://github.com/MoeMusic/Moe"
+documentation = "https://mrmoe.readthedocs.io/en/latest/index.html"
+classifiers=[
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Multimedia :: Sound/Audio :: Editors",
+]
+readme = "README.rst"
+license = "MIT"
+
+[tool.poetry.scripts]
+moe = 'moe.cli:main'
+
+[tool.poetry.dependencies]
+python = ">=3.9, <3.14"
+alembic = "^1.4.2"
+dynaconf = "^3.1.4"
+mediafile = "^0.13.0"
+musicbrainzngs = "^0.7.1"
+pluggy = "^1.3.0"
+rich = "^13.0.0"
+SQLAlchemy = "^2.0.0"
+Unidecode = "^1.2.0"
+questionary = "^2.0.0"
+importlib-metadata = "^7.0.1"
+
+[tool.poetry.group.test.dependencies]
+debugpy = "^1.4.1"
+pytest = "^8.0.0"
+pytest-cov = "^6.0.0"
+tox = "^4.0.0"
+
+[tool.poetry.group.lint.dependencies]
+black = "^24.0.0"
+commitizen = "^3.0.0"
+darglint = "^1.8.1"
+flake8 = "^7.0.0"
+flake8-alphabetize = "^0.0.19"
+flake8-bugbear = "^24.0.0"
+flake8-comprehensions = "^3.10.0"
+flake8-docstrings = "^1.5.0"
+flake8-pytest-style = "^2.0.0"
+flake8-use-fstring = "^1.1"
+"github3.py" = "^4.0.0"
+isort = "^5.10.1"
+mccabe = "^0.7.0"
+pre-commit = "^4.0.0"
+pyright = "^1.1.267"
+
+[tool.poetry.group.docs.dependencies]
+furo = "*"
+pypandoc = "^1.9"
+Sphinx = "^7.0.0"
+
+[tool.commitizen]
+name = "cz_customize"
+version = "2.4.0"
+version_files = [
+    "pyproject.toml:^version",
+]
+tag_format = "v$version"
+
+[tool.commitizen.customize]
+bump_pattern = '^(build|deprecate|feat|fix|perf)'
+bump_map = { feat = "MINOR", build = "PATCH", deprecate = "PATCH", fix = "PATCH", perf = "PATCH" }
+schema_pattern = '(build|ci|deprecate|docs|feat|fix|perf|refactor|release|style|test)(\(\w+\))?!?:\s\S.*'
+
+[tool.isort]
+profile = 'black'
+known_third_party = ["alembic"]
+
+[tool.pytest.ini_options]
+log_cli_level = 10
+addopts = "--color=yes"
+markers = [
+    "darwin: tests that should only run on apple",
+    "linux: tests that should only run on linux",
+    "win32: tests that should only run on windows"
+]
+
+[tool.pyright]
+exclude = [
+    "moe/moe_alembic", "tests"
+]
+pythonPlatform = "All"
+
+[build-system]
+requires = ["poetry-core>=1.0"]
+build-backend = "poetry.core.masonry.api"
