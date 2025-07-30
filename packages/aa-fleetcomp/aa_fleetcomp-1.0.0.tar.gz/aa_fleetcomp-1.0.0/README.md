@@ -1,0 +1,61 @@
+# AA Fleetcomp
+
+[![release](https://img.shields.io/pypi/v/aa-metenox?label=release)](https://pypi.org/project/aa-fleetcomp/)
+[![python](https://img.shields.io/pypi/pyversions/aa-metenox)](https://pypi.org/project/aa-fleetcomp/)
+[![django](https://img.shields.io/pypi/djversions/aa-metenox?label=django)](https://pypi.org/project/aa-fleetcomp/)
+[![license](https://img.shields.io/badge/license-MIT-green)](https://gitlab.com/r0kym/aa-fleetcomp/-/blob/master/LICENSE)
+
+Alliance auth application to monitor a fleet composition (ship numbers, multi-boxing, etc...)
+
+### Screenshots
+
+![](images/fleet_window.png)
+
+![](images/user_details.png)
+
+## Installation
+
+### Step 1 - Check prerequisites
+
+The application requires the Eve Universe module: [django-eveuniverse](https://django-eveuniverse.readthedocs.io/en/latest/)
+
+### Step 2 - Install app
+
+Make sure you are in the virtual environment (venv) of your Alliance Auth installation. Then install the newest release from PyPI:
+
+```bash
+pip install aa-fleetcomp
+```
+
+### Step 3 - Configure Auth settings
+
+Configure your Auth settings (`local.py`) as follows:
+
+- Add `'fleetcomp'` to `INSTALLED_APPS`
+
+### Step 4 - Finalize App installation
+
+Run migrations & copy static files
+
+```bash
+python manage.py migrate
+python manage.py collectstatic --noinput
+```
+
+Restart your supervisor services for Auth.
+
+## Custom groupings
+
+The fleet view will propose some default grouping of ships to be tracked (logi, dread, faxes, ...).
+If you want an additional grouping you can go in the admin menu and create a `CustomGrouping` object.
+
+Currently, if you select ships that are already selected through another grouping it will cause issues in the remaining count.
+
+## Permissions
+
+Permissions overview.
+
+| Name           | Description                                                                                 |
+|----------------|---------------------------------------------------------------------------------------------|
+| `basic_access` | Allows to access the module, create snapshots of its own fleets and see own fleet snapshots |
+| `view_all`     | Can view all recorded fleets and create snapshots of other FCs fleet                        |
