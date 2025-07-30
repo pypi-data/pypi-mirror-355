@@ -1,0 +1,177 @@
+# reqsgen
+
+Generate requirements.txt from your Python imports automatically.
+
+## Overview
+
+`reqsgen` is a zero-config, offline-only Python tool that scans your project's `.py` files for external imports and generates a minimal, sorted `requirements.txt`. No network calls, no API keys, no extra configuration required.
+
+## Features
+
+- 🔍 **Automatic Import Discovery**: Recursively scans Python files and extracts all imports
+- 📚 **Standard Library Filtering**: Automatically excludes Python standard library modules
+- 📝 **Clean Output**: Generates sorted, minimal requirements.txt files
+- 🔒 **Offline Operation**: No network calls or external dependencies required
+- ⚡ **Zero Configuration**: Works out of the box with sensible defaults
+- 📌 **Version Pinning**: Optional version pinning for reproducible environments
+
+## Installation
+
+```bash
+pip install reqsgen
+```
+
+## Usage
+
+### Command Line
+
+Generate requirements.txt from current directory:
+```bash
+reqsgen
+```
+
+Scan a specific directory:
+```bash
+reqsgen /path/to/your/project
+```
+
+Specify output file:
+```bash
+reqsgen . -o my-requirements.txt
+```
+
+Pin package versions:
+```bash
+reqsgen . --pin
+```
+
+### Python API
+
+```python
+from reqsgen import find_imports, filter_stdlib, generate_requirements
+
+# Find all imports in a project
+imports = find_imports("/path/to/project")
+
+# Filter out standard library modules
+external_packages = filter_stdlib(imports)
+
+# Generate requirements file
+num_packages = generate_requirements(
+    path="/path/to/project",
+    output_file="requirements.txt",
+    pin_versions=True
+)
+```
+
+## How It Works
+
+1. **Scan**: Recursively walks through your project directory finding all `.py` files
+2. **Parse**: Uses Python's `ast` module to safely parse each file and extract import statements
+3. **Filter**: Removes standard library modules using a comprehensive built-in list
+4. **Generate**: Creates a sorted requirements.txt with only external packages
+
+## Command Line Options
+
+```
+usage: reqsgen [-h] [-o OUTPUT] [--pin] [--version] [path]
+
+Generate requirements.txt from your Python imports
+
+positional arguments:
+  path                  Path to scan for Python files (default: current directory)
+
+options:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output OUTPUT
+                        Output file path (default: requirements.txt)
+  --pin                 Pin package versions (e.g., package==1.2.3)
+  --version             show program's version number and exit
+```
+
+## Examples
+
+### Basic Usage
+```bash
+$ reqsgen
+Wrote 5 packages to requirements.txt
+```
+
+### With Version Pinning
+```bash
+$ reqsgen --pin
+Wrote 5 packages to requirements.txt
+```
+
+Generated `requirements.txt`:
+```
+flask==2.3.3
+requests==2.31.0
+numpy==1.24.3
+pandas==2.0.3
+click==8.1.7
+```
+
+## Requirements
+
+- Python 3.8+
+- No external dependencies (uses only Python standard library)
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Development
+
+### Running Tests
+
+```bash
+# Install development dependencies
+pip install pytest
+
+# Run the test suite
+python -m pytest tests/ -v
+
+# Run comprehensive integration tests
+python test_real_project.py
+python test_edge_cases.py
+```
+
+### Building and Publishing
+
+```bash
+# Install build tools
+pip install build twine
+
+# Build the package
+python -m build
+
+# Check the distribution
+python -m twine check dist/*
+
+# Upload to PyPI (requires account and API token)
+python -m twine upload dist/*
+```
+
+## Changelog
+
+### v0.1.0 (2024-12-15)
+- Initial release
+- Basic import scanning and requirements generation
+- Standard library filtering
+- Version pinning support
+- Command-line interface
+- Python API
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+### Development Setup
+
+1. Clone the repository
+2. Create a virtual environment: `python -m venv venv`
+3. Activate it: `source venv/bin/activate` (Linux/Mac) or `venv\Scripts\activate` (Windows)
+4. Install in development mode: `pip install -e .`
+5. Install test dependencies: `pip install pytest`
+6. Run tests: `python -m pytest tests/ -v`
