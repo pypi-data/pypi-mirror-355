@@ -1,0 +1,76 @@
+Metadata-Version: 2.4
+Name: iplotx
+Version: 0.2.0
+Summary: Plot networkx from igraph and networkx.
+Project-URL: Homepage, https://github.com/fabilab/iplotx
+Project-URL: Documentation, https://readthedocs.org/iplotx
+Project-URL: Repository, https://github.com/fabilab/iplotx.git
+Project-URL: Bug Tracker, https://github.com/fabilab/iplotx/issues
+Project-URL: Changelog, https://github.com/fabilab/iplotx/blob/main/CHANGELOG.md
+Author-email: Fabio Zanini <fabio.zanini@unsw.edu.au>
+Maintainer-email: Fabio Zanini <fabio.zanini@unsw.edu.au>
+License: MIT
+Keywords: graph,network,plotting,visualisation
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.11
+Requires-Dist: matplotlib>=2.0.0
+Requires-Dist: numpy>=2.0.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: pylint>=3.3.7
+Provides-Extra: igraph
+Requires-Dist: igraph>=0.11.0; extra == 'igraph'
+Provides-Extra: networkx
+Requires-Dist: networkx>=2.0.0; extra == 'networkx'
+Description-Content-Type: text/markdown
+
+![Github Actions](https://github.com/fabilab/iplotx/actions/workflows/test.yml/badge.svg)
+![PyPI - Version](https://img.shields.io/pypi/v/iplotx)
+![RTD](https://readthedocs.org/projects/iplotx/badge/?version=latest)
+
+# iplotx
+Plotting networks from igraph and networkx.
+
+**NOTE**: This is currently alpha quality software. The API and functionality will break constantly, so use at your own risk. That said, if you have things you would like to see improved, please open a GitHub issue.
+
+## Installation
+```bash
+pip install iplotx
+```
+
+## Quick Start
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+import iplotx as ipx
+
+g = nx.Graph([(0, 1), (1, 2), (2, 3), (3, 4), (4, 0)])
+layout = nx.layout.circular_layout(g)
+fig, ax = plt.subplots(figsize=(3, 3))
+ipx.plot(g, ax=ax, layout=layout)
+```
+
+![Quick start image](docs/source/_static/graph_basic.png)
+
+## Documentation
+See [readthedocs](https://iplotx.readthedocs.io/en/latest/) for the full documentation.
+
+## Gallery
+See [gallery](https://iplotx.readthedocs.io/en/latest/gallery/index.html).
+
+## Roadmap
+- Plot networks from igraph and networkx interchangeably, using matplotlib as a backend. ✅
+- Support interactive plotting, e.g. zooming and panning after the plot is created. ✅
+- Support storing the plot to disk thanks to the many matplotlib backends (SVG, PNG, PDF, etc.). ✅
+- Support flexible yet easy styling. ✅
+- Efficient plotting of large graphs using matplotlib's collection functionality. ✅
+- Support trees from special libraries such as ete3, biopython, etc. This will need a dedicated function and layouting. ✅
+- Support animations, e.g. showing the evolution of a network over time. 🏗️
+- Support uni- and bi-directional communication between graph object and plot object.🏗️
+
+## Authors
+Fabio Zanini (https://fabilab.org)
