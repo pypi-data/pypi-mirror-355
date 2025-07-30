@@ -1,0 +1,627 @@
+/* SECURITY MODE BUTTON - GLASSMORPHISM STYLE */
+.security-mode-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 2px solid rgba(68, 68, 68, 0.3);
+    border-radius: 12px;
+    background: rgba(26, 26, 26, 0.6);
+    backdrop-filter: blur(15px);
+    color: #EAEAEA;
+    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.security-mode-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Mode-specific button styles */
+.security-mode-btn.safe-mode {
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+.security-mode-btn.base-mode {
+    border-color: rgba(243, 156, 18, 0.5);
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.3);
+}
+
+.security-mode-btn.hell-out-mode {
+    border-color: rgba(220, 38, 38, 0.5);
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.3);
+    animation: hell-out-pulse 2s infinite;
+}
+
+@keyframes hell-out-pulse {
+    0%, 100% { 
+        box-shadow: 0 0 8px rgba(220, 38, 38, 0.3);
+        border-color: rgba(220, 38, 38, 0.5);
+    }
+    50% { 
+        box-shadow: 0 0 16px rgba(220, 38, 38, 0.6);
+        border-color: rgba(220, 38, 38, 0.8);
+    }
+}
+
+/* SECURITY LED INDICATOR */
+.security-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: relative;
+}
+
+.security-led.safe {
+    background: #10b981;
+    box-shadow: 0 0 6px #10b981;
+}
+
+.security-led.base {
+    background: #F39C12;
+    box-shadow: 0 0 6px #F39C12;
+}
+
+.security-led.hell-out {
+    background: #dc2626;
+    box-shadow: 0 0 6px #dc2626;
+    animation: led-pulse-red 1s infinite;
+}
+
+@keyframes led-pulse-red {
+    0%, 100% { 
+        background: #dc2626;
+        box-shadow: 0 0 6px #dc2626;
+    }
+    50% { 
+        background: #ef4444;
+        box-shadow: 0 0 12px #ef4444;
+    }
+}
+
+/* ENTFERNT: SECURITY STATUS LED - Ersetzt durch Terminal-Glow-Effekte */
+
+/* TERMINAL GLOW ANPASSUNGEN BASIEREND AUF SICHERHEITSMODUS */
+/* Diese Klassen werden dynamisch dem body hinzugefügt */
+body.safe-mode #terminal-container {
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(16, 185, 129, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+body.safe-mode #prompt-input:focus {
+    border-color: #10b981;
+    box-shadow: 
+        0 0 20px rgba(16, 185, 129, 0.6),
+        0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+body.base-mode #terminal-container {
+    border-color: rgba(243, 156, 18, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(243, 156, 18, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+body.base-mode #prompt-input:focus {
+    border-color: #F39C12;
+    box-shadow: 
+        0 0 20px rgba(243, 156, 18, 0.6),
+        0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+body.hell-out-mode #terminal-container {
+    border-color: rgba(220, 38, 38, 0.4);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 25px rgba(220, 38, 38, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: terminal-danger-pulse 3s infinite;
+}
+
+body.hell-out-mode #prompt-input:focus {
+    border-color: #dc2626;
+    box-shadow: 
+        0 0 25px rgba(220, 38, 38, 0.7),
+        0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes terminal-danger-pulse {
+    0%, 100% { 
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.5),
+            0 0 25px rgba(220, 38, 38, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    50% { 
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.5),
+            0 0 35px rgba(220, 38, 38, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* SECURITY DIALOG OVERLAY */
+.security-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+}
+
+.security-dialog {
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(230, 126, 34, 0.3);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+    color: #EAEAEA;
+}
+
+.security-dialog-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(68, 68, 68, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.security-dialog-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #E67E22;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(68, 68, 68, 0.3);
+    color: #EAEAEA;
+}
+
+/* SECURITY MODE OPTIONS */
+.security-dialog-content {
+    padding: 24px;
+}
+
+.security-mode-option {
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 2px solid rgba(68, 68, 68, 0.3);
+    border-radius: 12px;
+    background: rgba(42, 42, 42, 0.6);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.security-mode-option:hover {
+    border-color: rgba(230, 126, 34, 0.5);
+    transform: translateX(4px);
+}
+
+.security-mode-option.selected {
+    border-color: #E67E22;
+    background: rgba(230, 126, 34, 0.1);
+    box-shadow: 0 0 12px rgba(230, 126, 34, 0.3);
+}
+
+.mode-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.mode-led {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.mode-led.safe {
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+}
+
+.mode-led.base {
+    background: #F39C12;
+    box-shadow: 0 0 8px #F39C12;
+}
+
+.mode-led.hell-out {
+    background: #dc2626;
+    box-shadow: 0 0 8px #dc2626;
+    animation: led-pulse-red 1s infinite;
+}
+
+.mode-title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.mode-status {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+}
+
+.security-mode-option[data-mode="safe"] .mode-status {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.security-mode-option[data-mode="base"] .mode-status {
+    background: rgba(243, 156, 18, 0.2);
+    color: #F39C12;
+}
+
+.security-mode-option[data-mode="hell-out"] .mode-status {
+    background: rgba(220, 38, 38, 0.2);
+    color: #dc2626;
+}
+
+.mode-description {
+    font-size: 12px;
+    line-height: 1.4;
+    color: #ccc;
+}
+
+.mode-warning {
+    margin-top: 8px;
+    padding: 8px;
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 6px;
+    font-size: 11px;
+    color: #ff6b6b;
+}
+
+/* DIALOG ACTIONS */
+.security-dialog-actions {
+    padding: 20px 24px;
+    border-top: 1px solid rgba(68, 68, 68, 0.3);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.btn-cancel, .btn-primary, .btn-danger {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-cancel {
+    background: rgba(68, 68, 68, 0.6);
+    color: #EAEAEA;
+    border: 1px solid rgba(68, 68, 68, 0.3);
+}
+
+.btn-cancel:hover {
+    background: rgba(68, 68, 68, 0.8);
+    border-color: rgba(68, 68, 68, 0.5);
+}
+
+.btn-primary {
+    background: rgba(230, 126, 34, 0.8);
+    color: #fff;
+    border: 1px solid #E67E22;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #E67E22;
+    box-shadow: 0 0 12px rgba(230, 126, 34, 0.5);
+}
+
+.btn-primary:disabled {
+    background: rgba(68, 68, 68, 0.4);
+    color: #666;
+    border-color: rgba(68, 68, 68, 0.2);
+    cursor: not-allowed;
+}
+
+.btn-danger {
+    background: rgba(220, 38, 38, 0.8);
+    color: #fff;
+    border: 1px solid #dc2626;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #dc2626;
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.5);
+}
+
+.btn-danger:disabled {
+    background: rgba(68, 68, 68, 0.4);
+    color: #666;
+    border-color: rgba(68, 68, 68, 0.2);
+    cursor: not-allowed;
+}
+
+/* HELL-OUT WARNING DIALOG */
+.warning-dialog {
+    border-color: rgba(220, 38, 38, 0.5);
+}
+
+.warning-dialog-content {
+    background: rgba(26, 26, 26, 0.98);
+}
+
+.warning-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(220, 38, 38, 0.3);
+    background: rgba(220, 38, 38, 0.1);
+}
+
+.warning-icon {
+    font-size: 24px;
+    color: #dc2626;
+    animation: warning-pulse 1.5s infinite;
+}
+
+@keyframes warning-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.warning-header h2 {
+    color: #dc2626;
+    margin: 0;
+    font-size: 18px;
+}
+
+.warning-content {
+    padding: 24px;
+}
+
+.warning-message h3 {
+    color: #dc2626;
+    margin: 0 0 16px 0;
+    font-size: 16px;
+}
+
+.warning-message p {
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+.danger-list {
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.danger-list h4 {
+    color: #dc2626;
+    margin: 0 0 12px 0;
+    font-size: 14px;
+}
+
+.danger-list ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.danger-list li {
+    margin-bottom: 8px;
+    color: #ff6b6b;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* CONFIRMATION STEPS */
+.confirmation-steps {
+    margin-top: 24px;
+}
+
+.confirmation-step {
+    background: rgba(42, 42, 42, 0.6);
+    border: 1px solid rgba(68, 68, 68, 0.3);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.confirmation-step h4 {
+    color: #E67E22;
+    margin: 0 0 12px 0;
+    font-size: 14px;
+}
+
+.confirmation-step p {
+    margin: 0 0 12px 0;
+    font-size: 12px;
+    color: #ccc;
+}
+
+#confirmation-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid rgba(68, 68, 68, 0.5);
+    border-radius: 6px;
+    color: #EAEAEA;
+    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#confirmation-input:focus {
+    border-color: #E67E22;
+    box-shadow: 0 0 8px rgba(230, 126, 34, 0.3);
+}
+
+.disclaimer-container {
+    margin: 12px 0;
+}
+
+.disclaimer-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    line-height: 1.4;
+    font-size: 12px;
+}
+
+.disclaimer-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.disclaimer-text {
+    flex: 1;
+}
+
+.disclaimer-text p {
+    margin: 4px 0;
+    line-height: 1.5;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(68, 68, 68, 0.5);
+    border-radius: 4px;
+    background: rgba(26, 26, 26, 0.8);
+    position: relative;
+    flex-shrink: 0;
+    margin-top: 6px;
+    transition: all 0.3s ease;
+}
+
+.disclaimer-checkbox:hover .checkmark {
+    border-color: #E67E22;
+}
+
+.disclaimer-checkbox input[type="checkbox"]:checked + .checkmark {
+    background: #E67E22;
+    border-color: #E67E22;
+}
+
+.disclaimer-checkbox input[type="checkbox"]:checked + .checkmark::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.step-status {
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.step-status.success {
+    color: #10b981;
+}
+
+.step-status.error {
+    color: #dc2626;
+}
+
+.warning-actions {
+    padding: 20px 24px;
+    border-top: 1px solid rgba(220, 38, 38, 0.3);
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    background: rgba(220, 38, 38, 0.05);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .security-dialog {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .security-dialog-header h2 {
+        font-size: 16px;
+    }
+    
+    .mode-title {
+        font-size: 13px;
+    }
+    
+    .mode-description {
+        font-size: 11px;
+    }
+    
+    .security-dialog-actions {
+        flex-direction: column;
+    }
+    
+    .warning-actions {
+        flex-direction: column-reverse;
+    }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+    .hell-out-pulse,
+    .led-pulse-red,
+    .terminal-danger-pulse,
+    .warning-pulse {
+        animation: none;
+    }
+    
+    body.hell-out-mode #terminal-container {
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.5),
+            0 0 25px rgba(220, 38, 38, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+}
