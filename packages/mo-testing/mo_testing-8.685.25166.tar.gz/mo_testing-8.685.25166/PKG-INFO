@@ -1,0 +1,69 @@
+Metadata-Version: 2.4
+Name: mo-testing
+Version: 8.685.25166
+Summary: More Testing! Extends the `unittest.TestCase` to provide deep, yet fuzzy, structural comparisons
+Home-page: https://github.com/klahnakoski/mo-testing
+Author: Kyle Lahnakoski
+Author-email: kyle@lahnakoski.com
+License: MPL 2.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mo-dots==10.685.25166
+Requires-Dist: mo-future==7.685.25166
+Requires-Dist: mo-logs==8.685.25166
+Requires-Dist: mo-math==7.685.25166
+Requires-Dist: mo-times==5.685.25166
+Provides-Extra: tests
+Requires-Dist: mo_times; extra == "tests"
+Requires-Dist: mo_logs; extra == "tests"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+# More Testing
+
+
+[![PyPI Latest Release](https://img.shields.io/pypi/v/mo-testing.svg)](https://pypi.org/project/mo-testing/)
+[![Build Status](https://github.com/klahnakoski/mo-testing/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/klahnakoski/mo-testing/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/github/klahnakoski/mo-testing/badge.svg?branch=dev)](https://coveralls.io/github/klahnakoski/mo-testing?branch=dev)
+[![Downloads](https://static.pepy.tech/badge/mo-testing/month)](https://pepy.tech/project/mo-testing)
+
+
+`FuzzyTestCase` extends the `unittest.TestCase` to provide deep, yet fuzzy, structural comparisons; intended for use in test cases dealing with JSON.
+
+
+## Details
+
+The primary method is the `assertAlmostEqual` method with the following arguments:
+
+* `test_value` - the value, or structure being tested
+* `expected` - the expected value or structure.  In the case of a number, the accuracy is controlled by the following parameters.  In the case of a structure, only the not-null parameters of `expected` are tested for existence.
+* `msg` - Detailed error message if there is no match
+
+Keyword arguments:
+* `digits` - number of decimal places of accuracy required to consider two values equal
+* `places` - number of significant digits used to compare values for accuracy
+* `delta` - maximum difference between values for them to be equal
+
+This method `assertEqual` is recursive; it does a deep comparison; it can not handle cycles in the data structure.
+
+## Major Changes
+
+### Version 8
+
+* `digits`, `places`, and `delta` must be specified as keyword arguments
