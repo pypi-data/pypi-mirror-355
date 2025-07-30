@@ -1,0 +1,26 @@
+# This workflow will install Python dependencies, run benchmarks
+name: benchmarks
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: "3.12"
+          cache: true
+
+      - name: Install dependencies
+        run: pdm install -G test,build
+
+      - name: Run benchmarks
+        run: pdm run pytest benchmarks
