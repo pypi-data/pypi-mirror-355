@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_file = "snappea/scmversion.py"
+
+[project]
+name = "snappea"
+authors = [
+    {name = "Bugsink B.V.", email = "info@bugsink.com"},
+]
+description = "MessageQueue-less task runner for Django"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "BSD-3-Clause"
+classifiers = [
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+repository = "https://github.com/bugsink/snappea/"
+documentation = "https://www.bugsink.com/blog/snappea-design/"
+issues = "https://github.com/bugsink/snappea/issues"
+
+[tool.setuptools]
+include-package-data = true  # this is the default, but explicit is better than implicit
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "snappea*",
+]
+
+# exclude = ["my_package.tests*"]  # exclude packages matching these glob patterns (empty by default)
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
