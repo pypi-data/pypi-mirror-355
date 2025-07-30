@@ -1,0 +1,32 @@
+[CDF-24931] ⬆ Migrate timeseries (#1625)
+
+# Description
+
+Stacked on #1624, #1626, #1613 , #1628
+
+**Reviewer**: This is a 400 line PR with 350 lines of testing code. Note
+this is using the set-pending-ids endpoints which is only available in
+staging clusters.
+
+This introduces the `cdf migrate timeseries` command. This command
+allows the user to move asset-centric timeseries to CogniteTimeSeries
+and link them such that when the migration is done, users can access
+that datapoints from the assent-centric timeseries through the new node
+IDs of the CogniteTimeSeries.
+
+## Changelog
+
+- [x] Patch
+- [ ] Minor
+- [ ] Skip
+
+## cdf
+
+### Added
+
+- [alpha] New command `cdf migrate timeseries` for migrating timeseries
+to CogniteTimeseries.
+
+## templates
+
+No changes.
