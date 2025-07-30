@@ -1,0 +1,11 @@
+packages:
+  scikit-image:
+    exclude_patterns:
+      - pattern: '**/bar.py'
+      - pattern: '**/bar.so'
+
+default:
+  exclude_patterns:
+    - pattern: '**/*.pyc'
+    - pattern: '**/tests/**/*.py'
+    - pattern: '**/tests/**/*.so'
