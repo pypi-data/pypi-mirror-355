@@ -1,0 +1,92 @@
+Metadata-Version: 2.4
+Name: dataeyes-mcp
+Version: 0.1.0
+Summary: Dataeyes MCP Server
+Keywords: http,mcp,dataeyes
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: mcp[cli]>=1.9.4
+Dynamic: license-file
+
+# Dataeyes MCP Server
+
+## Overview
+Dataeyes MCP Server is an HTTP backend service developed by DataEyes AI, based on the MCP (Multi-Channel Platform) protocol. Its core feature is providing a web content reading tool for LLM (Large Language Model) applications by integrating the Dataeyes intelligent API.
+
+## Core Feature
+- **Web Content Reader (`reader`)**: Reads web page content and returns it in Markdown format suitable for LLMs. This is the main and only tool provided by this MCP service.
+
+## Directory Structure
+```
+dataeyes-mcp/
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── uv.lock
+└── src/
+    └── dataeyes_mcp_server/
+        ├── __init__.py
+        ├── __main__.py
+        └── dataeyes.py
+```
+
+## Requirements
+- Python: 3.13 or above (see `.python-version`)
+- Dependency management: [uv](https://github.com/astral-sh/uv) or [pip](https://pip.pypa.io/)
+
+## Installation
+```bash
+# Install dependencies
+uv pip install -r pyproject.toml
+# Or
+pip install -r requirements.txt  # You may need to generate requirements.txt manually
+```
+
+## Environment Variables
+- `DATAEYES_API_KEY`: Your Dataeyes platform API key (required)
+
+Example:
+```bash
+export DATAEYES_API_KEY=your_api_key
+```
+
+## Usage
+### 1. Run from command line
+```bash
+python -m dataeyes_mcp_server
+```
+Or, after editable install:
+```bash
+uv pip install -e .
+uvx mcp-server-dataeyes
+```
+
+### 2. Import as a package
+```python
+from dataeyes_mcp_server import main
+main()
+```
+
+## Tool API: reader
+- **Function**: Reads web page content and returns Markdown format for LLMs
+- **Parameters**:
+  - `url` (string, required): Web page URL
+  - `timeout` (number, optional): Timeout in seconds (default 30, range 1-60)
+- **Returns**: Markdown format text
+
+## Dependencies
+- [httpx](https://www.python-httpx.org/) >= 0.28.1
+- [mcp[cli]](https://github.com/dataeyes-ai/mcp) >= 1.9.4
+
+## Development Notes
+- Use a virtual environment (e.g., `.venv`) to isolate dependencies.
+- `.gitignore` excludes common Python cache and virtual environment directories.
+- Follow PEP8 code style.
+
+## License
+MIT License. See LICENSE for details.
+
+## Contact
+For questions or business cooperation, please contact DataEyes AI official channels.

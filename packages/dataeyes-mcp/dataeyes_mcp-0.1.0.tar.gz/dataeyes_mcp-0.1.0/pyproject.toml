@@ -1,0 +1,14 @@
+[project]
+name = "dataeyes-mcp"
+version = "0.1.0"
+description = "Dataeyes MCP Server"
+readme = "README.md"
+requires-python = ">=3.13"
+keywords = ["http", "mcp", "dataeyes"]
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.9.4",
+]
+
+[project.scripts]
+dataeyes-mcp-server = "dataeyes_mcp_server:main"
