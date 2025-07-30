@@ -1,0 +1,28 @@
+[project]
+name = "pydouble-slit"
+version = "0.0.4"
+authors = [
+  { name = "Himanshu Mishra", email = "himanshu.mishra469@nmims.in" },
+]
+description = "A small example package for double slit simulation"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = { text = "MIT" }
+
+dependencies = [
+    "matplotlib",
+    "numpy",
+    "scipy"
+]
+
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["pydouble_slit"]
+
+[tool.setuptools.package-data]
+"pydouble_slit" = ["LICEN[CS]E*"]
