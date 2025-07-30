@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "asrbench-cli"
+version = "0.1.0"
+description = "A command-line tool for the ASRBench framework, simplifying audio transcription system benchmarking with a single config file, supporting popular and custom transcription systems"
+authors = ["ASRBench <asrbenchmark@gmail.com>"]
+readme = "README-pypi.md"
+packages = [{ include = "asrbench_cli" }]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Benchmark",
+]
+
+[tool.poetry.urls]
+"Documentation" = "https://asrbench.github.io/asrbench/cli/installation"
+"Source" = "https://github.com/ASRBench/asrbench-cli"
+"Bug Tracker" = "https://github.com/ASRBench/asrbench-cli/issues"
+
+[tool.poetry.scripts]
+cli = "asrbench_cli.cli: app"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+faster-whisper = "^1.0.3"
+vosk = "^0.3.45"
+transformers = "^4.44.2"
+librosa = "^0.10.2.post1"
+asrbench = "^0.1.0"
+openai-whisper = "20240930"
+typer = {extras = ["all"], version = "^0.13.1"}
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+blue = "^0.9.1"
+pytest = "^8.3.3"
+pytest-cov = "^6.0.0"
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
