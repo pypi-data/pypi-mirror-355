@@ -1,0 +1,73 @@
+[project]
+name = "fluidattacks-sifts"
+version = "0.2.14"
+description = ""
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "aioboto3==14.3.0",
+    "aiofiles==24.1.0",
+    "aiosqlite==0.21.0",
+    "asyncache==0.3.1",
+    "click==8.1.8",
+    "diskcache==5.6.3",
+    "fluidattacks-core==2.7.4",
+    "langsmith[openai-agents]>=0.4.1",
+    "litellm==1.71.2",
+    "more-itertools==10.7.0",
+    "openai==1.82.1",
+    "openai-agents==0.0.16",
+    "opensearch-py==2.8.0",
+    "orjson==3.10.18",
+    "platformdirs==4.3.8",
+    "pydantic==2.11.5",
+    "pyyaml==6.0.2",
+    "reactivex==4.0.4",
+    "redis==6.2.0",
+    "sarif-om==1.0.4",
+    "thefuzz==0.22.1",
+    "tinydb==4.8.2",
+    "types-aioboto3[dynamodb,sqs,s3]==14.3.0",
+    "voyageai==0.3.2",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.16.0",
+    "types-boto3>=1.37.38",
+    "pytest>=8.3.5",
+    "ruff>=0.9.9",
+    "types-aiofiles>=24.1.0.20241221",
+    "types-networkx>=3.4.2.20250304",
+    "types-requests>=2.32.0.20250306",
+    "types-pyyaml>=6.0.12.20241230",
+]
+notebook = [
+    "ipykernel>=6.29.5",
+    "itables>=2.4.0",
+    "pandas>=2.3.0",
+    "tabulate>=0.9.0",
+]
+
+[project.scripts]
+sifts-cli = "sifts.cli:main_cli"
+analysis-root-cli = "analysis_root:main_cli"
+
+[tool.setuptools]
+packages = [
+    "analysis_root",
+    "sifts",
+    "sifts.analysis",
+    "sifts.analysis.tools",
+    "sifts.cli",
+    "sifts.common_types",
+    "sifts.config",
+    "sifts.core",
+    "sifts.io",
+    "sifts.io.aws",
+    "sifts.io.db",
+    "sifts.io.vcs",
+    "sifts.llm",
+]
+package-data = { "sifts" = ["static/**", "py.typed"] }
+include-package-data = true
