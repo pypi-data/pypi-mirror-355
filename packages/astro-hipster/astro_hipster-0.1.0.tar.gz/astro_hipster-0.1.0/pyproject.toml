@@ -1,0 +1,71 @@
+[project]
+name = "astro-hipster"
+version = "0.1.0"
+description = "Generate HiPS representation"
+authors = [
+  {name = "Kai Polsterer", email = "kai.polsterer@h-its.org"},
+  {name = "Bernd Doser", email = "bernd.doser@h-its.org"},
+  {name = "Andreas Fehlner", email = "andreas.fehlner@h-its.org"},
+  {name = "Sebastian T. Gomez", email = "sebastian.trujillogomez@h-its.org"},
+]
+license = "Apache-2.0"
+readme = "README.md"
+
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "astropy>=6.1", # version 7 doesn't support python 3.10
+    "gaiaxpy>=2.1",
+    "healpy>=1.18",
+    "jsonargparse[omegaconf]>=4.37",
+    "matplotlib>=3.10",
+    "onnxruntime-gpu>=1.21",
+    "pandas>2.2",
+    "pyarrow>=20.0",
+    "scipy>1.15",
+    "tqdm>=4.67",
+    "jinja2>3.1",
+    "streamlit>=1.44",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ipykernel >=6.29",
+    "pytest >=8.3",
+    "ruff >=0.11",
+]
+
+[project.scripts]
+hipster = 'hipster.main:main'
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.pytest]
+timeout = 300
+testpaths = 'tests'
+xfail_strict = true
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore:The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument",
+    "ignore:torch.onnx.dynamo_export only implements opset version 18 for now.",
+    "ignore:GPU available but not used.",
+    "ignore:You requested to overfit but enabled train dataloader shuffling.",
+]
+
+[tool.pylint.TYPECHECK]
+generated-members = 'numpy.*, torch.*'
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
