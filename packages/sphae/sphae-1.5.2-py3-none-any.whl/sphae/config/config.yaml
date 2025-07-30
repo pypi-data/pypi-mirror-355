@@ -1,0 +1,34 @@
+resources:
+  smalljob:
+    cpu: 8
+    mem: 16000
+    time: 480
+  bigjob:
+    cpu: 32
+    mem: 64000
+    time: 480
+
+params:
+  no_medaka: False
+  medaka: "r1041_e82_400bps_sup_v4.2.0" # the current default in medaka v1.8 and the most recent model
+  flye: "--nano-hq"
+  genomeSize: 44k 
+  min_mean_quality: 9 
+  min_length: 1000 
+  bases: 10000000
+  gene-predict: 'phanotate'
+  #gene-predict: 'prodigal-gv' #to test alternate codons, uncomment this
+
+db:
+  pfam: "ftp://ftp.ebi.ac.uk/pub/databases/Pfam/releases/"
+  pfam_file: 'Pfam35.0/Pfam-A.hmm.gz'
+  models: "https://zenodo.org/record/8198288/files/phynteny_models_v0.1.11.tar.gz"
+
+args:
+  output: "sphae.out"
+  vv_db: $VVDB
+  checkv_db: $CHECKVDB
+  pharokka_db: $PHAROKKADB
+  phynteny_db: $PHYNTENYDB
+  phold_db: $PHOLDDB
+  medaka: $MEDAKAMODEL
