@@ -1,0 +1,96 @@
+Metadata-Version: 2.4
+Name: pygis
+Version: 0.10.0
+Summary: A Python package for installing commonly used packages for GIS programming.
+Author-email: Qiusheng Wu <giswqs@gmail.com>
+License: MIT license
+Project-URL: Homepage, https://github.com/opengeos/pygis
+Keywords: pygis
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: duckdb
+Requires-Dist: duckdb-engine
+Requires-Dist: ffmpeg-python
+Requires-Dist: geeadd
+Requires-Dist: geemap>=0.35.3
+Requires-Dist: geopandas
+Requires-Dist: ipykernel
+Requires-Dist: jupysql
+Requires-Dist: jupyter-server-proxy
+Requires-Dist: leafmap>=0.48.0
+Requires-Dist: mapclassify
+Requires-Dist: maplibre
+Requires-Dist: mapwidget
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: planetary-computer
+Requires-Dist: pmtiles
+Requires-Dist: pooch
+Requires-Dist: shapely
+Requires-Dist: solara
+Requires-Dist: voila
+Requires-Dist: voila-topbar
+Requires-Dist: whiteboxgui
+Requires-Dist: xarray
+Provides-Extra: raster
+Requires-Dist: rasterio; extra == "raster"
+Requires-Dist: rioxarray; extra == "raster"
+Requires-Dist: earthaccess; extra == "raster"
+Requires-Dist: hypercoast; extra == "raster"
+Requires-Dist: geedim; extra == "raster"
+Requires-Dist: py3dep; extra == "raster"
+Provides-Extra: lidar
+Requires-Dist: laspy[laszip,lazrs]; extra == "lidar"
+Requires-Dist: pyntcloud[LAS]; extra == "lidar"
+Requires-Dist: pyvista[all]; extra == "lidar"
+Provides-Extra: vector
+Requires-Dist: overturemaps; extra == "vector"
+Requires-Dist: fiona; extra == "vector"
+Provides-Extra: plot
+Requires-Dist: pygis[all]; extra == "plot"
+Requires-Dist: kaleido; extra == "plot"
+Provides-Extra: all
+Requires-Dist: pygis[lidar,raster,vector]; extra == "all"
+Dynamic: license-file
+
+# pygis
+
+[![image](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/opengeos/pygis/HEAD)
+[![image](https://img.shields.io/pypi/v/pygis.svg)](https://pypi.python.org/pypi/pygis)
+[![image](https://img.shields.io/conda/vn/conda-forge/pygis.svg)](https://anaconda.org/conda-forge/pygis)
+[![image](https://pepy.tech/badge/pygis)](https://pepy.tech/project/pygis)
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pygis.svg)](https://anaconda.org/conda-forge/pygis)
+[![Conda Recipe](https://img.shields.io/badge/recipe-pygis-green.svg)](https://github.com/conda-forge/pygis-feedstock)
+[![image](https://img.shields.io/badge/YouTube-Channel-red)](https://www.youtube.com/c/QiushengWu)
+[![image](https://img.shields.io/twitter/follow/giswqs?style=social)](https://twitter.com/giswqs)
+
+**A Python package for installing commonly used packages for GIS programming.**
+
+- Free software: MIT license
+- Documentation: https://pygis.gishub.org
+
+[![](https://i.imgur.com/bKFts2R.png)](https://pygis.gishub.org)
+
+To use pygis with Docker, you can pull the image from Docker Hub:
+
+```bash
+docker pull giswqs/pygis:latest
+docker run -it -p 8888:8888 -v $(pwd):/home/jovyan/work giswqs/pygis:latest
+```
+
+To build the Docker image from scratch using the Dockerfile in the root directory, you can run:
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -t giswqs/pygis:latest .
+docker push giswqs/pygis:latest
+```
