@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: concurry
+Version: 0.1.0
+Summary: A unified, delightful Python concurrency library
+Author-email: Abhishek Divekar <adivekar@utexas.edu>
+License-File: LICENSE
+Keywords: async,concurrency,multiprocessing,parallel,ray,threading
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Distributed Computing
+Requires-Python: >=3.10
+Requires-Dist: autoenum>=1.0.0
+Requires-Dist: tqdm>=4.60.0
+Provides-Extra: all
+Requires-Dist: cloudpickle>=2.0.0; extra == 'all'
+Requires-Dist: ray>=2.0.0; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: black>=21.0; extra == 'dev'
+Requires-Dist: flake8>=3.8; extra == 'dev'
+Requires-Dist: mypy>=0.900; extra == 'dev'
+Requires-Dist: pytest-cov>=2.0; extra == 'dev'
+Requires-Dist: pytest>=6.0; extra == 'dev'
+Provides-Extra: ray
+Requires-Dist: cloudpickle>=2.0.0; extra == 'ray'
+Requires-Dist: ray>=2.0.0; extra == 'ray'
+Description-Content-Type: text/markdown
+
+## My Project
+
+TODO: Fill this README out!
+
+Be sure to:
+
+* Change the title in this README
+* Edit your repository description on GitHub
+
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This project is licensed under the Apache-2.0 License.
+
