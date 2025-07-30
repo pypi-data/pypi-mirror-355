@@ -1,0 +1,62 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python package
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: False
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        numpy-version: [ "numpy<2.0" , "numpy>=2.0" ]
+
+    steps:
+         # try to cache package install
+    - uses: ConorMacBride/install-package@v1
+      with:
+          apt: protobuf-compiler
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }} ${{ matrix.numpy-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache-dependency-path: |
+           **/pyproject.toml
+           **/requirements*.txt
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip wheel pytest flake8
+        # python -m pip install flake8 pytest wheel build
+        # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: build and binary module
+      run: |
+        python -m pip wheel ./
+        python -m pip install ./
+
+    #- name: Archive wheel
+    #  uses: actions/upload-artifact@v4
+    #  with:
+    #    name: bact_archiver_${{ matrix.python-version }}
+    #    path: bact_archiver*.whl
+    #    retention-days: 14
+
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Test with pytest
+      run: |
+        (cd tests && python -m pytest --log-cli-level INFO)
