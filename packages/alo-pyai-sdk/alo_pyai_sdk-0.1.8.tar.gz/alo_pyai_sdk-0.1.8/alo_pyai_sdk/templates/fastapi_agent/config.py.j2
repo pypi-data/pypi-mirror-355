@@ -1,0 +1,193 @@
+from pathlib import Path
+from typing import Any, Type, Dict 
+from pydantic_ai import models # Keep for infer_model and base Model type
+
+# Import Models
+from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.models.anthropic import AnthropicModel
+from pydantic_ai.models.gemini import GeminiModel
+from pydantic_ai.models.google import GoogleModel
+from pydantic_ai.models.groq import GroqModel
+from pydantic_ai.models.mistral import MistralModel
+from pydantic_ai.models.cohere import CohereModel
+from pydantic_ai.models.bedrock import BedrockConverseModel
+
+# Import Providers
+from pydantic_ai.providers.openai import OpenAIProvider
+from pydantic_ai.providers.anthropic import AnthropicProvider
+from pydantic_ai.providers.google_gla import GoogleGLAProvider
+from pydantic_ai.providers.google_vertex import GoogleVertexProvider
+from pydantic_ai.providers.google import GoogleProvider # For GoogleModel with Vertex
+from pydantic_ai.providers.groq import GroqProvider
+from pydantic_ai.providers.mistral import MistralProvider
+from pydantic_ai.providers.cohere import CohereProvider
+from pydantic_ai.providers.bedrock import BedrockProvider
+
+
+# Assuming alo_pyai_sdk.core.config_manager is available in the generated agent's environment
+# This might require the SDK to be installed or added to PYTHONPATH for the generated agent
+# For a self-contained agent, this logic might need to be part of the agent's own utils
+# or the GlobalConfig/LLMConfig models would need to be copied/redefined.
+# For now, we assume the SDK's core modules are accessible.
+try:
+    from alo_pyai_sdk.core import config_manager
+except ImportError:
+    # Fallback or simplified config loading if alo_pyai_sdk is not in PYTHONPATH
+    # This is a basic fallback, a real app might need a more robust solution
+    # or ensure the SDK is installed in its environment.
+    print("Warning: alo_pyai_sdk.core.config_manager not found. Using simplified config loading.")
+    # Define a simplified version or raise a more specific error
+    class SimpleLLMConfig:
+        def __init__(self, provider, api_key=None, model_name=None, base_url=None, extra_args=None):
+            self.provider = provider
+            self.api_key = api_key
+            self.model_name = model_name
+            self.base_url = base_url
+            self.extra_args = extra_args if extra_args is not None else {}
+
+    class SimpleGlobalConfig:
+        def __init__(self):
+            self.llms = {}
+
+    class ConfigManagerMock:
+        def load_config(self, project_root: Path) -> SimpleGlobalConfig:
+            # This mock would not actually load from YAML.
+            # It's a placeholder to prevent import errors if the SDK isn't installed
+            # where the agent runs. The agent would then rely on Pydantic-AI's
+            # default behavior (e.g., environment variables for API keys).
+            print(f"Mock ConfigManager: Not loading from YAML. LLM config '{settings.LLM_CONFIG_NAME}' must be resolvable by Pydantic-AI directly or via env vars.")
+            cfg = SimpleGlobalConfig()
+            # Populate with a fallback if needed, or let Pydantic-AI handle it
+            cfg.llms[settings.LLM_CONFIG_NAME] = SimpleLLMConfig(
+                provider=settings.LLM_CONFIG_NAME.split(":")[0] if ":" in settings.LLM_CONFIG_NAME else "openai", # crude provider guess
+                model_name=settings.LLM_CONFIG_NAME.split(":")[1] if ":" in settings.LLM_CONFIG_NAME else settings.LLM_MODEL_IDENTIFIER_FALLBACK.split(":")[1]
+            )
+            return cfg
+    config_manager = ConfigManagerMock()
+
+# --- Agent Specific Settings (from .env or direct) ---
+# These would typically be loaded using a library like python-dotenv if you use a .env file
+# For simplicity, we might use os.getenv or hardcode for templates,
+# but a robust app would use a proper settings management (e.g. Pydantic-Settings).
+
+class AgentSettings:
+    LLM_CONFIG_NAME: str = "{{ llm_config_name }}"
+    LLM_MODEL_IDENTIFIER_FALLBACK: str = "{{ llm_model_identifier_fallback }}" # e.g., "openai:gpt-4o"
+    AGENT_RETRIES: int = 1 # Default retries for the agent
+    
+    # Settings needed for registry communication, passed from generate command context
+    SERVICE_ID: str = "{{ agent_service_id }}"
+    AGENT_NAME: str = "{{ agent_name }}"
+    AGENT_DESCRIPTION: str = "{{ agent_description }}"
+    AGENT_HOST: str = "{{ agent_host | default('0.0.0.0') }}" # Host the agent service runs on
+    AGENT_PORT: int = {{ agent_port | default(8001) }} # Port the agent service runs on
+    REGISTRY_URL: str = "{{ registry_url }}" # URL of the Agent Registry
+
+settings = AgentSettings()
+# --- End Agent Specific Settings ---
+
+# Determine project root - assumes agent is run from project root
+# or that this module is discoverable relative to a project root in PYTHONPATH.
+# A more robust solution might involve environment variables or a discoverable marker.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent # agents/{agent_id}/config.py -> project_root
+
+def get_pydantic_ai_model(llm_config_name: str) -> models.Model:
+    """
+    Loads the specified LLM configuration from the project's alo_config.yaml
+    and returns an initialized Pydantic-AI Model instance.
+    """
+    global_config = config_manager.load_config(PROJECT_ROOT)
+    
+    if llm_config_name not in global_config.llms:
+        raise ValueError(f"LLM configuration '{llm_config_name}' not found in alo_config.yaml.")
+        
+    llm_conf = global_config.llms[llm_config_name]
+    
+    provider_key = llm_conf.provider.lower()
+
+    provider_class_map: Dict[str, Dict[str, Type]] = {
+        "openai": {"model": OpenAIModel, "provider_sdk": OpenAIProvider},
+        "anthropic": {"model": AnthropicModel, "provider_sdk": AnthropicProvider},
+        "google-gla": {"model": GeminiModel, "provider_sdk": GoogleGLAProvider},
+        "google-vertex": {"model": GoogleModel, "provider_sdk": GoogleProvider},
+        "groq": {"model": GroqModel, "provider_sdk": GroqProvider},
+        "mistral": {"model": MistralModel, "provider_sdk": MistralProvider},
+        "cohere": {"model": CohereModel, "provider_sdk": CohereProvider},
+        "bedrock": {"model": BedrockConverseModel, "provider_sdk": BedrockProvider},
+    }
+    
+    model_class_info = provider_class_map.get(provider_key)
+    model_class = model_class_info.get("model") if model_class_info else None
+    
+    model_args: dict[str, Any] = {}
+    actual_model_name = llm_conf.model_name
+
+    if model_class_info and model_class_info.get("provider_sdk"):
+        provider_sdk_class = model_class_info["provider_sdk"]
+        provider_init_args: dict[str, Any] = {}
+        
+        if llm_conf.api_key:
+            provider_init_args["api_key"] = llm_conf.api_key
+        if llm_conf.base_url and provider_key in ["openai", "mistral", "deepseek"]:
+             provider_init_args["base_url"] = llm_conf.base_url
+        
+        if provider_key == "google-vertex":
+            project_arg = llm_conf.extra_args.get("project_id") if llm_conf.extra_args else None
+            location_arg = llm_conf.extra_args.get("region") if llm_conf.extra_args else None
+            # For GoogleVertexProvider, pass project and location directly
+            # The GoogleProvider (for google-genai) takes 'project' and 'location'
+            if project_arg: provider_init_args["project"] = project_arg
+            if location_arg: provider_init_args["location"] = location_arg
+            provider_init_args["vertexai"] = True # Ensure GoogleProvider is in Vertex mode
+            if not actual_model_name: actual_model_name = "gemini-1.5-pro"
+        elif provider_key == "bedrock":
+            if llm_conf.extra_args:
+                aws_args = {k: v for k, v in llm_conf.extra_args.items() if k in ["region_name", "aws_access_key_id", "aws_secret_access_key", "aws_session_token", "profile_name"]}
+                provider_init_args.update(aws_args)
+            if not actual_model_name: actual_model_name = "anthropic.claude-3-5-sonnet-latest"
+
+        # Instantiate provider if args are present or if it's a type that can be parameterless
+        if provider_init_args or provider_key in ["google-gla", "openai", "bedrock"]:
+            try:
+                if provider_key == "google-gla" and not llm_conf.api_key: # GoogleGLAProvider can be parameterless
+                     model_args["provider"] = GoogleGLAProvider()
+                elif provider_key == "openai" and not llm_conf.api_key and not llm_conf.base_url: # OpenAIProvider can be parameterless
+                     model_args["provider"] = OpenAIProvider()
+                # BedrockProvider can also be parameterless if AWS env vars are set
+                elif provider_key == "bedrock" and not provider_init_args:
+                     model_args["provider"] = BedrockProvider()
+                else:
+                    model_args["provider"] = provider_sdk_class(**provider_init_args)
+            except Exception as e:
+                print(f"Warning: Could not initialize provider {provider_sdk_class.__name__} with args {provider_init_args}: {e}. Relying on infer_model.")
+                if "provider" in model_args: del model_args["provider"]
+
+    if not actual_model_name:
+        if provider_key == "openai": actual_model_name = "gpt-4o"
+        elif provider_key == "anthropic": actual_model_name = "claude-3-5-sonnet-latest"
+        elif provider_key == "google-gla": actual_model_name = "gemini-1.5-flash"
+        else: actual_model_name = "default"
+
+    if model_class:
+        try:
+            return model_class(model_name=actual_model_name, **model_args)
+        except Exception as e:
+            print(f"Warning: Could not directly instantiate {model_class.__name__} with name '{actual_model_name}' and args {model_args}: {e}. Falling back to infer_model.")
+            pass
+
+    model_identifier = f"{llm_conf.provider}:{actual_model_name}" if actual_model_name != "default" else llm_conf.provider
+    if "provider" in model_args:
+        return models.infer_model(model_identifier, provider=model_args["provider"])
+    
+    return models.infer_model(model_identifier)
+
+# Example of how agent_definition.py might use this:
+# from .config import get_pydantic_ai_model
+#
+# LLM_CONFIG_NAME = "{{ llm_config_name }}" # This would be templated
+# configured_model = get_pydantic_ai_model(LLM_CONFIG_NAME)
+#
+# agent = Agent(
+# model=configured_model,
+# ...
+# )

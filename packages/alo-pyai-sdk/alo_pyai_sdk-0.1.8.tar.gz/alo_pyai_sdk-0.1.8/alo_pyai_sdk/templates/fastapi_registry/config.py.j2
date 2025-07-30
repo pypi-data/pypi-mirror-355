@@ -1,0 +1,29 @@
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+class RegistryAppSettings(BaseSettings):
+    """
+    Configuration settings for the Agent Registry application.
+    These can be loaded from environment variables or a .env file.
+    """
+    # Example: Database URL for persistent storage
+    # DATABASE_URL: str = "sqlite:///./registry.db" 
+
+    # Example: Secret key for any signed cookies or tokens if needed
+    # SECRET_KEY: str = "your-secret-key-here"
+
+    # Project name and version can be passed from the SDK generator
+    PROJECT_NAME: str = "{{ project_name }}"
+    SDK_VERSION: str = "{{ sdk_version }}"
+    REGISTRY_PORT: int = {{ registry_port | default(8000) }}
+
+    model_config = SettingsConfigDict(env_prefix="REGISTRY_")
+
+settings = RegistryAppSettings()
+
+if __name__ == "__main__":
+    # For testing the settings loading
+    print("Registry App Settings:")
+    print(f"  Project Name: {settings.PROJECT_NAME}")
+    print(f"  SDK Version: {settings.SDK_VERSION}")
+    print(f"  Registry Port: {settings.REGISTRY_PORT}")
+    # print(f"  Database URL: {settings.DATABASE_URL}")
