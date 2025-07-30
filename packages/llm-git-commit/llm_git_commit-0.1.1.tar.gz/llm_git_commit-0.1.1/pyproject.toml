@@ -1,0 +1,25 @@
+[project]
+name = "llm-git-commit"
+version = "0.1.1"
+description = "LLM plugin to generate git commit messages and interactively commit."
+readme = "README.md" 
+authors = [{name = "shamanic", email = "shamanicbeatbox@gmail.com"}] 
+license = {text = "Apache-2.0"} 
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+
+]
+dependencies = [
+    "llm",
+    "click",
+    "prompt-toolkit"
+]
+requires-python = ">=3.8"
+
+# Optional: Add links to your repository if you plan to host it\
+[project.urls]
+Homepage = "https://github.com/shamanicvocalarts/llm-git-commit"
+Issues = "https://github.com/shamanicvocalarts/llm-git-commit"
+
+[project.entry-points.llm]
+git-commit = "llm_git_commit"
