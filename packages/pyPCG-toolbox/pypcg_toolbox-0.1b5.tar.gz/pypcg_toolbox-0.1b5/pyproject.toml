@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyPCG_toolbox"
+version = "0.1b5"
+authors = [
+  { name="Kristóf Müller"},
+  { name="Janka Hatvani"},
+  { name="Miklós Koller"},
+  { name="Márton Áron Goda"},
+]
+maintainers = [
+  { name="Kristóf Müller", email = "muller.kristof@itk.ppke.hu"},
+]
+description = "A PCG processing toolbox"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering"
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/mulkr/pyPCG-toolbox/"
+Documentation = "https://pypcg-toolbox.readthedocs.io/en/latest/"
+Repository = "https://github.com/mulkr/pyPCG-toolbox.git"
+Issues = "https://github.com/mulkr/pyPCG-toolbox/issues"
+
+[tool.setuptools]
+packages = ["pyPCG"]
+
+[tool.setuptools.package-data]
+data = ["*.wav","*.json","*.mat"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
