@@ -1,0 +1,21 @@
+[project]
+name = "pfun-path-helper"
+version = "0.1.2"
+description = "Path helper script, appends relevant paths to sys.path to ease multi-package development."
+authors = [{name = "Robbie Capps", email = "rocapp@gmail.com"}]
+dependencies = [
+    "build>=1.0.3",
+    "setuptools>=68.2.2",
+    "uv>=0.7.13"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.2",
+    "ipython>=8.16.1",
+    "tox>=3.23.0"
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
