@@ -1,0 +1,396 @@
+Metadata-Version: 2.1
+Name: simplegraphics-python
+Version: 1.0.12
+Summary: A simple graphics wrapper on top of tkinter
+Home-page: https://cspages.ucalgary.ca/~bdstephe/217_P24/
+Author: Ben Stephenson
+Author-email: ben.stephenson@ucalgary.ca
+Maintainer: Grygoriy Gromko
+Maintainer-email: gr.gromko@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.1.0
+Description-Content-Type: text/markdown
+
+****SimpleGraphics**** is a lightweight Python graphics library designed as a convenient wrapper around the standard ****tkinter**** library. Its primary purpose is to make graphical programming accessible even to beginners: simply import the module, and a graphics window opens automatically, without the need to create classes, objects or manually call mainloop.
+
+Unlike tkinter, where developers need to work with controls and other window components, events and geometry managers, SimpleGraphics allows you to focus on drawing, user interaction and animation.
+
+The library was created by ****Ben Stephenson****, a professor at the University of Calgary (Canada). It was developed for educational purposes and is actively used in introductory computer science courses.
+
+
+## Basic Drawing Functions
+
+
+### line(...)
+
+****Purpose:**** Draws a line (or polyline) connecting multiple points (x1, y1, x2, y2, ...).
+
+****Example:****
+
+line(10, 10, 100, 100)
+
+
+### curve(...)
+
+****Purpose:**** Draws a smooth curve passing through given points.
+
+****Example:****
+
+curve(10, 10, 60, 30, 100, 10)
+
+
+### blob(...)
+
+****Purpose:**** Draws a closed smooth curve (spline), similar to a freeform shape.
+
+****Example:****
+
+blob(50, 100, 100, 150, 150, 100, 100, 50)
+
+
+### rect(x, y, w, h)
+
+****Purpose:**** Draws a rectangle with top-left corner at (x, y) and specified width and height.
+
+****Example:****
+
+rect(50, 50, 100, 60)
+
+
+### ellipse(x, y, w, h)
+
+****Purpose:**** Draws an ellipse inscribed in a rectangle with coordinates (x, y) and dimensions w, h.
+
+****Example:****
+
+ellipse(30, 30, 120, 80)
+
+
+### circle(x, y, d)
+
+****Purpose:**** Draws a circle with center at (x, y) and diameter d.
+
+****Example:****
+
+circle(100, 100, 50)
+
+
+### arc(x, y, w, h, start, extent)
+
+****Purpose:**** Draws an elliptical arc starting at angle start (in degrees) spanning extent degrees.
+
+****Example:****
+
+arc(60, 60, 100, 100, 0, 90)
+
+
+### pieSlice(x, y, w, h, start, extent)
+
+****Purpose:**** Draws a pie slice (like a pizza slice) based on an arc.
+
+****Example:****
+
+pieSlice(50, 50, 100, 100, 0, 45)
+
+
+### polygon(...)
+
+****Purpose:**** Draws a filled polygon through a list of points.
+
+****Example:****
+
+polygon(10, 10, 100, 50, 50, 100)
+
+
+### text(x, y, what, align="c", ang=0)
+
+****Purpose:**** Displays text at point (x, y). Alignment (align) and rotation angle (ang) can be modified.
+
+****Example:****
+
+text(200, 150, "Hello, world!", align="c", ang=0)
+
+## Color and Font
+
+
+### setColor(r, g=None, b=None)
+
+****Purpose:**** Sets both fill and outline colors simultaneously.
+
+****Example:****
+
+setColor("blue")
+
+
+### setFill(...), setOutline(...)
+
+****Purpose:**** Sets fill or outline colors separately.
+
+****Example:****
+
+setFill("yellow")
+
+setOutline(255, 0, 0)
+
+
+### setWidth(w)
+
+****Purpose:**** Sets line thickness in pixels.
+
+****Example:****
+
+setWidth(4)
+
+
+### setFont(family, size, modifiers)
+
+****Purpose:**** Sets text font. Modifiers like "bold", "italic", "underline" can be added.
+
+****Example:****
+
+setFont("Arial", 14, "bold italic")
+
+## Window Management
+
+
+### resize(w, h)
+
+****Purpose:**** Changes the graphics window size.
+
+****Example:****
+
+resize(1024, 768)
+
+
+### background(color)
+
+****Purpose:**** Sets window background color.
+
+****Example:****
+
+background("lightgray")
+
+
+### getWidth(), getHeight()
+
+****Purpose:**** Returns window dimensions in pixels.
+
+****Example:****
+
+w, h = getWidth(), getHeight()
+
+## Keyboard Interaction
+
+
+### getTyped()
+
+****Purpose:**** Returns user input text and clears the buffer.
+
+
+### peekTyped()
+
+****Purpose:**** Returns text without clearing the buffer.
+
+
+### getKeys(), peekKeys(), getHeldKeys()
+
+****Purpose:**** Works with pressed keys (single press or held keys).
+
+## Mouse Interaction
+
+
+### mousePos(), mouseX(), mouseY()
+
+****Purpose:**** Returns mouse cursor coordinates.
+
+
+### leftButtonPressed(), middleButtonPressed(), rightButtonPressed()
+
+****Purpose:**** Checks if corresponding mouse button is pressed.
+
+
+### getMouseEvent(), peekMouseEvent(), clearMouseEvents()
+
+****Purpose:**** Works with mouse event queue (presses, releases).
+
+## Animation
+
+
+### doAnimate(func)
+
+****Purpose:**** Starts continuous execution of a function for animation.
+
+
+### noAnimate()
+
+****Purpose:**** Stops animation.
+
+
+### animationTime(ms)
+
+****Purpose:**** Sets or returns frame interval in milliseconds (default is 50).
+
+****Example:****
+
+from SimpleGraphics import \*
+
+shape = circle(0, 0, 50)
+
+def animate():
+
+    move(shape, mouseX(), mouseY())
+
+doAnimate(animate)
+
+## Object Manipulation
+
+
+### move(obj, x, y)
+
+****Purpose:**** Moves object to new position.
+
+
+### delete(obj), clear()
+
+****Purpose:**** Deletes object or all objects.
+
+
+### scale(obj, xs, ys), putUp(obj), putDown(obj)
+
+****Purpose:**** Scales object, changes display order.
+
+
+### checkCollision(obj1, obj2)
+
+****Purpose:**** Returns True if two objects intersect.
+
+## Image Handling
+
+
+### createImage(w, h), loadImage(fname)
+
+****Purpose:**** Creates or loads an image.
+
+
+### putPixel(img, x, y, r, g, b), getPixel(img, x, y)
+
+****Purpose:**** Works with image pixels.
+
+
+### drawImage(img, x, y)
+
+****Purpose:**** Draws image on window.
+
+
+### savePPM(img, fname), saveGIF(img, fname), saveEPS(fname)
+
+****Purpose:**** Saves images or entire window to file.
+
+## Termination
+
+
+### update()
+
+****Purpose:**** Forces window content update.
+
+
+### close(), closed()
+
+****Purpose:**** Closes or checks window status.
+
+
+### version()
+
+****Purpose:**** Returns library version
+
+## Sample Program
+
+from SimpleGraphics import \*
+
+setColor("red")
+
+circle(200, 150, 100)
+
+setFill("yellow")
+
+rect(150, 250, 100, 60)
+
+text(200, 340, "SimpleGraphics!")
+  
+
+  Known Bugs: 
+    * It appears that different operating systems number the buttons
+      differently.  While button 1 always seems to be the left button, 
+      whether button 2 is the right button or the middle button seems to vary.
+
+    * Changing to a new font using setFont and then displaying text can
+      result in previously drawn text being updated to use the new font.
+      The exact circumstances that cause this to occur are currently unclear.
+
+    * Resize seems to fail on occasion.  The program that displays 
+      all of the colors has demonstrated this behaviour occasionally.
+
+    * No event is captured when the user resizes the window with the mouse.
+      The canvas should be resized to match the window so that getWidth() and
+      getHeight() can be used to help scale a drawing to fit the window.
+
+    * Resize doesn't seem to be actually resizing the window on some versions 
+      of Cygwin -- It just resizes the canvas and the window fails to resize 
+      with it.  Could this be related to the resize bug noted previously?
+
+  Please report bugs by sending email to ben.stephenson@ucalgary.ca.
+
+  Revision History:
+    v1.0.0 -- Publicly released January 23, 2014
+    v1.0.1 -- Publicly released February 7, 2014
+              Added close function to allow the programmer to close the window
+              Added the setWindowTitle function to allow the programmer
+                to change the contents of the window's title bar
+              SimpleGraphics now maintains a list of image references
+                so that images don't disappear when the function ends
+              setWidth() now impacts polygons, blobs, arcs and pie slices
+    v1.0.2 -- Publicly released February 16, 2014
+              Fixed a bug in the close function where it could attempt
+                to invoke a method on a None object without successfully
+                catching the exception.
+    v1.0.3 -- Publicly released August 19, 2014
+              Added savePPM and saveGIF functions for images
+    v1.0.4 -- Publicly released September 26, 2014
+              Added a try/except around the import for unregister so a
+              better error message is displayed when SimpleGraphics.py is
+              run with Python 2.x.y
+    v1.0.5 -- Publicly released November 4, 2014
+              Adjusted the implementation of getPixel to adapt to
+              PhotoImage.get() returning a string in most versions, but a
+              tuple in Python 3.4.x for Windows.
+    v1.0.6 -- Publicly released September 4, 2015
+              Fixed several bugs related to drawing rectangles with widths 
+                and/or heights of 1.
+              Added a name to each font and improved the handling of font
+                modifiers.  This may have fixed the problem with setFont.
+              Added the fontList and setJoinStyle functions
+              Added the keys set and the functions for accessing it (getKeys,
+                getHeldKeys and peekKeys)
+    v1.0.7 -- Publicly released October 21, 2015
+              In Python 3.5.0 the % operator will not accept a floating
+                point value for a hexadecimal format.  Several int() casts 
+                were added to work around this problem.
+    v1.0.8 -- Publicly released March 17, 2017
+              Added setArrow so that lines and curves can include arrow heads
+              Added setArrowShape so that the shape of the arrowhead can be
+                controlled
+    v1.0.9 -- Publicly released October 3, 2017
+              Added exception checks to background and drawImage to avoid
+                crashes at shutdown when __canvas gets set to None before
+                the last drawing operations are attempted.
+    v1.0.10 -- Publicly released June 28, 2019
+               Fixed a bug where 1x1 rectangles were not being drawn
+               Fixed a bug where lists passed to the line function were being
+                 modified when they shouldn't be
+    v1.0.11 -- Publicly released April 28, 2024
+               Fixed a bug where rectangles with width 1 xor height 1 were
+               being drawn 1 pixel too narrow / 1 pixel too short
+               Added the optional angle argument parameter to text when
+               the Python version is greater than or equal to X.Y.Z.
