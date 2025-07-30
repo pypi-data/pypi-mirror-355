@@ -1,0 +1,67 @@
+[tool.poetry]
+name = "QuantStats-reloaded"
+version = "0.1.0"
+description = "Portfolio analytics for quants"
+authors = ["Aaron Yang <aaron_yang@jieyu.ai>"]
+license = "Apache Software License"
+readme = "README.md"
+repository = "https://github.com/zillionare/quantstats-reloaded"
+keywords = ["quant", "algotrading", "algorithmic-trading", "quantitative-trading", "quantitative-analysis", "algo-trading", "visualization", "plotting"]
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+packages = [{include = "quantstats"}]
+include = [
+    "LICENSE.txt",
+    "quantstats/report.html",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = ">=0.24.0"
+numpy = ">=1.16.5"
+seaborn = ">=0.9.0"
+matplotlib = ">=3.0.0"
+scipy = ">=1.2.0"
+tabulate = ">=0.8.0"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "*"
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+flake8 = "^6.1.0"
+black = "^23.11.0"
+tox = "^4.11.3"
+empyrical-reloaded = "^0.5.10"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
