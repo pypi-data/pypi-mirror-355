@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: buildingmotif
+Version: 0.4.0.dev6
+Summary: Building Metadata OnTology Interoperability Framework
+Home-page: https://github.com/NREL/BuildingMOTIF
+License: LICENSE
+Author: Hannah Eslinger
+Author-email: Hannah.Eslinger@nrel.gov
+Requires-Python: >=3.10,<3.13
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Provides-Extra: all
+Provides-Extra: all-ingresses
+Provides-Extra: bacnet-ingress
+Provides-Extra: postgres
+Provides-Extra: topquadrant
+Provides-Extra: xlsx-ingress
+Requires-Dist: Flask (>=2.1.2,<3.0.0)
+Requires-Dist: Flask-API (>=3.0.post1,<4.0)
+Requires-Dist: SQLAlchemy[mypy] (>=1.4.44,<2.0.0)
+Requires-Dist: alembic (>=1.8.0,<2.0.0)
+Requires-Dist: brick-tq-shacl (==0.3.4a2) ; extra == "topquadrant"
+Requires-Dist: jsonschema (>=4.21.1,<5.0.0)
+Requires-Dist: matplotlib (>=3.9.2,<4.0.0)
+Requires-Dist: nbmake (>=1.3.0,<2.0.0)
+Requires-Dist: networkx (>=3.4.2,<4.0.0)
+Requires-Dist: pandas (>=2.2.3,<3.0.0)
+Requires-Dist: psycopg2 (>=2.9.5,<3.0.0) ; extra == "all" or extra == "postgres"
+Requires-Dist: pyaml (>=21.10.1,<22.0.0)
+Requires-Dist: pygit2 (>=1.17,<1.18)
+Requires-Dist: pyshacl (>=0.30,<0.31)
+Requires-Dist: rdflib (>=7.0)
+Requires-Dist: rdflib-sqlalchemy (>=0.5.3,<0.6.0)
+Requires-Dist: rfc3987 (>=1.3.8,<2.0.0)
+Requires-Dist: setuptools (>=73.0.1,<74.0.0)
+Requires-Dist: types-PyYAML (>=6.0.4,<7.0.0)
+Requires-Dist: types-jsonschema (>=4.21.0.20240311,<5.0.0.0)
+Requires-Dist: werkzeug (>=2.3.7,<3.0.0)
+Project-URL: Documentation, https://buildingmotif.readthedocs.io/
+Project-URL: Repository, https://github.com/NREL/BuildingMOTIF
+Description-Content-Type: text/markdown
+
+# BuildingMOTIF
+
+[![codecov](https://codecov.io/gh/NREL/BuildingMOTIF/branch/main/graph/badge.svg?token=HAFSYH45NX)](https://codecov.io/gh/NREL/BuildingMOTIF)
+[![Documentation Status](https://readthedocs.org/projects/buildingmotif/badge/?version=latest)](https://buildingmotif.readthedocs.io/en/latest/?badge=latest)
+![PyPI](https://img.shields.io/pypi/v/buildingmotif)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/buildingmotif)
+
+> *Enabling the enabling technology of semantic interoperability.*
+
+Semantic Interoperability in buildings through standardized semantic metadata is crucial in unlocking the value of the abundant and diverse networked data in buildings, avoiding subsequent data incompatibility/interoperability issues, and paving the way for advanced building technologies like Fault Detection and Diagnostics (FDD), real-time energy optimization, other energy management information systems ([EMIS](https://www.energy.gov/eere/femp/what-are-energy-management-information-systems)), improved HVAC controls, and grid-integrated energy efficient building ([GEB](https://www.energy.gov/eere/buildings/grid-interactive-efficient-buildings)) technologies, all of which are needed to fully de-carbonize buildings.
+
+Utilizing the capabilities of [Semantic Web](https://www.w3.org/standards/semanticweb/), it is possible to standardize building metadata in structured, expressive, and machine-readable way, but at the same time it is very important to make it easier to implement for field practitioners without advanced knowledge in computer science. ***Building Metadata OnTology Interoperability Framework (BuildingMOTIF)*** bridges that gap between theory and practice, by offering a toolset for building metadata creation, storage, visualization, and validation. It is offered in the form of a SDK with easy-to-use APIs, which abstract the underlying complexities of [RDF](https://www.w3.org/RDF/) graphs, database management, [SHACL](https://www.w3.org/TR/shacl/) validation, and interoperability between different metadata schemas/ontologies. It also supports connectors for easier integration with existing metadata sources (e.g., Building Automation System data, design models, existing metadata models, etc.) which are available at different phases of the building life-cycle.
+
+The objectives of the ***BuildingMOTIF*** toolset are to (1) lower costs, reduce installation time, and improve delivered quality of building controls and services for building owners and occupants, (2) enable a simpler and more easily verifiable procurement process for products and services for building managers, and (3) open new business opportunities for service providers, by removing knowledge barriers for parties implementing building controls and services.
+
+Currently, ***BuildingMOTIF*** is planned to support [Brick](https://brickschema.org/) Schema, [Project Haystack](https://project-haystack.org/), and the upcoming [ASHRAE 223P](https://www.ashrae.org/about/news/2018/ashrae-s-bacnet-committee-project-haystack-and-brick-schema-collaborating-to-provide-unified-data-semantic-modeling-solution) standard, and to offer both UI and underlying SDK with tutorials and reference documentation to be useful for different levels of expertise of users for maximum adoption.
+
+# Documentation
+
+The documentation uses Diataxis[^1] as a framework for its structure, which is organized into the following sections.
+
+[^1]: https://diataxis.fr/
+
+## Reference
+
+- [Developer Documentation](https://nrel.github.io/BuildingMOTIF/reference/developer_documentation.html)
+- [Command Line Interface](https://nrel.github.io/BuildingMOTIF/reference/cli_tool.html)
+- [Code Documentation](https://nrel.github.io/BuildingMOTIF/reference/apidoc/index.html)
+
+## Tutorials
+
+- [Model Creation](https://nrel.github.io/BuildingMOTIF/tutorials/model_creation.html)
+- [Model Validation](https://nrel.github.io/BuildingMOTIF/tutorials/model_validation.html)
+- [Model Correction](https://nrel.github.io/BuildingMOTIF/tutorials/model_correction.html)
+- [Template Writing](https://nrel.github.io/BuildingMOTIF/tutorials/template_writing.html)
+
+## Guides
+
+- [CSV Import](https://nrel.github.io/BuildingMOTIF/guides/csv-import.html)
+- [Brick model from BACnet network guide](https://nrel.github.io/BuildingMOTIF/guides/bacnet-to-brick.html)
+
+## Explanations
+
+- [Ingresses](https://nrel.github.io/BuildingMOTIF/explainations/ingresses.html)
+
+## Appendix
+
+- [Bibiography](https://nrel.github.io/BuildingMOTIF/bibliography.html)
