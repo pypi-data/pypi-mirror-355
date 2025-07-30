@@ -1,0 +1,20 @@
+[project]
+name = "jiayihn-equipment-mcp"
+version = "0.1.1"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "xiechen", email = "xiechen@jiayihn.net" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.9.4",
+]
+
+[project.scripts]
+jiayihn-equipment-mcp = "jiayihn_equipment_mcp:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
