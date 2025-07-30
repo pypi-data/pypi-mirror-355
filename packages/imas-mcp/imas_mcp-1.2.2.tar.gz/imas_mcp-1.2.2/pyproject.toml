@@ -1,0 +1,162 @@
+[build-system]
+requires = [
+    "hatchling",
+    "hatch-vcs",
+    "pydantic>=2.11.4,<3.0.0",
+    "whoosh>=2.7.4,<3.0.0",
+    "pint>=0.24.4,<0.25.0",
+    "rich>=13.7.0,<14.0.0",
+    "packaging>=25.0,<26.0",
+    "click>=8.0.0,<9.0.0",
+    "imas-data-dictionary @ git+https://github.com/iterorganization/imas-data-dictionary.git@develop",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "imas-mcp"
+dynamic = ["version"]
+description = "An MCP Server for accessing the IMAS Data Dictionary"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+authors = [{ name = "Simon McIntosh", email = "simon.mcintosh@iter.org" }]
+license = { text = "CC BY-ND 4.0" }
+keywords = [
+    "IMAS",
+    "MCP",
+    "Model Context Protocol",
+    "Data Dictionary",
+    "Fusion",
+    "Plasma Physics",
+    "ITER",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database :: Database Engines/Servers",
+]
+dependencies = [
+    "mcp-cli>=0.1.0",
+    "fastmcp>=2.2.8,<3.0.0",
+    "pydantic>=2.11.4,<3.0.0",
+    "whoosh>=2.7.4,<3.0.0",
+    "pint>=0.24.4,<0.25.0",
+    "nest-asyncio>=1.5.0,<2.0.0",
+    "click>=8.0.0,<9.0.0",
+    "packaging>=25.0,<26.0",
+]
+
+[project.optional-dependencies]
+http = ["starlette>=0.37.0,<1.0.0", "uvicorn>=0.30.0,<1.0.0"]
+test = ["pytest>=8.3.5,<9.0.0", "pytest-cov>=6.1.1,<7.0.0", "coverage>=7.0.0"]
+
+[dependency-groups]
+dev = [
+    "black>=23.0.0",
+    "ruff>=0",
+    "ipython>=9.2.0",
+    "ipykernel>=6.29.5",
+    "mypy>=1.15.0",
+    "pre-commit>=4.2.0",
+    "tqdm-stubs>=0.2.1",
+    "ipywidgets>=8.1.7",
+]
+
+[project.urls]
+Homepage = "https://github.com/simon-mcintosh/imas-mcp"
+Repository = "https://github.com/simon-mcintosh/imas-mcp"
+Documentation = "https://github.com/simon-mcintosh/imas-mcp#readme"
+"Bug Tracker" = "https://github.com/simon-mcintosh/imas-mcp/issues"
+
+[project.scripts]
+imas-mcp = "scripts.run_server:run_server"
+run-server = "scripts.run_server:run_server"
+index-name = "scripts.index_name:index_name"
+build-index = "scripts.build_index:build_index"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["imas_mcp"]
+include = ["README.md", "LICENSE"]
+exclude = ["*.pyc", "__pycache__/*", "imas_mcp/resources/.gitkeep"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"imas_mcp/resources" = "imas_mcp/resources"
+
+[tool.hatch.build.hooks.custom]
+path = "hatch_build_hooks.py"
+verbose = false
+ids-filter = "pf_active"
+
+[tool.hatch.envs.test]
+dependencies = [
+    "pytest>=8.3.5,<9.0.0",
+    "pytest-cov>=6.1.1,<7.0.0",
+    "coverage>=7.0.0",
+]
+
+[tool.hatch.envs.dev]
+dependencies = [
+    "black>=23.0.0",
+    "ruff>=0",
+    "ipython>=9.2.0",
+    "ipykernel>=6.29.5",
+    "mypy>=1.15.0",
+    "pre-commit>=4.2.0",
+]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[[tool.mypy.overrides]]
+module = ["whoosh.*", "imas.*", "pint.*", "chromadb.*", "pydantic.*"]
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[[tool.mypy.overrides]]
+module = ["whoosh.*", "imas.*", "pint.*", "chromadb.*", "pydantic.*"]
+ignore_missing_imports = true
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-markers", "--strict-config", "--verbose"]
+
+[tool.coverage.run]
+source = ["imas_mcp"]
+omit = ["tests/*", "*/tests/*", "**/test_*.py", "**/conftest.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+show_missing = true
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
+precision = 2

@@ -1,0 +1,27 @@
+{
+  "servers": {
+    "imas-local-stdio": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "run-server", "--auto-build"]
+    },
+    "imas-docker-stdio": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "ghcr.io/simon-mcintosh/imas-mcp:latest-stdio"
+      ]
+    },
+    "imas-local-http": {
+      "type": "http",
+      "url": "http://localhost:8000/mcp/"
+    },
+    "my-mcp-server-f55d8b64": {
+      "type": "http",
+      "url": "https://localhost:8000/mcp/"
+    }
+  }
+}
