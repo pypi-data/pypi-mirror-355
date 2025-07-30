@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: devicer.py
+Version: 0.1.1
+Summary: Open-Source Python Middleware for Digital Fingerprinting
+Author: One anonymous contributor
+Author-email: Samuel Roux <sam.roux.com@gmail.com>, Stephen Perso <stephenrperso@gmail.com>
+Project-URL: Homepage, https://gatewaycorporate.org/
+Project-URL: Repository, https://github.com/gatewaycorporate/fp-devicer-python.git
+Project-URL: Issues, https://github.com/gatewaycorporate/fp-devicer-python/issues
+Keywords: fingerprinting,identification,middleware,tracking
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: license.txt
+Requires-Dist: py-tlsh>=4.7.2
+Dynamic: license-file
+
+# FP-Devicer
+## Developed by Gateway Corporate Solutions LLC
+
+FP-Devicer is a digital fingerprinting middleware library designed for ease of use and near-universal compatibility with servers.
+
+Importing and using the library to compare fingerprints between users is as simple as collecting some user data and running the calculateConfidence function.
+```python
+from devicer.confidence import calculate_condifence
+
+user1, user2 = {
+  """Collected data goes here"""
+}
+
+const confidence = calculate_confidence(user1, user2)
+```
+
+The resulting confidence will range between 0 and 100, with 100 providing the highest confidence of the users being identical.
