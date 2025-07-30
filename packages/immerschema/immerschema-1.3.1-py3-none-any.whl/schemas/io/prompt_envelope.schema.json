@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "immerschema/schemas/io/prompt_envelope.schema.json",
+
+  "title": "LLM Prompt Envelope (author ➜ model)",
+  "$comment": "Always 2 or 3 items. All elements are *required* when present.",
+
+  "type": "array",
+  "minItems": 2,
+  "maxItems": 3,
+
+  "prefixItems": [
+    {
+      "type": "string",
+      "title": "USER_MESSAGE",
+      "description": "Human instruction or question sent to the model."
+    },
+    {
+      "$ref": "../core.schema.json",
+      "title": "CURRENT_ITEM",
+      "description": "The scene (or sub-scene) JSON the user is editing."
+    },
+    {
+      "type": "array",
+      "title": "FULL_PIPELINE (optional)",
+      "description": "If present, every scene in the project—used for global checks.",
+      "items": { "$ref": "../core.schema.json" }
+    }
+  ],
+
+  "items": false
+}

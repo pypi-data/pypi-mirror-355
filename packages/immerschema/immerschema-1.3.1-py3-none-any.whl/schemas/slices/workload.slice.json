@@ -1,0 +1,58 @@
+{
+  "$id": "immerschema/schemas/slices/workload.slice.json",
+  "title": "Workload snapshot (aggregated from tasks)",
+  "type": "object",
+
+  "properties": {
+    "workloadBreakdown": {
+      "type": "object",
+      "required": ["generatedFromTasksAt", "deptHours", "bufferPct"],
+      "additionalProperties": false,
+
+      "properties": {
+        "generatedFromTasksAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+
+
+        "deptHours": {
+          "type": "object",
+          "propertyNames": { "$ref": "../enum/dept.enum.json" },
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          },
+          "minProperties": 1
+        },
+
+
+        "roleHours": {
+          "type": "object",
+          "propertyNames": { "$ref": "../enum/role.enum.json" },
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+
+
+        "totalPlanned": {
+          "type": "number",
+          "minimum": 0
+        },
+        "bufferPct": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "totalWithBuffer": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  },
+
+  "additionalProperties": true
+}

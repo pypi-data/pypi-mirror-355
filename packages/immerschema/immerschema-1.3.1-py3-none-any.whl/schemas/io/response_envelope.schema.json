@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "immerschema/schemas/io/response_envelope.schema.json",
+
+  "title": "LLM Response Envelope (model ➜ middleware)",
+  "$comment": "First item is chain-of-thoughts (CoT). Strip before showing user if needed.",
+
+  "type": "array",
+  "minItems": 3,
+  "maxItems": 3,
+
+  "prefixItems": [
+    {
+      "type": "string",
+      "title": "CHAIN_OF_THOUGHTS",
+      "description": "Model's internal reasoning. Keep for logs; hide from user UI."
+    },
+    {
+      "type": "string",
+      "title": "LLM_ANSWER",
+      "description": "Human-readable reply to display."
+    },
+    {
+      "type": "array",
+      "title": "ITEMS_UPDATE",
+      "description": "List of RFC-6902 patches to apply (may be empty).",
+      "items": { "$ref": "./patch.schema.json" }
+    }
+  ],
+
+  "items": false
+}

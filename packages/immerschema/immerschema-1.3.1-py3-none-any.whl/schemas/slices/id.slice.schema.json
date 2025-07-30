@@ -1,0 +1,24 @@
+{
+  "$id": "immerschema/schemas/slices/id.slice.schema.json",
+  "type": "object",
+  "required": ["id"],
+  "properties": {
+    "id": { 
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$",
+      "description": "Shot ID can be alphanumeric with dots, underscores, and hyphens, but must start with alphanumeric"
+    },
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$",
+      "default": "1.0.0"
+    },
+    "scene": { "type": "integer", "minimum": 1 },
+    "subScene": {
+      "type": ["integer", "string"],
+      "description": "Whole number, optionally one lowercase letter for inserts (e.g. 3a)."
+    },
+    "index": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": true
+} 

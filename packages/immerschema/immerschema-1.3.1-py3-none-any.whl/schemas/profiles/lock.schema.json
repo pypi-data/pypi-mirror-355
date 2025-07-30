@@ -1,0 +1,17 @@
+{
+  "$id": "immerschema/schemas/profiles/lock.schema.json",
+  "title": "Profile – Lock (final safety gate)",
+  "type": "object",
+  "additionalProperties": true,
+
+  "allOf": [
+    { "$ref": "./assign.schema.json" },
+    { "$ref": "../slices/risks.prop.slice.json" }
+  ],
+
+  "required": [
+    "voice",
+    "risks",
+    "description"
+  ]
+}

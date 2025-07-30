@@ -1,0 +1,51 @@
+{
+  "$id": "immerschema/schemas/taxonomy/technique.taxonomy.json",
+  "title": "Technique taxonomy (UI helper)",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+    "3D Rendering & Realtime": {
+      "type": "array",
+      "items": { "enum": [
+        "3d_render", "3d_realtime"
+      ]}
+    },
+    "Capture & Scanning": {
+      "type": "array",
+      "items": { "enum": [
+        "capture_video", "capture_volumetric", "capture_photogrammetry", "capture_360", "capture_stock"
+      ]}
+    },
+    "Character Animation": {
+      "type": "array",
+      "items": { "enum": [
+        "rig_animation", "mocap_performance"
+      ]}
+    },
+    "2D / Motion-Graphics": {
+      "type": "array",
+      "items": { "enum": [
+        "2d_montage", "2d_multiscreen", "2d_video_collage", "2d_hand_drawn", "2d_shape_animation", "2d_info_graphics", "2d_typography"
+      ]}
+    },
+    "Generative & Procedural": {
+      "type": "array",
+      "items": { "enum": [
+        "gen_procedural", "gen_particle", "gen_data_viz", "gen_audio_reactive", "gen_generative_art"
+      ]}
+    },
+    "Simulation (Physics)": {
+      "type": "array",
+      "items": { "enum": [
+        "sim_fluid", "sim_smoke_fire", "sim_cloth_softbody"
+      ]}
+    },
+    "AI / ML": {
+      "type": "array",
+      "items": { "enum": [
+        "ai_generate", "ai_style_transfer", "ai_avatar", "ai_face_swap"
+      ]}
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$id": "immerschema/schemas/slices/technique.slice.schema.json",
+  "title": "Technique slice (nested)",
+  "type": "object",
+  "properties": {
+    "technique": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "../slices/tech-group.slice.schema.json" }
+      ],
+      "properties": {
+        "primaryTechnique": {
+          "$ref": "../enum/technique.enum.json",
+          "description": "The main visual technique for this shot."
+        },
+        "otherTechniques": {
+          "type": "array",
+          "items": { "$ref": "../enum/technique.enum.json" },
+          "description": "Additional techniques in this shot."
+        },
+        "note": {
+          "type": "string",
+          "description": "Additional context or notes about the technique."
+        }
+      },
+      "required": ["primaryTechnique"],
+      "additionalProperties": true
+    }
+  },
+  "required": ["technique"],
+  "additionalProperties": true
+}
