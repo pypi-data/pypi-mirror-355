@@ -1,0 +1,122 @@
+Metadata-Version: 2.4
+Name: saltext.mqtt_return
+Version: 1.1rc3
+Summary: A useful Salt Event returner for publishing messages to MQTT or AWS IoT
+Home-page: https://github.com/keslerm/mqtt_return
+Author: Morgan Kesler
+Author-email: keslerm@aegiszero.is
+License: Apache Software License
+Project-URL: Source, https://github.com/keslerm/mqtt_return
+Project-URL: Tracker, https://github.com/keslerm/mqtt_return/issues
+Keywords: salt-extension
+Platform: any
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Cython
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: salt>=3003
+Requires-Dist: boto3
+Requires-Dist: paho-mqtt
+Provides-Extra: tests
+Requires-Dist: pytest==6.2.4; extra == "tests"
+Requires-Dist: pytest-salt-factories==0.906.0; extra == "tests"
+Provides-Extra: dev
+Requires-Dist: nox==2021.6.12; extra == "dev"
+Requires-Dist: pre-commit==2.13.0; extra == "dev"
+Requires-Dist: pylint; extra == "dev"
+Requires-Dist: SaltPyLint; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: furo; extra == "docs"
+Requires-Dist: sphinx-copybutton; extra == "docs"
+Requires-Dist: sphinx-prompt; extra == "docs"
+Requires-Dist: sphinxcontrib-spelling; extra == "docs"
+Requires-Dist: importlib_metadata; python_version < "3.8" and extra == "docs"
+Provides-Extra: docsauto
+Requires-Dist: sphinx-autobuild; extra == "docsauto"
+Dynamic: license-file
+
+# mqtt_return
+
+A useful Salt Event returner for publishing messages to MQTT or AWS IoT
+
+## Quickstart
+
+To get started with your new project:
+
+    # Create a new venv
+    python3 -m venv env --prompt mqtt_return
+    source env/bin/activate
+
+    # On mac, you may need to upgrade pip
+    python -m pip install --upgrade pip
+
+    # On WSL or some flavors of linux you may need to install the `enchant`
+    # library in order to build the docs
+    sudo apt-get install -y enchant
+
+    # Install extension + test/dev/doc dependencies into your environment
+    python -m pip install -e .[tests,dev,docs]
+
+    # Run tests!
+    python -m nox -e tests-3
+
+    # skip requirements install for next time
+    export SKIP_REQUIREMENTS_INSTALL=1
+
+    # Build the docs, serve, and view in your web browser:
+    python -m nox -e docs && (cd docs/_build/html; python -m webbrowser localhost:8000; python -m http.server; cd -)
+
+    # Run the example function
+    salt-call --local mqtt_return.example_function text="Happy Hacking!"
+
+
+## Configuration
+
+For publishing to a standard MQTT broker
+
+```yaml
+event_return: [mqtt_return]
+
+returner.mqtt_return.output: mqtt
+
+returner.mqtt_return.endpoint: mqtt
+returner.mqtt_return.port: 1883
+returner.mqtt_return.topic_prefix: "example/prefix"
+```
+
+For publishing to AWS IoT Core MQTT broker using boto3 and the iot-data client
+
+```yaml
+event_return: [mqtt_return]
+
+returner.mqtt_return.output: awsiot
+
+returner.mqtt_return.endpoint: https://example.iot.amazonaws.com
+returner.mqtt_return.topic_prefix: "example/prefix"
+returner.mqtt_return.aws_access_key_id: "aaaaa"
+returner.mqtt_return.aws_secret_access_key: "aaaaa"
+```
+
+
+## Topic Re-writing
+
+Allows you to re-write the topics with Regex and Python Substr
+
+For example to remove the `salt/` prefix from the topics:
+
+```yaml
+returner.mqtt_return.topic_rewrite_regex: "salt/"
+returner.mqtt_return.topic_rewrite_replace: ""
+```
