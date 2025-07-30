@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iptvpy"
+version = "2.0.1"
+description = "A modular Python library for IPTV portal interaction."
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "Apache License Version 2.0" }
+authors = [
+  { name = "भाग्य ज्योति (Bhagya Jyoti)" }
+]
+keywords = [ "iptv", "macportal", "stalker", "ministra", "portal", "handshake", "live", "catchup", "vod", "series", "epg", "download" ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 5 - Production/Stable"
+]
+dependencies = [  "cloudscraper>=1.2.71" ]
+
+[project.urls]
+"Homepage" = "https://github.com/BhagyaJyoti22006/iptvpy"
+"Repository" = "https://github.com/BhagyaJyoti22006/iptvpy"
+"Issues" = "https://github.com/BhagyaJyoti22006/iptvpy/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
