@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ project_name }}"
+dynamic = ["version"]
+description = "{{ description }}"
+readme = "README.md"
+{% if license %}license = "{{ license }}"{% endif %}
+authors = [
+    {name = "{{ author }}", email = "{{ email }}"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = ["python", "package"]
+requires-python = ">={{ python_version }}"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+    "build>=0.10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/{{ author }}/{{ project_name }}"
+Repository = "https://github.com/{{ author }}/{{ project_name }}"
+Documentation = "https://{{ project_name }}.readthedocs.io"
+"Bug Tracker" = "https://github.com/{{ author }}/{{ project_name }}/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["{{ project_slug }}*"]
+
+[tool.setuptools_scm]
+# Git 태그를 읽어서 버전을 자동 생성
+write_to = "{{ project_slug }}/_version.py"
+fallback_version = "0.0.0+dev"
+
+[tool.ruff]
+line-length = 119
+target-version = "py{{ python_version | replace('.', '') }}"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+known-first-party = ["{{ project_slug }}"]
+force-single-line = false 

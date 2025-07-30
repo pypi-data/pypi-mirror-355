@@ -1,0 +1,81 @@
+.PHONY: help version build test clean install-dev
+
+# 기본 목표
+help:
+	@echo "🚀 inpynit 개발 도구"
+	@echo ""
+	@echo "버전 관리:"
+	@echo "  version             - 현재 버전 확인 (git 태그 기반)"
+	@echo "  tag-patch           - 패치 버전 태그 생성 (0.1.0 -> 0.1.1)"
+	@echo "  tag-minor           - 마이너 버전 태그 생성 (0.1.0 -> 0.2.0)"
+	@echo "  tag-major           - 메이저 버전 태그 생성 (0.1.0 -> 1.0.0)"
+	@echo ""
+	@echo "개발 도구:"
+	@echo "  install-dev         - 개발 환경 설치"
+	@echo "  test               - 테스트 실행"
+	@echo "  format             - 코드 포매팅"
+	@echo "  lint               - 코드 린팅"
+	@echo ""
+	@echo "빌드 및 배포:"
+	@echo "  build              - 패키지 빌드"
+	@echo "  clean              - 빌드 아티팩트 정리"
+
+# 버전 관리 (setuptools-scm 기반)
+version:
+	@echo "🏷️  현재 버전 (git 태그 기반):"
+	@python -c "import inpynit; print(inpynit.__version__)"
+
+tag-patch:
+	@echo "📈 패치 버전 태그 생성 중..."
+	@python -c "import subprocess; import inpynit; current=inpynit.__version__.split('.'); new=f'{current[0]}.{current[1]}.{int(current[2])+1}'; subprocess.run(['git', 'tag', '-a', new, '-m', f'Release {new}']); print(f'🏷️ 태그 생성: {new}')"
+
+tag-minor:
+	@echo "📈 마이너 버전 태그 생성 중..."
+	@python -c "import subprocess; import inpynit; current=inpynit.__version__.split('.'); new=f'{current[0]}.{int(current[1])+1}.0'; subprocess.run(['git', 'tag', '-a', new, '-m', f'Release {new}']); print(f'🏷️ 태그 생성: {new}')"
+
+tag-major:
+	@echo "📈 메이저 버전 태그 생성 중..."
+	@python -c "import subprocess; import inpynit; current=inpynit.__version__.split('.'); new=f'{int(current[0])+1}.0.0'; subprocess.run(['git', 'tag', '-a', new, '-m', f'Release {new}']); print(f'🏷️ 태그 생성: {new}')"
+
+# 개발 도구
+install-dev:
+	@echo "🔧 개발 환경 설치 중..."
+	@pip install -e ".[dev]"
+	@echo "✅ 개발 환경 설치 완료"
+
+test:
+	@echo "🧪 테스트 실행 중..."
+	@pytest tests/ -v
+
+format:
+	@echo "🎨 코드 포매팅 중..."
+	@ruff format .
+
+lint:
+	@echo "🔍 코드 린팅 중..."
+	@ruff check .
+
+# 빌드 및 배포
+build: clean
+	@echo "📦 패키지 빌드 중..."
+	@python -m build
+	@echo "✅ 빌드 완료: dist/"
+
+clean:
+	@echo "🧹 정리 중..."
+	@rm -rf dist/
+	@rm -rf build/
+	@rm -rf *.egg-info/
+	@find . -type d -name __pycache__ -exec rm -rf {} +
+	@find . -type f -name "*.pyc" -delete
+	@echo "✅ 정리 완료"
+
+# 통합 워크플로우
+release-patch: tag-patch build
+	@echo "🎉 패치 릴리스 완료!"
+
+release-minor: tag-minor build
+	@echo "🎉 마이너 릴리스 완료!"
+
+release-major: tag-major build
+	@echo "🎉 메이저 릴리스 완료!" 
