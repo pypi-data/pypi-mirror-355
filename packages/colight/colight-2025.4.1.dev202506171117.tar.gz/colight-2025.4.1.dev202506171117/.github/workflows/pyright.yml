@@ -1,0 +1,27 @@
+name: Pyright type checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  pyright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install deps
+        run: uv sync --group dev
+
+      - uses: jakebailey/pyright-action@v1
+        with:
+          version: 1.1.358
