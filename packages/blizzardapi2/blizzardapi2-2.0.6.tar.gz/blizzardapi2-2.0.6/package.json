@@ -1,0 +1,22 @@
+{
+  "name": "blizzardapi2",
+  "version": "2.0.6",
+  "private": true,
+  "scripts": {
+    "release": "release-it"
+  },
+  "devDependencies": {
+    "release-it": "^17.0.0"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release v${version}",
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "releaseName": "Release v${version}",
+      "releaseNotes": "git log --pretty=format:\"* %s (%h)\" ${latestTag}...HEAD"
+    }
+  }
+} 
