@@ -1,0 +1,187 @@
+name: Publish release files for CD native and non-cd-native environments
+
+on:
+  release:
+    types: [ created ]
+  workflow_dispatch:
+
+jobs:
+  # Publish release files for CD native environments
+  native_build:
+    strategy:
+      fail-fast: false
+      matrix:
+        # Use the Ubuntu 22.04 image to link with a low version of glibc
+        #
+        # https://github.com/topgrade-rs/topgrade/issues/1095
+        platform: [ ubuntu-22.04, macos-latest, macos-13, windows-latest ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install needed components
+        run: |
+          rustup component add rustfmt
+          rustup component add clippy
+
+      - name: Install cargo-deb
+        run: cargo install cargo-deb
+        if: ${{ startsWith(matrix.platform, 'ubuntu-') }}
+        shell: bash
+
+      - name: Check format
+        run: cargo fmt --all -- --check
+
+      - name: Run clippy
+        run: cargo clippy --all-targets --locked -- -D warnings
+
+      - name: Run clippy (All features)
+        run: cargo clippy --all-targets --locked --all-features -- -D warnings
+
+      - name: Run tests
+        run: cargo test
+
+      - name: Build in Release profile with all features enabled
+        run: cargo build --release --all-features
+
+      - name: Rename Release (Unix)
+        run: |
+          cargo install default-target
+          mkdir -p assets
+          FILENAME=topgrade-${{github.event.release.tag_name}}-$(default-target)
+          mv target/release/topgrade assets
+          cd assets
+          tar --format=ustar -czf $FILENAME.tar.gz topgrade
+          rm topgrade
+          ls .
+        if: ${{ matrix.platform != 'windows-latest' }}
+        shell: bash
+
+      - name: Build Debian-based system binary and create package
+        # First remove the binary built by previous steps
+        # because we don't want the auto-update feature,
+        # then build the new binary without auto-updating.
+        run: |
+          rm -rf target/release
+          cargo build --release
+          cargo deb --no-build --no-strip
+        if: ${{ startsWith(matrix.platform, 'ubuntu-') }}
+        shell: bash
+
+      - name: Move Debian-based system package
+        run: |
+          mkdir -p assets
+          mv target/debian/*.deb assets
+        if: ${{ startsWith(matrix.platform, 'ubuntu-') }}
+        shell: bash
+
+      - name: Rename Release (Windows)
+        run: |
+          cargo install default-target
+          mkdir assets
+          FILENAME=topgrade-${{github.event.release.tag_name}}-$(default-target)
+          mv target/release/topgrade.exe assets/topgrade.exe
+          cd assets
+          powershell Compress-Archive -Path * -Destination ${FILENAME}.zip
+          rm topgrade.exe
+          ls .
+        if: ${{ matrix.platform == 'windows-latest' }}
+        shell: bash
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: assets/*
+
+  # Publish release files for non-CD-native environments
+  cross_build:
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          [
+            "aarch64-unknown-linux-gnu",
+            "armv7-unknown-linux-gnueabihf",
+            "x86_64-unknown-linux-musl",
+            "aarch64-unknown-linux-musl",
+            "x86_64-unknown-freebsd",
+          ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install needed components
+        run: |
+          rustup component add rustfmt
+          rustup component add clippy
+
+      - name: Install cargo-deb cross compilation dependencies
+        run: sudo apt-get install libc6-arm64-cross libgcc-s1-arm64-cross
+        if: ${{ matrix.target == 'aarch64-unknown-linux-gnu' }}
+        shell: bash
+
+      - name: Install cargo-deb cross compilation dependencies for armv7
+        run: sudo apt-get install libc6-armhf-cross libgcc-s1-armhf-cross
+        if: ${{ matrix.target == 'armv7-unknown-linux-gnueabihf' }}
+        shell: bash
+
+      - name: Install cargo-deb
+        run: cargo install cargo-deb
+        if: ${{ matrix.target == 'aarch64-unknown-linux-gnu' || matrix.target == 'armv7-unknown-linux-gnueabihf' }}
+        shell: bash
+
+      - name: install targets
+        run: rustup target add ${{ matrix.target }}
+
+      - name: install cross
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cross@0.2.5
+
+      - name: Check format
+        run: cross fmt --all -- --check
+
+      - name: Run clippy
+        run: cross clippy --all-targets --locked --target ${{matrix.target}} -- -D warnings
+
+      - name: Run clippy (All features)
+        run: cross clippy  --locked --all-features --target ${{matrix.target}} -- -D warnings
+
+      - name: Run tests
+        run: cross test --target ${{matrix.target}}
+
+      - name: Build in Release profile with all features enabled
+        run: cross build --release --all-features --target ${{matrix.target}}
+
+      - name: Rename Release
+        run: |
+          mkdir -p assets
+          FILENAME=topgrade-${{github.event.release.tag_name}}-${{matrix.target}}
+          mv target/${{matrix.target}}/release/topgrade assets
+          cd assets
+          tar --format=ustar -czf $FILENAME.tar.gz topgrade
+          rm topgrade
+          ls .
+
+      - name: Build Debian-based system package without autoupdate feature
+        # First remove the binary built by previous steps
+        # because we don't want the auto-update feature,
+        # then build the new binary without auto-updating.
+        run: |
+          rm -rf target/${{matrix.target}}
+          cross build --release --target ${{matrix.target}}
+          cargo deb --target=${{matrix.target}} --no-build --no-strip
+        if: ${{ matrix.target == 'aarch64-unknown-linux-gnu' || matrix.target == 'armv7-unknown-linux-gnueabihf' }}
+        shell: bash
+
+      - name: Move Debian-based system package
+        run: |
+          mkdir -p assets
+          mv target/${{matrix.target}}/debian/*.deb assets
+        if: ${{ matrix.target == 'aarch64-unknown-linux-gnu' || matrix.target == 'armv7-unknown-linux-gnueabihf' }}
+        shell: bash
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: assets/*
