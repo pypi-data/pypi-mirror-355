@@ -1,0 +1,70 @@
+Metadata-Version: 2.4
+Name: color_zone_processor
+Version: 0.1.0
+Summary: A tool for processing image color zones
+Home-page: https://github.com/yourusername/color_zone_processor
+Author: Your Name
+Author-email: your.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Pillow>=10.2.0
+Requires-Dist: numpy>=1.26.4
+Requires-Dist: scipy>=1.12.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Color Zone Processor
+
+A Python tool for processing image color zones by replacing pixels of specific colors with other colors in a structured way.
+
+## Installation
+
+You can install the package using pip:
+
+```bash
+pip install .
+```
+
+## Usage
+
+After installation, you can use the tool from the command line:
+
+```bash
+color-zone-processor --first-percentage 33.53 --total-percentage 33.53
+```
+
+### Command Line Arguments
+
+- `--first-percentage`: Percentage of target color pixels to replace with first color (0-100)
+- `--total-percentage`: Total percentage of target color pixels to replace (0-100)
+- `--min-zone-size`: Minimum size of color zone to consider (default: 100)
+
+### Example
+
+```bash
+color-zone-processor --first-percentage 33.53 --total-percentage 33.53 --min-zone-size 100
+```
+
+## Development
+
+To install the package in development mode:
+
+```bash
+pip install -e .
+```
+
+## License
+
+MIT License 
