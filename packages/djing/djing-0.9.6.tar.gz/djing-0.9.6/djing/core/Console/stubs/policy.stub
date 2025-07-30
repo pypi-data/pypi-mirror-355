@@ -1,0 +1,29 @@
+from django.contrib.auth import get_user_model
+from {{model_path}} import {{model_name}}
+
+UserModel = get_user_model()
+
+class {{name}}:
+    def __init__(self) -> None:
+        pass
+
+    def view_any(self, user: UserModel) -> bool:
+        return True
+
+    def view(self, user: UserModel, model: {{model_name}}) -> bool:
+        return True
+
+    def create(self, user: UserModel) -> bool:
+        return True
+
+    def update(self, user: UserModel, model: {{model_name}}) -> bool:
+        return True
+
+    def delete(self, user: UserModel, model: {{model_name}}) -> bool:
+        return True
+
+    def restore(self, user: UserModel, model: {{model_name}}) -> bool:
+        return True
+
+    def force_delete(self, user: UserModel, model: {{model_name}}) -> bool:
+        return True
