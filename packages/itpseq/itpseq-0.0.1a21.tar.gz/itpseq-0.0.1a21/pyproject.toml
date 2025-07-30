@@ -1,0 +1,62 @@
+[build-system]
+requires = ['hatchling']
+build-backend = 'hatchling.build'
+
+[tool.hatch.version]
+path = 'itpseq/__init__.py'
+
+[project]
+name = 'itpseq'
+authors = [
+  { name='Thibaud Renault', email='thibaud.renault@u-bordeaux.fr' },
+]
+description = 'A tool to process and analyze iTP-Seq datasets'
+readme = 'README.md'
+requires-python = '>=3.9'
+classifiers = [
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3',
+    'Operating System :: OS Independent',
+    'Intended Audience :: Science/Research',
+    'Topic :: Scientific/Engineering :: Bio-Informatics',
+]
+keywords = ['ribosome', 'inverse toeprinting', 'iTP-Seq']
+license = 'GPL-3.0-only'
+dependencies = [
+    'regex',
+    'natsort',
+    'numpy',
+    'pandas',
+    'pydeseq2',
+    'matplotlib',
+    'seaborn',
+    'logomaker',
+    'Jinja2',
+    'weasyprint',
+    'rich-click',
+    'rich',
+    'dna_features_viewer',
+]
+dynamic = ['version']
+
+[project.urls]
+Homepage = 'https://github.com/t-renault/itpseq'
+Issues = 'https://github.com/t-renault/itpseq/issues'
+Documentation = 'https://itpseq.readthedocs.io'
+
+[project.scripts]
+itpseq = 'itpseq.__main__:cli'
+
+[tool.hatch.build]
+include = [
+    'itpseq/**',
+    'docs/**',
+    'LICENSE',
+    'pyproject.toml',
+    'README.md',
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+license-files = ['LICENSE']
