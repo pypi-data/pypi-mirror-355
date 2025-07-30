@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "text_to_markdown_jxppx"      # 包名（注意不能和已有的PyPI包重名）
+version = "1.0.0"               # 初始版本号
+authors = [
+    {name="wangkun", email="17621177409@163.com"}
+]
+description = "用于将文本文件转化为markdown格式"
+readme = "README.md"
+license = {file = "MIT"}    # 或者直接写 license = "MIT"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    # 核心依赖 - 使用Python标准库，无需额外依赖
+]
+
+# 可选依赖
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",           # 用于单元测试
+    "pytest-cov>=4.0.0",       # 测试覆盖率
+    "black>=22.0.0",           # 代码格式化
+    "flake8>=5.0.0",           # 代码检查
+]
+enhanced = [
+    "chardet>=5.0.0",          # 自动检测文件编码
+    "python-magic>=0.4.27",    # 文件类型检测（可选）
+]
+
+
+
+[tool.setuptools.package-data]
+"text_to_markdown_jxppx" = ["example.txt"]
+
+
+# 项目脚本入口点
+[project.scripts]
+text-to-md = "text_to_markdown_jxppx.tt_md:main"
+
+# 项目URL
+[project.urls]
+Homepage = "https://github.com/yourusername/text_to_markdown_jxppx"
+Repository = "https://github.com/yourusername/text_to_markdown_jxppx"
+Issues = "https://github.com/yourusername/text_to_markdown_jxppx/issues"

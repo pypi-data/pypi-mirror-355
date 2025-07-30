@@ -1,0 +1,184 @@
+Metadata-Version: 2.4
+Name: text_to_markdown_jxppx
+Version: 1.0.0
+Summary: 用于将文本文件转化为markdown格式
+Author-email: wangkun <17621177409@163.com>
+Project-URL: Homepage, https://github.com/yourusername/text_to_markdown_jxppx
+Project-URL: Repository, https://github.com/yourusername/text_to_markdown_jxppx
+Project-URL: Issues, https://github.com/yourusername/text_to_markdown_jxppx/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=5.0.0; extra == "dev"
+Provides-Extra: enhanced
+Requires-Dist: chardet>=5.0.0; extra == "enhanced"
+Requires-Dist: python-magic>=0.4.27; extra == "enhanced"
+Dynamic: license-file
+
+# Text to Markdown Converter
+
+一个简单而强大的文本文件转Markdown格式的Python工具。
+
+## 功能特性
+
+- 🚀 **自动识别标题**: 智能识别文本中的标题并转换为Markdown标题格式
+- 📝 **段落处理**: 自动处理普通段落文本
+- 📋 **列表转换**: 支持多种列表格式的识别和转换
+- 🔧 **编码支持**: 自动检测文件编码，支持UTF-8、GBK等多种编码
+- 💻 **命令行工具**: 提供便捷的命令行接口
+- 📦 **Python API**: 提供简洁的Python编程接口
+
+## 安装
+
+```bash
+# 从源码安装
+pip install -e .
+
+# 安装开发依赖
+pip install -e .[dev]
+
+# 安装增强功能依赖
+pip install -e .[enhanced]
+```
+
+## 快速开始
+
+### 命令行使用
+
+```bash
+# 基本用法
+python -m text_to_markdown_jxppx.tt_md input.txt
+
+# 指定输出文件
+python -m text_to_markdown_jxppx.tt_md input.txt output.md
+
+# 或者直接运行脚本
+python text_to_markdown_jxppx/tt_md.py example.txt
+```
+
+### Python API
+
+```python
+from text_to_markdown_jxppx.tt_md import convert_text_to_markdown, TextToMarkdownConverter
+
+# 简单转换
+output_path = convert_text_to_markdown('input.txt')
+print(f"转换完成: {output_path}")
+
+# 指定输出文件
+convert_text_to_markdown('input.txt', 'output.md')
+
+# 使用转换器类进行更多控制
+converter = TextToMarkdownConverter()
+result = converter.convert_file('input.txt', encoding='gbk')
+```
+
+## 转换规则
+
+### 标题识别
+
+工具会自动识别以下类型的标题：
+
+1. **全大写短行** → `# 标题` (一级标题)
+2. **数字开头的行** (如 "1. 标题", "1.1 标题") → `## 标题` (二级标题)
+3. **短行文本** (少于30字符) → `### 标题` (三级标题)
+
+### 列表转换
+
+支持多种列表格式：
+
+- `- 项目` → `- 项目`
+- `* 项目` → `- 项目`
+- `1. 项目` → `- 项目`
+- `a. 项目` → `- 项目`
+
+### 示例
+
+**输入文本:**
+```
+PYTHON编程指南
+
+Python是一种高级编程语言。
+
+1. 基础语法
+
+Python使用缩进来表示代码块。
+
+常用数据类型：
+- 整数 (int)
+- 字符串 (str)
+- 列表 (list)
+```
+
+**输出Markdown:**
+```markdown
+# PYTHON编程指南
+
+Python是一种高级编程语言。
+
+## 基础语法
+
+Python使用缩进来表示代码块。
+
+### 常用数据类型：
+
+- 整数 (int)
+- 字符串 (str)
+- 列表 (list)
+```
+
+## 依赖说明
+
+### 核心功能
+本工具**仅使用Python标准库**，无需安装额外依赖：
+- `re` - 正则表达式处理
+- `os` - 文件系统操作
+- `pathlib` - 路径处理
+- `typing` - 类型提示
+
+### 可选依赖
+
+#### 开发依赖 (`pip install -e .[dev]`)
+- `pytest>=7.0.0` - 单元测试框架
+- `pytest-cov>=4.0.0` - 测试覆盖率
+- `black>=22.0.0` - 代码格式化工具
+- `flake8>=5.0.0` - 代码质量检查
+
+#### 增强功能 (`pip install -e .[enhanced]`)
+- `chardet>=5.0.0` - 自动检测文件编码
+- `python-magic>=0.4.27` - 文件类型检测
+
+## 开发
+
+```bash
+# 克隆项目
+git clone <repository-url>
+cd text_to_markdown
+
+# 安装开发环境
+pip install -e .[dev]
+
+# 运行测试
+pytest
+
+# 代码格式化
+black .
+
+# 代码检查
+flake8
+```
+
+## 许可证
+
+MIT License
+
+## 贡献
+
+欢迎提交Issue和Pull Request！
