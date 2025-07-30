@@ -1,0 +1,41 @@
+[project]
+name = "agix"
+version = "0.7.4"
+description = "Experimental AGI framework with neuro-symbolic reasoning, evolutionary agents and plastic learning"
+authors = [{ name = "Adolfo", email = "adolfogonzal@gmail.com" }]
+license = "MIT"  # más explícito
+readme = "README.md"
+requires-python = ">=3.8"
+
+dependencies = [
+    "numpy>=1.22",
+    "scipy>=1.9",
+    "matplotlib>=3.5",
+    "networkx>=3.0"
+]
+
+keywords = ["AGI", "neuro-symbolic", "evolution", "machine-learning", "reasoning"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+
+
