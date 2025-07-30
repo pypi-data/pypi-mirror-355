@@ -1,0 +1,44 @@
+nav:
+  - Home: index.md
+  - github action: running-as-github-action.md
+  - standalone: running-as-standalone-cli.md
+  - OGC Test suites: ogc-test-suites.md
+  - Development: development.md
+
+site_name: ogc-cite-runner
+site_url: https://osgeo.github.io/ogc-cite-runner
+repo_url: https://github.com/OSGeo/ogc-cite-runner
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+theme:
+  name: material
+  logo: assets/cite-runner-logo-no-text-small.svg
+  favicon: assets/cite-runner-logo-no-text-small.svg
+  palette:
+    primary: custom
+    accent: custom
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.path
+    - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+    - toc.top
+extra_css:
+  - stylesheets/extra.css
