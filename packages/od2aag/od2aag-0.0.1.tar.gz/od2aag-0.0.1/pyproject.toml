@@ -1,0 +1,30 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0, <69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "od2aag"
+version = "0.0.1"
+authors = [
+    { name = "Alessandro Guarita" }, 
+]
+description = "Módulo para Old Dragon 2"
+
+# Lê o conteúdo do README.md para a descrição longa
+readme = "README.md"
+license = { text = "MIT" } # Forma moderna de especificar a licença
+
+requires-python = ">=3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+# keywords (opcional, mas bom para buscas no PyPI)
+keywords = ["old dragon", "rpg", "od2"]
+
+[tool.setuptools.packages.find]
+where = ["src"] # Informa ao setuptools para procurar pacotes dentro do diretório 'src'
