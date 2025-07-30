@@ -1,0 +1,232 @@
++--------------------------------+
+June 14 2025  Version 1.0.28
++--------------------------------+
+
+- Improving functionalities
+- code refactor
+
++--------------------------------+
+June 12 2025  Version 1.0.27
++--------------------------------+
+
+- Update man page
+- Removed `metadata:s:a:0` because this program gets metadata from CUE file
+  and not from the audio source file.
+
++--------------------------------+
+June 11 2025  Version 1.0.26
++--------------------------------+
+
+- Fix #40 `ffcuesplitter.log incomplete when there are multiple .cue files in
+  the same directory.
+- Update copyleft Year.
+- Fix #37 `FFcuesplitter: error: argument --ffmpeg-add-params: expected one
+  argument`. Updated help for `ffmpeg-add-params` parameter using the command
+  line.
+- Due to known issue in FFmpeg with cutting FLAC files, the `copy` option has
+  been removed from the `-f`, `--output-format` parser argument to splitting
+  FLAC files without re-encoding. To force this behavior, e.g. the source file
+  is not in FLAC format, use the `--ffmpeg-add-params` argument and add
+  `-c copy` parameter to split files without re-encoding, for instance:
+  `--ffmpeg-add-params='-c copy'`. This partially fix #37 too.
+- Changed `--format-type` flag argument to `--output-format` argument using command
+  line argparser, `output_format` using Python.
+- New feature, added `-del` flag to remove original files on split
+  operations #38 .
+- Improved the writing of track titles to files preserving the original titles
+  to be used for metadata (Tag). This would lead to increased portability of
+  files on any file system of any OS.
+- Documentation and wiki pages updated with new additions and changes.
+- Changed `-metadata` to `metadata:s:a:0` and added `-map 0` trying to fix
+  issue #30 .
+- Drop support for Python 3.8 (EOL).
+
++--------------------------------+
+October 22 2024  Version 1.0.25
++--------------------------------+
+
+- Switched to hatchling as the default build backend which replaces setuptools.
+- Fixed some lint warn/error (pylint + flake8).
+- Changed info.py to about.py + code improvements.
+- Removed setup.py file because it was obsolete.
+- Removed MANIFEST.in file because it was obsolete.
+- Minimum Python version fixed at v3.8 .
+
++--------------------------------+
+January 07 2024  Version 1.0.23
++--------------------------------+
+
+- Updated year and description.
+- Fix `ValueError` when processing the tqdm progress bar (PR #34),
+  Thanks to @alecchangod .
+
++--------------------------------+
+February 06 2024  Version 1.0.22
++--------------------------------+
+
+- Refactored code.
+- Removed instantiation of DataArgs. DataArgs is now
+  implicitly included on the code instantiating the
+  FFCueSplitter class or the FileSystemOperations class (see docs)
+- update README usage and wiki page.
+
++--------------------------------+
+February 04 2023  Version 1.0.21
++--------------------------------+
+
+- Refactored code.
+- Start using dataclasses
+- Argument passing is done through DataArgs class.
+- Improved methods calls for FFCueSplitter class.
+- update README usage and wiki page.
+
++--------------------------------+
+January 31 2023  Version 1.0.20
++--------------------------------+
+
+- Uses logging to tracking events to console.
+- Refactoring of classes, methods and functions.
+- Improved API using Python programs.
+- Improved CLI.
+- Update man page.
+- Update all documentation and wiki pages.
+
++--------------------------------+
+January 24 2023  Version 1.0.19 Beta
++--------------------------------+
+
+- Added opus codec/format, thanks to @tsweet (Tim Sweet)
+- Update man page
+- Update wiki
+- Fixed typos on printed strings.
+
++--------------------------------+
+January 11 2023  Version 1.0.18 Beta
++--------------------------------+
+
+- Fixes Python compatibility on setup.py.
+- Fixes tests case.
+- Made CI on GitHub actions
+
++--------------------------------+
+January 09 2023  Version 1.0.17 Beta
++--------------------------------+
+
+- Fixes utils.sanitize error #23
+- Update year.
+
++--------------------------------+
+December 28 2022  Version 1.0.16 Beta
++--------------------------------+
+
+- Fixes utils.sanitize
+- Improve README.md
+- Improve message debugs
+
++--------------------------------+
+December 27 2022  Version 1.0.15 Beta
++--------------------------------+
+
+- Changed `-s` `--subfolders` to `-c` `--collection` on command line .
+- Changed `subfolders` default argument to `collection` default argument on constructor.
+- Update man page.
+- Update README.md .
+- Made wiki for FFcuesplitter command line and using API from Python.
+- Replaced `file_cataloger` def with `FileFinder` class + code refactoring.
+- Improved `Log to File`: Now logs to each file destination.
+- New FFcuesplitter wiki: <https://github.com/jeanslack/FFcuesplitter/wiki>
+- Cosmetic output: For each file to process, print its path-name as source.
+
++--------------------------------+
+December 20 2022  Version 1.0.12 Beta
++--------------------------------+
+
+- Added names sanitization machinery.
+- Added `-s` `--subfolders` option.
+- Update man page.
+- Update README.md .
+- Added batch filenames list processing.
+- Added `-r` `--recursive` option.
+- Improved file overwrite checking, now it is done before processing.
+
++--------------------------------+
+December 14 2022  Version 1.0.11 Beta
++--------------------------------+
+
+- Added `encoding=utf8` argument to sub-processes.
+- Update man page.
+- Improved descriptions.
+
++--------------------------------+
+November 25 2022  Version 1.0.9 Beta
++--------------------------------+
+
+- Fixed USAGE type errors on README file related to command line.
+
++--------------------------------+
+February 17 2022  Version 1.0.8 Beta
++--------------------------------+
+
+- Fixed double quotes on ffprobe command pathname.
+- Fixed double quotes on filenames passed to ffprobe.
+
++--------------------------------+
+February 06 2022  Version 1.0.7 Beta
++--------------------------------+
+
+
+- Possible errors using os.chdir() without first setting a value
+  to os.getcwd() for the next change.
+- The ffmpeg_arguments method now returns arguments with absolute
+  path names for input files as well.
+- Code refactoring.
+- Updated doc strings.
+
++--------------------------------+
+February 03 2022  Version 1.0.6 Beta
++--------------------------------+
+
+- Removed `ParserError` exception.
+- Fixed missing Artist/Performer metadata.
+- Added `-y` parameter to ffmpeg arguments.
+- Changed ffmpeg-url command line option to ffmpeg-cmd
+- Changed ffprobe-url command line option to ffprobe-cmd
+- Improve file names sanitize.
+- Added `probedata` attribute to grab media informations by ffprobe command.
+
++--------------------------------+
+January  24 2022  Version 1.0.3 Beta
++--------------------------------+
+
+- added MS-Windows compatibility.
+- Fixed test cases if ffprobe is not installed.
+- Added `copy` option to not re-encoding output files.
+- refactor ffprobe.py
+- fixed __doc__ strings
+
++--------------------------------+
+January  22 2022  Version 1.0.2 Beta
++--------------------------------+
+
+- added deflacue dependency for cue sheet parsing
+- update test cases
+- updates docs
+- improved FFProbe class
+
++--------------------------------+
+January  20 2022  Version 1.0.1 Alfa
++--------------------------------+
+
+- Added multiple progress meters.
+- Improved library to use as Python module.
+- Updated test cases.
+- Updated documentation.
+
+
++--------------------------------+
+January  17 2022  Version 1.0.0 Alfa
++--------------------------------+
+
+- First commit
+- Second commit
+
