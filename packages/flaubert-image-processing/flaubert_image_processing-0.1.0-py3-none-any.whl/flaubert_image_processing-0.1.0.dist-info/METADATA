@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: flaubert-image-processing
+Version: 0.1.0
+Summary: Pacote de processamento de imagens em Python
+Home-page: https://github.com/FlaubertWeb/image-processing-package
+Author: Flaubert Caldeira da Silva Junior
+Author-email: flaubertweb@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: pillow
+Requires-Dist: scikit-image
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: setuptools
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# image-processing-package
+
+Pacote de processamento de imagens em Python, desenvolvido como desafio do bootcamp DIO/Suzano.
+
+## Funcionalidades
+- Conversão para tons de cinza, redimensionamento e transformações básicas.
+- Combinação de imagens.
+- Utilitários para leitura, exibição e manipulação de arquivos de imagem.
+
+## Instalação
+
+Clone o repositório, ative o ambiente virtual, instale as dependências e o pacote:
+
+```bash
+git clone https://github.com/FlaubertWeb/image-processing-package.git
+cd image-processing-package
+python -m venv .venv
+# Windows:
+.\.venv\Scripts\activate
+# Linux/Mac:
+source .venv/bin/activate
+
+pip install -r requirements.txt
+pip install -e .
