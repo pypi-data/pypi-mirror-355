@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "billit-mcp"
+version = "0.2.10"
+description = "Model Context Protocol server for Billit API integration, enabling AI assistants to manage invoices and financial transactions"
+authors = ["Markov Kernel <support@markov-kernel.com>"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/markov-kernel/Billit-mcp"
+repository = "https://github.com/markov-kernel/Billit-mcp"
+documentation = "https://github.com/markov-kernel/Billit-mcp#readme"
+keywords = ["mcp", "model-context-protocol", "billit", "invoice", "api", "ai", "cursor"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Office/Business :: Financial",
+]
+packages = [{include = "billit"}, {include = "billit_mcp", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.12"
+uvicorn = {extras = ["standard"], version = "^0.34.3"}
+httpx = "^0.28.1"
+pydantic = "^2.11.5"
+python-dotenv = "^1.1.0"
+python-multipart = "^0.0.7"
+mcp = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.0"
+pytest-asyncio = "^1.0.0"
+respx = "^0.22.0"
+pytest-cov = "^6.1.1"
+
+[tool.poetry.scripts]
+billit-mcp = "billit_mcp:main"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-v"
+markers = [
+    "live: marks tests that require live API credentials (deselect with '-m \"not live\"')",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
