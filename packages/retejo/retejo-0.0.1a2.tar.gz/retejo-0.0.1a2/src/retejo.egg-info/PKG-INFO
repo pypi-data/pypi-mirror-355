@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: retejo
+Version: 0.0.1a2
+Summary: Modern python http client
+Author-email: Ivan Kirpichnikov <mmssvvvv570@gmail.com>
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development
+Classifier: Topic :: System :: Networking
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Typing :: Typed
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: Environment :: Web Environment
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: adaptix==3.0.0b11
+Provides-Extra: requests
+Requires-Dist: requests==2.32.4; extra == "requests"
+Provides-Extra: types
+Requires-Dist: types-requests==2.32.4.20250611; extra == "types"
+Provides-Extra: lint
+Requires-Dist: mypy==1.16.0; extra == "lint"
+Requires-Dist: ruff==0.11.13; extra == "lint"
+Provides-Extra: dev
+Requires-Dist: retejo[lint,requests,types]; extra == "dev"
+Dynamic: license-file
