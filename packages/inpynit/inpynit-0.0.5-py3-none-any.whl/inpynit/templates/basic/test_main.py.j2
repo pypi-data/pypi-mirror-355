@@ -1,0 +1,33 @@
+"""
+{{ project_name }} 테스트
+"""
+
+import pytest
+import {{ project_slug }}
+from {{ project_slug }}.main import hello_world
+
+
+def test_hello_world():
+    """hello_world 함수 테스트"""
+    result = hello_world()
+    assert "Hello from {{ project_name }}" in result
+    assert "🎉" in result
+
+
+def test_hello_world_return_type():
+    """hello_world 함수 반환 타입 테스트"""
+    result = hello_world()
+    assert isinstance(result, str)
+
+
+def test_hello_world_not_empty():
+    """hello_world 함수가 빈 문자열을 반환하지 않는지 테스트"""
+    result = hello_world()
+    assert len(result) > 0
+
+
+def test_version_available():
+    """버전 정보가 사용 가능한지 테스트"""
+    assert hasattr({{ project_slug }}, '__version__')
+    assert isinstance({{ project_slug }}.__version__, str)
+    assert len({{ project_slug }}.__version__) > 0 
