@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=51.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "FuPy"
+version = "0.9.1"
+dependencies = [
+]
+requires-python = ">= 3.12"
+authors = [
+    {name = "Tom Verhoeff (Eindhoven Univesity of Technology)", email = "T.Verhoeff@tue.nl"},
+]
+description = "Functional Programming in Python, for Education"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE.txt"}
+keywords = ["functional programming", "education"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Topic :: Software Development :: Interpreters",
+    "Topic :: Software Development :: Code Generators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://gitlab.tue.nl/t-verhoeff-software/FuPy"
+Documentation = "https://fupy.readthedocs.io/"
+Source = "https://gitlab.tue.nl/t-verhoeff-software/FuPy/"
+Issues = "https://gitlab.tue.nl/t-verhoeff-software/fupy/-/issues"
+
+[project.optional-dependencies]
+testing = [
+    "pytest>=6.0",
+    "pytest-mock>=3.5",
+    "pytest-cov>=2.12"
+]
+docs = [
+    "sphinx>=4.0",
+    "sphinx-rtd-theme>=1.0",
+    "recommonmark>=0.7",
+    "myst_parser>=3.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+norecursedirs = [".git", "files",]
+pythonpath = "src"
+addopts = "--cov=FuPy --cov-branch --cov-report term-missing --cov-report html"
+testpaths = [
+    "tests",
+]
+xfail_strict = true
