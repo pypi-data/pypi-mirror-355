@@ -1,0 +1,123 @@
+{% load dynforms %}
+{% load static %}
+<div class="controls {{ repeatable }}" id="{{ field.name }}-controls">
+    <div class="row">
+        {% if 'department' in field.options %}
+            <div class="col-12 mb-2 {{ floating }}">
+                <input id="{{ field.name }}-place" aria-label="Institution"
+                       {% if not field|show_sublabels %}placeholder="Institution / Department"{% endif %}
+                       name="{{ field.name }}.place" class="form-control" type="text" value="{{ data.place }}"
+                >
+                {% if field|show_sublabels %}
+                    <label for="{{ field.name }}-place">Institution / Department</label>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="col-12 mb-2 {{ floating }}">
+            <input id="{{ field.name }}-street" name="{{ field.name }}.street"
+                   aria-label="Street"
+                   {% if not field|show_sublabels %}placeholder="Street"{% endif %}
+                   class="form-control {{ required }}" type="text" value="{{ data.street }}"
+            >
+            {% if field|show_sublabels %}
+                <label for="{{ field.name }}-street">Street</label>
+            {% endif %}
+        </div>
+        <div class="col-6 mb-2 {{ floating }}">
+            <input id="{{ field.name }}-country" aria-label="Country" name="{{ field.name }}.country"
+                   class="form-control {{ required }}" type="text" value="{{ data.country }}"
+                   {% if  not field|show_sublabels %}placeholder="Country ..."{% endif %}
+            >
+            {% if field|show_sublabels %}
+                <label for="{{ field.name }}-country">Country</label>
+            {% endif %}
+        </div>
+        <div class="col-6 mb-2 {{floating}}">
+
+            <input id="{{ field.name }}-region" aria-label="Province/State/Region" name="{{ field.name }}.region"
+                   class="form-control {{ required }}" type="text" value="{{ data.region }}"
+                   {% if  not field|show_sublabels %}placeholder="Province/State/Region ..."{% endif %}
+            >
+            {% if field|show_sublabels %}
+                <label for="{{ field.name }}-region">Province / State / Region</label>
+            {% endif %}
+        </div>
+        <div class="col-6 mb-2 {% if 'floating' in field.options %}form-floating{% endif %}">
+
+            <input id="{{ field.name }}-city" aria-label="City"
+                   {% if not field|show_sublabels %}placeholder="City"{% endif %}
+                   name="{{ field.name }}.city"
+                   class="form-control {{ required }}" type="text" value="{{ data.city }}"
+            >
+            {% if field|show_sublabels %}
+                <label for="{{ field.name }}-city">City</label>
+            {% endif %}
+        </div>
+        <div class="col-6 mb-2 {% if 'floating' in field.options %}form-floating{% endif %}">
+
+            <input id="{{ field.name }}-code" aria-label="Postal Code"
+                   {% if not field|show_sublabels %}placeholder="Postal Code"{% endif %}
+                   name="{{ field.name }}.code" class="form-control {{ required }}" type="text" value="{{ data.code }}"
+            >
+            {% if field|show_sublabels %}
+                <label for="{{ field.name }}-code">Postal / Zip Code</label>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"
+            integrity="sha512-qOBWNAMfkz+vXXgbh0Wz7qYSLZp6c14R0bZeVX2TdQxWpuKr6yHjBIM69fcF8Ve4GUX6B6AKRQJqiiAmwvmUmQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'dynforms/countries.min.js' %}" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const $country = $('#{{field.name}}-country');
+            const $region = $('#{{field.name}}-region');
+
+            const countries = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: COUNTRIES
+            });
+            const _regions = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: REGIONS["CANADA"]
+            });
+
+
+            $country.typeahead(null, {
+                source: countries,
+                limit: 20
+            });
+
+            $region.typeahead(null, {
+                source: _regions,
+                limit: 20
+            });
+
+            $country.bind('typeahead:selected typeahead:autocompleted', function () {
+                const cntry = $country.val();
+                const cntry_regions = REGIONS[cntry.toUpperCase()];
+
+
+                if (cntry && cntry_regions) {
+                    const regions = new Bloodhound({
+                        datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        local: cntry_regions
+                    });
+                    //console.log(cntry_regions);
+                    $region.typeahead('destroy');
+                    $region.typeahead(null, {
+                        source: regions,
+                        limit: 20
+                    });
+                    if ($.inArray($region.val(), cntry_regions) !== -1) {
+                        $region.val("")
+                    }
+                }
+            });
+        });
+    </script>
+</div>
