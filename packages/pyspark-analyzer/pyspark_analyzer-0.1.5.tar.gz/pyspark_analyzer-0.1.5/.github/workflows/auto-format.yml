@@ -1,0 +1,58 @@
+name: Auto Format
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.py'
+      - 'pyproject.toml'
+
+jobs:
+  format:
+    name: Auto Format Code
+    runs-on: ubuntu-latest
+
+    # Only run on PRs from forks or when manually triggered
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        ref: ${{ github.head_ref }}
+
+    - name: Setup Python and uv
+      uses: ./.github/actions/setup-python-uv
+      with:
+        python-version: "3.11"
+        install-extras: all-extras
+
+    - name: Run black formatting
+      run: |
+        uv run black pyspark_analyzer/ tests/ examples/
+
+    - name: Run isort import sorting
+      run: |
+        uv run isort pyspark_analyzer/ tests/ examples/ --profile black
+
+    - name: Run ruff formatting fixes
+      run: |
+        uv run ruff check pyspark_analyzer/ tests/ examples/ --fix --exit-zero
+
+    - name: Check for changes
+      id: verify-changed-files
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Commit changes
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "🤖 Auto-format code with black, isort, and ruff" || exit 0
+        git push
