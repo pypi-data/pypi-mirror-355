@@ -1,0 +1,15 @@
+mango_pycore
+============
+
+.. toctree::
+   :maxdepth: 4
+
+   api
+   instalation
+   helloworld
+   restTutorial
+   websocketTutorial
+   triggers
+   
+
+   
