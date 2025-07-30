@@ -1,0 +1,30 @@
+[project]
+authors = [
+    {name = "willsygao", email = "shuoyuan.gao0102@gmail.com"},
+]
+maintainers = [
+    {name = "willsygao", email = "shuoyuan.gao0102@gmail.com"}
+]
+name = "tencentcloud-live-mcp-server"
+version = "1.1.0"
+description = "Tencent Cloud API server implemented based on Model Context Protocol (MCP)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "tencentcloud-sdk-python>=3.0.0",
+    "requests>=2.32.3",
+    "mcp>=1.6.0",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+tencentcloud-live-mcp-server = "server:main"
+
+[project.urls]
+Homepage = "https://github.com/willsygao/tencentcloud-live-mcp-server"
+Repository = "https://github.com/willsygao/tencentcloud-live-mcp-server.git"
