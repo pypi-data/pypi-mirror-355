@@ -1,0 +1,37 @@
+Metadata-Version: 2.4
+Name: xapipy
+Version: 0.1.0
+Summary: A Python library for the X API v2 with OAuth 1.0a authentication
+Author-email: studioant <weareallone83@gmail.com>
+License: MIT License
+Project-URL: Homepage, https://github.com/studioant/xapipy
+Project-URL: Documentation, https://github.com/studioant/xapipy#readme
+Project-URL: Source, https://github.com/studioant/xapipy
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: requests>=2.25.1
+Requires-Dist: requests-oauthlib>=1.3.0
+Requires-Dist: python-dotenv>=0.19.0
+Dynamic: license-file
+
+# XApiPy
+
+A Python library for interacting with the X API v2 using OAuth 1.0a authentication.
+
+## Installation
+
+```bash
+pip install xapipy
+```
+
+## Usage
+
+```bash
+from xapipy import XApiPy
+x_api = XApiPy()
+x_api.tweets.post("Hello from XApiPy!")
+```
