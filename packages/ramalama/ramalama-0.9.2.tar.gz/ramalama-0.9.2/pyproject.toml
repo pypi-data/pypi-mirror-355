@@ -1,0 +1,111 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ramalama"
+version = "0.9.2"
+description = "RamaLama is a command line tool for working with AI LLM models."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+keywords = ["ramalama", "llama", "AI"]
+dependencies = [
+  "argcomplete",
+]
+maintainers = [
+   { name="Dan Walsh", email = "dwalsh@redhat.com" },
+   { name="Eric Curtin", email = "ecurtin@redhat.com" },
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "argcomplete~=3.0",
+    "black~=25.0",
+    "codespell~=2.0",
+    "flake8~=7.0",
+    "huggingface_hub~=0.33.0",
+    "isort~=6.0",
+    "pytest~=8.3",
+    "wheel~=0.45.0",
+    "mypy",
+]
+
+cov = [
+    "pytest-cov",
+]
+
+cov-detailed = [
+    "pytest-cov",
+    "pytest-func-cov",
+    "pytest-report",
+    "pytest-json",
+    "pytest-html"
+]
+
+[project.urls]
+Homepage = "https://github.com/containers/ramalama"
+Documentation = "https://github.com/containers/ramalama/tree/main/docs"
+Repository = "https://github.com/containers/ramalama"
+Issues = "https://github.com/containers/ramalama/issues"
+
+[project.scripts]
+ramalama = "ramalama.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+preview = true
+target-version = ["py310", "py311", "py312", "py313"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.tox
+  | \.venv
+  | \.history
+  | build
+  | dist
+  | docs
+  | hack
+  | venv
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.flake8]
+max-line-length = 120
+
+[tool.pytest.ini_options]
+testpaths = ["."]
+log_cli = true
+log_cli_level = "DEBUG"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+
+
+[tool.setuptools.packages.find]
+include = ["ramalama"]
+
+[tool.setuptools.data-files]
+"share/ramalama" = ["shortnames/shortnames.conf"]
+"share/man/man1" = ["docs/*.1"]
+"share/man/man5" = ["docs/*.5"]
+"share/man/man7" = ["docs/*.7"]
+"share/bash-completion/completions" = ["completions/bash-completion/completions/*"]
+"share/zsh/vendor-completions" = ["completions/zsh/vendor-completions/*"]
+"share/fish/vendor_completions.d" = ["completions/fish/vendor_completions.d/*"]
+"libexec/ramalama" = [
+  "libexec/ramalama/ramalama-client-core",
+  "libexec/ramalama/ramalama-run-core",
+  "libexec/ramalama/ramalama-serve-core",
+]
+
