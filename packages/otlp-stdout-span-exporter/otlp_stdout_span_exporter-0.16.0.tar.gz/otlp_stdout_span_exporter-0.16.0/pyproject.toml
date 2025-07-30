@@ -1,0 +1,90 @@
+[build-system]
+requires = ["hatchling>=1.0.0"]
+build-backend = "hatchling.build"
+
+# Use Hatch's built-in version hook to generate version.py
+[tool.hatch.build.hooks.version]
+path = "src/otlp_stdout_span_exporter/version.py"
+
+[project]
+name = "otlp-stdout-span-exporter"
+version = "0.16.0"
+description = "OpenTelemetry span exporter that writes to stdout in OTLP format"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [
+    { name = "Alessandro Bologna", email = "alessandro.bologna@gmail.com" }
+]
+keywords = ["opentelemetry", "tracing", "spans", "otlp", "stdout", "exporter"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "opentelemetry-sdk>=1.30.0",
+    "opentelemetry-exporter-otlp-proto-common>=1.30.0",
+]
+
+[project.urls]
+homepage = "https://github.com/dev7a/serverless-otlp-forwarder/"
+repository = "https://github.com/dev7a/serverless-otlp-forwarder/tree/main/packages/python/otlp-stdout-span-exporter"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.0.0",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.9.6",
+    "mypy>=1.15.0",
+]
+
+# Entry points for OpenTelemetry auto-discovery
+[project.entry-points."opentelemetry_traces_exporter"]
+otlpstdout = "otlp_stdout_span_exporter:OTLPStdoutSpanExporter"
+
+[tool.hatch.build]
+only-packages = true
+sources = ["src"]
+
+# Ensure artifacts are included in the packages
+[tool.hatch.build.targets.wheel]
+artifacts = ["src/otlp_stdout_span_exporter/version.py"]
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["src/otlp_stdout_span_exporter/version.py"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["otlp_stdout_span_exporter"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --cov=otlp_stdout_span_exporter --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
