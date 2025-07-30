@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "demisto-py"
+version = "3.2.20"
+description = "\"A Python library for the Demisto API\""
+authors = ["Demisto"]
+license = "Apache-2.0"
+readme = "README.md"
+packages = [{include = "demisto_client"}]
+homepage = "https://github.com/demisto/demisto-py"
+keywords=["Swagger", "Demisto API"]
+classifiers=[
+        'Intended Audience :: Developers',
+        'Natural Language :: English',
+        'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python',    
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: Implementation :: CPython'
+    ]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<=3.13"
+certifi = "^2024.2.2"
+six = "^1.16"
+python-dateutil = "^2.7.2"
+urllib3 = "<2.1.0"  # Can't update until CIAC-9648 is resolved
+tzlocal = "^5.2.0"
+setuptools = ">=80.9.0"
+
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-mock = "^3.12.0"
+freezegun = "^1.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
