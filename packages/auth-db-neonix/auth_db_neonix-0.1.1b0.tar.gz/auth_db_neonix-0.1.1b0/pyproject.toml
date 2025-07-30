@@ -1,0 +1,39 @@
+[project]
+name = "auth_db_neonix"
+version = "0.1.1b"
+description = "User auth, settings management, and local DB handling with Firebase and SQLite"
+authors = [
+    { name="NeoNix", email="rittoone@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "firebase-admin>=6.0.0",
+    "pydantic>=1.9.0",
+    "pandas>=2.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "flake8>=5.0",
+    "black>=23.0",
+    "mypy>=1.5"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+#[tool.setuptools]
+#packages = ["auth_db_neonix"]
+
+[tool.setuptools.packages.find]
+include = ["auth_db_neonix*", "auth_db_neonix.*"]
+
+[tool.setuptools.package-data]
+auth_db_neonix = ["security/*.json"]
+
+[project.scripts]
+authdb-main = "auth_db_neonix.main:main"
+
