@@ -1,0 +1,29 @@
+[main]
+output_dir = "test_scratch"
+scratch_dir = "/tmp"
+cpus = 1
+mem_per_cpu_gb = 1
+workers = 1
+overwrite = false
+nodelist = ["apollo-11"]
+exclude = ["apollo-12"]
+timelimit = "12:34:00"
+
+[molecules]
+xyz_dir = "molecules"
+include = ["h2"]
+
+[[step]]
+name = "01_opt_freq_singlet"
+keywords = ["D4", "TPSS", "def2-SVP", "OPT"]
+
+[[step]]
+name = "01_sp"
+keywords = ["D4", "TPSS", "def2-SVP", "FREQ"]
+keep = ["01_opt_freq_singlet.gbw"]
+
+[[step]]
+name = "01_tddft"
+keywords = ["D4", "TPSS", "def2-SVP"]
+blocks = ["%TDDFT NROOTS 1 END"]
+mult = 3
