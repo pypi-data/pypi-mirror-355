@@ -1,0 +1,54 @@
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/"
+    groups:
+      rust-dependencies:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "all"
+    assignees:
+      - "Cian-H"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "all"
+    assignees:
+      - "Cian-H"
+    commit-message:
+      prefix: "pip-deps"
+      prefix-development: "pip-deps-dev"
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    groups:
+      action-dependencies:
+        patterns:
+          - "*"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
