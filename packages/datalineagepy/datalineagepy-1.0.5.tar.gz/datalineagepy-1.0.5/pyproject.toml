@@ -1,0 +1,134 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datalineagepy"
+version = "1.0.5"
+authors = [
+    {name = "Arbaz Nazir", email = "arbaznazir4@gmail.com"},
+]
+description = "Automatic pandas DataFrame lineage tracking for data governance and compliance"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Database",
+    "Topic :: Documentation",
+    "Topic :: System :: Logging",
+]
+keywords = [
+    "data", "lineage", "pandas", "governance", "compliance", 
+    "tracking", "audit", "etl", "data-engineering", "analytics"
+]
+dependencies = [
+    "pandas>=1.3.0",
+    "numpy>=1.20.0",
+    "networkx>=2.5",
+    "plotly>=5.0.0",
+    "jinja2>=3.0.0",
+    "pydantic>=1.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.9",
+    "mypy>=0.910",
+    "pre-commit>=2.15",
+]
+cloud = [
+    "boto3>=1.20.0",
+    "azure-storage-blob>=12.0.0",
+    "google-cloud-storage>=2.0.0",
+]
+streaming = [
+    "kafka-python>=2.0.0",
+    "pyspark>=3.0.0",
+]
+database = [
+    "sqlalchemy>=1.4.0",
+    "psycopg2-binary>=2.8.0",
+    "PyMySQL>=1.0.0",
+]
+orchestration = [
+    "apache-airflow>=2.0.0",
+    "prefect>=2.0.0",
+    "dbt-core>=1.0.0",
+]
+ml = [
+    "scikit-learn>=1.0.0",
+    "scipy>=1.7.0",
+]
+all = [
+    "datalineagepy[cloud,streaming,database,orchestration,ml]"
+]
+
+[project.urls]
+Homepage = "https://github.com/Arbaznazir/DataLineagePy"
+Documentation = "https://github.com/Arbaznazir/DataLineagePy/tree/main/docs"
+Repository = "https://github.com/Arbaznazir/DataLineagePy.git"
+"Bug Tracker" = "https://github.com/Arbaznazir/DataLineagePy/issues"
+Changelog = "https://github.com/Arbaznazir/DataLineagePy/blob/main/CHANGELOG.md"
+
+[project.entry-points."datalineagepy.connectors"]
+csv = "datalineagepy.connectors.csv:CSVConnector"
+json = "datalineagepy.connectors.json:JSONConnector"
+parquet = "datalineagepy.connectors.parquet:ParquetConnector"
+mysql = "datalineagepy.connectors.mysql:MySQLConnector"
+postgresql = "datalineagepy.connectors.postgresql:PostgreSQLConnector"
+sqlite = "datalineagepy.connectors.sqlite:SQLiteConnector"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["datalineagepy*"]
+
+[tool.setuptools.package-data]
+datalineagepy = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v"
+
+[tool.coverage.run]
+source = ["datalineagepy"]
+omit = ["*/tests/*", "*/examples/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+] 
