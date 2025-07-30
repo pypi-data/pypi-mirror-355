@@ -1,0 +1,85 @@
+Metadata-Version: 2.4
+Name: pyqtorch
+Version: 1.7.8
+Summary: An efficient, large-scale emulator designed for quantum machine learning, seamlessly integrated with a PyTorch backend. Please refer to https://pyqtorch.readthedocs.io/en/latest/ for setup and usage info, along with the full documentation.
+Project-URL: Documentation, https://pasqal-io.github.io/pyqtorch/latest/
+Project-URL: Issues, https://github.com/pasqal-io/pyqtorch/-/issues
+Project-URL: Source, https://github.com/pasqal-io/pyqtorch
+Author-email: Slimane Thabet <slimane.thabet@pasqal.com>, Aleksander Wennersteen <aleksander.wennersteen@pasqal.com>, Mario Dagrada <mario.dagrada@pasqal.com>, Dominik Seitz <dominik.seitz@pasqal.com>, Niklas Heim <niklas.heim@pasqal.com>, Roland Guichard <roland.guichard@pasqal.com>, "Joao P. Moutinho" <joao.moutinho@pasqal.com>, Vytautas Abramavicius <vytautas.abramavicius@pasqal.com>, Anton Quelle <anton.quelle@pasqal.com>, Charles Moussa <charles.moussa@pasqal.com>, Callum Duffy <callum.duffy@pasqal.com>
+License: Apache 2.0
+License-File: LICENSE
+Keywords: quantum
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.9
+Requires-Dist: numpy
+Requires-Dist: torch
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: flake8; extra == 'dev'
+Requires-Dist: flaky; extra == 'dev'
+Requires-Dist: matplotlib; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: pre-commit; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: pytest-xdist; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Provides-Extra: testlibs
+Requires-Dist: jax; extra == 'testlibs'
+Requires-Dist: jaxlib; extra == 'testlibs'
+Requires-Dist: qutip; extra == 'testlibs'
+Description-Content-Type: text/markdown
+
+# pyqtorch
+
+**pyqtorch** is a [PyTorch](https://pytorch.org/)-based state vector simulator designed for quantum machine learning.
+It acts as the main backend for [`Qadence`](https://github.com/pasqal-io/qadence), a digital-analog quantum programming interface.
+`pyqtorch` allows for writing fully differentiable quantum programs using both digital and analog operations; enabled via a intuitive, torch-based syntax.
+
+[![Linting / Tests/ Documentation](https://github.com/pasqal-io/pyqtorch/actions/workflows/test.yml/badge.svg)](https://github.com/pasqal-io/pyqtorch/actions/workflows/test.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Pypi](https://badge.fury.io/py/pyqtorch.svg)](https://pypi.org/project/pyqtorch/)
+![Coverage](https://img.shields.io/codecov/c/github/pasqal-io/pyqtorch?style=flat-square)
+
+
+## Installation guide
+
+`pyqtorch` can be installed from PyPI with `pip` as follows:
+
+```bash
+pip install pyqtorch
+```
+
+## Install from source
+
+We recommend to use the [`hatch`](https://hatch.pypa.io/latest/) environment manager to install `pyqtorch` from source:
+
+```bash
+python -m pip install hatch
+
+# get into a shell with all the dependencies
+python -m hatch shell
+
+# run a command within the virtual environment with all the dependencies
+python -m hatch run python my_script.py
+```
+
+Please note that `hatch` will not combine nicely with other environment managers such Conda. If you want to use Conda, install `pyqtorch` from source using `pip`:
+
+```bash
+# within the Conda environment
+python -m pip install -e .
+```
+
+## Contributing
+
+Please refer to [CONTRIBUTING](CONTRIBUTING.md) to learn how to contribute to `pyqtorch`.
