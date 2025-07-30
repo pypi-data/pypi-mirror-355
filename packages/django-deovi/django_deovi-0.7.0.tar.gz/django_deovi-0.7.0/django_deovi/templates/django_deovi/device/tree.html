@@ -1,0 +1,143 @@
+{% extends "django_deovi/base.html" %}
+{% load i18n smart_image %}
+
+{% block head_title %}{{ device_object }} - {{ block.super }}{% endblock head_title %}
+
+{% block app_content %}{% spaceless %}
+<div class="device-detail">
+    <div class="device-detail__head">
+        <h2 class="device-detail__title">{{ device_object }}</h2>
+        {% with device_object.resume as resume %}
+            <div class="device-detail__stats stats">
+                <div class="stats__cell">
+                    <div><i class="h5 bi bi-bar-chart-fill"></i></div>
+                    <div><small class="text-muted sm-2 fw-normal">{% trans "Total size" %}</small></div>
+                    <h3 class="fw-bold mb-0 fs-5">{{ resume.filesize|filesizeformat }}</h3>
+                </div>
+                <div class="stats__cell">
+                    <div><i class="h5 bi bi-folder"></i></div>
+                    <div><small class="text-muted sm-2 fw-normal">{% trans "Directories" %}</small></div>
+                    <h3 class="fw-bold mb-0 fs-5">{{ resume.directories }}</h3>
+                </div>
+                <div class="stats__cell">
+                    <div><i class="h5 bi bi-film"></i></div>
+                    <div><small class="text-muted sm-2 fw-normal">{% trans "Medias" %}</small></div>
+                    <h3 class="fw-bold mb-0 fs-5">{{ resume.mediafiles }}</h3>
+                </div>
+                <div class="stats__cell">
+                    <div><i class="h5 bi bi-balloon"></i></div>
+                    <div><small class="text-muted sm-2 fw-normal">{% trans "Created" %}</small></div>
+                    <h3 class="fw-bold mb-0 fs-5">
+                        <abbr class="text-decoration-none" title="{{ device_object.created_date }}">
+                            {{ device_object.created_date|date:"SHORT_DATE_FORMAT" }}
+                        </abbr>
+                    </h3>
+                </div>
+                <div class="stats__cell">
+                    <div><i class="h5 bi bi-activity"></i></div>
+                    <div><small class="text-muted sm-2 fw-normal">{% trans "Last update" %}</small></div>
+                    <h3 class="fw-bold mb-0 fs-5">
+                        <abbr class="text-decoration-none" title="{{ resume.last_media_update }}">
+                            {{ resume.last_media_update|date:"SHORT_DATE_FORMAT" }}
+                        </abbr>
+                    </h3>
+                </div>
+            </div>
+        {% endwith %}
+    </div>
+
+    <div class="device-detail__directories treegrid">
+        <div class="btn-toolbar justify-content-between pb-2 mb-2"
+             role="toolbar" aria-label="Device toolbar">
+            <div class="btn-group btn-group-sm" role="group"
+                 aria-label="Device navigation">
+                <a class="btn btn-secondary"
+                   href="{{ device_object.get_absolute_url }}">
+                    <i class="bi bi-grid me-1"></i>
+                    Device detail
+                </a>
+            </div>
+            <div class="btn-group btn-group-sm"
+                 role="group" aria-label="Device menu">
+                <button id="treegrid-open-all" type="button"
+                        class="btn btn-primary"
+                        data-treegrid-target="#device-detail-tree">
+                    Open all
+                </button>
+                <button id="treegrid-close-all" type="button"
+                        class="btn btn-primary"
+                        data-treegrid-target="#device-detail-tree">
+                    Close all
+                </button>
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Selection export
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item treegrid-export-action"
+                               data-treegrid-form="#treegrid-form"
+                               data-treegrid-action="list-text"
+                               data-treegrid-title="Export selection to a plain text list"
+                               href="#">
+                                A list of paths
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item treegrid-export-action"
+                               data-treegrid-form="#treegrid-form"
+                               data-treegrid-action="details-json"
+                               data-treegrid-title="Export selection details to JSON"
+                               href="#">
+                                Path details as JSON
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item treegrid-export-action"
+                               data-treegrid-form="#treegrid-form"
+                               data-treegrid-action="size-sum"
+                               data-treegrid-title="Selected path sizes sum"
+                               href="#">
+                                Compute size to a sum
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="treegrid__directory treegrid__directory--headers">
+            <div class="name">Name</div>
+            <div class="counter">Files</div>
+            <div class="counter">Children</div>
+            {% comment %}<div class="size">Direct filesize</div>{% endcomment %}
+            <div class="size">Filesize</div>
+        </div>
+
+        <form action="{% url "django_deovi:device-tree-export" device_slug=device_object.slug %}" id="treegrid-form">
+            {% csrf_token %}
+            <ul class="treegrid__container treegrid__children" id="device-detail-tree">
+                {% include "django_deovi/device/_tree-item.html" with parent_last=True level=1 device=device directory=device_object.get_directory_tree %}
+            </ul>
+        </form>
+    </div>
+</div>
+
+<div id="treegrid-export-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="copy-button btn btn-primary">
+                    <i class="copy-icon"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endspaceless %}{% endblock app_content %}

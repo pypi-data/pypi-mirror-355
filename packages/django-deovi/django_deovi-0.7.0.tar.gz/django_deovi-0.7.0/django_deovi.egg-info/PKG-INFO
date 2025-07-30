@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: django-deovi
+Version: 0.7.0
+Summary: A Django application around Deovi
+Home-page: https://github.com/sveetch/django-deovi
+Author: David Thenon
+Author-email: sveetch@gmail.com
+License: MIT
+Keywords: Python Django
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 5.1
+Classifier: Framework :: Django :: 5.2
+Description-Content-Type: text/x-rst
+License-File: LICENCE.txt
+Requires-Dist: Django>=5.1
+Requires-Dist: deovi>=0.7.0
+Requires-Dist: bigtree[pandas]>=0.10.3
+Requires-Dist: django-smart-media>=0.2.2
+Requires-Dist: whoosh-reloaded>=2.7.5
+Requires-Dist: django-haystack>=3.3.0
+Requires-Dist: django-crispy-forms>=2.3
+Requires-Dist: crispy-bootstrap5>=2024.10
+Provides-Extra: breadcrumbs
+Requires-Dist: django-view-breadcrumbs>=2.2.4; extra == "breadcrumbs"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-django>=4.0.0; extra == "dev"
+Requires-Dist: factory-boy>=3.3.0; extra == "dev"
+Requires-Dist: pyquery>=2.0.0; extra == "dev"
+Requires-Dist: freezegun>=1.2.0; extra == "dev"
+Provides-Extra: quality
+Requires-Dist: flake8>=6.0.0; extra == "quality"
+Requires-Dist: tox>=4.11.0; extra == "quality"
+Provides-Extra: doc
+Requires-Dist: sphinx>=8.0.2; extra == "doc"
+Requires-Dist: furo>=2024.8.6; extra == "doc"
+Requires-Dist: sphinx-copybutton>=0.5.2; extra == "doc"
+Provides-Extra: doc-live
+Requires-Dist: livereload>=2.7.0; extra == "doc-live"
+Provides-Extra: release
+Requires-Dist: twine>=5.0.0; extra == "release"
+Dynamic: license-file
+
+.. _Python: https://www.python.org/
+.. _Django: https://www.djangoproject.com/
+.. _Django REST framework: https://www.django-rest-framework.org/
+.. _bigtree: https://bigtree.readthedocs.io/
+.. _Deovi: https://deovi.readthedocs.io/
+
+
+============
+Django Deovi
+============
+
+A Django interface to load `Deovi`_ dumps and browse data.
+
+
+Dependancies
+************
+
+* `Python`_>=3.10;
+* `Django`_>=4.2;
+* `bigtree`_>=0.10.3;
+* `Deovi`_>=0.7.0;
+
+
+Links
+*****
+
+* Read the documentation on `Read the docs <https://django-deovi.readthedocs.io/>`_;
+* Download its `PyPi package <https://pypi.python.org/pypi/django-deovi>`_;
+* Clone it on its `Github repository <https://github.com/sveetch/django-deovi>`_;
