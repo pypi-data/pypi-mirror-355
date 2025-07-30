@@ -1,0 +1,30 @@
+import requests
+
+url = "{{ url }}"
+{%- if headers %}
+headers = {
+    {%- for key, value in headers.items() %}
+    "{{ key }}": "{{ value }}",
+    {%- endfor %}
+}
+{%- endif %}
+
+{%- if body %}
+data = {{ body | tojson(indent=2) }}
+{%- endif %}
+
+{%- if headers or body %}
+response = requests.{{ method.lower() }}(
+    url,
+    {%- if headers %}
+    headers=headers,
+    {%- endif %}
+    {%- if body %}
+    json=data,
+    {%- endif %}
+)
+{%- else %}
+response = requests.{{ method.lower() }}(url)
+{%- endif %}
+print(response.status_code)
+print(response.json())

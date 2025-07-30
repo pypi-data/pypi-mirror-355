@@ -1,0 +1,13 @@
+curl \
+{%- if method.upper() != 'GET' %}
+  -X{{ method.upper() }} \
+{%- endif %}
+{%- if headers %}
+    {%- for key, value in headers.items() %}
+  -H"{{ key }}": "{{ value }}" \
+    {%- endfor %}
+{%- endif %}
+{%- if body %}
+  -d '{{ body | tojson(indent=4) }}' \
+{%- endif %}
+  "{{ url }}"
