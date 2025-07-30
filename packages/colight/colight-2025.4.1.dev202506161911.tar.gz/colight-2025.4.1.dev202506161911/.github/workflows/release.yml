@@ -1,0 +1,136 @@
+name: Release to PyPI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check.outputs.skip }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if build should be skipped
+        id: check
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]] && [[ -n "$(git tag --points-at HEAD)" ]]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install deps
+        run: uv sync --group dev
+
+      - name: Install dependencies with Yarn
+        run: yarn install --frozen-lockfile --production=false
+
+      - name: build the javascript bundle
+        run: |
+          yarn build
+          # Force Git to track the build files temporarily
+          git add -f src/js-dist
+
+      - name: Set version components
+        id: versions
+        run: |
+          # Handle different version scenarios
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            # Dev version for main pushes without tag
+            BASE_VERSION=$(uv run python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+            DEV_VERSION=$(date +'%Y%m%d%H%M')
+            PYTHON_VERSION="${BASE_VERSION}.dev${DEV_VERSION}"
+            NPM_VERSION="${BASE_VERSION}-dev.${DEV_VERSION}"
+            uv run python scripts/update_version.py "${PYTHON_VERSION}"
+          elif [[ "${{ github.ref }}" =~ ^refs/tags/v.*\.alpha ]]; then
+            # Alpha release from tag
+            PYTHON_VERSION=${GITHUB_REF#refs/tags/v}
+            NPM_VERSION=$(echo ${PYTHON_VERSION} | sed 's/\.alpha/-alpha./')
+          else
+            # Regular release from tag
+            PYTHON_VERSION=$(uv run python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+            NPM_VERSION=$PYTHON_VERSION
+          fi
+
+          echo "PYTHON_VERSION=${PYTHON_VERSION}" >> $GITHUB_OUTPUT
+          echo "NPM_VERSION=${NPM_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Update version query params in widget.py
+        run: |
+          VERSION=${{ steps.versions.outputs.PYTHON_VERSION }}
+          python scripts/update_asset_versions.py $VERSION
+
+      - name: Update widget URL and build Python package
+        run: |
+          NPM_BASE="https://cdn.jsdelivr.net/npm/@colight/core@${{ steps.versions.outputs.NPM_VERSION }}"
+          JSDELIVR_JS_URL="${NPM_BASE}/widget.mjs"
+          JSDELIVR_CSS_URL="${NPM_BASE}/widget.css"
+
+          # Update both URLs in the source
+          sed -i "s|CDN_SCRIPT_URL = None|CDN_SCRIPT_URL = \"${JSDELIVR_JS_URL}\"|" src/colight/env.py
+          sed -i "s|CDN_CSS_URL = None|CDN_CSS_URL = \"${JSDELIVR_CSS_URL}\"|" src/colight/env.py
+
+          uv build
+
+          git checkout src/colight/util.py
+
+      - name: Deploy to PyPI
+        run: |
+          echo "=== Checking build artifacts ==="
+          ls -la src/js-dist/
+          echo "=== Publishing to PyPI ==="
+          uv publish --token ${{ secrets.PYPI_TOKEN }}
+
+      - name: Setup Node.js for npm publishing
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Publish to npm
+        run: |
+          npm version ${{ steps.versions.outputs.NPM_VERSION }} --no-git-tag-version
+
+          cp src/colight/widget.css src/js-dist/
+
+          echo "Publishing npm package version ${{ steps.versions.outputs.NPM_VERSION }}"
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Parse latest changelog entry
+        id: changelog
+        run: |
+          # Extract everything from start until the second occurrence of a line starting with ###
+          awk '/^###/{count++; if(count==2){exit} if(count==1){p=1}} p{print}' CHANGELOG.md > release_notes.md
+
+      - name: Create GitHub Release
+        if: github.ref_type == 'tag' && !contains(github.ref, '.alpha')
+        uses: ncipollo/release-action@v1
+        with:
+          bodyFile: release_notes.md
+          artifacts: "src/js-dist/*"

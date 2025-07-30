@@ -1,0 +1,100 @@
+site_name: Colight
+site_url: https://colight.dev
+repo_url: https://github.com/colight-dev/colight
+repo_name: colight-dev/colight
+edit_uri: tree/docs/docs/
+theme:
+  name: material
+  custom_dir: docs/overrides
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil-box
+    download: material/download
+  palette:
+    primary: white
+    accent: custom
+  font:
+    text: Crimson Pro
+  features:
+    - navigation.indexes
+    - toc.integrate
+    - content.action.edit
+  logo: false
+nav:
+  - Home: index.md
+  - Essential Reading: essential-reading.py
+  - Scene3d: scene3d.py
+  - The Basics:
+    - Layouts: system-guide/layouts.py
+    - State: system-guide/state.py
+    - HTML with Hiccup: system-guide/html-with-hiccup.py
+    - Color: learn-more/color.py
+    - JS Imports: system-guide/js-imports.py
+    - Interactivity & Animation:
+      - Sliders: interactivity/sliders.py
+      - Animating Frames: interactivity/frames.py
+      - Mouse events: interactivity/events.py
+      - Conditional Rendering: learn-more/cond.py
+      - Tailing data: interactivity/tail.py
+  - Export:
+    - Save to File: export/save_to_file.py
+    - Images and Video: export/images_and_video.py
+  - Advanced:
+    - Python Event Loops: learn-more/python-event-loop.py
+    - Compare with Observable Plot: learn-more/vs-observable.py
+    - Plot Options: learn-more/plot-options.py
+  - Examples:
+      - Draw Density: examples/draw-density.py
+      - Live Editing Source Code: examples/live-edit-source.py
+      - Ellipse Mark: examples/ellipse-mark.py
+      - Histogram Mark: examples/histogram-mark.py
+      - Image Mark: examples/image-mark.py
+      - Timelines with barX: examples/barx-timeline.py
+      - Highlighting Code: examples/bylight.py
+      - Rendering LaTeX: examples/katex.py
+      - Render Pixel Data: examples/pixels.py
+  - API Docs:
+    - Plot: api/plot.md
+    - Scene3D: api/scene3d.md
+  - How Do I...: learn-more/how-do-i.py
+
+  - Changelog: CHANGELOG.md
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+plugins:
+  - search
+  - colight.docs.plugin:
+      modules:
+        - module: colight.plot
+          output: api/plot.md
+        - module: colight.scene3d
+          output: api/scene3d.md
+  - mkdocs-jupyter:
+      include: ["*.py"]
+      ignore: ["llms.py"]
+      execute: true
+      allow_errors: false
+      kernel_name: colight
+      include_requirejs: true
+      include_source: True
+      remove_tag_config:
+        remove_cell_tags:
+          - hide
+        remove_input_tags:
+          - hide_source
+        remove_all_outputs_tags:
+          - hide_output
+extra_css:
+  - stylesheets/custom.css?v=2025.4.1.dev202506161911
+  - stylesheets/bylight.css
+extra_javascript:
+  - js/bylight.js
+  - js/scroll-fix.js
+  - js/command-k.js
+hooks:
+  - src/colight/scripts/css_modifier.py
+  - src/colight/scripts/tailwind_builder.py

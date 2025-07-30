@@ -1,0 +1,34 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: yarn install --frozen-lockfile
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Install deps
+        run: uv sync --group dev
+
+      - name: Build JavaScript
+        run: yarn build
+      - name: Run Python tests
+        run: yarn test:py
+      - name: Run JavaScript tests
+        run: yarn test:js

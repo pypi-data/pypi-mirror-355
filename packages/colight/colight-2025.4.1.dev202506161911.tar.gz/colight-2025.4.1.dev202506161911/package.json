@@ -1,0 +1,63 @@
+{
+  "name": "@colight/core",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:colight-dev/colight.git",
+  "author": "Matthew Huebert <me@matt.is>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@webgpu/types": "^0.1.53",
+    "canvas": "^3.1.0",
+    "esbuild": "^0.21.5",
+    "esbuild-css-modules-plugin": "^3.1.5",
+    "jsdom": "^25.0.0",
+    "npm-run-all": "^4.1.5",
+    "pyright": "^1.1.367",
+    "vitest": "^2.0.5"
+  },
+  "dependencies": {
+    "@anywidget/react": "^0.0.7",
+    "@observablehq/plot": "^0.6.16",
+    "@tailwindcss/typography": "^0.5.15",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@twind/core": "^1.1.3",
+    "@twind/preset-autoprefix": "^1.0.7",
+    "@twind/preset-tailwind": "^1.1.4",
+    "@twind/preset-typography": "^1.0.7",
+    "@types/react": "^19.0.4",
+    "@types/react-dom": "^19.0.2",
+    "bylight": "^1.0.5",
+    "d3": "^7.9.0",
+    "esbuild-plugin-import-map": "^2.1.0",
+    "gl-matrix": "^3.4.3",
+    "katex": "^0.16.11",
+    "markdown-it": "^14.1.0",
+    "mobx": "^6.13.1",
+    "mobx-react-lite": "^4.0.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwindcss": "^3.4.14"
+  },
+  "scripts": {
+    "release": "uv run python scripts/release.py $*",
+    "alpha": "uv run python scripts/release.py --alpha",
+    "build": "node esbuild.config.mjs",
+    "dev": "node esbuild.config.mjs --watch",
+    "watch:docs": "uv run mkdocs serve",
+    "build:docs": "uv run mkdocs build",
+    "test:js": "yarn vitest run",
+    "test:js-watch": "node --experimental-vm-modules node_modules/vitest/vitest.mjs",
+    "test:py": "uv run python -m pytest tests/python --ignore=tests/python/test_screenshots.py",
+    "test:images": "uv run python -m pytest tests/python/test_screenshots.py",
+    "test": "npm-run-all test:py test:js"
+  },
+  "files": [
+    "src/js-dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
