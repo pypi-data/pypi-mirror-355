@@ -1,0 +1,26 @@
+salt>=3003
+boto3
+paho-mqtt
+
+[dev]
+nox==2021.6.12
+pre-commit==2.13.0
+pylint
+SaltPyLint
+
+[docs]
+sphinx
+furo
+sphinx-copybutton
+sphinx-prompt
+sphinxcontrib-spelling
+
+[docs:python_version < "3.8"]
+importlib_metadata
+
+[docsauto]
+sphinx-autobuild
+
+[tests]
+pytest==6.2.4
+pytest-salt-factories==0.906.0
