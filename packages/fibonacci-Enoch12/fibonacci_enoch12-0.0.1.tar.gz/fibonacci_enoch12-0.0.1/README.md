@@ -1,0 +1,130 @@
+Sure! Here's a tailored `README.md` for your recursive Fibonacci calculator, based on the example you provided:
+
+---
+
+```markdown
+# 🌀 Recursive Fibonacci Calculator - `fibonacci_Enoch12`
+
+[![Python Version](https://img.shields.io/badge/Python-3.6%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+A simple Python script to calculate Fibonacci numbers using recursion.  
+Perfect for learning how recursion works in Python and understanding Fibonacci sequences.
+
+---
+
+## 🚀 Features
+
+- Recursive implementation of Fibonacci logic
+- Beginner-friendly structure and code
+- Interactive command-line input
+- No external dependencies
+
+---
+
+## 📂 File Structure
+```
+
+📁 fibonacci-recursive/
+│
+├── fibonacci_Enoch12.py # Main Python script
+└── README.md # Project documentation
+
+````
+
+---
+
+## 🧾 Code Overview
+
+```python
+def fibonacci(n):
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fibonacci(n - 1) + fibonacci(n - 2)
+
+def main():
+    try:
+        count = int(input("How many Fibonacci numbers should be printed? "))
+        print("Fibonacci sequence:")
+        for i in range(count):
+            print(f"fibonacci({i}) = {fibonacci(i)}")
+    except ValueError:
+        print("Please enter a valid integer.")
+
+if __name__ == "__main__":
+    main()
+````
+
+---
+
+## 🧪 Sample Output
+
+```
+How many Fibonacci numbers should be printed? 7
+Fibonacci sequence:
+fibonacci(0) = 0
+fibonacci(1) = 1
+fibonacci(2) = 1
+fibonacci(3) = 2
+fibonacci(4) = 3
+fibonacci(5) = 5
+fibonacci(6) = 8
+```
+
+---
+
+## 🔧 How to Use
+
+1. **Clone the repository**:
+
+```bash
+git clone https://github.com/Enoch1234455/fibonacci-recursive.git
+cd fibonacci-recursive
+```
+
+2. **Run the script**:
+
+```bash
+python fibonacci_Enoch12.py
+```
+
+3. **Enter how many Fibonacci numbers you want** when prompted.
+
+---
+
+## 💡 Enhancements (Optional Ideas)
+
+Expand this project by:
+
+- Adding **memoization** or **dynamic programming** to optimize performance
+- Implementing **unit tests** with `unittest` or `pytest`
+- Providing **graphical output** using `matplotlib`
+- Creating a **CLI** using `argparse` for more flexible input
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🙌 Contributing
+
+Feel free to fork the repo, open issues, or submit pull requests. Contributions are welcome!
+
+---
+
+## 📬 Contact
+
+Made with ❤️ by [Enoch](https://github.com/Enoch1234455)
+
+```
+
+---
+
+Let me know if you'd like help generating a `LICENSE` file or optimizing the recursive code with memoization.
+```

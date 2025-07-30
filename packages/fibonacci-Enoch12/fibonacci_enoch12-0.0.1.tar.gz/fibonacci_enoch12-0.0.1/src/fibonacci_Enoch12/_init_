@@ -1,0 +1,21 @@
+# Program Name: fibonacci_Enoch12
+
+def fibonacci(n):
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fibonacci(n - 1) + fibonacci(n - 2)
+
+def main():
+    try:
+        count = int(input("How many Fibonacci numbers should be printed? "))
+        print("Fibonacci sequence:")
+        for i in range(count):
+            print(f"fibonacci({i}) = {fibonacci(i)}")
+    except ValueError:
+        print("Please enter a valid integer.")
+
+if __name__ == "__main__":
+    main()
