@@ -1,0 +1,29 @@
+[project]
+name = "uniquant"
+version = "0.1.2"
+description = "A modular, multi-platform SDK for building trading bots and clients across multiple exchanges."
+authors = [
+    { name = "Broo DevX", email = "broodevx@gmail.com" }
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.8"
+
+dependencies = [
+    "aiohttp>=3.8.0",
+    "requests>=2.27.0",
+    "websockets>=10.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/Broo-DevX-Coder/Uniquant"
+Documentation = "https://github.com/Broo-DevX-Coder/Uniquant/wiki"
+Issues = "https://github.com/Broo-DevX-Coder/Uniquant/issues"
+
+[tool.setuptools]
+packages = ["uniquant.Lbank","uniquant.main"]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
