@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: exception_details
+Version: 0.0.3
+Summary: Get nicely formated exception details
+Author: André Herber
+Author-email: andre.herber.programming@gmail.com
+Keywords: python
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: colorful_terminal
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+
+# exception_details
+*Get nicely formated exception details.*
+
+## Content
+- Installation
+- Usage
+
+## Installation
+`pip install exception-details`
+
+## Usage
+- `print_exception_details(exception: Exception)`  
+  Print the exception details.  
+    Usage:  
+        `try: ...`  
+        `except Exception as e: print_exception_details(e)`  
+
+    Contains:
+    - function name
+    - filepath
+    - line
+    - code snippet
+    - species of the exception
+    - message
+
+    Args:
+        exception (Exception): Your Exception
+- `get_exception_details_dict(exception: Exception)`  
+  Get the exception details as a dictionary.  
+    Usage:  
+        `try: ... `  
+        `except Exception as e: details = get_exception_details_dict(e)`  
+        
+    Contains:
+    - 'function' -> function name
+    - 'path' -> filepath
+    - 'line' -> line
+    - 'code' -> code snippet
+    - 'species' -> species of the exception
+    - 'message' -> message
+
+    Args:
+        exception (Exception): Your Exception
+
+    Returns:
+        dict: Exception details as a dictionary with the keys: "function", "path", "line", "code", "species", "message"
+- `get_exception_details_str(exception: Exception, colored=True)`  
+  Print the exception details.  
+    Usage:  
+        `try: ... `  
+        `except Exception as e: details = get_exception_details_str(e)`  
+
+    Contains:
+    - function name
+    - filepath
+    - line
+    - code snippet
+    - species of the exception
+    - message
+
+    Args:
+        exception (Exception): Your Exception
+        colored (boolean): The string has coloreds parts if True.
+    
+    Returns:
+        str: Exception details as a string."
+
+## Links
+[GitHub](https://github.com/ICreedenI/exception_details) | [PyPI](https://pypi.org/project/exception-details/)
