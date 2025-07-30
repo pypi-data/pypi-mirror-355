@@ -1,0 +1,211 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stellarphot"
+dynamic = ["version"]
+description = "A package for performing stellar photometry."
+readme = "README.md"
+license = { text = "BSD-3-Clause" }
+requires-python = ">=3.11"
+authors = [
+    { name = "Matt Craig", email = "mattwcraig@gmail.com" },
+]
+dependencies = [
+    "astropy >=5",
+    "astroquery",
+    "astrowidgets",
+    "bottleneck",
+    "ccdproc",
+    "ginga",
+    "ipyautoui >=0.7.19",
+    "ipyfilechooser",
+    "ipywidgets",
+    "jupyter-app-launcher >=0.3.0",
+    "lightkurve",
+    "matplotlib",
+    "papermill",
+    "pandas",
+    "photutils >=2,<3",
+    "pydantic >=2",
+    "pyyaml",
+    "platformdirs",
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx",
+    "sphinx-astropy[confv2]",
+    "sphinx-design",
+    "graphviz",
+]
+exo_fitting = [
+    "batman-package",
+]
+test = [
+    "black",
+    "pre-commit",
+    "pytest-astropy",
+    "ruff",
+    "tox",
+]
+
+[project.urls]
+Homepage = "https://github.com/stellarphot/stellarphot"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "stellarphot/_version.py"
+
+[tool.hatch.build.targets.sdist]
+# This section determines what files are included in the source distribution
+include = [
+    # The source code
+    "/stellarphot",
+    # Logo for JupyterLab launcher
+    "/docs/_static/stellarphot-logo.svg",
+    # Configuration for jupyter-app-launcher
+    "/.jp_app_launcher_stellarphot.yaml"
+]
+
+[tool.hatch.build.targets.wheel.shared-data]
+# This section determines what data files are included in the wheel
+# and where they should eventually be installed in the user's environment.
+"docs/_static/stellarphot-logo.svg" = "share/jupyter/stellarphot/stellarphot-logo.svg"
+# This includes the notebooks used in the launcher
+"stellarphot/notebooks" = "share/jupyter/stellarphot"
+".jp_app_launcher_stellarphot.yaml" = "share/jupyter/jupyter_app_launcher/jp_app_launcher_stellarphot.yaml"
+
+[tool.coverage]
+
+    [tool.coverage.run]
+    source = ["stellarphot"]
+    omit = [
+        "*/conftest*",
+        "*/setup_package*",
+        "*/tests/*",
+        "*/**/tests/*",
+        "*/*version*",
+        "*/**/__init__.py",
+        ".tox/**/*",
+    ]
+
+    [tool.coverage.report]
+    exclude_lines = [
+        # Have to re-enable the standard pragma
+        "pragma: no cover",
+        # Don't complain about packages we have installed
+        "except ImportError",
+        # Don't complain if tests don't hit assertions
+        "raise AssertionError",
+        "raise NotImplementedError",
+        # Don't complain about connection errors
+        "raise requests.ConnectionError",
+        # Don't complain about script hooks
+        "def main(.*):",
+        # Ignore branches that don't pertain to this version of Python
+        "pragma: py{ignore_python_version}",
+    ]
+    omit = [
+        # Don't include tox stuff, please
+        ".tox/**/*",
+    ]
+
+[tool.black]
+line-length = 88
+target-version = ['py310', 'py311']
+include = '\.pyi?$|\.ipynb$'
+# 'extend-exclude' excludes files or directories in addition to the defaults
+# extend-exclude = '''
+# # A regex preceded with ^/ will apply only to files and directories
+# # in the root of the project.
+# (
+#   ^/docs
+# )
+# '''
+
+[tool.ruff]
+# ruff 0.6.0 started automatically linting notebooks. We are not ready for that yet.
+extend-exclude = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # E and W are the checks done by pycodestyle
+    "W",
+    "F",    # pyflakes checks
+    "ARG",  # flake8-unused-arguments
+    "UP",   # language updates
+    "NPY",  # check for numpy deprecations
+    "I",    # isort checks
+    "B",    # flake8-bugbear
+]
+[tool.ruff.lint.per-file-ignores]
+# Ignore `E402` and `F403` (import violations) in all `__init__.py` files.
+"__init__.py" = ["E402", "F403"]
+# Ignore F405 (variable may be from star imports) in docs/conf.py
+"docs/conf.py" = ["F405"]
+
+[tool.codespell]
+skip = '*.svg'
+ignore-words = "ignore-words.txt"
+
+[tool.pytest.ini_options]
+minversion = 7.0
+testpaths = [
+    "stellarphot",
+    "docs",
+]
+norecursedirs = [
+    "docs[\\/]_build",
+    "docs[\\/]generated",
+]
+astropy_header = true
+doctest_plus = "enabled"
+text_file_format = "rst"
+remote_data_strict = true
+addopts = [
+    "-ra",
+    "--color=yes",
+    "--doctest-rst",
+    "--strict-config",
+    "--strict-markers",
+]
+log_cli_level = "info"
+xfail_strict = true
+filterwarnings = [
+    "error",
+    # Apparently bqplot is using deprecated traitlets APIs
+    'ignore:\s+Sentinel is not a public part of the traitlets API:DeprecationWarning',
+    # ginga is using something from asdf that has been deprecated
+    'ignore:AsdfInFits has been deprecated:DeprecationWarning',
+    # ipyautoui generates this warning...
+    'ignore:metadata \{.+\} was set from the constructor:DeprecationWarning',
+    # Generated from batman
+    'ignore:Conversion of an array with ndim > 0 to a scalar:DeprecationWarning',
+    # ipywidgets or ipyautoui generates this warning...
+    'ignore:Passing unrecognized arguments to super:DeprecationWarning',
+    # pandas will require pyarrow at some point, which is good to know, I guess...
+    'ignore:[.\n]*Pyarrow will become a required dependency of pandas[.\n]*:DeprecationWarning',
+    # ipyautoui is generating this on import because they still have some pydantic changes to make
+    'ignore:Using extra keyword arguments on `Field` is deprecated:',
+    # ipywidgets is using something deprecated in traitlets
+    'ignore:Deprecated in traitlets 4.1, use the instance:DeprecationWarning',
+    # Some WCS headers are issuing warnings
+    'ignore:RADECSYS=:',
+    # papermill is using deprecated jupyter paths
+    'ignore:Jupyter is migrating its paths to use standard platformdirs:DeprecationWarning',
+    # papermill is also using a deprecated method of getting current time
+    'ignore:.*is deprecated and scheduled for removal.*:DeprecationWarning',
+    # lightkurve is using a deprecated numpy interface
+    'ignore:.*numpy.core.einsumfunc is deprecated and has been renamed.*:DeprecationWarning',
+    # lightkurve issues a warning about an optional import
+    'ignore:.*the tpfmodel submodule is not available without oktopus.*:UserWarning',
+    # Sometimes gaussian fits are not great
+    'ignore:The fit may be unsuccessful; check fit_info:astropy.utils.exceptions.AstropyUserWarning',
+    # Apparently some change in pytest or coverage or pytest-cov exposes warnings
+    # that were previously ignored.
+    'ignore:.*:coverage.exceptions.CoverageWarning'
+]
