@@ -1,0 +1,64 @@
+{
+  "$id": "immerschema/schemas/taxonomy/role.taxonomy.json",
+  "title": "Role taxonomy (UI helper)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "Direction & Production": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Director", "Producer", "ProjectManager"]
+      },
+      "minItems": 1
+    },
+    "Art & Supervision": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["ArtLead", "CGSupervisor"]
+      },
+      "minItems": 1
+    },
+    "Realtime & FX": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["HoudiniArtist", "MotionDesigner", "UnrealArtist", "TouchDesignerArtist", "TouchDesignerDeveloper", "NotchArtist", "AIArtist"]
+      },
+      "minItems": 1
+    },
+    "Audio": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["AudioLead", "Composer"]
+      },
+      "minItems": 1
+    },
+    "Post Production": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["PostLead", "MontageArtist"]
+      },
+      "minItems": 1
+    },
+    "Support": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["CameraOperator", "TechSupport"]
+      },
+      "minItems": 1
+    },
+    "Other": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["other"]
+      },
+      "minItems": 1
+    }
+  }
+} 

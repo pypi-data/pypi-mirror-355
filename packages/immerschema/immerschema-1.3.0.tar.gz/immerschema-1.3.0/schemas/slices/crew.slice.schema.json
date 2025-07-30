@@ -1,0 +1,25 @@
+{
+  "$id": "immerschema/schemas/slices/crew.slice.schema.json",
+  "title": "Crew slice",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "role":       { "$ref": "../enum/role.enum.json" },
+      "customRole": { "type": "string" },
+      "name":       { "type": "string" },
+      "contacts":   { "type": "object", "additionalProperties": { "type": "string" } },
+      "availability": { "type": "string" },
+      "note":       { "type": "string" }
+    },
+    "required": ["role"],
+    "additionalProperties": false,
+    "allOf": [
+      {
+        "if":   { "properties": { "role": { "const": "other" } } },
+        "then": { "required": ["customRole"] }
+      }
+    ]
+  },
+  "default": []
+}

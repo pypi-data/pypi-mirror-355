@@ -1,0 +1,29 @@
+{
+  "$id": "immerschema/schemas/enum/screenzone.enum.json",
+  "$schema": "http://json-schema.org/draft/2020-12/schema",
+  "title": "Screen zone enum",
+  "description": "18 canonical zones for fulldome blocking.",
+  "type": "string",
+  "enum": [
+    "full_dome",
+
+    "zenith",      "upper",   "horizon",  "lower",   "nadir",
+
+    "front",       "rear",    "left",     "right",
+
+    "upper_front_left",  "upper_front_right",
+    "upper_rear_left",   "upper_rear_right",
+    "lower_front_left",  "lower_front_right",
+    "lower_rear_left",   "lower_rear_right"
+  ],
+  "enumOrder": [
+    "full_dome",
+    "zenith", "upper", "horizon", "lower", "nadir",
+    "upper_front_left", "upper_front_right",
+    "upper_rear_right", "upper_rear_left",
+    "front", "right", "rear", "left",
+    "lower_front_left", "lower_front_right",
+    "lower_rear_right", "lower_rear_left"
+  ]
+  
+}

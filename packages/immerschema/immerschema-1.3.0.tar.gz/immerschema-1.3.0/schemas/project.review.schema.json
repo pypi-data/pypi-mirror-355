@@ -1,0 +1,32 @@
+{
+  "$id": "immerschema/schemas/project.review.schema.json",
+  "title": "Fulldome Project – Review",
+  "type": "object",
+  "required": ["projectId", "title", "shots"],
+  "additionalProperties": false,
+
+  "properties": {
+    "projectId": { "type": "string" },
+    "title":     { "type": "string" },
+    "schemaVersion": {
+      "type": "string",
+      "default": "1.0.0"
+    },
+
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "./profiles/review.schema.json" },
+      "description": "Shot documents validated against the Review profile."
+    },
+
+    "globalSoftware": {
+      "type": "array",
+      "items": { "$ref": "./enum/software.enum.json" },
+      "default": []
+    },
+
+    "globalMusic": { "type": "string" },
+    "debug": { "$ref": "./ext/debug.schema.json#/properties/debug" }
+  }
+} 
