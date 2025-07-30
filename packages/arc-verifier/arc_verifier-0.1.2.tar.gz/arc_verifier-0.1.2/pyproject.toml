@@ -1,0 +1,124 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["arc_verifier*"]
+exclude = ["internal_docs*", "temp_issues*", "tests*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "arc_verifier.__version__.__version__"}
+
+[project]
+name = "arc-verifier"
+dynamic = ["version"]
+description = "Verification and evaluation framework for autonomous agents across agentic protocols"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Arc-Verifier Contributors"},
+]
+keywords = ["near", "agents", "verification", "tee", "docker", "security"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "click>=8.1.0",
+    "docker>=6.0.0", 
+    "rich>=13.0.0",
+    "pyyaml>=6.0.0",
+    "pydantic>=2.0.0",
+    "httpx>=0.24.0",
+    "python-dotenv>=1.0.0",
+    "aiohttp>=3.9.0",
+    "dagger-io>=0.6.0",
+    "cryptography>=41.0.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "requests>=2.31.0",
+    "aiofiles>=23.0.0",
+    "python-dateutil>=2.8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/arc-computer/arc-verifier"
+Documentation = "https://github.com/arc-computer/arc-verifier/tree/main/docs"
+Repository = "https://github.com/arc-computer/arc-verifier"
+Issues = "https://github.com/arc-computer/arc-verifier/issues"
+
+[project.scripts]
+arc-verifier = "arc_verifier.cli:cli"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-timeout>=2.1.0",
+    "black>=23.7.0",
+    "mypy>=1.4.0",
+    "ruff>=0.1.0",
+    "coverage>=7.0.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+select = ["E", "F", "W", "C", "I", "N", "UP", "YTT", "S", "B", "A", "C4", "T20"]
+ignore = ["E501"]  # Line too long (handled by black)
+
+[tool.coverage.run]
+source = ["arc_verifier"]
+omit = ["*/tests/*", "*/venv/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.pytest.ini_options]
+# Extend timeouts for integration tests
+timeout = 600  # 10 minutes default timeout
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+    "--disable-warnings",
+    "--timeout=600",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+# Asyncio configuration
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
