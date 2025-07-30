@@ -1,0 +1,96 @@
+<autocomplete-input endpoint="{{ widget.url }}" name="{{ widget.name }}" {% if widget.attrs.id %}id="{{ widget.attrs.id }}"{% endif %}>
+    <template shadowrootmode="open">
+        <style>
+            :host {
+                position: relative;
+                display: inline-block;
+                width: 100%;
+            }
+            
+            input {
+                width: 100%;
+                padding: 8px 12px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+            
+            input:focus {
+                outline: none;
+                border-color: #007bff;
+                box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+            }
+            
+            .results {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border: 1px solid #ccc;
+                border-top: none;
+                border-radius: 0 0 4px 4px;
+                max-height: 200px;
+                overflow-y: auto;
+                z-index: 1000;
+                display: none;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            .result-item {
+                padding: 8px 12px;
+                cursor: pointer;
+                border-bottom: 1px solid #eee;
+                outline: none;
+            }
+            
+            .result-item:hover,
+            .result-item.active {
+                background-color: #e3f2fd;
+                border-left: 3px solid #007bff;
+                padding-left: 9px;
+            }
+            
+            .result-item.active {
+                background-color: #007bff;
+                color: white;
+                border-left: 3px solid #0056b3;
+            }
+            
+            .result-item:last-child {
+                border-bottom: none;
+            }
+            
+            /* High contrast mode support */
+            @media (prefers-contrast: high) {
+                .result-item.active {
+                    outline: 2px solid;
+                    outline-offset: -2px;
+                }
+            }
+            
+            /* Reduced motion support */
+            @media (prefers-reduced-motion: reduce) {
+                .result-item {
+                    transition: none;
+                }
+            }
+            
+            .loading {
+                padding: 8px 12px;
+                color: #666;
+                font-style: italic;
+            }
+        </style>
+        
+        <input type="text" 
+               name="{{ widget.name }}" 
+               {% if widget.value %}value="{{ widget.value }}"{% endif %}
+               {% for attr_name, attr_value in widget.attrs.items %}
+                   {% if attr_name != 'id' %}{{ attr_name }}="{{ attr_value }}"{% endif %}
+               {% endfor %}
+               placeholder="{{ widget.attrs.placeholder|default:'Start typing to search...' }}">
+        <div class="results"></div>
+    </template>
+</autocomplete-input>
