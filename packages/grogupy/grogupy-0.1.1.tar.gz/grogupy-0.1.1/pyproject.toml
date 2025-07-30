@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "grogupy"
+dynamic = ["version"]
+authors = [
+  { name="Laszlo Oroszlany", email="laszlo.oroszlany@ttk.elte.hu" },
+  { name="Daniel Tibor Pozsar", email="danielpozsar@student.elte.hu" },
+]
+description = """Python package calculating relativistic magnetic interactions 
+for the generalised Heisenberg model."""
+readme = "README.md"
+kewords = [
+    "density-function-theory",
+    "solid-state-physics",
+    "magnetic-materials",
+    "heisenberg-model",
+    "solid-state",
+    "magnetism",
+    "wannier90",
+    "physics",
+    "siesta",
+    "dft",
+]
+requires-python = ">=3.9"
+dependencies = [
+  "numpy",
+  "sisl",
+  "scipy",
+  "netcdf4",
+  "openmpi",
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3 :: Only",
+    
+    "License :: OSI Approved :: MIT License",
+    
+    "Operating System :: OS Independent",
+    "Environment :: GPU :: NVIDIA CUDA :: 12",
+    
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Natural Language :: English"
+]
+
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.optional-dependencies]
+viz = ["plotly", "nbconvert"]
+mpi = ["mpi4py"]
+gpu = ["cupy-cuda12x"]
+
+[project.scripts]
+grogupy_run = "grogupy.cli.run:main"
+grogupy_analyze = "grogupy.cli.analyze:main"
+grogupy_convergence = "grogupy.cli.check_convergence:main"
+
+[project.urls]
+Homepage = "https://grogupy.readthedocs.io/"
+Documentation = "https://grogupy.readthedocs.io/"
+Repository = "https://github.com/danielpozsar/grogupy"
+Issues = "https://github.com/danielpozsar/grogupy/issues"
+
+[tool.pytest.ini_options]
+testpaths = [
+  "./src/grogupy/",
+  "./tests/",
+]
+
+[tool.hatch.version]
+path = "src/grogupy/__init__.py"
+
+addopts = [
+    "--import-mode=importlib",
+    "--cov",
+    "--doctest-modules",
+]
