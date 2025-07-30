@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=64.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ltoolboxLib"
+version = "1.1.03"
+description = "Python utilities for dynamic strings, sandboxed files, multiuse-case classes, and ANSI colors"
+readme = "README.md"
+authors = [{ name = "StrawberryMilcRivers", email = "chocomilccy@gmail.com" }]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+requires-python = ">=3.8"
+dependencies = [
+    "pyperclip>=1.8.0",   # Only explicit third-party deps
+    "requests>=2.25.0",
+    "win10toast>=0.9.0; platform_system == 'Windows'",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "mypy"]
