@@ -1,0 +1,39 @@
+[package]
+name = "rlbot_flatbuffers"
+version = "0.17.0"
+edition = "2024"
+description = "A Python module implemented in Rust for serializing and deserializing RLBot's flatbuffers"
+repository = "https://github.com/RLBot/flatbuffers-python"
+build = "codegen/main.rs"
+license = "MIT"
+readme = "README.md"
+exclude = [".github", "pytest.py", "pybench.py", "rustfmt.toml", ".gitignore", ".gitmodules", "flatc*", "FLATBUFFERS-LICENSE", "**/README.md"]
+publish = false
+
+[lints.clippy]
+all = "warn"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = "0.25.0"
+serde = "1.0.217"
+flatbuffers = "=25.2.10"
+# get-size appears to be unmaintained but it's too useful here
+# forked and updated deps
+get-size = { git = "https://github.com/VirxEC/get-size", branch = "update", features = ["derive"] }
+
+[build-dependencies]
+reqwest = { version = "0.12.15", features = ["blocking", "rustls-tls"], default-features = false }
+zip = { version = "4.0.0", features = ["deflate"], default-features = false }
+
+[profile.dev]
+opt-level = 2
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1
+panic = "abort"
