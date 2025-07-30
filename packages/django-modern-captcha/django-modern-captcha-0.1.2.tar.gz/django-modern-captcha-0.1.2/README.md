@@ -1,0 +1,76 @@
+Django Modern CAPTCHA 🛡️🤖
+A next-generation CAPTCHA solution for Django that fights spam without frustrating users
+
+https://img.shields.io/pypi/v/django-modern-captcha
+https://img.shields.io/pypi/pyversions/django-modern-captcha
+https://img.shields.io/pypi/djversions/django-modern-captcha
+https://img.shields.io/badge/license-MIT-blue.svg
+
+Features ✨
+✅ Multiple verification methods - Choose from invisible, math, image, or honeypot challenges
+✅ Behavioral analysis - Tracks mouse movements and typing patterns to detect bots
+✅ Adaptive difficulty - Automatically adjusts based on suspicious activity
+✅ Privacy-focused - No tracking or external dependencies
+✅ Mobile-friendly - Works seamlessly across all devices
+✅ Accessible - Designed with WCAG compliance in mind
+✅ Admin analytics - Detailed reports on CAPTCHA attempts
+
+Why Modern CAPTCHA? 🤔
+Traditional CAPTCHAs are:
+
+Annoying for users
+
+Often inaccessible
+
+Becoming less effective against advanced bots
+
+Django Modern CAPTCHA solves these problems with:
+
+Invisible verification for most users
+
+Multiple fallback options
+
+Machine learning-powered behavioral analysis
+
+Simple integration with Django forms
+
+
+Quick Start 🚀
+bash
+pip install django-modern-captcha
+Add to your INSTALLED_APPS:
+
+python
+INSTALLED_APPS = [
+    ...
+    'modern_captcha',
+]
+Use in your forms:
+
+python
+from modern_captcha.forms import ModernCaptchaForm
+
+class ContactForm(ModernCaptchaForm, forms.Form):
+    name = forms.CharField()
+    email = forms.EmailField()
+    message = forms.CharField(widget=forms.Textarea)
+Demo 🎮
+Try the live demo (coming soon)
+
+Documentation 📚
+Full documentation available at modern-captcha.readthedocs.io
+
+Contributing 🤝
+We welcome contributions! Please see our Contribution Guidelines.
+
+
+[![Tests](https://github.com/manish-codefyn/django-modern-captcha/actions/workflows/tests.yml/badge.svg)](https://github.com/manish-codefyn/django-modern-captcha/actions/workflows/tests.yml)
+[![Code Coverage](https://codecov.io/gh/manish-codefyn/django-modern-captcha/branch/main/graph/badge.svg)](https://codecov.io/gh/manish-codefyn/django-modern-captcha)
+[![Documentation Status](https://readthedocs.org/projects/django-modern-captcha/badge/?version=latest)](https://django-modern-captcha.readthedocs.io/en/latest/?badge=latest)
+
+
+Author 👨💻
+Manish Sharma
+📧 Email: manis.shr@gmail.com
+🐱 GitHub: manish-codefyn# django-modern-captcha
+# django-modern-captcha
