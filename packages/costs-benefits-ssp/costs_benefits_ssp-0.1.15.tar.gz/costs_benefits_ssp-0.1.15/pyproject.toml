@@ -1,0 +1,25 @@
+[project]
+name = "costs_benefits_ssp"
+version = "0.1.15"
+description = "Costs and Benefits package"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openpyxl==3.1.5",
+    "pandas==2.2.3",
+    "sqlalchemy==2.0.36",
+]
+
+[dependency-groups]
+dev = [
+    "costs-benefits-ssp",
+    "setuptools>=80.9.0",
+    "sphinx>=8.2.3",
+    "sphinx-autobuild>=2024.10.3",
+    "sphinx-book-theme>=1.1.4",
+    "sphinxawesome-theme>=5.3.2",
+    "sphinxcontrib-bibtex>=2.6.3",
+]
+
+[tool.uv.sources]
+costs-benefits-ssp = { workspace = true }
