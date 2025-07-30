@@ -1,0 +1,83 @@
+premier:
+  keyspace: example-api-gateway
+  paths:
+    - pattern: /api/users*
+      features:
+        cache:
+          expire_s: 300
+        timeout:
+          seconds: 10
+        retry:
+          max_attempts: 3
+          wait: 1
+        monitoring:
+          log_threshold: 0.2
+    - pattern: /api/products*
+      features:
+        cache:
+          expire_s: 300
+        timeout:
+          seconds: 15
+        monitoring:
+          log_threshold: 0.3
+    - pattern: /api/admin/*
+      features:
+        timeout:
+          seconds: 30
+        retry:
+          max_attempts: 2
+          wait: 2
+        monitoring:
+          log_threshold: 0.1
+    - pattern: /api/search*
+      features:
+        cache:
+          expire_s: 300
+        timeout:
+          seconds: 20
+        retry:
+          max_attempts: 2
+          wait: 1.5
+        monitoring:
+          log_threshold: 0.5
+    - pattern: /api/bulk/*
+      features:
+        timeout:
+          seconds: 60
+        retry:
+          max_attempts: 1
+          wait: 1
+        monitoring:
+          log_threshold: 1
+    - pattern: /api/slow
+      features:
+        timeout:
+          seconds: 5
+        retry:
+          max_attempts: 2
+          wait: 1
+        monitoring:
+          log_threshold: 3
+    - pattern: /api/unreliable
+      features:
+        timeout:
+          seconds: 10
+        retry:
+          max_attempts: 5
+          wait: 0.5
+        monitoring:
+          log_threshold: 0.1
+  default_features:
+    cache:
+      expire_s: 300
+    rate_limit:
+      quota: 60
+      duration: 60
+      algorithm: sliding_window
+    timeout:
+      seconds: 10
+    retry:
+      max_attempts: 3
+      wait: 1
+    monitoring:
+      log_threshold: 1
