@@ -1,0 +1,68 @@
+# ble-hrm-server
+
+A Python MCP server for Bluetooth Low Energy (BLE) Heart Rate Monitoring. Connects to BLE HRM devices, monitors heart rate, and provides tools for heart rate data analysis and visualization.
+
+## Features
+- Discover and connect to BLE Heart Rate Monitor (HRM) devices
+- Monitor heart rate in real time
+- Retrieve current, average, and maximum heart rate
+- Generate heart rate charts and time-bucketed data
+- Store and manage heart rate data
+
+## Installation
+
+We recommend using a virtual environment and `uv` for dependency management:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install uv
+uv sync
+```
+
+Or install directly from PyPI:
+
+```bash
+pip install ble-hrm-server
+```
+
+## Usage
+
+### Run the server
+
+If installed from source:
+```bash
+uv run src/hrm/server.py
+```
+
+If installed from PyPI:
+```bash
+uvx ble-hrm-server
+```
+
+### Run tests
+```bash
+uv run pytest
+```
+
+## Configuration
+
+The server can be configured via a `.env` file. Use `.env.sample` as a template. Required environment variables:
+- `QINIU_ACCESS_KEY`: Your Qiniu access key
+- `QINIU_SECRET_KEY`: Your Qiniu secret key
+- `QINIU_BUCKET_NAME`: Qiniu bucket name
+- `QINIU_BUCKET_DOMAIN`: Qiniu bucket domain
+
+## Tools
+
+- **monitoring_heart_rate**: Start monitoring heart rate for a specified duration
+- **get_heart_rate**: Get the average heart rate over the last 10 seconds
+- **evaluate_active_heart_rate**: Get the maximum heart rate in the last 60 seconds
+- **get_heart_rate_bucket**: Get heart rate data in 1-second buckets for the last 10 seconds
+- **build_heart_rate_chart**: Generate a PNG chart of heart rate data for the last 600 seconds
+
+## License
+MIT
+
+## Sponsor
+Special thanks to Qiniu Cloud for providing storage and LLM inference services. 
