@@ -1,0 +1,281 @@
+{
+  "MODULE": {
+    "test": {
+      "MASS_MEASUREMENT": {
+        "code": "MASS_MEASUREMENT",
+        "name": "Mass Measurement",
+        "path": "qc_tests/MASS_MEASUREMENT/main.py",
+        "confirm_path": "qc_tests/MASS_MEASUREMENT/confirm.py",
+        "supported": false,
+        "ITkPDcode": ["MASS_MEASUREMENT"]
+      },
+      "GLUE_MODULE_FLEX_ATTACH": {
+        "code": "GLUE_MODULE_FLEX_ATTACH",
+        "name": "Glue Information Module+Flex Attach",
+        "path": "qc_tests/glue_info_module_flex/Glue_info.py",
+        "confirm_path": "qc_tests/glue_info_module_flex/confirm.py",
+        "supported": false,
+        "ITkPDcode": ["GLUE_MODULE_FLEX_ATTACH"]
+      },
+      "VISUAL_INSPECTION": {
+        "code": "VISUAL_INSPECTION",
+        "name": "Visual Inspection",
+        "path": "qc_tests/VISUAL_INSPECTION/main.py",
+        "confirm_path": "qc_tests/VISUAL_INSPECTION/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["VISUAL_INSPECTION"]
+      },
+      "QUAD_MODULE_METROLOGY": {
+        "code": "QUAD_MODULE_METROLOGY",
+        "name": "Quad Module Metrology",
+        "path": "qc_tests/QUAD_MODULE_METROLOGY/main.py",
+        "confirm_path": "qc_tests/QUAD_MODULE_METROLOGY/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["METROLOGY_QUAD", "QUAD_MODULE_METROLOGY"]
+      },
+      "FLATNESS": {
+        "code": "FLATNESS",
+        "name": "Flatness",
+        "path": "qc_tests/FLATNESS/main.py",
+        "confirm_path": "qc_tests/FLATNESS/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["FLATNESS"]
+      },
+      "WIREBOND_PULL_TEST": {
+        "code": "WIREBOND_PULL_TEST",
+        "name": "Wirebond Pull Tests",
+        "path": "qc_tests/WIREBOND_PULL_TEST/main.py",
+        "confirm_path": "qc_tests/WIREBOND_PULL_TEST/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["WIREBOND_PULL_TEST"]
+      },
+      "WIREBONDING": {
+        "code": "WIREBONDING",
+        "name": "Wirebonding Information",
+        "path": "qc_tests/wirebonding_info/Wire_info.py",
+        "confirm_path": "qc_tests/wirebonding_info/confirm.py",
+        "supported": false,
+        "ITkPDcode": ["WIREBONDING"]
+      },
+      "IV_MEASURE": {
+        "code": "IV_MEASURE",
+        "name": "IV measurement",
+        "path": "qc_tests/IV_MEASURE/main.py",
+        "confirm_path": "qc_tests/IV_MEASURE/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["IV_MEASURE"]
+      },
+      "PARYLENE": {
+        "code": "PARYLENE",
+        "name": "Parylene Properties",
+        "path": "qc_tests/parylene_properties/Parylene_prop.py",
+        "confirm_path": "qc_tests/parylene_properties/confirm.py",
+        "supported": false,
+        "ITkPDcode": ["PARYLENE"]
+      },
+      "WP_ENVELOPE": {
+        "code": "WP_ENVELOPE",
+        "name": "Wire bonding roof envelope",
+        "path": "./qc_tests/roof_envelope/roof_envelope.py",
+        "confirm_path": "./qc_tests/roof_envelope/confirm.py",
+        "supported": false,
+        "ITkPDcode": ["WP_ENVELOPE"]
+      },
+      "THERMAL_CYCLING": {
+        "code": "THERMAL_CYCLING",
+        "name": "Thermal Cycling",
+        "path": "qc_tests/THERMAL_CYCLING/main.py",
+        "confirm_path": "qc_tests/THERMAL_CYCLING/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["THERMAL_CYCLING"]
+      }
+    },
+    "property": {
+      "RD53A_PULL-UP_RESISTOR": {
+        "code": "RD53A_PULL-UP_RESISTOR",
+        "name": "RD53A pull-up resistor FE",
+        "path": "qc_tests/pullup/Pullup.py",
+        "confirm_path": "qc_tests/pullup/confirm.py",
+        "supported": false,
+        "stage": ["MODULEWIREBONDING"],
+        "ITkPDcode": [
+          "RD53A_PULL-UP_RESISTOR1",
+          "RD53A_PULL-UP_RESISTOR2",
+          "RD53A_PULL-UP_RESISTOR3",
+          "RD53A_PULL-UP_RESISTOR4"
+        ],
+        "exception": {}
+      },
+      "IREFTRIM_FE": {
+        "code": "IREFTRIM_FE",
+        "name": "IrefTrim FE",
+        "path": "qc_tests/ireftrim/IrefTrim.py",
+        "confirm_path": "qc_tests/ireftrim/confirm.py",
+        "supported": false,
+        "stage": ["MODULEWIREBONDING"],
+        "ITkPDcode": [
+          "IREFTRIM_FE1",
+          "IREFTRIM_FE2",
+          "IREFTRIM_FE3",
+          "IREFTRIM_FE4"
+        ],
+        "exception": {}
+      },
+      "ORIENTATION": {
+        "code": "ORIENTATION",
+        "name": "PCB-Bare Orientation isNormal",
+        "path": "qc_tests/orientation/Orientation.py",
+        "confirm_path": "qc_tests/orientation/confirm.py",
+        "supported": false,
+        "stage": ["MODULEWIREBONDING"],
+        "ITkPDcode": ["ORIENTATION"],
+        "exception": { "chip_quantity": [0, 1, 2, 3] }
+      },
+      "FECHIP_VERSION": {
+        "code": "FECHIP_VERSION",
+        "name": "FE chip version",
+        "path": "",
+        "confirm_path": "",
+        "supported": false,
+        "stage": [],
+        "ITkPDcode": ["FECHIP_VERSION"],
+        "exception": {}
+      }
+    }
+  },
+  "BARE_MODULE": {
+    "test": {
+      "MASS_MEASUREMENT": {
+        "code": "MASS_MEASUREMENT",
+        "name": "Mass Measurement",
+        "path": "qc_tests/MASS_MEASUREMENT/main.py",
+        "confirm_path": "qc_tests/MASS_MEASUREMENT/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["MASS_MEASUREMENT"]
+      },
+      "OPTICAL_INSPECTION": {
+        "code": "OPTICAL_INSPECTION",
+        "name": "Optical Inspection",
+        "path": "qc_tests/vi/vi_main.py",
+        "confirm_path": "qc_tests/vi/confirm.py",
+        "supported": false,
+        "ITkPDcode": ["OPTICAL_INSPECTION"]
+      },
+      "QUAD_BARE_MODULE_METROLOGY": {
+        "code": "QUAD_BARE_MODULE_METROLOGY",
+        "name": "Quad Bare Module Metrology",
+        "path": "qc_tests/QUAD_BARE_MODULE_METROLOGY/main.py",
+        "confirm_path": "qc_tests/QUAD_BARE_MODULE_METROLOGY/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["QUAD_BARE_MODULE_METROLOGY"]
+      },
+      "FLATNESS": {
+        "code": "FLATNESS",
+        "name": "Backside Flatness",
+        "path": "qc_tests/FLATNESS/main.py",
+        "confirm_path": "qc_tests/FLATNESS/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["FLATNESS"]
+      },
+      "BARE_MODULE_SENSOR_IV": {
+        "code": "BARE_MODULE_SENSOR_IV",
+        "name": "bare module sensor IV",
+        "path": "qc_tests/IV_MEASURE_BARE/main.py",
+        "confirm_path": "qc_tests/IV_MEASURE_BARE/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["BARE_MODULE_SENSOR_IV"]
+      },
+      "VISUAL_INSPECTION": {
+        "code": "VISUAL_INSPECTION",
+        "name": "Visual Inspection",
+        "path": "qc_tests/VISUAL_INSPECTION/main.py",
+        "confirm_path": "qc_tests/VISUAL_INSPECTION/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["VISUAL_INSPECTION"]
+      },
+      "MASS": {
+        "code": "MASS",
+        "name": "Mass",
+        "path": "qc_tests/MASS_MEASUREMENT/main.py",
+        "confirm_path": "qc_tests/MASS_MEASUREMENT/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["MASS"]
+      }
+    },
+    "property": {
+      "MASS_MEASUREMENT": {
+        "code": "MASS_MEASUREMENT",
+        "name": "Mass Measurement",
+        "path": "qc_tests/mass/MASS.py",
+        "confirm_path": "qc_tests/mass/confirm.py",
+        "supported": false,
+        "ITkPDcode": ["MASS_MEASUREMENT"]
+      }
+    }
+  },
+  "PCB": {
+    "test": {
+      "METROLOGY": {
+        "code": "METROLOGY",
+        "name": "Quad PCB Metrology",
+        "path": "qc_tests/METROLOGY_PCB/main.py",
+        "confirm_path": "qc_tests/METROLOGY_PCB/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["METROLOGY"]
+      },
+      "HV_LV_TEST": {
+        "code": "HV_LV_TEST",
+        "name": "HV LV TEST",
+        "path": "qc_tests/HV_LV_TEST/main.py",
+        "confirm_path": "qc_tests/HV_LV_TEST/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["HV_LV_TEST"]
+      },
+      "LAYER_THICKNESS": {
+        "code": "LAYER_THICKNESS",
+        "name": "LAYER THICKNESS",
+        "path": "qc_tests/LAYER_THICKNESS/main.py",
+        "confirm_path": "qc_tests/LAYER_THICKNESS/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["LAYER_THICKNESS"]
+      },
+      "VISUAL_INSPECTION": {
+        "code": "VISUAL_INSPECTION",
+        "name": "Visual Inspection",
+        "path": "qc_tests/VISUAL_INSPECTION/main.py",
+        "confirm_path": "qc_tests/VISUAL_INSPECTION/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["VISUAL_INSPECTION"]
+      },
+      "MASS": {
+        "code": "MASS",
+        "name": "Mass",
+        "path": "qc_tests/MASS_MEASUREMENT/main.py",
+        "confirm_path": "qc_tests/MASS_MEASUREMENT/confirm.py",
+        "supported": true,
+        "ITkPDcode": ["MASS"]
+      }
+    },
+    "property": {}
+  },
+  "SENSOR_TILE": {
+    "test": {
+      "IV_MEASURE": {
+        "code": "IV_MEASURE",
+        "name": "IV measurement",
+        "path": "",
+        "confirm_path": "",
+        "supported": false,
+        "ITkPDcode": ["IV_MEASURE"]
+      },
+      "CV_MEASURE": {
+        "code": "CV_MEASURE",
+        "name": "CV measurement",
+        "path": "",
+        "confirm_path": "",
+        "supported": false,
+        "ITkPDcode": ["CV_MEASURE"]
+      }
+    }
+  }
+}

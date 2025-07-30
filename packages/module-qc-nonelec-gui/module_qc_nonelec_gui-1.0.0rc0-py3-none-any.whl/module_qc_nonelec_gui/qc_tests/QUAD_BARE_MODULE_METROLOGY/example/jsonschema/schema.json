@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["results"],
+  "properties": {
+    "PCB_BAREMODULE_POSITION_TOP_RIGHT": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "PCB_BAREMODULE_POSITION_BOTTOM_LEFT": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "DISTANCE_PCB_BARE_MODULE_TOP_LEFT": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "DISTANCE_PCB_BARE_MODULE_BOTTOM_RIGHT": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "ANGLE_PCB_BM": {
+      "type": "number"
+    },
+    "AVERAGE_THICKNESS": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "STD_DEVIATION_THICKNESS": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "THICKNESS_VARIATION_PICKUP_AREA": {
+      "type": "number"
+    },
+    "THICKNESS_INCLUDING_POWER_CONNECTOR": {
+      "type": "number"
+    },
+    "HV_CAPACITOR_THICKNESS": {
+      "type": "number"
+    }
+  }
+}

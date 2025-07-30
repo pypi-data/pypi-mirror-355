@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["IV_ARRAY"],
+  "properties": {
+    "properties": {
+      "type": "object",
+      "properties": {
+        "HUM": { "type": "number" },
+        "TEMP": { "type": "number" }
+      }
+    },
+
+    "IV_ARRAY": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "voltage",
+        "current",
+        "sigma current",
+        "temperature",
+        "humidity",
+        "time"
+      ],
+      "properties": {
+        "voltage": { "type": "array", "items": { "type": "number" } },
+        "current": { "type": "array", "items": { "type": "number" } },
+        "sigma current": { "type": "array", "items": { "type": "number" } },
+        "temperature": { "type": "array", "items": { "type": "number" } },
+        "humidity": { "type": "array", "items": { "type": "number" } },
+        "time": { "type": "array", "items": { "type": "number" } }
+      }
+    }
+  }
+}
