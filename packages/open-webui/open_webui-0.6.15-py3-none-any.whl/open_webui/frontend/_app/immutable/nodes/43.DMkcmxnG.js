@@ -1,0 +1,2 @@
+import{s,q as a}from"../chunks/Bk--KVgx.js";import{S as r,i}from"../chunks/CoU9NT7-.js";import{g as e}from"../chunks/CecBzzH9.js";function c(n){return a(()=>{const o=new URLSearchParams(window.location.search);if(o.has("v")){const t=o.get("v");e(`/?youtube=${encodeURIComponent(t)}`)}else e("/")}),[]}class l extends r{constructor(o){super(),i(this,o,c,null,s,{})}}export{l as component};
+//# sourceMappingURL=43.DMkcmxnG.js.map
