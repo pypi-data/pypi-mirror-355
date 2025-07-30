@@ -1,0 +1,122 @@
+stages:
+  - autoupdate
+  - check
+  - test
+  - build
+  - deploy
+
+variables:
+  # see https://docs.gitlab.com/ee/ci/caching/#cache-python-dependencies
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PRE_COMMIT_HOME: "$CI_PROJECT_DIR/.cache/pre-commit"
+
+image: registry.cern.ch/docker.io/library/python:3.11-buster
+before_script:
+  # want to set up a virtualenv to cache
+  - apt-get install -y --no-install-recommends git
+  - python -V
+  - git config --global credential.helper 'cache'
+  - |
+    echo "protocol=https
+    host=gitlab.cern.ch
+    username=gitlab-ci-token
+    password=${CI_JOB_TOKEN}
+    " | git credential approve
+  - python -m venv venv
+  - source venv/bin/activate
+  - python -m pip install -U pip pipx opencv-python-headless pymongo pyqt5 typer
+    defect_detection
+  - python -m pipx ensurepath
+  - python -m pip freeze --local
+
+# NB: repo-review requires python>=3.10
+review:
+  image: registry.cern.ch/docker.io/library/python:3.11-buster
+  stage: check
+  script:
+    - pipx run 'sp-repo-review[cli]' .
+
+lint:
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+  script:
+    - pipx run hatch run lint
+  allow_failure: true
+
+pre-commit:
+  stage: check
+  variables:
+    PRE_COMMIT_HOME: "$CI_PROJECT_DIR/.cache/pre-commit"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+  script:
+    - pipx run pre-commit run --hook-stage manual --all-files
+
+pre-commit-autoupdate:
+  stage: autoupdate
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+    - if:
+        $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+      # manual jobs need allow_failure? https://gitlab.com/gitlab-org/gitlab/-/issues/233876
+      allow_failure: true
+  script:
+    - python -m pip install pre-commit
+    - python -m pip freeze --local
+    - ci/pre-commit-update.sh
+
+tests:
+  stage: test
+  image: registry.cern.ch/docker.io/library/$IMAGE
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+  script:
+    - pipx run hatch run +py=${PYTHON_VERSION} dev:test
+  parallel:
+    matrix:
+      - IMAGE: "python:3.9-buster"
+        PYTHON_VERSION: "3.9"
+      - IMAGE: "python:3.10-buster"
+        PYTHON_VERSION: "3.10"
+      - IMAGE: "python:3.11-buster"
+        PYTHON_VERSION: "3.11"
+
+package:
+  stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+  script:
+    - pipx run hatch run build-check
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 day
+
+.deploy_package:
+  stage: deploy
+  dependencies:
+    - package
+  script:
+    - pipx run hatch run upload
+
+deploy_package_gitlab:
+  extends: .deploy_package
+  rules:
+    - if:
+        $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
+  variables:
+    TWINE_REPOSITORY_URL: "https://gitlab.cern.ch/api/v4/projects/${CI_PROJECT_ID}/packages/pypi"
+    TWINE_USERNAME: "gitlab-ci-token"
+    TWINE_PASSWORD: "${CI_JOB_TOKEN}"
+
+deploy_package_pypi:
+  extends: .deploy_package
+  only:
+    - tags
+  variables:
+    TWINE_REPOSITORY: pypi
+    TWINE_USERNAME: __token__
+    TWINE_PASSWORD: $PYPI_TOKEN

@@ -1,0 +1,184 @@
+# module-qc-nonelec-gui 1.0.0rc0
+
+## What is this
+
+This package is previously known to as "QC Helper" and it provides a GUI
+application for submitting non-electrical QC tests of ITkPix modules.
+
+It requires `python3.7` and relevant python modules. The GUI uses `PyQT5`
+framework.
+
+Installation and functionality tested for CentOS Linux series.
+
+## Quick installation
+
+```bash
+git clone https://gitlab.cern.ch/hoide/module-qc-nonelec-gui.git
+cd module-qc-nonelec-gui
+python3 -m pip install -e .
+
+module-qc-nonelec-gui&
+```
+
+## _Versioning Policy_
+
+Respecting for "Semantic Versioning", version number is defined as
+"Major.Minor.Patch".
+
+- Major : Major update
+
+  For example) to be changed the structure of QC test result.
+
+- Minor : Minor update
+
+  For example) to be added new submodule of QC test item.
+
+- Patch : Patch
+
+  For example) to be fixed a bug or so on.
+
+# **Quick Tutorial**
+
+You have to follow below document.
+
+- QC Software doc
+  [link](https://itk.docs.cern.ch/pixels/qc_software/rd53a_demo_flow)
+
+_Install_
+
+    git config --global credential.helper cache    ( If you want to avoid multiple authentications )
+    mkdir Workdir
+    cd ./Workdir
+    git clone --recursive -b [tag of latest version] https://gitlab.cern.ch/atlas-itk/pixel/module/module-qc-nonelec-gui.git
+    cd module-qc-nonelec-gui
+    python3 -m pip install -e .
+    #pip>=21.3 is required to install with pyproject.toml in the editable mode!!
+
+_Update_
+
+    git fetch
+    git checkout -b [tag of latest version] [tag of latest version]    (example:  $git checkout -b v2.2.3 v2.2.3)
+    git submodule update
+
+_Run_
+
+    cd Workdir/module-qc-nonelec-gui
+    python3 -m module-qc-nonelec-gui
+    #or
+    module-qc-nonelec-gui
+
+For detail, please look below.
+
+    instruction.pdf
+
+## **Environmental Debug**
+
+"#python3 -m pip install -U pip" before "python3 -m pip install PyQt5".
+
+#yum install
+
+     libxcb-1.13-1.el7.i686
+     xcb-util-wm-0.4.1-5.el7.i686
+     xcb-util-image-0.4.0-2.el7.i686
+     xcb-util-keysyms-0.4.0-1.el7.i686
+     xcb-util-renderutil-0.3.9-3.el7.i686
+     python36-pyqt5-sip-4.19.16-3.el7.x86_64
+     sip-4.14.6-4.el7.x86_64
+     libxkbcommon-x11-devel-0.7.1-3.el7.x86_64
+     xcb-util-wm-0.4.1-5.el7.x86_64
+     xcb-util-image-0.4.0-2.el7.x86_64
+     xcb-util-keysyms-0.4.0-1.el7.x86_64
+     xcb-util-renderutil-0.3.9-3.el7.x86_64
+     mesa-libGL.x86_64
+     qt5-qtbase-gui-5.9.7-4.el7.x86_64
+     qt
+
+#yum -y groupinstall "X Window System"
+
+<details><summary>More detail</summary><div>
+
+If you get the error [qt.qpa.plugin: Could not load the Qt platform plugin "xcb"
+in "" even though it was found.] in executing
+
+    $python3 bin/main.py,
+
+you should do below at first.
+
+    $export QT_DEBUG_PLUGINS=1
+
+Then, If you execute below again,
+
+    $python3 bin/main.py,
+
+you can get a message which show what is wrong.
+
+If you get below message, you have to install the shared library
+"libxcb—icccm.so.4".
+
+    Cannot load library /usr/local/lib64/python3.6/site-packages/PyQt5/Qt/plugins/platforms/libqxcb.so: (libxcb—icccm.so.4: cannot open shared object file: No such file or directory)
+
+You can search what package you should download to get above shared library by
+using
+
+    https://pkgs.org
+
+If you can find out what package you need, you should install it
+
+    #yum install xcb-util-wm.x86_64        (for libxcb—icccm.so.4 in CentOS7)
+
+After finish downloading, you can check if you succeeded to install the shared
+library.
+
+    #find /* -name libxcb-icccm.so.4
+
+</div></details>
+
+## **Error which you can ignore**
+
+    libGL error: No matching fbConfigs or visuals found
+    libGL error: failed to load driver: swrast
+
+## **FAQ**
+
+_Error on pip installing_
+
+    $ python3.9 -m pip install -e .
+    Defaulting to user installation because normal site-packages is not writeable
+    ERROR: File "setup.py" not found. Directory cannot be installed in editable mode: /data/home/hirose/work/ITkPixel/module-qc-nonelec-gui_test/module-qc-nonelec-gui
+    (A "pyproject.toml" file was found, but editable mode currently requires a setup.py based build.)
+
+    #########################################################
+    # This happens when your pip version is older than 21.3.
+    #########################################################
+    #Workaround:
+
+    $python3 -m pip install --upgrade pip
+    #python3 might be different depending on your system (e.g. python3.7, python3.9 etc...)
+
+_Error on launching the module-qc-nonelec-gui_
+
+    $module-qc-nonelec-gui
+    Launching GUI
+    qt.qpa.xcb: could not connect to display
+    qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found.
+    This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
+
+    Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, wayland-egl, wayland, wayland-xcomposite-egl, wayland-xcomposite-glx, webgl, xcb.
+
+    Aborted (core dumped)
+
+    ################################################################################################
+    # This happens when you connect a QC Helper innstalled machine remotely WITHOUT X11 formarding.
+    ################################################################################################
+    #Workaround:
+    ssh with -Y option to your remote machine.
+
+# Golden module storage
+
+https://cernbox.cern.ch/s/VcWorfNdGzQVxpE
+
+Deploy golden module under `src/module_qc_nonelec_gui/qc_tests/vi` as
+`golden_module` directory.
+
+- Version 2023-03-20:
+  https://cernbox.cern.ch/remote.php/dav/public-files/FmenidYbrKAJAdW/golden_module_20230320.zip

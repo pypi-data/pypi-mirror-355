@@ -1,0 +1,212 @@
+[build-system]
+requires = ["hatchling>=0.7", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "module-qc-nonelec-gui"
+dynamic = ["version"]
+authors = [
+  { name = "Hideyuki Oide", email = "Hideyuki.Oide@cern.ch" },
+  { name = "Minoru Hirose", email = "Minoru.Hirose@cern.ch" },
+  { name = "Giordon Stark", email = "gstark@cern.ch" },
+  { name = "Daiki Sameshima", email = "sameshima@hepmail.phys.se.tmu.ac.jp" },
+  { name = "Erika Oshima", email = "ooshima@hepmail.phys.se.tmu.ac.jp" },
+  { name="Yuji Onishi", email="onishi@cern.ch" },
+]
+maintainers = [
+    { name = "Giordon Stark", email = "gstark@cern.ch" },
+    { name = "Hideyuki Oide", email = "Hideyuki.Oide@cern.ch" },
+    { name = "ATLAS ITk Pixels", email = "atlas-itk-pixel-modules@cern.ch" },
+]
+description = "GUI to upload Pixel Quality Control tests to ITk Production Database"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+dependencies = [
+    "jsonschema",
+    "matplotlib",
+    "requests",
+    "opencv-python-headless>=4.10",
+    "pymongo>=4.0",
+    "pyqt5; platform_system == 'Linux'",
+    "pyqt5; platform_system == 'Darwin'",
+    "typer",
+    "defect_detection",
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+]
+
+
+
+[project.urls]
+"Documentation" = "https://module-qc-nonelec-gui.readthedocs.io/"
+"Homepage" = "https://gitlab.cern.ch/atlas-itk/pixel/module/module-qc-nonelec-gui"
+"Bug Tracker" = "https://gitlab.cern.ch/atlas-itk/pixel/module/module-qc-nonelec-gui/-/issues"
+"Source" = "https://gitlab.cern.ch/atlas-itk/pixel/module/module-qc-nonelec-gui"
+
+[project.scripts]
+"module-qc-nonelec-gui" = "module_qc_nonelec_gui.__main__:main"
+"module-qc-nonelec-gui-config" = "module_qc_nonelec_gui.__main__:localDB_config"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+local_scheme = "no-local-version"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/module_qc_nonelec_gui/_version.py"
+
+[tool.hatch.build.targets.sdist]
+
+[tool.hatch.envs.default]
+dependencies = [
+    "tbump>=6.7.0",
+    "pylint",
+    "build",
+    "twine",
+]
+installer = "uv"
+
+[tool.hatch.envs.default.scripts]
+tag = "tbump {args}"
+lint = "pylint src"
+build = "python -m build"
+validate = "twine check dist/*"
+# https://github.com/linkchecker/linkchecker/issues/678
+build-check = [
+  "build",
+  "validate",
+]
+upload = "twine upload dist/*"
+
+[tool.hatch.envs.dev]
+template = "dev"
+# pylint and pytest needs to be installed into package environment
+detached = false
+dependencies = [
+    "pytest >=6",
+]
+
+[tool.hatch.envs.dev.scripts]
+test = "pytest -ra {args}"
+
+[[tool.hatch.envs.dev.matrix]]
+python = ["3.9", "3.10", "3.11", "pypy3.8"]
+
+[tool.hatch.envs.docs]
+template = "docs"
+dependencies = [
+    "Sphinx>=4.0",
+    "myst-parser>=0.13",
+    "sphinx-book-theme>=0.1.0",
+    "sphinx-copybutton",
+    # https://github.com/linkchecker/linkchecker/pull/669#issuecomment-1267236287
+    "linkchecker @ git+https://github.com/linkchecker/linkchecker.git@d9265bb71c2054bf57b8c5734a4825d62505c779",
+]
+
+[tool.hatch.envs.docs.scripts]
+# --strict disabled for now, see https://github.com/timvink/mkdocs-git-revision-date-localized-plugin/issues/101
+build = "sphinx-build -M html . _build {args}"
+#build = "mkdocs build --config-file {env:MKDOCS_CONFIG} --clean --strict {args}"
+serve = "python -m http.server 8000 -d _build/html"
+ci-build = "build"
+deploy = "ci-build"
+validate = "linkchecker --config .linkcheckerrc _build/html"
+# https://github.com/linkchecker/linkchecker/issues/678
+build-check = [
+  "build",
+  "validate",
+]
+
+[tool.ruff]
+exclude = []
+
+[tool.ruff.lint]
+select = [
+  "E", "F", "W", # flake8
+  "B",  "B904",  # flake8-bugbear
+  "I",           # isort
+  "ARG",         # flake8-unused-arguments
+  "C4",          # flake8-comprehensions
+  "EM",          # flake8-errmsg
+  "ICN",         # flake8-import-conventions
+  "ISC",         # flake8-implicit-str-concat
+  "PGH",         # pygrep-hooks
+  "PIE",         # flake8-pie
+  "PL",          # pylint
+  "PT",          # flake8-pytest-style
+  "PTH",         # flake8-use-pathlib
+  "RET",         # flake8-return
+  "RUF",         # Ruff-specific
+  "SIM",         # flake8-simplify
+  "T20",         # flake8-print
+  "UP",          # pyupgrade
+  "YTT",         # flake8-2020
+]
+ignore = ["PLR", "E501"]
+typing-modules = ["module_qc_nonelec_gui.typing"]
+unfixable = ["T20", "F841"]
+isort.required-imports = ["from __future__ import annotations"]
+
+[tool.lint.ruff.per-file-ignores]
+"src/module-qc-nonelec-gui/dbinterface/lib/db_write.py" = ["PLW0603"]
+
+[tool.pylint]
+master.py-version = "3.7"
+master.ignore-paths= ["src/module-qc-nonelec-gui/_version.py"]
+reports.output-format = "colorized"
+similarities.ignore-imports = "yes"
+messages_control.disable = [
+  "design",
+  "fixme",
+  "line-too-long",
+  "missing-module-docstring",
+  "wrong-import-position",
+  # below are additional warnings to fix later
+  "duplicate-code",
+  "invalid-name",
+  "logging-fstring-interpolation",
+  "logging-not-lazy",
+  "broad-exception-caught",
+  "protected-access",
+  "missing-module-docstring",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  "unsubscriptable-object",
+  "broad-exception-raised",
+  "too-many-lines",
+  "too-many-nested-blocks",
+  "consider-using-enumerate",
+]
+extension-pkg-whitelist = ["PyQt5", "cv2"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = ["error"]
+testpaths = [
+    "tests",
+]
+log_cli_level = "INFO"
+
+[tool.repo-review]
+ignore = [
+  "GH", # only if using GitHub
+  "PC140", "MY100", # no typehints used
+  "RTD100",
+  "PC180",  # https://github.com/scientific-python/cookie/issues/439
+]
