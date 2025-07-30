@@ -1,0 +1,113 @@
+[tool.poetry]
+name = "agtos"
+version = "0.4.0"
+description = "The Agent Operating System - Orchestrate AI agents and tools through natural conversation"
+authors = ["William Attaway"]
+readme = "README-pypi.md"
+repository = "https://github.com/agtos-ai/agtos"
+homepage = "https://agtos.ai"
+
+# CRITICAL SECURITY: Exclude sensitive files from distribution
+# This prevents source code exposure in tar.gz files on PyPI
+exclude = [
+    "*.md",
+    "tests/",
+    "examples/",
+    "docs/",
+    "scripts/",
+    ".github/",
+    ".gitignore",
+    "*.sh",
+    "Dockerfile*",
+    "docker-compose*.yml",
+    ".env*",
+    "*.log",
+    "*.db",
+    "*.sqlite",
+    "venv/",
+    ".venv/",
+    "__pycache__/",
+    "*.pyc",
+    "*.pyo",
+    ".pytest_cache/",
+    ".coverage",
+    "htmlcov/",
+    ".tox/",
+    ".mypy_cache/",
+    ".ruff_cache/",
+    "drives/",
+    "CLAUDE.md",
+    "CONTEXT.md",
+    "AI-*.md",
+    "ISSUES.md",
+    "ROADMAP.md",
+    "TECHNICAL_DESIGN.md",
+    "SUBAGENT-AUTONOMY.md",
+    "META_MCP_TEST_RESULTS.md",
+    "DEEP_NESTING_ANALYSIS.md",
+    "HEALTH_REPORT.md",
+    "REFACTORING_PATTERNS.md",
+    "REST_BRIDGE_IMPLEMENTATION.md",
+    "ai-assisted-git-flow.md",
+    "activate.sh",
+    "test_*.sh",
+    "*.ipynb",
+    ".DS_Store",
+    "Thumbs.db"
+]
+
+# Include only necessary files
+include = [
+    "agtos/**/*.py",
+    "README-pypi.md",
+    "LICENSE",
+    "py.typed"
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = "^0.16.0"
+pyyaml = "^6.0"
+fastapi = "^0.115.0"
+uvicorn = "^0.32.0"
+sse-starlette = "^2.1.0"
+requests = "^2.32.0"
+psutil = { version = "^6.0.0", optional = true }
+aiohttp = "^3.9.0"
+prompt-toolkit = "^3.0.0"
+watchdog = "^6.0.0"
+packaging = "^23.0"
+supabase = "^2.11.0"
+python-dotenv = "^1.0.0"
+pydantic = "^2.0.0"
+toml = "^0.10.2"
+rich = "^13.0.0"
+
+[tool.poetry.extras]
+full = ["psutil"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.0"
+pytest-asyncio = "^0.23.0"
+httpx = "^0.27.0"
+
+[tool.poetry.scripts]
+agtos = "agtos.cli:app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# CRITICAL SECURITY WARNING: This project has a private source/public package model
+# We MUST NOT build source distributions (tar.gz) as they expose sensitive files
+# ONLY build wheel distributions to protect our intellectual property
+# Use: poetry build -f wheel
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v"
+# Exclude examples directory from test discovery
+norecursedirs = "examples drives venv .git"
