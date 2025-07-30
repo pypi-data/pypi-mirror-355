@@ -1,0 +1,89 @@
+[tool.pytest.ini_options]
+pythonpath = [
+    ".",
+]
+testpaths = [
+    ".",
+    "test",
+]
+# ignore any of these paths
+norecursedirs = [
+
+]
+addopts = [
+]
+
+[tool.poetry]
+name = "mcpf"
+version = "0.1.0-rc3"
+description = "Minimalist Configurable Pipelining Framework"
+authors = [
+    "Karoly Bosa <karoly.bosa@risc-software.at>"
+]
+packages = [
+    { include = "mcpf_metapackage" },
+]
+
+# This package is a meta package that does not contain any code.
+# Do not add any mandatory dependencies here.
+# Define all packages in the mcp subgroup here as optional dependencies.
+[tool.poetry.dependencies]
+python = "^3.10"
+mcpf-io = { version = "^0.1.0-rc3", optional = true }
+mcpf-io-pandas = { version = "^0.1.0-rc3", optional = true }
+mcpf-xform = { version = "^0.1.0-rc3", optional = true }
+mcpf-xform-pandas = { version = "^0.1.0-rc3", optional = true }
+mcpf-xform-sql = { version = "^0.1.0-rc3", optional = true }
+mcpf-db-postgres = { version = "^0.1.0-rc3", optional = true }
+mcpf-db-influx = { version = "^0.1.0-rc3", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.19.0"
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+pytest-xdist = "^3.1.0"
+black = "^23.1.0"
+isort = "^5.12.0"
+ruff = "^0.0.259"
+
+[tool.poetry.extras]
+io = ["mcpf-io", "mcpf-io-pandas"]
+xform = ["mcpf-xform", "mcpf-xform-pandas"]
+xql = ["mcpf-xform-sql"]
+postgres = ["mcpf-db-postgres"]
+influx = ["mcpf-db-influx"]
+
+[tool.ruff]
+line-length = 120
+ignore = ["D207", "D208", "E402", "E501", "E722", "E741", "E731", "F841"]
+
+[tool.isort]
+profile = "black"
+
+[tool.poe.tasks]
+_format = "black ."
+_sort_imports = "isort ."
+_lint = "ruff check --fix ."
+
+_check_format = "black --check ."
+_check_sort_imports = "isort --check ."
+_check_lint = "ruff check ."
+
+# Fake tasks for latest pipeline that didn't exist in former config
+check_licenses = "python3 -c ''"
+
+docs = "mkdocs serve"
+precommit = ["_format", "_sort_imports", "_lint"]
+check = ["_check_format", "_check_sort_imports", "_check_lint"]
+test = "pytest"
+
+# https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file
+[tool.black]
+line-length = 120
+
+[build-system]
+requires = ["poetry-core>=1.1.14"]
+build-backend = "poetry.core.masonry.api"
+
+
+
