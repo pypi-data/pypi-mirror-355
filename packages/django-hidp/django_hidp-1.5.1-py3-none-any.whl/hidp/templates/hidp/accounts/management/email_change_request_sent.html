@@ -1,0 +1,18 @@
+{% extends 'hidp/base_post_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Change email address' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Change email address' %}</h1>
+
+  <p>{% translate 'Changing your account email address requires confirmation from both your current and new email addresses. Please check your email for a confirmation link.' %}</p>
+
+  <p>{% translate 'It may take a few minutes for this email to arrive. If you do not see it, check your spam folder. If you still cannot find it, make sure you entered the correct email address.' %}</p>
+
+  <p>{% translate 'Your account email address will only be changed after you confirm from both email addresses.' %}</p>
+
+  <p>{% translate 'Please note that this also changes the username you use to sign in.' %}</p>
+
+  {% include 'hidp/includes/forms/submit_row.html' with cancel_label=_('Back') cancel_url=back_url %}
+{% endblock %}

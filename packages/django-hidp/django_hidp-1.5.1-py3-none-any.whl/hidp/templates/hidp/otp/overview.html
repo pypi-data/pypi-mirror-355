@@ -1,0 +1,47 @@
+{% extends 'hidp/base_post_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Two-factor authentication' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Two-factor authentication' %}</h1>
+
+  <h2>{% translate "Two-factor methods" %}</h2>
+  <ul>
+  {% for device in totp_devices %}
+    <li>
+      <p>
+        {% translate device.name context "OTP device name" %}: {% translate "configured" %} &mdash;
+        <a href="{% url 'hidp_otp_management:disable' %}">{% translate "disable" %}</a>
+      </p>
+    </li>
+  {% empty %}
+    <li>
+      <p>
+        {% translate TOTP_DEVICE_NAME context "OTP device name" %}: {% translate "not configured" %} &mdash;
+        <a href="{% url 'hidp_otp_management:setup' %}">{% translate "set up" %}</a>
+      </p>
+    </li>
+  {% endfor %}
+  </ul>
+
+  <h2>{% translate "Recovery codes" %}</h2>
+  <ul>
+  {% for device in static_devices %}
+    <li>
+      <p>
+        {% translate device.name context "OTP device name" %}: {% translate "configured" %} &mdash;
+        <a href="{% url 'hidp_otp_management:recovery-codes' %}">{% translate "view" %}</a>
+      </p>
+    </li>
+  {% empty %}
+    <li>
+      <p>
+        {% translate STATIC_DEVICE_NAME context "OTP device name" %}: {% translate "not configured" %}
+      </p>
+    </li>
+  {% endfor %}
+  </ul>
+
+  {% include 'hidp/includes/forms/submit_row.html' with cancel_label=_('Back') cancel_url=back_url %}
+{% endblock %}

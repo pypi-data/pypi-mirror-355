@@ -1,0 +1,14 @@
+{% extends 'hidp/base_pre_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Sign up' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Create a new account' %}</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    {% include 'hidp/includes/forms/submit_row.html' with submit_label=_('Sign up') %}
+  </form>
+{% endblock %}

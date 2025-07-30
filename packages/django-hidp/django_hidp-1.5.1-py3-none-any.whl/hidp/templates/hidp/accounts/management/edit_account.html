@@ -1,0 +1,14 @@
+{% extends 'hidp/base_post_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Edit account' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Edit your account information' %}</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    {% include 'hidp/includes/forms/submit_row.html' with submit_label=_('Save') cancel_url=cancel_url %}
+  </form>
+{% endblock %}

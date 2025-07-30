@@ -1,0 +1,17 @@
+{% extends 'hidp/base_pre_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Verification required' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Verification required' %}</h1>
+
+  <p>{% translate 'You need to verify your email address before you can sign in. Please check your email for a verification link.' %}</p>
+
+  <p>{% translate 'It may take a few minutes for this email to arrive. If you do not see it, check your spam folder. If you still cannot find it, make sure you entered the correct email address.' %}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    {% include 'hidp/includes/forms/submit_row.html' with submit_label=_('Resend verification email') %}
+  </form>
+{% endblock %}

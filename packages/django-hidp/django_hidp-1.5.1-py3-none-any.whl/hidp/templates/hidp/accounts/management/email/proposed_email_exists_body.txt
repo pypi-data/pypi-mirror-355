@@ -1,0 +1,13 @@
+{% load i18n %}{% autoescape off %}
+{% blocktranslate trimmed %}
+You requested to change your account email address from {{ current_email }} to {{ proposed_email }}.
+However, you already have an account that uses {{ proposed_email }}.
+{% endblocktranslate %}
+
+{% translate 'Please change the email address of the other account first, then try again.' %}
+
+{% translate 'If you did not make this request, you can cancel it using the following link:' %}
+
+{{ cancel_url }}
+
+{% endautoescape %}

@@ -1,0 +1,24 @@
+{% extends 'hidp/base_post_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Two-factor authentication' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Disable two-factor authentication' %}</h1>
+
+  <p><strong>{% translate "Warning" %}:</strong> {% translate "Disabling two-factor authentication will make your account less secure." %}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+
+    {% include 'hidp/includes/forms/submit_row.html' with submit_label=_('Disable two-factor authentication') cancel_url=back_url %}
+  </form>
+
+  <p>
+    {% url 'hidp_otp_management:disable-recovery-code' as recovery_code_url %}
+    {% blocktranslate trimmed %}
+      If you have lost your device, you can <a href="{{ recovery_code_url }}">use a recovery code</a> instead.
+    {% endblocktranslate %}
+  </p>
+{% endblock %}

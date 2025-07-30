@@ -1,0 +1,27 @@
+{% extends 'hidp/base_post_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Manage account' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Manage your account information' %}</h1>
+
+  <p>
+    {% blocktranslate trimmed %}
+      You are currently logged in as {{ user }}.
+    {% endblocktranslate %}
+  </p>
+
+  <form action="{{ logout_url }}" method="post">
+    {% csrf_token %}
+    <button type="submit">{% translate 'Sign out' %}</button>
+  </form>
+
+  <hr>
+
+  <ul>
+    {% for item in account_management_links %}
+      <li><a href="{{ item.url }}">{{ item.text }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
