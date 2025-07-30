@@ -1,0 +1,49 @@
+try:
+    from plone.base.defaultpage import is_default_page
+    from plone.base.interfaces import IConstrainTypes
+    from plone.base.interfaces import IEditingSchema
+    from plone.base.interfaces import IImagingSchema
+    from plone.base.interfaces import ILanguage
+    from plone.base.interfaces import IMailSchema
+    from plone.base.interfaces import IMigratingPloneSiteRoot
+    from plone.base.interfaces import INavigationRoot
+    from plone.base.interfaces import INavigationSchema
+    from plone.base.interfaces import INonInstallable
+    from plone.base.interfaces import INonStructuralFolder
+    from plone.base.interfaces import IPloneSiteRoot
+    from plone.base.interfaces import ISearchSchema
+    from plone.base.interfaces import ISecuritySchema
+    from plone.base.interfaces import ISelectableConstrainTypes
+    from plone.base.interfaces import ISiteSchema
+    from plone.base.interfaces import ITestCasePloneSiteRoot
+    from plone.base.navigationroot import get_navigation_root
+    from plone.base.utils import base_hasattr
+    from plone.base.utils import safe_callable
+    from plone.base.utils import safe_hasattr
+    from plone.base.utils import safe_text
+except ImportError:
+    # BBB Plone 5.2
+    from plone.app.layout.navigation.interfaces import INavigationRoot
+    from plone.app.layout.navigation.root import (
+        getNavigationRoot as get_navigation_root,
+    )
+    from Products.CMFPlone.defaultpage import is_default_page
+    from Products.CMFPlone.interfaces import IConstrainTypes
+    from Products.CMFPlone.interfaces import IEditingSchema
+    from Products.CMFPlone.interfaces import IImagingSchema
+    from Products.CMFPlone.interfaces import ILanguage
+    from Products.CMFPlone.interfaces import IMailSchema
+    from Products.CMFPlone.interfaces import IMigratingPloneSiteRoot
+    from Products.CMFPlone.interfaces import INavigationSchema
+    from Products.CMFPlone.interfaces import INonInstallable
+    from Products.CMFPlone.interfaces import INonStructuralFolder
+    from Products.CMFPlone.interfaces import IPloneSiteRoot
+    from Products.CMFPlone.interfaces import ISearchSchema
+    from Products.CMFPlone.interfaces import ISecuritySchema
+    from Products.CMFPlone.interfaces import ISelectableConstrainTypes
+    from Products.CMFPlone.interfaces import ISiteSchema
+    from Products.CMFPlone.interfaces import ITestCasePloneSiteRoot
+    from Products.CMFPlone.utils import base_hasattr
+    from Products.CMFPlone.utils import safe_callable
+    from Products.CMFPlone.utils import safe_hasattr
+    from Products.CMFPlone.utils import safe_text

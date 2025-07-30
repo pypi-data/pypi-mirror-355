@@ -1,0 +1,30 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <adapter
+      factory=".indexers.BlocksSearchableTextExtender"
+      name="IBlocks"
+      zcml:condition="have plone-60"
+      />
+  <adapter
+      factory=".indexers.SearchableText_blocks"
+      name="SearchableText"
+      zcml:condition="not-have plone-60"
+      />
+  <adapter
+      factory=".indexers.TextBlockSearchableText"
+      name="text"
+      />
+  <adapter
+      factory=".indexers.SlateTextIndexer"
+      name="slate"
+      />
+  <adapter
+      factory=".indexers.TableBlockSearchableText"
+      name="table"
+      />
+
+</configure>

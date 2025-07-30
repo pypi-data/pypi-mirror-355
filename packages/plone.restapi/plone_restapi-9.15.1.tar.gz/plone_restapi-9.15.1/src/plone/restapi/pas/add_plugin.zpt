@@ -1,0 +1,66 @@
+<h1 tal:replace="structure here/manage_page_header">Header</h1>
+
+<main class="container-fluid"
+      i18n:ignore=""
+>
+
+  <h2 tal:define="
+        form_title string:Add JWT Authentication Plugin;
+      "
+      tal:replace="structure here/manage_form_title"
+  >Form Title</h2>
+
+  <p class="form-help">
+      Plone PAS plugin for authentication with JSON web tokens (JWT).
+  </p>
+
+  <form action="addJWTAuthenticationPlugin"
+        enctype="multipart/form-data"
+        method="post"
+  >
+
+    <div class="form-group row">
+      <label class="form-label col-sm-3 col-md-2"
+             for="id_"
+      >Id</label>
+      <div class="col-sm-9 col-md-10">
+        <input class="form-control"
+               id="id_"
+               name="id_"
+               type="text"
+               tal:attributes="
+                 value request/id_|string:jwt_auth;
+               "
+        />
+      </div>
+    </div>
+
+    <div class="form-group row form-optional">
+      <label class="form-label col-sm-3 col-md-2"
+             for="title"
+      >Title</label>
+      <div class="col-sm-9 col-md-10">
+        <input class="form-control"
+               id="title"
+               name="title"
+               type="text"
+               tal:attributes="
+                 value request/title|string:JWT Authentication;
+               "
+        />
+      </div>
+    </div>
+
+    <div class="zmi-controls">
+      <input class="btn btn-primary"
+             name="submit"
+             type="submit"
+             value="Add"
+      />
+    </div>
+
+  </form>
+
+</main>
+
+<h1 tal:replace="structure here/manage_page_footer">Footer</h1>
