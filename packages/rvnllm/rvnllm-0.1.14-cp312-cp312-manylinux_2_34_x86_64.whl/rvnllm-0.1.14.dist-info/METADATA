@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: rvnllm
+Version: 0.1.14
+Requires-Dist: polars>=0.19
+Summary: Lightning-fast LLM model introspection
+Keywords: llm,gguf,diff,info
+Home-Page: https://www.rvnllm.com/
+Author: Ervin Bosenbacher <ervin.bosenbacher@rvnllm.com>
+Author-email: Ervin Bosenbacher <ervin.bosenbacher@rvnllm.com>
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Source Code, https://github.com/rvnllm/rvnllm
+
+# rvnllm
+
+**rvnllm** is a blazing-fast Python package for inspecting, diffing, and analyzing GGUF-based LLM model files.
+
+> Think `ExifTool`, but for large language models.
+
+## Features
+
+- Zero-copy GGUF model parsing
+- Tensor-level metadata inspection
+- Structural diffs between model files
+- Cross-platform wheels (Linux, macOS, Windows)
+
+## Installation
+
+### pip
+```bash
+pip install rvnllm
+```
+
+### Build from source
+```
+git clone https://github.com/rvnllm/rvnllm.git
+cd py/rvn_py
+maturin build --release
+pip install dist/*.whl
+```
+
+### Usage example
+```
+import rvnllm
+
+df = rvnllm.info("Llama-3-70B-Q4_0.gguf")
+print(df.head())
+```
+
