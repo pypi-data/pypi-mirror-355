@@ -1,0 +1,30 @@
+Metadata-Version: 2.4
+Name: fers_calculations
+Version: 0.1.14.dev20250617
+Summary: High-performance Rust-backed calculations for FERS.
+Keywords: rust,python,mechanical-engineering,FEM,structural-engineering,calculations
+Author: Jeroen Hermsen <info@ferscloud.nl>
+Author-email: Jeroen Hermsen <info@ferscloud.nl>
+License: BSD-3-Clause
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+# FERS_calculations
+
+`FERS_calculations` is a high-performance library for Rust-backed calculations in mechanical engineering. It can process JSON input files to deliver fast and accurate results. While it can be run as a standalone tool, integration with `FERS_core` simplifies input creation and workflow management.
+
+## Features
+
+- **Standalone Functionality:** Run directly by providing a valid JSON input file.
+- **Rust-Powered Performance:** Designed for speed and reliability in computational tasks.
+- **Python Integration:** Seamless integration with python package `FERS_core` and website `FERScloud.com` for easy preprocessing and result handling.
+- **Engineer-Friendly Design:** Minimal coding effort required for complex structural engineering calculations.
+
+---
+
+## Usage
+
+### Standalone
+You can run `FERS_calculations` without `FERS_core` by preparing a JSON input file and running the binary directly.
+
+```bash
+./fers_calculations input.json
