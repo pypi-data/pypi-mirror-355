@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=46.4"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ewokssphinx"
+version = "1.0.0"
+keywords = ['ewoks', 'sphinx']
+authors = [{ name = "ESRF", email = "dau-pydev@esrf.fr" }]
+description = "Ewoks Sphinx directives"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE.md" }
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Framework :: Sphinx :: Extension",
+]
+requires-python = ">=3.10"
+dependencies = ["sphinx", "ewokscore >= 1.3.0"]
+
+[project.urls]
+Homepage = "https://gitlab.esrf.fr/workflow/ewoks/ewokssphinx/"
+Documentation = "https://gitlab.esrf.fr/workflow/ewoks/ewokssphinx/-/blob/main/README.md"
+Repository = "https://gitlab.esrf.fr/workflow/ewoks/ewokssphinx/"
+Issues = "https://gitlab.esrf.fr/workflow/ewoks/ewokssphinx/issues"
+Changelog = "https://gitlab.esrf.fr/workflow/ewoks/ewokssphinx/-/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+test = ["pytest >=7"]
+dev = ["ewokssphinx[test]", "black >=25", "flake8 >=4"]
+doc = [
+    "ewokssphinx[test]",
+    "myst-parser",
+    "pydata_sphinx_theme",
+    "sphinx-design",
+]
+
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ewokssphinx = ["*.css"]
+
+[tool.coverage.run]
+omit = ['*/tests/*']
