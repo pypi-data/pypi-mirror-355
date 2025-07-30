@@ -1,0 +1,228 @@
+from pydantic_ai import Agent, RunContext
+from pydantic import BaseModel, Field
+from typing import Type, Any, Optional, List # Added Optional, Type, List
+from datetime import datetime # Added for dynamic prompt example
+from pathlib import Path # For PROJECT_ROOT_PATH in fallback settings
+
+# Attempt to import settings and model loader from .config
+try:
+    from .config import get_pydantic_ai_model, settings
+    print(f"INFO: Successfully imported get_pydantic_ai_model and settings from .config for agent '{{ agent_name }}'")
+except ImportError:
+    print(f"WARNING: Could not import from .config for agent '{{ agent_name }}'. Using fallback settings and direct model inference.")
+    
+    class FallbackAgentSettings:
+        LLM_CONFIG_NAME: str = "{{ llm_config_name | default('mana_llm') }}" # Default from generate command
+        LLM_MODEL_IDENTIFIER_FALLBACK: str = "{{ llm_model_identifier_fallback | default('openai:gpt-4o') }}"
+        AGENT_RETRIES: int = 1
+        # Define PROJECT_ROOT_PATH for MCP server loading fallback
+        # This assumes the agent is in project_root/agents/agent_id/
+        PROJECT_ROOT_PATH: Path = Path(__file__).resolve().parent.parent.parent 
+
+    settings = FallbackAgentSettings()
+    
+    # Define a fallback get_pydantic_ai_model if the import failed
+    def get_pydantic_ai_model(llm_config_name: str):
+        raise ValueError(f"get_pydantic_ai_model from .config not available. LLM config '{llm_config_name}' cannot be loaded by this fallback.")
+
+from alo_pyai_sdk.core.llm_loader import load_mcp_servers_from_project_config # For MCP servers
+from pydantic_ai.mcp import MCPServer # For type hinting
+from pydantic_ai import models # Ensure models is imported for the fallback
+from pydantic_ai.models.test import TestModel # For the ultimate fallback
+
+# --- Define Agent Output Type (Example) ---
+# This is a placeholder. If 'agent_output_type_is_str' is False,
+# the AI-assisted generation or user should define a specific Pydantic model here
+# and assign it to _output_type_actual.
+# Example:
+# class {{ agent_output_type | capitalize | replace(' ', '') }}(BaseModel):
+#     detail: str = Field(description="Default output field")
+
+# --- Define Agent Dependencies Type (Example, if needed) ---
+# This is a placeholder. The AI-assisted generation or user should define
+# a specific Pydantic model here if dependencies are needed and assign it to _deps_type_actual.
+# Example:
+# class {{ agent_name | capitalize | replace(' ', '') }}Deps(BaseModel):
+#     # database_url: str
+#     pass
+
+# --- Initialize the Pydantic-AI Agent ---
+print(f"INFO: Initializing Pydantic-AI Agent '{{ agent_name }}'...")
+print(f"INFO: Attempting to load LLM with config name: '{settings.LLM_CONFIG_NAME}'")
+
+configured_model = None
+try:
+    configured_model = get_pydantic_ai_model(settings.LLM_CONFIG_NAME)
+    print(f"INFO: Agent '{{ agent_name }}' successfully configured LLM using '{settings.LLM_CONFIG_NAME}' via get_pydantic_ai_model.")
+except ValueError as e: # Specific error from get_pydantic_ai_model if config not found or function unavailable
+    print(f"WARNING: {e}") 
+    print(f"WARNING: Falling back to LLM model identifier: {settings.LLM_MODEL_IDENTIFIER_FALLBACK}")
+    try:
+        # Attempt to use infer_model for the fallback.
+        # This relies on Pydantic-AI's ability to find API keys from env vars
+        # if the provider requires them and they are not in the model identifier string.
+        configured_model = models.infer_model(settings.LLM_MODEL_IDENTIFIER_FALLBACK)
+        print(f"Agent '{{ agent_name }}' initialized with fallback LLM: {settings.LLM_MODEL_IDENTIFIER_FALLBACK}")
+    except Exception as fallback_e:
+        print(f"ERROR: Could not initialize fallback LLM model '{settings.LLM_MODEL_IDENTIFIER_FALLBACK}': {fallback_e}")
+        # configured_model remains None
+
+if not configured_model:
+    print(f"CRITICAL: All attempts to configure an LLM failed for agent '{{ agent_name }}'. Initializing with TestModel as a last resort.")
+    configured_model = TestModel()
+    print(f"INFO: Agent '{{ agent_name }}' initialized with TestModel.")
+
+# --- Define Output and Dependencies Types ---
+# Default to string output. AI-assisted generation or user should replace this
+# with a Pydantic BaseModel if structured output is needed.
+_output_type_actual: Type[Any] = str
+print(f"INFO: Agent '{{ agent_name }}' output type initially set to: {_output_type_actual}")
+
+# Default to Any dependencies. AI-assisted generation or user should replace this
+# with a Pydantic BaseModel if specific dependencies are needed.
+_deps_type_actual: Type[Any] = Any
+print(f"INFO: Agent '{{ agent_name }}' dependencies type initially set to: {_deps_type_actual}")
+
+# --- Load MCP Servers ---
+mcp_servers_list: List[MCPServer] = []
+# Ensure settings.PROJECT_ROOT_PATH is available, either from imported settings or fallback
+project_root_for_mcp = getattr(settings, 'PROJECT_ROOT_PATH', Path(__file__).resolve().parent.parent.parent)
+print(f"INFO: Attempting to load MCP servers from project root: {project_root_for_mcp}")
+try:
+    mcp_servers_list = load_mcp_servers_from_project_config(project_root_for_mcp)
+    if mcp_servers_list:
+        print(f"INFO: Agent '{{ agent_name }}' loaded {len(mcp_servers_list)} MCP server(s) from configuration.")
+    else:
+        print(f"INFO: No MCP servers configured or loaded for agent '{{ agent_name }}'.")
+    except Exception as e:
+        print(f"Warning: Could not load MCP servers for agent '{{ agent_name }}': {e}")
+else:
+    print(f"Warning: PROJECT_ROOT_PATH not set in agent '{{ agent_name }}' config, cannot load MCP servers.")
+
+
+agent = Agent(
+    model=configured_model,
+    output_type=_output_type_actual,
+    deps_type=_deps_type_actual, # User should change 'Any' to their specific Deps type if needed
+    system_prompt="""
+    You are '{{ agent_name }}', an AI assistant.
+    {{- agent_system_prompt_instructions | default("Please assist the user with their request.") -}}
+    """,
+    mcp_servers=mcp_servers_list,
+    tools=[], # Explicitly no tools by default. AI or user should populate this.
+    retries=settings.AGENT_RETRIES,
+)
+print(f"INFO: Pydantic-AI Agent '{{ agent_name }}' instance created.")
+
+# --- Example Tool (Define tools directly here or import from a tools.py) ---
+# AI-assisted generation or user should define tools here if needed.
+# Example:
+# @agent.tool
+# async def example_tool(ctx: RunContext[_deps_type_actual], query: str) -> str:
+#     """An example tool that the agent can use."""
+#     # print(f"Tool 'example_tool' called with query: {query}")
+#     # if isinstance(ctx.deps, YourDepsModel):
+#     #     # Access dependencies: ctx.deps.your_attribute
+#     #     pass
+#     return f"Tool processed query: '{query}'"
+#
+# If tools are defined, add them to the agent instance if not already passed in constructor:
+# if hasattr(example_tool, 'is_tool'): # Check if it's a Pydantic-AI tool
+#     agent.tools.append(example_tool)
+
+
+# --- Dynamic System Prompt Example (Optional) ---
+# @agent.system_prompt
+# async def dynamic_prompt_example(ctx: RunContext[_deps_type_actual]) -> str:
+#     # current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#     # base_prompt = "You are '{{ agent_name }}'. "
+#     # if isinstance(ctx.deps, YourDepsModel):
+#     #     base_prompt += f"Current user: {ctx.deps.user_id}. "
+#     # return f"{base_prompt}Current time is {current_time}. Assist the user."
+#     return "You are '{{ agent_name }}'. Current time: {{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}}"
+
+# --- Main Agent Accessor ---
+def get_agent() -> Agent:
+    """Returns the configured Pydantic-AI agent instance."""
+    return agent
+
+if __name__ == "__main__":
+    # This block is for local testing of the agent definition.
+    print(f"--- Running '{{ agent_name }}' agent_definition.py directly (__main__) ---")
+    print(f"Registered Agent Name: {settings.AGENT_NAME if hasattr(settings, 'AGENT_NAME') else 'N/A'}")
+    print(f"LLM Config Name Used: {settings.LLM_CONFIG_NAME if hasattr(settings, 'LLM_CONFIG_NAME') else 'N/A'}")
+    if configured_model:
+        model_details = getattr(configured_model, 'model_name', str(type(configured_model)))
+        print(f"Configured Model: {model_details}")
+    else:
+        print("Configured Model: ERROR - NOT SET")
+    print(f"Agent Output Type: {_output_type_actual}")
+    print(f"Agent Dependencies Type: {_deps_type_actual}")
+    print(f"Agent Retries: {agent.retries}")
+    print(f"Agent System Prompt: {agent.system_prompt}")
+    tool_names = [t.name for t in agent.tools] if agent.tools else "None"
+    print(f"Agent Tools: {tool_names}")
+    mcp_server_details = [s.url or s.command for s in agent.mcp_servers] if agent.mcp_servers else "None"
+    print(f"Agent MCP Servers: {mcp_server_details}")
+
+    # Example of a test run (requires appropriate environment setup for the LLM)
+    # print("\n--- Attempting a test run ---")
+    # try:
+    #     # Ensure your API keys are set in the environment if using a real LLM
+    #     # test_prompt = "Tell me a very short story about a brave robot."
+    #     # print(f"Test Prompt: {test_prompt}")
+    #     # result = agent.run_sync(test_prompt)
+    #     # print(f"Test Run Output: {result.output}")
+    #     # if result.usage():
+    #     #     from dataclasses import asdict
+    #     #     print(f"Test Run Usage: {asdict(result.usage())}")
+    #     pass
+    # except Exception as e:
+    #     print(f"ERROR during test run: {e}")
+    #     print("Ensure LLM API keys (e.g., OPENAI_API_KEY) are set in your environment.")
+    pass
+print(f"--- Agent '{{ agent_name }}' definition loading complete ---")
+# @agent.tool
+# async def example_tool(ctx: RunContext[_deps_type_actual], query: str) -> str:
+#     """
+#     An example tool that the agent can use.
+#     """
+#     # Access dependencies via ctx.deps if deps_type is defined
+#     # For example, if _deps_type_actual = MyAgentDependencies and it has a field 'db_conn':
+#     # conn = ctx.deps.db_conn
+#     # result = await conn.execute("SELECT ...")
+#     return f"Tool processed query: {query}"
+
+# Example of a dynamic system prompt using RunContext (if deps are defined)
+# @agent.system_prompt
+# async def dynamic_prompt_example(ctx: RunContext[_deps_type_actual]) -> str:
+#     # if isinstance(ctx.deps, MyAgentDependencies): # Check if deps is of the expected type
+#     #     return f"User ID is {ctx.deps.user_id}. Current date: {datetime.now().date()}"
+#     return f"Current date: {datetime.now().date()}"
+
+
+def get_agent() -> Agent:
+    """Returns the configured Pydantic-AI agent instance."""
+    return agent
+
+if __name__ == "__main__":
+    # For testing the agent definition directly
+    # This section is for local testing and won't run when deployed via FastAPI
+    print(f"Agent '{{ agent_name }}' initialized.")
+    print(f"Model: {agent.model.model_name if agent.model else 'Not specified'}") # type: ignore
+    print(f"Output type: {agent.output_type}")
+    print(f"Deps type: {agent._deps_type}") # Accessing protected member for demo
+
+    # Example run (will require API keys to be set if not using a test model)
+    # try:
+    #     # test_deps = {{ agent_deps_type | default("None") }}() # Instantiate deps if needed
+    #     # result = agent.run_sync("Hello, agent!", deps=test_deps)
+    #     result = agent.run_sync("Hello, agent!")
+    #     print("\nTest Run Output:")
+    #     print(result.output)
+    #     print("\nTest Run Usage:")
+    #     print(result.usage())
+    # except Exception as e:
+    #     print(f"\nError during test run: {e}")
+    #     print("Ensure your LLM API key (e.g., OPENAI_API_KEY) is set in the environment if using a real model.")
+    pass
