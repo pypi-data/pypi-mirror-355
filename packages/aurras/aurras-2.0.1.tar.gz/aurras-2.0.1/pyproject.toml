@@ -1,0 +1,75 @@
+[project]
+name = "aurras"
+version = "2.0.1"
+description = "A high-end command line music player"
+authors = [
+    {name = "vedant-asati03", email = "vedant.asati03@gmail.com"},
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0.0"
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Players",
+]
+keywords = ["music", "player", "audio", "cli", "terminal", "youtube", "spotify"]
+dependencies = [
+    "aiosqlite>=0.18.0",
+    "argparse>=1.4.0",
+    "pillow>=9.0.0",
+    "prompt-toolkit>=3.0.0",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0",
+    "questionary>=1.10.0",
+    "requests>=2.28.0",
+    "rich>=12.0.0",
+    "spotdl>=4.0.0",
+    "spotipy>=2.25.1",
+    "sqlitedict>=2.1.0",
+    "syncedlyrics>=0.6.0",
+    "textual>=0.31.0",
+    "ytmusicapi>=0.24.0",
+]
+
+[project.urls]
+repository = "https://github.com/vedant-asati03/Aurras"
+
+[project.scripts]
+aurras = "aurras.aurras_cli.__main__:main"
+aurras-tui = "aurras.aurras_tui.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["aurras*"]
+exclude = ["assets*", "packaging*", "docs*", "tests*", "scripts*"]
+
+[tool.setuptools.package-data]
+"aurras.core.player" = ["*.dll"]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "flake8>=7.2.0",
+    "isort>=6.0.1",
+    "mypy>=1.16.0",
+    "pytest>=8.3.5",
+]
