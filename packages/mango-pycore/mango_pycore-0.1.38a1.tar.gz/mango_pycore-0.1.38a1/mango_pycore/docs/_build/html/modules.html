@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mango_pycore &mdash; Mango Pycore 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b0099a1c"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API documentation" href="api.html" />
+    <link rel="prev" title="Welcome to mango-pycore’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Mango Pycore
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">mango_pycore</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html">API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instalation.html">Instalation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html">Hello World Tutorial with mango_pycore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html">RestApi Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html">Websocket Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html">Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mango Pycore</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">mango_pycore</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mango-pycore">
+<h1>mango_pycore<a class="headerlink" href="#mango-pycore" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#api-base-api-module">api.base_api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-api.exceptions">api.exceptions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#api.exceptions.BadRequest"><code class="docutils literal notranslate"><span class="pre">BadRequest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.exceptions.BadRequest.message"><code class="docutils literal notranslate"><span class="pre">BadRequest.message</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#api.exceptions.MiddlewareShortCircuit"><code class="docutils literal notranslate"><span class="pre">MiddlewareShortCircuit</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.exceptions.MiddlewareShortCircuit.response"><code class="docutils literal notranslate"><span class="pre">MiddlewareShortCircuit.response</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-api.http_api">api.http_api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#api.http_api.HttpApi"><code class="docutils literal notranslate"><span class="pre">HttpApi</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.http_api.HttpApi.__call__"><code class="docutils literal notranslate"><span class="pre">HttpApi.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#api-request-module">api.request module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#api-response-module">api.response module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-api.rest_api">api.rest_api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#api.rest_api.RestApi"><code class="docutils literal notranslate"><span class="pre">RestApi</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.rest_api.RestApi.__call__"><code class="docutils literal notranslate"><span class="pre">RestApi.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-api.websocket_api">api.websocket_api module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#api.websocket_api.WebsocketApi"><code class="docutils literal notranslate"><span class="pre">WebsocketApi</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.websocket_api.WebsocketApi._config_logging"><code class="docutils literal notranslate"><span class="pre">WebsocketApi._config_logging()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.websocket_api.WebsocketApi._process_middlewares"><code class="docutils literal notranslate"><span class="pre">WebsocketApi._process_middlewares()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.websocket_api.WebsocketApi._register_middleware"><code class="docutils literal notranslate"><span class="pre">WebsocketApi._register_middleware()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.websocket_api.WebsocketApi._register_route"><code class="docutils literal notranslate"><span class="pre">WebsocketApi._register_route()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.websocket_api.WebsocketApi.debug"><code class="docutils literal notranslate"><span class="pre">WebsocketApi.debug</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.websocket_api.WebsocketApi.middleware"><code class="docutils literal notranslate"><span class="pre">WebsocketApi.middleware()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#api.websocket_api.WebsocketApi.route"><code class="docutils literal notranslate"><span class="pre">WebsocketApi.route()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-api">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="instalation.html">Instalation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="instalation.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instalation.html#setting-up-your-environment">Setting Up Your Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instalation.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="helloworld.html">Hello World Tutorial with mango_pycore</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html#step-1-setting-up-your-project">Step 1: Setting Up Your Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html#step-2-creating-the-application-code">Step 2: Creating the Application Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html#step-3-creating-the-sam-template">Step 3: Creating the SAM Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html#step-4-defining-dependencies">Step 4: Defining Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html#step-5-building-and-testing-locally">Step 5: Building and Testing Locally</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="restTutorial.html">RestApi Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#step-2-modifying-the-url-get-parameters">Step 2: Modifying the URL GET Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#step-3-modifying-the-sam-template">Step 3: Modifying the SAM Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#step-4-testing-the-new-url-parameters">Step 4: Testing the new URL Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#put-request">PUT request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#post-request">POST request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#delete-request">DELETE request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#request">REQUEST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="websocketTutorial.html">Websocket Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html#step-2-creating-the-websocket-client">Step 2: Creating the WebSocket Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html#step-3-creating-the-message">Step 3: Creating the Message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html#step-4-testing-the-websocket-client">Step 4: Testing the WebSocket Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html#step-5-testing-and-format">Step 5: Testing and Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="triggers.html">Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html#step-1-create-a-dynamodb-table">Step 1: Create a DynamoDB Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html#step-2-enable-dynamodb-streams">Step 2: Enable DynamoDB Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html#step-3-set-up-the-stream-handler">Step 3: Set Up the Stream Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html#step-4-create-simulated-events">Step 4: Create Simulated Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html#step-5-build-and-test-locally">Step 5: Build and Test Locally</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html#step-6-deploying-to-aws-optional">Step 6: Deploying to AWS (Optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to mango-pycore’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Pablo Galindo Largacha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

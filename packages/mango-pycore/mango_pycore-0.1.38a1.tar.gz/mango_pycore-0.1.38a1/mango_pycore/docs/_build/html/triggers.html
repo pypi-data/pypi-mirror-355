@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example &mdash; Mango Pycore 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b0099a1c"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Websocket Tutorial" href="websocketTutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Mango Pycore
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">mango_pycore</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instalation.html">Instalation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html">Hello World Tutorial with mango_pycore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html">RestApi Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html">Websocket Tutorial</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-create-a-dynamodb-table">Step 1: Create a DynamoDB Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-enable-dynamodb-streams">Step 2: Enable DynamoDB Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-set-up-the-stream-handler">Step 3: Set Up the Stream Handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-create-simulated-events">Step 4: Create Simulated Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-build-and-test-locally">Step 5: Build and Test Locally</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-6-deploying-to-aws-optional">Step 6: Deploying to AWS (Optional)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mango Pycore</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">mango_pycore</a></li>
+      <li class="breadcrumb-item active">Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/triggers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="streams-tutorial-using-mango-pycore-dynamodb-products-inventory-example">
+<h1>Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example<a class="headerlink" href="#streams-tutorial-using-mango-pycore-dynamodb-products-inventory-example" title="Permalink to this heading"></a></h1>
+<p>In this tutorial, we’ll guide you through a <strong>practical example</strong> of using the <cite>Stream</cite> class from the <cite>mango_pycore</cite> library in a real-world scenario. We’ll create a DynamoDB table to store products in an inventory system and trigger actions when products are added, updated, or deleted.</p>
+<p>We’ll walk through:</p>
+<ul class="simple">
+<li><p>Setting up a DynamoDB table named <cite>Products</cite>.</p></li>
+<li><p>Enabling DynamoDB Streams to capture changes.</p></li>
+<li><p>Using the <cite>Stream</cite> class to register handlers for <cite>INSERT</cite>, <cite>MODIFY</cite>, and <cite>REMOVE</cite> events.</p></li>
+<li><p>Simulating these events and testing them locally.</p></li>
+<li><p>Including all technical steps required to run the tutorial on any computer.</p></li>
+</ul>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<p>Before you begin, ensure you have the following:</p>
+<ul class="simple">
+<li><p><strong>AWS Account</strong>: Access to an AWS account to set up DynamoDB.</p></li>
+<li><p><strong>AWS CLI</strong>: Installed and configured with your AWS credentials.</p></li>
+<li><p><strong>Python Environment</strong>: Python 3.8+ installed.</p></li>
+<li><p><strong>AWS SAM CLI</strong>: Installed for testing and deploying Lambda functions locally.</p></li>
+<li><p><strong>Docker(Running)</strong>: Required for local AWS SAM testing.</p></li>
+<li><p><strong>mango-pycore Library</strong>: Installed via pip.</p></li>
+</ul>
+<p>Install <cite>mango-pycore</cite> using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mango-pycore
+</pre></div>
+</div>
+</section>
+<section id="step-1-create-a-dynamodb-table">
+<h2>Step 1: Create a DynamoDB Table<a class="headerlink" href="#step-1-create-a-dynamodb-table" title="Permalink to this heading"></a></h2>
+<p>First, we create a DynamoDB table named <cite>Products</cite> to store product information. The table will have the following structure:</p>
+<ul class="simple">
+<li><p><strong>Primary Key (PK):</strong> <cite>product_id</cite> (string)</p></li>
+<li><p><strong>Sort Key (SK):</strong> <cite>category</cite> (string)</p></li>
+</ul>
+<p>Open your terminal and run the following AWS CLI command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span>dynamodb<span class="w"> </span>create-table<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--table-name<span class="w"> </span>Products<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--attribute-definitions<span class="w"> </span><span class="nv">AttributeName</span><span class="o">=</span>product_id,AttributeType<span class="o">=</span>S<span class="w"> </span><span class="nv">AttributeName</span><span class="o">=</span>category,AttributeType<span class="o">=</span>S<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--key-schema<span class="w"> </span><span class="nv">AttributeName</span><span class="o">=</span>product_id,KeyType<span class="o">=</span>HASH<span class="w"> </span><span class="nv">AttributeName</span><span class="o">=</span>category,KeyType<span class="o">=</span>RANGE<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--provisioned-throughput<span class="w"> </span><span class="nv">ReadCapacityUnits</span><span class="o">=</span><span class="m">5</span>,WriteCapacityUnits<span class="o">=</span><span class="m">5</span>
+</pre></div>
+</div>
+<p>This command creates the <strong>Products</strong> table with the specified primary key (<cite>product_id</cite>) and sort key (<cite>category</cite>).</p>
+</section>
+<section id="step-2-enable-dynamodb-streams">
+<h2>Step 2: Enable DynamoDB Streams<a class="headerlink" href="#step-2-enable-dynamodb-streams" title="Permalink to this heading"></a></h2>
+<p>Next, enable DynamoDB Streams on the table to capture changes (INSERT, MODIFY, REMOVE events).</p>
+<p>Run the following AWS CLI command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span>dynamodb<span class="w"> </span>update-table<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--table-name<span class="w"> </span>Products<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--stream-specification<span class="w"> </span><span class="nv">StreamEnabled</span><span class="o">=</span>true,StreamViewType<span class="o">=</span>NEW_AND_OLD_IMAGES
+</pre></div>
+</div>
+<p>This will capture both the old and new values when a record is modified or removed.</p>
+</section>
+<section id="step-3-set-up-the-stream-handler">
+<h2>Step 3: Set Up the Stream Handler<a class="headerlink" href="#step-3-set-up-the-stream-handler" title="Permalink to this heading"></a></h2>
+<p>We’ll now set up the <cite>Stream</cite> class to handle DynamoDB stream events for product insertion, updates, and deletions.</p>
+<ol class="arabic">
+<li><p><strong>Create a project directory</strong> and navigate into it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>dynamodb-streams-tutorial
+<span class="nb">cd</span><span class="w"> </span>dynamodb-streams-tutorial
+</pre></div>
+</div>
+</li>
+<li><p><strong>Initialize a new AWS SAM application</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sam<span class="w"> </span>init
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Choose <strong>1 - AWS Quick Start Templates</strong>.</p></li>
+<li><p>Choose <strong>1 - Zip</strong>.</p></li>
+<li><p>Choose <strong>3 - python3.8</strong>.</p></li>
+<li><p>Use the default name or provide one.</p></li>
+<li><p>Choose <strong>1 - Hello World Example</strong>.</p></li>
+</ul>
+</li>
+<li><p><strong>Navigate to the application directory</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>sam-app
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install the `mango-pycore` library</strong> in the Lambda function directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>hello_world
+pip<span class="w"> </span>install<span class="w"> </span>mango-pycore<span class="w"> </span>-t<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+<li><p><strong>Replace the existing `app.py`</strong> file with the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">mango_pycore.stream.dynamo</span> <span class="kn">import</span> <span class="n">Stream</span>
+<span class="kn">from</span> <span class="nn">mango_pycore.tools.utils</span> <span class="kn">import</span> <span class="n">from_dynamodb_to_json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c1"># Initialize Stream</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">Stream</span><span class="p">(</span><span class="n">pk_name</span><span class="o">=</span><span class="s2">&quot;product_id&quot;</span><span class="p">,</span> <span class="n">sk_name</span><span class="o">=</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;InventoryStreamHandler&quot;</span><span class="p">)</span>
+
+<span class="c1"># Handler for new product (INSERT)</span>
+<span class="nd">@stream</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">p_key</span><span class="o">=</span><span class="s2">&quot;123&quot;</span><span class="p">,</span> <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;INSERT&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">handle_insert</span><span class="p">(</span><span class="n">old_data</span><span class="p">,</span> <span class="n">new_data</span><span class="p">,</span> <span class="n">table_name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New product added: </span><span class="si">{</span><span class="n">new_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Handler for updating product (MODIFY)</span>
+<span class="nd">@stream</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">p_key</span><span class="o">=</span><span class="s2">&quot;123&quot;</span><span class="p">,</span> <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MODIFY&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">handle_modify</span><span class="p">(</span><span class="n">old_data</span><span class="p">,</span> <span class="n">new_data</span><span class="p">,</span> <span class="n">table_name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product updated. Old: </span><span class="si">{</span><span class="n">old_data</span><span class="si">}</span><span class="s2">, New: </span><span class="si">{</span><span class="n">new_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Handler for removing product (REMOVE)</span>
+<span class="nd">@stream</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">p_key</span><span class="o">=</span><span class="s2">&quot;123&quot;</span><span class="p">,</span> <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;REMOVE&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">handle_remove</span><span class="p">(</span><span class="n">old_data</span><span class="p">,</span> <span class="n">new_data</span><span class="p">,</span> <span class="n">table_name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product removed: </span><span class="si">{</span><span class="n">old_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Lambda function to process stream events</span>
+<span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="n">stream</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Update the `template.yaml`</strong> file to configure the Lambda function for DynamoDB Streams:</p>
+<p>Replace the existing function configuration with the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">AWSTemplateFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2010-09-09&#39;</span>
+<span class="nt">Transform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AWS::Serverless-2016-10-31</span>
+<span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">  </span><span class="no">dynamodb-streams-tutorial</span>
+
+<span class="nt">Resources</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">InventoryStreamFunction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AWS::Serverless::Function</span>
+<span class="w">    </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">CodeUri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello_world/</span>
+<span class="w">      </span><span class="nt">Handler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.lambda_handler</span>
+<span class="w">      </span><span class="nt">Runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python3.8</span>
+<span class="w">      </span><span class="nt">Events</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">DynamoDBStream</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DynamoDB</span>
+<span class="w">          </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">Stream</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arn:aws:dynamodb:us-east-1:123456789012:table/Products/stream/2023-01-01T00:00:00.000</span>
+<span class="w">            </span><span class="nt">StartingPosition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TRIM_HORIZON</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>: Replace the <cite>Stream</cite> ARN with the actual ARN of your DynamoDB table stream. You can find it by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span>dynamodb<span class="w"> </span>describe-table<span class="w"> </span>--table-name<span class="w"> </span>Products<span class="w"> </span>--query<span class="w"> </span><span class="s2">&quot;Table.LatestStreamArn&quot;</span><span class="w"> </span>--output<span class="w"> </span>text
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="step-4-create-simulated-events">
+<h2>Step 4: Create Simulated Events<a class="headerlink" href="#step-4-create-simulated-events" title="Permalink to this heading"></a></h2>
+<p>Now, let’s create simulated DynamoDB stream events to test the <cite>INSERT</cite>, <cite>MODIFY</cite>, and <cite>REMOVE</cite> operations.</p>
+<p>### Simulating an <cite>INSERT</cite> Event</p>
+<ol class="arabic">
+<li><p><strong>Create a file</strong> named <cite>insert_event.json</cite> in the root of your project directory.</p></li>
+<li><p><strong>Add the following JSON content</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;eventID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INSERT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventSource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aws:dynamodb&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;awsRegion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;dynamodb&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;Keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;product_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Electronics&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;NewImage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;product_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Electronics&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Smartphone&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;999&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;50&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;StreamViewType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NEW_AND_OLD_IMAGES&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;SequenceNumber&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;111&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;SizeBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">26</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;eventSourceARN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:dynamodb:us-east-1:123456789012:table/Products/stream/2023-01-01T00:00:00.000&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>### Simulating a <cite>MODIFY</cite> Event</p>
+<ol class="arabic">
+<li><p><strong>Create a file</strong> named <cite>modify_event.json</cite>.</p></li>
+<li><p><strong>Add the following JSON content</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;eventID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MODIFY&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventSource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aws:dynamodb&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;awsRegion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;dynamodb&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;Keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;product_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Electronics&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;OldImage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;product_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Electronics&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Smartphone&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;999&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;50&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;NewImage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;product_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Electronics&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Smartphone Pro&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1299&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;30&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;StreamViewType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NEW_AND_OLD_IMAGES&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;SequenceNumber&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;222&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;SizeBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">59</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;eventSourceARN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:dynamodb:us-east-1:123456789012:table/Products/stream/2023-01-01T00:00:00.000&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>### Simulating a <cite>REMOVE</cite> Event</p>
+<ol class="arabic">
+<li><p><strong>Create a file</strong> named <cite>remove_event.json</cite>.</p></li>
+<li><p><strong>Add the following JSON content</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;eventID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REMOVE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;eventSource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aws:dynamodb&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;awsRegion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;dynamodb&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;Keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;product_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Electronics&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;OldImage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;product_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Electronics&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Smartphone Pro&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1299&quot;</span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;30&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;StreamViewType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NEW_AND_OLD_IMAGES&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;SequenceNumber&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;333&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;SizeBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">38</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;eventSourceARN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:dynamodb:us-east-1:123456789012:table/Products/stream/2023-01-01T00:00:00.000&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="step-5-build-and-test-locally">
+<h2>Step 5: Build and Test Locally<a class="headerlink" href="#step-5-build-and-test-locally" title="Permalink to this heading"></a></h2>
+<p>Now we’ll build the SAM application and test it locally using the simulated events.</p>
+<ol class="arabic">
+<li><p><strong>Navigate back to the root of your SAM application</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>..
+</pre></div>
+</div>
+</li>
+<li><p><strong>Build the SAM application</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sam<span class="w"> </span>build
+</pre></div>
+</div>
+</li>
+<li><p><strong>Test the function locally with the `INSERT` event</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sam<span class="w"> </span><span class="nb">local</span><span class="w"> </span>invoke<span class="w"> </span>InventoryStreamFunction<span class="w"> </span>--event<span class="w"> </span>insert_event.json
+</pre></div>
+</div>
+<p>You should see the following output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>START<span class="w"> </span>RequestId:<span class="w"> </span>...<span class="w"> </span>Version:<span class="w"> </span><span class="nv">$LATEST</span>
+New<span class="w"> </span>product<span class="w"> </span>added:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;123&#39;</span>,<span class="w"> </span><span class="s1">&#39;category&#39;</span>:<span class="w"> </span><span class="s1">&#39;Electronics&#39;</span>,<span class="w"> </span><span class="s1">&#39;name&#39;</span>:<span class="w"> </span><span class="s1">&#39;Smartphone&#39;</span>,<span class="w"> </span><span class="s1">&#39;price&#39;</span>:<span class="w"> </span><span class="m">999</span>,<span class="w"> </span><span class="s1">&#39;quantity&#39;</span>:<span class="w"> </span><span class="m">50</span><span class="o">}</span>
+END<span class="w"> </span>RequestId:<span class="w"> </span>...
+REPORT<span class="w"> </span>RequestId:<span class="w"> </span>...<span class="w"> </span>Duration:<span class="w"> </span>...<span class="w"> </span>ms<span class="w"> </span>Billed<span class="w"> </span>Duration:<span class="w"> </span>...<span class="w"> </span>ms<span class="w"> </span>Memory<span class="w"> </span>Size:<span class="w"> </span>...<span class="w"> </span>MB<span class="w"> </span>Max<span class="w"> </span>Memory<span class="w"> </span>Used:<span class="w"> </span>...<span class="w"> </span>MB
+</pre></div>
+</div>
+</li>
+<li><p><strong>Test the function locally with the `MODIFY` event</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sam<span class="w"> </span><span class="nb">local</span><span class="w"> </span>invoke<span class="w"> </span>InventoryStreamFunction<span class="w"> </span>--event<span class="w"> </span>modify_event.json
+</pre></div>
+</div>
+<p>Expected output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>START<span class="w"> </span>RequestId:<span class="w"> </span>...<span class="w"> </span>Version:<span class="w"> </span><span class="nv">$LATEST</span>
+Product<span class="w"> </span>updated.<span class="w"> </span>Old:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;123&#39;</span>,<span class="w"> </span><span class="s1">&#39;category&#39;</span>:<span class="w"> </span><span class="s1">&#39;Electronics&#39;</span>,<span class="w"> </span><span class="s1">&#39;name&#39;</span>:<span class="w"> </span><span class="s1">&#39;Smartphone&#39;</span>,<span class="w"> </span><span class="s1">&#39;price&#39;</span>:<span class="w"> </span><span class="m">999</span>,<span class="w"> </span><span class="s1">&#39;quantity&#39;</span>:<span class="w"> </span><span class="m">50</span><span class="o">}</span>,<span class="w"> </span>New:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;123&#39;</span>,<span class="w"> </span><span class="s1">&#39;category&#39;</span>:<span class="w"> </span><span class="s1">&#39;Electronics&#39;</span>,<span class="w"> </span><span class="s1">&#39;name&#39;</span>:<span class="w"> </span><span class="s1">&#39;Smartphone Pro&#39;</span>,<span class="w"> </span><span class="s1">&#39;price&#39;</span>:<span class="w"> </span><span class="m">1299</span>,<span class="w"> </span><span class="s1">&#39;quantity&#39;</span>:<span class="w"> </span><span class="m">30</span><span class="o">}</span>
+END<span class="w"> </span>RequestId:<span class="w"> </span>...
+REPORT<span class="w"> </span>RequestId:<span class="w"> </span>...<span class="w"> </span>Duration:<span class="w"> </span>...<span class="w"> </span>ms<span class="w"> </span>Billed<span class="w"> </span>Duration:<span class="w"> </span>...<span class="w"> </span>ms<span class="w"> </span>Memory<span class="w"> </span>Size:<span class="w"> </span>...<span class="w"> </span>MB<span class="w"> </span>Max<span class="w"> </span>Memory<span class="w"> </span>Used:<span class="w"> </span>...<span class="w"> </span>MB
+</pre></div>
+</div>
+</li>
+<li><p><strong>Test the function locally with the `REMOVE` event</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sam<span class="w"> </span><span class="nb">local</span><span class="w"> </span>invoke<span class="w"> </span>InventoryStreamFunction<span class="w"> </span>--event<span class="w"> </span>remove_event.json
+</pre></div>
+</div>
+<p>Expected output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>START<span class="w"> </span>RequestId:<span class="w"> </span>...<span class="w"> </span>Version:<span class="w"> </span><span class="nv">$LATEST</span>
+Product<span class="w"> </span>removed:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;123&#39;</span>,<span class="w"> </span><span class="s1">&#39;category&#39;</span>:<span class="w"> </span><span class="s1">&#39;Electronics&#39;</span>,<span class="w"> </span><span class="s1">&#39;name&#39;</span>:<span class="w"> </span><span class="s1">&#39;Smartphone Pro&#39;</span>,<span class="w"> </span><span class="s1">&#39;price&#39;</span>:<span class="w"> </span><span class="m">1299</span>,<span class="w"> </span><span class="s1">&#39;quantity&#39;</span>:<span class="w"> </span><span class="m">30</span><span class="o">}</span>
+END<span class="w"> </span>RequestId:<span class="w"> </span>...
+REPORT<span class="w"> </span>RequestId:<span class="w"> </span>...<span class="w"> </span>Duration:<span class="w"> </span>...<span class="w"> </span>ms<span class="w"> </span>Billed<span class="w"> </span>Duration:<span class="w"> </span>...<span class="w"> </span>ms<span class="w"> </span>Memory<span class="w"> </span>Size:<span class="w"> </span>...<span class="w"> </span>MB<span class="w"> </span>Max<span class="w"> </span>Memory<span class="w"> </span>Used:<span class="w"> </span>...<span class="w"> </span>MB
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="step-6-deploying-to-aws-optional">
+<h2>Step 6: Deploying to AWS (Optional)<a class="headerlink" href="#step-6-deploying-to-aws-optional" title="Permalink to this heading"></a></h2>
+<p>If you want to deploy your Lambda function to AWS and test it with real DynamoDB events, follow these steps.</p>
+<ol class="arabic">
+<li><p><strong>Package the SAM application</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sam<span class="w"> </span>package<span class="w"> </span>--output-template-file<span class="w"> </span>packaged.yaml<span class="w"> </span>--s3-bucket<span class="w"> </span>your-s3-bucket-name
+</pre></div>
+</div>
+<p>Replace <cite>your-s3-bucket-name</cite> with an actual S3 bucket in your AWS account.</p>
+</li>
+<li><p><strong>Deploy the SAM application</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sam<span class="w"> </span>deploy<span class="w"> </span>--template-file<span class="w"> </span>packaged.yaml<span class="w"> </span>--stack-name<span class="w"> </span>dynamodb-streams-tutorial<span class="w"> </span>--capabilities<span class="w"> </span>CAPABILITY_IAM
+</pre></div>
+</div>
+</li>
+<li><p><strong>Update the DynamoDB Table to Use the Lambda Function</strong></p>
+<p>After deployment, you need to set up the DynamoDB Streams trigger in AWS to point to your Lambda function.</p>
+<ul class="simple">
+<li><p>Go to the AWS Lambda console.</p></li>
+<li><p>Find your function (<cite>InventoryStreamFunction</cite>).</p></li>
+<li><p>In the “Configuration” tab, under “Triggers”, ensure that the DynamoDB stream from your <cite>Products</cite> table is added.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<p>In this tutorial, we walked through the complete process of:</p>
+<ul class="simple">
+<li><p>Creating a DynamoDB table called <strong>Products</strong>.</p></li>
+<li><p>Enabling DynamoDB Streams to track changes.</p></li>
+<li><p>Setting up a Python script using the <cite>Stream</cite> class to handle stream events.</p></li>
+<li><p>Simulating stream events for <cite>INSERT</cite>, <cite>MODIFY</cite>, and <cite>REMOVE</cite> actions using local test files.</p></li>
+<li><p>Building and testing the application locally with AWS SAM CLI.</p></li>
+<li><p>(Optional) Deploying the Lambda function to AWS and connecting it to the DynamoDB Streams.</p></li>
+</ul>
+<p>By following these steps, you can set up event-driven processing for DynamoDB tables in your project, automating actions when records are added, updated, or deleted.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="websocketTutorial.html" class="btn btn-neutral float-left" title="Websocket Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Pablo Galindo Largacha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
