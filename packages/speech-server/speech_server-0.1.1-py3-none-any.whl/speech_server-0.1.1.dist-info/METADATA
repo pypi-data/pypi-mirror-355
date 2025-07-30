@@ -1,0 +1,184 @@
+Metadata-Version: 2.1
+Name: speech-server
+Version: 0.1.1
+Summary: FastAPI wrapper for Chatterbox TTS
+Home-page: https://github.com/Ladvien/speech_server.git
+Keywords: speech,tts,fastapi,chatterbox-tts,kokoro-onnx
+Author: C. Thomas Brittain
+Requires-Python: >=3.10,<3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aiofiles (>=23.2.0,<24.0.0)
+Requires-Dist: chatterbox-tts (>=0.1.1,<0.2.0)
+Requires-Dist: fastapi (>=0.104.1,<0.105.0)
+Requires-Dist: httpx (>=0.25.2,<0.26.0)
+Requires-Dist: kokoro-onnx (>=0.4.0,<0.5.0)
+Requires-Dist: numpy (>=2.0.2,<3.0.0)
+Requires-Dist: poethepoet (>=0.32.2,<0.33.0)
+Requires-Dist: pyaudio (>=0.2.14,<0.3.0)
+Requires-Dist: pydantic (>=2.5.0,<3.0.0)
+Requires-Dist: python-multipart (>=0.0.6,<0.0.7)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: rich (>=13.7.0,<14.0.0)
+Requires-Dist: setuptools (>=80.9.0,<81.0.0)
+Requires-Dist: sounddevice (>=0.5.1,<0.6.0)
+Requires-Dist: soundfile (>=0.12.0,<0.13.0)
+Requires-Dist: torch (>=2.1.0,<3.0.0)
+Requires-Dist: torchaudio (>=2.1.0,<3.0.0)
+Requires-Dist: uvicorn[standard] (>=0.24.0,<0.25.0)
+Project-URL: Repository, https://github.com/Ladvien/speech_server.git
+Description-Content-Type: text/markdown
+
+# 🗣️ Speech Server – TTS API with Chatterbox & Kokoro
+
+<!-- start intro -->
+This project provides a FastAPI-based HTTP server for generating speech audio using [Chatterbox TTS](https://github.com/chatterbox-voice/chatterbox-tts) or [Kokoro ONNX](https://huggingface.co/kokoro-ai).
+<!-- end intro -->
+
+---
+
+<!-- start quick_start -->
+## 🚀 Quick Start
+
+### 1. Clone the Repo
+
+```bash
+git clone https://github.com/Ladvien/speech_server.git
+cd speech_server
+```
+
+### 2. Install Dependencies
+
+We use [Poetry](https://python-poetry.org/) for managing dependencies.
+
+```bash
+poetry install
+```
+
+### 3. Run the Server
+
+```bash
+poetry run speech-server
+```
+
+Or:
+
+```bash
+poetry run uvicorn speech_server.server.app:app --host 0.0.0.0 --port 8000
+```
+
+Access:
+
+- API: http://localhost:8000
+- Docs: http://localhost:8000/docs
+<!-- end quick_start -->
+
+---
+
+<!-- start usage -->
+## 🧪 Example Usage
+
+### Generate Audio from Text
+
+```bash
+curl -X POST http://localhost:8000/tts \
+     -H "Content-Type: application/json" \
+     -d '{"text": "Hello, world!", "voice": "default"}' \
+     --output hello.wav
+```
+
+### List Voices
+
+```bash
+curl http://localhost:8000/voices
+```
+<!-- end usage -->
+
+---
+
+<!-- start config -->
+## ⚙️ Configuration
+
+Use `config.yaml`, environment variables, or Python config classes like `TTSServerConfig`.
+
+```yaml
+tts_service: chatterbox  # or 'kokoro'
+voice: default
+log_level: info
+sample_rate: 24000
+```
+<!-- end config -->
+
+---
+
+<!-- start features -->
+## 🧠 Features
+
+- ✅ Chatterbox TTS (PyTorch)
+- ✅ Kokoro ONNX (lightweight, GPU-ready)
+- ✅ Voice cloning support
+- ✅ Streaming endpoint
+- ✅ `/voices` API
+- ✅ YAML config support
+- ✅ Ready for Docker or cloud deployment
+<!-- end features -->
+
+---
+
+<!-- start extension -->
+## 🧩 Extend It
+
+To add a new TTS engine, subclass:
+
+```
+speech_server.common.base_tts_service.TTSService
+```
+
+Then register it via your config loader.
+<!-- end extension -->
+
+---
+
+<!-- start dev -->
+## 🛠 Dev Tools
+
+### Lint, Format, Test
+
+```bash
+poetry run black .
+poetry run isort .
+poetry run pytest
+```
+
+### Type Check
+
+```bash
+poetry run mypy src/
+```
+<!-- end dev -->
+
+---
+
+<!-- start docs -->
+## 📚 Documentation
+
+Build local docs:
+
+```bash
+cd docs
+make html
+```
+
+Docs live in `/docs/source/` and are rendered via [ReadTheDocs](https://readthedocs.org/).
+<!-- end docs -->
+
+---
+
+<!-- start license -->
+## 📄 License
+
+MIT © C. Thomas Brittain
+<!-- end license -->
+
