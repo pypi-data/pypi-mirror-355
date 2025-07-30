@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  nicescad:
+    image: nicescad-service
+    container_name: nicescad_service
+    build:
+      context: .
+      dockerfile: Dockerfile.nicescad
+    ports:
+      - 9858:9858
+  blockscad:
+    image: blockscad-service
+    container_name: blockscad_service
+    build:
+      context: .
+      dockerfile: Dockerfile.blockscad
+    ports:
+      - 8094:9000
+  p2scad:
+    image: p2scad-service
+    container_name: p2scad_service
+    build:
+      context: .
+      dockerfile: Dockerfile.p2scad
+    ports:
+      - 8093:8000
+  openjscad:
+    image: openjscad-service
+    container_name: openjscad_service
+    build:
+      context: .
+      dockerfile: Dockerfile.openjscad
+    ports:
+      - 8095:8080
+    volumes:
+      - $HOME/nicescad/workspace:/openjscad/packages/web/examples/workspace

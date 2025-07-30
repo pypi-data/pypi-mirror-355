@@ -1,0 +1,20 @@
+# Dockerfile.openjscad
+FROM nikolaik/python-nodejs:latest
+
+# Set the working directory
+WORKDIR /root
+
+# Install openjscad locally
+RUN npm install @jscad/openjscad
+
+# Go into the openjscad directory
+WORKDIR /root/node_modules/@jscad/openjscad
+
+# Create a workspace directory
+RUN mkdir -p /openjscad/packages/web/examples/workspace
+
+# Expose the port openjscad will run on
+EXPOSE 8080
+
+# Start the application with http.server
+CMD python -m http.server 8080
