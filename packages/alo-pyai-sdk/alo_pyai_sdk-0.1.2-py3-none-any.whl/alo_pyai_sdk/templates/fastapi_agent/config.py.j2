@@ -1,0 +1,45 @@
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import HttpUrl
+from typing import Optional
+
+class AgentAppSettings(BaseSettings):
+    """
+    Configuration settings for the {{ agent_name }} Agent Service.
+    These can be loaded from environment variables or a .env file.
+    Prefix environment variables with 'AGENT_{{ agent_name | upper }}_'.
+    """
+    AGENT_NAME: str = "{{ agent_name }}"
+    SERVICE_ID: str = "{{ agent_name | lower | replace(' ', '_') }}_agent" # Auto-generated from agent name
+    
+    AGENT_HOST: str = "0.0.0.0"
+    AGENT_PORT: int = {{ agent_port | default(8001) }} # Default port, can be overridden
+
+    # Configuration for connecting to the Agent Registry
+    REGISTRY_URL: Optional[HttpUrl] = "{{ registry_url | default('http://localhost:8000') }}" # URL of the central registry
+
+    # Name of the LLM configuration to use from the global alo_config.yaml
+    LLM_CONFIG_NAME: str = "{{ llm_config_name | default('default_openai') }}"
+    
+    # Fallback if LLM_CONFIG_NAME is not found or global config is not accessible
+    # This allows the agent to run standalone if API keys are in env vars
+    LLM_MODEL_IDENTIFIER_FALLBACK: str = "{{ llm_model_identifier_fallback | default('openai:gpt-4o') }}"
+
+    AGENT_RETRIES: int = {{ agent_retries | default(1) }}
+
+    # Add any other agent-specific settings here
+    # EXAMPLE_AGENT_PARAM: str = "default_value"
+
+    model_config = SettingsConfigDict(env_prefix="AGENT_{{ agent_name | upper | replace('-', '_') }}_")
+
+settings = AgentAppSettings()
+
+if __name__ == "__main__":
+    # For testing the settings loading
+    print(f"Settings for Agent: {settings.AGENT_NAME} (ID: {settings.SERVICE_ID})")
+    print(f"  Host: {settings.AGENT_HOST}")
+    print(f"  Port: {settings.AGENT_PORT}")
+    print(f"  Registry URL: {settings.REGISTRY_URL}")
+    print(f"  LLM Config Name: {settings.LLM_CONFIG_NAME}")
+    print(f"  LLM Fallback: {settings.LLM_MODEL_IDENTIFIER_FALLBACK}")
+    print(f"  Agent Retries: {settings.AGENT_RETRIES}")
+    # print(f"  Example Param: {settings.EXAMPLE_AGENT_PARAM}")
