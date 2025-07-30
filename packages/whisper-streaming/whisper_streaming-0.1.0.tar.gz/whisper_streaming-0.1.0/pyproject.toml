@@ -1,0 +1,74 @@
+[project]
+name = "whisper-streaming"
+authors = [
+    { name = "Niklas Kaaf", email = "nkaaf@protonmail.com" },
+]
+description = "Providing easy-to-use and extensible STT (Speech-To-Text) implementation with Whisper-like ASR (Automatic Speech Recognition) models."
+readme = "README.md"
+requires-python = ">=3.9, <3.13"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: GPU :: NVIDIA CUDA",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Telecommunications Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+keywords = [
+    "whisper",
+    "faster-whisper",
+    "streaming",
+    "audio"
+]
+license-files = [
+    "LICENSE",
+    "LICENSE-MIT"
+]
+maintainers = [
+    { name = "Niklas Kaaf", email = "nkaaf@protonmail.com" },
+]
+dynamic = ["dependencies", "version", "optional-dependencies"]
+
+[project.urls]
+Repository = "https://github.com/nkaaf/ufal-whisper_streaming"
+"Bug Tracker" = "https://github.com/nkaaf/ufal-whisper_streaming/issues"
+Releases = "https://github.com/nkaaf/ufal-whisper_streaming/releases"
+Troubleshooting = "https://github.com/nkaaf/ufal-whisper_streaming/discussions/1"
+# TODO: Documentation
+
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements/library/requirements.txt"]
+
+[tool.hatch.metadata.hooks.requirements_txt.optional-dependencies]
+faster-whisper = ["requirements/library/requirements_faster_whisper.txt"]
+all = ["requirements/library/requirements_faster_whisper.txt"]
+
+[tool.hatch.version]
+path = "VERSION"
+pattern = "^(?P<version>\\S*)$"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["ICN001", "COM812"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
