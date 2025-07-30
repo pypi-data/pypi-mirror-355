@@ -1,0 +1,18 @@
+defaults:
+  - _self_
+  - run_processor.yaml
+
+scores_path: ${paths.output_paths.scores_cache_path}
+
+scores:
+  - individual
+  - interaction
+
+dpi: 300
+output_dir: ${paths.output_paths.vis_cache_path}
+
+percentiles:
+  - 10
+  - 50
+  - 90
+min_scenarios_to_plot: 10
