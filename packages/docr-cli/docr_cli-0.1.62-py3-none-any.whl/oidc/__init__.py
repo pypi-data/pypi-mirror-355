@@ -1,0 +1,1 @@
+"""OIDC registration module."""
