@@ -1,0 +1,47 @@
+Metadata-Version: 2.3
+Name: nomad_media_pip
+Version: 0.1.5a1
+Summary: Nomad Media SDK PIP
+Author: Nomad Media
+Requires-Python: >=3.12
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: deepdiff
+Requires-Dist: requests
+Description-Content-Type: text/markdown
+
+## Nomad Media Pip SDK
+This sdk is a wrapper for all of the nomad api endpoints.
+
+## Minimum Requirements
+- Python 3.12
+
+## Installation
+To use the Nomad SDK, install the package using pip.
+
+```shell
+pip install nomad-media-pip
+
+## Quick Start
+
+```python
+from nomad_media_pip import Nomad_SDK
+
+# Initialize SDK
+config = {
+    "username": "username",
+    "password": "password",
+    "serviceApiUrl": "https://your-api-url",
+    "apiType": "admin", # Use "admin" or "portal"
+    "debugMode": False, # Enable for detailed logging
+    "singleton": False, # Enables to restrict sdk to single instance
+    "noLogging": False # Enable to remove all logging
+}
+
+# Create SDK instance
+sdk = Nomad_SDK(config)
+
+# Example: Search assets
+response = sdk.search("example")
+```
