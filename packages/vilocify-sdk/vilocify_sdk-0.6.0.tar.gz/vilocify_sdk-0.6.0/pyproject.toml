@@ -1,0 +1,80 @@
+[project]
+name = "vilocify-sdk"
+version = "0.6.0"
+requires-python = ">=3.12,<4.0"
+license = "MIT"
+description = "Vilocify SDK built atop APIv2"
+readme = "README.md"
+authors = [
+    { name = "Wolfgang Popp", email = "popp.wolfgang@siemens.com" }
+]
+dependencies = [
+    "requests (>=2.31.0,<3.0.0)",
+    "cyclonedx-python-lib (>=10.0.0,<11.0.0)",
+    "click (>=8.1.7,<9.0.0)"
+]
+
+[project.urls]
+homepage = "https://github.com/siemens/vilocify-sdk-python"
+issues = "https://github.com/siemens/vilocify-sdk-python/issues"
+
+[project.scripts]
+vilocify = 'vilocify.cli:main'
+
+[tool.poetry]
+packages = [
+    { include = "vilocify" }
+]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+ruff = "^0.11.0"
+mypy = "^1.11.2"
+types-requests = "^2.32.0.20240914"
+requests-mock = "^1.12.1"
+editorconfig-checker = "^3.2.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+log_cli = "True"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "C4",
+    "C90",
+    "DTZ",
+    "E",
+    "EXE",
+    "F",
+    "FIX",
+    "G",
+    "I",
+    "INP",
+    "LOG",
+    "N",
+    "PL",
+    "PT",
+    "PTH",
+    "RET",
+    "RUF",
+    "S",
+    "SIM",
+    "UP",
+    "W",
+    "YTT",
+    "TCH",
+    "ANN"
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.ruff.lint.flake8-annotations]
+suppress-none-returning = true
