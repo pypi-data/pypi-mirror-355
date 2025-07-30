@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyproject-appimage"
+description = "Generate AppImages from your Python projects"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["JakobDev", "AppImage"]
+license = "BSD-2-Clause"
+authors = [
+    { name = "JakobDev", email = "jakobdev@gmx.de" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Environment :: Other Environment",
+    "Topic :: Games/Entertainment",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython"
+]
+dependencies = [
+    "requests",
+    "desktop-entry-lib",
+    "tomli; python_version < '3.11'"
+]
+dynamic = ["version"]
+
+[project.urls]
+Downloads = "https://codeberg.org/JakobDev/pyproject-appimage/releases"
+Issues = "https://codeberg.org/JakobDev/pyproject-appimage/issues"
+Source = "https://codeberg.org/JakobDev/pyproject-appimage"
+Donation = "https://ko-fi.com/jakobdev"
+
+[tool.setuptools.package-dir]
+pyproject_appimage = "pyproject_appimage"
+
+[tool.setuptools.dynamic]
+version = { file = "pyproject_appimage/version.txt" }
+
+[tool.setuptools.package-data]
+pyproject_appimage = ["version.txt", "default.png"]
+
+[project.scripts]
+pyproject-appimage = "pyproject_appimage:main"
+
+[tool.pyproject-appimage]
+script = "pyproject-appimage"
+output = "pyproject-appimage.AppImage"
+python-version ="3.12"
