@@ -1,0 +1,139 @@
+Metadata-Version: 2.4
+Name: saferl-lite
+Version: 0.1.0
+Summary: A lightweight, explainable, and constrained reinforcement learning toolkit.
+Home-page: https://github.com/satyamcser/saferl-lite
+Author: Satyam Mishra
+Author-email: satyam@example.com
+Project-URL: Documentation, https://satyamcser.github.io/saferl-lite/
+Project-URL: Source, https://github.com/satyamcser/saferl-lite
+Project-URL: Bug Tracker, https://github.com/satyamcser/saferl-lite/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: gym
+Requires-Dist: gymnasium
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: pre-commit
+Requires-Dist: flake8
+Requires-Dist: pyyaml
+Requires-Dist: shap
+Requires-Dist: captum
+Requires-Dist: typer
+Requires-Dist: scikit-learn
+Requires-Dist: pandas
+Requires-Dist: pytest
+Requires-Dist: pytest-cov
+Requires-Dist: coverage
+Requires-Dist: mkdocs
+Requires-Dist: wandb
+Requires-Dist: mkdocs>=1.5
+Requires-Dist: mkdocs-material>=9.5
+Requires-Dist: mkdocstrings[python]
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 🔐 SafeRL-Lite
+
+A **lightweight, explainable, and modular** Python library for **Constrained Reinforcement Learning (Safe RL)** with real-time **SHAP & saliency-based explainability**, custom metrics, and Gym-compatible wrappers.
+
+<p align="center">
+  <img src="https://img.shields.io/github/license/satyamcser/saferl-lite?style=flat-square">
+  <img src="https://img.shields.io/github/stars/satyamcser/saferl-lite?style=flat-square">
+  <img src="https://img.shields.io/pypi/v/saferl-lite?style=flat-square">
+  <img src="https://img.shields.io/github/actions/workflow/status/satyamcser/saferl-lite/ci.yml?branch=main&style=flat-square">
+</p>
+
+---
+
+## 🌟 Overview
+
+**SafeRL-Lite** empowers reinforcement learning agents to act under **safety constraints**, while remaining **interpretable** and **modular** for fast experimentation. It wraps standard Gym environments and DQN-based agents with:
+
+- ✅ Safety constraint logic
+- 🔍 Visual explainability (SHAP, saliency maps)
+- 📊 Violation and reward tracking
+- 🧪 Built-in testing and evaluations
+
+---
+
+## 🔧 Installation
+
+> 📦 PyPI (coming soon)
+```bash
+pip install saferl-lite
+```
+
+## 🛠️ From source:
+
+```bash
+git clone https://github.com/satyamcser/saferl-lite.git
+cd saferl-lite
+pip install -e .
+```
+
+## 🚀 Quickstart
+Train a constrained DQN agent with saliency-based explainability:
+
+```bash
+python train.py --env CartPole-v1 --constraint pole_angle --explain shap
+```
+
+🔹 This:
+
+- Adds a pole-angle constraint wrapper to the Gym env
+
+- Logs violations
+
+- Displays SHAP or saliency explanations for agent decisions
+
+## 🧠 Features
+#### ✅ Constrained RL
+- Add custom constraints via wrapper or logic class
+
+- Violation logging and reward shaping
+
+- Safe vs unsafe episode tracking
+
+#### 🔍 Explainability
+- SaliencyExplainer — gradient-based visual heatmaps
+
+- SHAPExplainer — feature contribution values per decision
+
+- Compatible with any PyTorch-based agent
+
+#### 📊 Metrics
+- Constraint violation rate
+
+- Episode reward
+
+- Cumulative safe reward
+
+- Action entropy & temporal behavior stats
+
+#### 📚 Modularity
+- Swap out agents, constraints, evaluators, or explainers
+
+- Supports Gym environments
+
+- Configurable training pipeline
+
+## 📜 Citation
+Coming soon after arXiv/preprint release.
