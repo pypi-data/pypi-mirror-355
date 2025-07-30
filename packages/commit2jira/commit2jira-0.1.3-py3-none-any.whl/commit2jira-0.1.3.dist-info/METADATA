@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: commit2jira
+Version: 0.1.3
+Summary: Jira Git Hook + AI Commit Message Helper
+Author: Your Name
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: click
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: summary
+
+# Posthook
+
+A simple Git hook installer that integrates with Jira and GPT.
+
+## Features
+
+- Copies custom Git hooks into your repository.
+- Generates commit messages with GPT.
+- Posts commits as comments to Jira tickets.
+- Automatically creates a `.env` config file.
+
+## Installation
+
+```bash
+pip install posthook && posthook install --target .
