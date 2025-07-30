@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name = "DictList2"
+dynamic = ["version"]
+
+authors = [
+  { name="Sergey Strukov", email="strukovsv@main.ru" },
+]
+
+description = "It is a lightweight Python library that extends the built-in list for convenient work with arrays of dictionaries."
+readme = "README.md"
+requires-python = ">=3.11"
+
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 4 - Beta",
+
+  # Indicate who your project is intended for
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+
+  # Pick your license as you wish (see also "license" above)
+  "License :: OSI Approved :: MIT License",
+
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "dictlist2._version.VERSION" }
+
+[project.urls]
+Homepage = "https://github.com/strukovsv/dictlist2"
+Issues = "https://github.com/strukovsv/dictlist2/issues"
