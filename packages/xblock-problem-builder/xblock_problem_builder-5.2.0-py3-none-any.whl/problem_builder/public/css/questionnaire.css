@@ -1,0 +1,163 @@
+.mentoring .questionnaire .choices-list {
+    display: table;
+    position: relative;
+    width: 100%;
+    border-spacing: 0;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+.mentoring .questionnaire .choice-result {
+    display: inline-block;
+    width: 34px;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 0;
+    padding: 0;
+    background: 0 0;
+    box-shadow: none !important;
+}
+
+.mentoring .questionnaire .feedback {
+    min-height: 100%;
+    border-left: 2px solid #ddd;
+}
+
+.mentoring div[data-block-type=pb-mrq] .questionnaire .choice-result {
+    display: inline-block;
+    padding: 0;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.mentoring .questionnaire .choice {
+    padding: 0 0 0 30px;
+    /*line-height: 0.5;*/
+    clear: both;
+}
+
+.mentoring .questionnaire .choice-result.checkmark-correct,
+.mentoring .questionnaire .choice-result.checkmark-partially-correct,
+.mentoring .questionnaire .choice-result.checkmark-incorrect {
+    text-align:center;
+}
+
+.mentoring .questionnaire .choice-tips,
+.mentoring .questionnaire .feedback {
+    display: none;
+    color: #3c3c3c;
+    position: static;
+    top: 0;
+    right: 0;
+    background: transparent;
+    font-family: arial;
+    font-size: 14px;
+    padding: 0 20px;
+    width: 300px;
+    min-height: 33px;
+    max-height: 180px;
+    z-index: 10000;
+}
+
+.mentoring .questionnaire .choice-tips .title {
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-family: arial;
+}
+
+.mentoring .questionnaire .choice-tips .tip-choice-group,
+.mentoring .questionnaire .feedback .tip-choice-group,
+.mentoring .questionnaire .feedback .message-content {
+    position: relative;
+    overflow-y: auto;
+    line-height: normal;
+    max-height: 100px;
+    margin: 5px 0;
+}
+
+.mentoring .questionnaire .choice-tips button,
+.mentoring .questionnaire .feedback button{
+    padding: 0;
+    background: 0 0;
+    font-size: inherit;
+    border: 0;
+}
+.mentoring .questionnaire .choice-tips p,
+.mentoring .questionnaire .feedback p {
+    color: #3c3c3c;
+    margin: 5px 0;
+}
+
+.mentoring .questionnaire .choice-tips .close,
+.mentoring .questionnaire .feedback .close {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 3px;
+    width: 18px;
+    height: 21px;
+    font-family: FontAwesome;
+    font-style: normal;
+    text-align: center;
+    font-size: 0;
+}
+
+.mentoring .questionnaire .choice-tips .close:before,
+.mentoring .questionnaire .feedback .close:before {
+    font-size: 20px;
+}
+
+.mentoring .choices-list .choice-selector {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.mentoring .choices-list .choice-label-text {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    width: calc(100% - 47px);
+}
+.mentoring .choice-tips-container{
+    width: calc(50% - 10px) !important;
+}
+.mentoring .choice-tips-container,
+.mentoring .choice-label {
+    display: inline-block;
+    vertical-align: middle;
+    width: 50%;
+    min-height: 33px;
+}
+
+.mentoring  .choice-tips{ top: 0 !important;}
+
+
+/*RTL Specified CSS*/
+
+.rtl .mentoring .questionnaire .choice-tips,
+.rtl .mentoring .questionnaire .feedback{
+    right: auto;
+    left: 0;
+}
+
+.rtl .themed-xblock.mentoring .choice .choice-tips-container.with-tips,
+.rtl .themed-xblock.mentoring .questionnaire .feedback{
+    border-right: 2px solid #ddd;
+    border-left: 0;
+}
+
+.rtl .mentoring .questionnaire .choice-tips .close,
+.rtl .mentoring .questionnaire .feedback .close {
+    right: auto;
+    left: 3px;
+}
+
+.assessment-question-block .submit button.step-overall-checkmark {
+    border: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none !important;
+}
