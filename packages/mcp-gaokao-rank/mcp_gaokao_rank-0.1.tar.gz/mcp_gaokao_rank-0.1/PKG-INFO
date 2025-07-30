@@ -1,0 +1,33 @@
+Metadata-Version: 2.4
+Name: mcp-gaokao-rank
+Version: 0.1
+Summary: MCP服务器：根据高考分数查询省内排名位次
+Project-URL: Homepage, https://github.com/yourusername/mcp-gaokao-rank
+Project-URL: Repository, https://github.com/yourusername/mcp-gaokao-rank.git
+Project-URL: Issues, https://github.com/yourusername/mcp-gaokao-rank/issues
+Author-email: fanfei <gfanfei@gmail.com>
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Requires-Dist: mcp>=1.9.4
+Requires-Dist: requests>=2.32.4
+Description-Content-Type: text/markdown
+
+# MCP 高考排名查询服务器
+
+一个Model Context Protocol (MCP)服务器，提供高考分数排名查询功能。
+
+## 功能
+
+- `get_rank`: 根据省份、年份、考试类别和分数查询排名
+- `get_categories`: 根据省份和年份获取所有可用的考试类别
+
+## 安装
+
+```bash
+pip install mcp-gaokao-rank
