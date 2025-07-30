@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: ttktooltip
+Version: 1.1
+Summary: A simple tooltip widget for Tkinter
+Home-page: https://github.com/prashant-mandal/ttktooltip
+Author: Prashant Mandal
+Author-email: prashant7mandal@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
+# ttktooltip
+
+A tooltip widget for Tkinter
+
+Usage
+
+```
+ToolTip(myicon, "Click here.")
+```
+
+Description
+
+```
+# Create a tkinter object
+self.myicon = tkinter.Label(self.root, image=None, cursor="hand2")
+
+# Pass the object with your text.
+ToolTip(self.myicon, "Click here.")
+# Hover the mouse to display the text.
+```
+
+Show or destroy the tooltip explicitly.
+
+```
+mytooltip = ToolTip(self.myicon, "Click here.")
+mytooltip.show()
+mytooltip.hide()
+```
