@@ -1,0 +1,114 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "app-use"
+description = "Make mobile apps accessible for AI agents"
+authors = [{ name = "Erick Torres-Moreno" }]
+version = "0.0.2"
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = [
+    "ai",
+    "automation", 
+    "mobile",
+    "mobile-use",
+    "app-use",
+    "appium",
+    "agent",
+    "ios",
+    "android",
+    "ui-automation",
+    "browser-use"
+]
+dependencies = [
+    # Core
+    "pydantic>=2.11.5",
+    "python-dotenv>=1.0.1",
+    # LangChain & LLM
+    "langchain-core==0.3.63",
+    "langchain-openai==0.3.19",
+    "langchain-anthropic==0.3.14",
+    "langchain-ollama==0.3.3",
+    "langchain-google-genai<2.1.5",
+    "langchain-deepseek>=0.1.3",
+    "langchain>=0.3.25",
+    "langchain-aws>=0.2.24",
+    "google-api-core>=2.25.0",
+    "openai>=1.0.0",
+    "mem0ai>=0.1.104",
+    # Other
+    "opencv-python>=4.11.0",
+    "pillow>=11.2.1",
+    "Appium-Python-Client>=5.1.1",
+    "faiss-cpu>=1.11.0",
+    "sentence-transformers>=4.1.0",
+    "google-generativeai>=0.8.5",
+]
+
+[project.optional-dependencies]
+
+memory = [
+    # sentence-transformers: depends on pytorch, which does not support python 3.13 yet
+    "sentence-transformers>=4.0.2",
+]
+all = [
+    "app-use[memory]",
+]
+
+cli = [
+    "rich>=14.0.0",
+    "click>=8.1.8",
+    "textual>=3.2.0",
+]
+
+[project.urls]
+Repository = "https://github.com/app-use/app-use"
+Homepage = "https://github.com/app-use/app-use"
+"Bug Tracker" = "https://github.com/app-use/app-use/issues"
+Documentation = "https://github.com/app-use/app-use#readme"
+
+[project.scripts]
+appuse = "app_use.cli:main"
+app-use = "app_use.cli:main"
+
+[tool.hatch.build]
+include = [
+    "app_use/**/*.py",
+    "!app_use/**/tests/*.py",
+    "!app_use/**/tests.py",
+    "app_use/agent/system_prompt.md",
+]
+
+[tool.pyright]
+typeCheckingMode = "off" 
+
+[tool.ruff]
+line-length = 130
+fix = true
+
+[tool.ruff.lint]
+select = ["ASYNC", "E", "F", "FAST", "I", "PLE"]
+ignore = ["ASYNC109", "E101", "E402", "E501", "F841", "E731", "W291"]
+unfixable = ["E101", "E402", "E501", "F841", "E731"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "tab"
+line-ending = "lf"
+docstring-code-format = true
+docstring-code-line-length = 140
+skip-magic-trailing-comma = false
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.13",
+    "build>=1.2.2",
+    "pyright>=1.1.399",
+]
