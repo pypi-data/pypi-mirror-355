@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "visidata-mcp"
+version = "0.1.5"
+description = "MCP server for VisiData - a terminal spreadsheet multitool for discovering and arranging tabular data"
+authors = [
+    { name = "Moe Loubani", email = "moe@moe.ca" }
+]
+dependencies = [
+    "mcp>=1.9.0",
+    "visidata>=3.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "httpx>=0.28.0"
+]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/moeloubani/visidata-mcp"
+Repository = "https://github.com/moeloubani/visidata-mcp"
+
+[project.scripts]
+visidata-mcp = "visidata_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/visidata_mcp"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/README.md",
+] 
