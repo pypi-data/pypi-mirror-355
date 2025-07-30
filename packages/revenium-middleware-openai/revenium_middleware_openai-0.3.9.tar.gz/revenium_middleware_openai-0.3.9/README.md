@@ -1,0 +1,176 @@
+# 🤖 Revenium Middleware for OpenAI
+
+[![PyPI version](https://img.shields.io/pypi/v/revenium-middleware-openai.svg)](https://pypi.org/project/revenium-middleware-openai/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/revenium-middleware-openai.svg)](https://pypi.org/project/revenium-middleware-openai/)
+[![Documentation Status](https://readthedocs.org/projects/revenium-middleware-openai/badge/?version=latest)](https://revenium-middleware-openai.readthedocs.io/en/latest/?badge=latest)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
+[//]: # ([![Build Status]&#40;https://github.com/revenium/revenium-middleware-openai/actions/workflows/ci.yml/badge.svg&#41;]&#40;https://github.com/revenium/revenium-middleware-openai/actions&#41;)
+
+A middleware library for metering and monitoring OpenAI API usage in Python applications. 🐍✨
+
+## ✨ Features
+
+- **📊 Precise Usage Tracking**: Monitor tokens, costs, and request counts across all OpenAI API endpoints
+- **🔌 Seamless Integration**: Drop-in middleware that works with minimal code changes
+- **⚙️ Flexible Configuration**: Customize metering behavior to suit your application needs
+
+## 📥 Installation
+
+```bash
+pip install revenium-middleware-openai
+```
+
+## 📥 Updating
+
+```bash
+pip install --upgrade revenium-middleware-openai
+```
+
+## 🔧 Usage
+
+### ‼️ Setting Environment Variables ‼️
+
+```bash
+export OPENAI_API_KEY=your-key-value
+export REVENIUM_METERING_API_KEY=your-key-value
+```
+That's it, now your OpenAI calls will be metered automatically:
+
+```python
+import openai
+import revenium_middleware_openai
+
+response = openai.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {
+            "role": "user",
+            "content": "What is the answer to life, the universe and everything?",
+        },
+    ],
+    max_tokens=500,
+)
+
+print(response.choices[0].message.content)
+```
+
+The middleware automatically intercepts OpenAI API calls and sends metering data to Revenium without requiring any
+changes to your existing code. Make sure to set the `REVENIUM_METERING_API_KEY` environment variable for authentication
+with the Revenium service.
+
+### 📈 Enhanced Tracking with Metadata
+
+For more granular usage tracking and detailed reporting, add the `usage_metadata` parameter:
+
+```python
+import openai
+import revenium_middleware_openai
+
+response = openai.chat.completions.create(
+    model="gpt-4o",  # You can change this to other models like "gpt-3.5-turbo"
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {
+            "role": "user",
+            "content": "What is the meaning of life, the universe and everything?",
+        },
+    ],
+    max_tokens=500,
+    usage_metadata={
+         "trace_id": "conv-28a7e9d4",
+         "task_type": "summarize-customer-issue",
+         "subscriber": {
+             "id": "subscriberid-1234567890",
+             "email": "user@example.com",
+             "credential": {
+                 "name": "engineering-api-key",
+                 "value": "actual-api-key-value"
+             }
+         },
+         "organization_id": "acme-corp",
+         "subscription_id": "startup-plan-Q1",
+         "product_id": "saas-app-gold-tier",
+         "agent": "support-agent",
+    },
+)
+print(response.choices[0].message.content)
+```
+
+#### 🏷️ Metadata Fields
+
+The `usage_metadata` parameter supports the following fields:
+
+| Field                        | Description                                               | Use Case                                                          |
+|------------------------------|-----------------------------------------------------------|-------------------------------------------------------------------|
+| `trace_id`                   | Unique identifier for a conversation or session           | Group multi-turn conversations into single event for performance & cost tracking                           |
+| `task_type`                  | Classification of the AI operation by type of work        | Track cost & performance by purpose (e.g., classification, summarization)                                  |
+| `subscriber`                 | Nested object containing subscriber information           | Track cost & performance by individual users (recommended structure)                                       |
+| `organization_id`            | Customer or department ID from non-Revenium systems       | Track cost & performance by customers or business units                                                    |
+| `subscription_id`            | Reference to a billing plan in non-Revenium systems       | Track cost & performance by a specific subscription                                                        |
+| `product_id`                 | Your product or feature making the AI call                | Track cost & performance across different products                                                         |
+| `agent`                      | Identifier for the specific AI agent                      | Track cost & performance performance by AI agent                                                           |
+| `response_quality_score`     | The quality of the AI response (0..1)                     | Track AI response quality                                                                                  |
+
+##### 👤 Subscriber Object Structure
+
+The `subscriber` field supports a nested structure for better organization:
+
+```python
+usage_metadata = {
+    "subscriber": {
+        "id": "user-12345",
+        "email": "user@example.com", 
+        "credential": {
+            "name": "api-key-alias",
+            "value": "actual-api-key-value"
+        }
+    },
+    # ... other metadata fields
+}
+```
+
+**Subscriber fields:**
+- `id`: Unique identifier for the subscriber
+- `email`: Email address of the subscriber  
+- `credential`: Nested object with API key information
+  - `name`: Alias or name for the credential
+  - `value`: The actual credential value
+
+**All metadata fields are optional**. Adding them enables more detailed reporting and analytics in Revenium.
+
+## 🔄 Compatibility
+
+- 🐍 Python 3.8+
+- 🤖 OpenAI Python SDK 1.0.0+
+- 🌐 Works with all OpenAI models and endpoints
+
+## 🔍 Logging
+
+This module uses Python's standard logging system. You can control the log level by setting the `REVENIUM_LOG_LEVEL`
+environment variable:
+
+```bash
+# Enable debug logging
+export REVENIUM_LOG_LEVEL=DEBUG
+
+# Or when running your script
+REVENIUM_LOG_LEVEL=DEBUG python your_script.py
+```
+
+Available log levels:
+
+- `DEBUG`: Detailed debugging information
+- `INFO`: General information (default)
+- `WARNING`: Warning messages only
+- `ERROR`: Error messages only
+- `CRITICAL`: Critical error messages only
+
+## 📄 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- 💖 Built with ❤️ by the Revenium team
