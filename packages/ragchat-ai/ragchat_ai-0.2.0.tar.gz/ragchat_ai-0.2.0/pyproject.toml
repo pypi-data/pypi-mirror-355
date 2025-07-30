@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+show_error_codes = true
+pretty = true
+files = ["ragchat", "tests"]
+plugins = ["pydantic.mypy"]
+mypy_path = "typings"
+
+[tool.ruff]
+line-length = 88  # Match Black's default
+fix = true        # Allow auto-fixes
+unsafe-fixes = true  # Optional: include fixes that change behavior
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]   # Common: E = style, F = unused/import, I = isort
+ignore = ["E501"]          # Let formatter handle long lines
+
+[tool.ruff.format]
+quote-style = "double"     # Use double quotes like Black
+preview = true             # Enable Black-style formatting
