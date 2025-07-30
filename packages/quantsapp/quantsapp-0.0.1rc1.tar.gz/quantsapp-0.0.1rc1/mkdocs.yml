@@ -1,0 +1,168 @@
+site_name: Quantsapp SDK Documentation
+site_description: Quantsapp SDK Documentation to interact with Quantsapp API
+site_url: http://python-sdk.quantsapp.com
+
+
+repo_url: https://github.com/quantsapp/python-sdk
+repo_name: quantsapp/python-sdk
+
+nav:
+  - Home: index.md
+  - Login:
+      - login.md
+      - Responses: login_responses.md
+  - Execution:
+      - execution.md
+      - Responses: execution_responses.md
+      - Variables: execution_variables.md
+  - Responses: responses.md
+  - Errors: errors.md
+
+theme:
+  logo: assets/quantsapp_rounded_logo.png
+  favicon: assets/quantsapp_rounded_favicon.png
+  name: material
+  language: en
+
+  icon:
+    repo: fontawesome/brands/github
+
+  features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - content.tooltips
+    - header.autohide
+    - navigation.footer
+    - navigation.top
+    # - navigation.tabs
+    - navigation.prune
+    - navigation.indexes
+    - navigation.tracking
+    - navigation.instant
+    - navigation.instant.progress
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+
+  palette:
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: black
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - scheme: default
+      primary: white
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: iso_datetime
+      fallback_to_build_date: true
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          inventories:
+            - https://docs.python.org/3/objects.inv
+            - https://docs.pydantic.dev/latest/objects.inv
+          options:
+            backlinks: tree
+            docstring_style: google
+            show_root_heading: false
+            show_root_toc_entry: false
+            show_source: false
+            filters:
+              - "!^_"
+            extensions:
+              - griffe_pydantic:
+                  schema: true
+
+# extra_css:
+#   - stylesheets/extra.css
+
+markdown_extensions:
+  - abbr
+  - attr_list
+  - admonition
+  - pymdownx.highlight:
+      use_pygments: true
+      auto_title: true
+      linenums: true
+      linenums_style: pymdownx-inline
+      anchor_linenums: true
+      pygments_lang_class: true
+      line_spans: __span
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - footnotes
+  - toc:
+      permalink: true
+      permalink_title: Anchor link to this section for reference
+
+extra:
+  # Ref - https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#generator-notice
+  generator: true
+
+  # Ref - https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#social-links
+  social:
+    - icon: fontawesome/brands/facebook
+      link: https://www.facebook.com/quantsapp/
+      name: Quanstapp on Facebook
+
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/quantsapp/
+      name: Quanstapp on Instagram
+
+    - icon: fontawesome/brands/youtube
+      link: https://www.youtube.com/channel/UCKO21sN386P_8h713o6nkGA
+      name: Quanstapp on YouTube
+
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/quantsapp/
+      name: Quanstapp on X
+
+    - icon: fontawesome/brands/linkedin
+      link: https://in.linkedin.com/company/quantsapp
+      name: Quanstapp on LinkedIn
+
+    - icon: fontawesome/brands/telegram
+      link: https://t.me/s/qappsocial?q=%23Nifty
+      name: Quanstapp on Telegram
+
+    - icon: fontawesome/brands/quora
+      link: https://www.quora.com/profile/Quantsapp-1
+      name: Quanstapp on Quora
+
+    - icon: fontawesome/solid/envelope
+      link: mailto:support@quantsapp.com
+
+# Ref - https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/#copyright-notice
+copyright: >
+  <a href="https://www.quantsapp.com" target="_blank">Quantsapp Pvt. Ltd. &copy; Copyright 2025</a> -
+  <a href="https://www.quantsapp.com/terms/QappPrivacyPolicy" target="_blank">Privacy Policy</a> -
+  <a href="https://www.quantsapp.com/sebi-disclosures" target="_blank">SEBI Disclosures</a>
+# TODO change the link to the actual SEBI disclosures page to API disclosures
+
+# # Required Python Packages
+# pip install mkdocs-material
+# pip install mkdocs-git-revision-date-localized-plugin
+# pip install mkdocstrings[python]
+# pip install griffe-pydantic
+

@@ -1,0 +1,222 @@
+# The name of the workflow that GitHub displays on your repository's 'Actions' tab
+name: Publish Python 🐍 distribution 📦
+
+# The event that triggers the workflow
+on:
+  push:
+    # Sequence of patterns matched against refs/tags to start the GitHub Action
+    tags:
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+
+# Job definitions for the workflow.
+jobs:
+  # Job ID: build
+  # This job builds the environment with all required dependencies and builds the Python package distribution
+  build:
+    # The name of the job that GitHub displays on the Actions tab
+    name: Build distribution 📦 (${{ github.ref_name }})
+
+    # The platforms on which the job will run
+    runs-on: ubuntu-latest
+
+    # The steps that the job will execute
+    steps:
+      # Step 1: Checks-out the repository, so the workflow can access its contents.
+      # Ref - https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          # Do not persist credentials to avoid issues with LFS
+          persist-credentials: false
+
+      # Step 2: Sets up the Python environment for the job.
+      # Ref - https://github.com/marketplace/actions/setup-python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          # x-ranges to specify the latest stable version of Python
+          # Ref - https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#specifying-a-python-version
+          python-version: "3.x"
+
+      # Step 3: Installs the required python dependencies for building the Python package
+      # Ref - https://pypi.org/project/build/
+      # Ref - https://pypi.org/project/mkdocs-material/
+      # Ref - https://pypi.org/project/mkdocs-git-revision-date-localized-plugin/
+      # Ref - https://pypi.org/project/mkdocstrings/
+      # Ref - https://pypi.org/project/griffe-pydantic/
+      # Ref - https://pypi.org/project/pydantic/
+      - name: Install pypa/build
+        run: >-
+          python3 -m
+          pip install
+          build
+          mkdocs-material
+          mkdocs-git-revision-date-localized-plugin
+          mkdocstrings[python]
+          griffe-pydantic
+          pydantic
+          --user
+
+      # Step 4: Build the Python package distribution.
+      # This step uses the `build` module to create a binary wheel and a source tarball.
+      # The `build` module is a PEP 517 compliant build frontend.
+      # Ref - https://build.pypa.io/en/stable/
+      - name: Build a binary wheel and a source tarball
+        run: python3 -m build
+
+      # Step 5: Uploads the built distribution packages to GitHub Actions artifacts
+      # Ref - https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          # Upload only the contents of the `dist/` directory
+          # This directory contains the built distribution packages.
+          # The `dist/` directory is created by the `build` step.
+          path: dist/
+
+      # Step 6: Build the documentation based on Mkdcos.
+      # This step uses the `build` module to create a binary wheel and a source tarball.
+      # The `build` module is a PEP 517 compliant build frontend.
+      # Ref - https://build.pypa.io/en/stable/
+      - name: Build a documentation based on Mkdocs
+        run: python3 -m mkdocs build
+
+      # Step 7: Uploads the built distribution packages to GitHub Actions artifacts
+      # Ref - https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: Store the docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-docs
+          # Upload only the contents of the `site/` directory
+          # This directory contains the built distribution packages.
+          # The `site/` directory is created by the `build` step.
+          path: site/
+
+  # Job ID: publish-to-pypi
+  # This job publishes the built Python package distribution to PyPI.
+  publish-to-pypi:
+    # The name of the job that GitHub displays on the Actions tab.
+    name: Publish Python 🐍 distribution 📦 to PyPI
+
+    # This job runs only if the `build` job is successful.
+    needs:
+      - build
+
+    # The platforms on which the job will run.
+    runs-on: ubuntu-latest
+
+    # The environment in which the job will run.
+    # Ref - https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idenvironment
+    environment:
+      name: pypi
+      url: https://pypi.org/p/quantsapp
+
+    # The permissions required for this job.
+    # Ref - https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions
+    permissions:
+      # The `id-token: write` permission is mandatory for trusted publishing to TestPyPI.
+      id-token: write
+
+    # The steps that the job will execute.
+    steps:
+      # Step 1: Downloads the built distribution packages from the previous job.
+      # Ref - https://github.com/marketplace/actions/download-a-build-artifact
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      # Step 2: Publishes the distribution packages to PyPI.
+      # Ref - https://github.com/marketplace/actions/pypi-publish
+      - name: Publish distribution 📦 to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  # Job ID: release
+  # This job make a release on GitHub with the build distribution files
+  # Just update the release description once released by GitHub Actions
+  release:
+    # The name of the job that GitHub displays on the Actions tab.
+    name: Make a Python 🐍 distribution 📦 release on GitHub
+
+    # This job runs only if the `build` job is successful.
+    needs:
+      - build
+
+    # The platforms on which the job will run.
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Ref - https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
+      contents: write  # Required to create a release
+
+    # The steps that the job will execute.
+    steps:
+
+      # Step 1: Downloads the built distribution packages from the previous job.
+      # Ref - https://github.com/marketplace/actions/download-a-build-artifact
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      # Step 2: Create GitHub Release
+      # Ref - https://github.com/marketplace/actions/pypi-publish
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+
+        with:
+          files: dist/*.whl,dist/*.tar.gz
+          draft: false
+          preserve_order: true
+
+
+  # # Job ID: docs-deploy
+  # # This job push the new docs to AWS S3
+  # docs-deploy:
+  #   # The name of the job that GitHub displays on the Actions tab.
+  #   name: Upload Python 🐍 docs 📦 to AWS S3
+
+  #   # This job runs only if the `build` job is successful.
+  #   needs:
+  #     - build
+
+  #   # The platforms on which the job will run.
+  #   runs-on: ubuntu-latest
+
+  #   permissions:
+  #     # Ref - https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
+  #     id-token: write  # This is required for requesting the JWT
+
+  #   # The steps that the job will execute.
+  #   steps:
+
+  #     # Step 1: Downloads the built documents from the previous job.
+  #     # Ref - https://github.com/marketplace/actions/download-a-build-artifact
+  #     - name: Download all the dists
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: python-package-docs
+  #         path: site/
+
+  #     # Step 2: Configure the AWS Credentials to push data on AWS S3
+  #     # Ref - https://github.com/aws-actions/configure-aws-credentials
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         role-to-assume: ${{ secrets.AWS_DOCS_UPLOAD_ROLE }}
+  #         role-session-name: python-sdk-${{ github.ref_name }}-docs-upload
+  #         aws-region: ${{ secrets.AWS_DOCS_UPLOAD_REGION }}
+
+  #     # Step 3: Upload the built docs to S3
+  #     # Ref - https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html
+  #     - name: Upload docs to S3
+  #       run: |
+  #         # Latest version of docs
+  #         aws s3 sync site/ s3://${{ secrets.AWS_DOCS_UPLOAD_S3_BUCKET }}
+
+  #         # Previous version of docs
+  #         # which can be accessed via https://<MAIN_URL>/<VERSION> (Example - https://python-sdk.quantsapp.com/v1.0.0)
+  #         # --delete ensures that if any file on source is not available on pusing will get deleted
+  #         aws s3 sync site/ s3://${{ secrets.AWS_DOCS_UPLOAD_S3_BUCKET }}/${{ github.ref_name }} --delete
