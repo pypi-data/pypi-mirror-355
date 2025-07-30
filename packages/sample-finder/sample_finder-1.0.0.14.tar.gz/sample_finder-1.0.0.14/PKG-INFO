@@ -1,0 +1,81 @@
+Metadata-Version: 2.4
+Name: sample-finder
+Version: 1.0.0.14
+Summary: Sample Finder is a modular tool to search for and download malware samples from public malware sources.
+Project-URL: Homepage, https://github.com/joren485/sample-finder
+Requires-Python: >=3.11
+Requires-Dist: loguru>=0.7.3
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: pyzipper>=0.3.6
+Requires-Dist: requests>=2.32.3
+Requires-Dist: typer>=0.15.4
+Description-Content-Type: text/markdown
+
+# Sample Finder
+
+Sample Finder is a modular tool to search for and download malware samples from public malware sources.
+
+### Supported sources
+* [Malpedia](https://malpedia.caad.fkie.fraunhofer.de/)
+* [MalShare](https://malshare.com/)
+* [Malware Bazaar](https://bazaar.abuse.ch/)
+* [VirusShare](https://virusshare.com/)
+* [Triage](https://tria.ge/)
+* [VirusExchange](https://virus.exchange)
+* [VirusTotal](https://www.virustotal.com) (only checks if the sample is available on VirusTotal and does not support downloading)
+
+### Installation
+#### Pip
+```bash
+$ pip install sample-finder
+```
+
+#### Development
+```bash
+$ git clone git@github.com:joren485/sample-finder.git
+$ cd sample-finder
+$ uv sync
+$ source .venv/bin/activate
+$ sample-finder --help
+```
+
+### Config
+You need a config file with API tokens for each supported source.
+You can find an example in `example.confg.yaml`:
+```yaml
+---
+
+sources:
+  malshare:
+    api_key: "API KEY"
+  malpedia:
+    api_key: "API KEY"
+  malwarebazaar:
+    api_key: "API KEY"
+  virusshare:
+    api_key: "API KEY"
+  virustotal:
+    api_key: "API KEY"
+  triage:
+    api_key: "API KEY"
+  virusexchange:
+    api_key: "API KEY"
+```
+
+### Usage
+```bash
+$ sample-finder --help
+ Usage: sample-finder [OPTIONS]
+
+ Download hashes from multiple sources.
+
+╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *  --input               -i      FILE       [default: None] [required]                                                                                                                                         │
+│ *  --output              -o      DIRECTORY  [default: None] [required]                                                                                                                                         │
+│    --config              -c      FILE       [default: config.yaml]                                                                                                                                             │
+│    --verbose             -v                                                                                                                                                                                    │
+│    --install-completion                     Install completion for the current shell.                                                                                                                          │
+│    --show-completion                        Show completion for the current shell, to copy it or customize the installation.                                                                                   │
+│    --help                                   Show this message and exit.                                                                                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```

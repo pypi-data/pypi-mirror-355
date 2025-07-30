@@ -1,0 +1,66 @@
+[project]
+name = "sample-finder"
+version = "1.0.0.14"
+description = "Sample Finder is a modular tool to search for and download malware samples from public malware sources."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "loguru>=0.7.3",
+    "pyyaml>=6.0.2",
+    "pyzipper>=0.3.6",
+    "requests>=2.32.3",
+    "typer>=0.15.4",
+]
+
+[dependency-groups]
+dev = [
+    "coverage>=7.8.1",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.10",
+    "types-pyyaml>=6.0.12.20250516",
+    "types-requests>=2.32.0.20250515",
+    "yamllint>=1.37.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.urls]
+Homepage = "https://github.com/joren485/sample-finder"
+
+[project.scripts]
+sample-finder = 'sample_finder.app:app'
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ARG002",
+    "EM102",
+    "FBT001",
+    "FBT002",
+    "BLE001",
+    "COM812",
+    "D100",
+    "D104",
+    "D203",
+    "D212",
+    "ISC001",
+    "PLR2004",
+    "PLW2901",
+    "S113",
+    "TRY003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "ANN201",
+    "D101",
+    "D102",
+    "S101",
+]
