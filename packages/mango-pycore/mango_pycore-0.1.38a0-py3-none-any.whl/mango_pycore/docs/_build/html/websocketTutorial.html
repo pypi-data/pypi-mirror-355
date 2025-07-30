@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Websocket Tutorial &mdash; Mango Pycore 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b0099a1c"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example" href="triggers.html" />
+    <link rel="prev" title="RestApi Tutorial" href="restTutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Mango Pycore
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">mango_pycore</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instalation.html">Instalation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html">Hello World Tutorial with mango_pycore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html">RestApi Tutorial</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Websocket Tutorial</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-creating-the-websocket-client">Step 2: Creating the WebSocket Client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-creating-the-message">Step 3: Creating the Message</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-testing-the-websocket-client">Step 4: Testing the WebSocket Client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-testing-and-format">Step 5: Testing and Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html">Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mango Pycore</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">mango_pycore</a></li>
+      <li class="breadcrumb-item active">Websocket Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/websocketTutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="websocket-tutorial">
+<h1>Websocket Tutorial<a class="headerlink" href="#websocket-tutorial" title="Permalink to this heading"></a></h1>
+<p>This tutorial will guide you through the process of creating and sending messages from the <cite>mango_pycore</cite> library to the WebSocket server.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<p>Before starting, make sure you have the following tools installed:</p>
+<ul class="simple">
+<li><p>Python 3.8 or later</p></li>
+<li><p>AWS SAM CLI</p></li>
+<li><p>Docker (for local testing)</p></li>
+<li><p><cite>mango_pycore</cite> library</p></li>
+</ul>
+</section>
+<section id="step-1-imports">
+<h2>Step 1: Imports<a class="headerlink" href="#step-1-imports" title="Permalink to this heading"></a></h2>
+<p>Create a Python file called <cite>send_message.py</cite>. This file will contain the code to send messages to the WebSocket server. At the top of the file, include the following imports:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mango_pycore.api.websocket.client</span> <span class="kn">import</span> <span class="n">WebsocketClient</span>
+<span class="kn">import</span> <span class="nn">json</span>
+</pre></div>
+</div>
+<p>We are importing <cite>json</cite> to convert the messages to JSON format. The <cite>mango_pycore</cite> library provides a <cite>WebsocketClient</cite> class that we will use to connect to the WebSocket server.</p>
+</section>
+<section id="step-2-creating-the-websocket-client">
+<h2>Step 2: Creating the WebSocket Client<a class="headerlink" href="#step-2-creating-the-websocket-client" title="Permalink to this heading"></a></h2>
+<p>To create the WebSocket client, we need to provide the server URL. Here is an example of how to create the WebSocket client:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">websocket</span> <span class="o">=</span> <span class="n">WebsocketClient</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="s2">&quot;wss://mango-api.com/v1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>websocket</cite> is the instance of the class we will be using. <cite>server</cite> is the URL of the WebSocket server we will be connecting to.</p>
+</section>
+<section id="step-3-creating-the-message">
+<h2>Step 3: Creating the Message<a class="headerlink" href="#step-3-creating-the-message" title="Permalink to this heading"></a></h2>
+<p>Let’s take a look at the following example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+    <span class="n">channel</span><span class="o">=</span><span class="s2">&quot;helloworld&quot;</span><span class="p">,</span>
+    <span class="n">message</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;company&quot;</span><span class="p">:</span> <span class="s2">&quot;Mango Soft Inc.&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;United States&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;Florida&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Miami&quot;</span><span class="p">})</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>We are going to use the <cite>send</cite> method of the <cite>websocket</cite> instance to send a message to the server. This method requires two variables:</p>
+<ol class="arabic">
+<li><p>The <cite>channel</cite> variable is the name of the channel we are going to send the message to.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">channel</span> <span class="o">=</span> <span class="s2">&quot;helloworld&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>The <cite>message</cite> variable is the message we are going to send to the server. We are using the <cite>json.dumps</cite> method to convert the message to JSON format.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">message</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;company&quot;</span><span class="p">:</span> <span class="s2">&quot;Mango Soft Inc.&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;United States&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;Florida&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Miami&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="step-4-testing-the-websocket-client">
+<h2>Step 4: Testing the WebSocket Client<a class="headerlink" href="#step-4-testing-the-websocket-client" title="Permalink to this heading"></a></h2>
+<p>The final code should look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mango_pycore.api.websocket.client</span> <span class="kn">import</span> <span class="n">WebsocketClient</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">websocket</span> <span class="o">=</span> <span class="n">WebsocketClient</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="s2">&quot;wss://mango-api.com/v1&quot;</span><span class="p">)</span>
+
+<span class="n">websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+    <span class="n">channel</span><span class="o">=</span><span class="s2">&quot;helloworld&quot;</span><span class="p">,</span>
+    <span class="n">message</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;company&quot;</span><span class="p">:</span> <span class="s2">&quot;Mango Soft Inc.&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;United States&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;Florida&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Miami&quot;</span><span class="p">})</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>To test the WebSocket client, we are going to use POSTMAN. POSTMAN allows us to connect to WebSocket servers. We’ll need to connect to the same server used in the code.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wss://mango-api.com/v1?channel<span class="o">=</span>helloworld
+</pre></div>
+</div>
+<p>NOTICE that we are using the same channel as in the code.</p>
+<p>After connecting to the server, run the <cite>send_message.py</cite> file to send the message to the server.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>send_message.py
+</pre></div>
+</div>
+<p>You should see the message in the POSTMAN console.</p>
+</section>
+<section id="step-5-testing-and-format">
+<h2>Step 5: Testing and Format<a class="headerlink" href="#step-5-testing-and-format" title="Permalink to this heading"></a></h2>
+<p>Since we used the <cite>json.dumps</cite> method, the message will appear in text format.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span><span class="se">\&quot;</span>company<span class="se">\&quot;</span>:<span class="w"> </span><span class="se">\&quot;</span>Mango<span class="w"> </span>Soft<span class="w"> </span>Inc.<span class="se">\&quot;</span>,<span class="w"> </span><span class="se">\&quot;</span>country<span class="se">\&quot;</span>:<span class="w"> </span><span class="se">\&quot;</span>United<span class="w"> </span>States<span class="se">\&quot;</span>,<span class="w"> </span><span class="se">\&quot;</span>state<span class="se">\&quot;</span>:<span class="w"> </span><span class="se">\&quot;</span>Florida<span class="se">\&quot;</span>,<span class="w"> </span><span class="se">\&quot;</span>city<span class="se">\&quot;</span>:<span class="w"> </span><span class="se">\&quot;</span>Miami<span class="se">\&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+<p>The <cite>mango_pycore</cite> WebSocket client allows you to send messages in the format you need. You can use this to send messages to the WebSocket server and receive responses from the server.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+    <span class="n">channel</span><span class="o">=</span><span class="s2">&quot;helloworld&quot;</span><span class="p">,</span>
+    <span class="n">message</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;company&quot;</span><span class="p">:</span> <span class="s2">&quot;Mango Soft Inc.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="s2">&quot;United States&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;Florida&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Miami&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This format will allow you to see the message in JSON format.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span><span class="s2">&quot;company&quot;</span>:<span class="w"> </span><span class="s2">&quot;Mango Soft Inc.&quot;</span>,<span class="w"> </span><span class="s2">&quot;country&quot;</span>:<span class="w"> </span><span class="s2">&quot;United States&quot;</span>,<span class="w"> </span><span class="s2">&quot;state&quot;</span>:<span class="w"> </span><span class="s2">&quot;Florida&quot;</span>,<span class="w"> </span><span class="s2">&quot;city&quot;</span>:<span class="w"> </span><span class="s2">&quot;Miami&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>We need to import the <cite>WebsocketClient</cite> class from the <cite>mango_pycore</cite> library to create a WebSocket client.</p></li>
+<li><p>Make an instance of the class specifying the server URL.</p></li>
+<li><p>Call the <cite>send</cite> method of the <cite>websocket</cite> instance to send messages to the server.</p></li>
+<li><p>The <cite>send</cite> method should have the <cite>channel</cite> and <cite>message</cite> variables to send the message to the server.</p></li>
+</ol>
+<p>The front end (simulated by POSTMAN) will be actively listening, and when the message is sent, it will be displayed in the console.</p>
+<p>In this tutorial, we learned how to create a WebSocket client using the <cite>mango_pycore</cite> library. We also learned how to send messages to the WebSocket server in different formats. You can use this knowledge to create your own WebSocket clients and send messages to the server.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="restTutorial.html" class="btn btn-neutral float-left" title="RestApi Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="triggers.html" class="btn btn-neutral float-right" title="Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Pablo Galindo Largacha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

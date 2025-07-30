@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RestApi Tutorial &mdash; Mango Pycore 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b0099a1c"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Websocket Tutorial" href="websocketTutorial.html" />
+    <link rel="prev" title="Hello World Tutorial with mango_pycore" href="helloworld.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Mango Pycore
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">mango_pycore</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instalation.html">Instalation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helloworld.html">Hello World Tutorial with mango_pycore</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RestApi Tutorial</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-modifying-the-url-get-parameters">Step 2: Modifying the URL GET Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-modifying-the-sam-template">Step 3: Modifying the SAM Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-testing-the-new-url-parameters">Step 4: Testing the new URL Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#put-request">PUT request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post-request">POST request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delete-request">DELETE request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#request">REQUEST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html">Websocket Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html">Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mango Pycore</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">mango_pycore</a></li>
+      <li class="breadcrumb-item active">RestApi Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/restTutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="restapi-tutorial">
+<h1>RestApi Tutorial<a class="headerlink" href="#restapi-tutorial" title="Permalink to this heading"></a></h1>
+<p>This tutorial will guide you through creating a REST API using the <cite>mango_pycore</cite> library.</p>
+<p>This tutorial is the second part of the Hello World tutorial.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<p>Before starting, make sure you have the following tools installed:</p>
+<ul class="simple">
+<li><p>Python 3.8 or later</p></li>
+<li><p>AWS SAM CLI</p></li>
+<li><p>Docker (for local testing)</p></li>
+<li><p><cite>mango_pycore</cite> library</p></li>
+</ul>
+</section>
+<section id="step-2-modifying-the-url-get-parameters">
+<h2>Step 2: Modifying the URL GET Parameters<a class="headerlink" href="#step-2-modifying-the-url-get-parameters" title="Permalink to this heading"></a></h2>
+<p>Inside the <cite>app.py</cite> file we previously created, we will add the following function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mango_pycore.api.rest_api</span> <span class="kn">import</span> <span class="n">RestApi</span>
+<span class="kn">from</span> <span class="nn">mango_pycore.api.request</span> <span class="kn">import</span> <span class="n">RestApiRequest</span>
+<span class="kn">from</span> <span class="nn">mango_pycore.api.response</span> <span class="kn">import</span> <span class="n">Response</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">RestApi</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">CIUDADES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Bogota&#39;</span><span class="p">:</span> <span class="s1">&#39;Cundinamarca&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Medellin&#39;</span><span class="p">:</span> <span class="s1">&#39;Antioquia&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">RestApiRequest</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/ciudades/</span><span class="si">{ciudad}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">depto_ciudad</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">RestApiRequest</span><span class="p">):</span>
+    <span class="n">ciudad</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ciudad&#39;</span><span class="p">)</span>
+    <span class="n">departamento</span> <span class="o">=</span> <span class="n">CIUDADES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ciudad</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;departamento&#39;</span><span class="p">:</span> <span class="n">departamento</span><span class="p">}</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>NOTICE: We added the <cite>CIUDADES</cite> dict and the <cite>depto_ciudad</cite> function to the <cite>app.py</cite> file. In the <cite>depto_ciudad</cite> function, we are using the <cite>path_parameters</cite> attribute of the <cite>request</cite> object to get the value of the <cite>ciudad</cite> parameter in the URL.</p>
+</section>
+<section id="step-3-modifying-the-sam-template">
+<h2>Step 3: Modifying the SAM Template<a class="headerlink" href="#step-3-modifying-the-sam-template" title="Permalink to this heading"></a></h2>
+<p>Inside the file named <cite>template.yaml</cite> we previously created, we will add the following content:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">AWSTemplateFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2010-09-09&#39;</span>
+<span class="nt">Transform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AWS::Serverless-2016-10-31</span>
+<span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">  </span><span class="no">MANGO_Boilerplate_BackEnd Stack</span>
+<span class="nt">Globals</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Function</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">MemorySize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">512</span>
+<span class="nt">Resources</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RestApi</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AWS::Serverless::Api</span>
+<span class="w">    </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">StageName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="w">  </span><span class="nt">HelloWorldFunction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AWS::Serverless::Function</span>
+<span class="w">    </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">CodeUri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="w">      </span><span class="nt">Handler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.app</span>
+<span class="w">      </span><span class="nt">Runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python3.8</span>
+<span class="w">      </span><span class="nt">Architectures</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span>
+<span class="w">      </span><span class="nt">Events</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">optionsCollection</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Api</span>
+<span class="w">          </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">RestApiId</span><span class="p">:</span><span class="w"> </span><span class="kt">!Ref</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RestApi</span>
+<span class="w">            </span><span class="nt">Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">options</span>
+<span class="w">            </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/{proxy+}</span>
+<span class="w">        </span><span class="nt">helloWorld</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Api</span>
+<span class="w">          </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">RestApiId</span><span class="p">:</span><span class="w"> </span><span class="kt">!Ref</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RestApi</span>
+<span class="w">            </span><span class="nt">Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">get</span>
+<span class="w">            </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">        </span><span class="nt">depto_ciudad</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Api</span>
+<span class="w">          </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">RestApiId</span><span class="p">:</span><span class="w"> </span><span class="kt">!Ref</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RestApi</span>
+<span class="w">            </span><span class="nt">Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">get</span>
+<span class="w">            </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/ciudades/{ciudad}</span>
+<span class="nt">Outputs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">UrlApi</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">URL of your API</span>
+<span class="w">    </span><span class="nt">Value</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">Fn::Sub</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;http://127.0.0.1:3000/v1&#39;</span>
+<span class="w">  </span><span class="nt">HelloWorldFunction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello</span><span class="nv"> </span><span class="s">World</span><span class="nv"> </span><span class="s">Lambda</span><span class="nv"> </span><span class="s">Function</span><span class="nv"> </span><span class="s">ARN&quot;</span>
+<span class="w">    </span><span class="nt">Value</span><span class="p">:</span><span class="w"> </span><span class="kt">!GetAtt</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HelloWorldFunction.Arn</span>
+<span class="w">  </span><span class="nt">HelloWorldFunctionIamRole</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Implicit</span><span class="nv"> </span><span class="s">IAM</span><span class="nv"> </span><span class="s">Role</span><span class="nv"> </span><span class="s">created</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">World</span><span class="nv"> </span><span class="s">function&quot;</span>
+<span class="w">    </span><span class="nt">Value</span><span class="p">:</span><span class="w"> </span><span class="kt">!GetAtt</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HelloWorldFunction.Arn</span>
+</pre></div>
+</div>
+<p>NOTICE: We added the <cite>depto_ciudad</cite> event to the <cite>HelloWorldFunction</cite> resource. This event will trigger the <cite>depto_ciudad</cite> function when a GET request is made to the <cite>/ciudades/{ciudad}</cite> URL.</p>
+<p>Remember to rebuild the application using the <cite>sam build</cite> command and start the API using the <cite>sam local start-api</cite> command.</p>
+<p>This template defines:</p>
+<ul class="simple">
+<li><p><strong>RestApi</strong>: An AWS API Gateway that exposes your Lambda function.</p></li>
+<li><p><strong>HelloWorldFunction</strong>: The AWS Lambda function that will handle API requests.</p></li>
+<li><p><strong>Outputs</strong>: Provides the URL of your API and the ARN of your Lambda function.</p></li>
+</ul>
+</section>
+<section id="step-4-testing-the-new-url-parameters">
+<h2>Step 4: Testing the new URL Parameters<a class="headerlink" href="#step-4-testing-the-new-url-parameters" title="Permalink to this heading"></a></h2>
+<p>Build your application using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sam<span class="w"> </span>build
+$<span class="w"> </span>sam<span class="w"> </span><span class="nb">local</span><span class="w"> </span>start-api
+</pre></div>
+</div>
+<p>Your API will be available at <cite>http://127.0.0.1:3000</cite>.</p>
+<p>Send a GET request with the depto_ciudad parameter to the URL:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>http<span class="w"> </span>GET<span class="w"> </span>localhost:3000/ciudades/Medellin
+HTTP/1.1<span class="w"> </span><span class="m">200</span><span class="w"> </span>OK
+
+<span class="s2">&quot;departamento&quot;</span>:<span class="w"> </span><span class="s2">&quot;Antioquia&quot;</span>
+
+$<span class="w"> </span>http<span class="w"> </span>GET<span class="w"> </span>localhost:3000/ciudades/Bogota
+HTTP/1.1<span class="w"> </span><span class="m">200</span><span class="w"> </span>OK
+
+<span class="s2">&quot;departamento&quot;</span>:<span class="w"> </span><span class="s2">&quot;Cundinamarca&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="put-request">
+<h2>PUT request<a class="headerlink" href="#put-request" title="Permalink to this heading"></a></h2>
+<p>Our examples have only allowed GET requests. It’s possible to support additional HTTP methods with mango-pycore. Here’s an example of a view function that supports PUT:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/ciudades/</span><span class="si">{ciudad}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">update_ciudad</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">RestApiRequest</span><span class="p">):</span>
+    <span class="n">ciudad</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ciudad&#39;</span><span class="p">)</span>
+    <span class="c1"># Parse the request body as JSON</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">departamento</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;departamento&#39;</span><span class="p">)</span>
+    <span class="c1"># Update the CIUDADES dictionary</span>
+    <span class="n">CIUDADES</span><span class="p">[</span><span class="n">ciudad</span><span class="p">]</span> <span class="o">=</span> <span class="n">departamento</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ciudades&quot;</span><span class="p">:</span> <span class="n">CIUDADES</span><span class="p">}</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Remember to add the event to the template.yaml file, to rebuild the application using the <cite>sam build</cite> command and start the API using the <cite>sam local start-api</cite> command.</p>
+<p>To Test it RUN the following command in your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>http<span class="w"> </span>PUT<span class="w"> </span>localhost:3000/ciudades/Bogota<span class="w"> </span><span class="nv">departamento</span><span class="o">=</span><span class="s2">&quot;Santander&quot;</span>
+</pre></div>
+</div>
+<p>You should get the response:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>HTTP/1.1<span class="w"> </span><span class="m">200</span><span class="w"> </span>OK
+
+<span class="s2">&quot;ciudades&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;Bogota&quot;</span>:<span class="w"> </span><span class="s2">&quot;Santander&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;Medellin&quot;</span>:<span class="w"> </span><span class="s2">&quot;Antioquia&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>NOTICE that we are using the PUT method to update the value of the <cite>departamento</cite> key in the <cite>CIUDADES</cite> dictionary. We are using attributes of the <cite>request</cite> object to get the <cite>path_parameters</cite> and the <cite>body</cite> of the request. This is done through the RestApiRequest object from mango-pycore.</p>
+</section>
+<section id="post-request">
+<h2>POST request<a class="headerlink" href="#post-request" title="Permalink to this heading"></a></h2>
+<p>Here’s an example of a view function that supports POST:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/ciudades&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">create_ciudad</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">RestApiRequest</span><span class="p">):</span>
+    <span class="c1"># Parse the request body as JSON</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+    <span class="n">ciudad</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ciudad&#39;</span><span class="p">)</span>
+    <span class="n">departamento</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;departamento&#39;</span><span class="p">)</span>
+    <span class="c1"># Add the new ciudad to the CIUDADES dictionary</span>
+    <span class="n">CIUDADES</span><span class="p">[</span><span class="n">ciudad</span><span class="p">]</span> <span class="o">=</span> <span class="n">departamento</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">code</span><span class="o">=</span><span class="mi">201</span><span class="p">,</span>  <span class="c1"># 201 Created</span>
+        <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ciudades&quot;</span><span class="p">:</span> <span class="n">CIUDADES</span><span class="p">}</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Remember to add the event to the template.yaml file, to rebuild the application using the <cite>sam build</cite> command and start the API using the <cite>sam local start-api</cite> command.</p>
+<p>To Test it RUN the following command in your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>http<span class="w"> </span>POST<span class="w"> </span>localhost:3000/ciudades<span class="w"> </span><span class="nv">ciudad</span><span class="o">=</span><span class="s2">&quot;Cartagena&quot;</span><span class="w"> </span><span class="nv">departamento</span><span class="o">=</span><span class="s2">&quot;Bolivar&quot;</span>
+</pre></div>
+</div>
+<p>You should get the response:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>HTTP/1.1<span class="w"> </span><span class="m">201</span><span class="w"> </span>Created
+
+<span class="s2">&quot;ciudades&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;Bogota&quot;</span>:<span class="w"> </span><span class="s2">&quot;Cundinamarca&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;Medellin&quot;</span>:<span class="w"> </span><span class="s2">&quot;Antioquia&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;Cartagena&quot;</span>:<span class="w"> </span><span class="s2">&quot;Bolivar&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>NOTICE that we are using the POST method to add a new key-value pair to the <cite>CIUDADES</cite> dictionary.</p>
+</section>
+<section id="delete-request">
+<h2>DELETE request<a class="headerlink" href="#delete-request" title="Permalink to this heading"></a></h2>
+<p>Here’s an example of a view function that supports DELETE:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/ciudades/</span><span class="si">{ciudad}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DELETE&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">delete_ciudad</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">RestApiRequest</span><span class="p">):</span>
+    <span class="n">ciudad</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ciudad&#39;</span><span class="p">)</span>
+    <span class="c1"># Delete the ciudad from the CIUDADES dictionary</span>
+    <span class="k">del</span> <span class="n">CIUDADES</span><span class="p">[</span><span class="n">ciudad</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ciudades&quot;</span><span class="p">:</span> <span class="n">CIUDADES</span><span class="p">}</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Remember to add the event to the template.yaml file, to rebuild the application using the <cite>sam build</cite> command and start the API using the <cite>sam local start-api</cite> command.</p>
+<p>To Test it RUN the following command in your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>http<span class="w"> </span>DELETE<span class="w"> </span>localhost:3000/ciudades/Bogota
+</pre></div>
+</div>
+<p>You should get the response:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>HTTP/1.1<span class="w"> </span><span class="m">200</span><span class="w"> </span>OK
+
+<span class="s2">&quot;ciudades&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;Medellin&quot;</span>:<span class="w"> </span><span class="s2">&quot;Antioquia&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</section>
+<section id="request">
+<h2>REQUEST<a class="headerlink" href="#request" title="Permalink to this heading"></a></h2>
+<p>The <cite>request.path_parameters</cite> and the <cite>request.body</cite> are part of the RestApiRequest object from mango-pycore which also has the following properties:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;headers&#39;</span><span class="p">]</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">][</span><span class="s1">&#39;httpMethod&#39;</span><span class="p">]</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">][</span><span class="s1">&#39;requestTimeEpoch&#39;</span><span class="p">]</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">route_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">][</span><span class="s1">&#39;resourcePath&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">stage</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">][</span><span class="s1">&#39;stage&#39;</span><span class="p">]</span>
+<span class="c1"># Conditional Data</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">api_id</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;apiId&#39;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">request_id</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;requestId&#39;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cookies&#39;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="p">{})</span> <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="p">{})</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">is_base_64_encoded</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;isBase64Encoded&#39;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">path_parameters</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pathParameters&#39;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">query_string</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;queryStringParameters&#39;</span><span class="p">,</span> <span class="p">{})</span> <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;queryStringParameters&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="p">{}</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;protocol&#39;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">source_ip</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">][</span><span class="s1">&#39;identity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sourceIp&#39;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;requestContext&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;domainName&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is further explained in the <cite>mango_pycore</cite> documentation.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<p>Congratulations! You’ve successfully created and deployed a Rest API using <cite>mango_pycore</cite> and AWS SAM. You can now expand this basic example to build more complex serverless applications.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="helloworld.html" class="btn btn-neutral float-left" title="Hello World Tutorial with mango_pycore" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="websocketTutorial.html" class="btn btn-neutral float-right" title="Websocket Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Pablo Galindo Largacha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
