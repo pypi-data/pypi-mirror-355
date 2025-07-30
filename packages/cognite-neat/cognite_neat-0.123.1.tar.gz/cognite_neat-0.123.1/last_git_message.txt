@@ -1,0 +1,23 @@
+[NEAT-958, NEAT-811]  Check instance limit (#1222)
+
+# Description
+
+**Context**: We had incidents were neat has caused other applications to
+fail. This happen as the result of the user creating large amounts of
+instances in CDF using neat and filling up the instance capacity of the
+CDF project. This adds a fail-safe that stops the user from using neat
+to fill up to the instance limit in a CDF project and leave a margin
+such that other applications can continue to add new instances.
+
+## Bump
+
+- [x] Patch
+- [ ] Minor
+- [ ] Skip
+
+## Changelog
+### Fixed
+
+- When writing instances (nodes and edges) to CDF using the
+`neat.to.cdf.instance()` method, Neat now checks that CDF will have at
+least free space for 500 000 instances after the writing is done.
