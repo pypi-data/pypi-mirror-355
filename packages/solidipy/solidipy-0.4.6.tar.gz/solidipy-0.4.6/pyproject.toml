@@ -1,0 +1,35 @@
+[project]
+name = "solidipy"
+version = "0.4.6"
+description = "A variety of utilities for common tasks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE.txt"}
+keywords = ["utility", "python", "solidipy"]
+authors = [
+  {"name"="Jackson Prince"},
+  {"name"="Michael Karavan"},
+  {"name"="Joshua Schutza"},
+  {"name"="Jacob Roscoe"},
+  {"name"="Joe Vellella"}
+]
+maintainers = [{"name"="Jackson Prince"}]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+]
+
+[project.optional-dependencies]
+dev = ["Flask", "google-cloud-secret-manager", "pydantic", "SQLAlchemy"]
+test = ["Flask", "coverage", "pytest", "pytest-asyncio", "pydantic", "SQLAlchemy"]
+gcp = ["google-cloud-secret-manager>=2.16.1"]
+
+
+[project.urls]
+"Source" = "https://gitlab.com/WaveLynxTech/solidipy"
+
+[build-system]
+requires = ["setuptools>=69.0.0", "wheel>=0.42.0"]
+build-backend = "setuptools.build_meta"
