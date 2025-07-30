@@ -1,0 +1,285 @@
+Metadata-Version: 2.4
+Name: ai-research-planner
+Version: 0.0.2
+Summary: AI-powered research planning and execution system
+Author-email: AI Research Team <team@airesearch.com>
+License: MIT
+License-File: LICENSE
+Keywords: ai,execution,planning,research,web-scraping
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: anthropic>=0.7.0
+Requires-Dist: beautifulsoup4>=4.11.0
+Requires-Dist: fake-useragent>=1.4.0
+Requires-Dist: nltk>=3.8
+Requires-Dist: ollama>=0.1.7
+Requires-Dist: openai>=1.0.0
+Requires-Dist: pydantic>=1.10.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: requests>=2.28.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: spacy>=3.4.0
+Requires-Dist: typer[all]>=0.9.0
+Requires-Dist: typing-extensions>=4.4.0
+Provides-Extra: dev
+Requires-Dist: black>=22.0.0; extra == 'dev'
+Requires-Dist: flake8>=5.0.0; extra == 'dev'
+Requires-Dist: isort>=5.10.0; extra == 'dev'
+Requires-Dist: mypy>=0.991; extra == 'dev'
+Requires-Dist: pytest-asyncio>=0.20.0; extra == 'dev'
+Requires-Dist: pytest-cov>=4.0.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# AI Research Planner
+
+AI-powered research planning and execution system that creates intelligent research plans and gathers comprehensive data from the internet.
+
+## Features
+
+- 🧠 **AI-Powered Planning**: Generate intelligent research plans using configurable AI models
+- 🌐 **Internet Research**: Execute plans by searching and scraping web data
+- 🧹 **Smart Data Cleaning**: Clean data intelligently, skipping cleaning if it removes too much content
+- ⚙️ **Multi-Model Support**: Works with Ollama, OpenAI, Anthropic, and other AI providers
+- 📊 **Progress Monitoring**: Track execution with detailed feedback and logging
+- 🎯 **Complexity Levels**: Simple, standard, deep, and comprehensive research modes
+
+## Installation
+```!pip install ai-research-planner```<br>
+OR<br>
+```pip install ai-research-planner```<br>
+CLI Use:<br>
+```ai-research research "Latest AI developments 2025" --config config/config_openai.yaml --store-var my_results --verbose```<br>
+OR<br>
+```research-planner research "Latest AI developments 2025" --config config/config_openai.yaml --store-var my_results --verbose```<br>
+<br>
+```
+# ========================================
+# GOOGLE COLAB SETUP AND USAGE EXAMPLES
+# ========================================
+
+# 1. Install the package in Colab
+!pip install ai-research-planner
+
+# 2. Set up your OpenAI API key (recommended way)
+import os
+os.environ['OPENAI_API_KEY'] = 'your-openai-api-key-here'
+
+# 3. Import and use the research planner
+import asyncio
+from ai_research_planner.main import ResearchPlanner
+
+# ========================================
+# METHOD 1: Direct Assignment with = sign
+# ========================================
+
+async def research_with_assignment():
+    """Research and store results with = assignment."""
+    
+    # Create planner
+    planner = ResearchPlanner()
+    
+    # Configure for OpenAI
+    planner.config.set('ai_model.provider', 'openai')
+    planner.config.set('ai_model.model_name', 'gpt-4o-mini')
+    
+    # Research and assign to variable with =
+    my_results = await planner.research_to_variable(
+        "Latest AI developments in 2025", 
+        complexity="standard"
+    )
+    
+    return my_results
+
+# Run in Colab cell
+my_results = await research_with_assignment()
+
+# Now you can use my_results directly
+print(f"📊 Total items collected: {len(my_results['raw_data'])}")
+print(f"🧹 Cleaned items: {len(my_results['cleaned_data'])}")
+
+# Access specific data
+urls = [item['url'] for item in my_results['raw_data']]
+titles = [item['title'] for item in my_results['cleaned_data']]
+
+print(f"\n📝 Sample titles:")
+for i, title in enumerate(titles[:3], 1):
+    print(f"{i}. {title}")
+
+# ========================================
+# METHOD 2: Multiple Research Variables
+# ========================================
+
+# Research different topics and assign to different variables
+ai_trends = await planner.research_to_variable("AI trends 2025", "standard")
+tech_news = await planner.research_to_variable("Latest tech news", "simple")
+market_data = await planner.research_to_variable("Tech market analysis", "deep")
+
+# Compare results
+print(f"AI Trends: {len(ai_trends['raw_data'])} items")
+print(f"Tech News: {len(tech_news['raw_data'])} items") 
+print(f"Market Data: {len(market_data['raw_data'])} items")
+
+# ========================================
+# METHOD 3: JSON String Assignment
+# ========================================
+
+# Get results as JSON string for easy storage/sharing
+json_results = await planner.research_to_json("Quantum computing breakthroughs", "standard")
+
+# Save to file in Colab
+with open('research_results.json', 'w') as f:
+    f.write(json_results)
+
+# Load and use later
+import json
+loaded_results = json.loads(json_results)
+print(f"Loaded {len(loaded_results['raw_data'])} items from JSON")
+
+# ========================================
+# METHOD 4: Configuration in Colab
+# ========================================
+
+# Create config dictionary for different providers
+openai_config = {
+    'ai_model': {
+        'provider': 'openai',
+        'model_name': 'gpt-4o-mini',
+        'api_keys': {
+            'openai_api_key': 'your-api-key-here'
+        }
+    },
+    'research': {
+        'max_sources': 10,
+        'data_cleaning': {'enabled': False}  # Skip cleaning for comprehensive data
+    }
+}
+
+# Apply config
+for key, value in openai_config.items():
+    for subkey, subvalue in value.items():
+        if isinstance(subvalue, dict):
+            for subsubkey, subsubvalue in subvalue.items():
+                planner.config.set(f"{key}.{subkey}.{subsubkey}", subsubvalue)
+        else:
+            planner.config.set(f"{key}.{subkey}", subvalue)
+
+# ========================================
+# METHOD 5: Batch Research in Colab
+# ========================================
+
+async def batch_research():
+    """Perform multiple research tasks in batch."""
+    
+    research_topics = [
+        "AI in healthcare 2025",
+        "Renewable energy innovations",
+        "Space technology advances",
+        "Quantum computing applications"
+    ]
+    
+    results = {}
+    
+    for topic in research_topics:
+        print(f"🔍 Researching: {topic}")
+        results[topic] = await planner.research_to_variable(topic, "standard")
+        
+        # Show progress
+        item_count = len(results[topic]['raw_data'])
+        print(f"✅ Completed: {item_count} items collected")
+    
+    return results
+
+# Run batch research
+batch_results = await batch_research()
+
+# Analyze batch results
+for topic, data in batch_results.items():
+    print(f"\n📊 {topic}:")
+    print(f"   Raw items: {len(data['raw_data'])}")
+    print(f"   Cleaned items: {len(data['cleaned_data'])}")
+    print(f"   Success rate: {data['summary']['metadata']['successful_steps']}/{data['summary']['execution_steps']}")
+
+# ========================================
+# METHOD 6: Data Analysis in Colab
+# ========================================
+
+# Combine all collected data for analysis
+all_data = []
+for topic, data in batch_results.items():
+    for item in data['cleaned_data']:
+        item['research_topic'] = topic  # Add topic tag
+        all_data.append(item)
+
+print(f"📈 Total dataset: {len(all_data)} items across {len(batch_results)} topics")
+
+# Create DataFrame for analysis (if pandas is available)
+try:
+    import pandas as pd
+    
+    # Convert to DataFrame
+    df = pd.DataFrame(all_data)
+    
+    # Basic analysis
+    print(f"\n📋 Data Summary:")
+    print(f"   Unique domains: {df['domain'].nunique()}")
+    print(f"   Average word count: {df['word_count'].mean():.0f}")
+    print(f"   Top domains: {df['domain'].value_counts().head(3).to_dict()}")
+    
+    # Save to CSV
+    df.to_csv('research_dataset.csv', index=False)
+    print(f"💾 Dataset saved to research_dataset.csv")
+    
+except ImportError:
+    print("📝 Install pandas for advanced data analysis: !pip install pandas")
+
+# ========================================
+# METHOD 7: Real-time Display in Colab
+# ========================================
+
+from IPython.display import display, HTML, clear_output
+import time
+
+async def research_with_progress():
+    """Research with real-time progress display in Colab."""
+    
+    goal = "Latest developments in artificial intelligence"
+    
+    print("🚀 Starting research...")
+    display(HTML(f"<h3>🔬 Research Goal: {goal}</h3>"))
+    
+    # Start research
+    start_time = time.time()
+    results = await planner.research_to_variable(goal, "standard")
+    end_time = time.time()
+    
+    # Display results with HTML formatting
+    html_output = f"""
+    <div style="border: 2px solid #4CAF50; padding: 15px; border-radius: 10px; background-color: #f9f9f9;">
+        <h2>🎉 Research Completed!</h2>
+        <p><strong>⏱️ Time taken:</strong> {end_time - start_time:.1f} seconds</p>
+        <p><strong>📊 Raw data items:</strong> {len(results['raw_data'])}</p>
+        <p><strong>🧹 Cleaned data items:</strong> {len(results['cleaned_data'])}</p>
+        <p><strong>✅ Success rate:</strong> {results['summary']['metadata']['successful_steps']}/{results['summary']['execution_steps']}</p>
+    </div>
+    """
+    
+    display(HTML(html_output))
+    
+    return results
+
+# Run with progress display
+research_results = await research_with_progress()
+```
