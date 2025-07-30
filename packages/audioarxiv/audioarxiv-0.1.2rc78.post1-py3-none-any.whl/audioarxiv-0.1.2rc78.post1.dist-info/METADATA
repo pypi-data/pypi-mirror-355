@@ -1,0 +1,127 @@
+Metadata-Version: 2.4
+Name: audioarxiv
+Version: 0.1.2rc78.post1
+Summary: Turn arXiv papers into audio. audioarxiv lets you fetch the research papers from arXiv and read them aloud.
+Author-email: "Isaac C. F. Wong" <isaac.cf.wong@gmail.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+License-File: LICENSE
+Requires-Dist: configargparse
+Requires-Dist: arxiv
+Requires-Dist: pyttsx3
+Requires-Dist: pymupdf
+Requires-Dist: sympy
+Requires-Dist: nltk
+Requires-Dist: pandas
+Requires-Dist: platformdirs
+Requires-Dist: pytest ; extra == "dev"
+Requires-Dist: pre-commit ; extra == "dev"
+Requires-Dist: black ; extra == "dev"
+Requires-Dist: flake8 ; extra == "dev"
+Requires-Dist: pyspark>=3.0.0 ; extra == "spark"
+Requires-Dist: bandit[toml]==1.8.3 ; extra == "test"
+Requires-Dist: black==25.1.0 ; extra == "test"
+Requires-Dist: check-manifest==0.50 ; extra == "test"
+Requires-Dist: flake8-bugbear==24.12.12 ; extra == "test"
+Requires-Dist: flake8-docstrings ; extra == "test"
+Requires-Dist: flake8-formatter_junit_xml ; extra == "test"
+Requires-Dist: flake8 ; extra == "test"
+Requires-Dist: flake8-pyproject ; extra == "test"
+Requires-Dist: pre-commit==4.2.0 ; extra == "test"
+Requires-Dist: pylint==3.3.7 ; extra == "test"
+Requires-Dist: pylint_junit ; extra == "test"
+Requires-Dist: pytest-cov==6.2.1 ; extra == "test"
+Requires-Dist: pytest-mock<3.14.1 ; extra == "test"
+Requires-Dist: pytest-runner ; extra == "test"
+Requires-Dist: pytest==8.4.0 ; extra == "test"
+Requires-Dist: pytest-github-actions-annotate-failures ; extra == "test"
+Requires-Dist: shellcheck-py==0.10.0.1 ; extra == "test"
+Project-URL: Documentation, https://isaac-cf-wong.github.io/audioarxiv
+Project-URL: Homepage, https://github.com/isaac-cf-wong/audioarxiv
+Project-URL: Release Notes, https://github.com/isaac-cf-wong/audioarxiv/releases
+Project-URL: Source, https://github.com/isaac-cf-wong/audioarxiv
+Project-URL: Tracker, https://github.com/isaac-cf-wong/audioarxiv/issues
+Provides-Extra: dev
+Provides-Extra: spark
+Provides-Extra: test
+
+# 🎧 audioarxiv
+
+[![PyPI version](https://badge.fury.io/py/audioarxiv.svg)](https://pypi.org/project/audioarxiv/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Build](https://img.shields.io/github/actions/workflow/status/isaac-cf-wong/audioarxiv/CI.yml?branch=main)](https://github.com/isaac-cf-wong/audioarxiv/actions)
+[![codecov](https://codecov.io/gh/isaac-cf-wong/audioarxiv/branch/main/graph/badge.svg)](https://codecov.io/gh/isaac-cf-wong/audioarxiv)
+[![Python Version](https://img.shields.io/pypi/pyversions/audioarxiv)](https://pypi.org/project/audioarxiv/)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Documentation Status](https://img.shields.io/badge/documentation-online-brightgreen)](https://isaac-cf-wong.github.io/audioarxiv/)
+[![DOI](https://zenodo.org/badge/956387048.svg)](https://doi.org/10.5281/zenodo.15251111)
+
+📚 **Documentation**: [https://isaac-cf-wong.github.io/audioarxiv/](https://isaac-cf-wong.github.io/audioarxiv/)
+
+**Turn arXiv papers into audio.**
+`audioarxiv` lets you fetch the research papers from arXiv and read them aloud.
+
+---
+
+## 🚀 Features
+
+- 🔍 Search and retrieve papers using the arXiv API
+- 📄 Extract and parse the content from PDF (excluding title/abstract)
+- 🗣️ Convert text to speech with natural voice output
+- 🧠 Great for passive learning while commuting or doing chores
+
+---
+
+## 📦 Installation
+
+Install from [PyPI](https://pypi.org/project/audioarxiv/):
+
+```bash
+pip install audioarxiv
+```
+
+---
+
+## 🛠 Usage
+
+```bash
+audioarxiv --id "<arxiv id>"
+```
+
+### 🎙️ Text-to-Speech Options
+
+You can customize the voice engine using `pyttsx3` by specifying the speaking rate, volume, voice, and pause between sentences.
+
+```bash
+audioarxiv --id "<arxiv id>" --rate <rate> --volume <volume> --voice "<voice>" --pause-seconds <pause-seconds>
+```
+
+- `rate`: Number of words per minutes. Defaults to 140.
+- `volume`: Volume of the audio. Defaults to 0.9.
+- `voice`: Voice of the audio. Defaults to the pyttsx3 default voice.
+- `pause-seconds`: Number of seconds to pause between sentences.
+
+The settings are saved, so you only need to provide your preferred settings once.
+
+## Contributing
+
+Contributions and suggestions are welcome! Whether it's fixing bugs, improving documentation, or adding new features, your help is appreciated.
+
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
+
+To get started:
+
+- Fork the repository
+- Create a new branch for your changes
+- Submit a pull request
+
+If you're unsure where to begin, feel free to open an issue or ask for guidance!
+
