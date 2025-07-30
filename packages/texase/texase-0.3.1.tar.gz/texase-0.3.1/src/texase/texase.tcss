@@ -1,0 +1,161 @@
+Screen {
+    /* align: center middle; */
+    layers: table details boxontop;
+}
+
+MiddleContainer {
+    align: center top;
+}
+
+Details {
+    max-width: 30%;
+    min-width: 20%;
+    layer: details;
+    dock: left;
+}
+
+#unsaved_changes {
+    color: $warning;
+    padding: 1 4;
+    text-align: center;
+    text-style: bold;
+    width: 1fr;
+    dock: bottom
+}
+
+#unsaved_changes.-hidden {
+    display: none;
+}
+
+#kvp {
+    height: 2fr;
+}
+
+#datalist {
+    min-height: 25%;
+}
+
+Title {
+    background: $boost;
+    color: $primary-lighten-3;
+    padding: 1 4;
+    text-align: center;
+    text-style: bold;
+    width: 1fr;
+}
+
+#table {
+    layer: table;
+    height: 1fr;
+}
+
+.topbox {
+    width: 70%;
+    layer: boxontop;
+}
+
+#filterkey {
+    max-width: 40%;
+    min-width: 20%;
+    /* height: 3; */
+    /* border: round grey; */
+}
+
+#filtervalue {
+    max-width: 40%;
+    min-width: 20%;
+}
+
+#filteroperator {
+    width: 10;
+}
+
+.filter-buttons {
+    min-width: 5;
+    min-height: 1;
+}
+
+#add-filter {
+    width: 6;
+}
+
+#only-marked-checkbox {
+    dock: bottom;
+}
+
+#filter-box {
+    height: 50%;
+}
+
+Filter {
+    align: center middle;
+    layout: horizontal;
+}
+
+.bottombox {
+    layer: table;
+    height: 3;
+    dock: bottom;
+}
+
+.bottom-inputs {
+    border-left: none;
+    width: 1fr;
+    padding: 0 0;
+}
+
+.bottom-labels {
+    padding: 0 1;
+    background: $boost;
+    color: $text;
+    width: auto;
+    border: tall $accent;
+    border-right: none;
+}
+
+.bottom-labels.-invalid {
+    border: tall $error;
+    border-right: none;
+}
+
+KeyBox {
+    width: 1fr;
+    height: auto;
+    layer: table;
+    /* dock: bottom; */
+}
+
+
+EditableItem > Label {
+    background: $boost;
+
+}
+
+.editable-input {
+    padding: 0 0;
+    border: none;
+    height: 1;
+    background: $boost;
+}
+
+FilesIOScreen {
+    align: center middle;
+}
+
+FilesIOScreen > Container {
+    width: 50%;
+    border: round $warning;
+    height: auto;
+
+}
+
+FilesIOScreen > Container > DirectoryTree {
+    height: auto;
+}
+
+FilesIOScreen > Container > Label {
+    text-align: center;
+    width: 1fr;
+    height: auto;
+    padding: 0 2;
+}
