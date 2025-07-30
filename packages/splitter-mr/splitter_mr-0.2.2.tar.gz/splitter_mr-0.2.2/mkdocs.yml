@@ -1,0 +1,42 @@
+site_name: Splitter MR Docs
+theme:
+  name: material
+  logo: assets/splitter_mr_logo_white.svg
+  features:
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Developer Guide: 
+    - Overview: api_reference/api_reference.md
+    - Readers: api_reference/reader.md
+    - Splitters: api_reference/splitter.md
+  - Examples:
+    - Overview: examples/examples.md
+    - RecursiveCharacterSplitter: examples/recursive_character_splitter.md
+    - HTMLTagSplitter: examples/html_tag_splitter.md
+  - CHANGELOG: CHANGELOG.md
+
+extra_css:
+  - assets/extra.css
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_root_heading: false
+            show_root_full_path: false
+            heading_level: 5
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - codehilite:
+      guess_lang: false
+      linenums: false
+      pygments_style: default
+  - toc:
+      permalink: true
