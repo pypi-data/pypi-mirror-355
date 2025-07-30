@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "midas-sndata"
+dynamic = ["version"]
+description = "A Midas module for the Smart Nord dataset."
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = []
+authors = [
+    { name = "Stephan Balduin", email = "stephan.balduin@offis.de"}
+]
+license = "LGPL-3.0-only"
+dependencies = [
+    "midas_powerseries>=2.1.0a3",
+    "pandas",
+    "tables",
+]
+
+[project.urls]
+Documentation = "https://midas-mosaik.gitlab.io/midas"
+
+[tool.setuptools.dynamic]
+version = {attr = "midas_smartnord.__version__"}
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["F401"]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+docstring-code-format = true
+skip-magic-trailing-comma = true
