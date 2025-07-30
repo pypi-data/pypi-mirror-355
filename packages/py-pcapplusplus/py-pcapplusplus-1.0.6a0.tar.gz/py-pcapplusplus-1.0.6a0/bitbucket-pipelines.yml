@@ -1,0 +1,52 @@
+#  Template python-build
+
+#  This template allows you to validate your python code.
+#  The workflow allows running tests and code linting on the default branch.
+
+steps:
+  - step: &build-and-test
+        name: Build and test py-pcapplusplus
+        image: galr2103/py_pcap_builder_x86_64:latest
+        script:
+          - sh ./scripts/uninstall_py_pcap.sh
+          - mkdir -p ~/.pip  
+          - echo -e "[global]\nindex-url = https://pypi.org/simple" > ~/.pip/pip.conf
+          - pip install --upgrade pip
+          - pip install pytest
+          - pip install -e .
+          # - pytest -s -v tests/* --junitxml=test-reports/report.xml
+
+  - step: &deploy-pypi-x86-64
+        name: Deploy py-pcapplusplus (x86 64) to PyPI
+        image: galr2103/py_pcap_builder_x86_64:latest
+        script:
+          - sh ./scripts/uninstall_py_pcap.sh
+          - sh ./scripts/pipeline_deploy_pypi.sh
+
+  - step: &deploy-pypi-aarch64
+        name: Deploy py-pcapplusplus (aarch64) to PyPI
+        image: galr2103/py_pcap_builder_aarch64:latest
+        runs-on:
+          - self.hosted
+          - linux.arm64
+        script:
+          - sh ./scripts/uninstall_py_pcap.sh
+          - sh ./scripts/pipeline_deploy_pypi.sh
+
+pipelines:
+  custom:
+    Build and test:
+      - step: *build-and-test
+
+    Deploy to PyPI:
+      - step: *build-and-test
+      - step: *deploy-pypi-x86-64
+      - step: *deploy-pypi-aarch64
+
+    Deploy to PyPI only x86-64:
+      - step: *build-and-test
+      - step: *deploy-pypi-x86-64
+
+    Deploy to PyPI only aarch64:
+      - step: *build-and-test
+      - step: *deploy-pypi-aarch64
