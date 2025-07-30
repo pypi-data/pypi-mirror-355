@@ -1,0 +1,314 @@
+Metadata-Version: 2.4
+Name: test-impact-analyzer
+Version: 0.1.0
+Summary: A smart GitHub webhook service that analyzes PRs to determine test impact
+Home-page: https://github.com/uppadhyayraj/test-impact-analyzer
+Author: Raj Uppadhyay
+Author-email: Raj Uppadhyay <uppadhyayraj@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/uppadhyayraj/test-impact-analyzer
+Project-URL: Repository, https://github.com/uppadhyayraj/test-impact-analyzer.git
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Testing
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: flask>=3.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pydantic-settings>=2.0.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: gitpython>=3.1.0
+Requires-Dist: pytest>=8.0.0
+Requires-Dist: pytest-cov>=4.1.0
+Requires-Dist: astroid>=3.0.0
+Requires-Dist: asyncio>=3.4.3
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: typing-extensions>=4.9.0
+Requires-Dist: colorlog>=6.8.0
+Requires-Dist: openai>=1.0.0
+Requires-Dist: langchain>=0.1.0
+Requires-Dist: langchain-ollama>=0.1.0
+Requires-Dist: crewai>=0.1.0
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+# Test Impact Analyzer Agent
+
+A smart GitHub webhook service that analyzes pull requests to determine which tests should be run based on code changes. The agent uses AI to understand code dependencies and suggest relevant tests.
+
+## Features
+
+- GitHub webhook integration for pull request events
+- Intelligent test impact analysis
+- Automatic PR comments with analysis results
+- Support for multiple programming languages
+- Configurable via environment variables
+
+## Overall Architecture 
+```
++------------------+    +------------------+    +------------------+
+|  GitHub Webhook  |--->|    AI Agent      |--->|   Test Runner    |
+|   (PR Events)    |    |(Direct Git API)  |    |  (pytest/jest)   |
++------------------+    +------------------+    +------------------+
+                               |
+                       +------------------+
+                       |   Local Git +    |
+                       |   GitHub API     |
+                       +------------------+
+                               |
+                       +------------------+
+                       |  Ollama (Local   |
+                       |      LLM)        |
+                       +------------------+
+```
+
+## Prerequisites
+
+- Python 3.8 or higher
+- Git 2.x or higher
+- Node.js 16+ (for JavaScript/TypeScript projects)
+- Docker (optional, for containerized deployment)
+- 8GB RAM minimum (16GB recommended for Ollama LLM)
+- Operating System:
+  - Linux (Ubuntu 20.04+, CentOS 7+)
+  - macOS (Big Sur or newer)
+  - Windows 10/11 with WSL2
+- Disk Space:
+  - 5GB for base installation
+  - 4GB+ for Ollama models
+  - Additional space for analyzed repositories
+
+## Installation
+
+### Option 1: Install from PyPI (Recommended)
+```bash
+pip install test-impact-analyzer
+```
+
+### Option 2: Install from source
+
+1. Clone the repository:
+```bash
+git clone https://github.com/uppadhyayraj/test-impact-analyzer-agent.git
+cd test-impact-analyzer-agent
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables in `.env`:
+```env
+# GitHub token with minimal scope (pull_request:write) for PR comments
+GITHUB_TOKEN=your_github_token
+
+# Server configuration (optional, defaults shown)
+PORT=5043
+HOST=0.0.0.0
+DEBUG=False
+```
+
+Note: For security best practices, limit the GitHub token scope to only `pull_request:write` access. Here's how to create a token with minimal permissions:
+
+1. Go to GitHub Settings > Developer Settings > Personal access tokens > Fine-grained tokens
+2. Click "Generate new token"
+3. Set token name (e.g., "Test Impact Analyzer")
+4. Set expiration date
+5. Select the specific repository you want to analyze
+6. Under "Repository permissions":
+   - Pull requests: Access level "Write"
+   - Leave all other permissions unchecked
+7. Click "Generate token"
+8. Copy the token and add it to your `.env` file
+
+This minimal scope is sufficient for posting PR comments while following security best practices.
+
+## Ollama Setup
+
+1. Install Ollama:
+```bash
+# macOS and Linux
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Windows
+# Download from https://ollama.com/download/windows
+```
+
+2. Pull the required model:
+```bash
+ollama pull qwen2.5-coder:7b
+```
+
+3. Update your `.env` file with Ollama configuration:
+```env
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=qwen2.5-coder:7b
+```
+
+4. Verify Ollama is running:
+```bash
+curl http://localhost:11434/api/health
+```
+
+Note: Ensure Ollama is running before starting the webhook server.
+
+## Usage
+
+### Running as a Webhook Server
+
+1. Start the server:
+```bash
+python src/app.py
+```
+
+2. Configure your GitHub repository webhook:
+   - Webhook URL: `http://your-server:5043/webhook`
+   - Events: Select "Pull requests"
+   - Content type: `application/json`
+
+The server will automatically:
+- Analyze new pull requests
+- Comment with test recommendations
+- Update analysis when PRs are updated
+
+### Running Webhook Locally
+
+1. Install ngrok:
+```bash
+# macOS with Homebrew
+brew install ngrok
+
+# Windows with Chocolatey
+choco install ngrok
+
+# Or download from https://ngrok.com/download
+```
+
+2. Start the webhook server:
+```bash
+python src/github_webhook.py
+```
+
+3. In a new terminal, create a public URL with ngrok:
+```bash
+ngrok http 5043
+```
+
+4. Configure your GitHub repository webhook:
+   - Copy the ngrok URL (e.g., `https://a1b2-c3d4.ngrok.io`)
+   - Webhook URL: `https://your-ngrok-url/webhook`
+   - Events: Select "Pull requests"
+   - Content type: `application/json`
+   - Secret: Leave empty for testing
+
+Note: The ngrok URL changes each time you restart ngrok. Update your webhook URL in GitHub repository settings accordingly.
+
+### Running from Command Line
+
+You can also run the analysis directly on a repository:
+
+```bash
+python main.py --repo-path /path/to/repo --base-branch main --target-branch feature --format detailed
+```
+
+Options:
+- `--repo-path`: Path to the git repository
+- `--base-branch`: Base branch for comparison (default: main)
+- `--target-branch`: Target branch with changes
+- `--format`: Output format (json, markdown, or detailed)
+- `--output-file`: Optional file to write results to
+
+## Configuration
+
+The application can be configured using environment variables or a `.env` file:
+
+1. Create a `.env` file in your project directory:
+```bash
+cp example.env .env
+```
+
+2. Edit the `.env` file with your configuration:
+```env
+# GitHub token with minimal scope (pull_request:write) for PR comments
+GITHUB_TOKEN=your_github_token
+
+# Server configuration (optional, defaults shown)
+PORT=5043
+HOST=0.0.0.0
+DEBUG=False
+```
+
+Note: For security best practices, limit the GitHub token scope to only `pull_request:write` access. Here's how to create a token with minimal permissions:
+
+1. Go to GitHub Settings > Developer Settings > Personal access tokens > Fine-grained tokens
+2. Click "Generate new token"
+3. Set token name (e.g., "Test Impact Analyzer")
+4. Set expiration date
+5. Select the specific repository you want to analyze
+6. Under "Repository permissions":
+   - Pull requests: Access level "Write"
+   - Leave all other permissions unchecked
+7. Click "Generate token"
+8. Copy the token and add it to your `.env` file
+
+This minimal scope is sufficient for posting PR comments while following security best practices.
+
+## Project Structure
+
+```
+test-impact-analyzer-agent/
+├── src/
+│   ├── app.py              # Main Flask application
+│   ├── config.py           # Configuration management
+│   ├── services/
+│   │   ├── github_service.py   # GitHub API interactions
+│   │   └── repo_service.py     # Git repository operations
+│   └── utils/
+│       └── logging.py          # Logging configuration
+├── main.py                 # Test analysis implementation
+├── requirements.txt        # Project dependencies
+└── README.md              # Project documentation
+```
+
+## Development
+
+1. Install dev dependencies:
+```bash
+pip install -r requirements-dev.txt
+```
+
+2. Run tests:
+```bash
+pytest
+```
+
+3. Run linting:
+```bash
+flake8
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+MIT License - see LICENSE file for details
