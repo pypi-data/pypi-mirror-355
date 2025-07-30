@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: unlock-pdf
+Version: 0.4.5
+Summary: Unlocks editing permissions of PDFs that don't have a password
+Project-URL: Homepage, https://github.com/elvishcm/unlock_pdf
+Author-email: Elvis Mak <elvishcmak@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: decrypt,pdf,productivty,tool,unlock
+Requires-Python: >=3.9
+Requires-Dist: pikepdf>=8.5.3
+Requires-Dist: pyside6>=6.2.2.1
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: isort; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Provides-Extra: gui
+Requires-Dist: pyside6; extra == 'gui'
+Description-Content-Type: text/markdown
+
+# unlock_pdf 
+
+This is a command-line tool that wraps around pikepdf to provide a convenient way to remove editing restrictions on PDFs with a write restriction but without a password.
+
+## Project structure
+See https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/
+
+Also see https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/#running-a-command-line-interface-from-source-with-src-layout for how to call the unlock_pdf from cli 
+
+See https://hatch.pypa.io/1.9/config/metadata/#entry-points for how to define entry points for the 
+
+## Installation
+### Installing with uv (Recommended)
+uv automatically places the `unlock_pdf` command into PATH and puts it in a persistent environment such that it can be accessed everywhere from the terminal.
+```
+uv tool install unlock_pdf
+```
+
+### Insatlling with PyPI
+If you prefer to have it in one specific environment, you can install with pip as well.
+```
+pip install unlock_pdf
+```
+
+## Examples
+Examples below are demonstrated assuming a installation with uv. You may use the following 
+To unlock 1 pdf:
+```
+$ unlock_pdf path/to/pdf 
+```
+
+### Directory flag
+To unlock all pdf's within a directory you will need to call the `-d` flag.
+```
+$ unlock_pdf path/to/folder -d
+```
+
+### Suffix flag
+The default behavior is to add `_unlocked` at the end of the filename.
+To change this, use the `-s` flag:
+```
+$ unlock_pdf path/to/pdf -d -s "_new"
+```
+
+
