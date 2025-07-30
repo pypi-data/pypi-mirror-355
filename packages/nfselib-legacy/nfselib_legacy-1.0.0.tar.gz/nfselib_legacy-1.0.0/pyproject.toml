@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=61.0"] # Specify a modern setuptools version
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nfselib-legacy"
+dynamic = ["version"]
+description = "nfselib: NFS-e electronic invoicing library for Brazil"
+readme = "README.md"
+authors = [
+    { name = "Raphaël Valyi", email = "raphael.valyi@akretion.com.br" },
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+keywords = ["e-invoicing", "NFS-e", "ERP", "Odoo"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Text Processing :: Markup :: XML",
+]
+
+dependencies = [
+    "xsdata",
+]
+
+[project.urls]
+Homepage = "https://github.com/akretion/nfselib"
+Source = "https://github.com/akretion/nfselib"
+
+[project.optional-dependencies]
+test = [
+    "xmldiff",
+    "pytest",
+    "pytest-cov",
+    "tox",
+]
+
+# --- Tool Configurations ---
+
+[tool.setuptools]
+packages = ["nfselib", "schemas", "WSDL"]
+
+[tool.setuptools.dynamic]
+version = {attr = "nfselib.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--color=yes"
+
+[tool.coverage.run]
+source = ["nfselib", "schemas", "WSDL"]
+branch = true
+
+[tool.flake8]
+exclude = ["tests/*"]
+max-line-length = 88
+ignore = ["W503", "ANN101", "ANN102", "E203"]
+
+[tool.doc8]
+max-line-length = 88
