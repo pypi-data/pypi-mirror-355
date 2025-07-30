@@ -1,0 +1,46 @@
+Metadata-Version: 2.4
+Name: torch-tomogram
+Version: 0.0.1
+Summary: Tomogram reconstruction, subtomogram reconstruction, and subtilt extraction for cryo-ET.
+Project-URL: homepage, https://github.com/teamtomo/torch-tomogram
+Project-URL: repository, https://github.com/teamtomo/torch-tomogram
+Author-email: Marten Chaillet <martenchaillet@gmail.com>, Alister Burt <alisterburt@gmail.com>
+License: BSD-3-Clause
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Requires-Dist: einops
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: torch-affine-utils
+Requires-Dist: torch-fourier-slice
+Requires-Dist: torch-grid-utils
+Requires-Dist: torch-subpixel-crop
+Provides-Extra: dev
+Requires-Dist: ipython; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: pdbpp; extra == 'dev'
+Requires-Dist: pre-commit; extra == 'dev'
+Requires-Dist: rich; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: pytest; extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
+Description-Content-Type: text/markdown
+
+# torch-tomogram
+
+[![License](https://img.shields.io/pypi/l/torch-tomogram.svg?color=green)](https://github.com/tlambert03/torch-tomogram/raw/main/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/torch-tomogram.svg?color=green)](https://pypi.org/project/torch-tomogram)
+[![Python Version](https://img.shields.io/pypi/pyversions/torch-tomogram.svg?color=green)](https://python.org)
+[![CI](https://github.com/tlambert03/torch-tomogram/actions/workflows/ci.yml/badge.svg)](https://github.com/tlambert03/torch-tomogram/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/tlambert03/torch-tomogram/branch/main/graph/badge.svg)](https://codecov.io/gh/tlambert03/torch-tomogram)
+
+(sub-)Tomogram reconstruction, subtilt extraction for cryo-ET.
