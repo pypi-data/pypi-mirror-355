@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "playwright_interceptor"
+dynamic = ["version"]
+description = "Addon for Playwright for intercepting and modifying HTTP requests and responses."
+readme = "README.md"
+authors = [
+    {name = "Miskler"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "playwright",
+    "beartype"
+]
+
+
+[project.urls]
+Homepage = "https://github.com/Open-Inflation/playwright_interceptor"
+
+[tool.setuptools.dynamic]
+version = {attr = "playwright_interceptor.__version__"}
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py", "*_tests.py"]
