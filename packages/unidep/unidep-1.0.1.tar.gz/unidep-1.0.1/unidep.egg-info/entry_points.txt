@@ -1,0 +1,11 @@
+[console_scripts]
+unidep = unidep:_cli.main
+
+[hatch]
+unidep = unidep._hatch_integration
+
+[pytest11]
+affected = unidep._pytest_plugin
+
+[setuptools.finalize_distribution_options]
+unidep = unidep._setuptools_integration:_setuptools_finalizer
