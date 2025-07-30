@@ -1,0 +1,94 @@
+name: Linting CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - "src/**/*.pyi"
+      - ".github/workflows/lint-ci.yaml"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "README.md"
+  pull_request:
+    paths:
+      - "src/**/*.pyi"
+      - ".github/workflows/lint-ci.yaml"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "README.md"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  python-lint:
+    name: Check code formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.13"
+          python-version: "3.12"
+
+      - name: Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run ruff check
+        run: |
+          uv run --group lint ruff check --output-format=github .
+
+      - name: Run ruff format
+        run: |
+          uv run --group lint ruff format .
+
+  python-typing-lint:
+    name: Check code typing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.13"
+          python-version: "3.12"
+
+      - name: Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run pyright
+        run: |
+          uv run --group lint pyright src
+
+  spelling-lint:
+    name: Check spelling
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.13"
+          python-version: "3.12"
+
+      - name: Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run codespell
+        run: |
+          uv run --group lint codespell src README.md

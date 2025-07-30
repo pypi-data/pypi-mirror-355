@@ -1,0 +1,61 @@
+[project]
+name = "mono-stubs"
+dynamic = ["version"]
+description = "Unofficial stubs for the Metri3D repo."
+authors = [{ name = "Hoel Bagard", email = "hoel.bagard@gmail.com" }]
+readme = "README.md"
+license = "MIT"
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+]
+requires-python = ">=3.8"
+dependencies = ["mmengine>=0.10.7", "torch>=2.0.0"]
+
+[dependency-groups]
+lint = ["codespell>=2.4.1", "pyright>=1.1.402", "ruff>=0.11.13"]
+
+[project.urls]
+"Bug Tracker" = "https://github.com/hoel-bagard/metric3d-stubs/issues"
+"Homepage" = "https://github.com/hoel-bagard/metric3d-stubs"
+"Repository" = "https://github.com/hoel-bagard/metric3d-stubs"
+
+[build-system]
+requires = ["hatchling>=1.10.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/mono-stubs/__init__.pyi"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mono-stubs"]
+
+[tool.ruff]
+line-length = 120
+exclude = [".venv"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "COM812", # conflict with formatter
+  "D203",   # one-blank-line-before-class (incompatible with D211)
+  "D213",   # multi-line-summary-second-line (incompatible with D212)
+  "D413",   # Missing blank line after last section ("Args")
+  "PYI021", # docstring-in-stub -> Still add some because otherwise there are none.
+]
+
+[tool.ruff.lint.isort]
+order-by-type = false
+known-first-party = ["mono"]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
