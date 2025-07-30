@@ -1,0 +1,582 @@
+<div align="center">
+  <h1>🌍 GeoIP Python SDK</h1>
+  
+  <p><strong>Enterprise-grade IP Geolocation API client for Python</strong></p>
+  
+  <p>A developer-friendly, type-safe Python SDK for the GeoIPAPI.com service, providing real-time IP geolocation data for personalization, analytics, and security applications.</p>
+
+  <div>
+    <a href="https://opensource.org/licenses/MIT">
+      <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" />
+    </a>
+    <img src="https://img.shields.io/badge/Python-3.9+-blue.svg" alt="Python 3.9+" />
+    <img src="https://img.shields.io/badge/Type_Safety-Pydantic-green.svg" alt="Type Safety: Pydantic" />
+  </div>
+</div>
+
+## 📋 Table of Contents
+
+- [✨ Features](#-features)
+- [🚀 Quick Start](#-quick-start)
+- [📦 Installation](#-installation)
+- [💡 Usage Examples](#-usage-examples)
+- [🏗️ Project Structure](#️-project-structure)
+- [🔧 Configuration](#-configuration)
+- [📚 API Reference](#-api-reference)
+- [🔄 Error Handling](#-error-handling)
+- [🔁 Retries](#-retries)
+- [🛠️ Custom HTTP Client](#️-custom-http-client)
+- [💾 Resource Management](#-resource-management)
+- [🐛 Debugging](#-debugging)
+- [🧪 Testing](#-testing)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
+## ✨ Features
+
+- 🎯 **Type-safe** - Full TypeScript-style type annotations with Pydantic
+- ⚡ **Async/Sync** - Support for both synchronous and asynchronous operations
+- 🔄 **Automatic Retries** - Configurable retry strategies with exponential backoff
+- 🛡️ **Error Handling** - Comprehensive error handling with custom exceptions
+- 🌐 **Multiple Formats** - Support for JSON, JSONP, XML, and YAML response formats
+- 🔧 **Customizable** - Custom HTTP clients, headers, and configuration options
+- 📝 **Well Documented** - Extensive documentation and examples
+- 🏢 **Enterprise Ready** - Built for production use with proper resource management
+
+## 🚀 Quick Start
+
+```python
+from geoipapi import GeoIP
+
+# Initialize the client
+with GeoIP() as client:
+    # Get current IP address
+    response = client.geo_ip_endpoints.get_ip()
+    print(f"Your IP: {response}")
+    
+    # Get detailed geolocation data
+    geo_data = client.geo_ip_endpoints.get_ip_data()
+    print(f"Location: {geo_data}")
+```
+
+## 📦 Installation
+
+The SDK supports multiple installation methods to fit your development workflow.
+
+### Using pip
+
+```bash
+pip install geoipapi
+```
+
+### Using Poetry
+
+```bash
+poetry add geoipapi
+```
+
+### Using uv (Recommended for scripts)
+
+For quick scripts without setting up a full project:
+
+```bash
+uvx --from geoipapi python
+```
+
+Or create a standalone script:
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#     "geoipapi",
+# ]
+# ///
+
+from geoipapi import GeoIP
+
+# Your code here...
+```
+
+Save as `script.py` and run with `uv run script.py`.
+
+### Development Installation
+
+For contributing or development:
+
+```bash
+git clone <repository-url>
+cd geo-ip-python
+pip install -e ".[dev]"
+```
+
+## 💡 Usage Examples
+
+### Basic Synchronous Usage
+
+```python
+from geoipapi import GeoIP
+
+# Using context manager (recommended)
+with GeoIP() as client:
+    # Get your current IP address
+    ip_response = client.geo_ip_endpoints.get_ip()
+    print(f"Current IP: {ip_response}")
+    
+    # Get detailed geolocation information
+    geo_data = client.geo_ip_endpoints.get_ip_data()
+    print(f"Country: {geo_data.country}")
+    print(f"City: {geo_data.city}")
+    print(f"Coordinates: {geo_data.lat}, {geo_data.lon}")
+```
+
+### Asynchronous Usage
+
+```python
+import asyncio
+from geoipapi import GeoIP
+
+async def main():
+    async with GeoIP() as client:
+        # Async operations
+        ip_response = await client.geo_ip_endpoints.get_ip_async()
+        geo_data = await client.geo_ip_endpoints.get_ip_data_async()
+        
+        print(f"IP: {ip_response}")
+        print(f"Location: {geo_data.city}, {geo_data.country}")
+
+# Run the async function
+asyncio.run(main())
+```
+
+### Custom Configuration
+
+```python
+from geoipapi import GeoIP
+from geoipapi.utils import RetryConfig, BackoffStrategy
+
+# Custom retry configuration
+retry_config = RetryConfig(
+    strategy="backoff",
+    backoff=BackoffStrategy(
+        initial_interval=1,
+        max_interval=50,
+        exponent=1.1,
+        max_elapsed_time=100
+    ),
+    retry_connection_errors=False
+)
+
+# Initialize with custom settings
+with GeoIP(
+    server_url="https://api.geoipapi.com",
+    retry_config=retry_config
+) as client:
+    response = client.geo_ip_endpoints.get_ip()
+    print(response)
+```
+
+## 🏗️ Project Structure
+
+```
+geo-ip-python/
+├── src/
+│   └── geoipapi/           # Main SDK package
+│       ├── __init__.py     # Package initialization
+│       ├── sdk.py          # Main SDK class
+│       ├── httpclient.py   # HTTP client abstractions
+│       ├── utils/          # Utility functions and classes
+│       ├── models/         # Data models and schemas
+│       └── endpoints/      # API endpoint implementations
+├── docs/                   # Documentation files
+├── tests/                  # Test suite
+├── samples/                # Usage examples
+├── .devcontainer/          # Development container config
+├── pyproject.toml          # Project configuration
+├── README.md               # This file
+├── USAGE.md                # Detailed usage examples
+└── CONTRIBUTING.md         # Contribution guidelines
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Set the following environment variables for debugging and configuration:
+
+```bash
+# Enable debug logging
+export GEOIP_DEBUG=true
+
+# Custom API endpoint (optional)
+export GEOIP_API_URL=https://api.geoipapi.com
+```
+
+### Client Configuration
+
+```python
+from geoipapi import GeoIP
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger("geoipapi")
+
+# Initialize with custom configuration
+client = GeoIP(
+    server_url="https://api.geoipapi.com",  # Custom server URL
+    debug_logger=logger,                     # Custom logger
+    timeout=30,                             # Request timeout
+)
+```
+
+## 📚 API Reference
+
+### Available Resources and Operations
+
+#### GeoIP Endpoints
+
+- **`get_ip()`** - Get Current IP Address
+  - Returns the client's current public IP address
+  - **Async version**: `get_ip_async()`
+
+- **`get_ip_data(ip_address: str = None)`** - Get Geolocation Data
+  - Returns detailed geolocation information for an IP address
+  - If no IP is provided, uses the client's current IP
+  - **Async version**: `get_ip_data_async()`
+
+### Response Models
+
+
+**Example Response:**
+```python
+{
+  "ip": "143.244.47.99",
+  "type": "IPv4",
+  "country": {
+    "is_eu_member": false,
+    "currency_code": "USD",
+    "continent": "NA",
+    "name": "United States",
+    "country_code": "US",
+    "state": "New York",
+    "city": "New York",
+    "zip": "10123",
+    "timezone": "America/New_York"
+  },
+  "location": {
+    "latitude": 40.7127491575256,
+    "longitude": -74.0069576127413
+  },
+  "asn": {
+    "number": 212238,
+    "name": "Datacamp Limited",
+    "network": "143.244.47.0/24",
+    "type": "HOSTING"
+  }
+}
+```
+
+## 🔄 Error Handling
+
+The SDK provides comprehensive error handling with specific exception types:
+
+```python
+from geoipapi import GeoIP, errors
+
+with GeoIP() as client:
+    try:
+        response = client.geo_ip_endpoints.get_ip_data("invalid-ip")
+        print(response)
+        
+    except errors.HTTPValidationError as e:
+        print(f"Validation error: {e.message}")
+        print(f"Status code: {e.status_code}")
+        
+    except errors.APIError as e:
+        print(f"API error: {e.message}")
+        print(f"Status code: {e.status_code}")
+        print(f"Response body: {e.body}")
+        
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+```
+
+### Common Error Types
+
+| Error Type | Status Code | Description |
+|------------|-------------|-------------|
+| `HTTPValidationError` | 422 | Invalid request parameters |
+| `APIError` | 4XX, 5XX | General API errors |
+| `ConnectionError` | N/A | Network connectivity issues |
+| `TimeoutError` | N/A | Request timeout |
+
+## 🔁 Retries
+
+Configure automatic retries for failed requests:
+
+```python
+from geoipapi import GeoIP
+from geoipapi.utils import RetryConfig, BackoffStrategy
+
+# Per-operation retry
+with GeoIP() as client:
+    retry_config = RetryConfig(
+        strategy="backoff",
+        backoff=BackoffStrategy(
+            initial_interval=1,    # Start with 1 second
+            max_interval=50,       # Max 50 seconds between retries
+            exponent=1.1,         # Exponential backoff factor
+            max_elapsed_time=100  # Give up after 100 seconds total
+        ),
+        retry_connection_errors=False
+    )
+    
+    response = client.geo_ip_endpoints.get_ip(retry_config)
+
+# Global retry configuration
+client = GeoIP(retry_config=retry_config)
+```
+
+## 🛠️ Custom HTTP Client
+
+### Basic Custom Headers
+
+```python
+from geoipapi import GeoIP
+import httpx
+
+# Add custom headers to all requests
+http_client = httpx.Client(headers={
+    "x-custom-header": "my-value",
+    "user-agent": "MyApp/1.0"
+})
+
+client = GeoIP(client=http_client)
+```
+
+### Advanced Custom Client
+
+```python
+from geoipapi import GeoIP
+from geoipapi.httpclient import AsyncHttpClient
+import httpx
+import uuid
+
+class CustomClient(AsyncHttpClient):
+    def __init__(self, client: AsyncHttpClient):
+        self.client = client
+
+    async def send(self, request: httpx.Request, **kwargs) -> httpx.Response:
+        # Add custom logic before sending
+        request.headers["request-id"] = str(uuid.uuid4())
+        
+        # Log the request
+        print(f"Sending request to {request.url}")
+        
+        response = await self.client.send(request, **kwargs)
+        
+        # Log the response
+        print(f"Received response: {response.status_code}")
+        
+        return response
+
+    def build_request(self, method: str, url, **kwargs) -> httpx.Request:
+        return self.client.build_request(method, url, **kwargs)
+
+# Use the custom client
+custom_client = CustomClient(httpx.AsyncClient())
+client = GeoIP(async_client=custom_client)
+```
+
+## 💾 Resource Management
+
+Always use context managers for proper resource cleanup:
+
+```python
+from geoipapi import GeoIP
+
+# Recommended: Using context manager
+def sync_example():
+    with GeoIP() as client:
+        response = client.geo_ip_endpoints.get_ip()
+        return response
+
+# For async operations
+async def async_example():
+    async with GeoIP() as client:
+        response = await client.geo_ip_endpoints.get_ip_async()
+        return response
+
+# Manual cleanup (not recommended)
+client = GeoIP()
+try:
+    response = client.geo_ip_endpoints.get_ip()
+finally:
+    client.close()  # Manual cleanup
+```
+
+## 🐛 Debugging
+
+### Enable Debug Logging
+
+```python
+import logging
+import os
+from geoipapi import GeoIP
+
+# Method 1: Environment variable
+os.environ['GEOIP_DEBUG'] = 'true'
+
+# Method 2: Custom logger
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+client = GeoIP(debug_logger=logging.getLogger("geoipapi"))
+```
+
+### Debug Output Example
+
+```
+2024-01-15 10:30:45 - geoipapi - DEBUG - Making request to https://api.geoipapi.com/ip
+2024-01-15 10:30:45 - geoipapi - DEBUG - Request headers: {'user-agent': 'geoipapi-python/1.0.0'}
+2024-01-15 10:30:46 - geoipapi - DEBUG - Response status: 200
+2024-01-15 10:30:46 - geoipapi - DEBUG - Response body: {"ip": "203.0.113.1", ...}
+```
+
+## 🧪 Testing
+
+### Running Tests
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=geoipapi
+
+# Run specific test file
+pytest tests/test_endpoints.py
+
+# Run with verbose output
+pytest -v
+```
+
+### Test Structure
+
+```
+tests/
+├── test_client.py          # Client initialization tests
+├── test_endpoints.py       # API endpoint tests
+├── test_error_handling.py  # Error handling tests
+├── test_retries.py         # Retry logic tests
+└── conftest.py            # Test configuration
+```
+
+### Writing Tests
+
+```python
+import pytest
+from geoipapi import GeoIP
+
+def test_get_ip():
+    with GeoIP() as client:
+        response = client.geo_ip_endpoints.get_ip()
+        assert response is not None
+        # Add more assertions based on expected response format
+
+@pytest.mark.asyncio
+async def test_get_ip_async():
+    async with GeoIP() as client:
+        response = await client.geo_ip_endpoints.get_ip_async()
+        assert response is not None
+```
+
+## 🤝 Contributing
+
+We welcome contributions! This project follows a collaborative development model.
+
+### Development Setup
+
+1. **Fork and Clone**
+   ```bash
+   git clone https://github.com/yourusername/geo-ip-python.git
+   cd geo-ip-python
+   ```
+
+2. **Create Development Environment**
+   ```bash
+   # Using poetry (recommended)
+   poetry install --with dev
+   
+   # Or using pip
+   pip install -e ".[dev]"
+   ```
+
+3. **Run Tests**
+   ```bash
+   pytest
+   ```
+
+### Contribution Guidelines
+
+- **Code Style**: Follow PEP 8 and use type hints
+- **Testing**: Add tests for new features and bug fixes
+- **Documentation**: Update docs for any API changes
+- **Commits**: Use clear, descriptive commit messages
+- **Pull Requests**: Include description of changes and test results
+
+### Development Commands
+
+```bash
+# Format code
+black src/ tests/
+
+# Lint code
+flake8 src/ tests/
+
+# Type checking
+mypy src/
+
+# Run all checks
+pre-commit run --all-files
+```
+
+For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License
+
+Copyright (c) 2024 GeoIP Python SDK
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+```
+
+---
+
+<div align="center">
+  <p>⭐ <strong>Star this repository if you find it useful!</strong> ⭐</p>
+  <p>
+    <a href="https://github.com/geoipapi/geo-ip-python/issues">Report Issues</a> •
+    <a href="https://github.com/geoipapi/geo-ip-python/discussions">Discussions</a> •
+    <a href="https://geoipapi.com/docs">API Documentation</a>
+  </p>
+</div>
