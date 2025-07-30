@@ -1,0 +1,85 @@
+Metadata-Version: 2.4
+Name: burst-link-protocol
+Version: 1.1.4
+Summary: Binary Utility for Reliable Stream Transfer (BURST) is a library for encoding and decoding binary data streams into and from a byte stream.
+Author-Email: Floris vernieuwe <floris@vernieuwe.eu>
+License-File: LICENSE
+Project-URL: Repository, https://github.com/Florioo/burst-link-protocol
+Requires-Python: <4.0,>=3.10
+Requires-Dist: cobs<2.0.0,>=1.2.1
+Requires-Dist: numpy<3.0.0,>=2.2.3
+Requires-Dist: crc<8.0.0,>=7.1.0
+Requires-Dist: pytest<9.0.0,>=8.3.4
+Requires-Dist: pytest-cov<7.0.0,>=6.0.0
+Requires-Dist: pytest-benchmark<6.0.0,>=5.1.0
+Requires-Dist: scikit-build-core>=0.10.7
+Requires-Dist: nanobind>=2.5.0
+Requires-Dist: pyserial>=3.5
+Requires-Dist: janus>=2.0.0
+Provides-Extra: dev
+Requires-Dist: scikit-build-core[pyproject]<0.11.0,>=0.10.7; extra == "dev"
+Requires-Dist: nanobind<3.0.0,>=2.5.0; extra == "dev"
+Requires-Dist: pytest<9.0.0,>=8.3.4; extra == "dev"
+Requires-Dist: pytest-cov<7.0.0,>=6.0.0; extra == "dev"
+Requires-Dist: pytest-benchmark<6.0.0,>=5.1.0; extra == "dev"
+Description-Content-Type: text/markdown
+
+# BURST link protocol 
+Binary Utility for Reliable Stream Transfer (BURST) is a cross-platform library that provides a robust link layer protocol for transmitting binary data over streams (e.g. UART). It ensures data integrity by applying a 16-bit checksum and utilizes COBS (Consistent Overhead Byte Stuffing) encoding to format packets efficiently.
+
+
+## Features
+* Multi-language Support: Seamless integration with Python, C, and C++ projects.
+* Reliable Transmission: 16-bit checksum ensures error detection.
+* Efficient Encoding: Uses COBS encoding to convert data into a stream-friendly format.
+
+## Design
+The following diagram illustrates the data flow within the BURST protocol:
+
+![design](docs/design.svg "design")
+
+# Installation
+
+## Prebuilt Wheels
+
+Prebuilt wheels are available for Windows, Linux and MacOS, they can be installed using pip:
+```sh
+pip install burst-link-protocol
+```
+
+## From Source
+Note: You need a valid C++ compiler and Python 3.7+ installed on your system.
+
+Basic installation
+```sh
+uv pip install --reinstall -e .
+```
+
+Fast build
+```sh
+uv pip install --reinstall --no-build-isolation -ve .
+```
+
+Auto rebuild on run
+```sh
+uv pip install --reinstall --no-build-isolation -Ceditable.rebuild=true -ve .
+# or 
+pip install --no-build-isolation -Ceditable.rebuild=true -ve .
+``` 
+
+
+### Python Stub files generation
+
+They are generated automatically buy can also be generated 
+
+```
+python -m nanobind.stubgen -m nanobind_example_ext
+```
+
+### Test
+
+```sh
+pytest test
+```
+
+
