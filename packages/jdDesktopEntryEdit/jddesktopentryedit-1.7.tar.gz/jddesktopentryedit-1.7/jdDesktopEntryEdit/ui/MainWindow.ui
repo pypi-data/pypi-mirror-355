@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>747</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTabWidget" name="main_tab_widget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="general_tab">
+       <attribute name="title">
+        <string>General</string>
+       </attribute>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Type:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>GenericName:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Comment:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Icon:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Exec:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <item>
+           <widget class="QLineEdit" name="exec_edit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="browse_exec_button">
+            <property name="text">
+             <string>Browse</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>TryExec:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+           <widget class="QLineEdit" name="try_exec_edit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="browse_try_exec_button">
+            <property name="text">
+             <string>Browse</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Path:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <item>
+           <widget class="QLineEdit" name="path_edit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="browse_path_button">
+            <property name="text">
+             <string>Browse</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="14" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>StartupWMClass:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="1">
+         <widget class="QLineEdit" name="startup_wm_class_edit"/>
+        </item>
+        <item row="16" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>URL:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="19" column="0" colspan="2">
+         <widget class="QCheckBox" name="no_display_checkbox">
+          <property name="text">
+           <string>Don't display in Menu (NoDisplay)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="20" column="0" colspan="2">
+         <widget class="QCheckBox" name="hidden_checkbox">
+          <property name="text">
+           <string>Hide Desktop Entry (Hidden)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="21" column="0" colspan="2">
+         <widget class="QCheckBox" name="dbus_activatable_checkbox">
+          <property name="text">
+           <string>Can be activated with D-Bus (DBusActivatable)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="22" column="0" colspan="2">
+         <widget class="QCheckBox" name="terminal_checkbox">
+          <property name="text">
+           <string>Run in a Terminal (Terminal)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="23" column="0" colspan="2">
+         <widget class="QCheckBox" name="startup_notify_checkbox">
+          <property name="text">
+           <string>Send a Message when started (StartupNotify)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="24" column="0" colspan="2">
+         <widget class="QCheckBox" name="prefers_non_default_gpu_checkbox">
+          <property name="text">
+           <string>Run on a more powerful discrete GPU if available (PrefersNonDefaultGPU)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="25" column="0" colspan="2">
+         <widget class="QCheckBox" name="single_main_window_checkbox">
+          <property name="text">
+           <string>Program has a single main window (SingleMainWindow)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="1">
+         <widget class="QLineEdit" name="url_edit"/>
+        </item>
+        <item row="8" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <widget class="QLineEdit" name="icon_edit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="browse_icon_button">
+            <property name="text">
+             <string>Browse</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="6" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLineEdit" name="comment_edit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="translate_comment_button">
+            <property name="text">
+             <string>Translate</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="4" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLineEdit" name="generic_name_edit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="translate_generic_name_button">
+            <property name="text">
+             <string>Translate</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLineEdit" name="name_edit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="translate_name_button">
+            <property name="text">
+             <string>Translate</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QRadioButton" name="application_type_rad">
+            <property name="text">
+             <string>Application</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="link_type_rad">
+            <property name="text">
+             <string>Link</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="directory_type_rad">
+            <property name="text">
+             <string>Directory</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="categories_tab">
+       <attribute name="title">
+        <string>Categories</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QListWidget" name="categories_list">
+          <property name="dragDropMode">
+           <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="add_categorie_button">
+            <property name="text">
+             <string>Add</string>
+            </property>
+            <property name="icon">
+             <iconset theme="list-add"/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="remove_categorie_button">
+            <property name="text">
+             <string>Remove</string>
+            </property>
+            <property name="icon">
+             <iconset theme="list-remove"/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="mime_type_tab">
+       <attribute name="title">
+        <string>MimeType</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="mime_type_layout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="keywords_tab">
+       <attribute name="title">
+        <string>Keywords</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QTabWidget" name="keywords_tab_widget">
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="elideMode">
+           <enum>Qt::TextElideMode::ElideNone</enum>
+          </property>
+          <widget class="QWidget" name="untranslated_keywords_tab">
+           <attribute name="title">
+            <string>Untranslated</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="untranslated_keywords_layout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_3">
+           <attribute name="title">
+            <string>Translated</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>A List of Languages in which are the Keywords translated</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="keywords_language_list">
+              <property name="dragDropMode">
+               <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <item>
+               <widget class="QPushButton" name="add_keywords_language_button">
+                <property name="text">
+                 <string>Add</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="list-add"/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="edit_keywords_language_button">
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="document-edit"/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="remove_keywords_language_button">
+                <property name="text">
+                 <string>Remove</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="list-remove"/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="actions_tab">
+       <attribute name="title">
+        <string>Actions</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QListWidget" name="actions_list">
+          <property name="dragDropMode">
+           <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QPushButton" name="add_action_button">
+            <property name="text">
+             <string>Add</string>
+            </property>
+            <property name="icon">
+             <iconset theme="list-add"/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="edit_action_button">
+            <property name="text">
+             <string>Edit</string>
+            </property>
+            <property name="icon">
+             <iconset theme="document-edit"/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="delete_action_button">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+            <property name="icon">
+             <iconset theme="edit-delete"/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="implements_tab">
+       <attribute name="title">
+        <string>Implements</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="implements_layout"/>
+      </widget>
+      <widget class="QWidget" name="only_show_in_tab">
+       <attribute name="title">
+        <string>OnlyShowIn</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="only_show_in_layout"/>
+      </widget>
+      <widget class="QWidget" name="not_show_in_tab">
+       <attribute name="title">
+        <string>NotShowIn</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="not_show_in_layout"/>
+      </widget>
+      <widget class="QWidget" name="custom_tab">
+       <attribute name="title">
+        <string>Custom</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>All Custom Keys of your Desktop Entry. Make sure the Keys starts with X-.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="custom_table">
+          <column>
+           <property name="text">
+            <string>Key</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Value</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Remove</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QPushButton" name="add_custom_button">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="check_custom_button">
+            <property name="text">
+             <string>Check</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="recent_files_menu">
+     <property name="title">
+      <string>Open recent</string>
+     </property>
+     <property name="icon">
+      <iconset theme="document-open-recent"/>
+     </property>
+     <addaction name="actionPlaceholder"/>
+    </widget>
+    <widget class="QMenu" name="new_template_file_menu">
+     <property name="title">
+      <string>New (from Template)</string>
+     </property>
+     <addaction name="actionPlaceholder_2"/>
+    </widget>
+    <addaction name="new_action"/>
+    <addaction name="new_template_file_menu"/>
+    <addaction name="separator"/>
+    <addaction name="open_action"/>
+    <addaction name="recent_files_menu"/>
+    <addaction name="open_url_action"/>
+    <addaction name="separator"/>
+    <addaction name="save_action"/>
+    <addaction name="save_as_action"/>
+    <addaction name="separator"/>
+    <addaction name="exit_action"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="validate_action"/>
+    <addaction name="preview_action"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="settings_action"/>
+    <addaction name="manage_templates_action"/>
+   </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string notr="true">?</string>
+    </property>
+    <addaction name="welcome_dialog_action"/>
+    <addaction name="specification_action"/>
+    <addaction name="separator"/>
+    <addaction name="view_source_action"/>
+    <addaction name="report_bug_action"/>
+    <addaction name="translate_action"/>
+    <addaction name="donate_action"/>
+    <addaction name="separator"/>
+    <addaction name="about_action"/>
+    <addaction name="about_qt_action"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuTools"/>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="new_action">
+   <property name="icon">
+    <iconset theme="document-new"/>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="open_action">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="save_action">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="save_as_action">
+   <property name="icon">
+    <iconset theme="document-save-as"/>
+   </property>
+   <property name="text">
+    <string>Save as...</string>
+   </property>
+  </action>
+  <action name="exit_action">
+   <property name="icon">
+    <iconset theme="application-exit"/>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionPlaceholder">
+   <property name="text">
+    <string notr="true">Placeholder</string>
+   </property>
+  </action>
+  <action name="validate_action">
+   <property name="text">
+    <string>Validate</string>
+   </property>
+  </action>
+  <action name="preview_action">
+   <property name="text">
+    <string>Preview</string>
+   </property>
+  </action>
+  <action name="specification_action">
+   <property name="text">
+    <string>Desktop Entry Specification</string>
+   </property>
+  </action>
+  <action name="about_action">
+   <property name="icon">
+    <iconset theme="help-about"/>
+   </property>
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="about_qt_action">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="settings_action">
+   <property name="icon">
+    <iconset theme="settings-configure"/>
+   </property>
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="manage_templates_action">
+   <property name="text">
+    <string>Manage templates</string>
+   </property>
+  </action>
+  <action name="actionPlaceholder_2">
+   <property name="text">
+    <string notr="true">Placeholder</string>
+   </property>
+  </action>
+  <action name="open_url_action">
+   <property name="text">
+    <string>Open from URL</string>
+   </property>
+  </action>
+  <action name="welcome_dialog_action">
+   <property name="text">
+    <string>Show Welcome Dialog</string>
+   </property>
+  </action>
+  <action name="view_source_action">
+   <property name="text">
+    <string>View Source</string>
+   </property>
+  </action>
+  <action name="report_bug_action">
+   <property name="text">
+    <string>Report Bug</string>
+   </property>
+  </action>
+  <action name="translate_action">
+   <property name="text">
+    <string>Translate</string>
+   </property>
+  </action>
+  <action name="donate_action">
+   <property name="text">
+    <string>Donate</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

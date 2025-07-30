@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools", "PyQt6", "wheel"]
+build-backend = "BuildBackend"
+backend-path = ["."]
+
+[project]
+name = "jdDesktopEntryEdit"
+description = "A graphical Program to create and edit Desktop Entries"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["JakobDev", "Linux", ".desktop", "freedesktop"]
+license = { text = "GPL-3" }
+authors = [
+    { name = "JakobDev", email = "jakobdev@gmx.de" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Environment :: Other Environment",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: POSIX",
+    "Operating System :: POSIX :: BSD",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython"
+]
+dependencies = [
+  "PyQt6",
+  "desktop-entry-lib"
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://jakobdev.codeberg.page/work/app/jdDesktopEntryEdit"
+Source = "https://codeberg.org/JakobDev/jdDesktopEntryEdit"
+Issues = "https://codeberg.org/JakobDev/jdDesktopEntryEdit/issues"
+Translate = "https://translate.codeberg.org/projects/jdDesktopEntryEdit"
+Donation = "https://ko-fi.com/jakobdev"
+
+[project.gui-scripts]
+jdDesktopEntryEdit = "jdDesktopEntryEdit:main"
+
+[tool.setuptools.package-dir]
+jdDesktopEntryEdit = "jdDesktopEntryEdit"
+
+[tool.setuptools.dynamic]
+version = { file = "jdDesktopEntryEdit/version.txt" }
+
+[tool.pyproject-appimage]
+script = "jdDesktopEntryEdit"
+output = "jdDesktopEntryEdit.AppImage"
+icon = "jdDesktopEntryEdit/Icon.svg"
+rename-icon = "page.codeberg.JakobDev.jdDesktopEntryEdit.svg"
+desktop-entry = "deploy/page.codeberg.JakobDev.jdDesktopEntryEdit.desktop"
+gettext-desktop-entry = true
+appstream = "deploy/page.codeberg.JakobDev.jdDesktopEntryEdit.metainfo.xml"
+gettext-appstream = true
+gettext-directory = "deploy/translations"
+python-version = "3.13"
