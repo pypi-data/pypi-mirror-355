@@ -1,0 +1,53 @@
+Metadata-Version: 2.3
+Name: FinAnalytics
+Version: 0.4.1
+Summary: Package to analyze your personal finances and some utils to perform ETL Operations as well
+License: MIT
+Author: Rahul
+Author-email: saihanumarahul66@gmail.com
+Requires-Python: >=3.11,<3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aws-lambda-typing (>=2.20.0,<3.0.0)
+Requires-Dist: boto3 (>=1.38.23,<2.0.0)
+Requires-Dist: countryinfo (>=0.1.2,<0.2.0)
+Requires-Dist: dateparser (>=1.2.1,<2.0.0)
+Requires-Dist: geopy (>=2.4.1,<3.0.0)
+Requires-Dist: loguru (>=0.7.3,<0.8.0)
+Requires-Dist: pandas (>=2.2.3,<3.0.0)
+Requires-Dist: pdfplumber (>=0.11.6,<0.12.0)
+Requires-Dist: price-parser (>=0.4.0,<0.5.0)
+Requires-Dist: python-dotenv (>=1.1.0,<2.0.0)
+Requires-Dist: rapidfuzz (>=3.13.0,<4.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: spacy (>=3.8.5,<4.0.0)
+Requires-Dist: timezonefinder (>=6.5.9,<7.0.0)
+Requires-Dist: tldextract (>=5.3.0,<6.0.0)
+Description-Content-Type: text/markdown
+
+# decision-making
+
+1. check bank statements of some known banks
+    * canara bank
+    * kotak bank
+    * icici bank
+
+2. decide the cols or factors or metrics for our decision if we were to do with our brain
+
+## metrics 
+
+1. account number is needed to distinguish between different accounts
+2. account holder name is needed again to distinguish between different accounts
+3. bank name is needed to distinguish between different banks or accounts
+4. credit or debit type for the transcation 
+5. amount of the transcation
+6. description—would be useful for LLM
+7. the rest of the balance would be useful for LLM for decision-making
+8. **Timestamp**-useful for identifying unique translations for an account 
+
+### few things are not required 
+1. issue date—not relevant
+2. starting account balance—since we need balance of the account in every transcation
+3. closing balance—since we need balance of the account in every transcation
