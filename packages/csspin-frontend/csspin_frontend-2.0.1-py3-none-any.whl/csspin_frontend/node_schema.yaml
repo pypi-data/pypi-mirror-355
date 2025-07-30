@@ -1,0 +1,20 @@
+# -*- mode: yaml; coding: utf-8 -*-
+#
+# Schema of the node plugin for csspin
+
+node:
+    type: object
+    help: Configuration of the Node plugin.
+    properties:
+        version:
+            type: str
+            help: NodeJS version
+        use:
+            type: path
+            help: Alternative path to a local NodeJS executable
+        mirror:
+            type: str
+            help: Proxy to get NodeJS sources from
+        ignore_ssl_certs:
+            type: bool
+            help: If enabled, ignoring SSL certificate validation checks.
