@@ -1,0 +1,22 @@
+# Read the Docs configuration file for MkDocs projects
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+# Required
+version: 2
+
+# Set the version of Python and other tools you might need
+build:
+  os: ubuntu-lts-latest # live on the edge for now
+  tools:
+    python: "latest" # high octane thrill seeker
+  jobs:
+      pre_build:
+        - ./scripts/doc_prebuild.sh
+
+mkdocs:
+  configuration: mkdocs.yml
+
+# Optionally declare the Python requirements required to build your docs
+python:
+  install:
+  - requirements: requirements.txt
