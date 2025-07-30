@@ -1,0 +1,47 @@
+[project]
+name = "ble-hrm-server"
+version = "0.2.0"
+description = "A MCP server, which serve as a BLE heart rate monitoring to connect with a HRM device."
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+authors = [{ name = "GENE WU." }]
+maintainers = [{ name = "Gene Wu", email = "genewoo@gmail.com" }]
+keywords = ["ble", "hrm", "mcp", "llm"]
+dependencies = [
+    "bleak>=0.22.3",
+    "dotenv>=0.9.9",
+    "fastmcp>=2.3.4",
+    "matplotlib>=3.10.3",
+    "pytest>=8.3.5",
+    "qiniu>=7.16.0",
+]
+
+[project.scripts]
+ble-hrm-server = "hrm.__main__:main"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0.0",
+    "coverage>=7.0.0",
+    "pytest-asyncio>=0.24.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+pythonpath = ["src"]
+asyncio_default_fixture_loop_scope = "session"
+
+[tool.coverage.run]
+omit = [
+    "tests/*"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
