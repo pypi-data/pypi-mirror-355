@@ -1,0 +1,74 @@
+Metadata-Version: 2.4
+Name: multivelovae
+Version: 0.1.0
+Summary: Velocity inference from multi-lineage, multi-omic, and multi-sample single-cell data
+Author: Chen Li, Yichen Gu
+Maintainer-email: Chen Li <chlseven@umich.edu>
+License-Expression: BSD-3-Clause
+Project-URL: Homepage, https://github.com/welch-lab/MultiVeloVAE
+Keywords: bioinformatics,RNA velocity,single-cell,multi-omic,variational autoencoder,deep generative model,batch correction,bayesian inference,trajectory inference,ordinary differential equation
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: anndata>=0.8.0
+Requires-Dist: hnswlib>=0.6.2
+Requires-Dist: igraph>=0.10.4
+Requires-Dist: ipywidgets
+Requires-Dist: leidenalg
+Requires-Dist: loess>=2.1.2
+Requires-Dist: matplotlib>=3.3.0
+Requires-Dist: multivelo>=0.1.2
+Requires-Dist: numpy>=1.17
+Requires-Dist: pandas>=0.23
+Requires-Dist: scanpy>=1.5
+Requires-Dist: scikit-learn>=1.2.2
+Requires-Dist: scipy>=1.4.1
+Requires-Dist: scvelo>=0.2.3
+Requires-Dist: seaborn>=0.10.0
+Requires-Dist: torch>=1.8.0
+Requires-Dist: tqdm
+Requires-Dist: umap-learn
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: sphinx>=5.1.1; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: plotnine; extra == "dev"
+Requires-Dist: scikit-misc; extra == "dev"
+Dynamic: license-file
+
+# MultiVeloVAE - Velocity inference from multi-lineage, multi-omic, and multi-sample single-cell data
+## Package Installation
+The package depends on several popular packages in computational biology and machine learning, including [scanpy](https://scanpy.readthedocs.io/en/stable/), [scVelo](https://scvelo.readthedocs.io/en/stable/), [PyTorch](https://pytorch.org/), and [scikit-learn](https://scikit-learn.org/stable/). We suggest using a GPU to accelerate the training process.
+
+To install the MultiVeloVAE package through PyPI:
+```
+pip install multivelovae
+```
+And import the package inside python:
+```python
+import multivelovae as vv
+```
+
+## Package Usage
+Please feel free to test this method on our previously published 10X Multiome datasets. See https://multivelo.readthedocs.io/en/latest/MultiVelo_Demo.html. The example of running the mouse brain dataset is located in [paper-notebooks](https://github.com/welch-lab/MultiVeloVAE/tree/main/paper-notebooks). Alternatively, you can apply the same training and analysis steps on our single-sample HSPC dataset for which we provide the AnnData objects directly in [figshare](https://multivelo.readthedocs.io/en/latest/MultiVelo_Fig5.html). Expected runtimes can be found inside each notebook.
+
+[This file](https://github.com/welch-lab/MultiVeloVAE/blob/main/paper-notebooks/reproducible_package_versions.txt) lists the versions of packages used to generate manuscript figures.
+
+## TODO
+bioconda
+readthedocs

@@ -1,0 +1,92 @@
+# pyproject.toml
+
+[build-system]
+requires      = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multivelovae"
+version = "0.1.0"
+authors = [
+    {name = "Chen Li"},
+    {name = "Yichen Gu"},
+]
+maintainers = [
+    {name = "Chen Li", email = "chlseven@umich.edu"},
+]
+description = "Velocity inference from multi-lineage, multi-omic, and multi-sample single-cell data"
+readme = {file = "README.md", content-type="text/markdown"}
+license = "BSD-3-Clause"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+keywords = [
+    "bioinformatics",
+    "RNA velocity",
+    "single-cell",
+    "multi-omic",
+    "variational autoencoder",
+    "deep generative model",
+    "batch correction",
+    "bayesian inference",
+    "trajectory inference",
+    "ordinary differential equation",
+]
+dependencies = [
+    "anndata>=0.8.0",
+    "hnswlib>=0.6.2",
+    "igraph>=0.10.4",
+    "ipywidgets",
+    "leidenalg",
+    "loess>=2.1.2",
+    "matplotlib>=3.3.0",
+    "multivelo>=0.1.2",
+    "numpy>=1.17",
+    "pandas>=0.23",
+    "scanpy>=1.5",
+    "scikit-learn>=1.2.2",
+    "scipy>=1.4.1",
+    "scvelo>=0.2.3",
+    "seaborn>=0.10.0",
+    "torch>=1.8.0",
+    "tqdm",
+    "umap-learn",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "sphinx>=5.1.1",
+    "ruff",
+    "black",
+    "flake8",
+    "isort",
+    "plotnine",
+    "scikit-misc",
+]
+
+[project.urls]
+Homepage = "https://github.com/welch-lab/MultiVeloVAE"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+exclude = [
+    "notebooks*",
+    "paper-notebooks*",
+    "*__pycache__*",
+]
+namespaces = false
