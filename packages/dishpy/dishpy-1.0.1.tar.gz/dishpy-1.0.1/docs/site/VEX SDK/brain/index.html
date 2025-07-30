@@ -1,0 +1,3592 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+            Brain &amp; Display - DishPy Docs
+        </title>
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/dishpy/index.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/xcode.css">
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <div class="m-5 container">
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    In this documentation
+                                </h6>
+                                <button id="nav-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="nav-arrow" style="font-family: Inter">↓</span>
+                                </button>
+                            </div>
+                            <div id="nav-content" class="px-6 pb-6 ml-5">
+                                
+                                    
+                                    <div>
+                                        <a href="../.." class="text-sm ">
+                                            DishPy
+                                        </a>
+                                    </div>
+                                    
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm ">
+                                            Tutorial
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/1_installation/" class="text-sm ">
+                                                    1. Installation
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/2_creating_proj/" class="text-sm ">
+                                                    2. Your first project
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/3_multifile/" class="text-sm ">
+                                                    3. Using multi-file capabilities in DishPy
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/4_create_packages/" class="text-sm ">
+                                                    4. Creating packages
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/5_registry/" class="text-sm ">
+                                                    5. The package registry
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm font-semibold">
+                                            VEX SDK
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../" class="text-sm ">
+                                                    VEX V5 Python SDK
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="./" class="text-sm font-semibold">
+                                                    Brain &amp; Display
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../controllers/" class="text-sm ">
+                                                    Controllers &amp; Competition
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../enums/" class="text-sm ">
+                                                    Enums &amp; Units
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../full/" class="text-sm ">
+                                                    Complete API Reference
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../motors/" class="text-sm ">
+                                                    Motors
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../sensors/" class="text-sm ">
+                                                    Sensors
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    Table of Contents
+                                </h6>
+                                <button id="toc-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="toc-arrow" style="font-family: Inter;">→</span>
+                                </button>
+                            </div>
+                            <div id="toc-content" class="px-6 pb-6 ml-5" style="display: none;">
+                                
+                                    <div>
+                                        <a href="#brain-display" class="text-sm">
+                                            Brain &amp; Display
+                                        </a>
+                                    </div>
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#brain" class="text-sm">
+                                                    Brain
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#vex.Brain" class="text-sm">
+                                                    Brain
+                                                </a>
+                                            </div>
+                                            
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain--brain-class" class="text-sm">
+                                                            Brain class
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain--arguments" class="text-sm">
+                                                                    Arguments:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain--returns" class="text-sm">
+                                                                    Returns:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain--examples" class="text-sm">
+                                                                    Examples:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.battery" class="text-sm">
+                                                            battery
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.screen" class="text-sm">
+                                                            screen
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.sdcard" class="text-sm">
+                                                            sdcard
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.three_wire_port" class="text-sm">
+                                                            three_wire_port
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.timer" class="text-sm">
+                                                            timer
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.Battery" class="text-sm">
+                                                            Battery
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery--battery-class-access-the-brain-battery" class="text-sm">
+                                                                    Battery class - access the brain battery
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery--arguments" class="text-sm">
+                                                                    Arguments:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery--returns" class="text-sm">
+                                                                    Returns:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery--examples" class="text-sm">
+                                                                    Examples:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery.capacity" class="text-sm">
+                                                                    capacity
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery.current" class="text-sm">
+                                                                    current
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery.temperature" class="text-sm">
+                                                                    temperature
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery.voltage" class="text-sm">
+                                                                    voltage
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.Lcd" class="text-sm">
+                                                            Lcd
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd--brainlcd-class" class="text-sm">
+                                                                    Brain.Lcd class
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd--arguments" class="text-sm">
+                                                                    Arguments:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd--returns" class="text-sm">
+                                                                    Returns:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.clear_row" class="text-sm">
+                                                                    clear_row
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.clear_screen" class="text-sm">
+                                                                    clear_screen
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.column" class="text-sm">
+                                                                    column
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_circle" class="text-sm">
+                                                                    draw_circle
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_image_from_file" class="text-sm">
+                                                                    draw_image_from_file
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_line" class="text-sm">
+                                                                    draw_line
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_pixel" class="text-sm">
+                                                                    draw_pixel
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_rectangle" class="text-sm">
+                                                                    draw_rectangle
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.get_string_height" class="text-sm">
+                                                                    get_string_height
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.get_string_width" class="text-sm">
+                                                                    get_string_width
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.next_row" class="text-sm">
+                                                                    next_row
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.pressed" class="text-sm">
+                                                                    pressed
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.pressing" class="text-sm">
+                                                                    pressing
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.print" class="text-sm">
+                                                                    print
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.print_at" class="text-sm">
+                                                                    print_at
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.released" class="text-sm">
+                                                                    released
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.render" class="text-sm">
+                                                                    render
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.row" class="text-sm">
+                                                                    row
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_clip_region" class="text-sm">
+                                                                    set_clip_region
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_cursor" class="text-sm">
+                                                                    set_cursor
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_fill_color" class="text-sm">
+                                                                    set_fill_color
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_font" class="text-sm">
+                                                                    set_font
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_origin" class="text-sm">
+                                                                    set_origin
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_pen_color" class="text-sm">
+                                                                    set_pen_color
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_pen_width" class="text-sm">
+                                                                    set_pen_width
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.x_position" class="text-sm">
+                                                                    x_position
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.y_position" class="text-sm">
+                                                                    y_position
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.Sdcard" class="text-sm">
+                                                            Sdcard
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard--sdcard-class-access-the-brain-sdcard" class="text-sm">
+                                                                    Sdcard class - access the brain sdcard
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard--arguments" class="text-sm">
+                                                                    Arguments:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard--returns" class="text-sm">
+                                                                    Returns:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard--examples" class="text-sm">
+                                                                    Examples:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.appendfile" class="text-sm">
+                                                                    appendfile
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.exists" class="text-sm">
+                                                                    exists
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.filesize" class="text-sm">
+                                                                    filesize
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.is_inserted" class="text-sm">
+                                                                    is_inserted
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.loadfile" class="text-sm">
+                                                                    loadfile
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.savefile" class="text-sm">
+                                                                    savefile
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.size" class="text-sm">
+                                                                    size
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#lcd-display" class="text-sm">
+                                                    LCD Display
+                                                </a>
+                                            </div>
+                                            
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.Lcd" class="text-sm">
+                                                            Lcd
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd--brainlcd-class" class="text-sm">
+                                                                    Brain.Lcd class
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd--arguments" class="text-sm">
+                                                                    Arguments:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd--returns" class="text-sm">
+                                                                    Returns:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.clear_row" class="text-sm">
+                                                                    clear_row
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.clear_screen" class="text-sm">
+                                                                    clear_screen
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.column" class="text-sm">
+                                                                    column
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_circle" class="text-sm">
+                                                                    draw_circle
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_image_from_file" class="text-sm">
+                                                                    draw_image_from_file
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_line" class="text-sm">
+                                                                    draw_line
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_pixel" class="text-sm">
+                                                                    draw_pixel
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.draw_rectangle" class="text-sm">
+                                                                    draw_rectangle
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.get_string_height" class="text-sm">
+                                                                    get_string_height
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.get_string_width" class="text-sm">
+                                                                    get_string_width
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.next_row" class="text-sm">
+                                                                    next_row
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.pressed" class="text-sm">
+                                                                    pressed
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.pressing" class="text-sm">
+                                                                    pressing
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.print" class="text-sm">
+                                                                    print
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.print_at" class="text-sm">
+                                                                    print_at
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.released" class="text-sm">
+                                                                    released
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.render" class="text-sm">
+                                                                    render
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.row" class="text-sm">
+                                                                    row
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_clip_region" class="text-sm">
+                                                                    set_clip_region
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_cursor" class="text-sm">
+                                                                    set_cursor
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_fill_color" class="text-sm">
+                                                                    set_fill_color
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_font" class="text-sm">
+                                                                    set_font
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_origin" class="text-sm">
+                                                                    set_origin
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_pen_color" class="text-sm">
+                                                                    set_pen_color
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.set_pen_width" class="text-sm">
+                                                                    set_pen_width
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.x_position" class="text-sm">
+                                                                    x_position
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Lcd.y_position" class="text-sm">
+                                                                    y_position
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#battery" class="text-sm">
+                                                    Battery
+                                                </a>
+                                            </div>
+                                            
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.Battery" class="text-sm">
+                                                            Battery
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery--battery-class-access-the-brain-battery" class="text-sm">
+                                                                    Battery class - access the brain battery
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery--arguments" class="text-sm">
+                                                                    Arguments:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery--returns" class="text-sm">
+                                                                    Returns:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery--examples" class="text-sm">
+                                                                    Examples:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery.capacity" class="text-sm">
+                                                                    capacity
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery.current" class="text-sm">
+                                                                    current
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery.temperature" class="text-sm">
+                                                                    temperature
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Battery.voltage" class="text-sm">
+                                                                    voltage
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#sd-card" class="text-sm">
+                                                    SD Card
+                                                </a>
+                                            </div>
+                                            
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.Brain.Sdcard" class="text-sm">
+                                                            Sdcard
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard--sdcard-class-access-the-brain-sdcard" class="text-sm">
+                                                                    Sdcard class - access the brain sdcard
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard--arguments" class="text-sm">
+                                                                    Arguments:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard--returns" class="text-sm">
+                                                                    Returns:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard--examples" class="text-sm">
+                                                                    Examples:
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.appendfile" class="text-sm">
+                                                                    appendfile
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.exists" class="text-sm">
+                                                                    exists
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.filesize" class="text-sm">
+                                                                    filesize
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.is_inserted" class="text-sm">
+                                                                    is_inserted
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.loadfile" class="text-sm">
+                                                                    loadfile
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.savefile" class="text-sm">
+                                                                    savefile
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.Brain.Sdcard.size" class="text-sm">
+                                                                    size
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            <h1 id="brain-display">Brain &amp; Display</h1>
+<p>The <code>Brain</code> class provides access to the VEX V5 brain's built-in components, including the screen, battery, and SD card. This is the central hub for interacting with the robot's onboard hardware.</p>
+<hr />
+<h2 id="brain">Brain</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vex.Brain" class="doc doc-heading">
+            <code>vex.Brain</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+
+
+        <h5 id="vex.Brain--brain-class">Brain class</h5>
+<p>The Brain class creates a number of instances of internal classes that allow access\
+to the screen, battery, 3wire ports and sd card on the V5 brain.</p>
+<h6 id="vex.Brain--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain--returns">Returns:</h6>
+<pre><code>An instance of the Brain class
+</code></pre>
+<h6 id="vex.Brain--examples">Examples:</h6>
+<pre><code>brain = Brain()
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vex.Brain.battery" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">battery</span> <span class="o">=</span> <span class="n">Brain</span><span class="o">.</span><span class="n">Battery</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An instance of the Battery class</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vex.Brain.screen" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">screen</span> <span class="o">=</span> <span class="n">Brain</span><span class="o">.</span><span class="n">Lcd</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An instance of the Lcd class</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vex.Brain.sdcard" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sdcard</span> <span class="o">=</span> <span class="n">Brain</span><span class="o">.</span><span class="n">Sdcard</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An instance of the Sdcard class</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vex.Brain.three_wire_port" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">three_wire_port</span> <span class="o">=</span> <span class="n">Triport</span><span class="p">(</span><span class="n">Ports</span><span class="o">.</span><span class="n">PORT22</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An instance of the Triport (3wire) class</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vex.Brain.timer" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An instance of the Timer class</p>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.Brain.Battery" class="doc doc-heading">
+            <code>Battery</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+        <h6 id="vex.Brain.Battery--battery-class-access-the-brain-battery">Battery class - access the brain battery</h6>
+<h6 id="vex.Brain.Battery--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Battery--returns">Returns:</h6>
+<pre><code>Instance of Battery class
+</code></pre>
+<h6 id="vex.Brain.Battery--examples">Examples:</h6>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Battery.capacity" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">capacity</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Battery.capacity--read-remaining-capacity-of-the-battery">read remaining capacity of the battery</h6>
+<h6 id="vex.Brain.Battery.capacity--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Battery.capacity--returns">Returns:</h6>
+<pre><code>capacity as percentage
+</code></pre>
+<h6 id="vex.Brain.Battery.capacity--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Battery.current" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">current</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">CurrentUnits</span><span class="o">.</span><span class="n">AMP</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Battery.current--read-the-current-of-the-battery">read the current of the battery</h6>
+<h6 id="vex.Brain.Battery.current--arguments">Arguments:</h6>
+<pre><code>units (optional) : AMP, default is mA but jot available as an enum.
+</code></pre>
+<h6 id="vex.Brain.Battery.current--returns">Returns:</h6>
+<pre><code>current in supplied units
+</code></pre>
+<h6 id="vex.Brain.Battery.current--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Battery.temperature" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">temperature</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">PercentUnits</span><span class="o">.</span><span class="n">PERCENT</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Battery.temperature--read-the-temperature-of-the-battery">read the temperature of the battery</h6>
+<h6 id="vex.Brain.Battery.temperature--arguments">Arguments:</h6>
+<pre><code>units (optional) : PERCENT, CELSIUS or FAHRENHEIT, default is CELSIUS
+</code></pre>
+<h6 id="vex.Brain.Battery.temperature--returns">Returns:</h6>
+<pre><code>temperature in supplied units
+</code></pre>
+<h6 id="vex.Brain.Battery.temperature--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Battery.voltage" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">voltage</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">VoltageUnits</span><span class="o">.</span><span class="n">MV</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Battery.voltage--read-the-voltage-of-the-battery">read the voltage of the battery</h6>
+<h6 id="vex.Brain.Battery.voltage--arguments">Arguments:</h6>
+<pre><code>units (optional) : VOLTS or MV, default is MV
+</code></pre>
+<h6 id="vex.Brain.Battery.voltage--returns">Returns:</h6>
+<pre><code>voltage in supplied units
+</code></pre>
+<h6 id="vex.Brain.Battery.voltage--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.Brain.Lcd" class="doc doc-heading">
+            <code>Lcd</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+        <h6 id="vex.Brain.Lcd--brainlcd-class">Brain.Lcd class</h6>
+<p>A class used to access to screen on the V5 for drawing and receiving touch events.</p>
+<h6 id="vex.Brain.Lcd--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd--returns">Returns:</h6>
+<pre><code>An instance of the Brain.Lcd class
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.clear_row" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">clear_row</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.clear_row--clear-screen-row-to-a-single-color">Clear screen row to a single color</h6>
+<p>The color can be passed in similar ways to the Color class.\</p>
+<h6 id="vex.Brain.Lcd.clear_row--arguments">Arguments:</h6>
+<pre><code>row (optional) : The row to clear, default is current cursor row
+color (optional) : The color the screen will be set to, default is BLACK
+</code></pre>
+<h6 id="vex.Brain.Lcd.clear_row--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.clear_row--examples">Examples:</h6>
+<pre><code># clear row to black\
+brain.screen.clear_row()
+
+# clear row 2 to red\
+brain.screen.clear_row(2, Color.RED)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.clear_screen" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">clear_screen</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.clear_screen--clear-the-whole-screen-to-a-single-color">Clear the whole screen to a single color</h6>
+<p>The color can be passed in similar ways to the Color class.\</p>
+<h6 id="vex.Brain.Lcd.clear_screen--arguments">Arguments:</h6>
+<pre><code>color (optional) : The color the screen will be set to, default is BLACK
+</code></pre>
+<h6 id="vex.Brain.Lcd.clear_screen--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.clear_screen--examples">Examples:</h6>
+<pre><code># clear screen to black\
+brain.screen.clear_screen()
+
+# clear screen to blue using predefined color\
+brain.screen.clear_screen(Color.BLUE)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.column" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">column</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the current column where text will be printed</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_circle" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_circle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_circle--draw-a-circle-on-the-screen-using-the-current-pen-and-fill-colors">Draw a circle on the screen using the current pen and fill colors.</h6>
+<h6 id="vex.Brain.Lcd.draw_circle--arguments">Arguments:</h6>
+<pre><code>x : The x position of the circle center referenced to the screen origin.
+y : The y position of the circle center referenced to the screen origin.
+radius : The height of the circle.
+color (optional) : An optional fill color, the current fill color will be used if not supplied
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_circle--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_circle--examples">Examples:</h6>
+<pre><code># draw a green circle on the screen that is filled using blue\
+brain.screen.set_pen_color(Color.GREEN)\
+brain.screen.set_fill_color(Color.BLUE)\
+brain.screen.draw_circle(50, 50, 10)
+
+# draw a green circle on the screen that is filled using red\
+brain.screen.set_pen_color(Color.GREEN)\
+brain.screen.draw_circle(100, 50, 10, Color.RED)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_image_from_file" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_image_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_image_from_file--display-the-named-image-from-the-sd-card">Display the named image from the SD Card</h6>
+<h6 id="vex.Brain.Lcd.draw_image_from_file--arguments">Arguments:</h6>
+<pre><code>filename : The file name of the image.
+x : The X coordinate for the top left corner of the image on the screen
+y : The Y coordinate for the top left corner of the image on the screen
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_image_from_file--returns">Returns:</h6>
+<pre><code>True if successfully drawn, False on error
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_image_from_file--examples">Examples:</h6>
+<pre><code># draw the vex.bmp image on the screen at coordinate 0, 0\
+# an image named vex.bmp must be on the SD Card in the root folder\
+brain.screen.draw_image_from_file('vex.bmp', 0, 0)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_line" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_line</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_line--draw-a-line-on-the-screen-using-the-current-pen-color">Draw a line on the screen using the current pen color.</h6>
+<h6 id="vex.Brain.Lcd.draw_line--arguments">Arguments:</h6>
+<pre><code>x1 : The x position of the beginning of the line referenced to the screen origin.
+y1 : The y position of the beginning of the line referenced to the screen origin.
+x2 : The x position of the end of the line referenced to the screen origin.
+y2 : The y position of the end of the line referenced to the screen origin.
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_line--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_line--examples">Examples:</h6>
+<pre><code># draw a red line on the screen\
+brain.screen.set_pen_color(Color.RED)\
+brain.screen.draw_line(10, 10, 20, 20)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_pixel" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_pixel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_pixel--draw-a-pixel-on-the-screen-using-the-current-pen-color">Draw a pixel on the screen using the current pen color.</h6>
+<h6 id="vex.Brain.Lcd.draw_pixel--arguments">Arguments:</h6>
+<pre><code>x : The x position to draw the pixel referenced to the screen origin.
+y : The y position to draw the pixel referenced to the screen origin.
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_pixel--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_pixel--examples">Examples:</h6>
+<pre><code># draw a red pixel on the screen\
+brain.screen.set_pen_color(Color.RED)\
+brain.screen.draw_pixel(10, 10)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_rectangle" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_rectangle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_rectangle--draw-a-rectangle-on-the-screen-using-the-current-pen-and-fill-colors">Draw a rectangle on the screen using the current pen and fill colors.</h6>
+<h6 id="vex.Brain.Lcd.draw_rectangle--arguments">Arguments:</h6>
+<pre><code>x : The x position of the rectangle top/left corner referenced to the screen origin.
+y : The y position of the rectangle top/left corner referenced to the screen origin.
+width : The width of the rectangle.
+height : The height of the rectangle.
+color (optional) : An optional fill color, the current fill color will be used if not supplied
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_rectangle--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_rectangle--examples">Examples:</h6>
+<pre><code># draw a green rectangle on the screen that is filled using blue\
+brain.screen.set_pen_color(Color.GREEN)\
+brain.screen.set_fill_color(Color.BLUE)\
+brain.screen.draw_rectangle(10, 10, 20, 20)
+
+# draw a green rectangle on the screen that is filled using red\
+brain.screen.set_pen_color(Color.GREEN)\
+brain.screen.draw_rectangle(50, 50, 20, 20, Color.RED)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.get_string_height" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_string_height</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.get_string_height--get-height-of-a-string">get height of a string</h6>
+<h6 id="vex.Brain.Lcd.get_string_height--arguments">Arguments:</h6>
+<pre><code>arguments are in the same format as can be passed to the print function.
+</code></pre>
+<h6 id="vex.Brain.Lcd.get_string_height--returns">Returns:</h6>
+<pre><code>height of string as integer.
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.get_string_width" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_string_width</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.get_string_width--get-width-of-a-string">get width of a string</h6>
+<h6 id="vex.Brain.Lcd.get_string_width--arguments">Arguments:</h6>
+<pre><code>arguments are in the same format as can be passed to the print function.
+</code></pre>
+<h6 id="vex.Brain.Lcd.get_string_width--returns">Returns:</h6>
+<pre><code>width of string as integer.
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.next_row" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">next_row</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.next_row--move-the-cursor-to-the-beginning-of-the-next-row">Move the cursor to the beginning of the next row</h6>
+<h6 id="vex.Brain.Lcd.next_row--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.next_row--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.pressed" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">pressed</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="p">())</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.pressed--register-a-function-to-be-called-when-the-screen-is-pressed">Register a function to be called when the screen is pressed</h6>
+<h6 id="vex.Brain.Lcd.pressed--arguments">Arguments:</h6>
+<pre><code>callback : A function that will be called when the screen is pressed
+arg (optional) : A tuple that is used to pass arguments to the callback function.
+</code></pre>
+<h6 id="vex.Brain.Lcd.pressed--returns">Returns:</h6>
+<pre><code>An instance of the Event class
+</code></pre>
+<h6 id="vex.Brain.Lcd.pressed--examples">Examples:</h6>
+<pre><code>def foo():
+    print("screen pressed")
+
+brain.screen.pressed(foo)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.pressing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">pressing</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.pressing--returns-whether-the-screen-is-currently-being-pressed-touched">Returns whether the screen is currently being pressed (touched)</h6>
+<h6 id="vex.Brain.Lcd.pressing--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.pressing--returns">Returns:</h6>
+<pre><code>True or False
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.print" class="doc doc-heading">
+            <code class="highlight language-python"><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.print--print-text-on-the-screen-using-current-curser-position">print text on the screen using current curser position.</h6>
+<h6 id="vex.Brain.Lcd.print--arguments">Arguments:</h6>
+<pre><code>Optional keyword arguments:
+sep : string inserted between values, default a space.
+precision : the number of decimal places to display when printing simple numbers, default is 2
+</code></pre>
+<h6 id="vex.Brain.Lcd.print--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.print--examples">Examples:</h6>
+<pre><code># print the number 1 on the screen at current cursor position\
+brain.screen.print(1)
+
+# print the numbers 1, 2, 3 and 4 on the screen at current cursor position separated by a '-'\
+brain.screen.print(1, 2, 3, 4, sep='-')
+
+# print motor1 velocity on the screen using a format string\
+brain.screen.print("motor  1 : % 7.2f" %(motor1.velocity()))
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.print_at" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">print_at</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.print_at--print-text-on-the-screen-at-x-and-coordinates">print text on the screen at x and coordinates.</h6>
+<h6 id="vex.Brain.Lcd.print_at--arguments">Arguments:</h6>
+<pre><code>Required keyword arguments
+x : The x position of the text referenced to the screen origin.
+y : The y position of the text referenced to the screen origin.
+
+Optional keyword arguments:
+sep : string inserted between values, default a space.
+precision : the number of decimal places to display when printing simple numbers, default is 2
+opaque : text does not clear background pixels if set to False. default is True.
+</code></pre>
+<h6 id="vex.Brain.Lcd.print_at--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.print_at--examples">Examples:</h6>
+<pre><code># print the number 1 on the screen at position x=100, y=40\
+brain.screen.print_at(1, x=100, y=40)
+
+# print the numbers 1, 2, 3 and 4 on the screen at position x=100, y=40\
+brain.screen.print_at(1, 2, 3, 4, x=100, y=40)
+
+# print motor1 velocity on the screen using a format string at position x=100, y=40\
+brain.screen.print_at("motor  1 : % 7.2f" %(motor1.velocity()), x=100, y=40)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.released" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">released</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="p">())</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.released--register-a-function-to-be-called-when-the-screen-is-released-touch-removed">Register a function to be called when the screen is released (touch removed)</h6>
+<h6 id="vex.Brain.Lcd.released--arguments">Arguments:</h6>
+<pre><code>callback : A function that will be called when the screen is released
+arg (optional) : A tuple that is used to pass arguments to the callback function.
+</code></pre>
+<h6 id="vex.Brain.Lcd.released--returns">Returns:</h6>
+<pre><code>An instance of the Event class
+</code></pre>
+<h6 id="vex.Brain.Lcd.released--examples">Examples:</h6>
+<pre><code>def foo():
+    print("screen released")
+
+brain.screen.released(foo)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.render" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">render</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.render--switch-drawing-to-double-buffered-and-render-too-screen">Switch drawing to double buffered and render too screen.</h6>
+<p>Once called, further drawing will not appear on the screen until the next time\
+render is called.  This function will block until the screen can be updated.</p>
+<h6 id="vex.Brain.Lcd.render--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.render--returns">Returns:</h6>
+<pre><code>True if buffer was successfully rendered to screen.
+</code></pre>
+<h6 id="vex.Brain.Lcd.render--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.row" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">row</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the current row where text will be printed</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_clip_region" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_clip_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_clip_region--sets-the-clip-region-for-drawing-to-the-supplied-rectangle">Sets the clip region for drawing to the supplied rectangle.</h6>
+<p>All drawing is clipped to the given rectangle.\
+This is set on a per thread basis.</p>
+<h6 id="vex.Brain.Lcd.set_clip_region--arguments">Arguments:</h6>
+<pre><code>x : The x position of the rectangle top/left corner referenced to the screen origin.
+y : The y position of the rectangle top/left corner referenced to the screen origin.
+width : The width of the rectangle.
+height : The height of the rectangle.
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_clip_region--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_clip_region--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_cursor" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_cursor</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_cursor--set-the-cursor-position-used-for-printing-text-on-the-screen">Set the cursor position used for printing text on the screen</h6>
+<p>row and column spacing will take into account the selected font.\
+The base cell size if 10x20 pixels for the MONO20 font.\
+text may not accurately print if using a proportional font.\
+The top, left corner of the screen is position 1,1</p>
+<h6 id="vex.Brain.Lcd.set_cursor--arguments">Arguments:</h6>
+<pre><code>row : The cursor row
+col : The cursor column
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_cursor--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_fill_color" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_fill_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_fill_color--set-the-fill-color-used-for-drawing-rectangles-and-circles">Set the fill color used for drawing rectangles and circles</h6>
+<p>The color can be passed in similar ways to the Color class.\
+The color is specific to the running thread.</p>
+<h6 id="vex.Brain.Lcd.set_fill_color--arguments">Arguments:</h6>
+<pre><code>color : The fill color
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_fill_color--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_fill_color--examples">Examples:</h6>
+<pre><code># set pen color red using a hex value\
+brain.screen.set_fill_color(0xFF0000)
+
+# set pen color blue using predefined color\
+brain.screen.set_fill_color(Color.BLUE)
+
+# set pen color green using web string\
+brain.screen.set_fill_color("#00FF00")
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_font" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_font</span><span class="p">(</span><span class="n">fontname</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_font--set-the-font-type-used-for-printing-text-on-the-screen">Set the font type used for printing text on the screen</h6>
+<h6 id="vex.Brain.Lcd.set_font--arguments">Arguments:</h6>
+<pre><code>fontname : The font name
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_font--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_font--examples">Examples:</h6>
+<pre><code>brain.screen.font_type(FontType.MONO40)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_origin" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_origin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_origin--set-the-origin-used-for-drawing-graphics-on-the-screen">Set the origin used for drawing graphics on the screen</h6>
+<p>drawing functions consider the top left corner of the screen as the origin.\
+This function can move the origin to an alternate position such as the center of the screen.</p>
+<h6 id="vex.Brain.Lcd.set_origin--arguments">Arguments:</h6>
+<pre><code>x : The origins x position relative to top left corner
+y : The origins y position relative to top left corner
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_origin--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_pen_color" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_pen_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_pen_color--set-the-pen-color-used-for-drawing-lines-rectangles-and-circles">Set the pen color used for drawing lines, rectangles and circles</h6>
+<p>The color can be passed in similar ways to the Color class.\
+The color is specific to the running thread.</p>
+<h6 id="vex.Brain.Lcd.set_pen_color--arguments">Arguments:</h6>
+<pre><code>color : The pen color
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_pen_color--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_pen_color--examples">Examples:</h6>
+<pre><code># set pen color red using a hex value\
+brain.screen.set_pen_color(0xFF0000)
+
+# set pen color blue using predefined color\
+brain.screen.set_pen_color(Color.BLUE)
+
+# set pen color green using web string\
+brain.screen.set_pen_color("#00FF00")
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_pen_width" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_pen_width</span><span class="p">(</span><span class="n">width</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_pen_width--set-the-pen-width-used-for-drawing-lines-rectangles-and-circles">Set the pen width used for drawing lines, rectangles and circles</h6>
+<h6 id="vex.Brain.Lcd.set_pen_width--arguments">Arguments:</h6>
+<pre><code>width : The pen width
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_pen_width--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.x_position" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">x_position</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.x_position--the-x-coordinate-of-the-last-screen-event-press-or-release">The X coordinate of the last screen event, press or release</h6>
+<h6 id="vex.Brain.Lcd.x_position--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.x_position--returns">Returns:</h6>
+<pre><code>The X coordinate as an int
+</code></pre>
+<h6 id="vex.Brain.Lcd.x_position--examples">Examples:</h6>
+<pre><code>def foo():
+    print("screen pressed at ", brain.screen.x_position())
+
+brain.screen.pressed(foo)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.y_position" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">y_position</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.y_position--the-y-coordinate-of-the-last-screen-event-press-or-release">The Y coordinate of the last screen event, press or release</h6>
+<h6 id="vex.Brain.Lcd.y_position--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.y_position--returns">Returns:</h6>
+<pre><code>The Y coordinate as an int
+</code></pre>
+<h6 id="vex.Brain.Lcd.y_position--examples">Examples:</h6>
+<pre><code>def foo():
+    print("screen pressed at ", brain.screen.y_position())
+
+brain.screen.pressed(foo)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.Brain.Sdcard" class="doc doc-heading">
+            <code>Sdcard</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+        <h6 id="vex.Brain.Sdcard--sdcard-class-access-the-brain-sdcard">Sdcard class - access the brain sdcard</h6>
+<h6 id="vex.Brain.Sdcard--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Sdcard--returns">Returns:</h6>
+<pre><code>Instance of Sdcard class
+</code></pre>
+<h6 id="vex.Brain.Sdcard--examples">Examples:</h6>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.appendfile" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">appendfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.appendfile--append-a-bytearray-into-a-named-file">append a bytearray into a named file</h6>
+<p>Append is used to add more data to an existing file.</p>
+<h6 id="vex.Brain.Sdcard.appendfile--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to write
+buffer : A bytearray to write into the file
+</code></pre>
+<h6 id="vex.Brain.Sdcard.appendfile--returns">Returns:</h6>
+<pre><code>The number of bytes written
+</code></pre>
+<h6 id="vex.Brain.Sdcard.appendfile--examples">Examples:</h6>
+<pre><code># append bytearray into file\
+brain.sdcard.appendfile('MyTextFile.txt', bytearray("World "))
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.exists" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">exists</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.exists--check-to-see-if-named-file-exists-on-the-sd-card">check to see if named file exists on the sd card</h6>
+<h6 id="vex.Brain.Sdcard.exists--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to check
+</code></pre>
+<h6 id="vex.Brain.Sdcard.exists--returns">Returns:</h6>
+<pre><code>True if file exists
+</code></pre>
+<h6 id="vex.Brain.Sdcard.exists--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.filesize" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">filesize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.filesize--returns-the-size-in-bytes-of-the-named-file">returns the size in bytes of the named file</h6>
+<h6 id="vex.Brain.Sdcard.filesize--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to check
+</code></pre>
+<h6 id="vex.Brain.Sdcard.filesize--returns">Returns:</h6>
+<pre><code>size of file in bytes
+</code></pre>
+<h6 id="vex.Brain.Sdcard.filesize--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.is_inserted" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_inserted</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.is_inserted--returns-status-of-sd-card">returns status of SD Card</h6>
+<h6 id="vex.Brain.Sdcard.is_inserted--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Sdcard.is_inserted--returns">Returns:</h6>
+<pre><code>True if an sdcard is inserted into the brain
+</code></pre>
+<h6 id="vex.Brain.Sdcard.is_inserted--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.loadfile" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">loadfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.loadfile--load-the-named-file">load the named file</h6>
+<h6 id="vex.Brain.Sdcard.loadfile--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to read
+buffer (optional) : A bytearray to read the file into
+</code></pre>
+<h6 id="vex.Brain.Sdcard.loadfile--returns">Returns:</h6>
+<pre><code>A bytearray with file data
+</code></pre>
+<h6 id="vex.Brain.Sdcard.loadfile--examples">Examples:</h6>
+<pre><code># read file into new bytearray\
+b = brain.sdcard.loadfile('MyTextFile.txt')
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.savefile" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">savefile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.savefile--save-a-bytearray-into-a-named-file">Save a bytearray into a named file</h6>
+<p>If the optional bytearray is None, then an empty file is created.</p>
+<h6 id="vex.Brain.Sdcard.savefile--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to write
+buffer (optional) : A bytearray to write into the file
+</code></pre>
+<h6 id="vex.Brain.Sdcard.savefile--returns">Returns:</h6>
+<pre><code>The number of bytes written
+</code></pre>
+<h6 id="vex.Brain.Sdcard.savefile--examples">Examples:</h6>
+<pre><code># write bytearray into file\
+brain.sdcard.savefile('MyTextFile.txt', bytearray("Hello "))
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.size" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">size</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.size--returns-the-size-in-bytes-of-the-named-file">returns the size in bytes of the named file</h6>
+<h6 id="vex.Brain.Sdcard.size--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to check
+</code></pre>
+<h6 id="vex.Brain.Sdcard.size--returns">Returns:</h6>
+<pre><code>size of file in bytes
+</code></pre>
+<h6 id="vex.Brain.Sdcard.size--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h2 id="lcd-display">LCD Display</h2>
+<p>The <code>Brain.Lcd</code> class allows you to draw graphics, print text, and handle touch events on the V5 brain's screen.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.Brain.Lcd" class="doc doc-heading">
+            <code>vex.Brain.Lcd</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <h6 id="vex.Brain.Lcd--brainlcd-class">Brain.Lcd class</h6>
+<p>A class used to access to screen on the V5 for drawing and receiving touch events.</p>
+<h6 id="vex.Brain.Lcd--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd--returns">Returns:</h6>
+<pre><code>An instance of the Brain.Lcd class
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.clear_row" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">clear_row</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.clear_row--clear-screen-row-to-a-single-color">Clear screen row to a single color</h6>
+<p>The color can be passed in similar ways to the Color class.\</p>
+<h6 id="vex.Brain.Lcd.clear_row--arguments">Arguments:</h6>
+<pre><code>row (optional) : The row to clear, default is current cursor row
+color (optional) : The color the screen will be set to, default is BLACK
+</code></pre>
+<h6 id="vex.Brain.Lcd.clear_row--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.clear_row--examples">Examples:</h6>
+<pre><code># clear row to black\
+brain.screen.clear_row()
+
+# clear row 2 to red\
+brain.screen.clear_row(2, Color.RED)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.clear_screen" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">clear_screen</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">Color</span><span class="o">.</span><span class="n">BLACK</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.clear_screen--clear-the-whole-screen-to-a-single-color">Clear the whole screen to a single color</h6>
+<p>The color can be passed in similar ways to the Color class.\</p>
+<h6 id="vex.Brain.Lcd.clear_screen--arguments">Arguments:</h6>
+<pre><code>color (optional) : The color the screen will be set to, default is BLACK
+</code></pre>
+<h6 id="vex.Brain.Lcd.clear_screen--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.clear_screen--examples">Examples:</h6>
+<pre><code># clear screen to black\
+brain.screen.clear_screen()
+
+# clear screen to blue using predefined color\
+brain.screen.clear_screen(Color.BLUE)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.column" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">column</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the current column where text will be printed</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_circle" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_circle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_circle--draw-a-circle-on-the-screen-using-the-current-pen-and-fill-colors">Draw a circle on the screen using the current pen and fill colors.</h6>
+<h6 id="vex.Brain.Lcd.draw_circle--arguments">Arguments:</h6>
+<pre><code>x : The x position of the circle center referenced to the screen origin.
+y : The y position of the circle center referenced to the screen origin.
+radius : The height of the circle.
+color (optional) : An optional fill color, the current fill color will be used if not supplied
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_circle--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_circle--examples">Examples:</h6>
+<pre><code># draw a green circle on the screen that is filled using blue\
+brain.screen.set_pen_color(Color.GREEN)\
+brain.screen.set_fill_color(Color.BLUE)\
+brain.screen.draw_circle(50, 50, 10)
+
+# draw a green circle on the screen that is filled using red\
+brain.screen.set_pen_color(Color.GREEN)\
+brain.screen.draw_circle(100, 50, 10, Color.RED)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_image_from_file" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_image_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_image_from_file--display-the-named-image-from-the-sd-card">Display the named image from the SD Card</h6>
+<h6 id="vex.Brain.Lcd.draw_image_from_file--arguments">Arguments:</h6>
+<pre><code>filename : The file name of the image.
+x : The X coordinate for the top left corner of the image on the screen
+y : The Y coordinate for the top left corner of the image on the screen
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_image_from_file--returns">Returns:</h6>
+<pre><code>True if successfully drawn, False on error
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_image_from_file--examples">Examples:</h6>
+<pre><code># draw the vex.bmp image on the screen at coordinate 0, 0\
+# an image named vex.bmp must be on the SD Card in the root folder\
+brain.screen.draw_image_from_file('vex.bmp', 0, 0)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_line" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_line</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_line--draw-a-line-on-the-screen-using-the-current-pen-color">Draw a line on the screen using the current pen color.</h6>
+<h6 id="vex.Brain.Lcd.draw_line--arguments">Arguments:</h6>
+<pre><code>x1 : The x position of the beginning of the line referenced to the screen origin.
+y1 : The y position of the beginning of the line referenced to the screen origin.
+x2 : The x position of the end of the line referenced to the screen origin.
+y2 : The y position of the end of the line referenced to the screen origin.
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_line--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_line--examples">Examples:</h6>
+<pre><code># draw a red line on the screen\
+brain.screen.set_pen_color(Color.RED)\
+brain.screen.draw_line(10, 10, 20, 20)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_pixel" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_pixel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_pixel--draw-a-pixel-on-the-screen-using-the-current-pen-color">Draw a pixel on the screen using the current pen color.</h6>
+<h6 id="vex.Brain.Lcd.draw_pixel--arguments">Arguments:</h6>
+<pre><code>x : The x position to draw the pixel referenced to the screen origin.
+y : The y position to draw the pixel referenced to the screen origin.
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_pixel--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_pixel--examples">Examples:</h6>
+<pre><code># draw a red pixel on the screen\
+brain.screen.set_pen_color(Color.RED)\
+brain.screen.draw_pixel(10, 10)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.draw_rectangle" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">draw_rectangle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.draw_rectangle--draw-a-rectangle-on-the-screen-using-the-current-pen-and-fill-colors">Draw a rectangle on the screen using the current pen and fill colors.</h6>
+<h6 id="vex.Brain.Lcd.draw_rectangle--arguments">Arguments:</h6>
+<pre><code>x : The x position of the rectangle top/left corner referenced to the screen origin.
+y : The y position of the rectangle top/left corner referenced to the screen origin.
+width : The width of the rectangle.
+height : The height of the rectangle.
+color (optional) : An optional fill color, the current fill color will be used if not supplied
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_rectangle--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.draw_rectangle--examples">Examples:</h6>
+<pre><code># draw a green rectangle on the screen that is filled using blue\
+brain.screen.set_pen_color(Color.GREEN)\
+brain.screen.set_fill_color(Color.BLUE)\
+brain.screen.draw_rectangle(10, 10, 20, 20)
+
+# draw a green rectangle on the screen that is filled using red\
+brain.screen.set_pen_color(Color.GREEN)\
+brain.screen.draw_rectangle(50, 50, 20, 20, Color.RED)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.get_string_height" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_string_height</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.get_string_height--get-height-of-a-string">get height of a string</h6>
+<h6 id="vex.Brain.Lcd.get_string_height--arguments">Arguments:</h6>
+<pre><code>arguments are in the same format as can be passed to the print function.
+</code></pre>
+<h6 id="vex.Brain.Lcd.get_string_height--returns">Returns:</h6>
+<pre><code>height of string as integer.
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.get_string_width" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_string_width</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.get_string_width--get-width-of-a-string">get width of a string</h6>
+<h6 id="vex.Brain.Lcd.get_string_width--arguments">Arguments:</h6>
+<pre><code>arguments are in the same format as can be passed to the print function.
+</code></pre>
+<h6 id="vex.Brain.Lcd.get_string_width--returns">Returns:</h6>
+<pre><code>width of string as integer.
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.next_row" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">next_row</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.next_row--move-the-cursor-to-the-beginning-of-the-next-row">Move the cursor to the beginning of the next row</h6>
+<h6 id="vex.Brain.Lcd.next_row--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.next_row--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.pressed" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">pressed</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="p">())</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.pressed--register-a-function-to-be-called-when-the-screen-is-pressed">Register a function to be called when the screen is pressed</h6>
+<h6 id="vex.Brain.Lcd.pressed--arguments">Arguments:</h6>
+<pre><code>callback : A function that will be called when the screen is pressed
+arg (optional) : A tuple that is used to pass arguments to the callback function.
+</code></pre>
+<h6 id="vex.Brain.Lcd.pressed--returns">Returns:</h6>
+<pre><code>An instance of the Event class
+</code></pre>
+<h6 id="vex.Brain.Lcd.pressed--examples">Examples:</h6>
+<pre><code>def foo():
+    print("screen pressed")
+
+brain.screen.pressed(foo)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.pressing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">pressing</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.pressing--returns-whether-the-screen-is-currently-being-pressed-touched">Returns whether the screen is currently being pressed (touched)</h6>
+<h6 id="vex.Brain.Lcd.pressing--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.pressing--returns">Returns:</h6>
+<pre><code>True or False
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.print" class="doc doc-heading">
+            <code class="highlight language-python"><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.print--print-text-on-the-screen-using-current-curser-position">print text on the screen using current curser position.</h6>
+<h6 id="vex.Brain.Lcd.print--arguments">Arguments:</h6>
+<pre><code>Optional keyword arguments:
+sep : string inserted between values, default a space.
+precision : the number of decimal places to display when printing simple numbers, default is 2
+</code></pre>
+<h6 id="vex.Brain.Lcd.print--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.print--examples">Examples:</h6>
+<pre><code># print the number 1 on the screen at current cursor position\
+brain.screen.print(1)
+
+# print the numbers 1, 2, 3 and 4 on the screen at current cursor position separated by a '-'\
+brain.screen.print(1, 2, 3, 4, sep='-')
+
+# print motor1 velocity on the screen using a format string\
+brain.screen.print("motor  1 : % 7.2f" %(motor1.velocity()))
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.print_at" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">print_at</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.print_at--print-text-on-the-screen-at-x-and-coordinates">print text on the screen at x and coordinates.</h6>
+<h6 id="vex.Brain.Lcd.print_at--arguments">Arguments:</h6>
+<pre><code>Required keyword arguments
+x : The x position of the text referenced to the screen origin.
+y : The y position of the text referenced to the screen origin.
+
+Optional keyword arguments:
+sep : string inserted between values, default a space.
+precision : the number of decimal places to display when printing simple numbers, default is 2
+opaque : text does not clear background pixels if set to False. default is True.
+</code></pre>
+<h6 id="vex.Brain.Lcd.print_at--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.print_at--examples">Examples:</h6>
+<pre><code># print the number 1 on the screen at position x=100, y=40\
+brain.screen.print_at(1, x=100, y=40)
+
+# print the numbers 1, 2, 3 and 4 on the screen at position x=100, y=40\
+brain.screen.print_at(1, 2, 3, 4, x=100, y=40)
+
+# print motor1 velocity on the screen using a format string at position x=100, y=40\
+brain.screen.print_at("motor  1 : % 7.2f" %(motor1.velocity()), x=100, y=40)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.released" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">released</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="p">())</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.released--register-a-function-to-be-called-when-the-screen-is-released-touch-removed">Register a function to be called when the screen is released (touch removed)</h6>
+<h6 id="vex.Brain.Lcd.released--arguments">Arguments:</h6>
+<pre><code>callback : A function that will be called when the screen is released
+arg (optional) : A tuple that is used to pass arguments to the callback function.
+</code></pre>
+<h6 id="vex.Brain.Lcd.released--returns">Returns:</h6>
+<pre><code>An instance of the Event class
+</code></pre>
+<h6 id="vex.Brain.Lcd.released--examples">Examples:</h6>
+<pre><code>def foo():
+    print("screen released")
+
+brain.screen.released(foo)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.render" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">render</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.render--switch-drawing-to-double-buffered-and-render-too-screen">Switch drawing to double buffered and render too screen.</h6>
+<p>Once called, further drawing will not appear on the screen until the next time\
+render is called.  This function will block until the screen can be updated.</p>
+<h6 id="vex.Brain.Lcd.render--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.render--returns">Returns:</h6>
+<pre><code>True if buffer was successfully rendered to screen.
+</code></pre>
+<h6 id="vex.Brain.Lcd.render--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.row" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">row</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the current row where text will be printed</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_clip_region" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_clip_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_clip_region--sets-the-clip-region-for-drawing-to-the-supplied-rectangle">Sets the clip region for drawing to the supplied rectangle.</h6>
+<p>All drawing is clipped to the given rectangle.\
+This is set on a per thread basis.</p>
+<h6 id="vex.Brain.Lcd.set_clip_region--arguments">Arguments:</h6>
+<pre><code>x : The x position of the rectangle top/left corner referenced to the screen origin.
+y : The y position of the rectangle top/left corner referenced to the screen origin.
+width : The width of the rectangle.
+height : The height of the rectangle.
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_clip_region--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_clip_region--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_cursor" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_cursor</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_cursor--set-the-cursor-position-used-for-printing-text-on-the-screen">Set the cursor position used for printing text on the screen</h6>
+<p>row and column spacing will take into account the selected font.\
+The base cell size if 10x20 pixels for the MONO20 font.\
+text may not accurately print if using a proportional font.\
+The top, left corner of the screen is position 1,1</p>
+<h6 id="vex.Brain.Lcd.set_cursor--arguments">Arguments:</h6>
+<pre><code>row : The cursor row
+col : The cursor column
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_cursor--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_fill_color" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_fill_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_fill_color--set-the-fill-color-used-for-drawing-rectangles-and-circles">Set the fill color used for drawing rectangles and circles</h6>
+<p>The color can be passed in similar ways to the Color class.\
+The color is specific to the running thread.</p>
+<h6 id="vex.Brain.Lcd.set_fill_color--arguments">Arguments:</h6>
+<pre><code>color : The fill color
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_fill_color--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_fill_color--examples">Examples:</h6>
+<pre><code># set pen color red using a hex value\
+brain.screen.set_fill_color(0xFF0000)
+
+# set pen color blue using predefined color\
+brain.screen.set_fill_color(Color.BLUE)
+
+# set pen color green using web string\
+brain.screen.set_fill_color("#00FF00")
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_font" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_font</span><span class="p">(</span><span class="n">fontname</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_font--set-the-font-type-used-for-printing-text-on-the-screen">Set the font type used for printing text on the screen</h6>
+<h6 id="vex.Brain.Lcd.set_font--arguments">Arguments:</h6>
+<pre><code>fontname : The font name
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_font--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_font--examples">Examples:</h6>
+<pre><code>brain.screen.font_type(FontType.MONO40)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_origin" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_origin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_origin--set-the-origin-used-for-drawing-graphics-on-the-screen">Set the origin used for drawing graphics on the screen</h6>
+<p>drawing functions consider the top left corner of the screen as the origin.\
+This function can move the origin to an alternate position such as the center of the screen.</p>
+<h6 id="vex.Brain.Lcd.set_origin--arguments">Arguments:</h6>
+<pre><code>x : The origins x position relative to top left corner
+y : The origins y position relative to top left corner
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_origin--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_pen_color" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_pen_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_pen_color--set-the-pen-color-used-for-drawing-lines-rectangles-and-circles">Set the pen color used for drawing lines, rectangles and circles</h6>
+<p>The color can be passed in similar ways to the Color class.\
+The color is specific to the running thread.</p>
+<h6 id="vex.Brain.Lcd.set_pen_color--arguments">Arguments:</h6>
+<pre><code>color : The pen color
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_pen_color--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_pen_color--examples">Examples:</h6>
+<pre><code># set pen color red using a hex value\
+brain.screen.set_pen_color(0xFF0000)
+
+# set pen color blue using predefined color\
+brain.screen.set_pen_color(Color.BLUE)
+
+# set pen color green using web string\
+brain.screen.set_pen_color("#00FF00")
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.set_pen_width" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_pen_width</span><span class="p">(</span><span class="n">width</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.set_pen_width--set-the-pen-width-used-for-drawing-lines-rectangles-and-circles">Set the pen width used for drawing lines, rectangles and circles</h6>
+<h6 id="vex.Brain.Lcd.set_pen_width--arguments">Arguments:</h6>
+<pre><code>width : The pen width
+</code></pre>
+<h6 id="vex.Brain.Lcd.set_pen_width--returns">Returns:</h6>
+<pre><code>None
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.x_position" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">x_position</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.x_position--the-x-coordinate-of-the-last-screen-event-press-or-release">The X coordinate of the last screen event, press or release</h6>
+<h6 id="vex.Brain.Lcd.x_position--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.x_position--returns">Returns:</h6>
+<pre><code>The X coordinate as an int
+</code></pre>
+<h6 id="vex.Brain.Lcd.x_position--examples">Examples:</h6>
+<pre><code>def foo():
+    print("screen pressed at ", brain.screen.x_position())
+
+brain.screen.pressed(foo)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Lcd.y_position" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">y_position</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Lcd.y_position--the-y-coordinate-of-the-last-screen-event-press-or-release">The Y coordinate of the last screen event, press or release</h6>
+<h6 id="vex.Brain.Lcd.y_position--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Lcd.y_position--returns">Returns:</h6>
+<pre><code>The Y coordinate as an int
+</code></pre>
+<h6 id="vex.Brain.Lcd.y_position--examples">Examples:</h6>
+<pre><code>def foo():
+    print("screen pressed at ", brain.screen.y_position())
+
+brain.screen.pressed(foo)
+</code></pre>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h2 id="battery">Battery</h2>
+<p>The <code>Brain.Battery</code> class provides information about the V5 brain's battery, such as capacity, voltage, current, and temperature.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.Brain.Battery" class="doc doc-heading">
+            <code>vex.Brain.Battery</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <h6 id="vex.Brain.Battery--battery-class-access-the-brain-battery">Battery class - access the brain battery</h6>
+<h6 id="vex.Brain.Battery--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Battery--returns">Returns:</h6>
+<pre><code>Instance of Battery class
+</code></pre>
+<h6 id="vex.Brain.Battery--examples">Examples:</h6>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Battery.capacity" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">capacity</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Battery.capacity--read-remaining-capacity-of-the-battery">read remaining capacity of the battery</h6>
+<h6 id="vex.Brain.Battery.capacity--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Battery.capacity--returns">Returns:</h6>
+<pre><code>capacity as percentage
+</code></pre>
+<h6 id="vex.Brain.Battery.capacity--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Battery.current" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">current</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">CurrentUnits</span><span class="o">.</span><span class="n">AMP</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Battery.current--read-the-current-of-the-battery">read the current of the battery</h6>
+<h6 id="vex.Brain.Battery.current--arguments">Arguments:</h6>
+<pre><code>units (optional) : AMP, default is mA but jot available as an enum.
+</code></pre>
+<h6 id="vex.Brain.Battery.current--returns">Returns:</h6>
+<pre><code>current in supplied units
+</code></pre>
+<h6 id="vex.Brain.Battery.current--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Battery.temperature" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">temperature</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">PercentUnits</span><span class="o">.</span><span class="n">PERCENT</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Battery.temperature--read-the-temperature-of-the-battery">read the temperature of the battery</h6>
+<h6 id="vex.Brain.Battery.temperature--arguments">Arguments:</h6>
+<pre><code>units (optional) : PERCENT, CELSIUS or FAHRENHEIT, default is CELSIUS
+</code></pre>
+<h6 id="vex.Brain.Battery.temperature--returns">Returns:</h6>
+<pre><code>temperature in supplied units
+</code></pre>
+<h6 id="vex.Brain.Battery.temperature--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Battery.voltage" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">voltage</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">VoltageUnits</span><span class="o">.</span><span class="n">MV</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Battery.voltage--read-the-voltage-of-the-battery">read the voltage of the battery</h6>
+<h6 id="vex.Brain.Battery.voltage--arguments">Arguments:</h6>
+<pre><code>units (optional) : VOLTS or MV, default is MV
+</code></pre>
+<h6 id="vex.Brain.Battery.voltage--returns">Returns:</h6>
+<pre><code>voltage in supplied units
+</code></pre>
+<h6 id="vex.Brain.Battery.voltage--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h2 id="sd-card">SD Card</h2>
+<p>The <code>Brain.Sdcard</code> class allows you to interact with the SD card inserted into the V5 brain, including file operations.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.Brain.Sdcard" class="doc doc-heading">
+            <code>vex.Brain.Sdcard</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <h6 id="vex.Brain.Sdcard--sdcard-class-access-the-brain-sdcard">Sdcard class - access the brain sdcard</h6>
+<h6 id="vex.Brain.Sdcard--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Sdcard--returns">Returns:</h6>
+<pre><code>Instance of Sdcard class
+</code></pre>
+<h6 id="vex.Brain.Sdcard--examples">Examples:</h6>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.appendfile" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">appendfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.appendfile--append-a-bytearray-into-a-named-file">append a bytearray into a named file</h6>
+<p>Append is used to add more data to an existing file.</p>
+<h6 id="vex.Brain.Sdcard.appendfile--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to write
+buffer : A bytearray to write into the file
+</code></pre>
+<h6 id="vex.Brain.Sdcard.appendfile--returns">Returns:</h6>
+<pre><code>The number of bytes written
+</code></pre>
+<h6 id="vex.Brain.Sdcard.appendfile--examples">Examples:</h6>
+<pre><code># append bytearray into file\
+brain.sdcard.appendfile('MyTextFile.txt', bytearray("World "))
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.exists" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">exists</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.exists--check-to-see-if-named-file-exists-on-the-sd-card">check to see if named file exists on the sd card</h6>
+<h6 id="vex.Brain.Sdcard.exists--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to check
+</code></pre>
+<h6 id="vex.Brain.Sdcard.exists--returns">Returns:</h6>
+<pre><code>True if file exists
+</code></pre>
+<h6 id="vex.Brain.Sdcard.exists--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.filesize" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">filesize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.filesize--returns-the-size-in-bytes-of-the-named-file">returns the size in bytes of the named file</h6>
+<h6 id="vex.Brain.Sdcard.filesize--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to check
+</code></pre>
+<h6 id="vex.Brain.Sdcard.filesize--returns">Returns:</h6>
+<pre><code>size of file in bytes
+</code></pre>
+<h6 id="vex.Brain.Sdcard.filesize--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.is_inserted" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_inserted</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.is_inserted--returns-status-of-sd-card">returns status of SD Card</h6>
+<h6 id="vex.Brain.Sdcard.is_inserted--arguments">Arguments:</h6>
+<pre><code>None
+</code></pre>
+<h6 id="vex.Brain.Sdcard.is_inserted--returns">Returns:</h6>
+<pre><code>True if an sdcard is inserted into the brain
+</code></pre>
+<h6 id="vex.Brain.Sdcard.is_inserted--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.loadfile" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">loadfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.loadfile--load-the-named-file">load the named file</h6>
+<h6 id="vex.Brain.Sdcard.loadfile--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to read
+buffer (optional) : A bytearray to read the file into
+</code></pre>
+<h6 id="vex.Brain.Sdcard.loadfile--returns">Returns:</h6>
+<pre><code>A bytearray with file data
+</code></pre>
+<h6 id="vex.Brain.Sdcard.loadfile--examples">Examples:</h6>
+<pre><code># read file into new bytearray\
+b = brain.sdcard.loadfile('MyTextFile.txt')
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.savefile" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">savefile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.savefile--save-a-bytearray-into-a-named-file">Save a bytearray into a named file</h6>
+<p>If the optional bytearray is None, then an empty file is created.</p>
+<h6 id="vex.Brain.Sdcard.savefile--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to write
+buffer (optional) : A bytearray to write into the file
+</code></pre>
+<h6 id="vex.Brain.Sdcard.savefile--returns">Returns:</h6>
+<pre><code>The number of bytes written
+</code></pre>
+<h6 id="vex.Brain.Sdcard.savefile--examples">Examples:</h6>
+<pre><code># write bytearray into file\
+brain.sdcard.savefile('MyTextFile.txt', bytearray("Hello "))
+</code></pre>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="vex.Brain.Sdcard.size" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">size</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <h6 id="vex.Brain.Sdcard.size--returns-the-size-in-bytes-of-the-named-file">returns the size in bytes of the named file</h6>
+<h6 id="vex.Brain.Sdcard.size--arguments">Arguments:</h6>
+<pre><code>filename : The name of the file to check
+</code></pre>
+<h6 id="vex.Brain.Sdcard.size--returns">Returns:</h6>
+<pre><code>size of file in bytes
+</code></pre>
+<h6 id="vex.Brain.Sdcard.size--examples">Examples:</h6>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleButton = document.getElementById('nav-toggle');
+                const navContent = document.getElementById('nav-content');
+                const arrow = document.getElementById('nav-arrow');
+
+                toggleButton.addEventListener('click', function() {
+                    if (navContent.style.display === 'none') {
+                        navContent.style.display = 'block';
+                        arrow.textContent = '↓';
+                    } else {
+                        navContent.style.display = 'none';
+                        arrow.textContent = '→';
+                    }
+                });
+
+                const tocToggleButton = document.getElementById('toc-toggle');
+                const tocContent = document.getElementById('toc-content');
+                const tocArrow = document.getElementById('toc-arrow');
+
+                if (tocToggleButton) {
+                    tocToggleButton.addEventListener('click', function() {
+                        if (tocContent.style.display === 'none') {
+                            tocContent.style.display = 'block';
+                            tocArrow.textContent = '↓';
+                        } else {
+                            tocContent.style.display = 'none';
+                            tocArrow.textContent = '→';
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>

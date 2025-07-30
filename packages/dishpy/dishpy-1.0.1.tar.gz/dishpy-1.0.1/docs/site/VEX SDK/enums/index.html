@@ -1,0 +1,3650 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+            Enums &amp; Units - DishPy Docs
+        </title>
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/dishpy/index.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/xcode.css">
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <div class="m-5 container">
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    In this documentation
+                                </h6>
+                                <button id="nav-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="nav-arrow" style="font-family: Inter">↓</span>
+                                </button>
+                            </div>
+                            <div id="nav-content" class="px-6 pb-6 ml-5">
+                                
+                                    
+                                    <div>
+                                        <a href="../.." class="text-sm ">
+                                            DishPy
+                                        </a>
+                                    </div>
+                                    
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm ">
+                                            Tutorial
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/1_installation/" class="text-sm ">
+                                                    1. Installation
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/2_creating_proj/" class="text-sm ">
+                                                    2. Your first project
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/3_multifile/" class="text-sm ">
+                                                    3. Using multi-file capabilities in DishPy
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/4_create_packages/" class="text-sm ">
+                                                    4. Creating packages
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../Tutorial/5_registry/" class="text-sm ">
+                                                    5. The package registry
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm font-semibold">
+                                            VEX SDK
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../" class="text-sm ">
+                                                    VEX V5 Python SDK
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../brain/" class="text-sm ">
+                                                    Brain &amp; Display
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../controllers/" class="text-sm ">
+                                                    Controllers &amp; Competition
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="./" class="text-sm font-semibold">
+                                                    Enums &amp; Units
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../full/" class="text-sm ">
+                                                    Complete API Reference
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../motors/" class="text-sm ">
+                                                    Motors
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../sensors/" class="text-sm ">
+                                                    Sensors
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    Table of Contents
+                                </h6>
+                                <button id="toc-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="toc-arrow" style="font-family: Inter;">→</span>
+                                </button>
+                            </div>
+                            <div id="toc-content" class="px-6 pb-6 ml-5" style="display: none;">
+                                
+                                    <div>
+                                        <a href="#enums-units" class="text-sm">
+                                            Enums &amp; Units
+                                        </a>
+                                    </div>
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#ports" class="text-sm">
+                                                    Ports
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#vex.Ports" class="text-sm">
+                                                    Ports
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#base-enum" class="text-sm">
+                                                    Base Enum
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#vex.vexEnum" class="text-sm">
+                                                    vexEnum
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#units" class="text-sm">
+                                                    Units
+                                                </a>
+                                            </div>
+                                            
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#percentunits" class="text-sm">
+                                                            PercentUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.PercentUnits" class="text-sm">
+                                                            PercentUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.PercentUnits.PERCENT" class="text-sm">
+                                                                    PERCENT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#timeunits" class="text-sm">
+                                                            TimeUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.TimeUnits" class="text-sm">
+                                                            TimeUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TimeUnits.MSEC" class="text-sm">
+                                                                    MSEC
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TimeUnits.SEC" class="text-sm">
+                                                                    SEC
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TimeUnits.SECONDS" class="text-sm">
+                                                                    SECONDS
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#currentunits" class="text-sm">
+                                                            CurrentUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.CurrentUnits" class="text-sm">
+                                                            CurrentUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.CurrentUnits.AMP" class="text-sm">
+                                                                    AMP
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#voltageunits" class="text-sm">
+                                                            VoltageUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.VoltageUnits" class="text-sm">
+                                                            VoltageUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.VoltageUnits.MV" class="text-sm">
+                                                                    MV
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.VoltageUnits.VOLT" class="text-sm">
+                                                                    VOLT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#powerunits" class="text-sm">
+                                                            PowerUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.PowerUnits" class="text-sm">
+                                                            PowerUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.PowerUnits.WATT" class="text-sm">
+                                                                    WATT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#torqueunits" class="text-sm">
+                                                            TorqueUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.TorqueUnits" class="text-sm">
+                                                            TorqueUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TorqueUnits.INLB" class="text-sm">
+                                                                    INLB
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TorqueUnits.NM" class="text-sm">
+                                                                    NM
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#rotationunits" class="text-sm">
+                                                            RotationUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.RotationUnits" class="text-sm">
+                                                            RotationUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.RotationUnits.DEG" class="text-sm">
+                                                                    DEG
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.RotationUnits.RAW" class="text-sm">
+                                                                    RAW
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.RotationUnits.REV" class="text-sm">
+                                                                    REV
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#velocityunits" class="text-sm">
+                                                            VelocityUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.VelocityUnits" class="text-sm">
+                                                            VelocityUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.VelocityUnits.DPS" class="text-sm">
+                                                                    DPS
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.VelocityUnits.PERCENT" class="text-sm">
+                                                                    PERCENT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.VelocityUnits.RPM" class="text-sm">
+                                                                    RPM
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#distanceunits" class="text-sm">
+                                                            DistanceUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.DistanceUnits" class="text-sm">
+                                                            DistanceUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.DistanceUnits.CM" class="text-sm">
+                                                                    CM
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.DistanceUnits.IN" class="text-sm">
+                                                                    IN
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.DistanceUnits.MM" class="text-sm">
+                                                                    MM
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#analogunits" class="text-sm">
+                                                            AnalogUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.AnalogUnits" class="text-sm">
+                                                            AnalogUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.AnalogUnits.EIGHTBIT" class="text-sm">
+                                                                    EIGHTBIT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.AnalogUnits.MV" class="text-sm">
+                                                                    MV
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.AnalogUnits.PCT" class="text-sm">
+                                                                    PCT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.AnalogUnits.TENBIT" class="text-sm">
+                                                                    TENBIT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.AnalogUnits.TWELVEBIT" class="text-sm">
+                                                                    TWELVEBIT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#temperatureunits" class="text-sm">
+                                                            TemperatureUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.TemperatureUnits" class="text-sm">
+                                                            TemperatureUnits
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TemperatureUnits.CELSIUS" class="text-sm">
+                                                                    CELSIUS
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TemperatureUnits.FAHRENHEIT" class="text-sm">
+                                                                    FAHRENHEIT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#device-control-enums" class="text-sm">
+                                                    Device &amp; Control Enums
+                                                </a>
+                                            </div>
+                                            
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#directiontype" class="text-sm">
+                                                            DirectionType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.DirectionType" class="text-sm">
+                                                            DirectionType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.DirectionType.FORWARD" class="text-sm">
+                                                                    FORWARD
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.DirectionType.REVERSE" class="text-sm">
+                                                                    REVERSE
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.DirectionType.UNDEFINED" class="text-sm">
+                                                                    UNDEFINED
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#turntype" class="text-sm">
+                                                            TurnType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.TurnType" class="text-sm">
+                                                            TurnType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TurnType.LEFT" class="text-sm">
+                                                                    LEFT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TurnType.RIGHT" class="text-sm">
+                                                                    RIGHT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.TurnType.UNDEFINED" class="text-sm">
+                                                                    UNDEFINED
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#braketype" class="text-sm">
+                                                            BrakeType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.BrakeType" class="text-sm">
+                                                            BrakeType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.BrakeType.BRAKE" class="text-sm">
+                                                                    BRAKE
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.BrakeType.COAST" class="text-sm">
+                                                                    COAST
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.BrakeType.HOLD" class="text-sm">
+                                                                    HOLD
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#gearsetting" class="text-sm">
+                                                            GearSetting
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.GearSetting" class="text-sm">
+                                                            GearSetting
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.GearSetting.RATIO_18_1" class="text-sm">
+                                                                    RATIO_18_1
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.GearSetting.RATIO_36_1" class="text-sm">
+                                                                    RATIO_36_1
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.GearSetting.RATIO_6_1" class="text-sm">
+                                                                    RATIO_6_1
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#fonttype" class="text-sm">
+                                                            FontType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.FontType" class="text-sm">
+                                                            FontType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.CJK16" class="text-sm">
+                                                                    CJK16
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.MONO12" class="text-sm">
+                                                                    MONO12
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.MONO15" class="text-sm">
+                                                                    MONO15
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.MONO20" class="text-sm">
+                                                                    MONO20
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.MONO30" class="text-sm">
+                                                                    MONO30
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.MONO40" class="text-sm">
+                                                                    MONO40
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.MONO60" class="text-sm">
+                                                                    MONO60
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.PROP20" class="text-sm">
+                                                                    PROP20
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.PROP30" class="text-sm">
+                                                                    PROP30
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.PROP40" class="text-sm">
+                                                                    PROP40
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.FontType.PROP60" class="text-sm">
+                                                                    PROP60
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#threewiretype" class="text-sm">
+                                                            ThreeWireType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.ThreeWireType" class="text-sm">
+                                                            ThreeWireType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.ACCELEROMETER" class="text-sm">
+                                                                    ACCELEROMETER
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.ANALOG_IN" class="text-sm">
+                                                                    ANALOG_IN
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.ANALOG_OUT" class="text-sm">
+                                                                    ANALOG_OUT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.DIGITAL_IN" class="text-sm">
+                                                                    DIGITAL_IN
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.DIGITAL_OUT" class="text-sm">
+                                                                    DIGITAL_OUT
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.ENCODER" class="text-sm">
+                                                                    ENCODER
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.GYRO" class="text-sm">
+                                                                    GYRO
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.LIGHT_SENSOR" class="text-sm">
+                                                                    LIGHT_SENSOR
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.LINE_SENSOR" class="text-sm">
+                                                                    LINE_SENSOR
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.MOTOR" class="text-sm">
+                                                                    MOTOR
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.POTENTIOMETER" class="text-sm">
+                                                                    POTENTIOMETER
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.SERVO" class="text-sm">
+                                                                    SERVO
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.SLEW_MOTOR" class="text-sm">
+                                                                    SLEW_MOTOR
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.SONAR" class="text-sm">
+                                                                    SONAR
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ThreeWireType.SWITCH" class="text-sm">
+                                                                    SWITCH
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#controllertype" class="text-sm">
+                                                            ControllerType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.ControllerType" class="text-sm">
+                                                            ControllerType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ControllerType.PARTNER" class="text-sm">
+                                                                    PARTNER
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.ControllerType.PRIMARY" class="text-sm">
+                                                                    PRIMARY
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#axistype" class="text-sm">
+                                                            AxisType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.AxisType" class="text-sm">
+                                                            AxisType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.AxisType.XAXIS" class="text-sm">
+                                                                    XAXIS
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.AxisType.YAXIS" class="text-sm">
+                                                                    YAXIS
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.AxisType.ZAXIS" class="text-sm">
+                                                                    ZAXIS
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#orientationtype" class="text-sm">
+                                                            OrientationType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.OrientationType" class="text-sm">
+                                                            OrientationType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.OrientationType.PITCH" class="text-sm">
+                                                                    PITCH
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.OrientationType.ROLL" class="text-sm">
+                                                                    ROLL
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.OrientationType.YAW" class="text-sm">
+                                                                    YAW
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#objectsizetype" class="text-sm">
+                                                            ObjectSizeType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.ObjectSizeType" class="text-sm">
+                                                            ObjectSizeType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#ledstatetype" class="text-sm">
+                                                            LedStateType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.LedStateType" class="text-sm">
+                                                            LedStateType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#gesturetype" class="text-sm">
+                                                            GestureType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.GestureType" class="text-sm">
+                                                            GestureType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vexlinktype" class="text-sm">
+                                                            VexlinkType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.VexlinkType" class="text-sm">
+                                                            VexlinkType
+                                                        </a>
+                                                    </div>
+                                                    
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.VexlinkType.GENERIC" class="text-sm">
+                                                                    GENERIC
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.VexlinkType.MANAGER" class="text-sm">
+                                                                    MANAGER
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="#vex.VexlinkType.WORKER" class="text-sm">
+                                                                    WORKER
+                                                                </a>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#eventmask" class="text-sm">
+                                                            EventMask
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#vex.EventMask" class="text-sm">
+                                                            EventMask
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            <h1 id="enums-units">Enums &amp; Units</h1>
+<p>This page documents all enums and unit types used throughout the DishPy VEX Python SDK. These are used for specifying units, modes, and options for various API calls.</p>
+<hr />
+<h2 id="ports">Ports</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vex.Ports" class="doc doc-heading">
+            <code>vex.Ports</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>Smartport definitions</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h2 id="base-enum">Base Enum</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vex.vexEnum" class="doc doc-heading">
+            <code>vex.vexEnum</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>Base class for all enumerated types</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h2 id="units">Units</h2>
+<h3 id="percentunits">PercentUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.PercentUnits" class="doc doc-heading">
+            <code>vex.PercentUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for percentage values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.PercentUnits.PERCENT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PERCENT</span> <span class="o">=</span> <span class="n">PercentUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;PERCENT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A percentage unit that represents a value from 0% to 100%</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="timeunits">TimeUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.TimeUnits" class="doc doc-heading">
+            <code>vex.TimeUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for time values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TimeUnits.MSEC" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MSEC</span> <span class="o">=</span> <span class="n">TimeUnits</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;MSEC&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A time unit that is measured in milliseconds.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TimeUnits.SEC" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">SEC</span> <span class="o">=</span> <span class="n">TimeUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;SECONDS&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A time unit that is measured in seconds.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TimeUnits.SECONDS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">SECONDS</span> <span class="o">=</span> <span class="n">TimeUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;SECONDS&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A time unit that is measured in seconds.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="currentunits">CurrentUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.CurrentUnits" class="doc doc-heading">
+            <code>vex.CurrentUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for current values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.CurrentUnits.AMP" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">AMP</span> <span class="o">=</span> <span class="n">CurrentUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;AMP&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A current unit that is measured in amps.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="voltageunits">VoltageUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.VoltageUnits" class="doc doc-heading">
+            <code>vex.VoltageUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for voltage values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.VoltageUnits.MV" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MV</span> <span class="o">=</span> <span class="n">VoltageUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;mV&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A voltage unit that is measured in millivolts.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.VoltageUnits.VOLT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">VOLT</span> <span class="o">=</span> <span class="n">VoltageUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;VOLT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A voltage unit that is measured in volts.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="powerunits">PowerUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.PowerUnits" class="doc doc-heading">
+            <code>vex.PowerUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for power values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.PowerUnits.WATT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">WATT</span> <span class="o">=</span> <span class="n">PowerUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;WATT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A power unit that is measured in watts.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="torqueunits">TorqueUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.TorqueUnits" class="doc doc-heading">
+            <code>vex.TorqueUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for torque values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TorqueUnits.INLB" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">INLB</span> <span class="o">=</span> <span class="n">TorqueUnits</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;INLB&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A torque unit that is measured in Inch Pounds.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TorqueUnits.NM" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">NM</span> <span class="o">=</span> <span class="n">TorqueUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;NM&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A torque unit that is measured in Newton Meters.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="rotationunits">RotationUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.RotationUnits" class="doc doc-heading">
+            <code>vex.RotationUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for rotation values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.RotationUnits.DEG" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">DEG</span> <span class="o">=</span> <span class="n">RotationUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;DEG&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A rotation unit that is measured in degrees.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.RotationUnits.RAW" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">RAW</span> <span class="o">=</span> <span class="n">RotationUnits</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="s1">&#39;RAW&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A rotation unit that is measured in raw data form.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.RotationUnits.REV" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">REV</span> <span class="o">=</span> <span class="n">RotationUnits</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;REV&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A rotation unit that is measured in revolutions.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="velocityunits">VelocityUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.VelocityUnits" class="doc doc-heading">
+            <code>vex.VelocityUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for velocity values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.VelocityUnits.DPS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">DPS</span> <span class="o">=</span> <span class="n">VelocityUnits</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;DPS&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A velocity unit that is measured in degrees per second.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.VelocityUnits.PERCENT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PERCENT</span> <span class="o">=</span> <span class="n">VelocityUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;PCT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A velocity unit that is measured in percentage.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.VelocityUnits.RPM" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">RPM</span> <span class="o">=</span> <span class="n">VelocityUnits</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;RPM&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A velocity unit that is measured in rotations per minute.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="distanceunits">DistanceUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.DistanceUnits" class="doc doc-heading">
+            <code>vex.DistanceUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for distance values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.DistanceUnits.CM" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">CM</span> <span class="o">=</span> <span class="n">DistanceUnits</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;CM&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A distance unit that is measured in centimeters.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.DistanceUnits.IN" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">IN</span> <span class="o">=</span> <span class="n">DistanceUnits</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A distance unit that is measured in inches.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.DistanceUnits.MM" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MM</span> <span class="o">=</span> <span class="n">DistanceUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;MM&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A distance unit that is measured in millimeters.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="analogunits">AnalogUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.AnalogUnits" class="doc doc-heading">
+            <code>vex.AnalogUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for analog values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.AnalogUnits.EIGHTBIT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">EIGHTBIT</span> <span class="o">=</span> <span class="n">AnalogUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;8BIT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An analog unit that is measured in an 8-bit analog value
+(a value with 256 possible states).</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.AnalogUnits.MV" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MV</span> <span class="o">=</span> <span class="n">AnalogUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;MV&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An analog unit that is measured in millivolts.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.AnalogUnits.PCT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PCT</span> <span class="o">=</span> <span class="n">AnalogUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;PCT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An analog unit that is measured in percentage.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.AnalogUnits.TENBIT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">TENBIT</span> <span class="o">=</span> <span class="n">AnalogUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;10BIT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An analog unit that is measured in an 10-bit analog value
+(a value with 1024 possible states).</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.AnalogUnits.TWELVEBIT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">TWELVEBIT</span> <span class="o">=</span> <span class="n">AnalogUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;12BIT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An analog unit that is measured in an 12-bit analog value
+(a value with 4096 possible states).</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="temperatureunits">TemperatureUnits</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.TemperatureUnits" class="doc doc-heading">
+            <code>vex.TemperatureUnits</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The measurement units for temperature values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TemperatureUnits.CELSIUS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">CELSIUS</span> <span class="o">=</span> <span class="n">TemperatureUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;CELSIUS&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A temperature unit that is measured in celsius.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TemperatureUnits.FAHRENHEIT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">FAHRENHEIT</span> <span class="o">=</span> <span class="n">TemperatureUnits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;FAHRENHEIT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A temperature unit that is measured in fahrenheit.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+<h2 id="device-control-enums">Device &amp; Control Enums</h2>
+<h3 id="directiontype">DirectionType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.DirectionType" class="doc doc-heading">
+            <code>vex.DirectionType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for direction values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.DirectionType.FORWARD" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">FORWARD</span> <span class="o">=</span> <span class="n">DirectionType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;FORWARD&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A direction unit that is defined as forward.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.DirectionType.REVERSE" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">REVERSE</span> <span class="o">=</span> <span class="n">DirectionType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;REVERSE&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A direction unit that is defined as backward.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.DirectionType.UNDEFINED" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">UNDEFINED</span> <span class="o">=</span> <span class="n">DirectionType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;UNDEFINED&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A direction unit used when direction is not known.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="turntype">TurnType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.TurnType" class="doc doc-heading">
+            <code>vex.TurnType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="vex.vexEnum" href="#vex.vexEnum">vexEnum</a></code></p>
+
+
+        <p>The defined units for turn values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TurnType.LEFT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">LEFT</span> <span class="o">=</span> <span class="n">TurnType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;LEFT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A turn unit that is defined as left turning.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TurnType.RIGHT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">RIGHT</span> <span class="o">=</span> <span class="n">TurnType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;RIGHT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A turn unit that is defined as right turning.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.TurnType.UNDEFINED" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">UNDEFINED</span> <span class="o">=</span> <span class="n">TurnType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;UNDEFINED&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A turn unit unit used when direction is not known.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="braketype">BrakeType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.BrakeType" class="doc doc-heading">
+            <code>vex.BrakeType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for motor brake values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.BrakeType.BRAKE" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">BRAKE</span> <span class="o">=</span> <span class="n">BrakeType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;BRAKE&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A brake unit that is defined as motor brake.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.BrakeType.COAST" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">COAST</span> <span class="o">=</span> <span class="n">BrakeType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;COAST&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A brake unit that is defined as motor coast.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.BrakeType.HOLD" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">HOLD</span> <span class="o">=</span> <span class="n">BrakeType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;HOLD&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A brake unit that is defined as motor hold.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="gearsetting">GearSetting</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.GearSetting" class="doc doc-heading">
+            <code>vex.GearSetting</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for gear values.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.GearSetting.RATIO_18_1" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">RATIO_18_1</span> <span class="o">=</span> <span class="n">GearSetting</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;RATIO18_1&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A gear unit that is defined as the green 18:1 gear cartridge used in
+V5 Smart Motors.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.GearSetting.RATIO_36_1" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">RATIO_36_1</span> <span class="o">=</span> <span class="n">GearSetting</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;RATIO36_1&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A gear unit that is defined as the red 36:1 gear cartridge used in
+V5 Smart Motors.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.GearSetting.RATIO_6_1" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">RATIO_6_1</span> <span class="o">=</span> <span class="n">GearSetting</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;RATIO6_1&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A gear unit that is defined as the blue 6:1 gear cartridge used in
+V5 Smart Motors.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="fonttype">FontType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.FontType" class="doc doc-heading">
+            <code>vex.FontType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>A unit representing font type and size</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.CJK16" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">CJK16</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;CJK16&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Chinese/Japanese/Korean font of size 16</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.MONO12" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MONO12</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;MONO12&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>proportional font of size 12</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.MONO15" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MONO15</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;MONO15&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>proportional font of size 15</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.MONO20" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MONO20</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;MONO20&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>monotype font of size 20</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.MONO30" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MONO30</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;MONO30&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>monotype font of size 30</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.MONO40" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MONO40</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;MONO40&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>monotype font of size 40</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.MONO60" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MONO60</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;MONO60&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>monotype font of size 60</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.PROP20" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PROP20</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;PROP20&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>proportional font of size 20</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.PROP30" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PROP30</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;PROP30&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>proportional font of size 30</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.PROP40" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PROP40</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;PROP40&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>proportional font of size 40</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.FontType.PROP60" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PROP60</span> <span class="o">=</span> <span class="n">FontType</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;PROP60&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>proportional font of size 60</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="threewiretype">ThreeWireType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.ThreeWireType" class="doc doc-heading">
+            <code>vex.ThreeWireType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for 3-wire devices.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.ACCELEROMETER" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ACCELEROMETER</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;ACCELEROMETER&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a accelerometer.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.ANALOG_IN" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ANALOG_IN</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;ANALOG_IN&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as an analog input.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.ANALOG_OUT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ANALOG_OUT</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;ANALOG_OUT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as an analog output.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.DIGITAL_IN" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">DIGITAL_IN</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;DIGITAL_IN&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as an digital input.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.DIGITAL_OUT" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">DIGITAL_OUT</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;DIGITAL_OUT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as an digital output.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.ENCODER" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ENCODER</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;ENCODER&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a quadrature encoder.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.GYRO" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">GYRO</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;GYRO&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a yaw rate gyro.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.LIGHT_SENSOR" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">LIGHT_SENSOR</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;LIGHT_SENSOR&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a light sensor.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.LINE_SENSOR" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">LINE_SENSOR</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;LINE_SENSOR&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a line sensor.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.MOTOR" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MOTOR</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;MOTOR&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a legacy vex motor.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.POTENTIOMETER" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">POTENTIOMETER</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;POT&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a potentiometer.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.SERVO" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">SERVO</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;SERVO&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a legacy vex servo.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.SLEW_MOTOR" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">SLEW_MOTOR</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;SLEW_MOTOR&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a legacy vex motor using slew rate control.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.SONAR" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">SONAR</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;SONAR&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as an ultrasonic sensor (sonar)</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ThreeWireType.SWITCH" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">SWITCH</span> <span class="o">=</span> <span class="n">ThreeWireType</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;BUTTON&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A 3-wire sensor that is defined as a switch.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="controllertype">ControllerType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.ControllerType" class="doc doc-heading">
+            <code>vex.ControllerType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined types for controller devices.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ControllerType.PARTNER" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PARTNER</span> <span class="o">=</span> <span class="n">ControllerType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;PARTNER&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A controller defined as a partner controller.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.ControllerType.PRIMARY" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PRIMARY</span> <span class="o">=</span> <span class="n">ControllerType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;PRIMARY&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A controller defined as a primary controller.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="axistype">AxisType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.AxisType" class="doc doc-heading">
+            <code>vex.AxisType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for inertial sensor axis.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.AxisType.XAXIS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">XAXIS</span> <span class="o">=</span> <span class="n">AxisType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;XAXIS&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The X axis of the Inertial sensor.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.AxisType.YAXIS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">YAXIS</span> <span class="o">=</span> <span class="n">AxisType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;YAXIS&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The Y axis of the Inertial sensor.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.AxisType.ZAXIS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ZAXIS</span> <span class="o">=</span> <span class="n">AxisType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;ZAXIS&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The Z axis of the Inertial sensor.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="orientationtype">OrientationType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.OrientationType" class="doc doc-heading">
+            <code>vex.OrientationType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for inertial sensor orientation.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.OrientationType.PITCH" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">PITCH</span> <span class="o">=</span> <span class="n">OrientationType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;PITCH&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>pitch, orientation around the Y axis of the Inertial sensor.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.OrientationType.ROLL" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ROLL</span> <span class="o">=</span> <span class="n">OrientationType</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;ROLL&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>roll, orientation around the X axis of the Inertial sensor.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.OrientationType.YAW" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">YAW</span> <span class="o">=</span> <span class="n">OrientationType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;YAW&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>yaw, orientation around the Z axis of the Inertial sensor.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="objectsizetype">ObjectSizeType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.ObjectSizeType" class="doc doc-heading">
+            <code>vex.ObjectSizeType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for distance sensor object size.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="ledstatetype">LedStateType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.LedStateType" class="doc doc-heading">
+            <code>vex.LedStateType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for optical sensor led state.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="gesturetype">GestureType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.GestureType" class="doc doc-heading">
+            <code>vex.GestureType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for optical sensor gesture types.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="vexlinktype">VexlinkType</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.VexlinkType" class="doc doc-heading">
+            <code>vex.VexlinkType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+        <p>The defined units for vexlink types.</p>
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.VexlinkType.GENERIC" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">GENERIC</span> <span class="o">=</span> <span class="n">VexlinkType</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;GENERIC&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A vexlink type that is defined as a raw unmanaged link.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.VexlinkType.MANAGER" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">MANAGER</span> <span class="o">=</span> <span class="n">VexlinkType</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;MANAGER&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A vexlink type that is defined as the manager radio.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="vex.VexlinkType.WORKER" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">WORKER</span> <span class="o">=</span> <span class="n">VexlinkType</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;WORKER&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A vexlink type that is defined as the worker radio.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="eventmask">EventMask</h3>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="vex.EventMask" class="doc doc-heading">
+            <code>vex.EventMask</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><hr />
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleButton = document.getElementById('nav-toggle');
+                const navContent = document.getElementById('nav-content');
+                const arrow = document.getElementById('nav-arrow');
+
+                toggleButton.addEventListener('click', function() {
+                    if (navContent.style.display === 'none') {
+                        navContent.style.display = 'block';
+                        arrow.textContent = '↓';
+                    } else {
+                        navContent.style.display = 'none';
+                        arrow.textContent = '→';
+                    }
+                });
+
+                const tocToggleButton = document.getElementById('toc-toggle');
+                const tocContent = document.getElementById('toc-content');
+                const tocArrow = document.getElementById('toc-arrow');
+
+                if (tocToggleButton) {
+                    tocToggleButton.addEventListener('click', function() {
+                        if (tocContent.style.display === 'none') {
+                            tocContent.style.display = 'block';
+                            tocArrow.textContent = '↓';
+                        } else {
+                            tocContent.style.display = 'none';
+                            tocArrow.textContent = '→';
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>

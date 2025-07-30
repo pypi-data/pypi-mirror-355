@@ -1,0 +1,393 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+            DishPy - DishPy Docs
+        </title>
+        <link href="assets/_mkdocstrings.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/dishpy/index.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/xcode.css">
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <div class="m-5 container">
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    In this documentation
+                                </h6>
+                                <button id="nav-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="nav-arrow" style="font-family: Inter">↓</span>
+                                </button>
+                            </div>
+                            <div id="nav-content" class="px-6 pb-6 ml-5">
+                                
+                                    
+                                    <div>
+                                        <a href="." class="text-sm font-semibold">
+                                            DishPy
+                                        </a>
+                                    </div>
+                                    
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm ">
+                                            Tutorial
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="Tutorial/1_installation/" class="text-sm ">
+                                                    1. Installation
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="Tutorial/2_creating_proj/" class="text-sm ">
+                                                    2. Your first project
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="Tutorial/3_multifile/" class="text-sm ">
+                                                    3. Using multi-file capabilities in DishPy
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="Tutorial/4_create_packages/" class="text-sm ">
+                                                    4. Creating packages
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="Tutorial/5_registry/" class="text-sm ">
+                                                    5. The package registry
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm ">
+                                            VEX SDK
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="VEX%20SDK/" class="text-sm ">
+                                                    VEX V5 Python SDK
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="VEX%20SDK/brain/" class="text-sm ">
+                                                    Brain &amp; Display
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="VEX%20SDK/controllers/" class="text-sm ">
+                                                    Controllers &amp; Competition
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="VEX%20SDK/enums/" class="text-sm ">
+                                                    Enums &amp; Units
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="VEX%20SDK/full/" class="text-sm ">
+                                                    Complete API Reference
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="VEX%20SDK/motors/" class="text-sm ">
+                                                    Motors
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="VEX%20SDK/sensors/" class="text-sm ">
+                                                    Sensors
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    Table of Contents
+                                </h6>
+                                <button id="toc-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="toc-arrow" style="font-family: Inter;">→</span>
+                                </button>
+                            </div>
+                            <div id="toc-content" class="px-6 pb-6 ml-5" style="display: none;">
+                                
+                                    <div>
+                                        <a href="#dishpy" class="text-sm">
+                                            DishPy
+                                        </a>
+                                    </div>
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#roadmap" class="text-sm">
+                                                    Roadmap
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#whywhen-should-i-use-dishpy-over-x" class="text-sm">
+                                                    Why/when should I use DishPy over X?
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#should-you-use-dishpy" class="text-sm">
+                                                    Should you use DishPy?
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#features" class="text-sm">
+                                                    Features
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#platform-support" class="text-sm">
+                                                    Platform Support
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#requirements" class="text-sm">
+                                                    Requirements
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#contributing" class="text-sm">
+                                                    Contributing
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#license" class="text-sm">
+                                                    License
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#changelog" class="text-sm">
+                                                    Changelog
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#credits" class="text-sm">
+                                                    Credits
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            <h1 id="dishpy">DishPy</h1>
+<p>A Python development tool for VEX Competition robotics that combines multi-file Python projects into single scripts and uploads them to VEX V5 brains.</p>
+<p><strong>Looking for tutorials? See <a href="https://aadishv.github.io/dishpy/Tutorial/1_installation/">here</a></strong></p>
+<h2 id="roadmap">Roadmap</h2>
+<p><strong>Small things</strong></p>
+<ul>
+<li>[ ] --noupdate flag for mu</li>
+</ul>
+<p><strong>Feature parity w/ VEX VSC extension</strong></p>
+<ul>
+<li>[x] Bindings to vexcom</li>
+<li>[x] Project initialization CLI</li>
+<li>[x] Better documentation for using vexcom's common functions</li>
+<li>[ ] VEXcom wrappers for ease-of-use</li>
+<li>[ ] templates</li>
+</ul>
+<p><strong>Core premise</strong></p>
+<ul>
+<li>[x] Script amalgamation through AST parsing</li>
+<li>[x] Library creation functionality</li>
+<li>[x] Library installation functionality</li>
+<li>[x] Really good docs!</li>
+</ul>
+<p><strong>Future-leaning</strong></p>
+<ul>
+<li>[ ] Simulation API</li>
+</ul>
+<h2 id="whywhen-should-i-use-dishpy-over-x">Why/when should I use DishPy over X?</h2>
+<ul>
+<li>PROS/VEXcode text -&gt; you don't like C++</li>
+<li>vexide -&gt; you don't like Rust</li>
+<li>VEXcode blocks -&gt; you're a grown up /j</li>
+<li>VEXcode Python -&gt; you want multifile support, an editor other than VEXcode/VSCode, libraries (coming soon!), and a CLI</li>
+</ul>
+<p>Note that, unlike PROS &amp; vexide, DishPy is not a <em>from-scratch</em> rewrite that does scheduling and everything (as an eight grader I am physically unable to make such a thing). Instead, it uses the exact same Python VM as VEXcode and the VScode extension and uploads code in the exact same way and binds to the same SDK -- the only difference is that the DX of DishPy is wayyy better.</p>
+<h2 id="should-you-use-dishpy">Should you use DishPy?</h2>
+<p>Unfortunately, the answer right now is <strong>probably not</strong> if you are a competition team. I cannot confirm I will be available to debug or maintain this at all times, so keep that in mind.</p>
+<p>If you do want to use this in competition, make sure to read the amalgamated files before running the programs to make sure nothing was lost in translation.</p>
+<p>If you want to make this better, feel free to</p>
+<ol>
+<li>Contribute and file a PR. The entire repository is open-source (that's probably how you are reading this :P)</li>
+<li>Fork it! This is MIT licensed so you can do whatever you want</li>
+<li>Play with it, report errors, and ping me in VTOW about them.</li>
+</ol>
+<h2 id="features">Features</h2>
+<ul>
+<li><strong>Project Management</strong>: Initialize new VEX robotics projects with a structured template</li>
+<li><strong>Code Amalgamation</strong>: Combine multi-file Python projects into single scripts with intelligent symbol prefixing</li>
+<li><strong>VEX Integration</strong>: Built-in VEX library support and seamless upload to V5 brains</li>
+<li><strong>Cross-Platform</strong>: Works on Linux (x64, ARM32, ARM64), macOS, and Windows</li>
+</ul>
+<h2 id="platform-support">Platform Support</h2>
+<p>DishPy includes pre-compiled vexcom binaries for:</p>
+<ul>
+<li>Linux x64</li>
+<li>Linux ARM32 (Raspberry Pi)</li>
+<li>Linux ARM64 (Raspberry Pi 4+)</li>
+<li>macOS</li>
+<li>Windows 32-bit</li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>Python 3.12+ with uv (see <a href="Tutorial/1_installation/">1. Installation</a>)</li>
+<li>VEX V5 Brain with USB connection</li>
+</ul>
+<h2 id="contributing">Contributing</h2>
+<p>DishPy is designed to streamline VEX Competition robotics development in Python. Contributions are welcome for:</p>
+<ul>
+<li>Literally anything</li>
+</ul>
+<h2 id="license">License</h2>
+<p>This project is licensed under the MIT License.</p>
+<h2 id="changelog">Changelog</h2>
+<p><strong>v1.0</strong></p>
+<ul>
+<li>This marks an important milestone for DishPy. All of the core features of DishPy (read: most of the codebase) is fully stable. I won't need to make any more changes to add major new features.</li>
+<li>There is still a lot to do to get to feature parity with VEXcode, but all of the core premise has now been fulfilled. I'll slowly add all of that soon.</li>
+<li>Package management API is now fully stabilized, with helpful tutorials as well (plus some design changes to docs to look better). Registry commands are now under the <code>dishpy package</code> namespace.</li>
+<li>Added separate <code>build</code> and <code>upload</code> commands by popular request.</li>
+<li>We are now on PyPI! Previously on test.pypi which required some manual setup by users.</li>
+</ul>
+<p><strong>v0.5</strong></p>
+<ul>
+<li>v0.5 ships with (<em>an experimental version of</em>) package management! It uses a PROS-like approach with decentralized packages maintaining their own metadata and users fetching that into a local registry. It is, however, much more limited than PROS. I would <strong>not</strong> recommend using it until it stabilizes (at which point I will also write a tutorial for it).</li>
+<li>Overhauled our <a href="https://aadishv.github.io/dishpy">docs</a> to match the styling for the rest of my website, a.k.a. very minimal.</li>
+<li>Fixed some small bugs in the amalgamator and create CLI.</li>
+</ul>
+<p><strong>v0.4</strong></p>
+<ul>
+<li>This is a <strong>ground-up</strong> rewrite of the entire DishPy CLI to now be significantly smaller and simpler. (It isn't vibe-coded anymore!)</li>
+<li>There are now slightly less debug messages which will hopefully be less annoying.</li>
+<li>We have removed <code>dishpy init</code> in favor of the more commonly used <code>dishpy create</code>.</li>
+<li>All of these changes go a long way towards having ✨libraries✨ in the near future!</li>
+</ul>
+<p><strong>v0.3</strong></p>
+<ul>
+<li>Added a breaking bug that affected all users on v0.2.2. In the port to vexcom downloading, I accidentally deleted the vex.py resource. This will not affect creating or uploading projects, but will throw an error with running <code>dishpy init</code> or <code>dishpy create</code>. Fixed by adding back the file.</li>
+<li>Made docs look more modern! Plus, updated the home page with all of the new tidbits we have here.</li>
+</ul>
+<p><strong>v0.2.2</strong></p>
+<ul>
+<li>Created a changelog!</li>
+<li>Instead of bundling the VEXcom executable with the repository, we now extract it from the VSCode extension. This better accomodates VEX licensing, although it does slightly worsen the UX as the CLI takes a few minutes to install on first VEXcom call.</li>
+<li>Vastly improved <a href="https://aadishv.github.io/dishpy">documentation</a>! Hopefully I'll start writing topical tutorials as well soon.</li>
+</ul>
+<h2 id="credits">Credits</h2>
+<ul>
+<li>Lewis | vexide (reverse-engineering vexcom calls)</li>
+<li>andrew | 781X (digging thru extension code w/ me)</li>
+<li>Aadish | 3151A (me)</li>
+<li>Chroma | 3332A | 3151A (inspiration)</li>
+<li>Gemini 2.5 Pro (LLM -- first run)</li>
+<li>Claude 4 Sonnet (LLM -- agentic tasks)</li>
+</ul>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleButton = document.getElementById('nav-toggle');
+                const navContent = document.getElementById('nav-content');
+                const arrow = document.getElementById('nav-arrow');
+
+                toggleButton.addEventListener('click', function() {
+                    if (navContent.style.display === 'none') {
+                        navContent.style.display = 'block';
+                        arrow.textContent = '↓';
+                    } else {
+                        navContent.style.display = 'none';
+                        arrow.textContent = '→';
+                    }
+                });
+
+                const tocToggleButton = document.getElementById('toc-toggle');
+                const tocContent = document.getElementById('toc-content');
+                const tocArrow = document.getElementById('toc-arrow');
+
+                if (tocToggleButton) {
+                    tocToggleButton.addEventListener('click', function() {
+                        if (tocContent.style.display === 'none') {
+                            tocContent.style.display = 'block';
+                            tocArrow.textContent = '↓';
+                        } else {
+                            tocContent.style.display = 'none';
+                            tocArrow.textContent = '→';
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>

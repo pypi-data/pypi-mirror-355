@@ -1,0 +1,304 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+            3. Using multi-file capabilities in DishPy - DishPy Docs
+        </title>
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/dishpy/index.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/xcode.css">
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <div class="m-5 container">
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    In this documentation
+                                </h6>
+                                <button id="nav-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="nav-arrow" style="font-family: Inter">↓</span>
+                                </button>
+                            </div>
+                            <div id="nav-content" class="px-6 pb-6 ml-5">
+                                
+                                    
+                                    <div>
+                                        <a href="../.." class="text-sm ">
+                                            DishPy
+                                        </a>
+                                    </div>
+                                    
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm font-semibold">
+                                            Tutorial
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../1_installation/" class="text-sm ">
+                                                    1. Installation
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../2_creating_proj/" class="text-sm ">
+                                                    2. Your first project
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="./" class="text-sm font-semibold">
+                                                    3. Using multi-file capabilities in DishPy
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../4_create_packages/" class="text-sm ">
+                                                    4. Creating packages
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../5_registry/" class="text-sm ">
+                                                    5. The package registry
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm ">
+                                            VEX SDK
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/" class="text-sm ">
+                                                    VEX V5 Python SDK
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/brain/" class="text-sm ">
+                                                    Brain &amp; Display
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/controllers/" class="text-sm ">
+                                                    Controllers &amp; Competition
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/enums/" class="text-sm ">
+                                                    Enums &amp; Units
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/full/" class="text-sm ">
+                                                    Complete API Reference
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/motors/" class="text-sm ">
+                                                    Motors
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/sensors/" class="text-sm ">
+                                                    Sensors
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    Table of Contents
+                                </h6>
+                                <button id="toc-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="toc-arrow" style="font-family: Inter;">→</span>
+                                </button>
+                            </div>
+                            <div id="toc-content" class="px-6 pb-6 ml-5" style="display: none;">
+                                
+                                    <div>
+                                        <a href="#3-using-multi-file-capabilities-in-dishpy" class="text-sm">
+                                            3. Using multi-file capabilities in DishPy
+                                        </a>
+                                    </div>
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#example-simple-multi-file-robot" class="text-sm">
+                                                    Example: Simple Multi-File Robot
+                                                </a>
+                                            </div>
+                                            
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#project-structure" class="text-sm">
+                                                            Project Structure
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#motor-module-srcmotorspy" class="text-sm">
+                                                            Motor Module (src/motors.py)
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#main-program-srcmainpy" class="text-sm">
+                                                            Main Program (src/main.py)
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#building" class="text-sm">
+                                                    Building
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#benefits" class="text-sm">
+                                                    Benefits
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            <h1 id="3-using-multi-file-capabilities-in-dishpy">3. Using multi-file capabilities in DishPy</h1>
+<p>As your robot programs grow, organizing code into multiple files makes development easier. DishPy automatically combines all your files into a single program for the V5 brain.</p>
+<h2 id="example-simple-multi-file-robot">Example: Simple Multi-File Robot</h2>
+<p>Let's split our robot code into logical modules:</p>
+<h3 id="project-structure">Project Structure</h3>
+<pre><code>my-robot/
+├── dishpy.toml
+├── src/
+│   ├── main.py
+│   ├── motors.py
+│   └── vex/
+└── .out/
+</code></pre>
+<h3 id="motor-module-srcmotorspy">Motor Module (<code>src/motors.py</code>)</h3>
+<pre><code class="language-python">import vex
+
+left_motor = vex.Motor(vex.Ports.PORT1)
+right_motor = vex.Motor(vex.Ports.PORT2, True)
+
+def drive_forward():
+    left_motor.spin(vex.FORWARD, 50, vex.PERCENT)
+    right_motor.spin(vex.FORWARD, 50, vex.PERCENT)
+
+def stop():
+    left_motor.stop()
+    right_motor.stop()
+</code></pre>
+<h3 id="main-program-srcmainpy">Main Program (<code>src/main.py</code>)</h3>
+<pre><code class="language-python">import vex
+from motors import drive_forward, stop
+
+brain = vex.Brain()
+
+brain.screen.print(&quot;Multi-file robot!&quot;)
+drive_forward()
+vex.wait(2, vex.SECONDS)
+stop()
+brain.screen.print(&quot;Done!&quot;)
+</code></pre>
+<h2 id="building">Building</h2>
+<pre><code class="language-bash">uvx dishpy mu
+</code></pre>
+<p>DishPy will combine both files into <code>.out/main.py</code> and upload to your brain.</p>
+<h2 id="benefits">Benefits</h2>
+<ul>
+<li><strong>Organization</strong>: Related code stays together</li>
+<li><strong>Reusability</strong>: Share motor functions across projects</li>
+<li><strong>Team work</strong>: Multiple people can work on different files</li>
+<li><strong>Single deployment</strong>: V5 brain still gets one optimized file</li>
+</ul>
+<p>The amalgamation process handles all imports and ensures your multi-file project works exactly the same as a single file would.</p>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleButton = document.getElementById('nav-toggle');
+                const navContent = document.getElementById('nav-content');
+                const arrow = document.getElementById('nav-arrow');
+
+                toggleButton.addEventListener('click', function() {
+                    if (navContent.style.display === 'none') {
+                        navContent.style.display = 'block';
+                        arrow.textContent = '↓';
+                    } else {
+                        navContent.style.display = 'none';
+                        arrow.textContent = '→';
+                    }
+                });
+
+                const tocToggleButton = document.getElementById('toc-toggle');
+                const tocContent = document.getElementById('toc-content');
+                const tocArrow = document.getElementById('toc-arrow');
+
+                if (tocToggleButton) {
+                    tocToggleButton.addEventListener('click', function() {
+                        if (tocContent.style.display === 'none') {
+                            tocContent.style.display = 'block';
+                            tocArrow.textContent = '↓';
+                        } else {
+                            tocContent.style.display = 'none';
+                            tocArrow.textContent = '→';
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>
