@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: misho-cli
+Version: 0.1.2
+Summary: Add your description here
+Author-email: Ivo Petkovic <ivo.petkovic@gmail.com>
+Requires-Python: >=3.12
+Requires-Dist: misho-api
+Requires-Dist: misho-client
+Requires-Dist: pydantic>=2.11.7
+Requires-Dist: rich>=14.0.0
+Requires-Dist: typer>=0.16.0
+Description-Content-Type: text/markdown
+
+Misho CLI
+
+Command Line Interface for Misho — the sportbooking reservation management system.
+
+# Usage
+
+For more information about available commands and usage, run:
+
+`mischo_cli --help`
+
+To enable tab-completions for your shell, run:
+
+`misho_cli --install-completion`
+
+This will detect your shell and install the appropriate completion script so you can use tab to auto-complete commands and options.
+
+Example usage for monitoring time slot:
+
+`misho_cli job create --day tomorrow --hour 19 21 notify`
