@@ -1,0 +1,415 @@
+Metadata-Version: 2.1
+Name: TriMO-FSB5
+Version: 0.1.0
+Summary: 适用于 Python 的 FSB5 文件解析库及工具集。| Library and to extract audio from FSB5 (FMOD Sample Bank) files
+Keywords: fsb5,fmod,audio
+Author-Email: Simon Pinfold <simon@uint8.me>, =?utf-8?b?552/5LmQ57uE57uHIFRyaU1P?= <TriM-Organization@hotmail.com>
+Maintainer-Email: =?utf-8?b?6YeR576/RWlsbGVz?= <EillesWan@outlook.com>
+License: # Copyright Announcement
+         
+         This software is a fork of the original python-fsb5 library by Simon Pinfold.
+         
+         And this fork is now licensed under the terms of the Apache 2.0 License.
+         
+         # The Apache 2.0 License Copyrights
+         
+         Copyright © 2025 Simon Pinfold, Eilles W
+         
+         Licensed under the Apache License, Version 2.0 (the "License");
+         you may not use this file except in compliance with the License.
+         You may obtain a copy of the License at
+         
+             http://www.apache.org/licenses/LICENSE-2.0
+         
+         Unless required by applicable law or agreed to in writing, software
+         distributed under the License is distributed on an "AS IS" BASIS,
+         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+         See the License for the specific language governing permissions and
+         limitations under the License.
+         
+         
+         
+         ```
+         
+                                          Apache License
+                                    Version 2.0, January 2004
+                                 http://www.apache.org/licenses/
+         
+            TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+         
+            1. Definitions.
+         
+               "License" shall mean the terms and conditions for use, reproduction,
+               and distribution as defined by Sections 1 through 9 of this document.
+         
+               "Licensor" shall mean the copyright owner or entity authorized by
+               the copyright owner that is granting the License.
+         
+               "Legal Entity" shall mean the union of the acting entity and all
+               other entities that control, are controlled by, or are under common
+               control with that entity. For the purposes of this definition,
+               "control" means (i) the power, direct or indirect, to cause the
+               direction or management of such entity, whether by contract or
+               otherwise, or (ii) ownership of fifty percent (50%) or more of the
+               outstanding shares, or (iii) beneficial ownership of such entity.
+         
+               "You" (or "Your") shall mean an individual or Legal Entity
+               exercising permissions granted by this License.
+         
+               "Source" form shall mean the preferred form for making modifications,
+               including but not limited to software source code, documentation
+               source, and configuration files.
+         
+               "Object" form shall mean any form resulting from mechanical
+               transformation or translation of a Source form, including but
+               not limited to compiled object code, generated documentation,
+               and conversions to other media types.
+         
+               "Work" shall mean the work of authorship, whether in Source or
+               Object form, made available under the License, as indicated by a
+               copyright notice that is included in or attached to the work
+               (an example is provided in the Appendix below).
+         
+               "Derivative Works" shall mean any work, whether in Source or Object
+               form, that is based on (or derived from) the Work and for which the
+               editorial revisions, annotations, elaborations, or other modifications
+               represent, as a whole, an original work of authorship. For the purposes
+               of this License, Derivative Works shall not include works that remain
+               separable from, or merely link (or bind by name) to the interfaces of,
+               the Work and Derivative Works thereof.
+         
+               "Contribution" shall mean any work of authorship, including
+               the original version of the Work and any modifications or additions
+               to that Work or Derivative Works thereof, that is intentionally
+               submitted to Licensor for inclusion in the Work by the copyright owner
+               or by an individual or Legal Entity authorized to submit on behalf of
+               the copyright owner. For the purposes of this definition, "submitted"
+               means any form of electronic, verbal, or written communication sent
+               to the Licensor or its representatives, including but not limited to
+               communication on electronic mailing lists, source code control systems,
+               and issue tracking systems that are managed by, or on behalf of, the
+               Licensor for the purpose of discussing and improving the Work, but
+               excluding communication that is conspicuously marked or otherwise
+               designated in writing by the copyright owner as "Not a Contribution."
+         
+               "Contributor" shall mean Licensor and any individual or Legal Entity
+               on behalf of whom a Contribution has been received by Licensor and
+               subsequently incorporated within the Work.
+         
+            2. Grant of Copyright License. Subject to the terms and conditions of
+               this License, each Contributor hereby grants to You a perpetual,
+               worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+               copyright license to reproduce, prepare Derivative Works of,
+               publicly display, publicly perform, sublicense, and distribute the
+               Work and such Derivative Works in Source or Object form.
+         
+            3. Grant of Patent License. Subject to the terms and conditions of
+               this License, each Contributor hereby grants to You a perpetual,
+               worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+               (except as stated in this section) patent license to make, have made,
+               use, offer to sell, sell, import, and otherwise transfer the Work,
+               where such license applies only to those patent claims licensable
+               by such Contributor that are necessarily infringed by their
+               Contribution(s) alone or by combination of their Contribution(s)
+               with the Work to which such Contribution(s) was submitted. If You
+               institute patent litigation against any entity (including a
+               cross-claim or counterclaim in a lawsuit) alleging that the Work
+               or a Contribution incorporated within the Work constitutes direct
+               or contributory patent infringement, then any patent licenses
+               granted to You under this License for that Work shall terminate
+               as of the date such litigation is filed.
+         
+            4. Redistribution. You may reproduce and distribute copies of the
+               Work or Derivative Works thereof in any medium, with or without
+               modifications, and in Source or Object form, provided that You
+               meet the following conditions:
+         
+               (a) You must give any other recipients of the Work or
+                   Derivative Works a copy of this License; and
+         
+               (b) You must cause any modified files to carry prominent notices
+                   stating that You changed the files; and
+         
+               (c) You must retain, in the Source form of any Derivative Works
+                   that You distribute, all copyright, patent, trademark, and
+                   attribution notices from the Source form of the Work,
+                   excluding those notices that do not pertain to any part of
+                   the Derivative Works; and
+         
+               (d) If the Work includes a "NOTICE" text file as part of its
+                   distribution, then any Derivative Works that You distribute must
+                   include a readable copy of the attribution notices contained
+                   within such NOTICE file, excluding those notices that do not
+                   pertain to any part of the Derivative Works, in at least one
+                   of the following places: within a NOTICE text file distributed
+                   as part of the Derivative Works; within the Source form or
+                   documentation, if provided along with the Derivative Works; or,
+                   within a display generated by the Derivative Works, if and
+                   wherever such third-party notices normally appear. The contents
+                   of the NOTICE file are for informational purposes only and
+                   do not modify the License. You may add Your own attribution
+                   notices within Derivative Works that You distribute, alongside
+                   or as an addendum to the NOTICE text from the Work, provided
+                   that such additional attribution notices cannot be construed
+                   as modifying the License.
+         
+               You may add Your own copyright statement to Your modifications and
+               may provide additional or different license terms and conditions
+               for use, reproduction, or distribution of Your modifications, or
+               for any such Derivative Works as a whole, provided Your use,
+               reproduction, and distribution of the Work otherwise complies with
+               the conditions stated in this License.
+         
+            5. Submission of Contributions. Unless You explicitly state otherwise,
+               any Contribution intentionally submitted for inclusion in the Work
+               by You to the Licensor shall be under the terms and conditions of
+               this License, without any additional terms or conditions.
+               Notwithstanding the above, nothing herein shall supersede or modify
+               the terms of any separate license agreement you may have executed
+               with Licensor regarding such Contributions.
+         
+            6. Trademarks. This License does not grant permission to use the trade
+               names, trademarks, service marks, or product names of the Licensor,
+               except as required for reasonable and customary use in describing the
+               origin of the Work and reproducing the content of the NOTICE file.
+         
+            7. Disclaimer of Warranty. Unless required by applicable law or
+               agreed to in writing, Licensor provides the Work (and each
+               Contributor provides its Contributions) on an "AS IS" BASIS,
+               WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+               implied, including, without limitation, any warranties or conditions
+               of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+               PARTICULAR PURPOSE. You are solely responsible for determining the
+               appropriateness of using or redistributing the Work and assume any
+               risks associated with Your exercise of permissions under this License.
+         
+            8. Limitation of Liability. In no event and under no legal theory,
+               whether in tort (including negligence), contract, or otherwise,
+               unless required by applicable law (such as deliberate and grossly
+               negligent acts) or agreed to in writing, shall any Contributor be
+               liable to You for damages, including any direct, indirect, special,
+               incidental, or consequential damages of any character arising as a
+               result of this License or out of the use or inability to use the
+               Work (including but not limited to damages for loss of goodwill,
+               work stoppage, computer failure or malfunction, or any and all
+               other commercial damages or losses), even if such Contributor
+               has been advised of the possibility of such damages.
+         
+            9. Accepting Warranty or Additional Liability. While redistributing
+               the Work or Derivative Works thereof, You may choose to offer,
+               and charge a fee for, acceptance of support, warranty, indemnity,
+               or other liability obligations and/or rights consistent with this
+               License. However, in accepting such obligations, You may act only
+               on Your own behalf and on Your sole responsibility, not on behalf
+               of any other Contributor, and only if You agree to indemnify,
+               defend, and hold each Contributor harmless for any liability
+               incurred by, or claims asserted against, such Contributor by reason
+               of your accepting any such warranty or additional liability.
+         
+            END OF TERMS AND CONDITIONS
+         
+            APPENDIX: How to apply the Apache License to your work.
+         
+               To apply the Apache License to your work, attach the following
+               boilerplate notice, with the fields enclosed by brackets "[]"
+               replaced with your own identifying information. (Don't include
+               the brackets!)  The text should be enclosed in the appropriate
+               comment syntax for the file format. We also recommend that a
+               file or class name and description of purpose be included on the
+               same "printed page" as the copyright notice for easier
+               identification within third-party archives.
+         
+            Copyright [yyyy] [name of copyright owner]
+         
+            Licensed under the Apache License, Version 2.0 (the "License");
+            you may not use this file except in compliance with the License.
+            You may obtain a copy of the License at
+         
+                http://www.apache.org/licenses/LICENSE-2.0
+         
+            Unless required by applicable law or agreed to in writing, software
+            distributed under the License is distributed on an "AS IS" BASIS,
+            WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+            See the License for the specific language governing permissions and
+            limitations under the License.
+         ```
+         
+         
+         # The Original Library's License
+         
+         ```
+         The MIT License (MIT)
+         
+         Copyright (c) 2016 Simon Pinfold
+         
+         Permission is hereby granted, free of charge, to any person obtaining a copy
+         of this software and associated documentation files (the "Software"), to deal
+         in the Software without restriction, including without limitation the rights
+         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         copies of the Software, and to permit persons to whom the Software is
+         furnished to do so, subject to the following conditions:
+         
+         The above copyright notice and this permission notice shall be included in all
+         copies or substantial portions of the Software.
+         
+         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+         SOFTWARE.
+         ```
+         
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: Chinese (Simplified)
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Multimedia :: Sound/Audio
+Classifier: Topic :: Multimedia :: Sound/Audio :: Conversion
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# TriMO-FSB5
+
+Python library and tool to extract FSB5 (FMOD Sample Bank) files.
+
+### Supported formats
+
+* MPEG
+* Vorbis (OGG)
+* WAVE (PCM8, PCM16, PCM32, PCMFLOAT, FADPCM)
+
+Other formats can be identified but will be extracted as `.dat` files and may not play as the headers may be missing.
+
+## Tool Usage
+
+```
+usage: extract.py [-h] [-o OUTPUT_DIRECTORY] [-p] [-q]
+                  [fsb_file [fsb_file ...]]
+
+Extract audio samples from FSB5 files
+
+positional arguments:
+  fsb_file              FSB5 container to extract audio from (defaults to
+                        stdin)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTPUT_DIRECTORY, --output-directory OUTPUT_DIRECTORY
+                        output directory to write extracted samples into
+  -q, --quiet           suppress output of header and sample information
+                        (samples that failed to decode will still be printed)
+ ```
+
+#### Resource files
+
+Unity3D packs multiple FSB5 files each containing a single sample into it's `.resource` files.
+python-fsb5 will automatically extract all samples if multiple FSB5s are found within one file.
+Output files will be prefixed with the (0 based) index of their FSB container within the resource file e.g. `out/sounds-15-track1.wav` is the path for a WAVE sample named track1 which is contained within the 16th FSB file within sounds.resource.
+
+#### Unnamed samples
+
+FSB5 does not require samples to store a name. If samples are stored without a name they will use their index within the FSB e.g. `sounds-0000.mp3` is the first sample in sounds.fsb.
+
+## Requirements
+
+python-fsb5 should work with python3 from version 3.2 and up.
+
+`libogg` and `libvorbis` are required to decode ogg samples. For linux simply install from your package manager. For windows ensure the dlls are avaliable (ie. in System32 or the directory you are running the script from). Known working dlls are avaliable as part of the [release](https://github.com/HearthSim/python-fsb5/releases/tag/b7bf605).
+
+If ogg files are not required to be decoded then the libraries are not required.
+
+## Library usage
+
+```python
+import fsb5
+
+# read the file into a FSB5 object
+with open('sample.fsb', 'rb') as f:
+  fsb = fsb5.FSB5(f.read())
+
+print(fsb.header)
+
+# get the extension of samples based off the sound format specified in the header
+ext = fsb.get_sample_extension()
+
+# iterate over samples
+for sample in fsb.samples:
+  # print sample properties
+  print('''\t{sample.name}.{extension}:
+  Frequency: {sample.frequency}
+  Channels: {sample.channels}
+  Samples: {sample.samples}'''.format(sample=sample, extension=ext))
+
+  # rebuild the sample and save
+  with open('{0}.{1}'.format(sample.name, ext), 'wb') as f:
+    rebuilt_sample = fsb.rebuild_sample(sample)
+    f.write(rebuilt_sample)
+```
+
+#### Useful header properties
+
+* `numSamples`: The number of samples contained in the file
+* `mode`: The audio format of all samples. Available formats are: (The table reference from [C# SFB5 library](https://github.com/SamboyCoding/Fmod5Sharp))
+| Format| Format in this Library | Supportance | Extension | Notes |
+| :-----: | :-----:|:--------------: | :---------: | :----------: |
+| NONE | `fsb5.SoundFormat.NONE` | ?? | ?? | |
+| PCM8 | `fsb5.SoundFormat.PCM8` | ✔️ | wav | |
+| PCM16 | `fsb5.SoundFormat.PCM16` | ✔️ | wav | |
+| PCM24 | `fsb5.SoundFormat.PCM24` | ❌ | | No games have ever been observed in the wild using this format. |
+| PCM32 | `fsb5.SoundFormat.PCM32` | ✔️ | wav | Supported in theory. No games have ever been observed in the wild using this format. |
+| PCMFLOAT | `fsb5.SoundFormat.PCMFLOAT` | ❌ | | Seen in at least one JRPG. |
+| GCADPCM | `fsb5.SoundFormat.GCADPCM` | ❌ | wav | Seen in Unity games. |
+| IMAADPCM | `fsb5.SoundFormat.IMAADPCM` | ✔️ | acm | Seen in Unity games. |
+| VAG | `fsb5.SoundFormat.VAG` | ❌ | | No games have ever been observed in the wild using this format. |
+| HEVAG | `fsb5.SoundFormat.HEVAG` | ❌ | | Very rarely used - only example I know of is a game for the PS Vita. |
+| XMA | `fsb5.SoundFormat.XMA` | ❌ | | Mostly used on Xbox 360. |
+| MPEG | `fsb5.SoundFormat.MPEG` | ✔️ | mp3 | Used in some older games. |
+| CELT | `fsb5.SoundFormat.CELT` | ❌ | | Used in some older indie games. |
+| AT9 | `fsb5.SoundFormat.AT9` | ❌ | | Native format for PlayStation Audio, including in Unity games. | 
+| XWMA | `fsb5.SoundFormat.XWMA` | ❌ | | No games have ever been observed in the wild using this format. |
+| VORBIS | `fsb5.SoundFormat.VORBIS` | ✔️ | ogg | Very commonly used in Unity games. |
+| FADPCM | `fsb5.SoundFormat.FADPCM` | ✔️ | wav | Seen in Minecraft: Bedrock Edition |
+
+#### Useful sample properties
+
+* `name` : The name of the sample, or a 4 digit number if names are not provided.
+* `frequency` : The sample rate of the audio
+* `channels` : The number of channels of audio (either 1 or 2)
+* `samples` : The number of samples in the audio
+* `metadata` : A dictionary of `fsb5.MetadataChunkType` to tuple (sometimes namedtuple) or bytes.
+
+All contents of sample.metadata is optional and often not provided. Several metadata types seem to override sample properties.
+
+Supported `fsb5.MetadataChunkType` s are:
+ * `CHANNELS` : A 1-tuple containing the number of channels
+ * `FREQUENCY` : A 1-tuple containing the sample rate
+ * `LOOP` : A 2-tuple of the loop start and end
+ * `XMASEEK` : Raw bytes
+ * `DSPCOEFF` : Raw bytes
+ * `XWMADATA` : Raw bytes
+ * `VORBISDATA` : A named tuple with properties `crc32` (int) and `unknown` (bytes)
+
+If a metadata chunk is unrecognized it will be included in the dictionary as an interger mapping to a bytes.
+
+#### Rebuilding samples
+
+Samples also have the `data` property.
+This contains the raw, unprocessed audio data for that sample from the FSB file.
+To reconstruct a playable version of the audio use `rebuild_sample` on the FSB5 object passing the sample desired to be rebuilt.
+
+## License
+
+This software is a fork of the original python-fsb5 library by Simon Pinfold.  
+And this fork is now licensed under the terms of the Apache 2.0 License.  
+Original python-fsb5 is licensed under the terms of the MIT license.  
+
+The full text of the license is available in the [LICENSE.md](./LICENSE.md) file.  
