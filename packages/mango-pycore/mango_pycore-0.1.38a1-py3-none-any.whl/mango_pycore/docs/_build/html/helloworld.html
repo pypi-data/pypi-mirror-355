@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello World Tutorial with mango_pycore &mdash; Mango Pycore 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b0099a1c"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RestApi Tutorial" href="restTutorial.html" />
+    <link rel="prev" title="Instalation Guide" href="instalation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Mango Pycore
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">mango_pycore</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instalation.html">Instalation Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Hello World Tutorial with mango_pycore</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-setting-up-your-project">Step 1: Setting Up Your Project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-creating-the-application-code">Step 2: Creating the Application Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-creating-the-sam-template">Step 3: Creating the SAM Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-defining-dependencies">Step 4: Defining Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-building-and-testing-locally">Step 5: Building and Testing Locally</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="restTutorial.html">RestApi Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocketTutorial.html">Websocket Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggers.html">Streams Tutorial using mango_pycore / DynamoDB Products Inventory Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mango Pycore</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">mango_pycore</a></li>
+      <li class="breadcrumb-item active">Hello World Tutorial with mango_pycore</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/helloworld.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hello-world-tutorial-with-mango-pycore">
+<h1>Hello World Tutorial with mango_pycore<a class="headerlink" href="#hello-world-tutorial-with-mango-pycore" title="Permalink to this heading"></a></h1>
+<p>This tutorial will guide you through creating a simple “Hello World” API using the <cite>mango_pycore</cite> library. We will use AWS SAM (Serverless Application Model) to deploy the API on AWS Lambda.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<p>Before starting, make sure you have the following tools installed:
+- Python 3.8 or later
+- AWS SAM CLI
+- Docker (for local testing)
+- <cite>mango_pycore</cite> library</p>
+</section>
+<section id="step-1-setting-up-your-project">
+<h2>Step 1: Setting Up Your Project<a class="headerlink" href="#step-1-setting-up-your-project" title="Permalink to this heading"></a></h2>
+<p>Create a new directory for your project and navigate into it. Inside this directory, you will create three essential files: <cite>app.py</cite>, <cite>template.yaml</cite>, and <cite>requirements.txt</cite>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>hello-world
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>hello-world
+$<span class="w"> </span>touch<span class="w"> </span>app.py<span class="w"> </span>template.yaml<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</section>
+<section id="step-2-creating-the-application-code">
+<h2>Step 2: Creating the Application Code<a class="headerlink" href="#step-2-creating-the-application-code" title="Permalink to this heading"></a></h2>
+<p>Inside the project folder, create a file named <cite>app.py</cite> with the following content. This file contains the code for your AWS Lambda function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mango_pycore.api.rest_api</span> <span class="kn">import</span> <span class="n">RestApi</span>
+<span class="kn">from</span> <span class="nn">mango_pycore.api.request</span> <span class="kn">import</span> <span class="n">RestApiRequest</span>
+<span class="kn">from</span> <span class="nn">mango_pycore.api.response</span> <span class="kn">import</span> <span class="n">Response</span>
+
+<span class="c1"># Create an instance of RestApi</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">RestApi</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">RestApiRequest</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+        <span class="n">code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">body</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>This code defines a REST API with a single route (“/”) that responds to GET requests with a “Hello World” message.</p>
+</section>
+<section id="step-3-creating-the-sam-template">
+<h2>Step 3: Creating the SAM Template<a class="headerlink" href="#step-3-creating-the-sam-template" title="Permalink to this heading"></a></h2>
+<p>Create a file named <cite>template.yaml</cite> with the following content. This AWS SAM template defines the AWS resources needed to deploy your Lambda function.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">AWSTemplateFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2010-09-09&#39;</span>
+<span class="nt">Transform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AWS::Serverless-2016-10-31</span>
+<span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">  </span><span class="no">MANGO_Boilerplate_BackEnd Stack</span>
+
+<span class="nt">Globals</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Function</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="w">    </span><span class="nt">MemorySize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">512</span>
+
+<span class="nt">Resources</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">RestApi</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AWS::Serverless::Api</span>
+<span class="w">    </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">StageName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+
+<span class="w">  </span><span class="nt">HelloWorldFunction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AWS::Serverless::Function</span>
+<span class="w">    </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">CodeUri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="w">      </span><span class="nt">Handler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.app</span>
+<span class="w">      </span><span class="nt">Runtime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python3.8</span>
+<span class="w">      </span><span class="nt">Architectures</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span>
+<span class="w">      </span><span class="nt">Events</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">optionsCollection</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Api</span>
+<span class="w">          </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">RestApiId</span><span class="p">:</span><span class="w"> </span><span class="kt">!Ref</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RestApi</span>
+<span class="w">            </span><span class="nt">Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">options</span>
+<span class="w">            </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/{proxy+}</span>
+<span class="w">        </span><span class="nt">helloWorld</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Api</span>
+<span class="w">          </span><span class="nt">Properties</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">RestApiId</span><span class="p">:</span><span class="w"> </span><span class="kt">!Ref</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RestApi</span>
+<span class="w">            </span><span class="nt">Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">get</span>
+<span class="w">            </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+
+<span class="nt">Outputs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">UrlApi</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">URL of your API</span>
+<span class="w">    </span><span class="nt">Value</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">Fn::Sub</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;http://127.0.0.1:3000/v1&#39;</span>
+
+<span class="w">  </span><span class="nt">HelloWorldFunction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello</span><span class="nv"> </span><span class="s">World</span><span class="nv"> </span><span class="s">Lambda</span><span class="nv"> </span><span class="s">Function</span><span class="nv"> </span><span class="s">ARN&quot;</span>
+<span class="w">    </span><span class="nt">Value</span><span class="p">:</span><span class="w"> </span><span class="kt">!GetAtt</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HelloWorldFunction.Arn</span>
+
+<span class="w">  </span><span class="nt">HelloWorldFunctionIamRole</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Implicit</span><span class="nv"> </span><span class="s">IAM</span><span class="nv"> </span><span class="s">Role</span><span class="nv"> </span><span class="s">created</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">World</span><span class="nv"> </span><span class="s">function&quot;</span>
+<span class="w">    </span><span class="nt">Value</span><span class="p">:</span><span class="w"> </span><span class="kt">!GetAtt</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HelloWorldFunction.Arn</span>
+</pre></div>
+</div>
+<p>This template defines:
+- <strong>RestApi</strong>: An AWS API Gateway that exposes your Lambda function.
+- <strong>HelloWorldFunction</strong>: The AWS Lambda function that will handle API requests.
+- <strong>Outputs</strong>: Provides the URL of your API and the ARN of your Lambda function.</p>
+</section>
+<section id="step-4-defining-dependencies">
+<h2>Step 4: Defining Dependencies<a class="headerlink" href="#step-4-defining-dependencies" title="Permalink to this heading"></a></h2>
+<p>Create a file named <cite>requirements.txt</cite> with the following content. This file lists the dependencies required by your Lambda function.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>mango-pycore==0.1.3
+</pre></div>
+</div>
+</section>
+<section id="step-5-building-and-testing-locally">
+<h2>Step 5: Building and Testing Locally<a class="headerlink" href="#step-5-building-and-testing-locally" title="Permalink to this heading"></a></h2>
+<p>To build and test your Lambda function locally, follow these steps:</p>
+<ol class="arabic">
+<li><p><strong>Build the application:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sam<span class="w"> </span>build
+</pre></div>
+</div>
+</li>
+<li><p><strong>Start the API locally:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sam<span class="w"> </span><span class="nb">local</span><span class="w"> </span>start-api
+</pre></div>
+</div>
+<p>Your API will be available at <cite>http://127.0.0.1:3000</cite>. You can test it by sending a GET request to this URL.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>http<span class="w"> </span>GET<span class="w"> </span>http://127.0.0.1:3000/
+</pre></div>
+</div>
+<p>You should receive a response with the “Hello World” message.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Headers</span><span class="p">:</span> <span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">,</span> <span class="n">X</span><span class="o">-</span><span class="n">Amz</span><span class="o">-</span><span class="n">Date</span><span class="p">,</span> <span class="n">Authorization</span><span class="p">,</span><span class="n">X</span><span class="o">-</span><span class="n">Api</span><span class="o">-</span><span class="n">Key</span><span class="p">,</span><span class="n">X</span><span class="o">-</span><span class="n">Amz</span><span class="o">-</span><span class="n">Security</span><span class="o">-</span><span class="n">Token</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="o">*</span>
+<span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Max</span><span class="o">-</span><span class="n">Age</span><span class="p">:</span> <span class="mi">600</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">26</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">03</span> <span class="n">Sep</span> <span class="mi">2024</span> <span class="mi">17</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">43</span> <span class="n">GMT</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">Werkzeug</span><span class="o">/</span><span class="mf">3.0.3</span> <span class="n">Python</span><span class="o">/</span><span class="mf">3.8.13</span>
+
+<span class="p">{</span>
+ <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<p>Congratulations! You’ve successfully created and deployed a simple “Hello World” API using <cite>mango_pycore</cite> and AWS SAM. You can now expand this basic example to build more complex serverless applications.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="instalation.html" class="btn btn-neutral float-left" title="Instalation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="restTutorial.html" class="btn btn-neutral float-right" title="RestApi Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Pablo Galindo Largacha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
