@@ -1,0 +1,85 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0, v0.5.1, etc.
+  workflow_dispatch:  # Allow manual triggering for testing
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+    
+    - name: Install dependencies and run tests
+      run: |
+        uv sync --dev
+        uv run pytest tests/ -v
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      id-token: write  # Required for trusted publishing
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+    
+    - name: Build package
+      run: |
+        uv sync
+        uv pip install build
+        uv run python -m build
+    
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        verbose: true
+        skip-existing: true
+
+  create-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write  # Required for creating releases
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Get tag name
+      id: tag
+      run: echo "tag=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+    
+    - name: Create GitHub Release
+      run: |
+        gh release create ${{ steps.tag.outputs.tag }} \
+          --title "Release ${{ steps.tag.outputs.tag }}" \
+          --notes "Released ${{ steps.tag.outputs.tag }}. See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/master/CHANGELOG.md) for full details." \
+          --latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
