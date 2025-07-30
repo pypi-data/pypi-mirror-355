@@ -1,0 +1,222 @@
+Metadata-Version: 2.4
+Name: termux-remember
+Version: 1.1.0
+Summary: 🧠 Secure CLI note keeper for Termux with tagging and password protection
+Home-page: https://github.com/mallikmusaddiq1/termux-remember
+Author: Mallik Mohammad Musaddiq
+Author-email: Mallik Mohammad Musaddiq <mallikmusaddiq1@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/mallikmusaddiq1/termux-remember
+Project-URL: Repository, https://github.com/mallikmusaddiq1/termux-remember
+Keywords: termux,notes,cli,secure,tagging,password
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: POSIX :: Linux
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Environment :: Console
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# 🧠 Termux Remember
+
+**Secure CLI Note Keeper for Termux with Tagging & Password Protection**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python Version](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/)
+[![Platform](https://img.shields.io/badge/platform-Termux%2FLinux-lightgrey)]()
+
+---
+
+## 📦 Description
+
+`termux-remember` is a secure, offline-first, and interactive command-line note-taking assistant built especially for Termux users.  
+It supports features like:
+
+- 📝 Multi-line and single-line notes
+- 🔐 Password protection (per-note)
+- 🏷️ Tagging system with powerful tag operations
+- 🔍 Keyword search
+- 🧩 Full interactive input modes
+- 📂 Local-only storage for privacy
+
+---
+
+### 🚀 Installation: Option 1
+
+```bash
+git clone https://github.com/mallikmusaddiq1/termux-remember.git
+cd termux-remember
+pip install .
+```
+
+> After installation, use the `remember` command directly from anywhere in Termux.
+
+### Option 2: Install directly via pip
+
+```bash
+pip install termux-remember
+```
+
+---
+
+## 🧠 Termux Remember - A Secure CLI Note Keeper for Termux Users
+
+An interactive terminal-based memory assistant to securely store your personal notes, ideas, and tasks.  
+Supports tagging, password-protection, multi-line entries, and keyword-based search.
+
+---
+
+## 📁 STORAGE DIRECTORY
+
+- User credentials: `~/.termux_remember/user.json`
+- Saved notes: `~/.termux_remember/memory.json`
+
+---
+
+## 🛠️ CLI COMMANDS
+
+### 🔐 USER AUTHENTICATION
+```
+--signup           Register with your email and password
+--login            Login to your account
+--logout           Logout from the current session
+```
+
+---
+
+### 📝 NOTE ADDITION & EDITING
+```
+--add TEXT         Add a note (use TEXT for single-line, or leave empty for interactive)
+--edit-note ID     Edit a specific note by its ID (Interactive)
+--tag TAG          Add a tag to your note (e.g., --tag "personal")
+--password         Protect your note using your login password
+```
+
+---
+
+### 📥 INTERACTIVE INPUT MODES
+
+You can add notes in two ways:
+
+#### 1. Single-line input
+```bash
+remember --add "Today I learned Python!"
+```
+
+#### 2. Interactive multi-line input
+```bash
+remember --add
+```
+
+Then type:
+```
+Note: This app is very helpful.
+It supports password-protected entries.
+EOF
+```
+
+✅ Ends when you type `EOF` on a new line.  
+✅ You can also use `\n` in a single-line string like:
+```bash
+remember --add "Line1\nLine2"
+```
+
+---
+
+### 🏷️ TAGGING & MANAGEMENT
+```
+--retag ID TAG     Update the tag of a note (e.g., --retag 3 "journal")
+--list-tag         List all unique tags
+--delete-all-tags  Remove all tags from all notes
+--delete-specific-tag TAG  Remove a specific tag from all notes
+--rm-note-tag ID   Remove tag from a specific note
+```
+
+---
+
+### 📋 LIST & SEARCH
+```
+--list             View all your saved notes (🔒 indicates password protected)
+--find KEY         Search notes by a keyword
+--view-note ID     View a specific note by its ID
+--show-tag TAG     View all notes that have a specific tag
+```
+
+---
+
+### 🗑️ NOTE DELETION
+```
+--forget ID        Delete a specific note (will ask for password if protected)
+--forget-all       Delete ALL notes after confirmation and password
+```
+
+---
+
+### 🔐 SECURITY DETAILS
+- All passwords are stored securely using SHA-256 hashing.
+- Notes marked with `--password` are hidden unless verified.
+- Viewing or deleting protected notes will require password confirmation.
+
+---
+
+### 🧪 EXAMPLES
+
+```bash
+remember --signup
+remember --login
+remember --add "Remember to call mom" --tag "family"
+remember --add --tag "diary" --password
+remember --edit-note 2
+remember --find "milk"
+remember --view-note 2
+remember --retag 2 "tasks"
+remember --list-tag
+remember --delete-all-tags
+remember --delete-specific-tag "family"
+remember --rm-note-tag 2
+remember --forget 2
+remember --forget-all
+```
+
+---
+
+### 🔑 FORGOT PASSWORD?
+
+Just create a new account using `--signup`.
+
+---
+
+### 📦 VERSION & META
+```
+--version          Show current version and author details
+```
+
+---
+
+### 👨‍💻 AUTHOR INFO
+
+**Mallik Mohammad Musaddiq**  
+📧 Email: mallikmusaddiq1@gmail.com  
+🌐 GitHub: [mallikmusaddiq1](https://github.com/mallikmusaddiq1/termux-remember)
+
+---
+
+### 🌐 GITHUB REPOSITORY
+
+https://github.com/mallikmusaddiq1/termux-remember
+
+---
+
+### 📄 LICENSE
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Made with ❤️ for Termux users who don't want to forget little things.
