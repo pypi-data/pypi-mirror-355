@@ -1,0 +1,22 @@
+{% extends 'directory_components/header_footer/footer_base.html' %}
+{% load static %}
+
+{% block global_footer_class %}domestic{% endblock %}
+
+{% block footer_left_logo %}{% endblock %}
+
+{% block global_footer_logo %}
+    <img id="great-global-footer-logo" class="great-global-header-footer-logo" alt="Department for Business and Trade" height="30" src="{% static 'directory_components/images/dbt-red-footer-logo.svg' %}">
+{% endblock %}
+
+{% block footer_performance_link %}
+<li>
+  <a id="footer-performance" href="{{ header_footer_urls.performance }}">Performance</a>
+</li>
+{% endblock %}
+
+{% block footer_domestic_international_link %}
+  <li class="great-footer-domestic-international-link">
+    <a id="footer-international" href="{{ services_urls.great_international }}">Go to the page for international businesses</a>
+  </li>
+{% endblock %}
