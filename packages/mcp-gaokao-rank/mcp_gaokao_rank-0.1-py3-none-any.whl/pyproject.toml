@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-gaokao-rank"
+version = "0.1"
+description = "MCP服务器：根据高考分数查询省内排名位次"
+authors = [{name = "fanfei", email = "gfanfei@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "mcp>=1.9.4",
+    "requests>=2.32.4",
+]
+
+[project.scripts]
+mcp-gaokao-rank = "server:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/mcp-gaokao-rank"
+Repository = "https://github.com/yourusername/mcp-gaokao-rank.git"
+Issues = "https://github.com/yourusername/mcp-gaokao-rank/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
