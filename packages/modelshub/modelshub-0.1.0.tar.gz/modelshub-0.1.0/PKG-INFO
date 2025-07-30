@@ -1,0 +1,96 @@
+Metadata-Version: 2.2
+Name: modelshub
+Version: 0.1.0
+Summary: A unified interface for various LLM providers
+Home-page: https://github.com/yourusername/modelshub
+Author: Munakala Bharath
+Author-email: bharathmunakala22@gmail.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: langchain>=0.1.0
+Requires-Dist: langchain-google-genai>=0.0.5
+Requires-Dist: langchain-openai>=0.0.2
+Requires-Dist: langchain-groq>=0.0.1
+Requires-Dist: langchain-anthropic>=0.0.1
+Requires-Dist: python-dotenv>=1.0.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# ModelsHub
+
+A unified interface for various Large Language Model (LLM) providers, making it easy to work with different LLM APIs in a consistent way.
+
+## Installation
+
+```bash
+pip install modelshub
+```
+
+## Quick Start
+
+```python
+from modelshub import Gemini, OpenAI, Groq, Anthropic
+
+# Initialize any model
+model = Gemini(api_key="your-api-key")
+# or
+model = OpenAI(api_key="your-api-key")
+# or
+model = Groq(api_key="your-api-key")
+# or
+model = Anthropic(api_key="your-api-key")
+
+# Use the model
+response = model.generate("What is the capital of France?")
+print(response)
+```
+
+## Features
+
+- Unified interface for multiple LLM providers
+- Easy to use and extend
+- Production-ready implementation
+- Consistent API across different providers
+- Built on top of LangChain for maximum compatibility
+
+## Supported Models
+
+- Google Gemini
+- OpenAI
+- Groq
+- Anthropic Claude
+- (More coming soon!)
+
+## Environment Variables
+
+You can set your API keys as environment variables:
+
+```bash
+export GOOGLE_API_KEY="your-google-api-key"
+export OPENAI_API_KEY="your-openai-api-key"
+export GROQ_API_KEY="your-groq-api-key"
+export ANTHROPIC_API_KEY="your-anthropic-api-key"
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
