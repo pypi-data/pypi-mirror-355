@@ -1,0 +1,554 @@
+# WhatsApp-Evie Integration Library
+
+<p align="center">
+  <img src="assets/png/eviesales.png" alt="Bitzer Logo" width="200">
+</p>
+
+
+[![PyPI version](https://badge.fury.io/py/whatsapp-evie.svg)](https://badge.fury.io/py/whatsapp-evie)
+[![Python versions](https://img.shields.io/pypi/pyversions/whatsapp-evie.svg)](https://pypi.org/project/whatsapp-evie/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI/CD](https://github.com/evolvis-ai/whatsapp-evie/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/evolvis-ai/whatsapp-evie/actions)
+[![codecov](https://codecov.io/gh/evolvis-ai/whatsapp-evie/branch/main/graph/badge.svg)](https://codecov.io/gh/evolvis-ai/whatsapp-evie)
+
+A professional Python library that provides a generic interface to integrate WhatsApp messaging with Evie. This library enables bidirectional communication between WhatsApp and Evie, allowing for seamless message exchange.
+
+## Author
+Alban Maxhuni, PhD
+- Email: a.maxhuni@evolvis.ai
+- Website: https://evolvis.ai
+
+## Features
+
+- Send messages from Evie to WhatsApp
+- Receive messages from WhatsApp to Evie
+- Support for multiple message types (text, image, audio, video, document)
+- Webhook server for receiving WhatsApp messages
+- Asynchronous message handling
+- Type-safe message models using Pydantic
+
+## Installation
+
+```bash
+pip install whatsapp-evie
+```
+
+## Quick Start
+
+```python
+from whatsapp_evie import WhatsAppEvieClient, Message, MessageType
+
+# Initialize the client
+client = WhatsAppEvieClient(
+    api_key="your_whatsapp_api_key",
+    webhook_url="your_webhook_url"
+)
+
+# Register a message handler
+def handle_text_message(message):
+    print(f"Received message: {message.content}")
+
+client.register_message_handler(MessageType.TEXT, handle_text_message)
+
+# Send a message
+message = Message(
+    message_id="123",
+    type=MessageType.TEXT,
+    content="Hello from Evie!",
+    sender_id="evie",
+    recipient_id="whatsapp_user",
+    timestamp=time.time()
+)
+
+await client.send_message(message)
+
+# Start the webhook server
+client.start_webhook_server()
+```
+
+## Configuration
+
+The library can be configured using environment variables:
+
+- `WHATSAPP_API_KEY`: Your WhatsApp API key
+- `WEBHOOK_URL`: The URL where WhatsApp will send messages
+
+## Message Types
+
+The library supports the following message types:
+
+- `TEXT`: Plain text messages
+- `IMAGE`: Image messages
+- `AUDIO`: Audio messages
+- `VIDEO`: Video messages
+- `DOCUMENT`: Document messages
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🚀 Features
+
+### Core Messaging
+- **📱 Comprehensive Message Support**: Text, images, audio, video, documents, locations, contacts, and interactive messages
+- **🔄 Bidirectional Communication**: Send and receive messages seamlessly
+- **📊 Message Status Tracking**: Track message delivery and read status
+- **🎯 Bulk Messaging**: Efficient bulk operations with progress tracking
+
+### Advanced Capabilities
+- **🌐 Webhook Server**: Built-in webhook server with signature verification and health checks
+- **⚡ Rate Limiting**: Intelligent rate limiting to respect WhatsApp API limits
+- **🔄 Retry Logic**: Automatic retry with exponential backoff for failed requests
+- **🛡️ Error Handling**: Comprehensive error handling with custom exceptions
+- **📝 Logging**: Structured logging with configurable levels and outputs
+
+### Developer Experience
+- **🔒 Type Safety**: Full type hints and Pydantic models for data validation
+- **⚡ Async/Await**: Built for modern async Python applications
+- **🖥️ CLI Interface**: Command-line interface for testing and automation
+- **🔧 Configuration Management**: Flexible configuration via environment variables or config objects
+- **📚 Comprehensive Documentation**: Detailed documentation with examples
+- **🛡️ Code Protection**: Optional PyArmor obfuscation for commercial distributions
+
+## 📦 Installation
+
+```bash
+pip install whatsapp-evie
+```
+
+### Development Installation
+
+```bash
+git clone https://github.com/evolvis-ai/whatsapp-evie.git
+cd whatsapp-evie
+pip install -e ".[dev]"
+```
+
+## 🚀 Quick Start
+
+### Basic Usage
+
+```python
+import asyncio
+from whatsapp_evie import WhatsAppEvieClient, Message, MessageType
+
+async def main():
+    # Initialize the client
+    async with WhatsAppEvieClient(
+        api_key="your_whatsapp_api_key",
+        phone_number_id="your_phone_number_id"
+    ) as client:
+
+        # Send a text message
+        message = Message.create_text(
+            content="Hello from WhatsApp-Evie! 🚀",
+            recipient_id="+1234567890"
+        )
+
+        success = await client.send_message(message)
+        print(f"Message sent: {success}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### Webhook Server
+
+```python
+import asyncio
+from whatsapp_evie import WhatsAppEvieClient, Message, MessageType, ClientConfig
+
+async def main():
+    # Load configuration from environment
+    config = ClientConfig.from_env()
+
+    async with WhatsAppEvieClient(config=config) as client:
+
+        # Register message handlers
+        async def handle_text_message(message: Message):
+            print(f"Received: {message.content} from {message.sender_id}")
+
+            # Echo the message back
+            response = Message.create_text(
+                content=f"Echo: {message.content}",
+                recipient_id=message.sender_id
+            )
+            await client.send_message(response)
+
+        client.register_message_handler(MessageType.TEXT, handle_text_message)
+
+        # Start webhook server
+        await client.start_webhook_server()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file or set environment variables:
+
+```bash
+# Required
+WHATSAPP_API_KEY=your_whatsapp_api_key
+WHATSAPP_PHONE_NUMBER_ID=your_phone_number_id
+
+# Optional
+WHATSAPP_API_VERSION=v17.0
+WHATSAPP_TIMEOUT=30
+WHATSAPP_MAX_RETRIES=3
+
+# Webhook configuration
+WEBHOOK_URL=https://your-domain.com/webhook
+WEBHOOK_HOST=0.0.0.0
+WEBHOOK_PORT=8000
+WEBHOOK_VERIFY_TOKEN=your_verify_token
+
+# Logging
+LOG_LEVEL=INFO
+LOG_FILE_PATH=/var/log/whatsapp-evie.log
+```
+
+### Configuration Object
+
+```python
+from whatsapp_evie import ClientConfig, WhatsAppConfig, WebhookConfig
+
+config = ClientConfig(
+    whatsapp=WhatsAppConfig(
+        api_key="your_api_key",
+        phone_number_id="your_phone_id",
+        timeout=30,
+        max_retries=3
+    ),
+    webhook=WebhookConfig(
+        host="0.0.0.0",
+        port=8000,
+        verify_signature=True,
+        verify_token="your_verify_token"
+    ),
+    debug=True
+)
+
+client = WhatsAppEvieClient(config=config)
+```
+
+## 📱 Message Types
+
+### Text Messages
+
+```python
+message = Message.create_text(
+    content="Hello, World! 👋",
+    recipient_id="+1234567890"
+)
+```
+
+### Media Messages
+
+```python
+# Image
+image_message = Message.create_media(
+    media_type=MessageType.IMAGE,
+    url="https://example.com/image.jpg",
+    recipient_id="+1234567890",
+    caption="Check out this image!"
+)
+
+# Document
+doc_message = Message.create_media(
+    media_type=MessageType.DOCUMENT,
+    url="https://example.com/document.pdf",
+    recipient_id="+1234567890",
+    caption="Important document"
+)
+```
+
+### Location Messages
+
+```python
+location_message = Message.create_location(
+    latitude=37.7749,
+    longitude=-122.4194,
+    recipient_id="+1234567890",
+    name="San Francisco",
+    address="San Francisco, CA, USA"
+)
+```
+
+### Contact Messages
+
+```python
+contact_message = Message.create_contact(
+    name="John Doe",
+    recipient_id="+1234567890",
+    phone="+1987654321",
+    email="john@example.com"
+)
+```
+
+## 🔄 Advanced Features
+
+### Bulk Messaging
+
+```python
+messages = [
+    Message.create_text("Hello User 1", "+1234567890"),
+    Message.create_text("Hello User 2", "+0987654321"),
+    Message.create_text("Hello User 3", "+1122334455")
+]
+
+results = await client.send_bulk_messages(messages)
+print(f"Sent {sum(results.values())} out of {len(messages)} messages")
+```
+
+### Message Handlers
+
+```python
+# Type-specific handlers
+async def handle_text(message: Message):
+    print(f"Text: {message.content}")
+
+async def handle_image(message: Message):
+    print(f"Image received from {message.sender_id}")
+    if message.media_info:
+        await client.download_media(
+            message.media_info.media_id,
+            f"/tmp/image_{message.message_id}.jpg"
+        )
+
+# Global handler for all messages
+async def handle_all_messages(message: Message):
+    print(f"Received {message.type} message")
+
+client.register_message_handler(MessageType.TEXT, handle_text)
+client.register_message_handler(MessageType.IMAGE, handle_image)
+client.register_global_handler(handle_all_messages)
+```
+
+### Error Handling
+
+```python
+from whatsapp_evie.exceptions import RateLimitError, AuthenticationError
+
+async def handle_errors(error: Exception, message: Message = None):
+    if isinstance(error, RateLimitError):
+        print(f"Rate limited. Retry after {error.retry_after} seconds")
+    elif isinstance(error, AuthenticationError):
+        print("Authentication failed. Check your API key")
+    else:
+        print(f"Unexpected error: {error}")
+
+client.register_error_handler(handle_errors)
+```
+
+## 🖥️ CLI Usage
+
+The library includes a command-line interface for testing and automation:
+
+```bash
+# Start webhook server
+whatsapp-evie webhook --host 0.0.0.0 --port 8000
+
+# Send a text message
+whatsapp-evie send-message --to +1234567890 --text "Hello from CLI!"
+
+# Send an image
+whatsapp-evie send-message --to +1234567890 --image https://example.com/image.jpg
+
+# Validate configuration
+whatsapp-evie validate-config
+
+# Test webhook endpoint
+whatsapp-evie test-webhook --url https://your-domain.com/webhook
+```
+
+## 🛡️ Code Protection (Optional)
+
+For commercial distributions, you can create obfuscated versions using PyArmor:
+
+```bash
+# Install PyArmor
+pip install pyarmor
+
+# Create obfuscated package
+python scripts/build_obfuscated.py --all
+
+# Build and publish obfuscated version
+python scripts/build_and_publish.py --release-obfuscated
+```
+
+The obfuscated version provides:
+- **Source code protection** - Makes reverse engineering significantly harder
+- **String obfuscation** - Encrypts sensitive strings and constants
+- **Runtime protection** - Anti-debug and anti-tampering mechanisms
+- **License control** - Optional usage restrictions and expiration dates
+
+See [Obfuscation Guide](docs/OBFUSCATION.md) for detailed instructions.
+```
+
+## 📚 Examples
+
+Check out the [examples](examples/) directory for more comprehensive examples:
+
+- [Basic Usage](examples/basic_usage.py) - Simple send/receive operations
+- [Webhook Server](examples/webhook_server.py) - Complete chatbot implementation
+- [Bulk Messaging](examples/bulk_messaging.py) - Bulk operations and CSV processing
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+
+# Run tests with coverage
+pytest --cov=whatsapp_evie --cov-report=html
+
+# Run specific test categories
+pytest -m "not slow"  # Skip slow tests
+pytest tests/test_client.py  # Run specific test file
+```
+
+## 🔧 Development
+
+### Setup Development Environment
+
+```bash
+# Clone the repository
+git clone https://github.com/evolvis-ai/whatsapp-evie.git
+cd whatsapp-evie
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install in development mode
+pip install -e ".[dev]"
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+### Code Quality
+
+The project uses several tools to maintain code quality:
+
+- **Black**: Code formatting
+- **isort**: Import sorting
+- **flake8**: Linting
+- **mypy**: Type checking
+- **pytest**: Testing
+- **pre-commit**: Git hooks
+
+```bash
+# Format code
+black whatsapp_evie tests examples
+
+# Sort imports
+isort whatsapp_evie tests examples
+
+# Lint code
+flake8 whatsapp_evie
+
+# Type checking
+mypy whatsapp_evie
+
+# Run all checks
+pre-commit run --all-files
+```
+
+## 📖 Documentation
+
+- **API Reference**: [Full API documentation](https://whatsapp-evie.readthedocs.io/)
+- **Examples**: [Practical examples](examples/)
+- **Configuration**: [Configuration guide](docs/configuration.md)
+- **Contributing**: [Contributing guidelines](CONTRIBUTING.md)
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Quick Contribution Guide
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Add tests for your changes
+5. Ensure all tests pass (`pytest`)
+6. Commit your changes (`git commit -m 'Add amazing feature'`)
+7. Push to the branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- WhatsApp Business API for providing the messaging platform
+- The Python community for excellent libraries and tools
+- All contributors who help improve this library
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/evolvis-ai/whatsapp-evie/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/evolvis-ai/whatsapp-evie/discussions)
+- **Email**: contact@evolvis.ai
+
+## 🗺️ Roadmap
+
+- [ ] Support for WhatsApp Business API v18.0
+- [ ] Message templates support
+- [ ] Advanced interactive messages (buttons, lists)
+- [ ] Message scheduling
+- [ ] Analytics and reporting
+- [ ] Multi-account support
+- [ ] Plugin system for custom message processors
+
+---
+
+Made with ❤️ by [Evolvis AI](https://evolvis.ai)
+
+---
+
+whatsapp-evie/
+├── whatsapp_evie/           # Main package
+│   ├── __init__.py         # Public API exports
+│   ├── client.py           # Enhanced client with all features
+│   ├── models.py           # Comprehensive data models
+│   ├── config.py           # Configuration management
+│   ├── exceptions.py       # Custom exceptions
+│   ├── utils.py            # Utility functions
+│   ├── logging_utils.py    # Logging utilities
+│   └── cli.py              # Command-line interface
+├── tests/                   # Comprehensive test suite
+│   ├── conftest.py         # Test configuration
+│   ├── test_client.py      # Client tests
+│   ├── test_models.py      # Model tests
+│   ├── test_config.py      # Configuration tests
+│   └── test_utils.py       # Utility tests
+├── examples/               # Practical examples
+│   ├── basic_usage.py      # Basic operations
+│   ├── webhook_server.py   # Chatbot implementation
+│   └── bulk_messaging.py   # Bulk operations
+├── docs/                   # Documentation
+├── .github/workflows/      # CI/CD pipeline
+├── scripts/                # Build and publish scripts
+├── pyproject.toml          # Modern Python packaging
+├── setup.py               # Package setup
+├── requirements.txt       # Dependencies
+├── dev-requirements.txt   # Development dependencies
+├── CHANGELOG.md           # Version history
+├── CONTRIBUTING.md        # Contribution guidelines
+└── README.md              # Comprehensive documentation
