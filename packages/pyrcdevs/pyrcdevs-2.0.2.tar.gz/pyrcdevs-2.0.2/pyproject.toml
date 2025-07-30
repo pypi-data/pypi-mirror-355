@@ -1,0 +1,100 @@
+[tool.poetry]
+name = "pyrcdevs"
+version = "2.0.2"
+description = "Python library for using the RCDevs API (Manager and SOAP APIs)"
+authors = ["RCDevs Security <devel@rcdevs.com>"]
+maintainers = ["Benoît Jager"]
+readme = "README.md"
+homepage = "https://www.rcdevs.com/"
+documentation = "https://docs.rcdevs.com/"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+xmltodict = "^0.14.2"
+aiohttp = "^3.11.16"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.4"
+pytest-env = "^1.1.5"
+coverage = "^7.6"
+tox = "^4.23.2"
+virtualenv-pyenv = "^0.5.0"
+python-ldap = "^3.4.4"
+pillow = "^11.1.0"
+pytz = "^2025.1"
+m2crypto = "^0.44.0"
+cryptography = "^44.0.2"
+pytest-asyncio = "^0.26.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24"
+sphinx = "^8.1.3"
+sphinx-rtd-theme = "^3.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+env = [
+    "WEBADM_HOST = ",
+    "WEBADM_ADMIN_DN = ",
+    "WEBADM_ADMIN_PASSWORD = ",
+    "WEBADM_API_USERNAME = ",
+    "WEBADM_API_PASSWORD = ",
+    "WEBADM_BASE_DN = ",
+    "OPENOTP_API_KEY = ",
+    "SMSHUB_API_KEY = ",
+    "SPANKEY_API_KEY = ",
+    "LDAP_HOST = ",
+    "LDAP_USERNAME = ",
+    "LDAP_PASSWORD = ",
+    "LDAP_BASE_DN = ",
+    "MAILSERVER = ",
+    "SMS_MOBILE = ",
+    "GROUP_OBJECTCLASS = group",
+    "CLUSTER_TYPE = ",
+    "DEFAULT_PASSWORD = ",
+    "OPENOTP_TOKENKEY = ",
+    "OPENOTP_PUSHID = ",
+    "TESTER_NAME = ",
+    "CA_CERT_PATH = ",
+    "CA_KEY_PATH = ",
+    "USER_CERT_PATH = ",
+]
+filterwarnings = [
+    "error",
+    "ignore::urllib3.exceptions.InsecureRequestWarning",
+    "ignore::pytest.PytestUnraisableExceptionWarning",
+]
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+env_list =
+    py310, py311, py312, py313
+
+[testenv]
+description = run the tests with pytest
+commands =
+    pytest {posargs:tests}
+set_env =
+  VIRTUALENV_DISCOVERY = pyenv
+  PYTHONPATH = ./tests:.
+deps =
+    aiohttp
+    pytest
+    pytest-env
+    coverage
+    virtualenv-pyenv
+    m2crypto
+    pillow
+    pytz
+    python-ldap
+    xmltodict
+"""
