@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: mtrequests
+Version: 2.0.0
+Summary: threading for requests
+Home-page: https://github.com/dail45/mtrequests
+Author: dail45
+Keywords: requests threading
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires: requests
+Requires: tls_client
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: tls-client
+
+# mtrequests
+threading for requests
+
+```python
+import mtrequests
+
+pp = mtrequests.PendingPool()
+
+print(mtrequests.get("https://example.com").send())
+print(mtrequests.get("https://example.com").wrap(pp).send())
+print(pp.wrap(mtrequests.get("https://example.com")).send())
+```
+
+## New in 2.0.0+
+
+```python
+import mtrequests
+
+session = mtrequests.Session()
+session.set_tls_client_session()  # add tls-client session for requests
+```
