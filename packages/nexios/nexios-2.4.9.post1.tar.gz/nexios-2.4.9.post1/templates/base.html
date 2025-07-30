@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }} - {{ site_name }}</title>
+</head>
+<body>
+    <nav>
+        {% for link in nav_links %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+        {% if user %}
+        <span>Welcome, {{ user.name }}!</span>
+        {% endif %}
+    </nav>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <p>© {{ current_year }} {{ site_name }} v{{ version }}</p>
+        <p>Last login: {{ last_login|format_datetime }}</p>
+    </footer>
+</body>
+</html>
