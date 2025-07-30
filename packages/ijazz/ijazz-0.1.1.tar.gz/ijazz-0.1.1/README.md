@@ -1,0 +1,194 @@
+# IJazZ_2p0
+
+This package includes the fitter part only. To use the full workflow, use [`law_ijazz`](https://gitlab.cern.ch/pgaigne/law_ijazz2p0).
+
+## Documentation
+
+The package documentation is available https://ijazz.readthedocs.io/en/latest/
+
+## Install the package
+
+### Create conda env
+```
+conda create -n ijazz python=3.9
+conda activate ijazz
+```
+
+### Install package in editable mode
+Clone the repo
+```
+git clone https://gitlab.cern.ch/fcouderc/ijazz_2p0.git
+cd ijazz_2p0
+```
+Install package in editable mode
+```
+pip install -e .
+```
+
+### Install from pypi
+```
+pip install ijazz
+```
+
+
+
+## Derive Scale and Smearing
+
+```
+ijazz_sas config/sas_config.yaml
+```
+
+where the config file is `config/sas_config.yaml` :
+```
+file_dt: data/cms/2022/higgs_dna_2022PreEE.pho.data.TimeCorr.parquet
+file_mc: data/cms/2022/higgs_dna_2022PreEE.pho.mc.parquet
+dir_results: results/test/
+cset_name: "EtaR9"  # name of the correction (appended to the file name if correction
+cat_latex: # latex names for parameters plots
+  ScEta: "SuperCluster $\eta$"
+  AbsScEta: "SuperCluster $|\eta|$"
+  r9: "Seed Cluster R9"
+  pt: "$p_T$ (GeV)"
+dset_name: "TestDataSet" # dataset name
+scale_flat_syst: 0.5e-3  # added in quadrature to the full list of scale systematics
+smear_flat_syst: 0       # added in quadrature to the full list of smear systematics
+
+syst: # list of systematics to be computed
+  win_mll: # name of systematic
+    # parameters to be overwritten
+    fitter:
+      win_z_mc: [65, 115]
+      win_z_dt: [70, 110]
+  cut_variation: # name of systematic
+    # parameters to be overwritten
+    sas:
+      cut: pt1 > 30 and pt2 > 30
+corrlib:
+  cset_description: "EM object scale and smearing vs eta / r9"
+  cset_version: 1
+  
+sas:
+  use_rpt: true         # - when categories include pt, fit with the relative pt 
+  hess: numerical       # - hessian matrix: null, numerical, analytical (not advised)
+  learning_rate: 1.0e-3 # - learning rate to the keras optimizer 
+  name_pt_var: pt       # - name of the pt variable in case used in categorisation and to be corrected
+  err_mc: true          # - compute the uncertainty due to limited MC statistics
+  correct_data: true    # - correct the data
+  correct_mc: true      # - smear the MC
+  categories:
+      ScEta: [-3.0, -2.0, -1.49, -1.0, 0.0, 1.0, 1.49, 2.0, 3.0]
+      r9: [-.Inf, 0.97, .inf]
+  # - cut to apply in the input dataframes
+  cut: null
+fitter:
+  win_z_mc: [70, 110]      # - mass range of the dilepton mass to fit
+  win_z_dt: [80, 100]      # - larger mass range to consider MC events
+  min_nevt_region_mc: 100  # - minimum number of mc events per category
+  min_nevt_region_dt: 20   # - minimum number of data events per category
+  bin_width_dt: 'Q'        # - binning width for the data, 'Q' for quantile binning
+  bin_width_mc: 0.1        # - binning width for the MC
+  name_cat: cat            # - name of the category variable
+  name_weights: null       # - name of the weights variable for MC
+  name_mll: 'mass'         # - name of the di-lepton mass variable  
+minimizer:
+  dnll_tol: 0.01           # - tolerance for the change in -2logL to determine convergence
+  max_epochs: 500          # - maximum number of epochs for optimization
+  init_rand: False         # - if True, initializes variables (resp, reso) randomly.
+  nepoch_print: 100        # - number of epochs to print the loss
+  batch_size: 200          # - size of the batch for likelihood computation
+  batch_training: True     # - use batch 
+  device: GPU              # - device to use for the minimizer
+  minimizer: Adam          # - optimization method, either 'Adam' or a SciPy minimizer (e.g., 'TNC').
+
+
+```
+
+## Input ntuples
+
+Input files must be `parquet` files with a column for the dilepton mass `name_mll` and columns for variables of each electrons `var1` and `var2`. MC weights can be used using `name_weights`. For example:
+- `mass`, `weight_central`, `ScEta1`, `ScEta2`, `r91`, `r92`, `pt1` and `pt2`.
+
+A reader to convert Higgs DNA output files to IJazZ input files is provided in the [sas_utils](https://pypi.org/project/cms-sas-utils/) package and used in the [law_ijazz](https://gitlab.cern.ch/pgaigne/law_ijazz2p0) workflow.
+
+## Plot the SaS results
+By default, the plots are automatically generated. However, you may want to customize some plot settings or compare two JSON files—either by overlaying their plots or by displaying the ratio between them.
+
+### Plot nominal results
+```bash
+ijazz_plot FineEtaR9/SAS2024_syst-Nominal.json -d r9 AbsScEta  --resp 0.98 1.03 --reso 0 0.06 -o FineEtaR9/SAS2024_syst-Nominal.jpg --latex higgsdna_cat_latex.json --ncol 2 --leg_fontsize small
+```
+
+where `higgsdna_cat_latex.json` is a dictionnary to map the variable name to a latex name for plotting:
+```
+{ 
+  "ScEta": "$\\eta_{SC}$", 
+  "AbsScEta": "$|\\eta_{SC}|$", 
+  "r9": "SC R9", 
+  "pt": "$p_T$ (GeV)", 
+  "seedGain": "SC Gain"
+}
+```
+
+The option `-d r9 AbsScEta` is used to define the axis order for plotting the variables. In this case, `r9` will be plotted along the x-axis, while results as a function of `AbsScEta` will be overlaid.
+
+This function can also be achieved in Python using the ijazz.plotting.plot_results_from_json function:
+```python
+import ijazz.plotting
+
+var_latex = { "ScEta": "$\\eta_{SC}$", "AbsScEta": "$|\\eta_{SC}|$", "r9": "Seed Cl. R9", "pt": "$p_T$ (GeV)", "seedGain": "Seed Cl. Gain"}
+
+figs, ax = ijazz.plotting.plot_results_from_json('Pho/FineEtaR9/SAS2024_syst-Nominal.json', resp_range=[0.98,1.03], reso_range=[0.0,0.06], cat_latex=var_latex, dim=['r9', 'AbsScEta'], leg_fontsize='small', leg_ncols=2)
+```
+
+
+### Compare SaS JSON Files
+
+You can compare JSON files in two ways: by calculating the ratio between two files or by overlaying their plots.
+
+#### Ratio Comparison
+
+Example to plot the ratio of scale and smearing between electron regression and photon regression:
+```python
+import ijazz.plotting
+
+var_latex = { "ScEta": "$\\eta_{SC}$", "AbsScEta": "$|\\eta_{SC}|$", "r9": "Seed Cl. R9", "pt": "$p_T$ (GeV)", "seedGain": "Seed Cl. Gain"}
+
+jsonEle = 'Ele/FineEtaR9/SAS2024_syst-Nominal.json'
+jsonPho = 'Pho/FineEtaR9/SAS2024_syst-Nominal.json'
+
+figs, ax = ijazz.plotting.plot_results_from_json({'syst': jsonEle, 'nominal': jsonPho}, jsons_mode='ratio', resp_range=[0.995,1.008], reso_range=[0.50,1.5], cat_latex=var_latex, leg_fontsize='small', leg_ncols=2)
+```
+
+#### Overlay Comparison
+
+Example to overlay the scale and smearing results from electron regression and photon regression:
+
+```python
+import ijazz.plotting
+
+var_latex = { "ScEta": "$\\eta_{SC}$", "AbsScEta": "$|\\eta_{SC}|$", "r9": "Seed Cl. R9", "pt": "$p_T$ (GeV)", "seedGain": "Seed Cl. Gain"}
+
+jsonEle = 'Ele/FineEtaR9/SAS2024_syst-Nominal.json'
+jsonPho = 'Pho/FineEtaR9/SAS2024_syst-Nominal.json'
+
+# plot scale and smearing if SaS are function of 1 or 2 variables
+figs, ax = ijazz.plotting.plot_results_from_json({'Electron': jsonEle, 'Photon': jsonPho}, jsons_mode='compare', resp_range=[0.95,1.08], reso_range=[0.0,0.08], cat_latex=var_latex)
+
+# plot scale only if SaS are function of 3 variables
+figs, ax = ijazz.plotting.plot_results_from_json(
+  {'Electron': jsonEle, 'Photon': jsonPho}, jsons_mode='compare'
+  resp_range=[0.95,1.08], reso_range=[0.0,0.08], cat_latex=var_latex,
+  param_to_plot='resp', # we need to specify which param to plot because we cannot display 4 dims
+  )
+
+# plot smearing only if SaS are function of 3 variables
+figs, ax = ijazz.plotting.plot_results_from_json(
+  {'Electron': jsonEle, 'Photon': jsonPho}, jsons_mode='compare',
+  resp_range=[0.95,1.08], reso_range=[0.0,0.08], cat_latex=var_latex,
+  param_to_plot='reso', # we need to specify which param to plot because we cannot display 4 dims
+  )
+```
+
+*NB:* if the SaS are function of three variables, the second dim must be of len = 2 (e.g. low and high R9).
+
+*NB 2:* it works with more than 2 input jsons: `ijazz.plotting.plot_results_from_json({'2022': json22, '2023': json23, '2024': json24}, jsons_mode='compare')`.
