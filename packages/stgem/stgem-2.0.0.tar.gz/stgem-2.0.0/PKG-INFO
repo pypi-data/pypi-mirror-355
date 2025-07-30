@@ -1,0 +1,125 @@
+Metadata-Version: 2.4
+Name: stgem
+Version: 2.0.0
+Summary: System Testing Using Generative Models
+Author-email: Ivan Porres <ivan.porres@abo.fi>, Jarkko Peltomäki <jarkko.peltomaki@abo.fi>, Valentin Soloviev <valentin.soloviev@abo.fi>, Erik Wihlman <erik.wihlman@abo.fi>, Jesper Winsten <jesper.winsten@abo.fi>
+License-Expression: MIT
+Project-URL: Homepage, https://gitlab.abo.fi/stc/stgem2
+Project-URL: Issues, https://gitlab.abo.fi/stc/stgem2/issues
+Project-URL: Documentation, https://gitlab.abo.fi/stc/stgem2
+Keywords: testing,generative AI
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: antlr4-python3-runtime==4.13.0
+Requires-Dist: dill~=0.3.4
+Requires-Dist: tensorflow~=2.16.1
+Requires-Dist: torch~=2.2.1
+Requires-Dist: numpy<2.0.0
+Requires-Dist: matplotlib~=3.8.3
+Requires-Dist: bunch_py3~=2.0.0
+Requires-Dist: pandas~=2.2.1
+Requires-Dist: joblib~=1.3.2
+Requires-Dist: gymnasium
+Requires-Dist: scipy
+Requires-Dist: alive_progress
+Requires-Dist: seaborn
+Requires-Dist: fmpy
+Requires-Dist: grpcio
+Requires-Dist: grpcio_tools
+Requires-Dist: protobuf
+Requires-Dist: scikit-learn
+Requires-Dist: commonmark
+Requires-Dist: myst-parser
+Requires-Dist: sphinx_rtd_theme
+Requires-Dist: plotly
+Dynamic: license-file
+
+# stgem: System Testing Using Generative Models
+
+stgem API Version 2
+
+stgem is a tool for runtime verification of cyber-physical systems. It supports falsification of requirements described
+in Signal Temporal Logic (STL) using robustness semantics. This is achieved by training a generative machine learning
+model online to produce system inputs that yield a low robustness.
+
+stgem is under development, and we are adding new algorithms and features. So far, the tool implements the algorithms
+presented in the following articles.
+
+- J. Peltomäki, I. Porres.
+  Requirement falsification for cyber-physical systems using generative models.
+  Autom. Softw. Eng 32(33) (2025).
+  [DOI](https://doi.org/10.1007/s10515-025-00503-x),
+  [Preprint](https://arxiv.org/abs/2310.20493).
+  The code specific for this paper is available [here](https://gitlab.abo.fi/stc/experiments/ogan).
+
+- J. Peltomäki, I. Porres.
+  Learning test generators for cyber-physical systems (2024), submitted.
+  [Preprint](http://arxiv.org/abs/2410.03202)
+
+- T. Khandait, F. Formica, P. Arcaini, S. Chotaliya, G.
+  Fainekos, A. Hekal, A. Kundu, E. Lew, M. Loreti, C.
+  Menghi, L. Nenzi, G. Pedrielli, J. Peltomäki, I. Porres,
+  R. Ray, V. Soloviev, E. Visconti, M. Waga, Z. Zhang.
+  ARCH-COMP 2024 category report: Falsification.
+  Proceedings of 11th International Workshop on Applied Verification of Continuous and Hybrid Systems, ARCH24.
+  EPiC Series in Computing, Vol. 103, 122-144 (2024).
+  [DOI](https://doi.org/10.29007/hgfv).
+  The code specific for this paper is available [here](https://gitlab.abo.fi/stc/experiments/arch-comp-2024).
+
+- J. Winsten, V. Soloviev, J. Peltomäki, I. Porres.
+  Adaptive test generation for unmanned aerial vehicles using WOGAN-UAV.
+  The 17th Intl. Workshop on Search-Based and Fuzz Testing, SBFT 2024 (2024).
+  [DOI](https://doi.org/10.1145/3643659.3648603).
+  The code specific for this paper is available [here](https://gitlab.abo.fi/stc/experiments/wogan-uav).
+
+- J. Peltomäki, J. Winsten, M. Methais, I. Porres.
+  Testing cyber-physical systems with explicit output coverage.
+  Proceedings of International Conference on Software Testing, Verification and Validation Workshops, ICSTW 2024 (2024).
+  [DOI](https://doi.org/10.1109/ICSTW60967.2024.00036). The code specific for this paper is available [here](https://gitlab.abo.fi/stc/experiments/stgem_output_coverage).
+
+- C. Menghi, P. Arcaini, W. Baptista, G. Ernst, G. Fainekos, F. Formica, S. Gon, T. Khandait, A. Kundu, G. Pedrielli, J.
+  Peltomäki, I. Porres, R. Ray, M. Waga, Z. Zhang.
+  ARCH-COMP 2023 category report: Falsification.
+  Proceedings of 10th International Workshop on Applied Verification of Continuous and Hybrid Systems, ARCH23.
+  EPiC Series in Computing, Vol. 96, 151-169 (2023).
+  [DOI](https://doi.org/10.29007/6nqs).
+  The code specific for this paper is available [here](https://gitlab.abo.fi/stc/experiments/ogan).
+
+- J. Winsten, I. Porres.
+  WOGAN at the SBFT 2023 tool competition - Cyber-physical systems track.
+  The 16th Intl. Workshop on Search-Based and Fuzz Testing, SBFT 2023 (2023).
+  [DOI](https://doi.org/10.1109/SBFT59156.2023.00009),
+  [Preprint](www/articles/wogan-sbft2023-competition-preprint.pdf).
+
+    - Related presentation video [here](https://www.youtube.com/watch?v=EF13eiidhA0) ([slides](www/talks/sbft2023_tool_talk.pdf))
+
+- J. Peltomäki, F. Spencer, I. Porres.
+  Wasserstein generative adversarial networks for online test generation for cyber physical systems.
+  The 15th Intl. Workshop on Search-Based Software Testing, SBST 2022 (2022).
+  [DOI](http://dx.doi.org/10.1145/3526072.3527535),
+  [Preprint](https://arxiv.org/abs/2205.11064).
+
+- J. Peltomäki, F. Spencer, I. Porres.
+  WOGAN at the SBST 2022 CPS tool competition.
+  The 15th Intl. Workshop on Search-Based Software Testing, SBST 2022 (2022).
+  [DOI](http://dx.doi.org/10.1145/3526072.3527522),
+  [Preprint](http://arxiv.org/abs/2205.11060).
+
+    - Related presentation videos [here](https://youtu.be/Vwxu6TtzBYs?t=8349) ([slides](www/talks/sbst2022_talk.pdf))
+      and [here](https://youtu.be/Vwxu6TtzBYs?t=24952) ([slides](www/talks/sbst2022_tool_talk.pdf)).
+
+- J. Peltomäki, I. Porres.
+  Falsification of multiple requirements for cyber-physical systems using online generative adversarial networks and multi-armed bandits.
+  The 6th. Intl. Workshop on Testing Extra-Functional Properties and Quality Characteristics of Software Systems, ITEQS 2022 (2022).
+  [DOI](http://dx.doi.org/10.1109/ICSTW55395.2022.00018),
+  [Preprint](http://arxiv.org/abs/2205.11057).
+
+Read the [CONTRIBUTING.md](CONTRIBUTING.md) file to learn how to set up stgem.
+
+stgem is developed at [Åbo Akademi University](https://www.abo.fi). Contact Ivan Porres ivan.porres@abo.fi for more
+information.
+

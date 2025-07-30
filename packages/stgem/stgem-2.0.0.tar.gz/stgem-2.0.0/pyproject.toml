@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stgem"
+version = "2.0.0"
+authors = [
+    { name = "Ivan Porres", email = "ivan.porres@abo.fi" },
+    { name = "Jarkko Peltomäki", email = "jarkko.peltomaki@abo.fi" },
+    { name = "Valentin Soloviev", email = "valentin.soloviev@abo.fi" },
+    { name = "Erik Wihlman", email = "erik.wihlman@abo.fi" },
+    { name = "Jesper Winsten", email = "jesper.winsten@abo.fi" },
+]
+description = "System Testing Using Generative Models"
+keywords = [
+    "testing",
+    "generative AI"
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "antlr4-python3-runtime==4.13.0",
+    "dill~=0.3.4",
+    "tensorflow~=2.16.1",
+    "torch~=2.2.1",
+    "numpy<2.0.0",
+    "matplotlib~=3.8.3",
+    "bunch_py3~=2.0.0",
+    "pandas~=2.2.1",
+    "joblib~=1.3.2",
+    "gymnasium",
+    "scipy",
+    "alive_progress",
+    "seaborn",
+    'fmpy',
+    "grpcio",
+    "grpcio_tools",
+    "protobuf",
+    "scikit-learn",
+    "commonmark",
+    "myst-parser",
+    "sphinx_rtd_theme",
+    "plotly"
+
+]
+
+[project.urls]
+Homepage = "https://gitlab.abo.fi/stc/stgem2"
+Issues = "https://gitlab.abo.fi/stc/stgem2/issues"
+Documentation = "https://gitlab.abo.fi/stc/stgem2"
+
+[tool.setuptools.packages.find]
+include = ['stgem*']
