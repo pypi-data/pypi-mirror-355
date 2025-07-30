@@ -1,0 +1,22 @@
+# Databricks notebook source
+
+from brickflow import Project, PypiTaskLibrary, MavenTaskLibrary  # make sure brickflow imports are at the top
+
+import {{ pkg }}
+
+def main() -> None:
+    """Project entrypoint"""
+    with Project(
+        "{{ project_name }}",
+        git_repo="{{ git_https_url }}",
+        provider="{{ git_provider }}",
+        libraries=[
+            # PypiTaskLibrary(package="spark-expectations=={{spark_expectations_version}}"), # Uncomment if spark-expectations is needed
+        ],
+    ) as f:
+        f.add_pkg({{pkg}})
+
+
+if __name__ == "__main__":
+    main()
+
