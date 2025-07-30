@@ -1,0 +1,1 @@
+TRANSACTIONS_TABLE_NAME = 'Transactions'
