@@ -1,0 +1,83 @@
+####
+1G1R
+####
+
+ROMSearch operates on a "one game, one ROM" (1G1R) philosophy. This means that for each game, it will find the
+ROM file that it believes to be the best. The approach ROMSearch takes is to (1) filter out ROMs that the user does
+not want, and then (2) score the remaining ROMs to find an overall "best" ROM.
+
+Filters
+-------
+
+Firstly, ROMs are filtered.
+
+* This starts with dat categories the user may not want (by default, this is everything not a game,
+  so demos, beta, etc.)
+* We then filter out ROMs that don't have languages (or implied languages) that are in the user preferences
+* ROMs are filtered if they don't have regions in the user preferences
+* Optionally, you can filter out any modern versions. If not, they will still be de-prioritized in the scoring, but
+  this option allows you to remove them altogether
+
+Scoring
+-------
+
+After the initial round of filtering, we then score the ROMs. Some have an ordered priority, which means that
+the order the user has selected matters (e.g. USA, World, Europe for regions).
+
+Scores are boosted in this order of priority:
+
+* Has RetroAchievements
+* Regions (ordered priority)
+* Languages (ordered priority)
+* Budget editions
+* Versions/revisions
+* Improved versions (e.g. EDC)
+
+There are also some demotions that go on. The priority is (from most to least demoted):
+
+* Priority from ``retool`` clonelists
+* Modern versions
+* Alternate versions
+* Demoted versions (e.g. arcade versions)
+
+If, after all this, there is still a tie, then we also add on small bonuses based on the default region and
+language preference order (see :doc:`default config <configs/defaults>`). The regions here take higher priority
+than languages. If you don't like this order, you can avoid this by including more languages and/or regions
+in your setup!
+
+Compilations
+------------
+
+Compilation ROMs are handled somewhat differently. If a ROM is marked as part of a compilation via ``retool``, then
+these will be added to each game in the compilation. We then proceed as normal, and after filtering based on
+regions/languages, if there are still potential single-game ROMs then the compilation will be removed from that
+particular game. Otherwise, we will keep the compilations. Any compilations are then scored as above to choose
+a "best" version. This does potentially mean that these compilations can appear as the best choice for multiple games,
+but this is unlikely given the pretty stringent criteria for these compilations ROMs to be chosen.
+
+More options for handling compilations will be included in future releases.
+
+Supersets
+---------
+
+``retool`` also has support for supersets (see
+`their superset page <https://unexpectedpanda.github.io/retool/contribute-clone-lists-variants-supersets/>`_).
+We handle them somewhat differently. Firstly, supersets will be filtered out if the region is not a selected one for
+the user. Secondly, supersets are prioritised over everything **except** ROMs that are marked as having
+RetroAchievements. This will mean that you may get a ROM from a different region than you might expect, but if it
+doesn't have RetroAchievements then this will be below a ROM that does.
+
+A note on compilations/supersets
+---------------------------------
+
+In the case of compilations and supersets, these can be non-unique to a game (e.g. a compilation of multiple games,
+or a superset containing a number of DLC). To avoid duplicating ROMs, if ROMs are being separated out to different
+directories, if a compilation or superset is chosen then this ends up in a directory based on the short name of the ROM,
+rather than the overarching game name.
+
+End result
+----------
+
+The final result is that you should get a prioritized ROM list based on your preferences. Hooray! This can then be
+passed to :doc:`ROMDownloader <modules/romdownloader>`, which will loop over these priorities to find the highest
+ranked existing ROM.
