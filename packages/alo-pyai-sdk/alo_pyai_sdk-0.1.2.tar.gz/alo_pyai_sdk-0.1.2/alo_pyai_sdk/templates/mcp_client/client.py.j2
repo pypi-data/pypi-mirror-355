@@ -1,0 +1,132 @@
+# MCP Client: {{ client_name }}
+# Target Server URL: {{ server_url }}
+
+from pydantic_ai.mcp import MCPServerSSE, MCPServerStdio, MCPServerStreamableHTTP # Or other MCP client types
+from pydantic_ai import Agent # If this client is to be used within an agent's tool
+
+# Option 1: If you want to create a Pydantic-AI MCPServer object directly
+# This is useful if you want to pass this to an Agent's mcp_servers list.
+
+def get_{{ client_name | lower | replace('-', '_') }}_mcp_server(
+    server_url: str = "{{ server_url }}",
+    transport_type: str = "{{ transport_type | default('sse') }}", # sse, streamable-http, or stdio
+    command: str = "{{ command | default('') }}", # For stdio
+    args: list[str] = {{ args_list | default([]) }}, # For stdio
+    tool_prefix: str = "{{ tool_prefix | default('') }}"
+):
+    """
+    Factory function to create an MCPServer instance for {{ client_name }}.
+    """
+    actual_tool_prefix = tool_prefix if tool_prefix else None
+
+    if transport_type == "sse":
+        if not server_url:
+            raise ValueError("server_url is required for SSE transport.")
+        return MCPServerSSE(url=server_url, tool_prefix=actual_tool_prefix)
+    elif transport_type == "streamable-http":
+        if not server_url:
+            raise ValueError("server_url is required for Streamable HTTP transport.")
+        return MCPServerStreamableHTTP(url=server_url, tool_prefix=actual_tool_prefix)
+    elif transport_type == "stdio":
+        if not command:
+            raise ValueError("command is required for stdio transport.")
+        return MCPServerStdio(command=command, args=args, tool_prefix=actual_tool_prefix)
+    else:
+        raise ValueError(f"Unsupported MCP transport type: {transport_type}")
+
+# Option 2: A more direct client class if you are not using Pydantic-AI's Agent mcp_servers
+# from mcp import ClientSession # Requires 'mcp-sdk' to be installed
+# from mcp.client.stdio import stdio_client as mcp_stdio_client # Example for stdio
+# from mcp.client.sse import sse_client as mcp_sse_client # Example for SSE
+# import httpx # For streamable HTTP
+
+# class {{ client_name | capitalize | replace('-', '') }}Client:
+#     def __init__(self, server_url: str = "{{ server_url }}", timeout: int = 10):
+#         self.server_url = server_url
+#         self.timeout = timeout
+#         # Initialize your specific MCP client transport here, e.g.,
+#         # self.http_client = httpx.AsyncClient(base_url=self.server_url, timeout=self.timeout)
+
+#     async def connect(self):
+#         # Logic to establish connection if needed (e.g., for stdio or raw SSE)
+#         # For http-based clients, often connection is per-request.
+#         print(f"Connecting to MCP Server '{{ client_name }}' at {self.server_url}...")
+#         # Example for raw SSE with mcp-sdk:
+#         # self.read_stream, self.write_stream = await mcp_sse_client(self.server_url)
+#         # self.session = ClientSession(self.read_stream, self.write_stream)
+#         # await self.session.initialize()
+#         pass
+
+#     async def list_tools(self):
+#         # Example: return await self.session.list_tools()
+#         print("Listing tools (placeholder)...")
+#         return []
+
+#     async def call_tool(self, tool_name: str, arguments: dict):
+#         # Example: return await self.session.call_tool(tool_name, arguments)
+#         print(f"Calling tool '{tool_name}' with args: {arguments} (placeholder)...")
+#         return {"result": "placeholder_tool_result"}
+
+#     async def close(self):
+#         # Example: await self.session.close()
+#         # if hasattr(self, 'http_client'): await self.http_client.aclose()
+#         print("Closing connection to MCP Server '{{ client_name }}'.")
+#         pass
+
+
+if __name__ == "__main__":
+    # Example of how to use the factory function
+    print(f"--- Testing {{ client_name }} MCP Server Factory ---")
+    
+    # Test SSE (default)
+    try:
+        sse_server_instance = get_{{ client_name | lower | replace('-', '_') }}_mcp_server(
+            server_url="{{ server_url | default('http://localhost:3001/sse') }}",
+            transport_type="sse",
+            tool_prefix="{{ tool_prefix | default('test_prefix') }}"
+        )
+        print(f"SSE Server Instance: {sse_server_instance}")
+        # To use it:
+        # agent = Agent(mcp_servers=[sse_server_instance])
+        # async with agent.run_mcp_servers():
+        #     # ... agent runs ...
+    except ValueError as e:
+        print(f"Error creating SSE server instance: {e}")
+
+    # Test Streamable HTTP
+    try:
+        streamable_http_server_instance = get_{{ client_name | lower | replace('-', '_') }}_mcp_server(
+            server_url="{{ server_url | default('http://localhost:8000/mcp') }}",
+            transport_type="streamable-http",
+            tool_prefix="{{ tool_prefix | default('test_prefix_http') }}"
+        )
+        print(f"Streamable HTTP Server Instance: {streamable_http_server_instance}")
+    except ValueError as e:
+        print(f"Error creating Streamable HTTP server instance: {e}")
+
+    # Test Stdio
+    try:
+        stdio_server_instance = get_{{ client_name | lower | replace('-', '_') }}_mcp_server(
+            transport_type="stdio",
+            command="{{ command | default('deno') }}",
+            args={{ args_list | default(['run', 'jsr:@pydantic/mcp-run-python', 'stdio']) }},
+            tool_prefix="{{ tool_prefix | default('py_stdio') }}"
+        )
+        print(f"Stdio Server Instance: {stdio_server_instance}")
+    except ValueError as e:
+        print(f"Error creating Stdio server instance: {e}")
+
+    # Example for direct client (if Option 2 was chosen and implemented)
+    # async def run_direct_client_test():
+    #     client = {{ client_name | capitalize | replace('-', '') }}Client()
+    #     await client.connect()
+    #     tools = await client.list_tools()
+    #     print(f"Tools from direct client: {tools}")
+    #     if tools:
+    #         # result = await client.call_tool(tools[0].name, {}) # Example call
+    #         # print(f"Tool call result: {result}")
+    #         pass
+    #     await client.close()
+    #
+    # import asyncio
+    # asyncio.run(run_direct_client_test())
