@@ -1,0 +1,190 @@
+Metadata-Version: 2.4
+Name: square_database
+Version: 3.1.4
+Summary: database layer for my personal server.
+Home-page: https://github.com/thepmsquare/square_database
+Author: thePmSquare
+Author-email: thepmsquare@gmail.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+Requires-Dist: sqlalchemy>=2.0.23
+Requires-Dist: uvicorn>=0.24.0.post1
+Requires-Dist: fastapi>=0.104.1
+Requires-Dist: python-multipart>=0.0.6
+Requires-Dist: websockets>=12.0
+Requires-Dist: httpx>=0.26.0
+Requires-Dist: pytest>=8.0.0
+Requires-Dist: square_logger>=2.0.0
+Requires-Dist: square_commons>=2.1.0
+Requires-Dist: pydantic>=2.9.2
+Provides-Extra: all
+Requires-Dist: square_database_structure>=2.5.6; extra == "all"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+# square_database
+
+## about
+
+database layer for my personal server.
+
+## installation
+
+```shell
+pip install square_database[all]
+```
+
+## usage (WIP)
+
+### change password in config.ini.
+
+### CREATE_SCHEMA = True to create database from scratch.
+
+### LOG_FILE_NAME and configure logger
+
+### link to square_database_structure
+
+## config
+
+square_database\data\config.ini
+
+## env
+
+- python>=3.12.0
+
+## changelog
+
+### v3.1.4
+
+- bump square_database_structure to >=2.5.6.
+
+### v3.1.3
+
+- bump square_database_structure to >=2.5.5.
+
+### v3.1.2
+
+- bump square_database_structure to >=2.5.4.
+
+### v3.1.1
+
+- remove config.ini and config.testing.ini from version control.
+
+### v3.1.0
+
+- add optional skip_conflicts flag to insert_rows.
+
+### v3.0.4
+
+- add enum_fallback_serializer.
+
+### v3.0.3
+
+- bump square_database_structure to >=2.5.2.
+
+### v3.0.2
+
+- bump square_database_structure to >=2.5.1.
+
+### v3.0.1
+
+- testing
+    - bugfix in conftest, dyanamic loading of config_str_database_module_name instead of square_database_structure.
+    - update get_patched_configuration and create_client_and_cleanup to be session scoped.
+- env
+    - add ALLOW_ORIGINS
+
+### v3.0.0
+
+- /delete_rows/v0 is now POST instead of DELETE.
+
+### v2.6.0
+
+- add config.testing.ini for testing.
+- add fixtures get_patched_configuration and create_client_and_cleanup.
+- add test for insert rows.
+- add test for get rows.
+- bump square_logger >= 2.0.0.
+
+### v2.5.3
+
+- bump square_database_structure to >=2.3.1.
+
+### v2.5.2
+
+- add logging decorators for all functions.
+- add error logs in all endpoints.
+
+### v2.5.1
+
+- fix github workflow for marking latest image on release.
+
+### v2.5.0
+
+- add Dockerfile
+
+### v2.4.0
+
+- set allow_credentials=True.
+
+### v2.3.0
+
+- expanded apply_filters to support additional conditions: ne, lt, lte, gt, gte, like, in_.
+
+### v2.2.1
+
+- update test for root
+
+### v2.2.0
+
+- standardize output format for all endpoints.
+- edit_rows is not patch method.
+- bug fix in get rows for column selection.
+- added total count in get rows.
+- added affected count in insert, edit, and delete rows.
+
+### v2.1.0
+
+- standardize filter input to forward facing data structure.
+- rename ignore_all to apply_filters.
+- add columns in get rows.
+- stricter type checking in pydantic models.
+- refactor logic to apply filters into common function.
+- add pydantic as explicit requirement.
+
+### v2.0.0
+
+- append version number for each endpoint in the api.
+
+### v1.1.0
+
+- remove table creation logic (move to square_database_structure).
+
+### v1.0.3
+
+- add limit, offset and order by in get rows.
+
+### v1.0.2
+
+- database creation logic change.
+
+### v1.0.1
+
+- no changes. (password erase from history.)
+
+### v1.0.0
+
+- initial commit.
+
+## Feedback is appreciated. Thank you!
