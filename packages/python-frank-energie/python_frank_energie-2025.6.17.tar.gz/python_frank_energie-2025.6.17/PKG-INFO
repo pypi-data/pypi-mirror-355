@@ -1,0 +1,60 @@
+Metadata-Version: 2.3
+Name: python-frank-energie
+Version: 2025.6.17
+Summary: Asynchronous Python client for the Frank Energie
+License: Apache-2.0
+Author: HiDiHo01
+Maintainer: HiDiHo01
+Requires-Python: >=3.12,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: PyJWT (>=2.10.1,<3.0.0)
+Requires-Dist: aiohttp (>=3.8.4,<6.0.0)
+Requires-Dist: cffi (>=1.17.1,<2.0.0)
+Requires-Dist: cryptography (>=44.0.1,<46.0.0)
+Requires-Dist: propcache (>=0.3.0,<0.4.0)
+Requires-Dist: python-dateutil (>=2.9.0,<3.0.0)
+Requires-Dist: pytz (>=2025.2,<2026.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: six (>=1.17.0,<2.0.0)
+Requires-Dist: syrupy (>=4.9.1,<5.0.0)
+Project-URL: Bug Tracker, https://github.com/HiDiHo01/python-frank-energie/issues
+Project-URL: Changelog, https://github.com/HiDiHo01/python-frank-energie/releases
+Project-URL: Documentation, https://github.com/HiDiHo01/python-frank-energie
+Project-URL: Homepage, https://github.com/HiDiHo01/python-frank-energie
+Project-URL: Repository, https://github.com/HiDiHo01/python-frank-energie
+Description-Content-Type: text/markdown
+
+[![Run Frank Energie Query](https://github.com/HiDiHo01/python-frank-energie/actions/workflows/run_query.yml/badge.svg)](https://github.com/HiDiHo01/python-frank-energie/actions/workflows/run_query.yml)
+# python-frank-energie
+
+Asyncio package to communicate with Frank Energie. This package is created to be used with https://github.com/HiDiHo01/home-assistant-frank_energie.
+
+## Disclaimer
+
+This package is not developed, nor supported by Frank Energie.
+
+## Installation
+```bash
+python3 -m pip install python-frank-energie
+```
+
+## Contributing
+This repo uses [Python Poetry](https://python-poetry.org) to easily run CI/CD scripts using a local environment. In combination with pre-commet you can make sure the PR passes the checks the first time.
+
+1. Clone and enter this repo
+1. Install poetry using `pip install poetry`
+1. Install the environment using `poetry install`
+
+When making a commit, pre-commit runs to check, format and test the code. If everything passes you can push the changes via a Pull request. There GitHub Actions will check if you did everything right and it will notify me. Feel free to ask me to review your PR.
+
+Some nice or useful commands:
+- `poetry shell` -> Run commands like `pytest test` with the correct environment, no need to prefix commands with `poetry run ...`
+- `(poetry run) pytest tests` -> Runs the unit tests
+- `(poetry run) pre-commit run --all-files` -> Run all pre-commit steps on all files.
+- `git commit -n ...` -> The `-n` flag allows you to ignore the pre-commit result and make a commit, useful when you want to commit drafts. All commits form a PR will be squashed so you can do this any time.
+
