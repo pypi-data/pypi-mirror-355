@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "language-transfer-flashcards"
+version = "0.1.4"
+description = "CLI tool converting Language Transfer lessons into Anki flashcards, automating content extraction for efficient language learning."
+authors = ["Tendai <tendai.charura@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/t-charura/language-transfer-flashcards"
+packages = [
+    { include = "ltf", from = "." }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.14"
+pydantic-settings = "^2.4.0"
+langchain-community = "^0.3.0"
+youtube-transcript-api = "^1.1.0"
+pytube = "^15.0.0"
+langchain-openai = "^0.3.0"
+typer = "^0.15.0"
+rich = "^13.7.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.1"
+black = "^24.4.2"
+flake8 = "^7.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ltf = "ltf.cli:app"
