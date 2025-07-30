@@ -1,0 +1,197 @@
+=======
+CHANGES
+=======
+
+5.0.5 (2025-06-16)
+------------------
+
+- bugfix: prevent unicode (u) prefix for tokenSeparators in javascript code
+
+
+5.0.4 (2025-06-13)
+------------------
+
+- bugfix: replace ininstance(v, str) with isinstance(v, six.string_types)
+
+
+5.0.3 (2025-06-11)
+------------------
+
+- removed more z3c.jsonrpc dependency
+
+
+5.0.2 (2025-06-11)
+------------------
+
+- removed more z3c.jsonrpc dependency
+
+
+5.0.1 (2025-06-10)
+------------------
+
+- removed more z3c.jsonrpc dependency
+
+
+5.0.0 (2025-06-04)
+------------------
+
+- switch from z3c.jsonrpc to p01.jsonrpc
+
+- bugfix: remove item/id access in widget_input.pt template for group term
+
+
+4.0.4 (2023-04-04)
+------------------
+
+- bugfix: added missing hidden template
+
+
+4.0.3 (2020-07-31)
+------------------
+
+- bugfix: added missing displayValue used in widget display mode
+
+
+4.0.2 (2020-06-13)
+------------------
+
+- bugfix: added missing displayValue used in widget display mode
+
+- bugfix: fix missing term title if a Choice field with values get used.
+
+
+4.0.1 (2020-04-21)
+------------------
+
+- bugfix: replaced unicode character "..." from javascript code
+
+
+4.0.0 (2020-04-21)
+------------------
+
+- feature: migrated to select2 version > 4.0
+
+- feature: added more widgets.
+
+- migrated: Take a look at the implementation we changed several details and
+  migrated to dataAdapter. More or less you can change the initSelect property
+  to a data property. We now use the select2 ajax option and use a custom
+  jsonrpc proxy call defined in the ajax transport option.
+
+
+2.1.4 (2018-11-26)
+------------------
+
+- bugfix: removed non ascii character from javascript code
+
+
+2.1.3 (2018-11-10)
+------------------
+
+- bugfix: fix missing no value option for single select widget
+
+
+2.1.2 (2018-09-17)
+------------------
+
+- bugfix: fix tal markup for display widget
+
+
+2.1.1 (2018-07-05)
+------------------
+
+- bugfix: ensure that we render all data for group select widgets. The last
+  group and it's children didn't get aded to the widget.
+
+
+2.1.0 (2018-06-20)
+------------------
+
+- feature: support option group in TagListSelect2Widget and
+  SingleTagSelect2Widget. The only requirement is, that the vocabulary terms
+  support an optional isGroup property which must return True for option groups.
+
+- feature: added InitDataMixin class providing a getVocabulary method used for
+  simply define a vocabulary source for TagListSelect2Widget and
+  SingleTagSelect2Widget.
+
+
+2.0.4 (2018-05-25)
+------------------
+
+- bugfix: use term.title and not term.token for translation if no
+  ITitledTokenizedTerm is given as term source.
+
+- bugfix: added missing noValueToken to widget classes
+
+- feature: switch to newest select2 javascript version 3.5.4
+
+
+2.0.3 (2015-07-06)
+------------------
+
+- bugfix; added missing styles for hidden choice text called select2-hidden-accessible
+
+
+2.0.2 (2015-07-02)
+------------------
+
+- bugfix: remove non ascii chars from javascript for ``Loading more results...``
+  and ``Searching...``.
+
+
+2.0.1 (2015-06-30)
+------------------
+
+- switch to newest 3.5.2 javascript release. Keep css styles and variables.
+  Feel free to use the newest css files or use the bootstrap3 optimized
+  styles located at https://github.com/t0m/select2-bootstrap-css
+
+- bugfix: use j01Select2* image names in less/css files
+
+- bugfix: added missing ; in varables.less at line 24
+
+
+2.0.0 (2015-06-09)
+------------------
+
+- bump version to 2.0.0 because it's a part of j01.form since v2.0.0
+
+- bugfix: make use of @select2-search-input-height and
+  @select2-search-input-padding
+
+
+0.6.0 (2014-03-24)
+------------------
+
+- feature: support bootstrap 3 based less and css concept. Just copy the
+  core.less file and override the variables.
+
+- update source to select2 version 3.4.5
+
+- removed SelectWidget as inherited widget class from Select2Widget and
+  re-implemented the update method wihtout inlcuding the field css class.
+
+
+0.5.3 (2013-09-25)
+------------------
+
+- Added display widget template for `ISelect2Widget`
+
+
+0.5.2 (2013-03-19)
+------------------
+
+- improve css styles
+
+
+0.5.1 (2013-01-02)
+------------------
+
+- bugfix: fix linux chameleon template issues with line break in tag elements.
+
+
+0.5.0 (2012-11-16)
+------------------
+
+- initial release

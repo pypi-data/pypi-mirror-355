@@ -1,0 +1,86 @@
+====
+TODO
+====
+
+Widgets
+-------
+
+- add j01.geo widget
+
+  - add custom geo location widget including slider for select distance
+
+    https://refreshless.com/nouislider/
+
+
+DataAadapter
+------------
+
+Develope a custom data adapter is not simple because the framework does
+many implicit things like enhance existing adapters. If you define your own
+adapter this enahcements are not applied which I think is good. But this means
+we will enhance a custom data adapter with everything else by ourself.
+
+Here is the code for a simple data adapter using a j01.jsonrpc proxy:
+
+$.fn.select2.amd.define('j01/select2/J01Data', [
+    'select2/data/array',
+    'select2/utils'
+], function(ArrayAdapter, Utils) {
+    function J01Data($element, options) {
+        this.options = options.get('ajax');
+        this.minimumInputLength = options.get('minimumInputLength');
+        J01Data.__super__.constructor.call(this, $element, options);
+    }
+    Utils.Extend(J01Data, ArrayAdapter);
+
+    J01Data.prototype.current = function(callback) {
+        var data = [];
+        var self = this;
+        this.$element.find(':selected').each(function () {
+            var $option = $(this);
+            var option = self.item($option);
+            data.push(option);
+        });
+        callback(data);
+    };
+
+    J01Data.prototype.processResults = function(results) {
+        return results;
+    };
+
+    J01Data.prototype.doRequest = function(params, success, failure) {
+        var url = this.options.get('j01Select2URL');
+        var method = this.options.get('j01Select2MethodName');
+        var proxy = getJSONRPCProxy(url);
+        proxy.addMethod(method, success, failure, 'j01Select2');
+        proxy[method](params);
+    };
+
+    J01Data.prototype.query = function(params, callback) {
+        // var options = $.extend({
+        //   type: 'GET'
+        // }, this.options);
+        params.term = params.term || '';
+        var self = this;
+        if (params.term.length < this.minimumInputLength) {
+          this.trigger('results:message', {
+            message: 'inputTooShort',
+            args: {
+              minimum: this.minimumInputLength,
+              input: params.term,
+              params: params
+            }
+          });
+
+          return;
+        }
+
+        function request() {
+            console.log("HERE");
+        }
+        self.doRequest(params, callback);
+    };
+    return J01Data;
+})
+var J01Data = $.fn.select2.amd.require('j01/select2/J01Data');
+
