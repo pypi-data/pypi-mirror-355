@@ -1,0 +1,27 @@
+[project]
+name = "wordgrid-tool"
+version = "0.1.1"
+description = "A CLI tool to fetch stats and answers for the Wordgrid game."
+authors = [
+    { name="Rupinder Matharu", email="RupinderM@users.noreply.github.com" }
+]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.7"
+dependencies = [
+    "requests"
+]
+
+[project.scripts]
+wordgrid = "wordgrid_tool:main"
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["wordgrid_tool"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
