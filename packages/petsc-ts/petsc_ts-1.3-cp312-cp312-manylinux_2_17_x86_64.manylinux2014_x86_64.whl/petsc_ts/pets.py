@@ -1,0 +1,129 @@
+from itertools import cycle
+
+import numpy as np
+from _petsc_miner import PatternMiner
+from aeon.transformations.base import BaseTransformer
+
+from .preprocessing import SAX
+
+
+class PetsTransformer(BaseTransformer):
+    """PETS: Create Pattern-based Embeddings from Time Series."""
+
+    _tags = {
+        "X_inner_type": ["numpy3D", "np-list"],
+        "y_inner_type": "numpy1D",
+        "capability:unequal_length": True,
+        "capability:multivariate": True,
+        "capability:predict_proba": True,
+        "output_data_type": "Tabular",
+        "fit_is_empty": False,
+        "requires_y": False,
+    }
+
+    def __init__(
+        self,
+        window,
+        stride,
+        w,
+        alpha,
+        min_size,
+        max_size,
+        duration,
+        k,
+        sort_alpha,
+        multiresolution,
+        soft,
+        tau,
+        verbosity,
+    ):
+        self.min_size = min_size
+        self.w = w
+        max_size = max_size if max_size is not None else w
+        self.max_size = max_size
+        self.multiresolution = multiresolution
+        self.soft = soft
+        self.tau = tau if tau is not None else 1 / (2 * alpha)
+        self.verbosity = verbosity
+
+        self.sax = SAX(window, stride, w, alpha)
+        self.miner = PatternMiner(alpha, min_size, max_size, duration, k, sort_alpha)
+
+        self.patterns_ = []
+        self.windows_ = []
+        self._data = []
+
+    def fit_transform(self, X, y=None):
+        self.fit(X)
+        return self._transform()
+
+    def fit(self, X, y=None):
+        # Mine each multivariate signal separately
+        for dimension, ts in enumerate(self._get_signals(X)):
+            # Start with window at min ts length and reduce window each iteration
+            if self.multiresolution:
+                self.sax.window = min(row.shape[1] for row in X)
+
+            while True:
+                if self.verbosity >= 1:
+                    print(f"window={self.sax.window}")
+                    print(f"Dimension {dimension}: applying SAX transform...")
+                discrete, labels = self.sax.transform(ts)
+                if self.verbosity >= 1:
+                    print(f"Dimension {dimension} mining patterns...")
+                patterns = self.miner.mine(discrete)
+                if self.verbosity >= 1:
+                    print(f"Dimension {dimension}: mined {len(patterns)} patterns!")
+
+                # Store for use in _transform
+                self._data.append((discrete, labels))
+                self.patterns_.append(patterns)
+                self.windows_.append(self.sax.window)
+
+                # Add more patterns with halved window while window >= SAX word size
+                if self.multiresolution:
+                    self.sax.window //= 2
+                    if self.sax.window < self.w:
+                        break
+                else:
+                    break
+        return self
+
+    def transform(self, X):
+        return self._transform(X)
+
+    def _transform(self, X=None):
+        # Caller is transform; if caller is fit_transform, _data is already filled
+        if X is not None:
+            self._data = []
+            for ts in self._get_signals(X):
+                for window in self.windows_:
+                    self.sax.window = window
+                    self._data.append(self.sax.transform(ts))
+
+        embedding = []
+
+        it = zip(cycle(self._data), self.windows_, self.patterns_)
+        for (discrete, labels), window, patterns in it:
+            # Col contains all columns that correspond to patterns mined with window
+            col = np.zeros((len(set(labels)), len(patterns)), dtype=int)
+            for pat_idx, pattern in enumerate(patterns):
+                if X is None:
+                    projection = pattern.projection
+                elif self.soft:
+                    projection = self.miner.project_soft(discrete, pattern, self.tau)
+                else:
+                    projection = self.miner.project(discrete, pattern)
+                if len(projection) > 0:
+                    # Sum the number of windows in each time series where pattern occurs
+                    ts_indices = np.array([labels[idx] for idx in projection])
+                    np.add.at(col, (ts_indices, pat_idx), 1)
+
+            embedding.append(col)
+
+        embedding = np.concatenate(embedding, axis=1)
+        return embedding
+
+    def _get_signals(self, X):
+        """Split X into list of separate multivariate signals."""
+        return [[x[signal] for x in X] for signal in range(X[0].shape[0])]
