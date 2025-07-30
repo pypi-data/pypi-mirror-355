@@ -1,0 +1,86 @@
+[project]
+name = "vibetest-use"
+version = "0.1.2"
+description = "Browser-agent QA swarm with MCP interface for testing AI-generated websites"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp[cli]>=1.0.0",
+  "browser-use",
+  "playwright",
+  "langchain_google_genai",
+  "langchain_core",
+  "pydantic",
+  "screeninfo",
+]
+authors = [
+  {name = "im47cn", email = "dreambt@gmail.com"}
+]
+readme = "README.md"
+license = "MIT"
+keywords = ["testing", "browser", "automation", "qa", "mcp"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Internet :: WWW/HTTP :: Browsers",
+]
+
+[project.urls]
+Homepage = "https://github.com/im47cn/vibetest-use"
+Repository = "https://github.com/im47cn/vibetest-use"
+Issues = "https://github.com/im47cn/vibetest-use/issues"
+
+[tool.setuptools.packages.find]
+include = ["vibetest*"]
+
+[project.scripts]
+vibetest-use = "vibetest.mcp_server:run"
+
+[tool.black]
+line-length = 127
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 127
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
