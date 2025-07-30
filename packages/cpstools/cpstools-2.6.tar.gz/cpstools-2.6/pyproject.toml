@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "cpstools"
+version = "2.6"
+description = "CPStools is a package for analyzing chloroplast genome sequences."
+readme = "README.md"
+authors = ["Xu Wenbo <xwb7533@163.com>"]
+license = "MIT"
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9, <4.0"
+biopython = "^1.84"
+numpy = "^1.26.4"
+tqdm = "^4.66.5"
+pandas = "^2.0.0"
+matplotlib = "^3.7.0"
+[tool.poetry.group.dev.dependencies]
+
+[tool.poetry.scripts]
+cpstools = "cpstools.cmdline:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
