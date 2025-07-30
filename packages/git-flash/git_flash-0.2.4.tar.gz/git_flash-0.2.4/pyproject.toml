@@ -1,0 +1,30 @@
+[project]
+name = "git-flash"
+version = "0.2.4"
+description = "An AI assistant for git operations using FastMCP."
+readme = "README.md"
+authors = [{ name = "Alosh Denny", email = "aloshdenny@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp",
+    "google-generativeai",
+    "python-dotenv",
+    "typer",
+    "rich"
+]
+
+[project.scripts]
+git-flash = "git_flash.client:cli_app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = [
+  "src/git_flash",
+  "README.md"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/git_flash"]
