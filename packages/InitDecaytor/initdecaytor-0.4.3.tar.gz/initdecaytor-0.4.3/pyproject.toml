@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "InitDecaytor"
+version = "0.4.3"
+description = "Simulation of the thermal decomposition of free-radical initiators"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  { name = "Kevin De Bruycker and Stijn D'hollander", email = "kevindebruycker@gmail.com" },
+#  { name = "Stijn D'hollander" }
+]
+dependencies = [
+  "dash>=3.0.4",
+  "matplotlib",
+  "numba",
+  "numpy",
+  "pandas",
+  "plotly",
+  "scipy",
+]
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 4 - Beta",
+
+  "Operating System :: OS Independent",
+
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3",
+#  "Programming Language :: Python :: 3.6",
+#  "Programming Language :: Python :: 3.7",
+#  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.13",
+]
+
+#[project.urls]
+#Homepage = "https://github.com/YOUR_USERNAME/InitDecaytor"  # Replace with actual URL
+#Repository = "https://github.com/YOUR_USERNAME/InitDecaytor"  # Optional
+#Issues = "https://github.com/YOUR_USERNAME/InitDecaytor/issues"  # Optional
+
+[tool.setuptools.packages.find]
+where = ["."]
