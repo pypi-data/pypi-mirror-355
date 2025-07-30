@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phantom_file_forge"
+version = "0.1.5"
+description = "A project to generate dummy files"
+authors = [
+    { name = "w h somadasa", email = "rhewage.lk@gmail.com" }
+]
+
+license-files = ["LICENSE"]
+readme = "README.md"
+
+requires-python = ">=3.12"
+dependencies = [
+    # Add your dependencies here, for example:
+    "pillow>=11.2.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+phantom_file_forge = "phantom_file_forge.generate_dummy_files:main"
