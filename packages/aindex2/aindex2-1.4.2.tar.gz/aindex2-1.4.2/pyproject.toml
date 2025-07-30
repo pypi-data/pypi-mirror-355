@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=61.0,<70.0", "wheel>=0.40.0,<0.44.0", "pybind11>=2.6.0", "numpy"]
+build-backend = "setuptools.build_meta"
+
+# ============================================================================
+# cibuildwheel configuration - optimized for cross-platform builds
+# ============================================================================
+
+[tool.cibuildwheel]
+# Build for Python 3.8+ on Linux and macOS only
+build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
+skip = "*-musllinux* *-win*"  # Skip musl Linux and Windows distributions
+
+# Test that wheels work - more robust test
+test-command = [
+    "python -c 'import sys; print(f\"Python {sys.version}\")'",
+    "python -c 'import aindex; print(\"✓ aindex import successful\")'",
+    "python -c 'from aindex import AIndex; print(\"✓ AIndex class available\")'",
+]
+test-skip = "cp38-macosx_*:arm64"  # Skip ARM64 tests for Python 3.8 due to cibuildwheel limitations
+
+# ============================================================================
+# Linux configuration
+# ============================================================================
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+
+before-all = [
+    "yum install -y make gcc-c++ || (apt-get update && apt-get install -y make build-essential)",
+    "mkdir -p bin obj aindex/core aindex/bin",
+]
+
+before-build = [
+    "pip install pybind11 numpy",
+    "echo 'Building for Linux {wheel}'",
+    "make clean || true",
+    "mkdir -p bin obj aindex/core aindex/bin",
+    "make all",
+]
+
+repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
+
+[tool.cibuildwheel.linux.environment]
+MAKEFLAGS = "-j1"
+
+# ============================================================================
+# macOS configuration  
+# ============================================================================
+
+[tool.cibuildwheel.macos]
+archs = ["arm64"]
+
+before-all = [
+    "mkdir -p bin obj aindex/core aindex/bin",
+]
+
+before-build = [
+    "pip install pybind11 numpy",
+    "echo '=== Building wheel for {arch} ==='",
+    "echo 'Current directory: ' && pwd",
+    "echo 'ARCHFLAGS: ${ARCHFLAGS:-not set}'",
+    "echo 'Machine arch: ' && uname -m",
+    "make clean || true",
+    "make all",
+    # Проверяем архитектуру собранного файла
+    "echo '=== Checking built extension architecture ==='",
+    "file aindex/core/aindex_cpp*.so || echo 'Extension not found'",
+    "lipo -info aindex/core/aindex_cpp*.so || echo 'Cannot check architecture'",
+]
+
+repair-wheel-command = "cp {wheel} {dest_dir}"
+
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "11.0"
+MAKEFLAGS = "-j1"
+# cibuildwheel автоматически подставит правильную архитектуру
+ARCHFLAGS = "-arch {arch}"
