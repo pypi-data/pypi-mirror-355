@@ -1,0 +1,157 @@
+dqsegdb (3.0.0-1) unstable; urgency=medium
+
+  * major new version
+  * replaced python3-ligo-segments with python3-igwn-segments
+  * removed restriction 'python3-lscsoft-glue (<< 4.0.0)'
+
+ -- Robert Bruntz <robert.bruntz@ligo.org>  Fri, 13 Jun 2025 11:50:00 -0400
+
+dqsegdb (2.2.0-1) unstable; urgency=medium
+
+  * changes to code, esp. SciTokens usage; no packaging changes
+
+ -- Robert Bruntz <robert.bruntz@ligo.org>  Tue, 22 Apr 2025 05:15:00 -0500
+
+dqsegdb (2.1.0-1) unstable; urgency=medium
+
+  * disable pytest during RPM/Deb builds
+  * pin lscsoft-glue to >= 3.0.1, < 4.0.0
+
+ -- Robert Bruntz <robert.bruntz@ligo.org>  Thu, 6 Feb 2024 02:35:00 -0500
+
+dqsegdb (2.0.0-1) unstable; urgency=medium
+
+  * 2.0.0 change from Python 2 to Python 3
+  * numerous small + medium improvements in code
+  * added python3-lal as a requirement of python3-dqsegdb
+
+ -- Robert Bruntz <robert.bruntz@ligo.org>  Thu, 27 Jan 2022 14:11:00 -0500
+
+dqsegdb (1.6.1-1) unstable; urgency=low
+
+  * 1.6.1 bug fix  release to use new ssl handler for https connections for
+    inserts.
+
+ -- ryan fisher <ryan.fisher@ligo.org>  Thu, 11 Jul 2019 17:28:00 -0500
+
+dqsegdb (1.6.0-1) unstable; urgency=low
+
+  * 1.6 release to use new ligo-segments, needs testing
+
+ -- ryan fisher <ryan.fisher@ligo.org>  Wed, 20 Feb 2019 18:28:00 -0500
+
+dqsegdb (1.4.2-1) unstable; urgency=low
+
+  * Small change release to depend on updated glue called lscsoft-glue
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Thu, 6 Apr 2017 18:00:00 -0500
+
+dqsegdb (1.4.1-1) unstable; urgency=low
+
+  * Intermediate base code only release to change python packaging code.  No corresponding rpm or debian release.
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Wed, 18 Jan 2017 14:00:00 -0500
+
+dqsegdb (1.4.0-1) unstable; urgency=low
+
+  * ER10 release
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Mon, 13 Jun 2016 14:00:00 -0500
+
+dqsegdb (1.3.1-1) unstable; urgency=low
+
+  * ER9 release attempt 2, adding in missing commit.
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Thu, 16 Jun 2016 17:00:00 -0500
+
+dqsegdb (1.3.0-1) unstable; urgency=low
+
+  * ER9 release
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Mon, 13 Jun 2016 17:00:00 -0500
+
+dqsegdb (1.2.2-1) unstable; urgency=low
+
+  * Two bug fixes to correct improper user inserts and add back in tables to
+    veto definer for ligolw_segments_from_cats.
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Fri, 07 Aug 2015 16:30:00 -0500
+
+dqsegdb (1.2.1-1) unstable; urgency=low
+
+  * ER8 fix release
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Fri, 07 Aug 2015 16:30:00 -0500
+
+dqsegdb (1.2.0-1) unstable; urgency=low
+
+  * ER8 release
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Thu, 06 Aug 2015 18:00:00 -0500
+
+dqsegdb (1.1.4-1) unstable; urgency=low
+
+  * Reverted previous 3 build changes and just added a BuildRequires to
+    dqsegdb.spec
+
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Thu, 30 Apr 2015 17:00:00 -0500
+
+dqsegdb (1.1.3-1) unstable; urgency=low
+
+  * Changed python setup.py to not require git hopefully.
+
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Wed, 22 Apr 2015 23:15:00 +0200
+
+dqsegdb (1.1.2-1) unstable; urgency=low
+
+  * Changed python setup.py to not require git hopefully.
+
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Wed, 22 Apr 2015 22:35:00 +0200
+
+dqsegdb (1.1.1-1) unstable; urgency=low
+
+  * Changed python setup.py to not require setuptools
+
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Wed, 22 Apr 2015 14:35:00 +0200
+
+dqsegdb (1.1.0-1) unstable; urgency=low
+
+  * Release for compatibility with old S6 comment fields change to server.
+
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Fri, 17 Apr 2015 10:35:00 +0200
+
+dqsegdb (1.0.2-1) unstable; urgency=low
+
+  * ER6 pre-release of DQSEGDB client code, third formal release with
+    compatibility fix to new Glue API for ligolw_segments_from_cats_dqsegdb.
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Tue, 25 Nov 2014 12:13:30 -0500
+
+dqsegdb (1.0.1-1) unstable; urgency=low
+
+  * ER6 pre-release of DQSEGDB client code, second formal release with bug fix.
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Sat, 22 Nov 2014 22:41:30 -0500
+
+dqsegdb (1.0-1) unstable; urgency=low
+
+  * ER6 pre-release of DQSEGDB client code, first formal release.
+
+ -- Ryan Fisher <ryan.fisher@ligo.org>  Fri, 21 Nov 2014 15:08:30 -0500
+
+dqsegdb (0.9-1+deb7u0) unstable; urgency=low
+
+  * build for Wheezy
+
+ -- Steffen Grunewald <steffen.grunewald@ligo.org>  Thu, 21 Aug 2014 16:48:30 +0200
+
+dqsegdb (0.9-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Steffen Grunewald <steffen.grunewald@ligo.org>  Thu, 21 Aug 2014 14:40:00 +0200
