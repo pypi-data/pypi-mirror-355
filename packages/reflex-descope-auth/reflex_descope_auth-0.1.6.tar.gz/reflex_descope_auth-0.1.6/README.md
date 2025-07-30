@@ -1,0 +1,117 @@
+A plugin for integrating [Descope](https://www.descope.com/) authentication with [Reflex](https://reflex.dev/) apps.  
+Supports secure login, logout, and session management using OpenID Connect (OIDC) Authorization Code Flow with PKCE.
+
+**[View on GitHub for more details](https://github.com/descope-sample-apps/reflex-descope-auth)**
+
+---
+
+## ✨ Features
+
+- 🔐 OIDC login with PKCE using Descope
+- 🧠 Local JWT session management
+- 🍪 Cookie-based session token storage
+- 👤 Easy access to user profile info
+- 🔁 Automatic session token generation
+- ❌ Graceful error handling
+- 🔧 Overrideable plugin state for customization
+
+---
+
+## 📦 Installation
+
+```bash
+pip install reflex-descope-auth
+```
+
+---
+
+## ⚙️ Configuration
+
+Before using the plugin, set the required environment variables.
+
+Create a `.env` file in your Reflex project:
+
+```env
+DESCOPE_PROJECT_ID=<your-project-id>
+DESCOPE_REDIRECT_URI=http://localhost:3000/callback
+DESCOPE_FLOW_ID=sign-up-or-in
+DESCOPE_LOGOUT_REDIRECT_URI=http://localhost:3000
+SESSION_SECRET=<your-session-secret>
+```
+
+You can also override Descope’s OIDC endpoints using additional environment variables (see [Environment Variables](#environment-variables)) — useful for custom Descope domains.
+
+---
+
+## 🚀 Usage
+
+### 1. Import and Extend the Plugin
+
+```python
+import reflex as rx
+from reflex_descope_auth import DescopeAuthState
+
+class State(DescopeAuthState):
+    @rx.event
+    async def auth_redirect(self):
+        yield DescopeAuthState.finalize_auth()
+        yield rx.redirect("/")
+```
+
+### 2. Setup Pages
+
+```python
+@rx.page(route="/callback", on_load=State.auth_redirect)
+def callback():
+    return rx.center("Logging in...")
+
+@rx.page()
+def index():
+    return rx.cond(
+        State.logged_in,
+        rx.text(f"Hello, {State.userinfo['name']}!"),
+        rx.button("Login", on_click=DescopeAuthState.start_login)
+    )
+```
+
+---
+
+## 🔧 Environment Variables
+
+| Name                        | Description                                                                 |
+|-----------------------------|-----------------------------------------------------------------------------|
+| `DESCOPE_PROJECT_ID`        | Your Descope project ID (required)                                         |
+| `DESCOPE_REDIRECT_URI`      | Redirect URI after login (default: `http://localhost:3000/callback`)       |
+| `DESCOPE_FLOW_ID`           | Flow ID from Descope (default: `sign-up-or-in`)                            |
+| `DESCOPE_LOGOUT_REDIRECT_URI` | Redirect URI after logout (default: `http://localhost:3000`)             |
+| `SESSION_SECRET`            | Secret used to sign local session tokens (default: `default-secret`)                                   |
+| `DESCOPE_AUTH_URL`          | (Optional) Override Descope auth endpoint                                  |
+| `DESCOPE_TOKEN_URL`         | (Optional) Override Descope token endpoint                                 |
+| `DESCOPE_USERINFO_URL`      | (Optional) Override userinfo endpoint                                      |
+| `DESCOPE_LOGOUT_URL`        | (Optional) Override logout endpoint                                        |
+| `DESCOPE_JWKS_URL`          | (Optional) Override JWKS URL for public keys                               |
+
+---
+
+## ❗ Error Handling
+
+If authentication fails:
+
+- The plugin sets an `error_message` variable in the state.
+- No crashes or exceptions — just check and display `State.error_message`.
+- Customize handling by subclassing and overriding the default behavior.
+
+---
+
+## 📝 Notes
+
+- Sessions are managed entirely on the client using secure cookies.
+- JWT tokens are signed with `HS256` using your `SESSION_SECRET`.
+- Descope handles user identity and OIDC flow; the plugin wraps it for Reflex.
+- See the full working [demo app](https://github.com/descope-sample-apps/reflex-descope-auth/tree/main/reflex_descope_demo) on GitHub.
+
+---
+
+## 📄 License
+
+MIT License

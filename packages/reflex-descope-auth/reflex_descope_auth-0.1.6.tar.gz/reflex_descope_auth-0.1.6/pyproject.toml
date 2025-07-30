@@ -1,0 +1,31 @@
+[project]
+name = "reflex-descope-auth"
+version = "0.1.6"
+description = "A Reflex plugin for handling Descope OAuth authentication."
+authors = [
+    { name = "Tal Berry", email = "devrel@descope.com" }
+]
+license = "MIT"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.9"
+
+dependencies = [
+    "reflex>=0.7.14",
+    "httpx>=0.28.0",
+    "PyJWT>=2.10.0",
+    "requests>=2.31.0",
+    "cryptography"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/descope-sample-apps/reflex-descope-auth"
+Issues = "https://github.com/descope-sample-apps/reflex-descope-auth/issues"
+
+[build-system]
+requires = ["setuptools >= 77.0.3", "wheel"]
+build-backend = "setuptools.build_meta"
