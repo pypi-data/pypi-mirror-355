@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pylitematic"
+version = "0.0.0"
+description = "Load, modify, and save Litematica schematics"
+authors = [
+    { name="Boscawinks", email="bosca.winks@gmx.de" }
+]
+dependencies = [
+    "bitpacking >=0.1.0",
+    "nbtlib >=1.6",
+    "numpy >=1.21"
+]
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "GPL-3.0-only" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Homepage = "https://github.com/nieswand/pylitematic"
+Repository = "https://github.com/nieswand/pylitematic"
+Issues = "https://github.com/nieswand/pylitematic/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
