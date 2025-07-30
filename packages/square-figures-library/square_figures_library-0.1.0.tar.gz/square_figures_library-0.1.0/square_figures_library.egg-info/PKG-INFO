@@ -1,0 +1,84 @@
+Metadata-Version: 2.4
+Name: square_figures_library
+Version: 0.1.0
+Summary: Подсчет площади геометрических фигур.
+Home-page: https://github.com/levisserena/square_figures_library
+Author: Акчурин Лев
+Author-email: levisserena@yandex.ru
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
+# Square Figures Library
+
+- [О проекте](#about)
+- [Установка](#install)
+- [Информация об авторе](#avtor)
+
+
+## О проекте <a name="about"></a> 
+
+Библиотека позволяет считать площадь и периметр фигур по заданным габаритным размерам.
+
+## Установка <a name="install"></a> 
+
+pip install square_figures_library
+
+## Примеры использования
+Импортируйте интерисующую вас фигуру, метод get_square или свойство square вернет значение
+площади фигуры, а метод get_perimeter и свойство perimeter - периметер.
+
+```python
+from square_figures_library import Circle
+
+
+circle = Circle(radius=7)
+print(circle.square)  # 153.93804002589985
+```
+Вы можете добавить свою фигур, но вам придется самим описать эти методы для получения результата.
+```python
+from math import pi
+
+from square_figures_library import Figure
+
+
+class Ball(Figure):
+
+    def __init__(self, radius):
+        self.radius = radius
+
+    def get_perimeter(self):
+        return 4 * pi * self.radius ** 2
+
+    def get_square(self):
+        return (4 / 3) * pi * self.radius ** 3
+```
+Так же для получения результата можно воспользоваться функциями calculate_square и
+calculate_perimeter.
+```python
+from square_figures_library import calculate_square
+
+
+...
+result = calculate_square(Ball(42))
+```
+
+## Информация об авторе. <a name="avtor"></a> 
+Акчурин Лев Ливатович.<br>
+[Страничка GitHub](https://github.com/levisserena)
+
+## При создании проекта использовалось:
+- сторонние библиотеке в приложении не использовались;
+- для тестирования использовалась библиотека pytest 8.4.0.
