@@ -1,0 +1,27 @@
+Neat 1031 plugin access via NeatSession (#1233)
+
+# Description
+
+This PR provides interface in NeatSession for accessing external plugins
+(if they exist). If external plugin does not exist a nice error is
+returned:
+![Screenshot 2025-06-06 at 15 12
+51](https://github.com/user-attachments/assets/b9106baf-bfbd-4bb8-909a-eb8509ff4360)
+
+Example of WIP external plugins:
+- [IMF Importer](https://github.com/thisisneat-io/imf-importer-plugin)
+- [CFIHOS](https://github.com/cognitedata/industrial-standard-processor)
+
+To reviewers: this is stacked PR on top of
+[Neat-1030](https://github.com/cognitedata/neat/pull/1232).
+
+## Bump
+
+- [x] Patch
+- [ ] Minor
+- [ ] Skip
+
+## Changelog
+### Added
+
+- Access to the neat plugins via NeatSession
