@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: sfextract
+Version: 0.0.8
+Summary: sfextract tries to extract Setup Factory files on any OS.
+Author: gdesmar
+Project-URL: Homepage, https://github.com/CybercentreCanada/sfextract
+Project-URL: Bug Tracker, https://github.com/CybercentreCanada/sfextract/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Console
+Classifier: Topic :: File Formats
+Classifier: Topic :: System :: Archiving
+Classifier: Topic :: System :: Installation/Setup
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENCE.md
+Requires-Dist: pefile
+
+# sfextract
+
+<a href="https://pypi.org/project/sfextract/#history"><img src="https://img.shields.io/pypi/v/sfextract.svg" alt="Latest Stable Release"></a>
+
+This library tries to extract all internal files associated with Setup Factory executables. This extractor is based on [SFUnpacker](https://github.com/Puyodead1/SFUnpacker) but is meant to be fully executable on Linux.
+
+## Installation
+
+sfextract can be installed from pypi using pip:
+```
+pip install sfextract
+```
+
+## Use
+
+By installing this library, you will be able to simply execute `sfextract` from your commandline.
+
+If you wish to use it as an imported library instead, you can use
+```python
+from sfextract.main import extract
+
+extractor = extract("file.exe", "output_folder")
+print(extractor.version)
+for file in extractor.files:
+    print(file)
+```
+
+## Limitations
+
+This library has the same limitations as the one it was based on. It currently only support Setup Factory 7, 8 and 9.
