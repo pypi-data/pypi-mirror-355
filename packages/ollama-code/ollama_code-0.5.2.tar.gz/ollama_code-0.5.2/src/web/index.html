@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codiac - Totemware Development Assistant</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/security.css">
+    <link rel="stylesheet" href="static/css/performance.css">
+    <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Fixed Terminal Label -->
+        <div id="terminal-label" class="terminal-label-fixed">
+            CODIAC TERMINAL v0.5.2
+        </div>
+        
+        <div id="terminal-container">
+            <div id="terminal-output">
+                <!-- Terminal bereit -->
+            </div>
+        </div>
+
+        <div id="input-section">
+            <input type="text" id="prompt-input" placeholder="Nachricht an Codiac eingeben..." autofocus>
+            <div id="status-bar">
+                <span id="auto-accept-indicator">⏵⏵ auto-accept edits <span id="auto-accept-status">on</span> <span class="shortcut-hint">(shift+tab to cycle)</span></span>
+                <span id="context-indicator">Context left until auto-compact: <span id="context-percentage">100</span>%</span>
+                <div id="codiac-status">
+                    <span id="status-emoji">🔥</span>
+                    <span id="status-text">Codiac bereit</span>
+                </div>
+                
+                <!-- NEUER SECURITY MODE BUTTON -->
+                <button id="security-mode-btn" class="security-mode-btn" onclick="openSecurityModeDialog()">
+                    <span id="security-led" class="security-led"></span>
+                    <span id="security-mode-text">🔒 Safe Mode</span>
+                </button>
+                
+                <span>Live: <span id="current-tokens">0</span>T</span>
+                <span>Total: <span id="session-tokens">0</span>T</span>
+                <span><span id="token-speed">0</span>/s</span>
+                <span id="timer">00:00</span>
+                <span class="atlas-glow" style="font-size: 10px;">[ESC: Stop | Ctrl+Alt+E: Notstop]</span>
+            </div>
+        </div>
+        
+        <!-- ENTFERNT: SECURITY LED UNTEN LINKS - Ersetzt durch Terminal-Glow-Effekte -->
+    </div>
+
+    <!-- SECURITY MODE DIALOG -->
+    <div id="security-mode-dialog" class="security-dialog-overlay" style="display: none;">
+        <div class="security-dialog">
+            <div class="security-dialog-header">
+                <h2>🔒 Sicherheitsmodus wählen</h2>
+                <button class="close-btn" onclick="closeSecurityModeDialog()">×</button>
+            </div>
+            
+            <div class="security-dialog-content">
+                <div class="security-mode-option" data-mode="safe">
+                    <div class="mode-header">
+                        <span class="mode-led safe"></span>
+                        <span class="mode-title">🔒 Safe Mode</span>
+                        <span class="mode-status">Empfohlen</span>
+                    </div>
+                    <div class="mode-description">
+                        <strong>Vollständig sicher:</strong> Alle Operationen werden nur simuliert. 
+                        Keine echten Dateizugriffe oder Systembefehle.
+                    </div>
+                </div>
+                
+                <div class="security-mode-option" data-mode="base">
+                    <div class="mode-header">
+                        <span class="mode-led base"></span>
+                        <span class="mode-title">🔓 Base Mode</span>
+                        <span class="mode-status">Begrenzt</span>
+                    </div>
+                    <div class="mode-description">
+                        <strong>Begrenzte echte Zugriffe:</strong> Echte Dateizugriffe nur im Arbeitsverzeichnis. 
+                        Kann Dateien lesen, schreiben und bearbeiten (kein Löschen).
+                    </div>
+                </div>
+                
+                <div class="security-mode-option" data-mode="hell-out">
+                    <div class="mode-header">
+                        <span class="mode-led hell-out"></span>
+                        <span class="mode-title">⚠️ Hell-Out Mode</span>
+                        <span class="mode-status">GEFÄHRLICH</span>
+                    </div>
+                    <div class="mode-description">
+                        <strong>VOLLZUGRIFF:</strong> Kompletter Systemzugriff ohne Beschränkungen. 
+                        Kann JEDE Datei lesen, schreiben und löschen!
+                    </div>
+                    <div class="mode-warning">
+                        ⚠️ <strong>WARNUNG:</strong> Kann Ihr System beschädigen!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="security-dialog-actions">
+                <button class="btn-cancel" onclick="closeSecurityModeDialog()">Abbrechen</button>
+                <button id="mode-select-btn" class="btn-primary" onclick="selectSecurityMode()">Modus wählen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HELL-OUT MODE WARNING DIALOG -->
+    <div id="hell-out-warning-dialog" class="security-dialog-overlay warning-dialog" style="display: none;">
+        <div class="security-dialog warning-dialog-content">
+            <div class="warning-header">
+                <span class="warning-icon">⚠️</span>
+                <h2>ACHTUNG: Hell-Out Mode</h2>
+            </div>
+            
+            <div class="warning-content">
+                <div class="warning-message">
+                    <h3>🔥 EXTREM GEFÄHRLICHER MODUS!</h3>
+                    <p>Sie sind dabei, den <strong>Hell-Out Mode</strong> zu aktivieren!</p>
+                    
+                    <div class="danger-list">
+                        <h4>Dieser Modus kann:</h4>
+                        <ul>
+                            <li>🔴 JEDE Datei auf Ihrem System lesen, ändern oder LÖSCHEN</li>
+                            <li>🔴 Systemdateien wie /etc/passwd modifizieren</li>
+                            <li>🔴 Kritische Windows-Registrierung bearbeiten</li>
+                            <li>🔴 Ihr System unbrauchbar machen</li>
+                            <li>🔴 Alle Ihre persönlichen Daten gefährden</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="confirmation-steps">
+                        <div class="confirmation-step" id="step1">
+                            <h4>Schritt 1: Bestätigung eingeben</h4>
+                            <p>Tippen Sie das Wort <strong>"bestätigen"</strong> ein:</p>
+                            <input type="text" id="confirmation-input" placeholder="bestätigen" autocomplete="off">
+                            <div id="step1-status" class="step-status"></div>
+                        </div>
+                        
+                        <div class="confirmation-step" id="step2" style="display: none;">
+                            <h4>Schritt 2: Haftungsausschluss</h4>
+                            <div class="disclaimer-container">
+                                <label class="disclaimer-checkbox">
+                                    <input type="checkbox" id="disclaimer-checkbox">
+                                    <span class="checkmark"></span>
+                                    <div class="disclaimer-text">
+                                        <p>Ich verstehe und akzeptiere, dass der Entwickler</p>
+                                        <p><strong>KEINE Verantwortung</strong> für Schäden am System übernimmt,</p>
+                                        <p>die durch diesen Modus entstehen können.</p>
+                                    </div>
+                                </label>
+                            </div>
+                            <div id="step2-status" class="step-status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-actions">
+                <button class="btn-cancel" onclick="closeHellOutWarning()">ABBRECHEN (Empfohlen)</button>
+                <button id="hell-out-confirm-btn" class="btn-danger" disabled onclick="confirmHellOutMode()">
+                    ⚠️ TROTZDEM AKTIVIEREN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/app.js"></script>
+    <script src="static/js/security.js"></script>
+</body>
+</html>
