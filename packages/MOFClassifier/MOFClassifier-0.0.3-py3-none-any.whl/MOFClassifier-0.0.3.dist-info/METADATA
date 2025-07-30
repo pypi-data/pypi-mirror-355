@@ -1,0 +1,62 @@
+Metadata-Version: 2.2
+Name: MOFClassifier
+Version: 0.0.3
+Summary: classifying “computation-ready” experimental metal-organic framework using PU-CGCNN
+Home-page: https://github.com/sxm13/MOFClassifier/
+Author: Guobin Zhao
+Author-email: sxmzhaogb@gmai.com
+License: CC-BY-4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.9, <4
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ase
+Requires-Dist: numpy==1.26.4
+Requires-Dist: torch==2.7.0
+Requires-Dist: Pymatgen==2024.8.9
+Requires-Dist: scikit-learn==1.3.2
+Requires-Dist: tqdm==4.67.1
+Requires-Dist: pandas==2.2.3
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+##  PU-CGCNN-based Models for CR and NCR Classifier of MOFs (MOFClassifier).
+                                                                                                                                          
+[![Static Badge](https://img.shields.io/badge/chemrxiv-2025.nvmnr.v1-brightgreen?style=flat)](https://doi.org/10.26434/x)
+![GitHub repo size](https://img.shields.io/github/repo-size/sxm13/NCRChecker?logo=github&logoColor=white&label=Repo%20Size)
+[![PyPI](https://img.shields.io/pypi/v/NCRChecker?logo=pypi&logoColor=white)](https://pypi.org/project/NCRChecker?logo=pypi&logoColor=white)
+[![Requires Python 3.9](https://img.shields.io/badge/Python-3.9-blue.svg?logo=python&logoColor=white)](https://python.org/downloads)
+[![GitHub license](https://img.shields.io/github/license/sxm13/NCRChecker)](https://github.com/sxm13/NCRChecker/blob/main/LICENSE)
+[![Downloads](https://pepy.tech/badge/NCRChecker)](https://pepy.tech/project/NCRChecker)
+[![GitHub issues](https://img.shields.io/github/issues/sxm13/NCRChecker.svg)](https://GitHub.com/sxm13/NCRChecker/issues/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.x.svg)](https://doi.org/10.5281/zenodo.x)
+                         
+### Installation 
+                                     
+```sh
+pip install MOFClassifier
+```
+
+### Examples                                                                                                     
+```python
+from MOFClassifier import CLscore
+cifid, CLscores, CLscore = CLscore.predict(root_cif="./example.cif")
+```
+-  **root_cif**: the path of your structure
+-  **cifid**: the name of structure
+-  **CLscores**: the CLscore predicted by 100 models (bags)
+-  **CLscore**: the mean CLscore of **CLscores**
+                                                                                
+### Citation                                          
+**Guobin Zhao**, **Pengyu Zhao** and **Yongchul G. Chung**. 2025. **arXiv**.
