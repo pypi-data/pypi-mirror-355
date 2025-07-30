@@ -1,0 +1,4 @@
+DB_NAME = 'mi'
+DATE_FORMAT = "%Y.%m.%d"
+
+from db2_hj3415.common import connection
