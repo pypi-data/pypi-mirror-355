@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: rootlab_lib
+Version: 0.2.0
+Summary: RootLab data analysis tools
+Author-email: Trevor Swan <tcs94@case.edu>, Samuel Root <ser132@case.edu>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/trevorswan11/rootlab-lib
+Project-URL: Issues, https://github.com/trevorswan11/rootlab-lib/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scipy
+Requires-Dist: pyserial
+Dynamic: license-file
+
+# rootlab-lib
+A library of data analysis tools for the RootLab at CWRU. This library contains functions commonly used for data analysis in the lab. For obvious reasons, data used for the modules tests is not be shared.
+
+## Instructions
+With basic pip, use:
+```
+pip install rootlab-lib
+```
+If using Sypder (Conda is your package manager), use:
+```
+conda install conda-build
+conda skeleton pypi rootlab-lib
+conda build rootlab-lib
+```
+This should work, but I need to look into the effectiveness of this, and may upload the package to conda-forge if needed!
+
+## Documentation
+You can read function documentation by opening the file `rootlab_lib.html` in the `doc` folder.
