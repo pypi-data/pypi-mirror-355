@@ -1,0 +1,72 @@
+modules:
+  - node_hermes_core.built_in.test_nodes
+  - node_hermes_core.built_in.operation_nodes
+  - node_hermes_core.built_in.output
+  - node_hermes_qt.nodes
+  - hermes_framing_nodes
+  - hermes_stream_nodes
+  - hermes_odin_nodes
+
+nodes:
+
+  statistics_worker:
+    type: worker
+    interval: 1
+    nodes:
+      stream_node:
+        type: serial_stream
+        port: COM9
+        baudrate: 6000000
+        rx_buffer_size: 500000
+
+      burst_node:
+        type: burst-link
+        stream: statistics_worker.stream_node
+
+  input_worker:
+    type: worker
+    interval: 0.1
+    nodes:
+      stream_input:
+        type: odin-stream
+        odin_definitions: 'C:\Users\fvernieuwe\Downloads\OD.odin'
+        time_correction:
+          counts_per_second: 1e6
+        burst_node: statistics_worker.burst_node
+
+  node_manager:
+    type: node_manager
+    interface:
+      type: tab
+      name: Node Manager
+
+  data_explorer:
+    type: data_explorer
+    tracker: ui_worker.tracker_node
+    interface:
+      type: dock
+      name: "Data Explorer"
+      position: right
+    fade_config:
+      fade_out: false
+      fade_in: false
+      fade_duration: 500ms
+
+  ui_worker:
+    type: worker
+    interval: 0.1
+
+    nodes:
+      tracker_node:
+        type: data_tracker
+
+        source:
+          type: queued_link
+          queue_size: 1000
+          nodes:
+            - input_worker.stream_input
+            - statistics_worker.stream_node
+            - statistics_worker.burst_node
+
+        value_tracking:
+          cache_size: 5000

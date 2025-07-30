@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: hermes-odin-nodes
+Version: 1.0.0
+Summary: nodes for interacting with ODIN
+Author-email: floris vernieuwe <floris@vernieuwe.eu>
+Requires-Python: >=3.10
+Requires-Dist: burst-link-protocol>=1.1.4
+Requires-Dist: hermes-framing-nodes>=1.0.1
+Requires-Dist: hermes-stream-nodes>=1.0.1
+Requires-Dist: node-hermes-core>=1.2.0
+Requires-Dist: odin-stream>=0.1.4
+Requires-Dist: polars>=1.30.0
+Description-Content-Type: text/markdown
+
+# Hermes framing nodes
+[![PyPI version](https://badge.fury.io/py/hermes-odin-nodes.svg)](https://pypi.org/project/hermes-odin-nodes)
+
+A collection of nodes to provide translation between stream interfaces.
+
+## Installation
+
+### From PyPI
+
+Install the package directly from PyPI using pip:
+
+```bash
+pip install hermes-odin-nodes
+```
+
+### From Source
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/node-hermes/hermes-odin-nodes
+pip install -e hermes-odin-nodes
+```
+
+## Development
+
+This project depends on UV for managing dependencies.
+Make sure you have UV installed and set up in your environment.
+
+You can find more information about UV [here](https://docs.astral.sh/uv/getting-started/installation/).
+
+```bash
+uv venv
+```
+
+```bash
+uv sync --all-extras --dev
+```
