@@ -1,0 +1,74 @@
+# SPDX-FileCopyrightText: b5327157 <b5327157@protonmail.com>
+#
+# SPDX-License-Identifier: LGPL-3.0-or-later
+
+# Setuptools
+
+[build-system]
+build-backend = 'setuptools.build_meta'
+requires = [
+	'setuptools >= 75.6.0',
+	'setuptools-scm[toml] >= 8.1.0',
+	'wheel >= 0.45.1',
+]
+
+[tool.setuptools_scm]
+version_scheme = 'post-release'
+write_to = 'no_vtf/_version.py'
+
+# Other
+
+[tool.black]
+color = true
+extend-exclude = '''
+	/generated/
+'''
+fast = true
+line-length = 100
+quiet = true
+target-version = [
+	'py310',
+	'py311',
+	'py312',
+	'py313',
+]
+
+[tool.coverage.report]
+exclude_also = [
+	'^\s*\.\.\.$',
+	':\s*\.\.\.$',
+	'^\s*(el)?if TYPE_CHECKING:$',
+	'^\s*@deprecated\(.+\)$',
+]
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+concurrency = [
+	'multiprocessing',
+]
+parallel = true
+sigterm = true
+
+[tool.pyright]
+analyzeUnannotatedFunctions = false
+ignore = [
+	'no_vtf/_version.py',
+	'**/generated',
+]
+strict = [
+	'no_vtf/core',
+	'no_vtf/deferred',
+	'no_vtf/filesystem',
+	'no_vtf/task_runner',
+	'no_vtf/vtf/__init__.py',
+	'no_vtf/vtf/image_decoder.py',
+	'no_vtf/vtf/namer.py',
+	'no_vtf/vtf/texture.py',
+	'no_vtf/vtf/texture_decoder.py',
+	'no_vtf/__init__.py',
+	'no_vtf/__main__.py',
+	'noxfile.py',
+	'builds/nox.py',
+	'ksy/compile.py',
+]

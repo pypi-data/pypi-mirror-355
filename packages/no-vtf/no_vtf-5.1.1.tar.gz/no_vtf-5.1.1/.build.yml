@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: b5327157 <b5327157@protonmail.com>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+sources:
+- https://git.sr.ht/~b5327157/no_vtf
+
+image: ubuntu/20.04
+arch: amd64
+
+secrets:
+- a3cafe86-e4dd-4f18-b7ad-5809c8d577f2
+- 076fcca6-4239-4488-bf29-ec6dd1e9852c
+
+oauth: pages.sr.ht/PAGES:RW
+
+artifacts:
+- coverage.zip
+- no_vtf.tar.gz
+- no_vtf-linux_x64.tar.xz
+- no_vtf-windows_x64.zip
+
+environment:
+  RUN_TESTS: '1'
+
+tasks:
+  - env: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/debian/env.sh
+
+  - python3_10: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/python3.10-install.sh
+
+  - wine: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/debian/wine-install.sh
+
+  - lint: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh python3.10 builds/nox.py --session lint
+
+  - lint_wine: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/with_wine.sh /tmp/wine builds/with_clone.sh wine git -- wine python3.10 builds/nox.py --session lint
+
+  - diff_generated: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/debian/ksc-install.sh
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/diff_generated.sh
+
+  - coverage: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh python3.10 builds/nox.py --session coverage -- ~/coverage.zip
+
+  - package: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh python3.10 builds/nox.py --session package -- ~/no_vtf.tar.gz
+
+  - package_wine: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/with_wine.sh /tmp/wine builds/with_clone.sh wine git -- wine python3.10 builds/nox.py --session package
+
+  - freeze: |
+      cd no_vtf
+      BUILD_NUMPY_FROM_SOURCE=1 builds/pprint_xtrace.sh builds/sr_ht.sh builds/with_clone.sh git -- python3.10 builds/nox.py --session freeze -- ~/no_vtf-linux_x64.tar.xz ~/no_vtf.tar.gz
+
+  - freeze_wine: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/with_wine.sh /tmp/wine builds/with_clone.sh wine git -- wine python3.10 builds/nox.py --session freeze -- ~/no_vtf-windows_x64.zip ~/no_vtf.tar.gz
+
+  - verify_signatures: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/verify_signatures.sh || complete-build
+
+  - pre-release: |
+      cd no_vtf
+      [ "$(git rev-parse --verify HEAD)" == "$(git rev-parse --verify master)" ] || complete-build
+      git describe --exact-match 2>/dev/null || complete-build
+
+  - publish_frozen: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh builds/publish_frozen.sh ~ no_vtf-linux_x64.tar.xz no_vtf-windows_x64.zip
+
+  - publish_package: |
+      cd no_vtf
+      builds/pprint_xtrace.sh builds/sr_ht.sh python3.10 builds/nox.py --session publish -- ~/.pypi.org.token

@@ -1,0 +1,92 @@
+# SPDX-FileCopyrightText: b5327157 <b5327157@protonmail.com>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# shellcheck shell=bash
+
+xtrace="$(set +o | grep -P '^set [\+-]o xtrace$')"
+set +x
+
+# shellcheck source=/dev/null
+[ ! -e ~/.buildenv ] || source ~/.buildenv
+
+$xtrace
+unset xtrace
+
+set -o pipefail
+set -o errtrace
+
+shopt -s inherit_errexit
+shopt -s failglob
+shopt -s expand_aliases
+
+tput()
+{
+	if [ -t 1 ] && [ -n "$TERM" ] && [ "$TERM" != 'dumb' ]; then
+		TERM="$TERM" command tput "$@"
+	fi
+}
+
+tput_args()
+{
+	tput -S < <(
+		IFS=$'\n'
+		printf '%s' "$*"
+	)
+}
+
+_err_trap()
+{
+	if [ -o xtrace ]; then
+		local errexit
+		errexit="$(set +o | grep -P '^set [\+-]o errexit$')"
+
+		set +x
+		set +e
+
+		(
+			$errexit
+			if ! [ -o errexit ] || [ "$4" -gt 0 ]; then
+				local sign='⚠'
+				local style=('setaf 3')
+			else
+				local sign='🗙'
+				local style=('setaf 1' 'bold')
+			fi
+			set +e
+
+			tput_args "${style[@]}"
+			printf '%s' "$sign"
+			tput sgr0
+
+			tput_args "${style[@]::1}"
+			printf ' (%s)' "$1"
+			tput sgr0
+
+			if [ -n "$3" ]; then
+				tput setaf '8'
+				printf ' [%s]' "$3"
+				tput sgr0
+			fi
+
+			printf ' %s\n' "$2"
+		) >&"${_err_trap_fd:?}" 2>&1
+
+		$errexit
+		set -x
+	fi
+
+	exec {_err_trap_fd}>&-
+	unset _err_trap_fd
+}
+trap '{ _err_trap "$?" "$BASH_COMMAND" "${FUNCNAME[0]}" "$BASH_SUBSHELL"; } {_err_trap_fd}>&2 2>/dev/null' ERR
+
+alias exec='exec '
+alias sudo='sudo '
+alias wine='wine '
+
+alias curl='curl --no-progress-meter --fail'
+
+alias gpg='gpg --quiet --batch --keyserver hkps://keys.openpgp.org'
+
+source builds/debian/common.shlib
