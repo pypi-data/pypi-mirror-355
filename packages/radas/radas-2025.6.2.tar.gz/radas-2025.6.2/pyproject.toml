@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "radas"
+# Version is year.month.version
+version = "2025.6.2"
+description = "Plasma radiated power calculated using OpenADAS"
+authors = ["Commonwealth Fusion Systems"]
+readme = "README.md"
+classifiers = [
+"Development Status :: 5 - Production/Stable",
+"Intended Audience :: Science/Research",
+"Programming Language :: Python :: 3",
+"Programming Language :: Python :: 3.10",
+"Programming Language :: Python :: 3.11",
+"Programming Language :: Python :: 3.12",
+"Programming Language :: Python :: 3 :: Only",
+"Topic :: Scientific/Engineering :: Physics",
+"License :: OSI Approved :: MIT License",
+]
+
+[tool.poetry.scripts]
+radas = 'radas.cli:run_radas_cli'
+run_radas = 'radas.cli:run_radas_cli'
+radas_config = 'radas.cli:write_config_template'
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+numpy = ">=1.22"
+scipy = ">=1.8"
+matplotlib = ">=3.6"
+Pint = ">=0.21"
+pyyaml = ">=6.0"
+xarray = ">=2023"
+pint-xarray = ">=0.3"
+click = ">=8.1"
+meson = ">=1.5.0"
+ninja = ">=1.11.1.1"
+fortranformat = ">=2.0.0"
+
+[tool.poetry.group.dev.dependencies]
+# Install pytest into all development environments
+# (don't set optional = true)
+pytest = ">=7.2"
+pytest-order = ">=1.1"
+pytest-cov = ">=4.1"
+coverage = ">=7.2"
+ipdb = ">=0.13.13"
+
+[tool.poetry.group.ipykernel]
+optional = true
+
+[tool.poetry.group.ipykernel.dependencies]
+ipdb = ">=0.13"
+ipykernel = ">=6.20"
+
+[tool.poetry.group.publish]
+optional = true
+
+[tool.poetry.group.publish.dependencies]
+twine = ">=4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+addopts = "--cov=radas --cov-branch --cov-report term --cov-report xml:coverage.xml --import-mode=importlib"
+pythonpath = [
+  ".",
+  "radas",
+]
+testpaths = [
+  "tests",
+]
