@@ -1,0 +1,328 @@
+Metadata-Version: 2.4
+Name: autoenum
+Version: 1.1.1
+Summary: A fuzzy-matched, Pydantic-compatible enum library for Python 3.
+Author-email: Abhishek Divekar <adivekar@utexas.edu>
+License-File: LICENSE
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10.9
+Requires-Dist: requests
+Description-Content-Type: text/markdown
+
+# AutoEnum: Delightfully Simple Python Enums 🎯
+A fuzzy-matched, Pydantic-compatible enum library for Python 3.
+
+## What's an AutoEnum?
+`AutoEnum` is a replacement for Python's `Enum`, which has [many problems](https://www.acooke.org/cute/Pythonssad0.html). 
+
+The standard way of defining enums is not Pythonic:
+```py
+from enum import Enum
+class Animal(Enum):
+    Antelope = 1
+    Bandicoot = 2
+    Cat = 3
+    Dog = 4
+```
+
+A while ago, Python 3 introduced the `auto` function to automatically assign values, which was an improvement:
+```py
+from enum import Enum, auto
+class Animal(Enum):
+    Antelope = auto()
+    Bandicoot = auto()
+    Cat = auto()
+    Dog = auto()
+```
+But inbuilt Python enums still have a lot of problems:
+- Case-sensitivity
+- No fuzzy-matching
+- No support for aliases
+- Incompatible str() and repr() outputs
+- Unable to convert to JSON.
+- No [Pydantic](https://pypi.org/project/pydantic/) compatibility
+  
+The `autoenum` library fixes all these problems. It is a single-file library with behavior very similar to `auto()` usage above:
+```py
+from autoenum import AutoEnum, auto
+class Animal(AutoEnum):   ## Only the superclass is changed.
+    Antelope = auto()
+    Bandicoot = auto()
+    Cat = auto()
+    Dog = auto()
+```
+AutoEnum allows you to do things like this:
+```
+>>> Animal.Antelope   ## Default usage, recommended in main codebase
+Antelope
+
+>>> Animal('Antelope')  ## Fuzzy-match a string entered by a user
+Antelope
+
+>>> Animal('     antElope_ ')  ## Spacing, casing and underscores are handled
+Antelope
+
+>>> Animal('Jaguar')  ## Throws an error 
+ValueError: Could not find enum with value Jaguar; available values are: [Antelope, Bandicoot, Cat, Dog].
+
+>>> Animal.from_str('Jaguar', raise_error=False)  ## The error can be suppressed
+None
+```
+Accessing an enum value directly, e.g. `Animal.Antelope`, carries the same overhead as a normal enum access (~50 nanoseconds).
+Fuzzy matching runs very fast (~175 ns/lookup i.e. ~5,700,000 lookups/second on a 26-item enum using the default fuzzy-matching algorithm).
+AutoEnum has been used for years in production systems, and has only gotten faster over time.
+
+## Features
+
+Consider an enum of 26 US cities with their common aliases:
+```py
+from autoenum import AutoEnum, auto, alias
+class City(AutoEnum):
+    Atlanta = auto()
+    Boston = auto()
+    Chicago = auto()
+    Denver = auto()
+    El_Paso = auto()
+    Fresno = auto()
+    Greensboro = auto()
+    Houston = auto()
+    Indianapolis = auto()
+    Jacksonville = auto()
+    Kansas_City = auto()
+    Los_Angeles = auto()
+    Miami = auto()
+    New_York_City = alias('New York', 'NYC')
+    Orlando = auto()
+    Philadelphia = auto()
+    Quincy = auto()
+    Reno = auto()
+    San_Francisco = auto()
+    Tucson = auto()
+    Union_City = auto()
+    Virginia_Beach = auto()
+    Washington = alias('Washington D.C.')
+    Xenia = auto()
+    Yonkers = auto()
+    Zion = auto()
+```
+
+### Construct Enum from string
+In regular Python enums, its impossible to directly create the enum value from a string: you have to match it with every possible value.
+With an AutoEnum, you can just do:
+```
+>>> City('Boston')
+Boston
+```
+
+Which functions the same as:
+```
+>>> City.Boston
+Boston
+```
+
+### `is` and `==`
+Both `is` and `==` can be used, as with current Enums:
+```
+>>> City.Los_Angeles is City('Los_Angeles')
+True
+>>> City.Los_Angeles == City('Los_Angeles')
+True
+```
+
+In Python code (if statements etc), it is preferred to match using `is`:
+```
+city = ... ## From previous code
+if city is City.Boston:
+    ...
+```
+
+### Robust naming conventions
+Different teams use different naming-conventions for their enums: 
+- Some use `NamesLikeThis` (PascalCase; class-name convention)
+- Others use `NAMES_LIKE_THIS` (Java and C++ enum convention)
+- Some even use `namesLikeThis` (camelCase; JS convention)
+- I somtimes use `Names_Like_this` for proper nouns (for example `Los_Angeles` above).
+Its difficult to remember which convention is followed by each project, and sometimes in your own code. 
+
+AutoEnum accepts all the above conventions and gives you the enum value you need:
+```
+>>> City.Los_Angeles == City('Los_Angeles') == City('LosAngeles') == City('LOS_ANGELES') == City('losAngeles')
+True
+```
+
+### Fuzzy-matching
+In most applications, you use an enum to match as user-entered input. Thus, the string value from which you construct and enum is likely to have minor typos like spacing, underscores, hyphens, or extra periods. 
+In inbuilt enums, cleaning of the input must be done separately for every enum. 
+With AutoEnum, forget about cleaning. So long as you have the same alphabets in the same order, it will work.
+```
+>>> City.Los_Angeles == City('Los Angeles') == City('Los__Angeles') == City(' _Los_Angeles   ') == City('LOS-Angeles')
+True
+```
+However, typos such missing chars, extra or modified chars are not permitted, as they can change the meaning of the enum (for example, `Face` vs `Fate` vs `Fat`).
+```
+>>> City('Lozz Angeles')
+ValueError: Could not find enum with value Lozz Angeles; available values are: [Atlanta, Boston, Chicago, Denver, El_Paso, Fresno, Greensboro, Houston, Indianapolis, Jacksonville, Kansas_City, Los_Angeles, Miami, New_York_City, Orlando, Philadelphia, Quincy, Reno, San_Francisco, Tucson, Union_City, Virginia_Beach, Washington, Xenia, Yonkers, Zion].
+```
+
+By default, the following characters are ignored:
+`(' ', '-', '_', '.', ':', ';', ',')`
+
+You can also write your own fuzzy-matching logic by overriding `_normalize`:
+
+```py
+class Animal(AutoEnum):
+    Antelope = auto()
+    Bandicoot = auto()
+    Cat = alias('Feline')
+    Dog = auto()
+
+    @classmethod
+    def _normalize(cls, x: str) -> str:
+      return str(x)  ## Exact matching
+```
+
+### Aliasing
+Python enums, contrary to belief, *do* support aliasing:
+```py
+from enum import Enum
+class Animal(Enum):
+    Antelope = 1
+    Bandicoot = 2
+    Cat = 3
+    Feline = 3  ## Same number as before indicates an alias
+    Dog = 4
+```
+It is not possible to mix the `auto` keyword with this style of aliasing in Python enums. 
+
+In `autoenum` however, the `alias` function allows you to create aliases for an enum value:
+```py
+from autoenum import AutoEnum, auto, alias
+class Animal(AutoEnum):
+    Antelope = auto()
+    Bandicoot = auto()
+    Cat = alias('Feline')
+    Dog = auto()
+```
+This lets you do:
+```
+>>> Animal('Cat')
+Cat
+
+>>> Animal('Feline')
+Cat
+```
+In code which consumes the alias, you should use `Animal.Cat` everywhere. 
+
+If you are parsing addresses, it is pretty common to see multiple variants of city names, and aliases become very useful:
+
+```
+>>> City('Washington') == City('Washington DC') == City('Washington D.C.')
+Washington
+```
+
+### JSON compatibility
+Regular enums cannot be converted to JSON:
+```py
+import json
+from enum import Enum
+class Animal(Enum):
+    Antelope = 1
+    Bandicoot = 2
+    Cat = 3
+    Dog = 4
+```
+If you run `json.dumps`, it will throw an error:
+```
+>>> json.dumps([Animal.Cat, Animal.Dog])
+TypeError: Object of type Animal is not JSON serializable
+```
+
+The standard way to get around this is to convert all values to strings:
+```
+>>> json.dumps([str(a) for a in [Animal.Cat, Animal.Dog]])
+'["Animal.Cat", "Animal.Dog"]'
+```
+...but after de-jsonifying it, you get strings, not enums. You cannot convert these back into enums easily:
+```
+>>> animals: List[str] = json.loads(json.dumps([str(a) for a in [Animal.Cat, Animal.Dog]]))
+>>> animals
+['Animal.Cat', 'Animal.Dog']
+>>> animals: List[Animal] = [Animal(a) for a in animals]
+ValueError: 'Animal.Cat' is not a valid Animal
+```
+
+AutoEnum fixes all these problems; it is natively json-encodable and structures can be converted using `AutoEnum.convert_values(...)`:
+```py
+import json
+from autoenum import AutoEnum, auto
+class Animal(AutoEnum):
+    Antelope = auto()
+    Bandicoot = auto()
+    Cat = auto()
+    Dog = auto()
+
+>>> json.dumps([Animal.Cat, Animal.Dog])
+'["Cat", "Dog"]'
+>>> animals: List[Animal] = Animal.convert_values(json.loads(json.dumps([Animal.Cat, Animal.Dog])))
+>>> animals
+[Cat, Dog]
+>>> assert isinstance(animals[0], Animal) and isinstance(animals[1], Animal)
+```
+
+
+### Pydantic compatibility
+You can use AutoEnum directly in [Pydantic](https://pypi.org/project/pydantic/) BaseModels alongside other Pydantic type-verification:
+```py
+from pydantic import BaseModel, conint, confloat, constr
+class Company(BaseModel):
+    name: constr(min_length=1)
+    headquarters: City   ## AutoEnum 
+    num_employees: conint(ge=1)
+```
+
+When creating such a Pydantic object, you can pass either the enum value, or a string which is fuzzy-matched:
+```
+>>> netflix = Company(name='Netflix', headquarters='Los Angeles', num_employees=12_000)
+>>> netflix.json()
+{"name": "Netflix", "headquarters": "Los_Angeles", "num_employees": 12000}
+>>> if City(json.loads(netflix.json())['headquarters']) is City.Los_Angeles:
+...     print(f'Headquarters is in "{City.Los_Angeles}"')
+Headquarters is in "Los_Angeles"
+```
+
+
+### Unified str() and repr()
+Inbuilt Python Enums have a fairly gaudy string representation:
+```
+>>> str(City.Boston)
+'City.Boston'
+>>> repr(City.Boston)
+'<City.Boston: 2>'  ## why?
+```
+It's usually clear from context that `Boston` belongs to the `City` enum, we don't need `City.Boston`. `2` is also conveying no information here. 
+
+AutoEnums are printed and represented in a minmial, uniform fashion:
+```
+>>> str(City.Boston)
+'Boston'
+>>> repr(City.Boston)
+'Boston'
+```
+
+### Dynamic Enum creation
+You don't need to define an enum subclass at all! You can use `make_autoenum` to create one dynamically. All strings are converted to valid Python identifiers.
+```
+from autoenum import make_autoenum
+Color = make_autoenum("Color", ["RED", "Green   as   grass", "Blue33", "Yellow!!!"])
+>>> list(Color)
+[Color.Red, Color.Green_As_Grass, Color.Blue33, Color.Yellow]
+>>> Color("Red")
+Color.Red
+>>> Color("Green as grass")
+Color.Green_As_Grass
+>>> Color("blue33")
+Color.Blue33
+>>> Color("Yellow")
+Color.Yellow
+```
