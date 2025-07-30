@@ -1,0 +1,17 @@
+# -*- mode: yaml; coding: utf-8 -*-
+#
+# Schema of the sphinx plugin for csspin
+
+sphinx:
+    type: object
+    help: Configuration of the sphinx plugin for csspin
+    properties:
+        docs:
+            type: path
+            help: Directory containing the documentation
+        opts:
+            type: str
+            help: Options passed to the sphinx call
+        build_dir:
+            type: path
+            help: Place to store the built documentation
