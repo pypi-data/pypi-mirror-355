@@ -1,0 +1,810 @@
+[
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.uns[\"umap\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.scatter",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "depend_on": {
+                "sc.tl.umap": [
+                    "adata.obsm[\"X_umap\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.uns[\"umap\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.tl.leiden",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"leiden\"]",
+                "adata.uns[\"leiden\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "depend_on": {
+                "sc.tl.umap": [
+                    "adata.obsm[\"X_umap\"]"
+                ],
+                "sc.tl.leiden": [
+                    "adata.obs[\"leiden\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.heatmap",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "var_names": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "var_names": "list",
+                "groupby": "str"
+            },
+            "depend_on": {
+                "sc.tl.louvain": [
+                    "adata.obs[\"louvain\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.dotplot",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "var_names": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "var_names": "list",
+                "groupby": "str"
+            },
+            "depend_on": {
+                "sc.tl.louvain": [
+                    "adata.obs[\"louvain\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.violin",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "keys": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "keys": "list",
+                "groupby": "str"
+            },
+            "depend_on": {
+                "sc.tl.louvain": [
+                    "adata.obs[\"louvain\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.dendrogram",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "depend_on": {
+                "sc.tl.louvain": [
+                    "adata.obs[\"louvain\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.diffmap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_diffmap\"]",
+                "adata.uns[\"diffmap_evals\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.tl.leiden",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"leiden\"]",
+                "adata.uns[\"leiden\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.diffmap",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "depend_on": {
+                "sc.tl.diffmap": [
+                    "adata.obsm[\"X_diffmap\"]"
+                ],
+                "sc.tl.leiden": [
+                    "adata.obs[\"leiden\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.log1p",
+            "prep": "",
+            "args": {
+                "data": "adata"
+            },
+            "arg_types": {
+                "data": "object"
+            },
+            "produce": [
+                "adata.X"
+            ],
+            "special": [
+                1
+            ]
+        },
+        {
+            "api": "sc.pp.highly_variable_genes",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.var[\"highly_variable\"]",
+                "adata.var[\"means\"]",
+                "adata.var[\"dispersions\"]",
+                "adata.var[\"dispersions_norm\"]",
+                "adata.var[\"variances\"]",
+                "adata.var[\"variances_norm\"]",
+                "adata.var[\"highly_variable_rank\"]",
+                "adata.var[\"highly_variable_nbatches\"]",
+                "adata.var[\"highly_variable_intersection\"]"
+            ],
+            "_comment": "These products are curated from doc, from 'variances' to the end are actually non-existent.Products are not always fully generated, such as the current case.When testing dependencies, results would show non-existent dependencies. Although we already fixed this problem in dependency finder program,this is still a problematic software design making return values unclear and unfixed.We should encourage fixed api name, arguments and return values.In the meanwhile, returning an object is acceptable only if it is fixed.Note that we hope products can be automatically extracted from doc through LLM.If doc provides vague information products, then we believe it is poorly designed.",
+            "depend_on": {
+                "sc.pp.log1p": [
+                    "adata.X"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.highly_variable_genes",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": {
+                "sc.pp.log1p": [
+                    "adata.X"
+                ],
+                "sc.pp.highly_variable_genes": [
+                    "adata.var[\"dispersions_norm\"]",
+                    "adata.var[\"highly_variable\"]",
+                    "adata.var[\"means\"]",
+                    "adata.var[\"dispersions\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.pca",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.obsm[\"X_pca\"]"
+                ],
+                "sc.tl.louvain": [
+                    "adata.obs[\"louvain\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.uns[\"umap\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.tl.embedding_density",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "produce": [
+                "adata.obs[\"umap_density\"]",
+                "adata.uns[\"umap_density_params\"]"
+            ],
+            "depend_on": {
+                "sc.tl.umap": [
+                    "adata.obsm[\"X_umap\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.embedding_density",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "depend_on": {
+                "sc.tl.umap": [
+                    "adata.obsm[\"X_umap\"]"
+                ],
+                "sc.tl.embedding_density": [
+                    "adata.obs[\"umap_density\"]",
+                    "adata.uns[\"umap_density_params\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.leiden",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"leiden\"]",
+                "adata.uns[\"leiden\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.tl.rank_genes_groups",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "produce": [
+                "adata.uns[\"rank_genes_groups\"]"
+            ],
+            "depend_on": {
+                "sc.tl.leiden": [
+                    "adata.obs[\"leiden\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.rank_genes_groups_dotplot",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "depend_on": {
+                "sc.tl.leiden": [
+                    "adata.obs[\"leiden\"]"
+                ],
+                "sc.tl.rank_genes_groups": [
+                    "adata.uns[\"rank_genes_groups\"]"
+                ]
+            }
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.leiden",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"leiden\"]",
+                "adata.uns[\"leiden\"]"
+            ],
+            "depend_on": {
+                "sc.pp.neighbors": [
+                    "adata.uns[\"neighbors\"]",
+                    "adata.obsp[\"connectivities\"]"
+                ]
+            }
+        },
+        {
+            "api": "sc.pl.correlation_matrix",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "depend_on": {
+                "sc.tl.leiden": [
+                    "adata.obs[\"leiden\"]"
+                ]
+            }
+        }
+    ]
+]

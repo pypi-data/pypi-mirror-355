@@ -1,0 +1,35 @@
+from __future__ import annotations
+from pydantic import ConfigDict, Field, PrivateAttr
+from biochatter.api_agent.base.agent_abc import BaseAPI
+import typing
+from typing import *
+
+{%- for api in apis %}
+class {{ api['model_name'] }}(BaseAPI):
+    """
+    {{ api['description'] }}
+    """
+    {%- for field in api['fields'] %}
+    {{ field['name'] }}: {{ field['annotation'] }} = Field(
+        {{ field['default'] }}, 
+        description="""{{ field['description'] }} 
+        {%- if field['original_annotation'] %}
+        Original annotation is {{ field['original_annotation'] }}
+        {%- endif %}
+        """, 
+        {%- if field['alias'] %}
+        alias="{{ field['alias'] }}"
+        {%- endif %}
+    )
+    {%- endfor %}
+    _api_name: str = PrivateAttr(default="{{ api['name'] }}")
+    _products_str_repr: list[str] = PrivateAttr(default={{ api['products'] }})
+    _data_name: str = PrivateAttr(default="{{ api['data_name'] }}")
+
+{%- endfor %}
+
+TOOLS_DICT = {
+    {%- for api in apis %}
+    "{{ api['name'] }}": {{ api['model_name'] }},
+    {%- endfor %}
+}

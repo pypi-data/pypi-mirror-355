@@ -1,0 +1,427 @@
+[
+    [
+        {
+            "api": "sc.tl.tsne",
+            "query": "compute t-SNE coordinates of data.",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": []
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.umap",
+            "query": "compute UMAP embedding of data.",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "produce": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.uns[\"umap\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.diffmap",
+            "query": "compute diffusion map embedding of data.",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "produce": [
+                "adata.obsm[\"X_diffmap\"]",
+                "adata.uns[\"diffmap_evals\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.diffmap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "produce": [
+                "adata.obsm[\"X_diffmap\"]",
+                "adata.uns[\"diffmap_evals\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.embedding_density",
+            "query": "compute cell embedding density of diffusiom map embedding.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "diffmap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "depend_on": [
+                "adata.obsm[\"X_diffmap\"]"
+            ],
+            "produce": []
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.leiden",
+            "query": "clutsering cells using Leiden algorithm.",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "query": "clutsering cells using Louvain algorithm.",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.dendrogram",
+            "query": "perform hierarchical clustering of cells based on louvain clustering.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.diffmap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_diffmap\"]",
+                "adata.uns[\"diffmap_evals\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "adata.uns.__setitem__",
+            "prep": "",
+            "args": {
+                "key": "iroot",
+                "value": 0
+            },
+            "arg_types": {
+                "key": "str",
+                "value": "int"
+            },
+            "produce": [
+                "adata.uns[\"iroot\"]"
+            ],
+            "special": [
+                0
+            ],
+            "depend_on": []
+        },
+        {
+            "api": "sc.tl.dpt",
+            "query": "compute diffusion pseudotime of cells given that the 0-th cell is set to the root cell.",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.uns[\"diffmap_evals\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.log1p",
+            "prep": "",
+            "args": {
+                "data": "adata"
+            },
+            "arg_types": {
+                "data": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.X"
+            ],
+            "special": [
+                1
+            ]
+        },
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.X"
+            ],
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.rank_genes_groups",
+            "query": "rank genes based on their expression in different clusters of cells, where cells are clustered by louvain algorithm.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "depend_on": [
+                "adata.X",
+                "adata.obs[\"louvain\"]"
+            ]
+        }
+    ]
+]

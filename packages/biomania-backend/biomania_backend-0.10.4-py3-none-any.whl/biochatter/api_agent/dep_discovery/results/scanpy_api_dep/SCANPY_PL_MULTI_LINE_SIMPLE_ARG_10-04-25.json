@@ -1,0 +1,627 @@
+[
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.uns[\"umap\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.scatter",
+            "query": "Plot umap embedding of cells.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "depend_on": [
+                "adata.obsm[\"X_umap\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.uns[\"umap\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.leiden",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"leiden\"]",
+                "adata.uns[\"leiden\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.umap",
+            "query": "Plot umap embedding of cells, where cells are colored by louvain clustering.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "depend_on": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.obs[\"leiden\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.heatmap",
+            "query": "Plot heatmap of gene expressions of genes ['TMSB4X', 'MALAT1', 'B2M'], where cells are clustered by louvain algorithm.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "var_names": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "var_names": "list",
+                "groupby": "str"
+            },
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.dotplot",
+            "query": "Plot dotplot with dendrogram of gene expressions of genes ['TMSB4X', 'MALAT1', 'B2M'], where cells are clustered by louvain algorithm.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "var_names": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "var_names": "list",
+                "groupby": "str"
+            },
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.violin",
+            "query": "Plot violin of gene expressions of genes ['TMSB4X', 'MALAT1', 'B2M'], where cells are clustered by louvain algorithm. ",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "keys": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "keys": "list",
+                "groupby": "str"
+            },
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.dendrogram",
+            "query": "visualize dendrogram of clusters defined by louvain algorithm on cells.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.diffmap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_diffmap\"]",
+                "adata.uns[\"diffmap_evals\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.leiden",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"leiden\"]",
+                "adata.uns[\"leiden\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.diffmap",
+            "query": "visualize diffusion map embedding of cells which are colored by leiden algorithm.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "depend_on": [
+                "adata.obsm[\"X_diffmap\"]",
+                "adata.obs[\"leiden\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.log1p",
+            "prep": "",
+            "args": {
+                "data": "adata"
+            },
+            "arg_types": {
+                "data": "object"
+            },
+            "produce": [
+                "adata.X"
+            ],
+            "special": [
+                1
+            ]
+        },
+        {
+            "api": "sc.pp.highly_variable_genes",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.var[\"highly_variable\"]",
+                "adata.var[\"means\"]",
+                "adata.var[\"dispersions\"]",
+                "adata.var[\"dispersions_norm\"]",
+                "adata.var[\"variances\"]",
+                "adata.var[\"variances_norm\"]",
+                "adata.var[\"highly_variable_rank\"]",
+                "adata.var[\"highly_variable_nbatches\"]",
+                "adata.var[\"highly_variable_intersection\"]"
+            ],
+            "_comment": "These products are curated from doc, from 'variances' to the end are actually non-existent.Products are not always fully generated, such as the current case.When testing dependencies, results would show non-existent dependencies. Although we already fixed this problem in dependency finder program,this is still a problematic software design making return values unclear and unfixed.We should encourage fixed api name, arguments and return values.In the meanwhile, returning an object is acceptable only if it is fixed.Note that we hope products can be automatically extracted from doc through LLM.If doc provides vague information products, then we believe it is poorly designed.",
+            "depend_on": [
+                "adata.X"
+            ]
+        },
+        {
+            "api": "sc.pl.highly_variable_genes",
+            "query": "visualize dispersions and mean expressions of highly variable genes in scatter plot.",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [
+                "adata.X",
+                "adata.var[\"highly_variable\"]",
+                "adata.var[\"means\"]",
+                "adata.var[\"dispersions\"]",
+                "adata.var[\"dispersions_norm\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.pca",
+            "query": "visualize the top 2 principal components of PCA of data in a scatter plot, where cells are colored by louvain clustering.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "depend_on": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.obs[\"louvain\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.uns[\"umap\"]"
+            ],
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ]
+        },
+        {
+            "api": "sc.tl.embedding_density",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "produce": [
+                "adata.obs[\"umap_density\"]",
+                "adata.uns[\"umap_density_params\"]"
+            ],
+            "depend_on": [
+                "adata.obsm[\"X_umap\"]"
+            ]
+        },
+        {
+            "api": "sc.pl.embedding_density",
+            "query": "visualize density of cells in UMAP embedding.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "depend_on": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.obs[\"umap_density\"]",
+                "adata.uns[\"umap_density_params\"]"
+            ]
+        }
+    ]
+]
