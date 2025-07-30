@@ -1,0 +1,86 @@
+Metadata-Version: 2.4
+Name: mola-treelab
+Version: 0.4.0
+Summary: MOLA-treelab is an ONERA code that implements an interface to CGNS
+Project-URL: Homepage, https://github.com/Luispain/treelab
+Project-URL: Issues, https://github.com/Luispain/treelab/issues
+Author-email: Luis Bernardos <luisfco.bernardos@gmail.com>, Thomas Bontemps <thomas.bontemps@hotmail.fr>
+License: LGPL-3.0-only
+License-File: LICENSE
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: h5py>=3.7.0
+Requires-Dist: matplotlib>3.6.2; python_version >= '3.8'
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: pyqt5; python_version < '3.8'
+Requires-Dist: pyside6
+Requires-Dist: qtvscodestyle
+Description-Content-Type: text/markdown
+
+[TreeLab](https://github.com/Luispain/treelab) is part of [MOLA](https://github.com/onera/MOLA) software, fully sharing its license and rights. 
+
+Installation
+============
+
+From sources
+------------
+
+Use [git clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) command in order to download the source files:
+```
+git clone https://github.com/Luispain/TreeLab
+```
+
+From a working Python environment, you can compile using [pypi](https://packaging.python.org/en/latest/tutorials/installing-packages/). For example, a user-only installation would
+be done as follows:
+
+```
+python3 -m pip --user install .
+```
+
+* You may use `--user` option on order to install only for current user. 
+* You can use `--prefix` option to specify the directory where the installation will be done
+* You can use `-e` option to install in developer mode; such that any change in `*.py` source files will be immediately take effect
+
+If you do not have admin rights and you encounter problems using `--prefix`, then
+try force reinstalling all dependencies:
+
+```
+python3 -m pip install --force-reinstall --no-cache-dir --ignore-installed --prefix=/your/path/to/treelab/installation mola-treelab
+```
+
+
+From stable releases
+--------------------
+
+PyPi
+----
+
+```
+python3 -m pip --user install mola-treelab
+```
+
+Make sure that the installation `bin` directory is seen by your `PATH` environment variable. For exemple, in Linux:
+```bash
+export PATH=$PATH:~/.local/bin
+```
+
+Usage
+=====
+
+You may use the API of TreeLab using a python script:
+
+```python
+from treelab import cgns
+n = cgns.Node( Name='jamon', Value=['croquetas', 'morcilla'])
+n.save('out.cgns', verbose=True)
+```
+
+From command line, you can launch the GUI using `treelab` command, optionnaly followed by the absolute or relative path of the CGNS file to open and optionally using the `-s` option in order to load only the skeleton of the tree, for example:
+```
+treelab out.cgns
+```
+
+![treelab showing node](doc/readme_node.png)
+
