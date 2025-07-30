@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dg-sound-fuzz"
+version = "0.1.5"
+description = "A Python package for fuzzy string matching and name scoring using sound-based algorithms"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    { name = "Narendrakumar G S", email = "narendrakumar.gs@digitap.ai" },
+    { name = "M V Pranav", email = "pranav.mv@digitap.ai" },
+    { name = "Sai Aditya Devulapalli", email = "sai.aditya@digitap.ai" }
+]
+dependencies = [
+    "RapidFuzz>=3.13.0",
+    "Metaphone~=0.6"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/digitap/dg-sound-fuzz"
+"Bug Tracker" = "https://github.com/digitap/dg-sound-fuzz/issues"
+
+[tool.black]
+line-length=120
