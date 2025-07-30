@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: HeleketAPI
+Version: 0.0.4.dev0
+Summary: Easy interaction with Heleket API, support for asynchronous approaches
+Home-page: https://github.com/Fsoky/CryptomusAPI
+Author: Fsoky
+Author-email: cyberuest0x12@gmail.com
+License: MIT
+Keywords: api heleket asyncio crypto heleketapi
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: summary
+
+```bash
+pip install HeleketAPI
+```
+
+```python
+import asyncio
+from HeleketAPI import HeleketClient
+
+api = HeleketClient("MERCHANT-UUID", "API-KEY")
+
+
+async def main() -> None:
+    invoice = await api.create_invoice(
+        amount=10,
+        currency="USDT"
+        network="tron",
+        lifetime=300
+    )
+    print(invoice.url)
+
+    await api.session.close()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
