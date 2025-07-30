@@ -1,0 +1,241 @@
+"""Simple LLM-based answer synthesizer and reader
+
+A basic implementation of the AnswerSynthesizer interface that generates
+answers using OpenAI's GPT models.
+"""
+
+import time
+from typing import List, Optional, Dict, Any, Type
+import logging
+
+from .base import AnswerSynthesizer, AnswerSynthesizerConfig, SearchResult
+from ..utils.model_config import get_default_llm_model
+
+try:
+    from refinire import LLMPipeline
+except ImportError:
+    LLMPipeline = None
+
+logger = logging.getLogger(__name__)
+
+
+class SimpleAnswerSynthesizerConfig(AnswerSynthesizerConfig):
+    """Configuration for SimpleAnswerSynthesizer
+    
+    SimpleAnswerSynthesizerの設定
+    
+    Args:
+        max_context_length: Maximum length of context to use
+                          使用するコンテキストの最大長
+        llm_model: LLM model to use for answer generation
+                  回答生成に使用するLLMモデル
+        temperature: Temperature for answer generation
+                    回答生成の温度パラメータ
+        max_tokens: Maximum tokens to generate
+                   生成する最大トークン数
+        generation_instructions: Instructions for the LLM on how to generate answers
+                               LLMに対する回答生成方法の指示
+        system_prompt: System prompt for OpenAI chat completions (when not using Refinire)
+                      OpenAIチャット補完用のシステムプロンプト（Refinireを使用しない場合）
+        openai_api_key: OpenAI API key
+                       OpenAI APIキー
+        openai_organization: OpenAI organization ID
+                            OpenAI組織ID
+    """
+    
+    def __init__(self, 
+                 max_context_length: int = 2000,
+                 llm_model: Optional[str] = None,
+                 temperature: float = 0.1,
+                 max_tokens: int = 500,
+                 generation_instructions: str = "You are a helpful assistant that answers questions based on the provided context.",
+                 system_prompt: str = "You are a helpful assistant that answers questions based on the provided context.",
+                 openai_api_key: Optional[str] = None,
+                 openai_organization: Optional[str] = None,
+                 **kwargs):
+        
+        # Initialize parent class
+        super().__init__(max_context_length=max_context_length,
+                        llm_model=llm_model,
+                        temperature=temperature,
+                        max_tokens=max_tokens,
+                        **kwargs)
+        
+        # Set additional attributes
+        self.generation_instructions = generation_instructions
+        self.system_prompt = system_prompt
+        self.openai_api_key = openai_api_key
+        self.openai_organization = openai_organization
+        # Additional initialization can be added here if needed
+
+
+class SimpleAnswerSynthesizer(AnswerSynthesizer):
+    """Simple LLM-based answer synthesizer
+    
+    OpenAIのGPTモデルを使用して回答を生成する
+    基本的なAnswerSynthesizerの実装。
+    """
+    
+    def __init__(self, config: Optional[SimpleAnswerSynthesizerConfig] = None):
+        """Initialize SimpleAnswerSynthesizer
+        
+        Args:
+            config: Synthesizer configuration
+                   合成器の設定
+        """
+        super().__init__(config or SimpleAnswerSynthesizerConfig())
+        
+        # Initialize Refinire LLM Pipeline (preferred) or fallback to OpenAI
+        if LLMPipeline is not None:
+            try:
+                self._llm_pipeline = LLMPipeline(
+                    name="answer_synthesizer",
+                    generation_instructions=self.config.generation_instructions,
+                    model=self.config.llm_model
+                )
+                self._use_refinire = True
+                logger.info(f"Initialized SimpleAnswerSynthesizer with Refinire LLMPipeline, model: {self.config.llm_model}")
+            except Exception as e:
+                logger.warning(f"Failed to initialize Refinire LLMPipeline: {e}. Falling back to OpenAI.")
+                self._init_openai_client()
+        else:
+            logger.warning("Refinire not available. Using OpenAI client.")
+            self._init_openai_client()
+    
+    def _init_openai_client(self):
+        """Initialize OpenAI client as fallback"""
+        try:
+            from openai import OpenAI
+            self.client = OpenAI(
+                api_key=self.config.openai_api_key,
+                organization=self.config.openai_organization
+            )
+            self._use_refinire = False
+            logger.info(f"Initialized SimpleAnswerSynthesizer with OpenAI client, model: {self.config.llm_model}")
+        except ImportError:
+            logger.error("Neither Refinire nor OpenAI is available. SimpleAnswerSynthesizer will not work.")
+            self._use_refinire = None
+    
+    @classmethod
+    def get_config_class(cls) -> Type[SimpleAnswerSynthesizerConfig]:
+        """Get configuration class for this synthesizer"""
+        return SimpleAnswerSynthesizerConfig
+    
+    def synthesize(self, query: str, contexts: List[SearchResult]) -> str:
+        """Synthesize answer from query and context documents
+        
+        Args:
+            query: User query
+                  ユーザークエリ
+            contexts: Relevant context documents
+                     関連文書
+                     
+        Returns:
+            str: Synthesized answer
+                 合成された回答
+        """
+        start_time = time.time()
+        
+        try:
+            # Prepare context
+            context_text = self._prepare_context(contexts)
+            
+            # Prepare prompt
+            prompt = self._prepare_prompt(query, context_text)
+            
+            # Generate answer using Refinire or OpenAI
+            if self._use_refinire and hasattr(self, '_llm_pipeline'):
+                result = self._llm_pipeline.run(prompt)
+                answer = result.content
+            elif self._use_refinire is False and hasattr(self, 'client'):
+                response = self.client.chat.completions.create(
+                    model=self.config.llm_model,
+                    messages=[
+                        {"role": "system", "content": self.config.system_prompt},
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=self.config.temperature,
+                    max_tokens=self.config.max_tokens
+                )
+                answer = response.choices[0].message.content
+            else:
+                raise RuntimeError("No LLM client available (neither Refinire nor OpenAI)")
+            
+            # Update statistics
+            self.processing_stats["queries_processed"] += 1
+            self.processing_stats["processing_time"] += time.time() - start_time
+            
+            return answer
+            
+        except Exception as e:
+            logger.error(f"Error synthesizing answer: {str(e)}")
+            self.processing_stats["errors_encountered"] += 1
+            raise
+    
+    def _prepare_context(self, contexts: List[SearchResult]) -> str:
+        """Prepare context text from search results
+        
+        Args:
+            contexts: Search results to use as context
+                     コンテキストとして使用する検索結果
+                     
+        Returns:
+            str: Formatted context text
+                 フォーマットされたコンテキストテキスト
+        """
+        context_texts = []
+        total_length = 0
+        
+        for result in contexts:
+            doc_text = result.document.content
+            if total_length + len(doc_text) > self.config.max_context_length:
+                break
+            context_texts.append(doc_text)
+            total_length += len(doc_text)
+        
+        return "\n\n".join(context_texts)
+    
+    def _prepare_prompt(self, query: str, context: str) -> str:
+        """Prepare prompt for LLM
+        
+        Args:
+            query: User query
+                  ユーザークエリ
+            context: Context text
+                    コンテキストテキスト
+                    
+        Returns:
+            str: Formatted prompt
+                 フォーマットされたプロンプト
+        """
+        return f"""Based on the following context, please answer the question.
+If the answer cannot be found in the context, say "I cannot find the answer in the provided context."
+
+Context:
+{context}
+
+Question: {query}
+
+Answer:"""
+    
+    def get_processing_stats(self) -> Dict[str, Any]:
+        """Get processing statistics with synthesizer-specific metrics
+        
+        Returns:
+            Dict[str, Any]: Processing statistics
+                           処理統計
+        """
+        stats = super().get_processing_stats()
+        
+        # Add synthesizer-specific stats
+        stats.update({
+            "synthesizer_type": "SimpleAnswerSynthesizer",
+            "model": self.config.llm_model
+        })
+        
+        return stats
+
+
+# Aliases for backward compatibility and simpler usage
+SimpleReaderConfig = SimpleAnswerSynthesizerConfig
+SimpleReader = SimpleAnswerSynthesizer
