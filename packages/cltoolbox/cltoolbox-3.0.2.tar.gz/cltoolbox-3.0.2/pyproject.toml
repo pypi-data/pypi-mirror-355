@@ -1,0 +1,80 @@
+[build-system]
+requires = [
+    "setuptools>=45",
+    "setuptools_scm[toml]>=6.2",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cltoolbox"
+dynamic = ["readme", "version"]
+description = "Python library for creating and manipulating CLIs"
+dependencies = [
+    "docstring_parser"
+]
+license = {text = "BSD-3-Clause and MIT"}
+authors = [
+    {name = "Tim Cera", email = "tim@cerazone.net"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Developers",
+    "Environment :: Console",
+    "License :: OSI Approved :: BSD License",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+keywords = [
+    "python",
+    "cli",
+    "argparse",
+    "arguments",
+    "command line",
+    "keyword arguments",
+    "docstring"
+]
+
+[project.urls]
+documentation = "https://timcera.bitbucket.io/cltoolbox/docs/index.html#cltoolbox-documentation"
+github = "https://github.com/timcera/cltoolbox"
+bitbucket = "https://bitbucket.org/timcera/cltoolbox/src/main/"
+
+[tool]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "3.0.2"
+tag_format = "v$version"
+version_files = ["VERSION"]
+update_changelog_on_bump = true
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools]
+license-files = ["LICENSE.txt"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+readme = {file = "README.rst"}
+version = {file = "VERSION"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["python-rst2ansi"]
+
+[tool.setuptools_scm]
