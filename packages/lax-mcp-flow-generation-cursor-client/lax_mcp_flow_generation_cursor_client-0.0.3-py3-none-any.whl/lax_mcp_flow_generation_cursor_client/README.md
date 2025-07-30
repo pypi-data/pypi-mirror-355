@@ -1,0 +1,80 @@
+# LambdaX MCP Flow Generation Cursor Client
+
+This is a client-side MCP server that acts as a proxy to the backend LAX MCP Flow Generation server. It solves the performance issue of sending large JSON files through the MCP protocol by handling file reading locally and forwarding requests to the backend server.
+
+## Architecture
+
+```
+Cursor → Cursor Client MCP Server → Backend MCP Server
+```
+
+- **Cursor**: The IDE client that connects to our local MCP server
+- **Cursor Client MCP Server**: This server (stdio transport) that handles file I/O and forwards requests
+- **Backend MCP Server**: The original LAX MCP Flow Generation server (HTTP transport)
+
+## Features
+
+- **File Path Support**: Tools can accept file paths instead of requiring full JSON objects
+- **Automatic File Reading**: Reads JSON files locally to avoid large data transfers
+- **Transparent Forwarding**: All requests are forwarded to the backend server
+- **Same Interface**: Exposes identical tools as the original server
+- **Error Handling**: Proper error handling for file operations and network requests
+
+## Available Tools
+
+- `validate_flow`: Validates flow JSON (supports file paths)
+- `search_flows`: Search for similar flows
+- `search_flows_by_node`: Search flows by specific node
+- `search_nodes`: Search for available nodes
+- `check_flow_exists_lax`: Check if flow exists in LAX
+- `search_advanced_features`: Search for advanced features
+- `search_functions`: Search for transform functions
+- `fetch_execution_of_node`: Get node execution examples
+- `get_node_by_name`: Get node details by name
+- `think`: Log reasoning and analysis
+- `get_flow_by_name`: Retrieve flow by name
+- `save_flow_to_lax`: Save flow to LambdaX (supports file paths)
+
+## Usage
+
+Add this to your Cursor MCP configuration:
+
+```json
+{
+    "mcpServers": {
+      "lax-mcp-flow-generation": {
+        "command": "lax-mcp-flow-gen",
+        "args": [],
+        "env": {
+           "BACKEND_SERVER_URL": "http://localhost:8000/mcp?username=YOUR_USERNAME&password=YOUR_PASSWORD"
+        }
+      }
+    }
+  }
+```
+
+## Examples
+
+### Using validate_flow with file path
+
+Instead of:
+```json
+{
+  "flow_json": { /* large JSON object */ }
+}
+```
+
+You can now use:
+```json
+{
+  "flow_json": "/path/to/flow.json"
+}
+```
+
+The server will automatically read the file and forward the content to the backend.
+
+## Environment Variables
+
+- `BACKEND_SERVER_URL`: URL of the backend MCP server (default: http://localhost:8000/mcp)
+- `LOG_LEVEL`: Logging level (default: INFO)
+- `MAX_FILE_SIZE`: Maximum file size in bytes (default: 10485760 = 10MB)
