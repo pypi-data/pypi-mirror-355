@@ -1,0 +1,110 @@
+[tool.poetry]
+name = "skelmis-docx"
+version = "2.2.0"
+description = "Create, read, and update Microsoft Word .docx files."
+authors = ["Skelmis <skelmis.craft@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "skelmis/docx", from="src"}]
+
+#[project.urls]
+#Homepage = "https://github.com/skelmis/python-docx"
+#Documentation = "https://skelmis-docx.readthedocs.io/en/latest/"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+lxml = ">=3.1.0,"
+typing-extensions = "^4.12.2"
+pywin32 = {version = "^307", platform = "windows"}
+
+[tool.poetry.group.dev.dependencies]
+build = "^1.2.1"
+ruff = "^0.5.7"
+setuptools = "^72.2.0"
+tox = "^4.18.0"
+twine = "^5.1.1"
+types-lxml = "^2024.8.7"
+behave = "^1.2.6"
+pyparsing = "^3.1.2"
+pytest = "^8.3.2"
+pytest-coverage = "^0.0"
+pytest-xdist = "^3.6.1"
+black = "^24.10.0"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^8.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311"]
+
+[tool.pyright]
+include = ["src/docx", "tests"]
+pythonPlatform = "All"
+pythonVersion = "3.10"
+reportImportCycles = true
+reportUnnecessaryCast = true
+reportUnnecessaryTypeIgnoreComment = true
+stubPath = "./typings"
+typeCheckingMode = "strict"
+verboseOutput = true
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    # -- exit on any warning not explicitly ignored here --
+    "error",
+
+    # -- pytest-xdist plugin may warn about `looponfailroots` deprecation --
+    "ignore::DeprecationWarning:xdist",
+
+    # -- pytest complains when pytest-xdist is not installed --
+    "ignore:Unknown config option. looponfailroots:pytest.PytestConfigWarning",
+]
+looponfailroots = ["src", "tests"]
+norecursedirs = [
+    "doc",
+    "docx",
+    "*.egg-info",
+    "features",
+    ".git",
+    "ref",
+    "_scratch",
+    ".tox",
+]
+python_files = ["test_*.py"]
+python_classes = ["Test", "Describe"]
+python_functions = ["it_", "its_", "they_", "and_", "but_"]
+
+[tool.ruff]
+exclude = []
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+ignore = [
+    "COM812",   # -- over-aggressively insists on trailing commas where not desired --
+    "PT001",    # -- wants @pytest.fixture() instead of @pytest.fixture --
+    "PT005",    # -- wants @pytest.fixture() instead of @pytest.fixture --
+]
+select = [
+    "C4",       # -- flake8-comprehensions --
+    "COM",      # -- flake8-commas --
+    "E",        # -- pycodestyle errors --
+    "F",        # -- pyflakes --
+    "I",        # -- isort (imports) --
+    "PLR0402",  # -- Name compared with itself like `foo == foo` --
+    "PT",       # -- flake8-pytest-style --
+    "SIM",      # -- flake8-simplify --
+    "UP015",    # -- redundant `open()` mode parameter (like "r" is default) --
+    "UP018",    # -- Unnecessary {literal_type} call like `str("abc")`. (rewrite as a literal) --
+    "UP032",    # -- Use f-string instead of `.format()` call --
+    "UP034",    # -- Avoid extraneous parentheses --
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["docx"]
+known-local-folder = ["helpers"]
