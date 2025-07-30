@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "casual-mcp-server-time"
+version = "1.0.0"
+description = "Time and date utilities as a FastMCP server"
+authors = [{name = "Alex Stansfield"}]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp",
+    "pydantic",
+    "dateparser",
+]
+
+[project.urls]
+Homepage = "https://github.com/casualgenius/mcp-servers"
+Issues = "https://github.com/casualgenius/mcp-servers/issues"
+Source = "https://github.com/casualgenius/mcp-servers"
+
+[project.scripts]
+casual-mcp-server-time = "casual_mcp_server_time.server:main"
