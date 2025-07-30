@@ -1,0 +1,39 @@
+# ALO Agent SDK - Agent Dockerfile Template
+# Use this template to build Docker images for your ALO agents.
+
+# Specify the Python version you want to use
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Argument for the agent's specific requirements file
+ARG AGENT_REQUIREMENTS_FILE=requirements.txt
+
+# 1. Copy requirements.sdk.txt (which should list alo-agent-sdk==0.1.12)
+#    This file should be in the agent project's root.
+COPY requirements.sdk.txt .
+
+# 2. Install alo-agent-sdk and its dependencies from PyPI.
+#    This also installs other dependencies listed in requirements.sdk.txt.
+RUN pip install --no-cache-dir -r requirements.sdk.txt
+
+# 3. Copy the agent's specific requirements file, if it exists, and install them
+#    These are additional dependencies for the specific agent, not the SDK itself.
+# The build context should be the root of the agent's project.
+COPY ${AGENT_REQUIREMENTS_FILE}* .
+RUN if [ -f "${AGENT_REQUIREMENTS_FILE}" ]; then pip install --no-cache-dir -r ${AGENT_REQUIREMENTS_FILE}; fi
+
+# Copy the rest of the agent's application code
+COPY . .
+
+# Google Cloud Run expects the application to listen on the port specified by $PORT
+ENV PORT 8080
+EXPOSE $PORT
+
+# Command to run the Uvicorn server for your FastAPI application
+# Replace 'main:app' with the actual location of your FastAPI app instance
+# e.g., if your FastAPI app is in 'agent_project/app.py' as 'my_app', use 'agent_project.app:my_app'
+# Ensure your agent's entrypoint script (e.g., main.py) correctly initializes
+# and exposes the FastAPI 'app' instance created by AgentBuilder.
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}
