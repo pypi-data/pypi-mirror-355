@@ -1,0 +1,9 @@
+from pydantic import BaseModel, Field
+from typing import Optional
+
+# import value objects
+
+class Output{{ pascal_case }}(BaseModel):
+    id: str = Field(..., description="Unique identifier for the {{ name }}")
+    example: str = Field(..., description="Example field")
+    deleted_at: Optional[str] = Field(None, description="Timestamp when the {{ name }} was deleted")
