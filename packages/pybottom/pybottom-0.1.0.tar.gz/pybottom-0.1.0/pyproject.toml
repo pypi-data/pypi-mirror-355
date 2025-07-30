@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pybottom"
+version = "0.1.0"
+description = "A cross-platform interactive process monitor (like top) using psutil and rich."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = ["Programming Language :: Python :: 3"]
+dependencies = ["psutil>=5.9.0", "rich>=13.0.0"]
+
+[project.scripts]
+pybtm = "pybtm.main:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
