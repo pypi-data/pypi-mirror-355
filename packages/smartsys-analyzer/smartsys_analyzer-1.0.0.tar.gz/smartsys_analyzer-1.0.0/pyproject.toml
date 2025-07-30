@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smartsys-analyzer"
+version = "1.0.0"
+description = "Advanced system monitoring and analyzer toolkit for Python"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text = "MIT"}
+authors = [
+  {name = "Adam Alcander et Eden", email = "aeden6877@gmail.com"}
+]
+keywords = ["monitoring", "system", "analyzer", "CPU", "memory", "disk", "health"]
+
+dependencies = [
+  "pydantic>=2.0",
+  "psutil>=5.9",
+  "colorama>=0.4",
+  "rich>=13.0",
+  "playsound>=1.3",
+  "schedule",
+  "tabulate",
+  "matplotlib",
+  "humanize",
+  "pyyaml",
+  "jsonschema",
+  "typing-extensions",
+  "platformdirs",
+  "typer"
+]
+
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: System :: Monitoring"
+]
+
+[project.urls]
+Homepage = "https://github.com/EdenGithhub/smartsys-analyzer"
+Issues = "https://github.com/EdenGithhub/smartsys-analyzer/issues"
+Source = "https://github.com/EdenGithhub/smartsys-analyzer"

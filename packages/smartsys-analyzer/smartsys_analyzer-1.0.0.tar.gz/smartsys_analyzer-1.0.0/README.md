@@ -1,0 +1,190 @@
+# 🔍 SmartSys Analyzer
+
+**SmartSys Analyzer** is a powerful and stylish Python system monitoring toolkit. It tracks CPU, memory, and disk usage with configurable thresholds, colorful logging, and intelligent alerts — built with ❤️ for developers, sysadmins, and enthusiasts.
+
+![Python Version](https://img.shields.io/badge/python-3.8+-blue)
+![License](https://img.shields.io/github/license/yourusername/smartsys-analyzer)
+![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20macos-brightgreen)
+![Status](https://img.shields.io/badge/status-stable-success)
+
+---
+
+## ✨ Features
+
+- ✅ Configurable resource thresholds (CPU, Memory, Disk)
+- ✅ Pydantic-based validation models
+- ✅ Colored terminal logs (via Colorama + Rich)
+- ✅ JSON config loader and saver
+- ✅ Cross-platform OS detection
+- ✅ Internet connectivity checker
+- ✅ Alert system (text + optional sound)
+- ✅ Language selection (EN, ID, ZH-Hans, AR)
+- ✅ Retry decorators and smart utilities
+- ✅ Fully PyPI-packaged and documented
+
+---
+
+## 📦 Requirements
+
+- Python **3.8+**
+- `pydantic`
+- `colorama`
+- `rich`
+- `playsound`
+- `psutil`
+
+Install them with:
+
+```bash
+pip install -r requirements.txt
+
+Or install directly when installing the package:
+
+bash
+Salin
+Edit
+pip install smartsys-analyzer
+
+🔧 Installation
+bash
+Salin
+Edit
+pip install smartsys-analyzer
+
+To install from source:
+
+bash
+Salin
+Edit
+git clone https://github.com/yourusername/smartsys-analyzer.git
+cd smartsys-analyzer
+pip install .
+
+## Usage Example
+
+🚀 Usage
+Basic Usage
+python
+
+from smartsys_analyzer.core import SystemAnalyzer
+from smartsys_analyzer.config import show_config_summary
+
+analyzer = SystemAnalyzer()
+analyzer.run()
+
+show_config_summary()
+
+With Threshold Customization:
+
+from smartsys_analyzer.core import SystemAnalyzer
+from smartsys_analyzer.schemas import ThresholdConfig
+
+config = ThresholdConfig(cpu=60, memory=70, disk=80)
+analyzer = SystemAnalyzer(threshold=config)
+analyzer.run()
+
+📘 Example Output
+[INFO] CPU: 45.5% | MEM: 68.2% | DISK: 72.9%
+[CRITICAL] Memory usage is 92.0%, which is above the threshold of 75%!
+[WARNING] Disk usage is 86.3%, which is above the threshold of 85%!
+
+📁 Project Structure:
+
+smartsys_analyzer/
+├── core.py
+├── config.py
+├── utils.py
+├── schemas.py
+├── __init__.py
+├── requirements.txt
+└── README.md
+
+## Languages
+
+🔤 Supported Languages
+English (en)
+
+Bahasa Indonesia (id)
+
+Simplified Chinese (zh-hans)
+
+Arabic (ar)
+
+Change language using:
+
+from smartsys_analyzer.config import set_language
+set_language("id")  # or "en", "zh-hans", "ar"
+
+🧪 Running Locally:
+
+python -m smartsys_analyzer.core
+
+or test each module:
+
+python smartsys_analyzer/utils.py
+
+📚 Changelog
+v1.0.0
+Initial release with core modules
+
+Advanced logging and alerts
+
+Configurable thresholds and runtime flags
+
+📖 Documentation
+Work in progress at:
+📚 https://github.com/yourusername/smartsys-analyzer/wiki
+
+🤝 Contributing
+Pull requests are welcome! For major changes, please open an issue first.
+
+Fork the repository
+
+Create your feature branch (git checkout -b new-feature)
+
+Commit your changes (git commit -am 'Add cool feature')
+
+Push to the branch (git push origin new-feature)
+
+Create a new Pull Request
+
+📃 License
+This project is licensed under the MIT License. See LICENSE file for details.
+
+❤️ Credits
+Built using:
+
+Pydantic
+
+Colorama
+
+Rich
+
+psutil
+
+🧠 Related Projects
+supermonitor
+
+sysdash
+
+psutil
+
+🗺️ Roadmap
+ YAML config support
+
+ Web dashboard version
+
+ Auto-email alerting system
+
+ CLI interface (smartsys-cli)
+
+ System tray integration (Windows/Mac)
+
+📞 Contact
+For questions or suggestions:
+
+📫 Email: aeden6877@gmail.com
+🌐 GitHub: EdenGithhub
+
+🎉 Thank You
+If you like this project, consider giving it a ⭐ on GitHub!
