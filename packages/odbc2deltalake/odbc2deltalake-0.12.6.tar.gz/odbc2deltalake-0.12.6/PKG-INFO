@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: odbc2deltalake
+Version: 0.12.6
+Author-email: Adrian Ehrsam <adrian.ehrsam@bmsuisse.ch>
+License-File: LICENSE
+Requires-Python: ~=3.9
+Requires-Dist: adlfs<2025,>=2024.2.0
+Requires-Dist: arrow-odbc>=5.0.0
+Requires-Dist: azure-identity<2,>=1.15.0
+Requires-Dist: deltalake2db>=0.3.3
+Requires-Dist: deltalake>=0.17.1
+Requires-Dist: duckdb>=0.10.2
+Requires-Dist: pyarrow>=16.1
+Requires-Dist: pydantic>=1.10.0
+Requires-Dist: pyodbc<6,>=5.1.0
+Requires-Dist: sqlglot>=23.17.0
+Provides-Extra: local
+Requires-Dist: arrow-odbc; extra == 'local'
+Requires-Dist: deltalake; extra == 'local'
+Requires-Dist: deltalake2db; extra == 'local'
+Requires-Dist: duckdb; extra == 'local'
+Requires-Dist: pyodbc; extra == 'local'
+Provides-Extra: local-azure
+Requires-Dist: adlfs; extra == 'local-azure'
+Requires-Dist: azure-identity; extra == 'local-azure'
+Requires-Dist: azure-storage-file-datalake; extra == 'local-azure'
