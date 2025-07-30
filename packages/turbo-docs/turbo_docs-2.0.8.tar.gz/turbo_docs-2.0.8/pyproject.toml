@@ -1,0 +1,37 @@
+[project]
+name = "turbo-docs"
+version = "2.0.8"
+description = "Default template for PDM package"
+dependencies = [
+    "tiktoken>=0.9.0",
+    "openai>=1.63.2",
+    "pydantic>=2.10.6",
+    "python-dotenv>=1.0.1",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+authors = [
+    { name = "voynow", email = "voynow99@gmail.com" },
+]
+
+[project.license]
+text = "MIT"
+
+[project.scripts]
+turbo-docs = "turbo_docs.cli:main"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.ruff]
+line-length = 120
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "file"
+path = "pyproject.toml"
