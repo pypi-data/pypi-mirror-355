@@ -1,0 +1,64 @@
+site_name: DriConfig
+site_url: https://dribia.github.io/driconfig/
+site_description: Python class to read from .yaml config files.
+strict: true
+
+repo_name: dribia/driconfig
+repo_url: https://github.com/dribia/driconfig
+edit_uri: ''
+
+theme:
+  name: material
+  custom_dir: docs/theme
+  language: en
+  favicon: img/dribia-favicon-120x120.png
+  logo: img/logo_dribia_d_blanc.png
+  icon:
+    repo: fontawesome/brands/github
+  font:
+    text: Roboto
+  features:
+    - search.suggest
+    - search.highlight
+    - search.share
+    - toc.follow
+    - navigation.top
+    - navigation.path
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.preview
+    - navigation.instant.progress
+
+nav:
+  - Welcome to DriConfig: index.md
+  - Installation: install.md
+  - Usage:
+    - usage/introduction.md
+    - usage/configdict.md
+    - usage/nested_models.md
+  - Contribute: contribute.md
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  version:
+    provider: mike
+    alias: true
+    default: latest
+
+markdown_extensions:
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - toc:
+      permalink: 📎
+  - codehilite
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
+
+plugins:
+  - mike:
+      alias_type: symlink
+      canonical_version: latest
+  - search
