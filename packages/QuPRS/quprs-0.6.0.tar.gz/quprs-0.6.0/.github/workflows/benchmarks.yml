@@ -1,0 +1,127 @@
+name: Python CI & Benchmarks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-save-baseline:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+
+      - name: Run benchmark on main
+        run: |
+          mkdir -p benchmarks
+          pytest --benchmark-only \
+            --benchmark-save=main \
+            --benchmark-storage=file://./benchmarks
+
+      - name: Upload benchmark artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-main-${{ matrix.python-version }}
+          path: benchmarks/**/*.json
+
+  test-and-benchmark:
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+
+      - name: Run tests
+        run: pytest -n auto -v
+
+      - name: Try downloading main benchmark baseline
+        id: download_baseline
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: benchmark-main-${{ matrix.python-version }}
+          path: benchmarks
+
+      - name: Generate baseline if not found
+        if: steps.download_baseline.outcome == 'failure'
+        run: |
+          echo "⚠️ No baseline found, generating from main branch..."
+          git fetch origin main
+          git checkout origin/main
+          pip install .[dev]
+          mkdir -p benchmarks
+          pytest --benchmark-only \
+            --benchmark-save=main \
+            --benchmark-storage=file://./benchmarks
+
+      - name: Return to PR branch
+        run: |
+          git fetch origin ${{ github.head_ref }}
+          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }}
+
+      - name: Run benchmark on PR branch
+        run: |
+          pytest --benchmark-only \
+            --benchmark-save=pr \
+            --benchmark-storage=file://./benchmarks
+
+      - name: Compare benchmark with main
+        run: |
+          pytest --benchmark-compare \
+            --benchmark-storage=file://./benchmarks \
+            --benchmark-compare-fail=mean:10% \
+            --benchmark-json=comparison_results.json
+
+      - name: Generate benchmark markdown report
+        run: |
+          python src/generate_benchmark_report.py
+
+      - name: Upload benchmark report artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-report-${{ matrix.python-version }}
+          path: |
+            benchmark_report.md
+            comparison_results.json
+
+      - name: Comment benchmark results on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: benchmark_report.md
+          header: "🔍 Benchmark Comparison Report (Python ${{ matrix.python-version }})"
