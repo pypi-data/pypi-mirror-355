@@ -1,0 +1,18 @@
+dividend_ths_cn_columns = {
+    'board_date': '董事会日期',
+    'holder_date': '股东大会预案公告日期',
+    'plan_date': '实施公告日',
+    'equity_registration_date': 'A股股权登记日',
+    'ex_dividend_date': 'A股除权除息日',
+    'dividend_plan': '分红方案说明',
+    # 'is_progress': '',
+    'date': '报告期',
+    'per_ten_pre_tax_dividend_ratio_rmb': '每10股分红金额',
+    'stock_dividend_total': 'A股派现总额',
+    'dividend_total': 'A+H派现总额',
+    'payment_rate': '股利支付率',
+    'pretax_dividend_rate': '税前分红率(%)',
+    # 'progress_code': '',
+    # 'progress_name': '',
+    # 'dividend_target': '',
+}
