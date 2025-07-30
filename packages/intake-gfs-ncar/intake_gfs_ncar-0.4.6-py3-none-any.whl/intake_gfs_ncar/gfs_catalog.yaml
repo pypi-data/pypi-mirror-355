@@ -1,0 +1,119 @@
+sources:
+  gfs_forecast:
+    driver: gfs_forecast
+    description: GFS forecast data from NCAR THREDDS
+    metadata:
+      tags: ['weather', 'forecast', 'gfs', 'thredds', 'ncar', 'atmospheric']
+      source: NCAR THREDDS GFS 0.25 degree forecast
+      license: Public Domain
+      intake_esm_varname: gfs_forecast
+      documentation: |
+        The Global Forecast System (GFS) is a weather forecast model produced by
+        the National Centers for Environmental Prediction (NCEP). This data is
+        provided by the NCAR THREDDS Data Server from the Research Data Archive.
+        
+        Access methods:
+        - 'ncss': NetcdfSubset service for efficient variable and spatial subsetting
+        - 'fileServer': HTTP download of full GRIB2 files
+        - 'auto': Try NetcdfSubset first, fallback to fileServer
+      spatial_coverage: Global
+      temporal_resolution: 3 hours
+      spatial_resolution: 0.25 degrees
+      variables_available: |
+        - Surface: Temperature, pressure, wind, precipitation, etc.
+        - Pressure levels: Temperature, geopotential height, wind, humidity, etc.
+        - Derived parameters: Precipitable water, CAPE, etc.
+      data_format: GRIB2 (fileServer) or NetCDF (NetcdfSubset)
+      update_frequency: 6 hours (00Z, 06Z, 12Z, 18Z)
+    parameters:
+      cycle:
+        description: Model cycle (forecast initialization time)
+        type: str
+        default: latest
+      max_lead_time:
+        description: Maximum lead time to retrieve (hours)
+        type: int
+        default: 24
+    args:
+      base_url: https://thredds.rda.ucar.edu/thredds
+      access_method: auto
+      cfgrib_filter_by_keys: {}
+      ncss_params: {}
+      cycle: "{{cycle}}"
+      max_lead_time: "{{max_lead_time}}"
+  
+  gfs_surface_winds:
+    driver: gfs_forecast
+    description: GFS 10-meter surface wind components (U and V)
+    metadata:
+      tags: ['weather', 'forecast', 'gfs', 'winds', 'surface']
+      source: NCAR THREDDS GFS 0.25 degree forecast
+      license: Public Domain
+      documentation: |
+        10-meter wind components from the Global Forecast System (GFS).
+        Includes U and V components that can be used to calculate wind speed and direction.
+        Uses NetcdfSubset for efficient data access.
+      spatial_coverage: Global
+      temporal_resolution: 3 hours
+      spatial_resolution: 0.25 degrees
+      variables: ['u10', 'v10']
+      data_format: NetCDF (via NetcdfSubset)
+      update_frequency: 6 hours (00Z, 06Z, 12Z, 18Z)
+    parameters:
+      cycle:
+        description: Model cycle (forecast initialization time)
+        type: str
+        default: latest
+      max_lead_time:
+        description: Maximum lead time to retrieve (hours)
+        type: int
+        default: 24
+    args:
+      base_url: https://thredds.rda.ucar.edu/thredds
+      access_method: ncss
+      cfgrib_filter_by_keys:
+        typeOfLevel: heightAboveGround
+        level: 10
+        shortName: ['10u', '10v']
+      ncss_params: {}
+      cycle: "{{cycle}}"
+      max_lead_time: "{{max_lead_time}}"
+  
+  gfs_ice_concentration:
+    driver: gfs_forecast
+    description: GFS sea ice concentration
+    metadata:
+      tags: ['weather', 'forecast', 'gfs', 'sea ice', 'polar']
+      source: NCAR THREDDS GFS 0.25 degree forecast
+      license: Public Domain
+      documentation: |
+        Sea ice concentration data from the Global Forecast System (GFS).
+        Provides fraction of grid cell covered by sea ice (0.0-1.0).
+        Uses NetcdfSubset for efficient data access with optional polar region subsetting.
+      spatial_coverage: Global (focus on polar regions)
+      temporal_resolution: 3 hours
+      spatial_resolution: 0.25 degrees
+      variables: ['ci']
+      data_format: NetCDF (via NetcdfSubset)
+      update_frequency: 6 hours (00Z, 06Z, 12Z, 18Z)
+    parameters:
+      cycle:
+        description: Model cycle (forecast initialization time)
+        type: str
+        default: latest
+      max_lead_time:
+        description: Maximum lead time to retrieve (hours)
+        type: int
+        default: 24
+    args:
+      base_url: https://thredds.rda.ucar.edu/thredds
+      access_method: ncss
+      cfgrib_filter_by_keys:
+        typeOfLevel: surface
+        shortName: ci
+      ncss_params:
+        # Example: subset to polar regions
+        # north: 90
+        # south: 60
+      cycle: "{{cycle}}"
+      max_lead_time: "{{max_lead_time}}"
