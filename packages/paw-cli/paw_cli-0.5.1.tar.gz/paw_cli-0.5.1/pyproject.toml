@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paw-cli"
+version = "0.5.1"
+authors = [
+  { name="KawaroX", email="wkawaro@gmail.com" },
+]
+description = "Pandoc Academic Workflow (PAW) CLI tool"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "typer",
+    "rich",
+    "ruamel-yaml>=0.18.14",
+    "pybtex>=0.24.0",
+    "pyperclip>=1.9.0",
+    "requests>=2.32.4",
+]
+
+[project.scripts]
+paw = "paw.main:app"
