@@ -1,0 +1,159 @@
+Metadata-Version: 2.1
+Name: cloudku-uploader
+Version: 0.1.2
+Summary: Python client for uploading files to cloudkuimages.guru
+Home-page: https://pypi.org/project/cloudku-uploader/
+Author: Nauval sada
+Author-email: akunv5783@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+
+# cloudku-uploader
+
+`cloudku-uploader` adalah pustaka Python untuk mengunggah file ke layanan [cloudkuimages.guru](https://cloudkuimages.guru). Pustaka ini dirancang untuk menangani upload file melalui `multipart/form-data`, mendukung pengaturan tanggal kadaluwarsa (`expire_date`), serta otomatis mencoba beberapa server cadangan jika terjadi kegagalan upload.
+
+---
+
+## ðŸ“¦ Instalasi
+
+Instal langsung dari PyPI:
+
+```bash
+pip install cloudku-uploader==0.1.0
+```
+
+> Membutuhkan Python 3.6 atau lebih baru.
+
+---
+
+## ðŸš€ Cara Penggunaan
+
+### 1. Unggah File Sederhana
+
+```python
+from cloudku_uploader.uploadfile import UploadFile
+
+uploader = UploadFile()
+
+# Buka file yang ingin diunggah
+with open('gambar.jpg', 'rb') as f:
+    result = uploader.upload(f.read(), file_name='gambar.jpg')
+
+print(result)
+```
+
+---
+
+### 2. Unggah File dengan Tanggal Kadaluwarsa
+
+```python
+from cloudku_uploader.uploadfile import UploadFile
+
+uploader = UploadFile()
+
+# Misal expire_date: "2025-12-31"
+with open('gambar.jpg', 'rb') as f:
+    result = uploader.upload(f.read(), file_name='gambar.jpg', expire_date='2025-12-31')
+
+print(result)
+```
+
+---
+
+### 3. Contoh Output Berhasil
+
+```json
+{
+  "status": "success",
+  "url": "https://cloudkuimages.guru/view.php?img=abc123.jpg",
+  "information": "https://cloudkuimages.guru/ch"
+}
+```
+
+---
+
+### 4. Contoh Output Gagal
+
+Jika semua server gagal diakses:
+
+```json
+{
+  "status": "error",
+  "message": "Upload failed: HTTP 503",
+  "information": "https://cloudkuimages.guru/ch"
+}
+```
+
+---
+
+## ðŸ“š Dokumentasi Fungsi
+
+### `UploadFile.upload(file_bytes, file_name='upload.jpg', expire_date=None)`
+
+| Parameter      | Tipe       | Keterangan                                                                 |
+|----------------|------------|----------------------------------------------------------------------------|
+| `file_bytes`   | `bytes`    | Isi file dalam format byte (misalnya dari `f.read()`)                      |
+| `file_name`    | `str`      | Nama file untuk dikirim (default: `'upload.jpg'`)                          |
+| `expire_date`  | `str`/`None` | Tanggal kadaluwarsa file (`YYYY-MM-DD`), jika ingin unggahan bersifat sementara |
+
+ðŸ“Œ Jika `expire_date` diberikan, file akan dikirim ke endpoint `/temp.php`. Jika tidak, akan dikirim ke `/upload.php`.
+
+---
+
+## ðŸ›¡ï¸ Fitur Keamanan & Redundansi
+
+- **Header disamakan seperti browser nyata**
+- **Fallback otomatis**: jika upload ke `https://cloudkuimages.guru` gagal, akan mencoba endpoint backup `https://cloudkuimages-guru.us.itpanel.app`
+- **Penanganan error terstruktur**
+
+---
+
+## ðŸ”§ Contoh CLI Upload Manual (untuk testing)
+
+Buat file `upload_example.py`:
+
+```python
+from cloudku_uploader.uploadfile import UploadFile
+
+uploader = UploadFile()
+
+with open('example.jpg', 'rb') as f:
+    result = uploader.upload(f.read(), file_name='example.jpg')
+    print(result)
+```
+
+Jalankan:
+
+```bash
+python upload_example.py
+```
+
+---
+
+## ðŸ“ Lisensi
+
+MIT License â€” bebas digunakan untuk keperluan pribadi maupun komersial.
+
+Lihat [LICENSE](LICENSE) untuk detailnya.
+
+---
+
+## ðŸ“« Kontak
+
+Dikembangkan oleh **Nauval sada**  
+
+
+---
+
+## âœ… Status
+
+- [x] Siap dipakai produksi
+- [x] Sudah tersedia di PyPI
+- [ ] Belum ada GUI atau CLI tool (opsional)
+
