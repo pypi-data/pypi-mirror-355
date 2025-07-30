@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "locust-victoria-metrics"
+version = "0.0.2"
+description = "A Locust plugin to extract test results and push metrics to Victoria Metrics"
+readme = "README.md"
+authors = [
+    { name = "Didit Setiawan", email = "didit@pintu.co.id" }
+]
+license = { text = "MIT" }
+keywords = ["locust", "loadtest", "metrics", "victoria-metrics", "locust-plugin"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "locust==2.29.1"
+]
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/dsetiawan230294/locust-victoria-metrics"
+"Bug Tracker" = "https://github.com/dsetiawan230294/locust-victoria-metrics/issues"
+
+[tool.setuptools]
+# Automatically find all packages under src
+packages = ["locust_victoria_metrics"]
+
+[tool.setuptools.package-dir]
+"" = "src"
