@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+# If you  aren't sure what all this does, please review
+# https://packaging.python.org/en/latest/tutorials/packaging-projects/
+# and/or
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#writing-pyproject-toml
+# before making any changes. ;-)
+
+[project]
+name = "goblinfish-aws-local-lpi-apis"
+version = "0.0.3"
+description = "Allows local application endpoints (FastAPI and eventually Flask) to call functions designed as AWS Lambda Function handlers."
+readme = "README.md"
+license = {name="MIT", file = "LICENSE"}
+keywords = ["aws", "lambda", "api gateway", "fastapi", "flask", "local development"]
+
+dependencies = [
+    "fastapi<1",
+    "uvicorn<1",
+    "watchfiles<2",
+    "python-multipart<1",
+    "awslambdaric<4",
+    "fastapi<1",
+]
+
+# Update these as new Python versions become available, or otherwise as
+# relevant; see https://pypi.org/classifiers/ for the official list!
+classifiers = [
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3",
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+#    "Framework :: Flask",
+    "Framework :: FastAPI",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+#    "Topic :: Internet :: WWW/HTTP :: ASGI :: Server",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
+]
+
+requires-python = ">= 3.11"
+authors = [
+    # If you generate a pull-request, you're an author! Take some credit!
+    {name = "Brian Allbee", email = "brian.allbee+goblinfish.lpi_apis@gmail.com"},
+]
+maintainers = [
+    {name = "Brian Allbee", email = "brian.allbee+goblinfish.lpi_apis@gmail.com"},
+]
+
+[project.urls]
+Repository = "https://bitbucket.org/stonefish-software-studio/goblinfish-aws-local-lpi_apis"
+"Related Blog Posts" = "https://goblinfish-code.blogspot.com/search/label/local.lpi_apis"
