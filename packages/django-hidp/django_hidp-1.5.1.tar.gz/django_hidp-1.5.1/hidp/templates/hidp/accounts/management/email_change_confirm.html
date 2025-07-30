@@ -1,0 +1,22 @@
+{% extends 'hidp/base_post_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Confirm email change' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Confirm email change' %}</h1>
+
+  <p>
+    {% blocktranslate trimmed %}
+      Are you sure you want to change your account email address from {{ current_email }} to {{ proposed_email }}?
+    {% endblocktranslate %}
+  </p>
+
+  <p>{% translate 'Please note that this also changes the username you use to sign in.' %}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    {% include 'hidp/includes/forms/submit_row.html' with submit_label=_('Confirm') cancel_url=cancel_url %}
+  </form>
+{% endblock %}

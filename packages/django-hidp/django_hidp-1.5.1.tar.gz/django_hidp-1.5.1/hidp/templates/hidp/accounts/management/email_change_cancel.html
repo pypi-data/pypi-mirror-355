@@ -1,0 +1,20 @@
+{% extends 'hidp/base_post_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Cancel email change request' %}{% endblock %}
+
+{% block main %}
+  <h1>{% translate 'Cancel email change request' %}</h1>
+
+  <p>
+    {% blocktranslate trimmed %}
+      Are you sure you want to cancel the request to change your account email address from {{ current_email }} to {{ proposed_email }}?
+    {% endblocktranslate %}
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    {% include 'hidp/includes/forms/submit_row.html' with submit_label=form.fields.allow_cancel.label cancel_url=cancel_url cancel_label=_('Back') %}
+  </form>
+{% endblock %}

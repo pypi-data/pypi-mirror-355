@@ -1,0 +1,20 @@
+{% load i18n %}
+<div>
+  {% if submit_label %}
+    <button
+      type="submit"
+      {% if submit_name %}name="{{ submit_name }}"{% endif %}
+      {% if submit_value %}value="{{ submit_value }}"{% endif %}
+    >
+      {{ submit_label }}
+    </button>
+  {% endif %}
+
+  {% if cancel_url or cancel_label %}
+    {% if cancel_url %}
+      <a href="{{ cancel_url }}">{{ cancel_label|default:_("Cancel") }}</a>
+    {% else %}
+      <button type="submit">{{ cancel_label|default:_("Cancel") }}</button>
+    {% endif %}
+  {% endif %}
+</div>

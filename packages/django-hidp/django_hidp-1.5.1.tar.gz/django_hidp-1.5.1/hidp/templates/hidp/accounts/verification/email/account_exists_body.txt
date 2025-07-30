@@ -1,0 +1,13 @@
+{% load i18n %}{% autoescape off %}
+{% blocktranslate trimmed %}
+You're receiving this email because you attempted to create an account using this email address.
+
+However, an account already exists with this email address.
+
+If you have forgotten your password, you can reset it using this link:
+{% endblocktranslate %}
+
+{{ password_reset_url }}
+
+{% translate 'If you did not attempt to sign up, you can safely ignore this email.' %}
+{% endautoescape %}

@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-hidp"
+description = "Full-featured authentication system for Django projects"
+authors = [
+  { name = "Jaap Roes", email = "jroes@leukeleu.nl" },
+  { name = "Dennis Bunskoek", email = "dbunskoek@leukeleu.nl" },
+  { name = "Ramon de Jezus", email = "rdejezus@leukeleu.nl" },
+  { name = "Thomas Kalverda", email = "tkalverda@leukeleu.nl" },
+  { name = "Wouter de Vries", email = "wdevries@leukeleu.nl" },
+]
+requires-python = ">=3.11"
+dynamic = [
+  "dependencies",
+  "version",
+  "optional-dependencies",
+]
+readme = "README.md"
+license = "BSD-3-Clause"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Framework :: Django",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Documentation = "https://leukeleu.github.io/django-hidp/"
+Repository = "https://github.com/leukeleu/django-hidp/"
+Issues = "https://github.com/leukeleu/django-hidp/issues"
+Releasenotes = "https://github.com/leukeleu/django-hidp/releases"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies.oidc_provider = { file = "requirements_oidc_provider.txt" }
+optional-dependencies.otp = { file = "requirements_otp.txt" }
+
+[tool.setuptools.dynamic.optional-dependencies.recommended]
+file = [
+  "requirements.txt",
+  "requirements_otp.txt",
+]
+[tool.setuptools.dynamic.optional-dependencies.all]
+file = [
+  "requirements.txt",
+  "requirements_oidc_provider.txt",
+  "requirements_otp.txt",
+]
+
+[tool.setuptools.packages.find]
+include = [
+  "hidp",
+  "hidp.*",
+]
+
+[tool.setuptools_scm]
+root = "../.."
+
+[tool.ruff]
+extend = "../hidp-pycqa/pyproject.toml"
+
+[tool.ruff.lint.extend-per-file-ignores]
+"hidp/config/*" = [
+  "N803", # ALL_UPPERCASE is OK in config code
+]
+"docs/conf.py" = [
+  "INP001", # Not a package
+]
+
+[tool.coverage.run]
+branch = true
+source = [
+  "hidp",
+  "tests",
+]
+omit = [
+  "**/[aw]sgi.py",
+  "**/migrations/*",
+  "**/settings.py",
+  "tests/translations/management/commands/makemessages.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+skip_empty = true
+
+[tool.coverage.html]
+directory = "../../var/htmlcov"

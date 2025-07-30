@@ -1,0 +1,34 @@
+{% extends 'hidp/base_pre_login.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Logout' %}{% endblock %}
+
+{% block main %}
+  {% if not error %}
+    <h1>
+      {% if application %}
+        {% blocktranslate trimmed %}
+          Logout requested by {{ application }}
+        {% endblocktranslate %}
+      {% else %}
+        {% translate 'Sign out' %}
+      {% endif %}
+    </h1>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% for field in form %}
+        {% if field.is_hidden %}
+          {{ field }}
+        {% endif %}
+      {% endfor %}
+
+      {% include 'hidp/includes/forms/submit_row.html' with submit_label=_('Sign out') submit_name='allow' submit_value='true' cancel_label=_('Cancel') %}
+    </form>
+
+  {% else %}
+    <p>{{ error.description }}</p>
+
+  {% endif %}
+{% endblock %}

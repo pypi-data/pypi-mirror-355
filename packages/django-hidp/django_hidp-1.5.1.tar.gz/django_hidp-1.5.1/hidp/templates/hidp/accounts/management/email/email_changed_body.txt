@@ -1,0 +1,10 @@
+{% load i18n %}{% autoescape off %}
+{% blocktranslate trimmed %}
+Your account email address has been changed from {{ current_email }} to {{ proposed_email }}.
+{% endblocktranslate %}
+
+{% blocktranslate trimmed %}
+Please remember to use {{ proposed_email }} to sign in from now on. No further action is required.
+{% endblocktranslate %}
+
+{% endautoescape %}
