@@ -1,0 +1,40 @@
+Metadata-Version: 2.4
+Name: ogc-cite-runner
+Version: 0.3.0
+Summary: A runner for OGC CITE test suites
+Project-URL: homepage, https://osgeo.github.io/ogc-cite-runner/
+Project-URL: repository, https://github.com/OSGeo/ogc-cite-runner
+Project-URL: documentation, https://osgeo.github.io/ogc-cite-runner/
+Project-URL: Bug Tracker, https://github.com/OSGeo/ogc-cite-runner/issues
+Author-email: Ricardo Garcia Silva <ricardo.garcia.silva@gmail.com>
+Maintainer-email: Ricardo Garcia Silva <ricardo.garcia.silva@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: CITE,OGC,test
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Topic :: Software Development :: Testing
+Requires-Python: >=3.10
+Requires-Dist: httpx<0.28.0,>=0.27.0
+Requires-Dist: isodate<0.8.0,>=0.7.2
+Requires-Dist: jinja2-humanize-extension<0.5.0,>=0.4.0
+Requires-Dist: jinja2<4.0.0,>=3.1.4
+Requires-Dist: lxml<6.0.0,>=5.3.1
+Requires-Dist: pydantic-settings<3.0.0,>=2.8.1
+Requires-Dist: pydantic<3.0.0,>=2.10.4
+Requires-Dist: typer<0.13.0,>=0.12.3
+Description-Content-Type: text/markdown
+
+# ogc-cite-runner
+
+Simplify testing your OGC implementation server against [CITE](https://github.com/opengeospatial/cite/wiki). This
+repository contains an OGC CITE runner that can be called as a github action. It can also be used standalone,
+which allows integration with other CI platforms or running locally.
+
+Check out the full docs at:
+
+https://osgeo.github.io/ogc-cite-runner/
