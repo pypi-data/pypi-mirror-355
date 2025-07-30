@@ -1,0 +1,41 @@
+[package]
+name = "libcorenn"
+description = "Library for CoreNN"
+license = "Apache-2.0"
+homepage = "https://github.com/wilsonzlin/corenn"
+repository = "https://github.com/wilsonzlin/corenn.git"
+version = "0.3.1"
+edition = "2021"
+
+[dependencies]
+ahash = { version = "0.8.11", features = ["serde"] }
+arbitrary-lock = "0.1.1"
+bytemuck = "1.20.0"
+byteorder = "1.5.0"
+dashmap = { version = "6.1.0", features = ["rayon", "serde"] }
+data-encoding = "2.6.0"
+derive_more = { version = "2.0.1", features = ["from"] }
+half = { version = "2.4.1", features = ["bytemuck", "num-traits", "serde", "std"] }
+hnswlib-rs = { version = "0.2.0", path = "../hnswlib-rs" }
+itertools = "0.13.0"
+linfa = "0.7.0"
+linfa-clustering = { version = "0.7.0", features = ["serde"] }
+linfa-nn = "0.7.0"
+ndarray = "0.15" # linfa uses 0.15.
+num = "0.4.3"
+num_cpus = "1.16.0"
+ordered-float = "4.3.0"
+parking_lot = "0.12.3"
+rand = "0.8"
+rayon = "1.10.0"
+rmp-serde = "1.3.0"
+rocksdb = "0.22.0"
+serde = { version = "1.0.210", features = ["derive", "rc"] }
+strum = "0.26.3"
+strum_macros = "0.26.4"
+toml = "0.8.19"
+tracing = "0.1.41"
+
+[dev-dependencies]
+ndarray-rand = "0.14.0" # Version 0.15 depends on ndarray 0.16 which we cannot use (see above).
+tracing-subscriber = "0.3.18"
