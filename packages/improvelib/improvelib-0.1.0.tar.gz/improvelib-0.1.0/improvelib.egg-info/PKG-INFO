@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: improvelib
+Version: 0.1.0
+Summary: Open-source package for model standardization and comparison in Python
+Author: Natasha Koussa, Sara Jones, Rylie Weaver
+Author-email: Andreas Wilke <wilke@anl.gov>, Alexander Partin <apartin@anl.gov>, Priyanka Vasanthakumari <pvasanthakumari@anl.gov>, Oleksandr Narykov <onarykov@anl.gov>, Rajeev Jain <rajeeja@gmail.com>, Justin M Wozniak <woz@anl.gov>
+Project-URL: Homepage, https://github.com/JDACS4C-IMPROVE/IMPROVE
+Project-URL: Issues, https://github.com/JDACS4C-IMPROVE/IMPROVE/issues
+Project-URL: Documentation, https://jdacs4c-improve.github.io/docs/
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: requests
+Requires-Dist: tqdm
+Requires-Dist: typing_extensions
+Requires-Dist: pyyaml
+Requires-Dist: scikit-learn
+Dynamic: license-file
+
+# improvelib
+
+`improvelib` is a comprehensive toolset designed to enable researchers to consistently compare the performance of new AI models against established benchmarks. It ensures that advancements in model accuracy, efficiency, and robustness are measured and reported in a standardized, reproducible way across cancer research and other fields. As an open-source project, we invite contributions from the community to promote collaboration, share best practices, introduce new metrics, and continuously enhance `improvelib`. The ultimate goal of `improvelib` is to be user-friendly and accessible, making it routine for researchers to rigorously and comprehensively compare new models with prior models.
+
+## Installation
+```bash
+pip install improvelib==0.1.0
+```
+
+`improvelib` uses Python >= 3.6 and requires the following dependencies:
+
+ * pandas
+ * requests
+ * tqdm
+ * typing_extensions
+ * pyyaml
+ * scikit-learn
+
+## Documentation
+For a detailed guide on how to use the `improvelib` library, including a tutorial using an example model, LightGBM, see https://jdacs4c-improve.github.io/docs.
+
+## Examples
+Two repositories demonstrating the use of the `improvelib` library for drug response prediction:
+
+ * https://github.com/JDACS4C-IMPROVE/GraphDRP -- GraphDRP (deep learning model based on graph neural network)
+ * https://github.com/JDACS4C-IMPROVE/LGBM -- LightGBM model
+
+
