@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <style>
+        #parent {
+            width: 100%;
+            height: 696px;
+            display: flex;
+            flex-direction: column;
+            font-weight: bold;
+        }
+
+        #header {
+            width: 100%;
+            height: 3fr;
+            background-color: black;
+            color: white;
+            padding: 0.3em;
+            font-size: 3.4em;
+            text-align: center;
+        }
+
+        #content {
+            width: 100%;
+            height: 2fr;
+            background-color: white;
+            flex-grow: 100;
+            padding: 0.3em;
+            font-size: 2.7em;
+        }
+
+        #footer {
+            width: 100%;
+            height: 120px;
+            background-color: black;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            font-size: 4.3em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id='parent'>
+        <div id='header'>
+            {{ header }}
+        </div>
+        <div id='content'>
+            <p>{{ content }}</p>
+        </div>
+        <div id='footer'>
+            {{ footer }}
+        </div>
+    </div>
+</div>
+</body>
+</html>
