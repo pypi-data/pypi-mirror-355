@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="en">
+<head>
+    <title>{{ te.rpc.info.title }} - Monitor</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+
+    {# Favicon #}
+    {% if icon_url %}
+        <link rel="icon" href="{{ icon_url }}">
+    {% else %}
+        <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/static/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114"
+              href="/static/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120"
+              href="/static/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144"
+              href="/static/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152"
+              href="/static/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180"
+              href="/static/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"
+              href="/static/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32"
+              href="/static/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96"
+              href="/static/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16"
+              href="/static/favicon-16x16.png">
+        <link rel="manifest" href="/static/manifest.json">
+    {% endif %}
+
+    {# Tailwind CSS #}
+    <link href="/static/output.css" rel="stylesheet">
+
+    {# Google Material Icons #}
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400"
+          rel="stylesheet"/>
+
+    <!--suppress CssUnusedSymbol -->
+    <style>
+        .hljs {
+            border-radius: 1rem;
+        }
+    </style>
+    {# Used by highlight.js #}
+    <link id="codeTheme" rel="stylesheet">
+
+    {# JS Sources #}
+    <script src="/static/highlight.min.js"></script>
+    <script src="/static/htmx.js"></script>
+    <script src="/static/tabella.js"></script>
+
+    {# Set theme in head to avoid flash-bang. #}
+    <script>
+        if (isDark()) {
+            document.documentElement.classList.add("dark")
+        } else {
+            document.documentElement.classList.remove("dark")
+        }
+    </script>
+</head>
+
+<body class="text-neutral-950 bg-neutral-300 dark:bg-neutral-900 dark:text-neutral-200">
+
+<main class="min-h-screen max-h-screen flex">
+    {# Top Bar #}
+    <header class="absolute w-full top-0 z-[48] pt-3 pb-3 bg-neutral-950 text-neutral-300 opacity-90">
+        <div class="flex container mx-auto">
+            {% include "top_bar.html" %}
+        </div>
+    </header>
+
+    {# Monitor View #}
+    <div class="p-3 container mx-auto mt-20 mb-4 rounded-3xl bg-neutral-100 dark:bg-neutral-950">
+        <div class="w-full h-full mx-auto overflow-auto">
+            <div hx-ws="connect:/monitor-ws" class="h-full p-6">
+            <span id="monitor-0" class="text-neutral-600 dark:text-neutral-500">
+                Waiting for method calls to be made...
+            </span>
+            </div>
+        </div>
+    </div>
+</main>
+
+{# Run on initial load. #}
+<script>
+    if (isDark()) {
+        document.getElementById("theme-icon").textContent = "dark_mode";
+        document.getElementById("codeTheme").href = "/static/vs2015.min.css"
+    } else {
+        document.getElementById("theme-icon").textContent = "light_mode";
+        document.getElementById("codeTheme").href = "/static/vs.min.css"
+    }
+</script>
+
+</body>
+</html>

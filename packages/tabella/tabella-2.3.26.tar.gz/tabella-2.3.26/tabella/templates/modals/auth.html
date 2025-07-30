@@ -1,0 +1,192 @@
+<dialog id="auth-modal" class="modal-primary w-1/5 top-52">
+
+    {# Close Button #}
+    {% with title="Authorize", modal_id="auth-modal" %}
+        {% include "modals/_title_bar.html" %}
+    {% endwith %}
+
+    {# Tabs #}
+    <ul id="auth-tabs"
+        class="flex flex-wrap text-sm font-medium text-center text-neutral-500 border-b
+               border-neutral-200 dark:border-neutral-700 dark:text-neutral-400">
+        {% for name, scheme in te.rpc.components.x_security_schemes.items() %}
+            <li class="ml-1">
+                <button id="auth-tab-{{ loop.index0 }}"
+                        class="{{ "tab-selected" if loop.first else "tab" }}"
+                        {{ "disabled" if loop.first else "" }}
+                        onclick="setAuthScheme({{ loop.index0 }}, {{ len(te.rpc.components.x_security_schemes) }})">
+                    {{ name }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {# Schemes #}
+    {% for scheme in te.rpc.components.x_security_schemes.values() %}
+        <div id="auth-scheme-div-{{ loop.index0 }}"
+             class="{{ "hidden" if not loop.first else "" }}">
+            {% if scheme.type in ["apikey", "bearer"] %}
+                {% include "modals/auth/_header.html" %}
+            {% else %}
+                {% if not httpx_missing %}
+                    {% include "modals/auth/_oauth.html" %}
+                {% else %}
+                    <div id="auth-input-div-{{ loop.index0 }}"
+                         class="pr-8 pl-8 pb-8 mt-1">
+                        <p class="text-xl text-red-600 dark:text-red-500">Error</p>
+                        Optional dependency
+                        <span class="p-1 rounded-lg dark:bg-neutral-700 dark:text-neutral-600">
+                            httpx
+                        </span>
+                        is required for OAuth 2.0 functionality. Install with:
+                        <br>
+                        <div class="p-1 rounded-lg dark:bg-neutral-700 dark:text-neutral-600">
+                            pip install httpx
+                        </div>
+                        or
+                        <div class="p-1 rounded-lg dark:bg-neutral-700 dark:text-neutral-600">
+                            poetry add httpx
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+
+</dialog>
+
+<script>
+    function setAuthScheme(scheme, schemeCount) {
+        for (let i = 0; i < schemeCount; i++) {
+            const schemeDiv = document.getElementById(`auth-scheme-div-${i}`);
+            const tab = document.getElementById(`auth-tab-${i}`);
+            if (scheme === i) {
+                schemeDiv.classList.remove("hidden");
+                tab.classList.add("tab-selected");
+                tab.classList.remove("tab");
+                tab.disabled = true;
+            } else {
+                schemeDiv.classList.add("hidden");
+                tab.classList.remove("tab-selected");
+                tab.classList.add("tab");
+                tab.disabled = false;
+            }
+        }
+    }
+
+    function setHeaderAuth(scheme) {
+        const input = document.getElementById(`auth-input-${scheme}`);
+        if (Object.keys(headers).length !== 0) {
+            for (let key in headers) {
+                delete headers[key];
+            }
+            logout(scheme);
+        } else {
+            headers[`scheme${scheme}`] = input.value;
+            login(scheme);
+            input.value = "";
+        }
+    }
+
+    function oauthHref(scheme) {
+        const apiUrlInput = document.getElementById("api-url-input");
+        const link = document.getElementById(`oauth-${scheme}-authorization_url`);
+        const input = document.getElementById(`auth-input-${scheme}`);
+
+        if (Object.keys(headers).length !== 0) {
+            for (let key in headers) {
+                delete headers[key];
+            }
+            logout(scheme);
+            return null;
+        }
+
+        // Scopes.
+        const elements = document.querySelectorAll(`[id^='scope-${scheme}-']`);
+        const scopes = [];
+        for (let i = 0; i < elements.length; i++) {
+            if (elements[i].checked) {
+                const scope = document.getElementById(`scope-value-${scheme}-${i}`).innerHTML;
+                scopes.push(scope.trim());
+            }
+        }
+
+        // Make request to OAuth 2.0 server.
+        const url = apiUrlInput.value;
+        link.href = `${link.href}`
+            + "?response_type=code"
+            + `&client_id=${input.value}`
+            + `&scope=${scopes.join(" ")}`
+            + `&state={{ code_challenge }}@${scheme}@${scopes.join(" ")}@${input.value}@${url}`
+            + "&code_challenge_method=S256"
+            + "&code_challenge={{ code_challenge }}"
+            + `&redirect_uri=${window.location.href.replace(/\?.*?$/, "").replace(/#.*?$/, "")}`;
+        link.click();
+        link.remove();
+    }
+
+    function login(scheme) {
+        const lockIcon = document.getElementById("auth-lock-icon");
+        lockIcon.innerHTML = "lock"
+        lockIcon.classList.remove(
+            "text-neutral-600",
+            "dark:text-neutral-400",
+            "group-hover:text-neutral-700",
+            "group-hover:dark:text-neutral-300"
+        );
+        document.getElementById("auth-modal-modal-title").classList.toggle("text-green-500");
+        document.getElementById("auth-tabs").classList.toggle("hidden");
+        document.getElementById(`auth-button-${scheme}`).innerHTML = "Logout";
+        document.getElementById(`auth-input-div-${scheme}`).classList.toggle("hidden");
+        document.getElementById(`auth-signed-in-div-${scheme}`).classList.toggle("hidden");
+        const icons = document.querySelectorAll(`[id*="scheme_${scheme}"]`);
+        for (const icon of icons) {
+            icon.classList.remove("security-locked");
+            icon.classList.add("security-unlocked");
+            icon.innerHTML = "lock"
+        }
+    }
+
+    function logout(scheme) {
+        const lockIcon = document.getElementById("auth-lock-icon");
+        lockIcon.innerHTML = "lock_open"
+        lockIcon.classList.add(
+            "text-neutral-600",
+            "dark:text-neutral-400",
+            "group-hover:text-neutral-700",
+            "group-hover:dark:text-neutral-300"
+        );
+        document.getElementById("auth-modal-modal-title").classList.toggle("text-green-500");
+        document.getElementById("auth-tabs").classList.toggle("hidden");
+        document.getElementById(`auth-input-div-${scheme}`).classList.toggle("hidden");
+        document.getElementById(`auth-signed-in-div-${scheme}`).classList.toggle("hidden");
+        const button = document.getElementById(`auth-button-${scheme}`);
+        button.innerHTML = "Authorize";
+        button.disabled = true;
+        const icons = document.querySelectorAll("[id^='security-']");
+        for (const icon of icons) {
+            icon.classList.add("security-locked");
+            icon.classList.remove("security-unlocked");
+            icon.innerHTML = "lock_open"
+        }
+    }
+
+    function setButtonEnableListener(scheme) {
+        document.getElementById(`auth-input-${scheme}`).addEventListener(
+            "input", (e) => document.getElementById(`auth-button-${scheme}`).disabled = e.target.value === ""
+        );
+    }
+
+    {% for _ in te.rpc.components.x_security_schemes %}
+        setButtonEnableListener({{ loop.index0 }});
+    {% endfor %}
+
+    {% if enabled_scheme %}
+        headers["scheme{{ enabled_scheme }}"] = true;
+        document.getElementById("auth-button-{{ enabled_scheme }}").disabled = false;
+        setAuthScheme({{ enabled_scheme }}, {{ len(te.rpc.components.x_security_schemes) }});
+        login({{ enabled_scheme }});
+        let newUrl = window.location.href.replace(/\?.*?$/, "").replace(/#.*?$/, "");
+        window.history.replaceState({}, document.title, newUrl);
+    {% endif %}
+</script>

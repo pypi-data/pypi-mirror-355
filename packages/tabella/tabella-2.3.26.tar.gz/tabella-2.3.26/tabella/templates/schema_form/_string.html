@@ -1,0 +1,21 @@
+<!--suppress HtmlFormInputWithoutLabel -->
+<input id="{{ input_id }}-input"
+       class="form-input input-primary"
+        {% if "default" in schema.__fields_set__ %}
+       value="{{ schema.default }}"
+        {% endif %}
+        {% if schema.format == "date" %}
+       type="date"
+        {% elif schema.format == "time" %}
+       type="time"
+        {% elif schema.format == "date-time" %}
+       type="datetime-local"
+        {% endif %}>
+
+<script>
+    function get{{ input_id }}() {
+        return getInputFunction('{{ input_id }}', () => document.getElementById("{{ input_id }}-input").value);
+    }
+
+    formFunctions["{{ input_id }}"] = get{{ input_id }};
+</script>

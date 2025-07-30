@@ -1,0 +1,23 @@
+<!--suppress HtmlFormInputWithoutLabel -->
+<div>
+    <label class="relative inline-flex items-center cursor-pointer">
+        <input id="{{ input_id }}-input" type="checkbox" class="sr-only peer"
+                {% if schema.default %}
+               checked
+                {% endif %}>
+        <span class="peer slider"></span>
+    </label>
+</div>
+
+<script>
+    function get{{ input_id }}() {
+        return getInputFunction('{{ input_id }}', _get{{ input_id }});
+    }
+
+    function _get{{ input_id }}() {
+        return document.getElementById("{{ input_id }}-input").checked;
+    }
+
+    formFunctions["{{ input_id }}"] = get{{ input_id }};
+</script>
+

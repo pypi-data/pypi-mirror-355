@@ -1,0 +1,17 @@
+<script>
+    function get{{ input_id }}() {
+        {% if is_(schema.const, True) %}
+            return true;
+        {% elif is_(schema.const, False) %}
+            return false;
+        {% elif is_(schema.const, None) %}
+            return null;
+        {% elif is_str(schema.const) %}
+            return "{{ schema.const }}";
+        {% else %}
+            return {{ schema.const }};
+        {% endif %}
+    }
+
+    formFunctions["{{ input_id }}"] = get{{ input_id }};
+</script>

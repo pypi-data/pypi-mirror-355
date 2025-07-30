@@ -1,0 +1,123 @@
+{% import "macros.html" as macros %}
+
+<div id="monitor-{{ count }}">
+
+    <span id="monitor-{{ count + 1 }}"></span>
+
+    {# Row Header #}
+    <div id="monitor-header-{{ count }}"
+         class="peer group rounded-t-3xl rounded-b-3xl p-2 mt-2 cursor-pointer hover:bg-white hover:dark:bg-neutral-800 hover:shadow"
+         hx-swap-oob="true"
+         onclick="toggleMethodCallDetails({{ count }})">
+        <div class="flex select-none text-lg">
+            {# Expand Arrow #}
+            <span id="monitor-icon-{{ count }}"
+                  class="ml-2 material-symbols-outlined transform transition group-hover:text-black dark:group-hover:text-white">
+                chevron_right
+            </span>
+
+            {# Method #}
+            <span class="ml-2 group-hover:text-black dark:group-hover:text-white">
+                {{ request["method"] }}
+            </span>
+
+            {# Timestamp #}
+            <span class="ml-auto mr-2 text-neutral-700 dark:text-neutral-400 group-hover:text-neutral-800 dark:group-hover:text-neutral-200 scale-75 sm:scale-100">
+                {{ timestamp }}
+            </span>
+
+            {# Icon #}
+            {% if "result" in response %}
+                <span class="material-symbols-outlined text-green-500">check</span>
+            {% else %}
+                <span class="material-symbols-outlined text-red-500">close</span>
+            {% endif %}
+        </div>
+    </div>
+
+    {# Method Details #}
+    <div id="method-call-details-{{ count }}"
+         class="hidden rounded-b-3xl px-2 pb-2 peer-hover:bg-white peer-hover:dark:bg-neutral-800 peer-hover:shadow">
+        <div class="method-call-card rounded-3xl py-2 px-4 flex flex-col">
+
+            {# Request #}
+            <div class="flex max-w-full">
+                <div class="rounded-3xl bg-neutral-100 dark:bg-neutral-950 p-3 mr-auto flex-row overflow-auto">
+                    <div class="font-bold text-sm">Request</div>
+                    <div class="{{ "" if expand_params else "flex" }} overflow-y-auto whitespace-nowrap">
+                        <span class="text-blue-700 dark:text-blue-400">{{ request["method"] }}</span>
+                        (
+                        {# Params by Position #}
+                        {% if by_position %}
+                            {% for param in request["params"] %}
+                                {{ macros.color_value(param, expand_params) }}
+                                {% if not loop.last %}
+                                    <span class="mr-2">,</span>
+                                {% endif %}
+                            {% endfor %}
+
+                            {# Params by Name #}
+                        {% else %}
+                            {% for name, value in request["params"].items() %}
+                                {# Open Indent Block #}
+                                {% if expand_params %}
+                                    <div class="ml-4">
+                                {% endif %}
+
+                            {# Param Name and Value #}
+                            <span class="text-orange-900 dark:text-orange-700">{{ name }}</span>
+                            =
+                            {{ macros.color_value(value, expand_params) }}
+                            {% if not loop.last %}
+                                <span class="mr-2">,</span>
+                            {% endif %}
+
+                            {# Close Indent Block #}
+                            {% if expand_params %}
+                                </div>
+                            {% endif %}
+
+                            {% endfor %}
+                        {% endif %}
+                        )
+                    </div>
+                </div>
+            </div>
+
+            {# Response #}
+            <div class="flex mt-1 ml-auto max-w-full">
+                <div class="rounded-3xl bg-neutral-100 dark:bg-neutral-950 p-3 lg:ml-0 flex flex-col max-w-full">
+                    <div class="font-bold text-sm {{ "text-red-700 dark:text-red-500" if response["error"] else "text-green-700 dark:text-green-300" }}">
+                        Response
+                    </div>
+                    <div class="overflow-auto">
+                        {% if "result" in response %}
+                            <span class="overflow-y-auto whitespace-nowrap">
+                                {{ macros.color_value(response["result"], expand_params) }}
+                            </span>
+                        {% else %}
+                            Code:
+                            <span class="text-red-700 dark:text-red-500">{{ response["error"]["code"] }}</span>
+                            <br>
+                            Message:
+                            <span class="text-red-700 dark:text-red-500">{{ response["error"]["message"] }}</span>
+                            {% if response["error"]["data"] %}
+                                <br>
+                                Data:
+                                <pre class="text-sm text-red-700 dark:text-red-500 rounded-3xl border border-neutral-200 dark:border-neutral-900 overflow-auto p-4">{{ response["error"]["data"] }}</pre>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# Details #}
+            <div class="w-full text-end">
+                <span class="text-neutral-800 dark:text-neutral-300 mr-1 text-sm">Duration</span>
+                {{ duration }}s
+            </div>
+
+        </div>
+    </div>
+
+</div>

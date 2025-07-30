@@ -1,0 +1,12 @@
+<div id="input-{{ input_id }}" class="flex ml-4">
+    <div class="w-1/3 mr-2 mt-auto">
+        {% with schema=key_schema, input_id="key_" + input_id, label="key" %}
+            {% include "schema_form/form.html" %}
+        {% endwith %}
+    </div>
+    <div class="w-2/3 mt-auto">
+        {% with schema=schema.additional_properties, input_id="item" + input_id %}
+            {% include "schema_form/form.html" %}
+        {% endwith %}
+    </div>
+</div>

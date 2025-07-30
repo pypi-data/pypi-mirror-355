@@ -1,0 +1,54 @@
+{# Input #}
+<div id="auth-input-div-{{ loop.index0 }}" class="pr-8 pl-8 mt-1">
+    <div class="flex">
+        <label class="mb-1 w-full">
+                        <span class="text-xl">
+                            {% if scheme.type == "apikey" %}
+                                API Key
+                            {% elif scheme.type == "bearer" %}
+                                Bearer
+                            {% elif scheme.type == "oauth2" %}
+                                Client ID
+                            {% endif %}
+                        </span>
+            <input id="auth-input-{{ loop.index0 }}"
+                   class="input-primary form-input"
+                   autocomplete="off">
+        </label>
+    </div>
+</div>
+
+{# Signed In Display #}
+<div id="auth-signed-in-div-{{ loop.index0 }}" class="hidden mr-6 ml-6">
+    {% if scheme.type == "apikey" %}
+        <p>API Key</p>
+        <div class="grid grid-cols-2 grid-rows-3 grid-flow-col ml-4">
+            <p>Value</p>
+            <p>In</p>
+            <p>Name</p>
+            <p>************</p>
+            <p>{{ scheme.in_ }}</p>
+            <p>{{ scheme.name }}</p>
+        </div>
+    {% elif scheme.type == "bearer" %}
+        <p>Token</p>
+        <div class="grid grid-cols-2 grid-rows-3 grid-flow-col ml-4">
+            <p>Value</p>
+            <p>In</p>
+            <p>Name</p>
+            <p>Bearer ******</p>
+            <p>{{ scheme.in_ }}</p>
+            <p>{{ scheme.name }}</p>
+        </div>
+    {% endif %}
+</div>
+
+{# Submit Button #}
+<div class="flex rounded-b-lg pb-4 pt-2">
+    <button id="auth-button-{{ loop.index0 }}"
+            class="ml-8 mr-8 p-1 rounded-lg w-full submit-button"
+            onclick="setHeaderAuth({{ loop.index0 }});"
+            disabled>
+        Authorize
+    </button>
+</div>

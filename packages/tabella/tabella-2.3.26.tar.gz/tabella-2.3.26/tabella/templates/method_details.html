@@ -1,0 +1,90 @@
+{# Params #}
+<div class="flex">
+    <div class="w-1/2">
+        <p class="text-xl">Parameters</p>
+        <div class="m-4">
+            {% for param in method.params %}
+                <div class="mb-4">
+                    <b id="param-{{ method_id + id(loop.index0) }}">{{ param.name }}</b>
+                    {# Default Value #}
+                    {% if "default" in param.schema_.__fields_set__ %}
+                        <i class="ml-2">
+                            {% with value=param.schema_.default %}
+                                =
+                                {% include "schema/_value.html" %}
+                            {% endwith %}
+                        </i>
+                    {% endif %}
+                    {# Required #}
+                    {% if param.required %}
+                        <i class="ml-2 text-sm text-red-600 dark:text-red-500">
+                            required
+                        </i>
+                    {% endif %}
+                    {# Description #}
+                    {% if param.description %}
+                        <span class="ml-2 dark:text-neutral-500 text-neutral-700">{{ param.description }}</span>
+                    {% endif %}
+                    {# Schema #}
+                    {% with schema=param.schema_,
+                        schema_id=method_id + id(loop.index0) + "-param" %}
+                        <div class="ml-4">{% include "schema/schema.html" %}</div>
+                    {% endwith %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {# Examples/Try it out #}
+    {% if examples.get(method.name) %}
+        <div class="w-1/2">
+            <div class="flex mb-2">
+                <p class="text-lg">Example Request</p>
+                {# Try it out #}
+                <button class="p-1 ml-auto rounded-lg border-2 border-green-500 text-green-500 hover:border-green-700 hover:text-green-700 hover:dark:border-green-400 hover:dark:text-green-400 hover:shadow"
+                        onclick="openModal('method-{{ method_id }}-modal');"
+                        hx-get="/docs/try-it-modal/{{ method_id }}"
+                        hx-trigger="click once"
+                        hx-target="#method-{{ method_id }}-modal"
+                        hx-swap="beforeend"
+                        hx-include
+                        api-url-input>Try it out</button>
+            </div>
+            {# Example #}
+            {% with code=examples.get(method.name)[0], code_id="params-" + method_id %}
+                {% include "json.html" %}
+            {% endwith %}
+        </div>
+    {% endif %}
+    <dialog id="method-{{ method_id }}-modal"
+            class="modal-primary top-40 {{ "w-3/5" if method.params else "w-2/5" }}">
+        {# Close Button #}
+        {% with title=method.name, modal_id="method-" + method_id + "-modal" %}
+            {% include "modals/_title_bar.html" %}
+        {% endwith %}
+    </dialog>
+</div>
+{# Result #}
+<div class="flex mt-4 pb-8">
+    <div class="w-1/2">
+        <div>
+            <span class="text-xl">Result</span>
+            {# Description #}
+            {% if method.result.description %}
+                <span class="ml-2 dark:text-neutral-500 text-neutral-700">{{ method.result.description }}</span>
+            {% endif %}
+        </div>
+        <div class="m-4">
+            {% with schema=method.result.schema_, schema_id=method_id + "-result" %}
+                {% include "schema/schema.html" %}
+            {% endwith %}
+        </div>
+    </div>
+    <div class="w-1/2">
+        {% if examples.get(method.name) %}
+            <p class="text-lg">Example Response</p>
+            {% with code=examples.get(method.name)[1], code_id="result-" + method_id %}
+                {% include "json.html" %}
+            {% endwith %}
+        {% endif %}
+    </div>
+</div>

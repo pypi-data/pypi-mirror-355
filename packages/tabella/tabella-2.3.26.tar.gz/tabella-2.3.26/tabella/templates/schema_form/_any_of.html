@@ -1,0 +1,52 @@
+{# Radio Button #}
+{% for any_schema in schema.any_of %}
+    <label>
+        <input type="radio"
+               id="{{ input_id + id(loop.index0) }}-radio"
+                {# `name` used by HTML to associate radio buttons. #}
+               name="{{ input_id }}-radio"
+               class="ml-4 form-radio radio-primary"
+                {% if loop.index0 == default %}
+               checked
+                {% endif %}
+               onchange="onInputTypeChange('{{ input_id }}', {{ loop.index0 }}, {{ len(schema.any_of) }});"
+                {% if any_schema.ref %}
+               hx-get="/docs/add-recursive-item/{{ method_id }}/{{ param_id }}/{{ input_id + id(loop.index0) }}/{{ is_even }}"
+               hx-trigger="click once"
+               hx-target="#recursive-{{ input_id + id(loop.index0) }}"
+                {% endif %}
+               autocomplete="off">
+        {% with schema=any_schema, schema_id=input_id + id(loop.index0) + "schema" %}
+            {% include "schema/schema.html" %}
+        {% endwith %}
+    </label>
+{% endfor %}
+
+{# Form #}
+{# Must be in separate loop or input fields will be between radio buttons. #}
+{% for any_schema in schema.any_of %}
+    {% with schema=any_schema, input_id=input_id + id(loop.index0), label=False %}
+        {% if any_schema.ref %}
+            <span id="{{ input_id }}-form">
+                <span id="recursive-{{ input_id }}"></span>
+            </span>
+        {% else %}
+            <span id="{{ input_id }}-form" class="hidden">
+                {% include "schema_form/form.html" %}
+            </span>
+        {% endif %}
+    {% endwith %}
+{% endfor %}
+
+<script>
+    function get{{ input_id }}() {
+        {% for any_schema in schema.any_of %}
+            if (document.getElementById("{{ input_id + id(loop.index0) }}-radio").checked) {
+                return get{{ input_id + id(loop.index0) }}();
+            }
+        {% endfor %}
+    }
+
+    onInputTypeChange("{{ input_id }}", {{ default }}, {{ len(schema.any_of) }});
+    formFunctions["{{ input_id }}"] = get{{ input_id }};
+</script>

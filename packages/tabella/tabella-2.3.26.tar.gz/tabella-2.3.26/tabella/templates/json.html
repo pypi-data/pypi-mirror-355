@@ -1,0 +1,25 @@
+<div class="relative">
+    {# Copy Button #}
+    <div class="group">
+        <div class="absolute right-0 mt-3 mr-3">
+            <div class="flex justify-center">
+                <button class="material-symbols-outlined rounded-full top-5 p-3 hover:shadow hover:bg-neutral-100 hover:dark:bg-neutral-800 hover:dark:text-neutral-50"
+                        onclick="copyToClipboard('{{ code_id }}');"
+                        onmouseover="onCopyMouseOver('{{ code_id }}');"
+                        onmouseleave="onCopyMouseOver('{{ code_id }}');">content_copy</button>
+            </div>
+            <div class="mt-1">
+                <div id="{{ code_id }}-copy-tooltip"
+                     class="opacity-0 transition-opacity flex justify-center pl-2 pr-2 pt-1.5 pb-1.5 text-sm text-neutral-50 bg-neutral-600 dark:bg-neutral-900 rounded-md select-none">
+                    <p>Copy</p>
+                </div>
+                <div id="{{ code_id }}-copied-tooltip"
+                     class="opacity-0 pl-2 pr-2 pt-1.5 pb-1.5 rounded-md text-neutral-50 text-sm bg-neutral-600 dark:bg-neutral-900 select-none">
+                    <p>Copied</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# JSON Example Card #}
+    <pre><code id="{{ code_id }}-code" class="shadow dark:shadow-lg language-json">{{ code }}</code></pre>
+</div>

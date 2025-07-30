@@ -1,0 +1,28 @@
+<div class="rounded-2xl ml-4 p-1 mb-1 {% if is_even %} bg-neutral-200 dark:bg-neutral-700 {% else %} bg-neutral-100 dark:bg-neutral-800 {% endif %}">
+    {# Properties #}
+    {% for name, property in schema.properties.items() %}
+        {% with schema=property,
+            input_id=input_id + id(loop.index0),
+            label=name,
+            required=name in (schema.required or []),
+            is_even=(0 if is_even else 1) if schema.properties else is_even %}
+            <div id="input-{{ input_id }}">{% include "schema_form/form.html" %}</div>
+        {% endwith %}
+    {% endfor %}
+</div>
+<script>
+    function get{{ input_id }}() {
+        return getInputFunction('{{ input_id }}', _get{{ input_id }});
+    }
+
+    function _get{{ input_id }}() {
+        let param = {};
+
+        {% for name, property in schema.properties.items() %}
+            param["{{ name }}"] = formFunctions["{{ input_id + id(loop.index0) }}"]();
+        {% endfor %}
+        return param;
+    }
+
+    formFunctions["{{ input_id }}"] = get{{ input_id }};
+</script>

@@ -1,0 +1,108 @@
+{# Logo #}
+<!--suppress HtmlUnknownTarget -->
+<div class="ml-1 mr-auto">
+    {% if icon_url %}
+        <img width="32" height="32" src="{{ icon_url }}" alt="logo">
+    {% else %}
+        <img src="/static/favicon-32x32.png" alt="logo" height=32 width=32>
+    {% endif %}
+</div>
+{% if request.path == "/" %}
+    {# API URL #}
+    {% if disable_api_input %}
+        {# Fixed API URL #}
+        <div class="group flex justify-center">
+            {# Server Selection #}
+            {% if servers %}
+                <label>
+                    <select id="server-select"
+                            name="api-url"
+                            class="select-primary-always-dark mr-2"
+                            autocomplete="off"
+                            hx-get="/docs/discover-click"
+                            hx-target="#openrpc-doc-viewer"
+                            hx-include
+                            server-select
+                            onchange=" document.getElementById('api-url-display-code').innerHTML = document.getElementById('server-select').value; document.getElementById('api-url-input').value = document.getElementById('server-select').value;">
+                        {% for server in servers %}
+                            <option value="{{ server.url }}"
+                                    {% if server.url == api_url %}selected{% endif %}>{{ server.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            {% endif %}
+            <div class="flex relative">
+                {# API Display #}
+                <span id="api-url-display-code"
+                      class="rounded-lg p-1.5 border-2 border-neutral-900 hover:text-neutral-50 hover:border-neutral-800 cursor-pointer select-none"
+                      onchange=""
+                      onclick="copyToClipboard('api-url-display');"
+                      onmouseover="onCopyMouseOver('api-url-display');"
+                      onmouseleave="onCopyMouseOver('api-url-display');">{{ api_url }}</span>
+                {# Copy Button #}
+                <div class="absolute flex justify-center mt-11 mx-auto w-full">
+                    <div class="w-fit">
+                        <div id="api-url-display-copy-tooltip"
+                             class="opacity-0 transition-opacity flex justify-center pl-2 pr-2 pt-1.5 pb-1.5 text-sm text-neutral-50 bg-neutral-600 dark:bg-neutral-700 rounded-md select-none">
+                            <p>Copy</p>
+                        </div>
+                        <div id="api-url-display-copied-tooltip"
+                             class="opacity-0 pl-2 pr-2 pt-1.5 pb-1.5 rounded-md text-neutral-50 text-sm bg-neutral-600 dark:bg-neutral-700 select-none">
+                            <p>Copied</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# Input with id="api-url-input" is used by JS later #}
+        <div class="hidden">
+            <label>
+                <input id="api-url-input" name="api-url" value="{{ api_url }}">
+            </label>
+        </div>
+        {# Dynamic API URL #}
+    {% else %}
+        <div class="flex">
+            <label class="grow">
+                <input id="api-url-input"
+                       name="api-url"
+                       class="bg-neutral-900 appearance-none border-2 border-neutral-600 rounded-l-lg w-full leading-tight focus:outline-none p-2 focus:border-neutral-500"
+                       type="text"
+                       placeholder="OpenRPC API URL">
+            </label>
+            {# Discover on button click. #}
+            <button onclick="setUrlStorage()"
+                    class="p-1.5 rounded-r-lg border-green-500 border-2 text-green-500 hover:border-green-700 hover:text-green-700 hover:bg-neutral-50 hover:shadow hover:dark:border-green-400 hover:dark:text-green-400 hover:dark:bg-neutral-800"
+                    hx-get="/docs/discover-click"
+                    hx-target="#openrpc-doc-viewer"
+                    hx-include
+                    api-url-input>Discover</button>
+            {# Discover on load. #}
+            <a href="#"
+               hx-get="/docs/discover-load"
+               hx-trigger="load"
+               hx-target="#openrpc-doc-viewer"
+               hx-include
+               api-url-input></a>
+        </div>
+    {% endif %}
+{% else %}
+    RPC Server Monitor
+{% endif %}
+{# Buttons #}
+<div class="ml-auto">
+    {# Navigate Button #}
+    {% if debug %}
+        {% if request.path == "/" %}
+            <a class="material-symbols-outlined rounded-full mr-1 p-2 hover:text-neutral-50 hover:bg-neutral-800 cursor-pointer"
+               href="/monitor">monitoring</a>
+        {% else %}
+            <a class="material-symbols-outlined rounded-full mr-1 p-2 hover:text-neutral-50 hover:bg-neutral-800 cursor-pointer"
+               href="/">list</a>
+        {% endif %}
+    {% endif %}
+    {# Theme Button #}
+    <button class="material-symbols-outlined rounded-full mr-1 p-2 hover:text-neutral-50 hover:bg-neutral-800"
+            onclick="toggleTheme()"
+            id="theme-icon"></button>
+</div>

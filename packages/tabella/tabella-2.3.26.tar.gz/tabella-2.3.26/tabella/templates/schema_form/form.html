@@ -1,0 +1,53 @@
+<div id="input-{{ input_id }}" class="mt-1">
+    {# Label #}
+    {% if label %}
+        {# Enabled/Disabled Slider #}
+        {% if not required %}
+            <label class="ml-1 relative inline-flex items-center cursor-pointer">
+                <input id="{{ input_id }}-enabled"
+                       type="checkbox"
+                       class="sr-only peer"
+                       onchange="toggleInput('{{ input_id }}');">
+                <span class="peer slider-sm"></span>
+            </label>
+            <script>toggleInput('{{ input_id }}');</script>
+        {% endif %}
+        {{ label }}
+        {% if not schema.any_of %}
+            {% with schema_id=input_id + "-schema" %}
+                {% include "schema/schema.html" %}
+            {% endwith %}
+        {% endif %}
+    {% endif %}
+    <span id="{{ input_id }}-input-span">
+        {% if "const" in schema.__fields_set__ %}
+            {% include "schema_form/_constant.html" %}
+        {% elif "enum" in schema.__fields_set__ %}
+            {% include "schema_form/_enum.html" %}
+        {% elif schema.type == "string" or is_any(schema) %}
+            {% include "schema_form/_string.html" %}
+        {% elif schema.type == "number" %}
+            {% include "schema_form/_number.html" %}
+        {% elif schema.type == "integer" %}
+            {% include "schema_form/_integer.html" %}
+        {% elif schema.type == "boolean" %}
+            {% include "schema_form/_boolean.html" %}
+        {% elif schema.type == "null" %}
+            {% include "schema_form/_null.html" %}
+        {% elif schema.type == "array" %}
+            {% include "schema_form/_array.html" %}
+        {% elif "properties" in schema.__fields_set__ %}
+            {% include "schema_form/_properties.html" %}
+        {% elif schema.type == "object" %}
+            {% include "schema_form/_object.html" %}
+        {% elif schema.any_of %}
+            {% with default=get_any_default(schema) %}
+                {% include "schema_form/_any_of.html" %}
+            {% endwith %}
+        {% elif schema.all_of %}
+            {% with schema=schema.all_of[0], all_of=schema, label=False %}
+                {% include "schema_form/form.html" %}
+            {% endwith %}
+        {% endif %}
+    </span>
+</div>

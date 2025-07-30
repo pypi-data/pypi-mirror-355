@@ -1,0 +1,10 @@
+<div>
+    <i class="ml-2">null</i>
+</div>
+<script>
+    function get{{ input_id }}() {
+        return getInputFunction('{{ input_id }}', () => null);
+    }
+
+    formFunctions["{{ input_id }}"] = get{{ input_id }};
+</script>

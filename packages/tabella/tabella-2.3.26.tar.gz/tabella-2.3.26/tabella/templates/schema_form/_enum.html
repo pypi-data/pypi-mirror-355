@@ -1,0 +1,26 @@
+<!--suppress HtmlFormInputWithoutLabel -->
+<div>
+    <select id="{{ input_id }}-input"
+            class="select-primary">
+        {% for option in schema.enum %}
+            <option value="{{ option }}"
+                    {% if all_of and "default" in all_of.__fields_set__ and all_of.default == option %}
+                    selected
+                    {% endif %}>
+                {{ option }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <script>
+        function get{{ input_id }}() {
+            return getInputFunction('{{ input_id }}', _get{{ input_id }});
+        }
+
+        function _get{{ input_id }}() {
+            return document.getElementById("{{ input_id }}-input").value;
+        }
+
+        formFunctions["{{ input_id }}"] = get{{ input_id }};
+    </script>
+</div>
