@@ -1,0 +1,24 @@
+[build-system]
+requires = [ "poetry-core>=1.0.0",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "fameprotobuf"
+version = "2.1.0"
+description = "Protobuf definitions converted to python classes for use in `fameio`"
+license = "Apache-2.0"
+authors = [ "Christoph Schimeczek <fame@dlr.de>", "Ulrich Frey <fame@dlr.de>", "Marc Deissenroth-Uhrig <fame@dlr.de>", "Benjamin Fuchs <fame@dlr.de>", "Felix Nitsch <fame@dlr.de>",]
+maintainers = [ "Christoph Schimeczek <fame@dlr.de>",]
+readme = "README.md"
+homepage = "https://gitlab.com/fame-framework/wiki/-/wikis/home"
+repository = "https://gitlab.com/fame-framework/fame-protobuf"
+keywords = [ "protobuffer", "FAME", "framework", "fameio", "agent-based modelling",]
+classifiers = [ "Development Status :: 5 - Production/Stable", "Operating System :: OS Independent", "Topic :: Scientific/Engineering",]
+include = [ "CHANGELOG.md", "src/main/python/**/*",]
+[[tool.poetry.packages]]
+include = "fameprotobuf"
+from = "src/main/python"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+protobuf = "^4.21.1"
