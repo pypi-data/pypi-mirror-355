@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "empiarreader"
+version = "0.0.14"
+description = "EMPIARReader provides utilities to lazily load data from EMPIAR into a machine-learning-friendly dataset format or to locally download the files."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "mooniean", email = "bcostagomes@turing.ac.uk" },
+    { name = "ots22", email = "ostrickson@turing.ac.uk" },
+]
+dependencies = [
+    "intake>=0.6.6",
+    "bs4>=0.0.1",
+    "matplotlib>=3.6.1",
+    "requests>=2.28.1",
+    "scikit-image>=0.19.3",
+    "xarray>=2022.9.0",
+    "mrcfile>=1.4.3",
+    "starfile>=0.4.11",
+    "intake-xarray>=0.6.1",
+    "aiohttp>=3.8.3",
+    "setuptools>=67.7.2",
+    "pre-commit>=3.3.3",
+    "numpy==1.23.3",
+    "jinja2==3.1.0"
+]
+
+[project.optional-dependencies]
+doc = [
+    "Sphinx>=5.0.0",
+    "pydata-sphinx-theme>=0.7"
+]
+dev = [
+    "pytest>=6.2.5"
+]
+
+[project.urls]
+Homepage = "https://github.com/ccpem/empiarreader"
+"Bug Tracker" = "https://github.com/ccpem/empiarreader"
+
+[project.scripts]
+empiarreader = "empiarreader.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["empiarreader*"]
+
+[project.entry-points."intake.drivers"]
+mrc = "empiarreader:MrcSource"
+star = "empiarreader:StarSource"
+empiar = "empiarreader:EmpiarCatalog"
