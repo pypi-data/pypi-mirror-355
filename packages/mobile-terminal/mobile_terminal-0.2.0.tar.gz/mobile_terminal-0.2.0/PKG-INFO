@@ -1,0 +1,135 @@
+Metadata-Version: 2.4
+Name: mobile-terminal
+Version: 0.2.0
+Summary: The terminal moves with you - Access your terminal from any mobile device
+Home-page: https://github.com/josharsh/term-cast
+Author: Josharsh
+Author-email: Josharsh <your.email@example.com>
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# mobile-terminal
+
+The terminal moves with you. Access and control your terminal from any mobile device.
+
+## What it does
+
+mobile-terminal creates a local web server that streams your terminal output to your phone in real-time. When your terminal needs input (like Y/N prompts, passwords, or any user input), you get notified on your phone and can respond directly from there.
+
+Perfect for:
+- Long-running scripts that occasionally need input
+- Remote deployments that ask for confirmation
+- AI coding assistants (like Claude) that need permissions
+- Any command that might interrupt your workflow
+
+## Features
+
+- 📱 **Real-time terminal streaming** to your phone
+- 🔔 **Instant notifications** when input is needed
+- ⌨️ **Send commands** from your phone
+- 🚫 **Prevents laptop sleep** while running
+- 🔒 **Local network only** - secure by default
+- 🎯 **Zero configuration** - just run and go
+
+## Installation
+
+### 🐍 Using pip (Recommended)
+```bash
+pip install mobile-terminal
+```
+
+### 🍺 Using Homebrew (macOS/Linux)
+```bash
+# Coming soon!
+brew tap josharsh/tap
+brew install mobile-terminal
+```
+
+### 📦 Using pipx (Isolated Environment)
+```bash
+pipx install mobile-terminal
+```
+
+### 🔧 From Source
+```bash
+git clone https://github.com/josharsh/mobile-terminal.git
+cd mobile-terminal
+pip install -e .
+```
+
+### 🐳 Using Docker
+```bash
+# Coming soon!
+docker run -p 8080:8080 josharsh/mobile-terminal
+```
+
+### Requirements
+- Python 3.7 or higher
+- Works on macOS, Linux, and Windows (WSL)
+
+## Usage
+
+### Basic usage
+```bash
+# Run any command with mobile-terminal
+mobile-terminal npm install
+# Or use the short alias
+mterm npm install
+
+# Or start an interactive shell
+mobile-terminal
+# Or simply
+mterm
+
+# Then open the URL on your phone:
+# http://192.168.1.42:8080
+```
+
+### Examples
+
+Monitor a deployment:
+```bash
+term-cast ./deploy-to-production.sh
+```
+
+Watch AI coding assistant:
+```bash
+term-cast claude-code
+```
+
+System updates:
+```bash
+term-cast sudo apt upgrade
+```
+
+## How it works
+
+1. term-cast creates a pseudo-terminal (PTY) that captures all input/output
+2. Starts a local web server on port 8080
+3. Your phone connects via WebSocket for real-time streaming
+4. When input is detected, your phone gets notified
+5. You can type responses directly from your phone
+6. Laptop stays awake while term-cast is running
+
+## Requirements
+
+- Python 3.7+
+- Same WiFi network for laptop and phone
+- Modern web browser on phone
+
+## Security
+
+- **Local network only** - no data leaves your network
+- **No authentication** by default - only use on trusted networks
+- **Optional encryption** - use `--ssl` flag for HTTPS
+- **Session isolation** - each run gets a unique session
+
+## License
+
+MIT
