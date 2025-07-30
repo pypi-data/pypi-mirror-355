@@ -1,0 +1,97 @@
+name: Buckia Integration Tests
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'buckia/**'
+      - 'tests/**'
+      - '.github/workflows/integration-tests.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'buckia/**'
+      - 'tests/**'
+      - '.github/workflows/integration-tests.yml'
+  workflow_dispatch:
+    inputs:
+      run_full_suite:
+        description: 'Run full test suite including stress tests'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+      # Don't fail fast so we get results from all versions
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install UV
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+    
+    - name: Cache UV
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/uv
+          ~/.uv
+        key: ${{ runner.os }}-${{ matrix.python-version }}-uv-${{ hashFiles('setup.py') }}
+    
+    - name: Install dependencies
+      run: |
+        # Create virtual environment and install dependencies
+        uv venv
+        uv pip install -e ".[dev,bunny,b2]"
+        uv pip install python-dotenv
+    
+    - name: Validate credentials
+      run: |
+        # Run the dedicated secret validation script
+        uv run python ./scripts/validate_secrets.py
+      env:
+        BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
+        buckia_buckia_demo: ${{ secrets.BUNNY_STORAGE_API_KEY }}
+    
+    - name: Run basic tests
+      run: |
+        uv run -m pytest tests/integration/test_bunny.py tests/integration/test_operations.py -v
+      env:
+        BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
+        buckia_buckia_demo: ${{ secrets.BUNNY_STORAGE_API_KEY }}
+    
+    - name: Run sync tests
+      run: |
+        uv run -m pytest tests/integration/test_sync.py -v
+      env:
+        BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
+        buckia_buckia_demo: ${{ secrets.BUNNY_STORAGE_API_KEY }}
+    
+    - name: Run error handling tests
+      run: |
+        uv run -m pytest tests/integration/test_error_handling.py -v
+      env:
+        BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
+        buckia_buckia_demo: ${{ secrets.BUNNY_STORAGE_API_KEY }}
+    
+    - name: Run stress tests (if requested)
+      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.run_full_suite == 'true' }}
+      run: |
+        uv run -m pytest tests/integration/test_error_handling.py::test_network_throttling -v
+      env:
+        BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
+        buckia_buckia_demo: ${{ secrets.BUNNY_STORAGE_API_KEY }}
+        STRESS_TEST: "1"
