@@ -1,0 +1,147 @@
+Metadata-Version: 2.4
+Name: onealpha
+Version: 0.1.1
+Summary: TheOneAlpha data downloader
+Author: Alok Vishwakarma
+Author-email: alokvishwakarma@theonealpha.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-python
+Dynamic: summary
+
+OneAlpha Python Client Library
+The OneAlpha Python client library provides a convenient interface to interact with a financial data API, allowing users to validate symbols, fetch financial data as Pandas DataFrames, and save data as CSV files. It supports flexible data retrieval options, including merged or individual formats, and various time frequencies.
+Features
+
+Test Connection: Verify connectivity to the API server.
+Validate Symbols: Check the availability of financial symbols for a given date range and frequency.
+Fetch DataFrame: Retrieve financial data as a Pandas DataFrame in merged or individual formats.
+Fetch CSV: Save financial data to CSV files, with support for individual symbol files or a single merged file.
+Get Available Symbols: Retrieve a list of symbols supported by the API.
+
+Installation
+
+Ensure you have Python 3.6+ installed.
+Install the required dependencies:pip install requests pandas
+
+
+Clone or download the onealpha library to your project directory.git clone <repository-url>
+
+Alternatively, copy the onealpha.py file into your project.
+
+Usage
+The OneAlphaClient class requires a base_url to connect to the API server. You must initialize the client with the appropriate API endpoint before using the library's functions.
+Example
+Below is an example of how to use the onealpha library to test connectivity, validate symbols, and fetch data.
+import onealpha
+import pandas as pd
+
+# Initialize the client with your API URL
+onealpha.client = onealpha.OneAlphaClient(base_url="http://localhost:8000")
+
+try:
+    # Test connection
+    print("Testing connection...")
+    connection_status = onealpha.test_connection()
+    print(f"Connection status: {connection_status}")
+
+    # Validate symbols
+    print("\nValidating symbols...")
+    validation = onealpha.validate_symbols(
+        symbols=['AARTIIND', 'RELIANCE', 'TCS'],
+        start_date='2025-01-01',
+        end_date='2025-01-07',
+        frequency='1min'
+    )
+    print(f"Validation result: {validation}")
+
+    # Fetch data as DataFrame
+    print("\nFetching DataFrame...")
+    df = onealpha.fetch_dataframe(
+        symbols=['AARTIIND', 'RELIANCE', 'TCS'],
+        start_date='2025-01-01',
+        end_date='2025-01-07',
+        frequency='1min',
+        format_type='merged',
+        fields=['open', 'high', 'low', 'close']
+    )
+    print("DataFrame:")
+    print(df)
+
+    # Fetch data as CSV
+    print("\nFetching CSV...")
+    csv_path = onealpha.fetch_csv(
+        symbols=['AARTIIND', 'RELIANCE', 'TCS'],
+        start_date='2025-01-01',
+        end_date='2025-01-07',
+        frequency='1min',
+        format_type='merged',
+        fields=['open', 'high', 'low', 'close']
+    )
+    print(f"File saved: {csv_path}")
+
+except Exception as e:
+    print(f"Error: {str(e)}")
+
+Key Methods
+
+test_connection(): Tests connectivity to the API server and returns the response as a dictionary.
+configure(database_url): Configures the API with a database URL.
+validate_symbols(symbols, start_date, end_date, frequency): Validates a list of symbols for a given date range and frequency.
+fetch_dataframe(symbols, start_date, end_date, frequency, format_type, fields): Fetches financial data as a Pandas DataFrame. Supports merged or individual format types.
+fetch_csv(symbols, start_date, end_date, frequency, format_type, fields): Saves financial data to CSV files, either as a single merged file or individual files per symbol.
+get_available_symbols(): Retrieves a list of available symbols from the API.
+
+Parameters
+
+symbols or symbol_names: List of financial symbols (e.g., ['AARTIIND', 'RELIANCE', 'TCS']).
+start_date and end_date: Date range in YYYY-MM-DD format (or use date_range as a tuple).
+frequency: Data frequency (e.g., 1min, 15min, 1h, 1d). Default is 15min.
+format_type: Data format (merged or individual). Default is merged.
+fields: List of data fields (e.g., ['open', 'high', 'low', 'close']). Default is ['close'].
+
+Output
+
+DataFrame: Returns a Pandas DataFrame with columns for date, time, and requested fields (e.g., AARTIIND_close, RELIANCE_open) for merged format, or Ticker, Open, High, etc., for individual format.
+CSV: Saves data to ~/Downloads/onealpha_data/ with filenames like MERGED_1min_20250101_20250107.csv (merged) or AARTIIND_1min_20250101_20250107.csv (individual).
+
+Requirements
+
+Python 3.6+
+requests library
+pandas library
+An active API server (local or remote) with the correct base_url.
+
+Setup
+
+Ensure the API server is running at the specified base_url (e.g., http://localhost:8000 for local development).
+If using a remote API, obtain the correct endpoint URL and any required authentication credentials (not currently supported in the client but can be added).
+For local testing, start the API server (e.g., using FastAPI or Flask) before running scripts.
+
+Troubleshooting
+
+Connection Error: If you see Connection test failed: ... No connection could be made, ensure the API server is running and the base_url is correct. Check with:curl http://localhost:8000/test-connection
+
+
+No Data Found: If the API returns "No data found," verify that the symbols and date range are valid. Use historical dates (e.g., 2025-01-01 to 2025-01-07) and check available symbols with get_available_symbols().
+Firewall Issues: On Windows, ensure port 8000 (or the specified port) is open in your firewall settings.
+
+Example Output
+For a successful fetch_csv call with format_type='merged':
+File saved: C:\Users\YourUser\Downloads\onealpha_data\MERGED_1min_20250101_20250107.csv
+
+The CSV file will contain columns like Date, Timestamp, Time, AARTIIND_open, RELIANCE_close, etc.
+Contributing
+Contributions are welcome! Please submit pull requests or open issues on the repository for bug reports or feature requests.
+License
+This project is licensed under the MIT License.
+Contact
+For support or inquiries, contact the project maintainer at [alokvishwakarma@theonealpha.com] or open an issue on the repository.
