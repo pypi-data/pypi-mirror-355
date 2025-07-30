@@ -1,0 +1,93 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "metalearners"
+description = "MetaLearners for CATE estimation"
+dynamic = ["version"]
+authors = [
+  {name = "QuantCo, Inc.", email = "noreply@quantco.com"},
+]
+classifiers = [
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "scikit-learn>=1.4",
+    "pandas",
+    "numpy",
+    "typing-extensions",
+    "shap",
+    "joblib>=1.2.0"
+]
+
+[project.urls]
+repository = "https://github.com/quantco/metalearners"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["metalearners"]
+
+[project.scripts]
+
+[tool.docformatter]
+black = true
+
+[tool.black]
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+ignore = [
+  "N803",  # https://docs.astral.sh/ruff/rules/invalid-argument-name
+  "N806",  # https://docs.astral.sh/ruff/rules/non-lowercase-variable-in-function
+  "E501",  # https://docs.astral.sh/ruff/faq/#is-the-ruff-linter-compatible-with-black
+]
+select = [
+  # pyflakes
+  "F",
+  # pycodestyle
+  "E", "W",
+  # isort
+  "I",
+  # pep8-naming
+  "N",
+  # pyupgrade
+  "UP",
+]
+
+[tool.mypy]
+python_version = '3.10'
+ignore_missing_imports = true
+no_implicit_optional = true
+check_untyped_defs = true
+
+exclude = ["docs/"]
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib --cov=metalearners --cov-report term-missing --color=yes"
+testpaths = [
+  "tests",
+]
+
+[tool.typos.default]
+extend-ignore-re = ["HTE", "crace", "(?Rm)^.*#\\s*spellchecker:disable-line$", "frst_in_family"]

@@ -1,0 +1,41 @@
+name: Benchmarks
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 1 * *"
+
+defaults:
+  run:
+    shell: bash -el {0}
+
+jobs:
+  run_benchmarks:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up pixi
+        uses: prefix-dev/setup-pixi@14c8aabd75893f83f4ab30c03e7cf853c8208961 # v0.8.10
+      - name: Install repository
+        run: |
+          pixi run -e benchmark postinstall
+          pixi run benchmark
+      - name: Update readme.md
+        run: |
+          line_number=`grep "| T-learner" benchmarks/readme.md -n | cut -f1 -d:`
+          head -n $(($line_number -1)) benchmarks/readme.md > benchmarks/new_readme.md
+          cat benchmarks/comparison.md >> benchmarks/new_readme.md
+          mv benchmarks/new_readme.md benchmarks/readme.md
+      - name: Create PR
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        with:
+          commit-message: Auto-update benchmarks/readme.md
+          title: Auto-update benchmarks/readme.md
+          body: |
+            Update benchmarks/readme.md.
+            Remember to update the corresponding values in `tests/test_learner.py`.
+          branch: update-benchmarks
+          delete-branch: true
+          add-paths: benchmarks/readme.md
+          draft: true
