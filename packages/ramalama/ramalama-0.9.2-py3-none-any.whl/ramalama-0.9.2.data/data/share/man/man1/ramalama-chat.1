@@ -1,0 +1,68 @@
+.TH "ramalama-chat 1" 
+.nh
+.ad l
+
+.SH NAME
+.PP
+ramalama\-chat \- OpenAI chat with the specified REST API URL
+
+.SH SYNOPSIS
+.PP
+\fBramalama chat\fP [\fIoptions\fP] [arg...]
+
+.PP
+positional arguments:
+  ARGS                  overrides the default prompt, and the output is
+                        returned without entering the chatbot
+
+.SH DESCRIPTION
+.PP
+Chat with an OpenAI Rest API
+
+.SH OPTIONS
+.SS \fB\-\-color\fP
+.PP
+Indicate whether or not to use color in the chat.
+Possible values are "never", "always" and "auto". (default: auto)
+
+.SS \fB\-\-help\fP, \fB\-h\fP
+.PP
+Show this help message and exit
+
+.SS \fB\-\-prefix\fP
+.PP
+Prefix for the user prompt (default: 🦭 > )
+
+.SS \fB\-\-url\fP=URL
+.PP
+The host to send requests to (default: 
+\[la]http://127.0.0.1:8080\[ra])
+
+.SH EXAMPLES
+.PP
+Communicate with the default local OpenAI REST API. (
+\[la]http://127.0.0.1:8080\[ra])
+With Podman containers.
+
+.PP
+.RS
+
+.nf
+$ ramalama chat
+🦭 >
+
+Communicate with an alternative OpenAI REST API URL. With Docker containers.
+$ ramalama chat \-\-url http://localhost:1234
+🐋 >
+
+.fi
+.RE
+
+.SH SEE ALSO
+.PP
+\fBramalama(1)\fP
+
+.SH HISTORY
+.PP
+Jun 2025, Originally compiled by Dan Walsh 
+\[la]dwalsh@redhat.com\[ra]
