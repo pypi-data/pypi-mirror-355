@@ -1,0 +1,80 @@
+[project]
+name = "pyairtouch"
+version = "3.0.0"
+description = "A fully typed asyncio API for the Polyaire AirTouch AC controllers"
+authors = [
+    { name = "TheNoctambulist", email = "thenoctambulist@zoho.com" },
+]
+dependencies = [
+    "typing-extensions>=4.9.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: AsyncIO",
+    "Typing :: Typed",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/thenoctambulist/pyairtouch"
+Issues = "https://github.com/thenoctambulist/pyairtouch/issues"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.ruff.lint]
+select = [
+    "ALL",
+]
+ignore = [
+    "D417",
+    "EM101",
+    "EM102",
+    "RUF022",
+    "TRY003",
+    "W191",
+    "E111",
+    "E114",
+    "E117",
+    "D206",
+    "D300",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "COM812",
+    "COM819",
+    "ISC001",
+    "ISC002",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+strict = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pre-commit>=3.6.0",
+    "mypy>=1.8.0",
+    "ruff>=0.1.9",
+]
+test = [
+    "pytest>=7.4.3",
+]
+
+[tool.pdm.scripts.example]
+cmd = "python3 examples/example.py"
