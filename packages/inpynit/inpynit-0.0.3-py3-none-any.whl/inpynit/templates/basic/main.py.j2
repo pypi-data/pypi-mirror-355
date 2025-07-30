@@ -1,0 +1,39 @@
+"""
+{{ project_name }} - {{ description }}
+
+Created with inpynit 🚀
+"""
+
+try:
+    from ._version import version as __version__
+except ImportError:
+    # 개발 모드이거나 setuptools_scm이 실행되지 않은 경우
+    try:
+        from importlib.metadata import version
+        __version__ = version("{{ project_name }}")
+    except Exception:
+        __version__ = "0.0.0+dev"
+
+__author__ = "{{ author }}"
+__email__ = "{{ email }}"
+
+
+def hello_world() -> str:
+    """
+    Hello World 함수입니다.
+    
+    Returns:
+        str: 인사말
+    """
+    return f"Hello from {{ project_name }}! 🎉"
+
+
+def main():
+    """메인 함수"""
+    print(hello_world())
+    print("{{ project_name }} 프로젝트가 성공적으로 생성되었습니다!")
+    print("이제 여러분만의 코드를 작성해보세요! ✨")
+
+
+if __name__ == "__main__":
+    main() 
