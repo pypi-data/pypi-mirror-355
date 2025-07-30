@@ -1,0 +1,528 @@
+Metadata-Version: 2.4
+Name: rl8
+Version: 0.3.0
+Summary: A high throughput, end-to-end RL library for infinite horizon tasks.
+Author: Andrew B.
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright [yyyy] [name of copyright owner]
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+        
+Project-URL: Repository, https://github.com/theOGognf/rl8
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development
+Classifier: Topic :: Scientific/Engineering
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mlflow-skinny==2.*
+Requires-Dist: pandas==2.*
+Requires-Dist: psutil==5.*
+Requires-Dist: torchrl==0.*
+Requires-Dist: typing-extensions
+Provides-Extra: dev
+Requires-Dist: build[virtualenv]; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: pytest-xdist; extra == "dev"
+Requires-Dist: pytest-randomly; extra == "dev"
+Requires-Dist: sphinx; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: types-PyYAML; extra == "dev"
+Requires-Dist: virtualenv; extra == "dev"
+Dynamic: license-file
+
+# ![rl8 logo.][13]
+
+![PyPI Downloads](https://img.shields.io/pypi/dm/rl8)
+![PyPI Version](https://img.shields.io/pypi/v/rl8)
+![Python Versions](https://img.shields.io/pypi/pyversions/rl8)
+
+**rl8** is a minimal end-to-end RL library that can simulate highly
+parallelized, infinite horizon environments, and can train a PPO policy
+using those environments, achieving up to 1M environment transitions
+(and one policy update) per second using a single NVIDIA RTX 2080.
+
+* **Documentation**: https://theogognf.github.io/rl8/
+* **PyPI**: https://pypi.org/project/rl8/
+* **Repository**: https://github.com/theOGognf/rl8
+
+The figure below depicts **rl8**'s experiment tracking integration with
+[MLflow][3] and **rl8**'s ability to solve reinforcement learning problems
+within seconds.
+
+![Consistently solving CartPole within seconds.][12]
+
+# Quick Start
+
+## Installation
+
+Install with pip for the latest stable version.
+
+```console
+pip install rl8
+```
+
+Install from GitHub for the latest unstable version.
+
+```console
+git clone https://github.com/theOGognf/rl8.git
+pip install ./rl8/
+```
+
+## Basic Usage
+
+Train a policy with PPO and log training progress with MLflow using the
+high-level trainer interface (this updates the policy indefinitely).
+
+```python
+from rl8 import Trainer
+from rl8.env import DiscreteDummyEnv
+
+trainer = Trainer(DiscreteDummyEnv)
+trainer.run()
+```
+
+Collect environment transitions and update a policy directly using the
+low-level algorithm interface (this updates the policy once).
+
+```python
+from rl8 import Algorithm
+from rl8.env import DiscreteDummyEnv
+
+algo = Algorithm(DiscreteDummyEnv)
+algo.collect()
+algo.step()
+```
+
+The trainer interface is the most popular interface for policy training
+workflows, whereas the algorithm interface is useful for lower-level
+customization of policy training workflows.
+
+# Concepts
+
+**rl8** is minimal in that it limits the number of interfaces required for
+training a policy with PPO without restrictions on observation and action
+specs, custom models, and custom action distributions.
+
+**rl8** is built around six key concepts:
+
+* **[The environment][14]**: The simulation that the policy learns to interact with.
+  The environment definition is a bit different from your typical environment
+  definition from other RL libraries.
+* **[The model][15]**: The policy parameterization that determines how the policy
+  processes environment observations and how parameters for the action
+  distribution are generated.
+* **[The action distribution][16]**: The mechanism for representing actions
+  conditioned on environment observations and model outputs. Environment
+  actions are ultimately sampled from the action distribution.
+* **[The policy][17]**: The union of the model and the action distribution that
+  actually calls and samples from the model and action distribution,
+  respectively.
+* **[The algorithm][18]**: The PPO implementation that uses the environment to train
+  the policy (i.e., update the model's parameters).
+* **[The trainer][19]**: The high-level interface for using the algorithm to train
+  indefinitely or until some condition is met. The trainer directly integrates
+  with MLflow to track experiments and training progress.
+
+# Quick Examples
+
+These short snippets showcase **rl8**'s main features. See the [examples][2]
+for complete implementations of **rl8**-compatible environments and models.
+
+## Customizing Training Runs
+
+Use a custom distribution and custom hyperparameters by passing
+options to the trainer (or algorithm) interface.
+
+```python
+from rl8 import SquashedNormal, Trainer
+from rl8.env import ContinuousDummyEnv
+
+trainer = Trainer(
+    ContinuousDummyEnv,
+    distribution_cls=SquashedNormal,
+    gae_lambda=0.99,
+    gamma=0.99,
+)
+trainer.run()
+```
+
+## Training a Recurrent Policy
+
+Swap to the recurrent flavor of the trainer (or algorithm) interface
+to train a recurrent model and policy.
+
+```python
+from rl8 import RecurrentTrainer
+from rl8.env import DiscreteDummyEnv
+
+trainer = RecurrentTrainer(DiscreteDummyEnv)
+trainer.run()
+```
+
+## Training on a GPU
+
+Specify the device used across the environment, model, and
+algorithm.
+
+```python
+from rl8 import Trainer
+from rl8.env import DiscreteDummyEnv
+
+trainer = Trainer(DiscreteDummyEnv, device="cuda")
+trainer.run()
+```
+
+## Minimizing GPU Memory Usage
+
+Enable policy updates with gradient accumulation and/or
+[Automatic Mixed Precision (AMP)][1] to minimize GPU memory
+usage so you can simulate more environments or use larger models.
+
+```python
+import torch.optim as optim
+
+from rl8 import Trainer
+from rl8.env import DiscreteDummyEnv
+
+trainer = Trainer(
+    DiscreteDummyEnv,
+    optimizer_cls=optim.SGD,
+    accumulate_grads=True,
+    enable_amp=True,
+    sgd_minibatch_size=8192,
+    device="cuda",
+)
+trainer.run()
+```
+
+## Specifying Training Stop Conditions
+
+Specify conditions based on training statistics to stop training early.
+
+```python
+from rl8 import Trainer
+from rl8.conditions import Plateaus
+from rl8.env import DiscreteDummyEnv
+
+trainer = Trainer(DiscreteDummyEnv)
+trainer.run(stop_conditions=[Plateaus("returns/mean", rtol=0.05)])
+```
+
+## Training with the CLI
+
+Suppose `./config.yaml` contains the following.
+
+```yaml
+# Fully qualified path to the environment's definition.
+env_cls: rl8.env.ContinuousDummyEnv
+
+# Some custom parameters.
+gamma: 0.75
+horizon: 8
+```
+
+Train a policy with the trainer interface using the `rl8 train` CLI.
+
+```console
+rl8 train -f config.yaml
+```
+
+# Why rl8?
+
+**TL;DR: rl8 focuses on a niche subset of RL that simplifies the overall
+library while allowing fast and fully customizable environments, models, and
+action distributions.**
+
+There are many high quality, open-sourced RL libraries. Most of them take on the
+daunting task of being a monolithic, one-stop-shop for everything RL, attempting to
+support as many algorithms, environments, models, and compute capabilities as possible.
+Naturely, this monolothic goal has some drawbacks:
+
+* The software becomes more dense with each supported feature, making the library
+  all-the-more difficult to customize for a specific use case.
+* The software becomes less performant for a specific use case. RL practitioners
+  typically end up accepting the cost of transitioning to expensive and
+  difficult-to-manage compute clusters to get results faster.
+
+Rather than focusing on being a monolithic RL library, **rl8** fills the niche
+of maximizing training performance for a few key assumptions:
+
+* Environments are highly parallelized and their parallelization is entirely
+  managed within the environment. This allows **rl8** to ignore distributed
+  computing design considerations.
+* Environments are infinite horizon (i.e., they have no terminal conditions).
+  This allows **rl8** to reset environments at the same, fixed horizon
+  intervals, greatly simplifying environment and algorithm implementations.
+* The only supported ML framework is PyTorch and the only supported algorithm
+  is PPO. This allows **rl8** to ignore layers upon layers of abstraction,
+  greatly simplifying the overall library implementation.
+
+The end result is a minimal and high throughput library that can train policies
+to solve complex tasks within minutes on consumer grade compute devices.
+
+Unfortunately, this means **rl8** doesn't support as many use cases as
+a monolithic RL library might. In fact, **rl8** is probably a bad fit for
+your use case if:
+
+* Your environment isn't parallelizable.
+* Your environment must contain terminal conditions and can't be reformulated
+  as an infinite horizon task.
+* You want to use an ML framework that isn't PyTorch or you want to use an
+  algorithm that isn't a variant of PPO.
+
+However, if **rl8** does fit your use case, it can do wonders for your
+RL workflow.
+
+# Related Projects
+
+* [PureJaxRL][4]: PureJaxRL is a high-performance, end-to-end RL library. Think of
+  it like **rl8**'s Jax equivalent, but more general in that it doesn't focus
+  on infinite horizon tasks.
+* [RL Games][5]: RL Games is a high performance RL library built around popular
+  environment protocols.
+* [RLlib][6]: Ray's RLlib is the industry standard RL library that supports many
+  popular RL algorithms. RLlib can scale RL workloads from your laptop all the
+  way to the cloud with little-to-no changes to your code.
+* [Sample Factory][7]: Sample Factory provides an efficient and high quality
+  implementation of PPO with a focus on accelerating training for a single machine
+  with support for a wide variety of environment protocols.
+* [SKRL][8]: SKRL focuses on readability, simplicity, and transparency of RL algorithm
+  implementations with support for a wide variety of environment protocols.
+* [Stable Baselines 3][9]: Stable Baselines 3 is a set of reliable and user-friendly
+  RL algorithm implementations that integrate with a rich set of features desirable
+  by most practitioners and use cases.
+* [TorchRL][10]: TorchRL is PyTorch's RL library that's focused on efficient, modular,
+  documented, and tested RL building blocks and algorithm implementations aimed
+  at supporting research in RL. TorchRL is a direct dependency of **rl8**.
+* [WarpDrive][11]: WarpDrive is a flexible, lightweight, and easy-to-use open-source
+  RL framework that implements end-to-end multi-agent RL on a single or multiple
+  GPUs. Think of it like **rl8**, but with an emphasis on support for multi-agent
+  RL and without a focus on infinite horizon tasks.
+
+[1]: https://pytorch.org/docs/stable/amp.html
+[2]: https://github.com/theOGognf/rl8/tree/main/examples
+[3]: https://github.com/mlflow/mlflow
+[4]: https://github.com/luchris429/purejaxrl
+[5]: https://github.com/Denys88/rl_games
+[6]: https://docs.ray.io/en/latest/rllib/index.html
+[7]: https://github.com/alex-petrenko/sample-factory
+[8]: https://github.com/Toni-SM/skrl
+[9]: https://github.com/DLR-RM/stable-baselines3
+[10]: https://github.com/pytorch/rl
+[11]: https://github.com/salesforce/warp-drive
+[12]: https://raw.githubusercontent.com/theOGognf/rl8/main/docs/_static/rl8-examples-solving-cartpole.png
+[13]: https://raw.githubusercontent.com/theOGognf/rl8/main/docs/_static/rl8-logo.png
+[14]: https://theogognf.github.io/rl8/build/html/_modules/rl8/env.html#Env
+[15]: https://theogognf.github.io/rl8/build/html/_modules/rl8/models/_base.html#GenericModelBase
+[16]: https://theogognf.github.io/rl8/build/html/_modules/rl8/distributions.html#Distribution
+[17]: https://theogognf.github.io/rl8/build/html/_modules/rl8/policies/_base.html#GenericPolicyBase
+[18]: https://theogognf.github.io/rl8/build/html/_modules/rl8/algorithms/_base.html#GenericAlgorithmBase
+[19]: https://theogognf.github.io/rl8/build/html/_modules/rl8/trainers/_base.html#GenericTrainerBase

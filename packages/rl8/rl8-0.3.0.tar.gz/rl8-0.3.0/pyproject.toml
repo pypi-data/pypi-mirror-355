@@ -1,0 +1,151 @@
+[build-system]
+requires = [
+    "setuptools>=64.0",
+    "setuptools_scm[toml]>=5"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rl8"
+description = "A high throughput, end-to-end RL library for infinite horizon tasks."
+authors = [{name = "Andrew B."}]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Typed"
+]
+dependencies = [
+    "mlflow-skinny==2.*",
+    "pandas==2.*",
+    "psutil==5.*",
+    "torchrl==0.*",
+    "typing-extensions"
+]
+dynamic = ["version"]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.scripts]
+rl8 = "rl8.__main__:main"
+
+[project.urls]
+Repository = "https://github.com/theOGognf/rl8"
+
+[project.optional-dependencies]
+dev = [
+    "build[virtualenv]",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+    "pytest-randomly",
+    "sphinx",
+    "tox",
+    "types-PyYAML",
+    "virtualenv"
+]
+
+[tool.isort]
+profile = "black"
+src_paths = [
+    "examples",
+    "src",
+    "tests"
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+implicit_reexport = true
+no_implicit_optional = true
+show_error_codes = true
+strict = true
+disable_error_code = "misc,no-untyped-call"
+
+[tool.setuptools_scm]
+version_scheme = "no-guess-dev"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+
+[testenv:{test, typecheck}]
+description =
+    test: Run unit tests.
+    typecheck: Run static type analysis.
+changedir = {toxinidir}
+setenv =
+    TOXINIDIR = {toxinidir}
+passenv =
+    PIP_CACHE
+    PIP_TRUSTED_HOST
+extras =
+    dev
+commands =
+    test: pytest {posargs}
+    typecheck: mypy {posargs:src}
+
+[testenv:lint]
+description = Lint the package.
+skip_install = True
+deps = pre-commit
+passenv =
+    TERM
+commands =
+    pre-commit run --all-files
+
+[testenv:{clean,build}]
+description =
+    clean: Remove old distribution files and temporary build artifacts (./build and ./dist)
+    build: Build the package in isolation according to PEP517, see https://github.com/pypa/build
+# https://setuptools.pypa.io/en/latest/build_meta.html#how-to-use-it
+skip_install = True
+changedir = {toxinidir}
+deps =
+    build: build[virtualenv]
+commands =
+    clean: python -c 'import shutil; [shutil.rmtree(p, True) for p in ("build", "dist", "docs/build")]'
+    clean: python -c 'import pathlib, shutil; [shutil.rmtree(p, True) for p in pathlib.Path("src").glob("*.egg-info")]'
+    build: python -m build {posargs}
+
+[testenv:{docs,doctests,linkcheck}]
+description =
+    docs: Invoke sphinx-build to build the docs
+    doctests: Invoke sphinx-build to run doctests
+    linkcheck: Check for broken links in the documentation
+setenv =
+    DOCSDIR = {toxinidir}/docs
+    BUILDDIR = {toxinidir}/docs/build
+    docs: BUILD = html
+    doctests: BUILD = doctest
+    linkcheck: BUILD = linkcheck
+deps =
+    -r {toxinidir}/docs/requirements.txt
+commands =
+    sphinx-build -E -a --color -b {env:BUILD} -d "{env:BUILDDIR}/doctrees" "{env:DOCSDIR}" "{env:BUILDDIR}/{env:BUILD}" {posargs}
+
+[testenv:publish]
+description =
+    Publish the package you have been developing to a package index server.
+    By default, it uses testpypi. If you really want to publish your package
+    to be publicly accessible in PyPI, use the `--repository pypi` option.
+skip_install = True
+changedir = {toxinidir}
+passenv =
+    TWINE_USERNAME
+    TWINE_PASSWORD
+    TWINE_REPOSITORY
+deps = twine
+commands =
+    python -m twine check dist/*
+    python -m twine upload {posargs:--repository {env:TWINE_REPOSITORY:testpypi}} dist/*
+"""
