@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqlazo"
+version = "0.2.0"
+description = "Managing small SQLITE database files"
+readme = { file = "README.md", content-type = "text/markdown", charset = "utf-8" }
+license = { text = "MIT License" }
+authors = [{name = "Tutos Rive", email = "support@dev2forge.software"}]
+dependencies = [
+    "chromologger>=0.1.4, <=0.1.10"
+]
+requires-python = ">=3.7"
+classifiers=[
+    # Estado del desarrollo
+    "Development Status :: 5 - Production/Stable",
+
+    # Audiencia del paquete
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+
+    # Propósito del software
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: System :: Monitoring",
+    "Topic :: Utilities",
+
+    # Compatibilidad de licencia
+    "License :: OSI Approved :: MIT License",
+
+    # Compatibilidad con Python
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+
+    # Características adicionales
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Environment :: Other Environment",
+]
+
+
+[tool.setuptools.packages]
+find = { include = ["sqlazo"] }
+
+[project.urls]
+"Homepage" = "https://docs.dev2forge.software/sqlazo/"
+"Repository" = "https://github.com/Dev2Forge/sqlazo/"
+"YouTube" = "https://www.youtube.com/@dev2forge"
