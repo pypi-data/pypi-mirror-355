@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "casual-mcp-server-weather"
+version = "1.0.1"
+description = "Weather and Air quality utilities as an MCP server"
+authors = [{name = "Alex Stansfield"}]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp",
+    "pydantic",
+    "requests",
+]
+
+[project.urls]
+Homepage = "https://github.com/casualgenius/mcp-servers"
+Issues = "https://github.com/casualgenius/mcp-serverss/issues"
+Source = "https://github.com/casualgenius/mcp-servers"
+
+[project.scripts]
+casual-mcp-server-weather = "casual_mcp_server_weather.server:main"
