@@ -1,0 +1,42 @@
+[build-system]
+requires = [
+  "hatchling",
+  "hatch-requirements-txt",
+  "hatch-fancy-pypi-readme>=22.5.0",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "gradio_spreadsheetcomponent"
+version = "0.0.3"
+description = "This component is used to answer questions about spreadsheets."
+readme = "README.md"
+license = "apache-2.0"
+requires-python = ">=3.10"
+authors = [{ name = "Mustafizur Rahman", email = "mustafizz996@gmail.com" }]
+keywords = ["gradio-custom-component", "gradio-spreadsheet-custom-component"]
+dependencies = [
+    "gradio>=4.0,<6.0",
+    "pandas",
+    "openpyxl",
+    "huggingface-hub"
+]
+classifiers = [
+  'Development Status :: 3 - Alpha',
+  'Operating System :: OS Independent',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3 :: Only',
+  'Programming Language :: Python :: 3.8',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Topic :: Scientific/Engineering',
+  'Topic :: Scientific/Engineering :: Artificial Intelligence',
+  'Topic :: Scientific/Engineering :: Visualization',
+]
+
+[tool.hatch.build]
+artifacts = ["/backend/gradio_spreadsheetcomponent/templates", "*.pyi", "backend/gradio_spreadsheetcomponent/templates", "../hf_env/Lib/site-packages/gradio_spreadsheetcomponent/templates", "/\\backend\\gradio_spreadsheetcomponent\\templates"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["/backend/gradio_spreadsheetcomponent"]
