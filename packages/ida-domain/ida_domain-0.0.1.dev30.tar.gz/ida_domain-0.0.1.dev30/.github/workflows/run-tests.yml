@@ -1,0 +1,57 @@
+name: Run tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:  
+  
+permissions:
+  contents: read
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+    
+    - name: Set up Python and uv
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+    
+    - name: Install IDA 
+      run: |
+        echo "Installing hcli..."
+        uv tool install ida-hcli
+        echo "Downloading IDA..."
+        hcli download ida-pro_91_x64linux.run
+        echo "Installing IDA..."
+        mkdir -p /opt/ida/
+        hcli ida install ida-pro_91_x64linux.run -i /opt/ida/
+        echo "Configuring IDA..."
+        hcli license get --id ${{ secrets.IDA_LICENSE_ID }} --output-dir $HOME/.idapro
+        ls $HOME/.idapro/
+        echo "Done!"
+        dir /opt/ida/
+      env:
+        HCLI_API_KEY: ${{ secrets.HCLI_API_KEY }}
+
+        
+    - name: Sync dependencies and run tests
+      run: |
+        # Sync project dependencies
+        uv sync --extra dev
+        
+        # Run your tests
+        uv run pytest -v
+      env:
+        IDADIR: /opt/ida/
