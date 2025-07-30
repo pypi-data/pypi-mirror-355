@@ -1,0 +1,56 @@
+[project]
+license = {text = "MIT"}
+version = "6.0.1"
+name = "banditpam"
+requires-python = ">= 3.10"
+authors = [
+  {name = "Mo Tiwari", email = "mohittiwarinyc@gmail.com"},
+  {name = "Balasubramanian Narasimhan", email = "naras@stanford.edu"},
+]
+maintainers = [
+  {name = "Mo Tiwari", email = "mohittiwarinyc@gmail.com"},
+  {name = "Balasubramanian Narasimhan", email = "naras@stanford.edu"},
+]
+readme = "README.md"
+description = "BanditPAM: A state-of-the-art, high-performance k-medoids algorithm."
+
+
+
+[tool.cibuildwheel]
+
+[tool.cibuildwheel.linux]
+# Get dependencies
+before-all = [
+    "scripts/docker/cibw_before_all_linux.sh",
+]
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "universal2", "arm64"]
+
+# Get dependencies
+before-all = [
+    "scripts/docker/cibw_before_all_macos.sh",
+]
+
+# The Anaconda version of szip is out of date, and since it appears first in the DYLD_LIBRARY_PATH, you may need to upgrade it with "conda install -c csdms-stack szip"
+# Also see https://cibuildwheel.readthedocs.io/en/stable/faq/#macos-passing-dyld_library_path-to-delocate and https://github.com/pypa/cibuildwheel/issues/816
+# NOTE: We removed the --require-archs {delocate_archs} from the delocate-wheel command temporarily. Even when building all MacOS wheels at once, it throws an error.
+#repair-wheel-command = [
+#    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib delocate-listdeps {wheel}",
+#    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}"
+#]
+
+# Adding /usr/local/lib because that's where armadillo is installed from the repo
+repair-wheel-command = [
+    "delocate-listdeps --depending {wheel}",
+    "delocate-listdeps {wheel}",
+    "delocate-wheel -v -w {dest_dir} {wheel}"
+]
+
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "numpy",
+    "pybind11",
+]
