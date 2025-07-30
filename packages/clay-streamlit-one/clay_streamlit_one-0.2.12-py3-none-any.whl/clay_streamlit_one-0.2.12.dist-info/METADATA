@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: clay_streamlit_one
+Version: 0.2.12
+Summary: A minimal streamlit app framework
+Author-email: "Ariel E." <ariel@claysciences.com>
+License: MIT
+Project-URL: Homepage, https://github.com/claysciences/clay_streamlit_one
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit>=1.23
+Requires-Dist: loguru
+Provides-Extra: dev
+Requires-Dist: bumpver; extra == "dev"
+Dynamic: license-file
+
+## Clay-Streamlit
+
+Are you tired of the boilerplate needed to actually run a useful streamlit app? I was.
+
+* Create multipage apps simply by defining list of pages
+* Each page has a name, lambda to show contents, and lambda to show sidebar
+
+* Run your code simply by calling `python <myfile.py>`
+* No need to complicate launch.json with `streamlit run <myfile>` commands
+* Makes debugging and working in containers simpler
+
+```
+from clay_streamlit_one import AppPage, ClayStreamlitApp
+
+pages_list = [
+        AppPage.AppPage("first page", 
+            None, 
+            lambda: st.button("This is a button for the first page") 
+        ),
+        AppPage.AppPage("Hi", 
+            lambda: st.code(demo_code) and st.write("Success! ClayStreamlitApp is working"),
+            None
+        ),
+        ]
+
+myapp = ClayStreamlitApp.ClayStreamlitApp()
+myapp.set_pages(pages_list)
+myapp.run()
+```
