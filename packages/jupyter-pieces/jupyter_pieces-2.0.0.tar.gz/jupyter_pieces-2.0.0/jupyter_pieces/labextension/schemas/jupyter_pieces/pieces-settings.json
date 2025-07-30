@@ -1,0 +1,22 @@
+{
+  "title": "Pieces Settings",
+  "description": "Settings for the Pieces extension",
+  "icon": "jupyter_pieces:logo",
+  "properties": {
+    "AutoOpen": {
+      "type": "boolean",
+      "title": "Auto-Open Pieces Panel on Material Save",
+      "description": "Automatically opens the Pieces Material panel when a Material is saved.",
+      "default": true
+    },
+    "Capabilities": {
+      "type": "string",
+      "title": "Cloud Capabilities",
+      "enum": ["Local", "Blended"],
+      "description": "Select if you'd like to utilize the cloud only, local only, or a blend of both. (Please Refresh JupyterLab after changing this setting.)",
+      "default": "Blended"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
