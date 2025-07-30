@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: pycolRxC
+Version: 0.1.0
+Summary: A Python implementation of the ecolRxC algorithm
+Author: Guilherme Calé
+Author-email: guicale@posteo.net
+License: GPL-2.0-or-later
+License-File: COPYING
+Requires-Dist: numpy
+Requires-Dist: numba
+Requires-Dist: pandas
+Requires-Dist: seaborn
+Requires-Dist: scipy<=1.15.3
+Dynamic: license-file
+
+# pycolRxC
+
+## A Python implementation of the ecolRxC algorithm
+
+### Description
+
+This project is an implementation of the ecolRxC algorithm, described[1] 
+and originally implemented in R[2] by Jose M. Pavia and Søren Risbjerg Thomsen.
+
+This implementation makes use of NumPy, SciPy and Numba, and reaches a 100-time
+speed-up compared to the original R implementation or a Python version without using Numba.
+This has been benchmarked with a small dataset, the same as in `example.py`, using
+`timeit` for the Python implementation and `microbenchmark` for the original R library.
+On this dataset, the R implementation took on average between 3 and 5 minutes,
+while this implementation takes about 2 to 3 seconds.
+
+For a description of the algorithm, please consult [1], and for a simple example
+on using this library look at `example.py`.
+
+Also, please note that only a small subset of the original library's features
+have been implemented. Notably, only the probit-scale Thomsen method for matrices larger
+than 2-by-2 has been implemented. In addition, the following have **not** been implemented:
+
+- census changes
+
+- references
+
+- confidence intervals
+
+- Yule’s approximation
+
+However, most of the groundwork has been laid such that ir should be trivial to
+add all the capabilities of the original.
+
+[1] Pavía, J. M., & Thomsen, S. R. (2024).
+ecolRxC: Ecological inference estimation of R × C tables using latent structure approaches.
+Political Science Research and Methods, 1–19. doi:10.1017/psrm.2024.57
+
+[2] https://cran.r-project.org/web/packages/ecolRxC/index.html
