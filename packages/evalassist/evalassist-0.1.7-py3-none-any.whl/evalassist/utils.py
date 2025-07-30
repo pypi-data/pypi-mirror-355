@@ -1,0 +1,413 @@
+import functools
+import json
+import logging
+import os
+import re
+import time
+import traceback
+from enum import Enum
+from typing import Optional
+
+from botocore.exceptions import NoCredentialsError
+from fastapi import HTTPException
+from ibm_watsonx_ai.wml_client_error import (
+    ApiRequestFailure,
+    CannotSetProjectOrSpace,
+    WMLClientError,
+)
+from langchain_core.exceptions import OutputParserException
+from openai import AuthenticationError, NotFoundError
+from torch import device
+from unitxt.inference import (
+    CrossProviderInferenceEngine,
+    HFAutoModelInferenceEngine,
+    TorchDeviceMixin,
+    WMLInferenceEngineGeneration,
+)
+from unitxt.llm_as_judge import EvaluatorNameEnum, ModelProviderEnum
+
+from .const import (
+    EXTENDED_EVALUATOR_TO_MODEL_ID,
+    EXTENDED_EVALUATORS_METADATA,
+    ExtendedEvaluatorMetadata,
+    ExtendedEvaluatorNameEnum,
+    ExtendedModelProviderEnum,
+)
+
+logger = logging.getLogger(__name__)
+
+
+def fill_unknown_template(template: str, value: str) -> str:
+    # Case 1: Unnamed placeholder(s) like "hello {}"
+    if "{}" in template:
+        return template.format(value)
+
+    # Case 2: Named placeholder like "hello {world}"
+    match = re.search(r"\{(\w+)\}", template)
+    if match:
+        var_name = match.group(1)
+        return template.format(**{var_name: value})
+
+    # Case 3: No placeholder
+    return template
+
+
+def get_custom_models():
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(base_path, "..", "custom_models.json")
+    if not os.path.exists(json_path):
+        json_path = os.path.join(base_path, "..", "..", "custom_models.json")
+    if os.path.exists(json_path):
+        with open(json_path, "r", encoding="utf-8") as file:
+            try:
+                custom_models = json.load(file)
+                return custom_models
+            except Exception:
+                raise ValueError("The custom_models json format is wrong")
+    else:
+        return []
+
+
+def convert_model_name_wx_to_hf(wx_model_name):
+    model_map = {
+        "ibm/granite-guardian-3-2b": "ibm-granite/granite-guardian-3.1-2b",
+        "ibm/granite-guardian-3-8b": "ibm-granite/granite-guardian-3.1-8b",
+    }
+    try:
+        return model_map[wx_model_name]
+    except KeyError:
+        return wx_model_name
+
+
+def get_enum_by_value(value: str, enum: Enum) -> Enum:
+    for enum_member in enum:
+        if enum_member.value == value:
+            return enum_member
+    return None
+
+
+def get_local_hf_inference_engine_params(
+    model_name: str,
+):
+    return {
+        "model_name": convert_model_name_wx_to_hf(model_name),
+        "max_new_tokens": 1024,
+        "device": get_default_torch_device(),
+    }
+
+
+def get_cross_inference_engine_params(
+    credentials: dict,
+    provider: ModelProviderEnum,
+    model_name: str,
+    custom_params: dict = None,
+    provider_specific_params: dict = None,
+):
+    provider_specific_args = {}
+    inference_engine_params = {
+        "max_tokens": 1024,
+        "seed": 42,
+        "credentials": credentials.copy(),
+    }
+    if provider == ModelProviderEnum.WATSONX:
+        provider_specific_args[ModelProviderEnum.WATSONX] = {
+            "max_requests_per_second": 7
+        }
+
+    if (
+        provider == ModelProviderEnum.AZURE
+        or provider == ExtendedModelProviderEnum.OPENAI_LIKE
+    ):
+        inference_engine_params["credentials"]["api_base"] = fill_unknown_template(
+            credentials["api_base"], model_name
+        )
+
+    elif provider == ExtendedModelProviderEnum.OPENAI_LIKE:
+        provider = ModelProviderEnum.OPENAI
+
+    if custom_params is not None:
+        inference_engine_params.update(custom_params)
+    if provider_specific_params is not None:
+        provider_specific_args.update(provider_specific_params)
+    inference_engine_params["model"] = model_name
+    inference_engine_params["provider"] = provider.value
+    inference_engine_params["provider_specific_args"] = provider_specific_args
+    return inference_engine_params
+
+
+def get_cross_inference_engine(
+    credentials: dict[str, str],
+    provider: ModelProviderEnum,
+    model_name: EvaluatorNameEnum,
+    custom_params: dict = None,
+    provider_specific_params: dict = None,
+):
+    inference_engine_params = get_cross_inference_engine_params(
+        credentials=credentials,
+        provider=provider,
+        model_name=model_name,
+        custom_params=custom_params,
+        provider_specific_params=provider_specific_params,
+    )
+
+    return CrossProviderInferenceEngine(**inference_engine_params)
+
+
+def get_watsonx_inference_engine(
+    credentials: dict[str, str],
+    provider: ModelProviderEnum,
+    model_name: EvaluatorNameEnum,
+    custom_params: dict = None,
+):
+    inference_engine_params = {
+        "max_new_tokens": 1024,
+        "credentials": {
+            "api_key": credentials["api_key"],
+            "project_id": credentials["project_id"],
+            "url": credentials["api_base"],
+        },
+        "model_name": model_name,
+    }
+    if custom_params is not None:
+        inference_engine_params.update(custom_params)
+    return WMLInferenceEngineGeneration(**inference_engine_params)
+
+
+preloaded_hf_models = {}
+
+
+def get_hf_inference_engine(
+    model_name: str,
+    custom_params: dict = None,
+):
+    global preloaded_hf_models
+    if model_name in preloaded_hf_models:
+        logger.debug(f"Using preloaded HF model {model_name}")
+        return preloaded_hf_models[model_name]
+    else:
+        logger.debug(f"Loading model {model_name}")
+        params = get_local_hf_inference_engine_params(model_name)
+        if custom_params is not None:
+            params.update(custom_params)
+        hf_model = HFAutoModelInferenceEngine(**params)
+        preloaded_hf_models[model_name] = hf_model
+        return hf_model
+
+
+def get_inference_engine(
+    credentials: dict[str, str],
+    provider: ModelProviderEnum | ExtendedModelProviderEnum,
+    model_name: str,
+    custom_params: dict = None,
+    provider_specific_params: dict = None,
+):
+    if provider == ExtendedModelProviderEnum.LOCAL_HF:
+        return get_hf_inference_engine(model_name, custom_params)
+    if provider == ModelProviderEnum.WATSONX and "granite-guardian" in model_name:
+        return get_watsonx_inference_engine(
+            credentials, provider, model_name, custom_params
+        )
+    return get_cross_inference_engine(
+        credentials, provider, model_name, custom_params, provider_specific_params
+    )
+
+
+def get_model_name_from_evaluator(
+    evaluator_metadata: ExtendedEvaluatorMetadata,
+    provider: str,
+) -> str:
+    model_name = EXTENDED_EVALUATOR_TO_MODEL_ID.get(evaluator_metadata.name, None)
+    return (
+        evaluator_metadata.custom_model_path
+        if evaluator_metadata.custom_model_path is not None
+        else model_name
+    )
+
+
+def get_evaluator_metadata_wrapper(
+    evaluator_name: EvaluatorNameEnum | ExtendedEvaluatorNameEnum,
+    custom_model_name: Optional[str] = None,
+) -> ExtendedEvaluatorMetadata:
+    if evaluator_name.name != ExtendedEvaluatorNameEnum.CUSTOM.name:
+        evaluator_search = [
+            e
+            for e in EXTENDED_EVALUATORS_METADATA
+            if e.name.name == evaluator_name.name
+        ]
+        if len(evaluator_search) == 0:
+            raise ValueError(f"An evaluator with id {evaluator_name} does not exist.")
+        if len(evaluator_search) > 1:
+            raise ValueError(
+                f"An evaluator with id {evaluator_name} matched several models."
+            )
+        return evaluator_search[0]
+    else:
+        custom_models = get_custom_models()
+        if custom_model_name not in [
+            custom_model["name"] for custom_model in custom_models
+        ]:
+            raise ValueError("The specified custom model was not found")
+
+        custom_model = [
+            custom_model
+            for custom_model in custom_models
+            if custom_model["name"] == custom_model_name
+        ][0]
+        return ExtendedEvaluatorMetadata(
+            name=evaluator_name,
+            custom_model_name=custom_model["name"],
+            custom_model_path=custom_model["path"],
+            providers=[
+                ExtendedModelProviderEnum(p)
+                if p in ExtendedModelProviderEnum
+                else ModelProviderEnum(p)
+                for p in custom_model["providers"]
+            ],
+        )
+
+
+def get_default_torch_device(avoid_mps: bool = False) -> device:
+    device = TorchDeviceMixin().get_device_id()
+    logger.debug(f"Detected device: {device}")
+    return device
+
+
+def init_evaluator_name(
+    evaluator_name: str,
+) -> tuple[ExtendedEvaluatorNameEnum, Optional[str]]:
+    evaluator_name_as_enum = get_enum_by_value(evaluator_name, EvaluatorNameEnum)
+    if evaluator_name_as_enum is None:
+        evaluator_name_as_enum = get_enum_by_value(
+            evaluator_name, ExtendedEvaluatorNameEnum
+        )
+    custom_model_name = None
+    if evaluator_name_as_enum is not None:
+        return (evaluator_name_as_enum, None)
+
+    custom_model_name = evaluator_name
+    evaluator_name = ExtendedEvaluatorNameEnum.CUSTOM
+    return (evaluator_name, custom_model_name)
+
+
+def log_runtime(function):
+    """
+    Usage: wrap a function call with the log_runtime function to log its runtime
+    """
+
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+
+        res = function(*args, **kwargs)
+
+        end_time = time.time()
+        total_time = round(end_time - start_time, 2)
+
+        logger.debug(
+            f"{function.__name__} took {total_time} seconds, {round(total_time / 60, 2)} minutes"
+        )
+
+        return res
+
+    return wrapper
+
+
+def to_snake_case(name: str) -> str:
+    return name.replace(" ", "_").lower()
+
+
+def parse_exception_message(e: Exception) -> str:
+    error_message = e.message if hasattr(e, "message") else None
+    if error_message is None:
+        return str(e)
+    result = error_message.split(" - ", 1)
+    if len(result) == 1:
+        return result[0]
+    try:
+        result = json.loads(result[1])
+    except json.JSONDecodeError:
+        return result[1]
+    if "errorMessage" in result:
+        return result["errorMessage"]
+    elif (
+        "errors" in result
+        and len(result["errors"]) > 0
+        and "message" in result["errors"][0]
+    ):
+        return result["errors"][0]["message"]
+    elif "title" in result:
+        return result["detail"]
+    else:
+        return str(result)
+
+
+def handle_exception(e: Exception) -> None:
+    error_message = parse_exception_message(e)
+    if isinstance(e, OutputParserException):
+        raise HTTPException(
+            status_code=400,
+            detail=error_message,
+        ) from e
+    elif isinstance(e, NotFoundError):
+        raise HTTPException(status_code=400, detail=error_message)
+    elif isinstance(e, ValueError):
+        raise HTTPException(status_code=400, detail=error_message)
+    elif isinstance(e, ApiRequestFailure):
+        raise HTTPException(status_code=400, detail=error_message)
+    elif isinstance(e, NoCredentialsError):
+        raise HTTPException(
+            status_code=400,
+            detail=error_message,
+        )
+    elif isinstance(e, AuthenticationError):
+        raise HTTPException(status_code=400, detail=error_message)
+    elif isinstance(e, CannotSetProjectOrSpace):
+        raise HTTPException(status_code=400, detail=error_message)
+    elif isinstance(e, WMLClientError):
+        raise HTTPException(status_code=400, detail=error_message)
+    elif isinstance(e, AssertionError):
+        raise HTTPException(status_code=400, detail=error_message)
+    elif isinstance(e, RuntimeError):
+        if e.__cause__:
+            handle_exception(e.__cause__)
+        else:
+            raise HTTPException(400, error_message)
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail=error_message,
+        )
+
+
+def handle_llm_generation_exceptions(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            handle_exception(e)
+        finally:
+            traceback.print_exc()
+
+    return wrapper
+
+
+def clean_object(results: dict | list):
+    """Cleans the object by removing `None` values and empty lists and dictionaries.
+
+    Args:
+        results (Union[dict, list]): The results to clean.
+
+    Returns:
+        Union[dict, list]: The cleaned results.
+    """
+    if isinstance(results, list):
+        return [clean_object(x) for x in results]
+    cleaned = {
+        k: (v if not isinstance(v, dict) else clean_object(v))
+        for k, v in results.items()
+        if v is not None and not (isinstance(v, (list, dict)) and len(v) == 0)
+    }
+    # Remove the dictionary itself if it becomes empty
+    return {
+        k: v for k, v in cleaned.items() if not (isinstance(v, dict) and len(v) == 0)
+    }
