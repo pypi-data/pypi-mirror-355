@@ -1,0 +1,22 @@
+[project]
+name = "dbtype_checker"
+version = "0.1.0"
+description = "Detect mismatched column types in your database using SQLAlchemy."
+authors = [
+  { name="Your Name", email="you@example.com" }
+]
+readme = "README.md"
+license = {text = "MIT"}
+dependencies = [
+    "sqlalchemy",
+    "pymysql",
+    "typer"
+]
+requires-python = ">=3.7"
+
+[project.scripts]
+dbtype-checker = "dbtype_checker.cli:main"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
