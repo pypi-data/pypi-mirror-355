@@ -1,0 +1,37 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "JAX NVIDIA",
+	"build": {
+		"dockerfile": "./Dockerfile",
+		"context": "."
+	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "",
+	"runArgs": [
+		"--gpus",
+		"all",
+		"--shm-size=1g"
+	],
+	  "mounts": [
+      "source=jaxnvidia-bashhistory,target=/commandhistory,type=volume"
+   ],
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-toolsai.jupyter",
+				"ms-toolsai.jupyter-renderers"
+			]
+		}
+	},
+	"remoteUser": "vscode",
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
+	  }
+}
