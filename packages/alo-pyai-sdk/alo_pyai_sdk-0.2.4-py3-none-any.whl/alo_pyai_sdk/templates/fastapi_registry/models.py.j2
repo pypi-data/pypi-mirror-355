@@ -1,0 +1,38 @@
+from pydantic import BaseModel, HttpUrl, Field
+from typing import List, Optional, Dict, Any
+from datetime import datetime
+
+class AgentRegistrationPayload(BaseModel):
+    """
+    Payload for registering a new agent or updating an existing one.
+    """
+    service_id: str = Field(..., description="Unique identifier for the agent service.")
+    service_url: HttpUrl = Field(..., description="The base URL where the agent service is accessible.")
+    # Optional: Add more fields that an agent might provide during registration
+    name: Optional[str] = Field(None, description="A human-readable name for the agent.")
+    description: Optional[str] = Field(None, description="A brief description of the agent's capabilities.")
+    skills: List[str] = Field(default_factory=list, description="A list of skills or capabilities the agent possesses.")
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="Any other relevant metadata for the agent.")
+
+class AgentInfo(AgentRegistrationPayload):
+    """
+    Information about a registered agent, including when it was last seen.
+    """
+    last_seen: str = Field(description="ISO timestamp of when the agent was last seen or updated.")
+    # You might add status (e.g., 'active', 'inactive', 'error') here if implementing health checks
+
+class AgentUnregisterPayload(BaseModel):
+    """
+    Payload for unregistering an agent.
+    """
+    service_id: str = Field(..., description="Unique identifier of the agent service to unregister.")
+
+# Example of a more detailed Skill model if needed for the registry
+# class SkillDetail(BaseModel):
+#     name: str
+#     description: Optional[str] = None
+#     input_schema: Optional[Dict[str, Any]] = None # JSON schema for skill input
+#     output_schema: Optional[Dict[str, Any]] = None # JSON schema for skill output
+
+# class AgentInfoWithDetailedSkills(AgentInfo):
+#     detailed_skills: List[SkillDetail] = Field(default_factory=list)
