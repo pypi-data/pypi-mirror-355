@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: tkinter-gui
+Version: 1.3.5
+Summary: Create multilingual interfaces for your tkinter applications.
+Author: danon
+Author-email: 
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
+tkintergui
+Create multilingual interfaces for your tkinter applications.
+
+tkintergui leverages Tk's tkintergui to provide a per-instance message catalog which holds all the translations, while allowing them to be kept in separate files away from code.
+
+⏬ Installation
+tkintergui requires Python 3.7+
+
+pip install tkintergui
+✨ Getting Started
+For storing the translation files I recommend this folder hierarchy:
+
+  project (or src/project)
+  ├── __init__.py
+  └── gui
+      ├── __init__.py
+      ├── hi.msg
+      └── mr.msg
+This layout is recommended by Tcl.
+
+Add some translations in the .msg files, in this case hi.msg:
+
+::tkintergui::mcset hi "Hello"
+Create a Tkinter window or instance, technically.
+
+Let's put tkintergui into action!
+
+from pathlib import Path
+
+
+msgsdir = Path(__file__).parent / "msgs"
+load(msgsdir)
+locale("hi")
+get("Hello")
+🤝 Contributing
+All contributions are welcome and acknowledged. Please read the contributor's guide.
+
+© License
+The code in this project is released under the 3-Clause BSD License.
