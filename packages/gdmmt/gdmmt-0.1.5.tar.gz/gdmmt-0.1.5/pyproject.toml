@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gdmmt"
+version = "0.1.5"
+description = "GD MMT: Extended version of mmt cli. Handles SRI generation, prefix management, versioning, and commit message generation."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name="Glendale Designs", email="info@glendaledesigns.com" }
+]
+dependencies = []
+
+[project.scripts]
+gdmmt = "gdmmt.cli:main"
+
+[tool.setuptools]
+packages = ["gdmmt"]
