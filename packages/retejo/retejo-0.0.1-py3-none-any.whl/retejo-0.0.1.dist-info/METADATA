@@ -1,0 +1,233 @@
+Metadata-Version: 2.4
+Name: retejo
+Version: 0.0.1
+Summary: Modern python http client
+Author-email: Ivan Kirpichnikov <mmssvvvv570@gmail.com>
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development
+Classifier: Topic :: System :: Networking
+Classifier: Topic :: System :: Distributed Computing
+Classifier: Typing :: Typed
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: Environment :: Web Environment
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: adaptix==3.0.0b11
+Provides-Extra: requests
+Requires-Dist: requests<3.0.0,>=2.20.0; extra == "requests"
+Provides-Extra: aiohttp
+Requires-Dist: aiohttp<4.0.0,>=3.5.0; extra == "aiohttp"
+Provides-Extra: types
+Requires-Dist: types-requests==2.32.4.20250611; extra == "types"
+Provides-Extra: lint
+Requires-Dist: mypy==1.16.0; extra == "lint"
+Requires-Dist: ruff==0.11.13; extra == "lint"
+Provides-Extra: dev
+Requires-Dist: retejo[lint,requests,types]; extra == "dev"
+Dynamic: license-file
+
+# Retejo
+
+A modern and simple way to create clients for **REST** like APIs
+
+## Advantages
+1. Fully typable library.
+2. Supports async and sync.
+3. Simple and intuitive user API.
+
+
+## Quickstart
+
+**Step 1.** Install library.
+
+```bash
+pip install retejo requests
+```
+
+**Step 2.** Declare model.
+
+```python
+@dataclass
+class Post:
+    id: int
+    title: str
+    body: str
+    user_id: int
+```
+
+**Step 3.** Declare methods.
+
+```python
+class GetPost(Method[Post]):
+    __url__ = "posts/{id}"
+    __method__ = "get"
+
+    id: UrlVar[int]
+
+
+class CreatePost(Method[PostId]):
+    __url__ = "posts"
+    __method__ = "post"
+
+    user_id: Body[int]
+    title: Body[str]
+    body: Body[str]
+```
+
+
+**Step 4.** Declare client.
+
+```python
+class Client(RequestsClient):
+    def __init__(self) -> None:
+        super().__init__(base_url="https://jsonplaceholder.typicode.com/")
+
+    @override
+    def _init_response_factory(self) -> Retort:
+        retort = super()._init_response_factory()
+        return retort.extend(
+            recipe=[
+                name_mapping(name_style=NameStyle.CAMEL),
+            ]
+        )
+```
+
+**Step 5.** Bind methods to clients.
+
+```python
+class Client(RequestsClient):
+    def __init__(self) -> None:
+        super().__init__(base_url="https://jsonplaceholder.typicode.com/")
+
+    @override
+    def _init_response_factory(self) -> Retort:
+        retort = super()._init_response_factory()
+        return retort.extend(
+            recipe=[
+                name_mapping(name_style=NameStyle.CAMEL),
+            ]
+        )
+
+    get_post = bind_method(GetPost)
+    create_post = bind_method(CreatePost)
+```
+
+**Step 6.** Use client.
+
+```python
+client = Client()
+created_post = client.create_post(
+    user_id=1,
+    title="Title",
+    body="Body"
+)
+got_post = client.get_post(created_post.id)
+
+```
+
+**Step 7.** Close client.
+
+```python
+client.close()
+```
+
+**Full code.**
+```python
+@dataclass
+class Post:
+    id: int
+    title: str
+    body: str
+    user_id: int
+
+
+class GetPost(Method[Post]):
+    __url__ = "posts/{id}"
+    __method__ = "get"
+
+    id: UrlVar[int]
+
+
+class CreatePost(Method[PostId]):
+    __url__ = "posts"
+    __method__ = "post"
+
+    user_id: Body[int]
+    title: Body[str]
+    body: Body[str]
+
+
+class Client(RequestsClient):
+    def __init__(self) -> None:
+        super().__init__(base_url="https://jsonplaceholder.typicode.com/")
+
+    @override
+    def _init_response_factory(self) -> Retort:
+        retort = super()._init_response_factory()
+        return retort.extend(
+            recipe=[
+                name_mapping(name_style=NameStyle.CAMEL),
+            ]
+        )
+
+    get_post = bind_method(GetPost)
+    create_post = bind_method(CreatePost)
+
+
+client = Client()
+created_post = client.create_post(
+    user_id=1,
+    title="Title",
+    body="Body"
+)
+got_post = client.get_post(created_post.id)
+client.close()
+```
+
+## Asyncio
+
+To use async client insted of sync:
+
+1. Install aiohttp (instead of requests)
+2. Change RequestsClient to AiohttpClient
+3. Add the await keyword before the method call
+
+```py
+class Client(AiohttpClient):
+    def __init__(self) -> None:
+        super().__init__(base_url="https://jsonplaceholder.typicode.com/")
+
+    @override
+    def _init_response_factory(self) -> Retort:
+        retort = super()._init_response_factory()
+        return retort.extend(
+            recipe=[
+                name_mapping(name_style=NameStyle.CAMEL),
+            ]
+        )
+
+    get_post = bind_method(GetPost)
+    create_post = bind_method(CreatePost)
+
+
+client = Client()
+created_post = await client.create_post(
+    user_id=1,
+    title="Title",
+    body="Body"
+)
+got_post = await client.get_post(created_post.id)
+client.close()
+```
+
+
