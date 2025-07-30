@@ -1,0 +1,44 @@
+.venv
+.ruff_cache
+.pytest_cache
+.mypy_cache
+__pycache__
+.coverage
+.coverage.*
+repomix-output.xml
+.DS_Store
+oboyu.db
+oboyu.db.wal
+.embedding_cache
+
+# Test databases (should not be committed)
+test.db
+test.db.wal
+index.db
+index.db.wal
+*.db
+*.db.wal
+
+# Benchmark directories
+bench/data/
+bench/queries/
+bench/results/
+test_docs/
+!test_docs/.gitkeep
+test_docs_old/
+!test_docs_old/.gitkeep
+
+# E2E display test reports
+e2e_display_report.md
+
+# Test data directories
+test_medium/
+test_small/
+
+# Docusaurus
+website/build/
+website/.docusaurus/
+website/.cache-loader/
+website/node_modules/
+
+e2e_display_report.md
