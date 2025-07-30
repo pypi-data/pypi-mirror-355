@@ -1,0 +1,36 @@
+Metadata-Version: 2.4
+Name: python-ballchasing
+Version: 0.2.0
+Summary: A Python wrapper around the Ballchasing API
+Author-email: Rolv-Arild Braaten <rolv_arild@hotmail.com>
+License: MIT License
+Project-URL: Homepage, https://github.com/Rolv-Arild/python-ballchasing
+Project-URL: Download, https://pypi.python.org/pypi/python-ballchasing
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Dynamic: license-file
+
+# Python Ballchasing
+Python wrapper for the ballchasing.com API. 
+
+# Installation
+```
+pip install python-ballchasing
+```
+
+# API
+The API is exposed via the `ballchasing.Api` class.
+
+Simple example:
+```python
+import ballchasing
+api = ballchasing.Api("Your token here")
+
+# Get a specific replay
+replay = api.get_replay("2627e02a-aa46-4e13-b66b-b76a32069a07")
+```
