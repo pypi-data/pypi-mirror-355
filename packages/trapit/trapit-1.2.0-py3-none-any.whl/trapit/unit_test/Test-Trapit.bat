@@ -1,0 +1,1 @@
+Powershell .\Test-Trapit  > .\Test-Trapit.out 2> .\Test-Trapit.err
