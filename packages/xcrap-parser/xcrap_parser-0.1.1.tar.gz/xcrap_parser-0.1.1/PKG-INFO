@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: xcrap-parser
+Version: 0.1.1
+Summary: Xcrap Parser is a declarative, model-driven parser for extracting data from HTML and JSON files, with the ability to interleave both to extract even more information.
+License: MIT
+Author: Marcuth
+Author-email: contact@marcuth.dev
+Requires-Python: >=3.12,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: jmespath (>=1.0.1,<2.0.0)
+Requires-Dist: parsel (>=1.10.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+# Xcrap Parser
+
+Xcrap Parser is a declarative, model-driven parser for extracting data from HTML and JSON files, with the ability to interleave both to extract even more information.
+
+It is inspired by the parser embedded in the Xcrap Framework available for Node.js. It was built using **Parsel** for HTML parsing and **JMESPath** for JSON parsing.
+
+## Installation
+
+```cmd
+pip install xcrap-parser
+```
+
+## Simple Usage
+
+```python
+from xcrap_parser import HtmlParsingModel
+
+html = "<html><title>Title</title><body><h1>Heading</h1></body></html>"
+
+root_parsing_model = HtmlParsingModel({
+    "title": {
+        "query": "title::text"
+    },
+    "heading": {
+        "query": "h1::text"
+    }
+})
+
+data = root_parsing_model.parse(html)
+
+print(data)
+```
