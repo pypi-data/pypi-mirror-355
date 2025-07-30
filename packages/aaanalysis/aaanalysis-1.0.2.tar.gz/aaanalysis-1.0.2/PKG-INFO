@@ -1,0 +1,194 @@
+Metadata-Version: 2.3
+Name: aaanalysis
+Version: 1.0.2
+Summary: Python framework for interpretable protein prediction
+License: BSD-3-Clause
+Keywords: protein,prediction,bioinformatics,machine learning,interpretable AI
+Author: Stephan Breimann
+Author-email: stephanbreimann@gmail.de
+Requires-Python: >=3.9,<3.13
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Provides-Extra: pro
+Requires-Dist: Jinja2 (>=3.1.6,<4.0.0)
+Requires-Dist: Pillow (>=11.1.0,<12.0.0)
+Requires-Dist: UpSetPlot (>=0.9.0,<0.10.0) ; extra == "pro"
+Requires-Dist: biopython (>=1.85,<2.0) ; extra == "pro"
+Requires-Dist: cycler (>=0.12.1,<0.13.0)
+Requires-Dist: et-xmlfile (>=2.0.0,<3.0.0)
+Requires-Dist: fonttools (>=4.55.6,<5.0.0)
+Requires-Dist: hypothesis (>=6.124.7,<7.0.0) ; extra == "pro"
+Requires-Dist: ipython (>=8.18.1,<9.0.0) ; extra == "pro"
+Requires-Dist: joblib (>=1.4.2,<2.0.0)
+Requires-Dist: kiwisolver (>=1.4.7,<2.0.0)
+Requires-Dist: logomaker (>=0.8.6,<0.9.0)
+Requires-Dist: matplotlib (>=3.5.3,<=3.9.0)
+Requires-Dist: numpy (>=1.24.4,<=2.1.3)
+Requires-Dist: openpyxl (>=3.1.5,<4.0.0)
+Requires-Dist: packaging (>=24.2,<25.0)
+Requires-Dist: pandas (>=2.2.3,<3.0.0)
+Requires-Dist: patsy (>=1.0.1,<2.0.0)
+Requires-Dist: pip (>=25.0.0,<26.0.0)
+Requires-Dist: pyparsing (>=3.2.1,<4.0.0)
+Requires-Dist: pytest (>=8.3.4,<9.0.0) ; extra == "pro"
+Requires-Dist: python-dateutil (>=2.9.0,<3.0.0)
+Requires-Dist: pytz (>=2024.2,<2025.0)
+Requires-Dist: scikit-learn (>=1.6.1,<2.0.0)
+Requires-Dist: scipy (>=1.13.1,<2.0.0)
+Requires-Dist: seaborn (>=0.13.2,<0.14.0)
+Requires-Dist: shap (>=0.46.0,<0.47.0) ; extra == "pro"
+Requires-Dist: six (>=1.17.0,<2.0.0)
+Requires-Dist: threadpoolctl (>=3.5.0,<4.0.0)
+Project-URL: Documentation, https://aaanalysis.readthedocs.io
+Project-URL: Homepage, https://aaanalysis.readthedocs.io
+Project-URL: Repository, https://github.com/breimanntools/aaanalysis
+Description-Content-Type: text/x-rst
+
+Welcome to the AAanalysis documentation!
+========================================
+..
+    Developer Notes:
+    Please make sure that badges in badges.rst (Read The Docs)
+    and README.rst (GitHub) are the same.
+
+.. Group 1: Package badges
+.. |PyPI Status| image:: https://img.shields.io/pypi/status/aaanalysis.svg
+   :target: https://pypi.org/project/aaanalysis/
+   :alt: PyPI - Status
+
+.. |PyPI Version| image:: https://img.shields.io/pypi/v/aaanalysis.svg
+   :target: https://pypi.python.org/pypi/aaanalysis
+   :alt: PyPI - Package Version
+
+.. |Supported Python Versions| image:: https://img.shields.io/pypi/pyversions/aaanalysis.svg
+   :target: https://pypi.python.org/pypi/aaanalysis
+   :alt: Supported Python Versions
+
+.. |Downloads| image:: https://pepy.tech/badge/aaanalysis
+   :target: https://pepy.tech/project/aaanalysis
+   :alt: Downloads
+
+.. |License| image:: https://img.shields.io/github/license/breimanntools/aaanalysis.svg
+   :target: https://github.com/breimanntools/aaanalysis/blob/master/LICENSE
+   :alt: License
+
+.. Group 2: Testing badges
+.. |Unit Tests| image:: https://github.com/breimanntools/aaanalysis/actions/workflows/main.yml/badge.svg
+   :target: https://github.com/breimanntools/aaanalysis/actions/workflows/main.yml
+   :alt: CI/CD Pipeline
+
+.. |CodeQL| image:: https://github.com/breimanntools/aaanalysis/actions/workflows/codeql_analysis.yml/badge.svg
+   :target: https://github.com/breimanntools/aaanalysis/actions/workflows/codeql_analysis.yml
+   :alt: CodeQL
+
+.. |Codecov| image:: https://codecov.io/gh/breimanntools/aaanalysis/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/breimanntools/aaanalysis
+   :alt: Codecov
+
+.. |Documentation Status| image:: https://readthedocs.org/projects/aaanalysis/badge/?version=latest
+   :target: https://aaanalysis.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
+
+.. Group 3: Potential badges for future
+.. |Conda Version| image:: https://anaconda.org/conda-forge/aaanalysis/badges/version.svg
+   :target: https://anaconda.org/conda-forge/aaanalysis
+   :alt: Conda - Package Version
+
+
+..
+    Missing badges
+    |Conda Version|
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - **Package**
+     - |PyPI Status| |PyPI Version| |Supported Python Versions| |Downloads| |License|
+   * - **Testing**
+     - |Unit Tests| |CodeQL| |Codecov| |Documentation Status|
+
+.. image:: docs/source/_artwork/logos/model_AAanalysis.png
+   :alt: Overview of AAanalysis components
+   :align: center
+   :width: 100%
+
+**AAanalysis** (Amino Acid analysis) is a Python framework for interpretable sequence-based protein prediction.
+Its foundation are the following algorithms:
+
+- **CPP**: Comparative Physicochemical Profiling, a feature engineering algorithm comparing two sets of protein
+  sequences to identify the set of most distinctive features.
+- **dPULearn**: deterministic Positive-Unlabeled (PU) Learning algorithm to enable training on
+  unbalanced and small datasets.
+- **AAclust**: k-optimized clustering wrapper framework to select redundancy-reduced sets of numerical scales
+  (e.g., amino acid scales).
+
+In addition, AAanalysis provide functions for loading various protein benchmark datasets, amino acid scales,
+and their two-level classification (**AAontology**). We combined **CPP** with the explainable
+AI  `SHAP <https://shap.readthedocs.io/en/latest/index.html>`_ framework to explain sample level predictions with
+single-residue resolution.
+
+If you are looking to make publication-ready plots with a view lines of code, see our
+`Plotting Prelude <https://aaanalysis.readthedocs.io/en/latest/generated/plotting_prelude.html>`_.
+
+
+You can find the official documentation at `Read the Docs <https://aaanalysis.readthedocs.io/en/latest/>`_.
+
+Install
+=======
+**AAanalysis** can be installed from `PyPi <https://pypi.org/project/aaanalysis>`_:
+
+.. code-block:: bash
+
+   pip install aaanalysis
+
+For extended features, including our explainable AI module, please use the 'professional' version:
+
+.. code-block:: bash
+
+   pip install aaanalysis[pro]
+
+Contributing
+============
+We appreciate bug reports, feature requests, or updates on documentation and code. For details, please refer to
+`Contributing Guidelines <CONTRIBUTING.rst>`_. These include specifics about AAanalysis and also notes on Test
+Guided Development (TGD) using ChatGPT. For further questions or suggestions, please email stephanbreimann@gmail.com.
+
+Citations
+=========
+If you use AAanalysis in your work, please cite the respective publication as follows:
+
+**AAclust**:
+   Breimann and Frishman (2024a),
+   *AAclust: k-optimized clustering for selecting redundancy-reduced sets of amino acid scales*,
+   `Bioinformatics Advances <https://academic.oup.com/bioinformaticsadvances/article/4/1/vbae165/7852846>`__.
+
+**AAontology**:
+   Breimann *et al.* (2024b),
+   *AAontology: An ontology of amino acid scales for interpretable machine learning*,
+   `Journal of Molecular Biology <https://www.sciencedirect.com/science/article/pii/S0022283624003267>`__.
+
+**CPP**:
+   Breimann and Kamp *et al.* (2025),
+   *Charting γ-secretase substrates by explainable AI*,
+   **Nature Communications** (link if available)
+
+**dPULearn**:
+   Breimann and Kamp *et al.* (2025),
+   *Charting γ-secretase substrates by explainable AI*,
+   **Nature Communications** (link if available)
+
