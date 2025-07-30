@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Code</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/performance.css">
+    <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+    <div id="app-container">
+        <div id="terminal-container">
+            <div id="terminal-output">
+                <!-- Atlas Terminal bereit -->
+            </div>
+        </div>
+
+        <div id="input-section">
+            <input type="text" id="prompt-input" placeholder="Nachricht an Atlas eingeben..." autofocus>
+            <div id="status-bar">
+                <span id="auto-accept-indicator">⏵⏵ auto-accept edits <span id="auto-accept-status">on</span> <span class="shortcut-hint">(shift+tab to cycle)</span></span>
+                <span id="context-indicator">Context left until auto-compact: <span id="context-percentage">100</span>%</span>
+                <span id="status-text">🔥 Atlas bereit</span>
+                <span id="working-dir">📁 Sandbox</span>
+                <span>Live: <span id="current-tokens">0</span>T</span>
+                <span>Total: <span id="session-tokens">0</span>T</span>
+                <span><span id="token-speed">0</span>/s</span>
+                <span id="timer">00:00</span>
+                <span class="atlas-glow" style="font-size: 10px;">[ESC: Stop | Ctrl+Alt+E: Notstop]</span>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="static/js/app.js"></script>
+</body>
+</html>
