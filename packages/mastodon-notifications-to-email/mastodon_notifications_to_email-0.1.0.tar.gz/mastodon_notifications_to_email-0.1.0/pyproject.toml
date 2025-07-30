@@ -1,0 +1,140 @@
+[project]
+name = "mastodon-notifications-to-email"
+version = "0.1.0"
+description = "Send Mastodon/GoToSocial notifications as emails"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = [
+    "mastodon",
+    "gotosocial",
+    "notification",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Topic :: Communications",
+]
+dependencies = [
+    "Mastodon.py",
+    "markdownify"
+]
+
+[project.scripts]
+mastodon_notifications_to_email = "mastodon_notifications_to_email:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
+
+[project.urls]
+"Homepage" = "https://codeberg.org/eht16/mastodon_notifications_to_email"
+"Bug Tracker" = "https://codeberg.org/eht16/mastodon_notifications_to_email/issues"
+
+###
+### Tox
+###
+[tool.tox]
+requires = ["tox>=4.19"]
+env_list = ["3.13", "3.12", "3.11"]
+isolated_build = true
+skip_missing_interpreters = true
+
+[tool.tox.testenv]
+description = "linting and code analysis"
+deps = ["ruff"]
+commands = [["ruff", "check", "--output-format=concise", "mastodon_notifications_to_email"]]
+
+###
+### Ruff
+###
+[tool.ruff]
+line-length = 100
+
+exclude = [
+    ".eggs",
+    ".git",
+    ".ruff_cache",
+    ".tox",
+    "__pypackages__",
+    "_build",
+    "venv",
+    "migrations"
+]
+
+[tool.ruff.lint]
+select = [
+    "A", # flake8-builtins
+    "ARG", # flake8-unused-arguments,
+    "B", # flake8-bugbear
+    "BLE", # flake8-blind-except
+    "C4", # flake8-comprehensions
+    "C90", # mccabe
+    "DJ", # flake8-django
+    "DTZ", # flake8-datetimez
+    "E", # pycodestyle errors
+    "EM", # flake8-errmsg
+    "ERA", # eradicate
+    "EXE", # flake8-executable
+    "F", # Pyflakes
+    "FBT", # flake8-boolean-trap
+    "FIX", # flake8-fixme,
+    "FLY", # flynt,
+    "G", # flake8-logging-format
+    "I", # isort
+    "ICN", # flake8-import-conventions
+    "INP", # flake8-no-pep420
+    "INT", # flake8-gettext
+    "ISC", # flake8-implicit-str-concat
+    "N", # pep8-naming
+    "NPY", # NumPy-specific rules
+    "PD", # pandas-vet
+    "PERF", # Perflint
+    "PERF", # Perflint,
+    "PGH", # pygrep-hooks
+    "PIE", # flake8-pie
+    "PL", # Pylint
+    "PT", # flake8-pytest-style
+    "PTH", # flake8-use-pathlib,
+    "PYI", # flake8-pyi
+    "Q", # flake8-quotes
+    "RET", # flake8-return
+    "RSE", # flake8-raise
+    "RUF", # Ruff-specific rules
+    "S", # flake8-bandit
+    "SIM", # flake8-simplify
+    "SLF", # flake8-self
+    "T10", # flake8-debugger
+    "T20", # flake8-print
+    "TCH", # flake8-type-checking
+    "TD", # flake8-todos,
+    "TID", # flake8-tidy-imports
+    "TRY", # tryceratops
+    "UP", # pyupgrade
+    "W", # pycodestyle warnings
+    "YTT", # flake8-2020,
+]
+fixable = ["I", "Q000"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+case-sensitive = true
+length-sort = false
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+multiline-quotes = "single"
+
+[tool.ruff.lint.pylint]
+allow-magic-value-types = ["bytes", "int", "str"]
+max-args = 7
