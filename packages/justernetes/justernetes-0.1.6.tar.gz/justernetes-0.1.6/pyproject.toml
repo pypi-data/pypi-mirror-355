@@ -1,0 +1,35 @@
+[project]
+name = "justernetes"
+version = "0.1.6"
+description = ""
+authors = [
+    {name = "knspar",email = "knspar@proton.me"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "loguru (>=0.7.3,<0.8.0)",
+    "pydantic (>=2.11.5,<3.0.0)",
+    "kopf (>=1.38.0,<2.0.0)",
+    "dynaconf (>=3.2.11,<4.0.0)",
+    "requests (>=2.32.4,<3.0.0)",
+    "kubernetes (>=33.1.0,<34.0.0)",
+    "typer (>=0.16.0,<0.17.0)"
+]
+
+[tool.poetry]
+packages = [{include = "justernetes", from = "src"}]
+
+
+[tool.poetry.group.dev.dependencies]
+pudb = "^2025.1"
+ipython = "^9.3.0"
+pytest = "^8.4.0"
+types-requests = "^2.32.4.20250611"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+justernetes = "justernetes.cli:app"
