@@ -1,0 +1,44 @@
+[project]
+name = "flet-svg"
+version = "0.1.0"
+description = "A Flet extension to render SVG with flutter_svg."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE.txt" }
+authors = [
+    { name = "Atsushi Tatsuma", email = "yoshoku@outlook.com" }
+]
+dependencies = [
+    "flet>=0.28.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/yoshoku/flet-svg"
+Repository = "https://github.com/yoshoku/flet-svg"
+Issues = "https://github.com/yoshoku/flet-svg/issues"
+
+[tool.setuptools.package-data]
+"flutter.flet_svg" = ["**/*"]
+
+[tool.uv]
+dev-dependencies = [
+    "flet[all]==0.28.3",
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.13",
+]
+
+[tool.poetry.group.dev.dependencies]
+flet = {extras = ["all"], version = "0.28.3"}
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+exclude = [".venv", "venv", "build", "docs"]
+lint.select = ["ALL"]
+
+[tool.setuptools]
+license-files = []
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
