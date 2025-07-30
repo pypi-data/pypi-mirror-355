@@ -1,0 +1,111 @@
+[project]
+name = "smart-mcp-proxy"
+version = "0.3.0"
+description = "Smart MCP Proxy - A federating gateway for MCP servers with intelligent tool discovery"
+readme = "README.md"
+requires-python = ">=3.11.1"
+license = {text = "MIT"}
+authors = [
+    {name = "Algis Dumbris", email = "a.dumbris@gmail.com"},
+]
+maintainers = [
+    {name = "Algis Dumbris", email = "a.dumbris@gmail.com"},
+]
+keywords = [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "proxy",
+    "gateway",
+    "tool-discovery",
+    "fastmcp",
+    "embedding",
+    "search",
+    "smart",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+]
+dependencies = [
+    "fastmcp>=2.8.0",
+    "httpx>=0.28.1",
+    "pydantic>=2.11.5",
+    "numpy>=2.2.6",
+    "bm25s>=0.2.13",
+]
+
+[project.scripts]
+mcpproxy = "mcpproxy.__main__:main"
+smart-mcp-proxy = "mcpproxy.__main__:main"
+
+[project.optional-dependencies]
+bm25 = [
+    "bm25s>=0.2.13",
+]
+huggingface = [
+    "sentence-transformers>=4.1.0",
+    "faiss-cpu>=1.11.0",
+    "bm25s>=0.2.13",
+]
+openai = [
+    "openai>=1.86.0",
+    "faiss-cpu>=1.11.0",
+    "bm25s>=0.2.13",
+]
+all = [
+    "sentence-transformers>=4.1.0",
+    "openai>=1.86.0",
+    "faiss-cpu>=1.11.0",
+    "bm25s>=0.2.13",
+]
+test = [
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.0.0",
+    "pytest-mock>=3.10.0",
+    "pytest-cov>=4.0.0",
+]
+dev = [
+    "build>=1.2.2.post1",
+    "ruff>=0.8.0",
+    "mypy>=1.9.0",
+]
+
+[project.urls]
+Homepage = "https://mcpproxy.app"
+Documentation = "https://mcpproxy.app"
+Repository = "https://github.com/Dumbris/mcpproxy"
+"Bug Reports" = "https://github.com/Dumbris/mcpproxy/issues"
+"Source Code" = "https://github.com/Dumbris/mcpproxy"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+markers = [
+    "faiss: marks tests as requiring faiss (deselect with '-m \"not faiss\"')",
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests"
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["mcpproxy"]
