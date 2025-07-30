@@ -1,0 +1,60 @@
+[project]
+name = "metablock"
+description = "Metablock cloud python client"
+version = "1.1.0"
+license = "BSD"
+readme = "readme.md"
+authors = [
+    { name = "Luca Sbardella", email="luca@quantmind.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "httpx >= 0.28.1",
+    "multidict >= 6.4.3"
+]
+
+[project.optional-dependencies]
+cli = [
+    "click >= 8.1.7",
+    "pyyaml >= 6.0.2",
+    "jinja2 >= 3.1.6",
+]
+
+[tool.poetry.group.dev.dependencies]
+pytest-asyncio = "^0.26.0"
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+mypy = "^1.15.0"
+black = "^25.1.0"
+isort = "^6.0.0"
+python-dotenv = "^1.1.0"
+types-pyyaml = "^6.0.12.20240917"
+ruff = "^0.11.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.scripts]
+metablock = "metablock.cli:main"
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "module"
+testpaths = ["tests"]
+
+[tool.ruff]
+lint.select = ["A", "E", "W", "F", "I", "B", "N"]
+line-length = 88
+
+[tool.mypy]
+disallow_untyped_calls = true
+warn_return_any = false
+disallow_untyped_defs = true
+warn_no_return = true
+
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false

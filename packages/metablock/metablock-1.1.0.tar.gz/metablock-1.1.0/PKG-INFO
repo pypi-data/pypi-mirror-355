@@ -1,0 +1,73 @@
+Metadata-Version: 2.3
+Name: metablock
+Version: 1.1.0
+Summary: Metablock cloud python client
+License: BSD
+Author: Luca Sbardella
+Author-email: luca@quantmind.com
+Requires-Python: >=3.11
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: cli
+Requires-Dist: click (>=8.1.7) ; extra == "cli"
+Requires-Dist: httpx (>=0.28.1)
+Requires-Dist: jinja2 (>=3.1.6) ; extra == "cli"
+Requires-Dist: multidict (>=6.4.3)
+Requires-Dist: pyyaml (>=6.0.2) ; extra == "cli"
+Description-Content-Type: text/markdown
+
+# A Python Client for Metablock API
+
+[![PyPI version](https://badge.fury.io/py/metablock.svg)](https://badge.fury.io/py/metablock)
+[![Python versions](https://img.shields.io/pypi/pyversions/metablock.svg)](https://pypi.org/project/metablock)
+[![Build](https://github.com/quantmind/metablock-py/workflows/build/badge.svg)](https://github.com/quantmind/metablock-py/actions?query=workflow%3Abuild)
+[![codecov](https://codecov.io/gh/quantmind/metablock-py/branch/main/graph/badge.svg?token=EAdSVpD0Af)](https://codecov.io/gh/quantmind/metablock-py)
+
+This is an asynchronous python client for [metablock API](https://api.metablock.io/v1/docs).
+
+## Installation
+
+This is a simple python package you can install via pip:
+
+```
+pip install metablock
+```
+
+## Usage
+
+Create the client
+
+```python
+from metablock import Metablock
+
+cli = Metablock()
+
+# get the user associated with the API token
+user = await cli.get_user()
+```
+
+For the authentication token, you can use the `METABLOCK_API_TOKEN` environment variable,
+alternatively, you can pass it to the client constructor:
+
+```python
+cli = Metablock(auth_key="your-token")
+```
+
+
+## Command line
+
+You can also use the client from the command line, to do so, install the package with the `cli` extra:
+
+```bash
+pip install metablock[cli]
+```
+
+Then you can use the `metablock` command:
+
+```bash
+metablock --help
+```
+
