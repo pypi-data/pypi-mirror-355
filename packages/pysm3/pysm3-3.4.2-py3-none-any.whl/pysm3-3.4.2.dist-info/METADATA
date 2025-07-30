@@ -1,0 +1,138 @@
+Metadata-Version: 2.4
+Name: pysm3
+Version: 3.4.2
+Summary: PySM generates full-sky simulations of Galactic emissions in intensity and polarization
+Project-URL: Homepage, https://github.com/galsci/pysm
+Project-URL: Documentation, https://pysm3.readthedocs.io/
+Project-URL: Bug Tracker, https://github.com/galsci/pysm/issues
+Project-URL: Changelog, https://github.com/galsci/pysm/blob/main/CHANGES.rst
+Author-email: Andrea Zonca <code@andreazonca.com>
+License: Copyright 2021 Andrea Zonca
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.7
+Requires-Dist: astropy
+Requires-Dist: h5py
+Requires-Dist: healpy>=1.16.0
+Requires-Dist: importlib-metadata; python_version < '3.8'
+Requires-Dist: numba
+Requires-Dist: numpy<2
+Requires-Dist: scipy<1.15
+Requires-Dist: toml
+Provides-Extra: docs
+Requires-Dist: ipykernel; extra == 'docs'
+Requires-Dist: nbsphinx; extra == 'docs'
+Requires-Dist: pandoc; extra == 'docs'
+Requires-Dist: sphinx-astropy; extra == 'docs'
+Requires-Dist: sphinx-math-dollar; extra == 'docs'
+Requires-Dist: sphinx-pyproject; extra == 'docs'
+Provides-Extra: mpi
+Requires-Dist: mpi4py; extra == 'mpi'
+Provides-Extra: test
+Requires-Dist: ipykernel; extra == 'test'
+Requires-Dist: nbval; extra == 'test'
+Requires-Dist: netcdf4; extra == 'test'
+Requires-Dist: pixell==0.26.0; extra == 'test'
+Requires-Dist: psutil; extra == 'test'
+Requires-Dist: pytest; extra == 'test'
+Requires-Dist: pytest-astropy; extra == 'test'
+Requires-Dist: tox; extra == 'test'
+Requires-Dist: xarray; extra == 'test'
+Description-Content-Type: text/x-rst
+
+|CI Tests| |Documentation Status| |PyPI| |Conda| |Astropy| |JOSS|
+
+PySM 3
+======
+
+PySM generates full-sky simulations of Galactic emissions in intensity
+and polarization relevant to CMB experiments. It is a large refactor of
+`PySM 2 <https://github.com/bthorne93/PySM_public>`__ focused on
+reducing memory usage, improving performance and run in parallel with
+MPI.
+
+See the documentation at https://pysm3.readthedocs.io
+
+See changes in ``CHANGES.rst`` in the repository.
+
+Related scientific papers
+-------------------------
+
+See `CITATION <https://github.com/galsci/pysm/blob/main/CITATION>`_
+
+* `Full-sky Models of Galactic Microwave Emission and Polarization (Pan-Experiment Galactic Science Group, 2025) <https://arxiv.org/abs/2502.20452>`_
+* `The Python Sky Model 3 software (Zonca et al, 2021) <https://arxiv.org/abs/2108.01444>`_
+* `The Python Sky Model: software for simulating the Galactic microwave sky (Thorne et al, 2017) <https://arxiv.org/abs/1608.02841>`_
+
+Install
+-------
+
+See the `documentation <https://pysm3.readthedocs.io/en/latest/#installation>`_
+
+* Install with ``pip install .`` or with ``pip install .[test]`` to also install the requirements for running tests
+* Optionally, if you have an MPI environment available and you would like to test the MPI capabilities of PySM, install ``mpi4py`` and ``libsharp``, check the documentation link above for more details.
+* Check code style with ``tox -e codestyle``
+* Test with ``pytest`` or ``tox -e test``
+* Building docs requires ``pandoc``, not the python package, the actual ``pandoc`` command line tool, install it with conda or your package manager
+* Build docs locally with ``tox -e build_docs``
+
+Support
+-------
+
+For any question or issue with the software `open an issue <https://github.com/galsci/pysm/issues/>`_.
+
+Release
+-------
+
+* Tag the new version with git
+* Make sure ``hatch`` detects the right version with ``hatch version``
+* Build with ``hatch build``
+* Upload to pypi with ``hatch publish``
+* Upload to Github with ``git push --tags``
+
+.. |CI Tests| image:: https://github.com/galsci/pysm/actions/workflows/ci_tests.yml/badge.svg
+   :target: https://github.com/galsci/pysm/actions/workflows/ci_tests.yml
+.. |Documentation Status| image:: https://readthedocs.org/projects/pysm3/badge/?version=latest
+   :target: https://pysm3.readthedocs.io/en/latest/?badge=latest
+.. |PyPI| image:: https://img.shields.io/pypi/v/pysm3
+   :target: https://pypi.org/project/pysm3/
+.. |Conda| image:: https://img.shields.io/conda/vn/conda-forge/pysm3
+   :target: https://anaconda.org/conda-forge/pysm3
+.. |Astropy| image:: http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat
+   :target: http://www.astropy.org/
+.. |JOSS| image:: https://joss.theoj.org/papers/8f2d6c3bbf6cbeffbb403a1207fa8de7/status.svg
+   :target: https://joss.theoj.org/papers/8f2d6c3bbf6cbeffbb403a1207fa8de7
