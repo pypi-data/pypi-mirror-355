@@ -1,0 +1,18 @@
+#pragma once
+
+enum class OPType {
+  ADD,
+  SUB,
+  MUL,
+  DIV,
+  MATMUL,
+  ONES_INIT,
+  ZEROES_INIT,
+  EYE_INIT,
+  LOGICAL_E,
+  LOGICAL_NE,
+  LOGICAL_GT,
+  LOGICAL_GTE,
+  LOGICAL_LT,
+  LOGICAL_LTE
+};
