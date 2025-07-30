@@ -1,0 +1,334 @@
+Metadata-Version: 2.4
+Name: magicimg
+Version: 0.1.1
+Summary: Package xử lý và tiền xử lý ảnh để chuẩn bị cho OCR và các hệ thống thị giác máy tính
+Home-page: https://github.com/tacgia/image-preprocess
+Author: Tác giả
+Author-email: Tác giả <shumi2011@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/tacgia/image-preprocess
+Project-URL: Bug Reports, https://github.com/tacgia/image-preprocess/issues
+Project-URL: Source, https://github.com/tacgia/image-preprocess/
+Project-URL: Documentation, https://github.com/tacgia/image-preprocess/blob/main/README.md
+Keywords: image processing,ocr,preprocessing,computer vision,opencv,tesseract
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: opencv-python>=4.5.0
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: matplotlib>=3.3.0
+Requires-Dist: pytesseract>=0.3.8
+Requires-Dist: Pillow>=8.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Requires-Dist: twine>=3.0; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
+# Image Preprocess
+
+[![PyPI version](https://badge.fury.io/py/image-preprocess.svg)](https://badge.fury.io/py/image-preprocess)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/)
+
+Package Python cho việc xử lý và tiền xử lý ảnh để chuẩn bị cho OCR và các hệ thống thị giác máy tính.
+
+## Tính năng chính
+
+- ✅ **Kiểm tra chất lượng ảnh**: Đánh giá độ mờ, độ sáng, độ tương phản, độ phân giải
+- ✅ **Phát hiện và sửa góc nghiêng**: Tự động phát hiện và điều chỉnh góc nghiêng của ảnh
+- ✅ **Phát hiện hướng ảnh**: Sử dụng OCR để xác định hướng đúng của ảnh
+- ✅ **Tăng cường chất lượng**: Tự động cải thiện độ sáng, độ tương phản và độ sắc nét
+- ✅ **Tiền xử lý cho OCR**: Tối ưu hóa ảnh cho việc nhận dạng ký tự quang học
+- ✅ **Phát hiện đường kẻ ngang**: Tìm và phân tích các đường kẻ trong bảng biểu
+- ✅ **Trích xuất hàng từ bảng**: Cắt và tách các hàng từ ảnh bảng
+- ✅ **Command Line Interface**: Sử dụng trực tiếp từ terminal
+- ✅ **Hỗ trợ nhiều nhà cung cấp API**: Tối ưu cho Google Vision, Anthropic Claude, và OCR local
+
+## Cài đặt
+
+### Cài đặt từ PyPI
+
+```bash
+pip install image-preprocess
+```
+
+### Cài đặt từ source
+
+```bash
+git clone https://github.com/tacgia/image-preprocess.git
+cd image-preprocess
+pip install -e .
+```
+
+### Cài đặt Tesseract OCR
+
+Package này sử dụng Tesseract OCR để phát hiện hướng ảnh. Cài đặt Tesseract:
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install tesseract-ocr
+```
+
+**macOS:**
+```bash
+brew install tesseract
+```
+
+**Windows:**
+Tải và cài đặt từ: https://github.com/UB-Mannheim/tesseract/wiki
+
+## Sử dụng cơ bản
+
+### Sử dụng với Python
+
+```python
+import image_preprocess
+
+# Sử dụng hàm tiện ích
+result = image_preprocess.preprocess_for_ocr("input.jpg", "output.jpg")
+print(f"Xử lý thành công: {result.success}")
+print(f"Điểm chất lượng: {result.quality_metrics.quality_score}")
+
+# Kiểm tra chất lượng ảnh
+is_good, quality_info, enhanced_image = image_preprocess.check_image_quality("input.jpg")
+print(f"Chất lượng ảnh tốt: {is_good}")
+
+# Phát hiện hướng ảnh
+angle = image_preprocess.detect_orientation("input.jpg")
+print(f"Góc cần xoay: {angle}°")
+```
+
+### Sử dụng với ImageProcessor class
+
+```python
+from image_preprocess import ImageProcessor
+
+# Tạo processor với thư mục debug
+processor = ImageProcessor(debug_dir="debug/")
+
+# Xử lý ảnh hoàn chỉnh
+result = processor.process_image(
+    input_path="input.jpg",
+    output_path="output.jpg", 
+    auto_rotate=True
+)
+
+if result.success:
+    print("Xử lý thành công!")
+    print(f"Các bước đã thực hiện: {result.processing_steps}")
+    print(f"Góc đã xoay: {result.rotation_angle}°")
+else:
+    print(f"Lỗi: {result.error_message}")
+```
+
+### Sử dụng với cấu hình tùy chỉnh
+
+```python
+from image_preprocess import ImageProcessor
+
+# Cấu hình tùy chỉnh
+config = {
+    "min_blur_index": 100.0,
+    "min_brightness": 150.0,
+    "min_contrast": 40.0,
+    "min_quality_score": 0.8,
+    "skip_rotation": False,
+    "line_detection": {
+        "min_line_length_ratio": 0.7,
+        "histogram_threshold_ratio": 0.6
+    }
+}
+
+processor = ImageProcessor(config=config)
+result = processor.process_image("input.jpg", "output.jpg")
+```
+
+## Sử dụng Command Line Interface
+
+### Xử lý ảnh
+
+```bash
+# Xử lý ảnh cơ bản
+image-preprocess process input.jpg --output output.jpg
+
+# Xử lý với thư mục debug
+image-preprocess process input.jpg --debug-dir debug/ --min-quality 0.8
+
+# Xử lý không xoay ảnh
+image-preprocess process input.jpg --no-rotation
+```
+
+### Kiểm tra chất lượng ảnh
+
+```bash
+image-preprocess quality input.jpg
+```
+
+### Phát hiện hướng ảnh
+
+```bash
+image-preprocess orientation input.jpg --debug-dir debug/
+```
+
+### Xem thông tin ảnh
+
+```bash
+image-preprocess info input.jpg
+```
+
+### Kiểm tra hệ thống
+
+```bash
+image-preprocess system-info
+```
+
+## API cho các nhà cung cấp
+
+Package hỗ trợ tối ưu hóa ảnh cho các nhà cung cấp API khác nhau:
+
+```python
+from image_preprocess.core import ImageProcessor
+
+# Tối ưu cho Google Vision API
+success, info, output_path = ImageProcessor.preprocess_image_for_api(
+    image_path="input.jpg",
+    provider="google",
+    output_dir="processed/",
+    min_quality_score=0.7
+)
+
+# Tối ưu cho Anthropic Claude
+success, info, output_path = ImageProcessor.preprocess_image_for_api(
+    image_path="input.jpg", 
+    provider="anthropic",
+    auto_rotate=True
+)
+
+# Tối ưu cho OCR local
+success, info, output_path = ImageProcessor.preprocess_image_for_api(
+    image_path="input.jpg",
+    provider="local",
+    debug_dir="debug/"
+)
+```
+
+## Cấu hình nâng cao
+
+### Tham số chất lượng ảnh
+
+- `min_blur_index`: Chỉ số mờ tối thiểu (mặc định: 80.0)
+- `max_dark_ratio`: Tỷ lệ pixel tối tối đa (mặc định: 0.2)
+- `min_brightness`: Độ sáng tối thiểu (mặc định: 180.0)
+- `min_contrast`: Độ tương phản tối thiểu (mặc định: 50.0)
+- `min_resolution`: Độ phân giải tối thiểu (mặc định: 1000x1400)
+- `min_quality_score`: Điểm chất lượng tối thiểu (mặc định: 0.7)
+
+### Tham số xử lý ảnh
+
+- `min_skew_angle`: Góc nghiêng tối thiểu để xử lý (mặc định: 0.3°)
+- `max_skew_angle`: Góc nghiêng tối đa có thể xử lý (mặc định: 30.0°)
+- `skip_rotation`: Bỏ qua xoay ảnh (mặc định: False)
+- `reuse_rotation`: Sử dụng lại góc xoay đã biết (mặc định: None)
+
+### Tham số phát hiện đường kẻ
+
+- `min_line_length_ratio`: Tỷ lệ chiều dài đường kẻ tối thiểu (mặc định: 0.6)
+- `histogram_threshold_ratio`: Ngưỡng histogram (mặc định: 0.5)
+- `min_line_distance`: Khoảng cách tối thiểu giữa các đường kẻ (mặc định: 20px)
+
+## Ví dụ thực tế
+
+### Xử lý ảnh phiếu bầu cử
+
+```python
+from image_preprocess import ImageProcessor
+
+# Cấu hình đặc biệt cho phiếu bầu cử
+ballot_config = {
+    "min_brightness": 200.0,  # Yêu cầu độ sáng cao hơn
+    "min_contrast": 60.0,     # Tương phản rõ ràng
+    "ballot_keywords": [      # Từ khóa đặc trưng
+        "phieu bau cu", "doan dai bieu", "dai hoi"
+    ]
+}
+
+processor = ImageProcessor(
+    debug_dir="ballot_debug/",
+    config=ballot_config
+)
+
+result = processor.process_image("phieu_bau.jpg", "processed_phieu.jpg")
+```
+
+### Xử lý ảnh tài liệu quét
+
+```python
+# Cấu hình cho tài liệu quét
+document_config = {
+    "min_blur_index": 60.0,   # Chấp nhận ảnh hơi mờ
+    "min_brightness": 150.0,  # Độ sáng thấp hơn
+    "skip_rotation": True,    # Không xoay tự động
+}
+
+processor = ImageProcessor(config=document_config)
+```
+
+## Yêu cầu hệ thống
+
+- Python 3.7+
+- OpenCV 4.5.0+
+- NumPy 1.19.0+
+- Matplotlib 3.3.0+ (cho debug)
+- pytesseract 0.3.8+ (cho phát hiện hướng)
+- Pillow 8.0.0+
+
+## Đóng góp
+
+Chúng tôi rất hoan nghênh mọi đóng góp! Vui lòng:
+
+1. Fork repository này
+2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Mở Pull Request
+
+## Giấy phép
+
+Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm thông tin.
+
+## Changelog
+
+### v0.1.0 (2024-12-15)
+- Phiên bản đầu tiên
+- Hỗ trợ kiểm tra chất lượng ảnh
+- Phát hiện và sửa góc nghiêng
+- Phát hiện hướng ảnh bằng OCR
+- Tăng cường chất lượng ảnh
+- Command Line Interface
+- Hỗ trợ nhiều nhà cung cấp API
+
+## Liên hệ
+
+- Tác giả: Tác giả
+- Email: tacgia@email.com
+- GitHub: https://github.com/tacgia/image-preprocess
+- Issues: https://github.com/tacgia/image-preprocess/issues 
