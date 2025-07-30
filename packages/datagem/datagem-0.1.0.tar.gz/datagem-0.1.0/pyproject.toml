@@ -1,0 +1,30 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datagem"  # IMPORTANTE: No TestPyPI, o nome deve ser único. Adicione seu nome de usuário para evitar conflitos.
+version = "0.1.0" # A primeira versão do seu pacote
+authors = [
+  { name="Gilberto Pereira Sassi", email="sassi.pereira.gilberto@gmail.com" },
+]
+description = "Um pacote para extrair informações de PDFs usando a API do Google Gemini."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+# Dependências que seu código precisa para funcionar.
+# Elas serão instaladas automaticamente quando alguém instalar seu pacote.
+dependencies = [
+    "google-genai",
+    "pandas"
+]
+
+[project.urls]
+Homepage = "https://github.com/obec-pesquisas/datagem" # Opcional: link para o repositório
+"Bug Tracker" = "https://github.com/obec-pesquisas/datagem/issues" # Opcional
