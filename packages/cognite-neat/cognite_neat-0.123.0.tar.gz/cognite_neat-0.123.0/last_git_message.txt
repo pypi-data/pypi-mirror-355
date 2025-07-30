@@ -1,0 +1,42 @@
+[NEAT-1004] 🧑‍🏫 Support index cursorable (#1218)
+
+# Description
+
+Validation for this new syntax is introduced in #1230 
+
+**Context** The neat spreadsheet format is (with the exception of
+filters) a one-to-one with the DMS API for containers, views, and data
+models. We are currently missing setting `cursorable` on btree indexes.
+This PR introduces it.
+
+![image](https://github.com/user-attachments/assets/befa96f1-ba04-4334-8640-7ab5104c2bd9)
+
+
+Adds support for setting index. 
+* Introduce a `ContainerIndexEntity` to store the information. This is
+following the same pattern that we use for example Units.
+* Replace the `list[str]` with `list[ContainerIndexEntity]` for physical
+properties.
+## Bump
+
+- [ ] Patch
+- [x] Minor
+- [ ] Skip
+
+## Changelog
+### Added
+
+- Support for setting `cursorable` when specifying an index on container
+properties.
+
+### Fixed
+
+- Neat can now specify and maintains the order of multi-property order
+on indices. You do this with the syntax,
+`btree:multipPropertyIntdex(order=1)` in the Index column of the
+physical data model spreadsheet.
+
+### Changed
+
+- When setting an index on a property(ies) with a listable container,
+Neat uses an `InvertedIndex` instead of a `BTreeIndex`.
