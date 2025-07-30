@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rackmail"
+version = "0.3.2"
+description = "CLI tool for managing Rackspace hosted mailboxes"
+authors = [{ name = "Zack Farmer", email = "zackfarmer1710@gmail.com" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.7"
+dependencies = [
+    "requests",
+    "dotenv"
+]
+
+[project.scripts]
+rackmail = "rackmail.main:main"
