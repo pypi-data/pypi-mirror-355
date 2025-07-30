@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smartdoc-cli"
+version = "0.1.4"
+description = "SmartDoc: A tool to generate API documentation for FastAPI, Flask, and Django projects."
+authors = [
+    { name = "Mohammad Safwan Athar", email = "mohammadsafwanathar27@gmail.com" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+dependencies = [
+    "click==8.1.7",
+    "fastapi",
+    "flask",
+    "django",
+    "markdown",        # for HTML conversion
+    "weasyprint",      # for PDF generation
+    "xhtml2pdf",
+]
+
+[project.scripts]
+smartdoc = "cli.main:cli"
+
+[tool.setuptools]
+packages = ["cli", "core", "core.extractor", "sample_app"]
