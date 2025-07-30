@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyOri"
+version = "0.1.0"
+description = "A Pure Python Library for Computational Origami"
+authors = [
+  { name = "Pooja Thaker", email = "ppthaker1@gmail.com" }
+]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib"
+]
+
+[project.urls]
+Homepage = "https://github.com/Happy-Birdie/OriPy"
+Documentation = "https://github.com/Happy-Birdie/OriPy"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pyori"]
