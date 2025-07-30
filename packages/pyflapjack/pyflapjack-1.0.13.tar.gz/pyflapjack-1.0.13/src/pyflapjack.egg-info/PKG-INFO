@@ -1,0 +1,88 @@
+Metadata-Version: 2.4
+Name: pyflapjack
+Version: 1.0.13
+Summary: Python package that interfaces the Flapjack API
+Author-email: Timothy Rudge <tim.rudge@ncl.ac.uk>, Gonzalo Vidal <g.a.vidal-pena2@ncl.ac.uk>
+Maintainer-email: Gonzalo Vidal <g.a.vidal-pena2@ncl.ac.uk>
+License: MIT License
+        
+        Copyright (c) 2022 RudgeLab
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/RudgeLab/pyFlapjack
+Project-URL: Bug Tracker, https://github.com/RudgeLab/pyFlapjack/issues
+Keywords: flapjack,data,experimental,analysis,synthetic biology
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: <=3.10,>=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy==1.26.1
+Requires-Dist: scipy==1.11.0
+Requires-Dist: pandas==1.3.3
+Requires-Dist: requests>=2.25.1
+Requires-Dist: tqdm==4.62.3
+Requires-Dist: plotly==5.3.1
+Requires-Dist: asyncio==3.4.3
+Requires-Dist: nest_asyncio==1.5.1
+Requires-Dist: requests_jwt==0.5.3
+Requires-Dist: websockets==10.0
+Requires-Dist: matplotlib==3.4.3
+Requires-Dist: kaleido==0.2.1
+Provides-Extra: test
+Requires-Dist: pytest<5.0.0; extra == "test"
+Requires-Dist: pytest-cov[all]; extra == "test"
+Dynamic: license-file
+
+# pyFlapjack
+
+pyFlapjack is our Python package that allows you to interface the [Flapjack](http://flapjack.rudge-lab.org) with Pandas and Numpy stack, so that you can easily implement it in your projects.
+
+<img src="https://github.com/RudgeLab/pyFlapjack/blob/stable/images/Flapjack_Dark.svg#gh-light-mode-only" alt="LOICA logo" width="250"/>
+<img src="https://github.com/RudgeLab/pyFlapjack/blob/stable/images/Flapjack_Light.svg#gh-dark-mode-only" alt="LOICA night logo" width="250"/>
+
+![PyPI](https://img.shields.io/pypi/v/pyflapjack)
+[![Documentation Status](https://readthedocs.org/projects/pyflapjack/badge/?version=latest)](https://pyflapjack.readthedocs.io/en/latest/?badge=latest)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyflapjack)
+![PyPI - License](https://img.shields.io/pypi/l/pyflapjack)
+
+### Instalation
+
+Installing pyFlapjack is quite simple. Please refer to our Wiki for installation instructions, available here: [Installation](https://github.com/RudgeLab/pyFlapjack/wiki/Installation).
+
+### Documentation
+
+Please visit our documentation with API reference at Read the Docs [pyflapjack.rtfd.io](pyflapjack.rtfd.io)
+
+### Tutorials
+
+Now that you have pyFlapjack installed you can familiarize yourself with the tool using the [Jupyter notebook tutorials](https://github.com/RudgeLab/pyFlapjack/tree/master/notebooks) designed for this purpose.
+
+## Related repositories
+
+The repository for Flapjack API is available here: [Flapjack API](https://github.com/RudgeLab/flapjack_api); and the one for the Flapjack Frontend is available here: [Flapjack Frontend](https://github.com/RudgeLab/flapjack_frontend).
+
+## Reference this paper
+
+Please reference our Flapjack's paper–available [here](https://pubs.acs.org/doi/10.1021/acssynbio.0c00554), using the following reference:
+> Guillermo Yáñez Feliú, Benjamín Earle Gómez, Verner Codoceo Berrocal, Macarena Muñoz Silva, Isaac N. Nuñez, Tamara F. Matute, Anibal Arce Medina, Gonzalo Vidal, Carlos Vidal Céspedes, Jonathan Dahlin, Fernán Federici, and Timothy J. Rudge
+_ACS Synthetic Biology_ **2021 10** (1), 183-191
+DOI: 10.1021/acssynbio.0c00554
