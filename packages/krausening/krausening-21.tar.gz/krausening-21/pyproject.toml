@@ -1,0 +1,29 @@
+[tool.poetry]
+repository = "https://github.com/TechnologyBrewery/krausening"
+
+[project]
+name = "krausening"
+version = "21"
+description = "Python implementation of Krausening"
+authors = [{name = "Eric Konieczny", email = "ekoniec1@gmail.com"}]
+license = "MIT"
+requires-python = ">=3.8"
+dynamic = ["version", "dependencies"]
+readme = "README.md"
+
+keywords = ["properties", "configuration-management"]
+
+[tool.poetry.dependencies]
+javaproperties = [{version = ">=0.8.1", python = ">=3.8,<4.0"}]
+cryptography = ">=42.0.0"
+watchdog = ">=2.1.9"
+
+[tool.poetry.group.dev.dependencies]
+behave = ">=1.2.6"
+pytest = ">=8.3.5"
+kappa-maki = ">=1.0.2"
+ruff = ">=0.11.13"
+
+[build-system]
+requires = ["poetry-core>=1.6.0"]
+build-backend = "poetry.core.masonry.api"
