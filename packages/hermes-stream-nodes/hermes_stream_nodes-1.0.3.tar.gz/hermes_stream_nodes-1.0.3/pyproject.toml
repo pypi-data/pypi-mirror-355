@@ -1,0 +1,35 @@
+[project]
+name = "hermes-stream-nodes"
+dynamic = ["version"]
+description = "Hermes stream nodes"
+authors = [{ name = "floris vernieuwe", email = "floris@vernieuwe.eu" }]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+   "node-hermes-core>=1.2.0",
+   "pyserial>=3.5",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9.9",
+]
+
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["E402"]
+
+[tool.ruff]
+line-length = 120
+exclude = ["**.pyi", "**/.venv/**"]
+include = ["src/**.py", "test/**.py"]
+
+[tool.pyright]
+ignore = ["**.pyi", "**/.venv/**"]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
