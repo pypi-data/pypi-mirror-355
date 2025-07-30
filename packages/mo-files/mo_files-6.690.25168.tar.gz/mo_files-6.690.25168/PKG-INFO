@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: mo-files
+Version: 6.690.25168
+Summary: More Files! Steamlined for UTF8 and JSON.
+Home-page: https://github.com/klahnakoski/mo-files
+Author: Kyle Lahnakoski
+Author-email: kyle@lahnakoski.com
+License: MPL 2.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mo-dots==10.685.25166
+Requires-Dist: mo-future==7.685.25166
+Requires-Dist: mo-json==6.686.25166
+Requires-Dist: mo-logs==8.685.25166
+Requires-Dist: mo-math==7.685.25166
+Provides-Extra: tests
+Requires-Dist: mo-testing>=8.685.25166; extra == "tests"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+# More Files!
+
+[![PyPI Latest Release](https://img.shields.io/pypi/v/mo-files.svg)](https://pypi.org/project/mo-files/)
+[![Build Status](https://github.com/klahnakoski/mo-files/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/klahnakoski/mo-files/actions/workflows/build.yml)
+[![Coverage Status](https://coveralls.io/repos/github/klahnakoski/mo-files/badge.svg?branch=dev)](https://coveralls.io/github/klahnakoski/mo-files?branch=dev)
+[![Downloads](https://static.pepy.tech/badge/mo-files/month)](https://pepy.tech/project/mo-files)
+
+The `File` class makes the default assumption all files have cr-delimited unicode content that is UTF-8 encoded. This is great for JSON files. It also provides better operators over some common file manipulations.
+
+
+
+
+## Breaking changes
+
+### Version 6.x
+
+**December 2022**
+
+Get a little closer to Python's pathlib module standards
+
+* `stem` - to refer file name without extension
+* `os_path` - to get the os-specific absolute path for use in other Python modules
+* `rel_path` - the given path 
+* `abs_path` - was `abspath`, added underscore for consistency 
+
+
+
