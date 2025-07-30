@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: vf-config-model
+Version: 1.0.0
+Summary: Shared client configuration models for Verbaflo
+Author-email: Raj Kamal <raj.kamal@verbaflo.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/verbaflo/config-model
+Project-URL: Repository, https://github.com/verbaflo/config-model.git
+Project-URL: Documentation, https://github.com/verbaflo/config-model#readme
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Dynamic: license-file
+
+# Config Model
+
+Shared client configuration models for Verbaflo.
+
+## Installation
+
+```bash
+pip install config-model
+```
+
+## Usage
+
+```python
+from config_model import ClientConfig, WidgetConfig
+
+# Create a new client configuration
+config = ClientConfig(
+    client_code="example",
+    client_name="Example Client",
+    # ... other configuration options
+)
+
+# Create a widget configuration
+widget = WidgetConfig(
+    bot_name="Example Bot",
+    client_name="Example Client",
+    # ... other widget options
+)
+```
+
+## Features
+
+- Pydantic models for client configuration
+- Widget configuration models
+- Communication channel configurations
+- Feature flag management
+- Multi-language support
+- And more!
+
+## Development
+
+1. Clone the repository
+2. Install development dependencies:
+   ```bash
+   pip install -e .
+   ```
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details. 
