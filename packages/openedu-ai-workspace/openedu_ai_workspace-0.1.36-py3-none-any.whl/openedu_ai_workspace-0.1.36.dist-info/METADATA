@@ -1,0 +1,328 @@
+Metadata-Version: 2.4
+Name: openedu_ai_workspace
+Version: 0.1.36
+Summary: A package for ai workspace (project) features.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: langchain-openai
+Requires-Dist: langchain-qdrant
+Requires-Dist: pydantic
+Requires-Dist: pymongo
+Requires-Dist: python-dotenv
+Requires-Dist: qdrant-client
+Requires-Dist: sentence-transformers
+Requires-Dist: typing-extensions
+Provides-Extra: dev
+Requires-Dist: black>=24.1.0; extra == "dev"
+Requires-Dist: bumpver>=2024.1130; extra == "dev"
+Requires-Dist: pre-commit>=4.2.0; extra == "dev"
+Requires-Dist: pytest>=8.3.5; extra == "dev"
+Requires-Dist: setuptools>=78.1.0; extra == "dev"
+Requires-Dist: twine>=6.1.0; extra == "dev"
+Requires-Dist: wheel>=0.45.1; extra == "dev"
+
+# openedu_ai_workspace
+
+[![PyPI version](https://img.shields.io/pypi/v/openedu_ai_workspace.svg)](https://pypi.org/project/openedu_ai_workspace/)
+[![Python Version](https://img.shields.io/pypi/pyversions/openedu_ai_workspace.svg)](https://pypi.org/project/openedu_ai_workspace/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A package for AI workspace (project) features, enabling management of workspaces and documents, with integration for MongoDB, Qdrant, and Azure OpenAI embeddings.
+
+## Overview
+
+`openedu_ai_workspace` provides a robust framework for managing AI-centric projects. It allows developers to create, organize, and interact with workspaces, store and retrieve documents, and leverage powerful AI capabilities through integrations with vector databases and embedding models.
+
+## Features
+
+*   **Workspace Management:**
+    *   Create, find, update, and delete workspaces.
+    *   Manage workspace-specific instructions and chat sessions.
+*   **Document Management:**
+    *   Upload documents to workspaces.
+    *   Retrieve document metadata.
+*   **Database Integration:**
+    *   Uses MongoDB for storing workspace and document metadata.
+    *   Integrates with Qdrant for efficient vector storage and similarity search of document embeddings.
+*   **AI Embeddings:**
+    *   Utilizes Azure OpenAI Embeddings for processing and embedding document content.
+
+## Prerequisites
+
+*   Python 3.10 or higher.
+*   Access to a running MongoDB instance.
+*   Access to a running Qdrant instance.
+*   Azure OpenAI Service:
+    *   API Key
+    *   Endpoint URL
+    *   Embedding Model Deployment Name
+
+## Installation
+
+Install `openedu_ai_workspace` using pip:
+
+```bash
+pip install openedu_ai_workspace
+```
+
+## Configuration
+
+The package relies on environment variables for critical configurations, such as database connection strings and API credentials. Ensure these are set in your environment or a `.env` file:
+
+*   `MONGODB_URL`: The connection URI for your MongoDB instance (e.g., `mongodb://localhost:27017/aicore`).
+*   `QDRANT_URL`: The URL for your Qdrant instance (e.g., `http://localhost:6333`).
+*   `AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key.
+*   `AZURE_OPENAI_ENDPOINT`: Your Azure OpenAI endpoint URL.
+*   `AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME`: The deployment name for your Azure OpenAI embedding model (e.g., `embedding`).
+
+## Usage Examples
+
+First, ensure you have a `.env` file in your project root with the necessary credentials, or that the environment variables are set.
+
+```
+# .env example
+MONGODB_URL="mongodb://localhost:27017/mydatabase"
+QDRANT_URL="http://localhost:6333"
+AZURE_OPENAI_API_KEY="your_azure_openai_api_key"
+AZURE_OPENAI_ENDPOINT="your_azure_openai_endpoint"
+AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME="your_embedding_deployment_name"
+```
+
+### Initializing the Workspace Client
+
+```python
+from dotenv import load_dotenv
+from ai_workspace import Workspace, WorkspaceSchema, DocumentSchema
+from ai_workspace.database import MongoDB, Qdrant
+from langchain_openai import AzureOpenAIEmbeddings
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Configuration (fetched from environment variables)
+MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017/aicore")
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
+AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME", "embedding")
+
+# Initialize database connections and embeddings model
+mongodb = MongoDB(uri=MONGODB_URL)
+qdrant = Qdrant(uri=QDRANT_URL)
+embedding_model = AzureOpenAIEmbeddings(
+    azure_deployment=AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME,
+    api_key=AZURE_OPENAI_API_KEY,
+    azure_endpoint=AZURE_OPENAI_ENDPOINT
+)
+
+# Create Workspace instance
+ai_workspace = Workspace(mongodb=mongodb, qdrant=qdrant, embedding=embedding_model)
+
+print("Workspace client initialized.")
+```
+
+### Creating a Workspace
+
+```python
+import uuid
+
+new_workspace_id = str(uuid.uuid4())  # Generate a unique ID for the new workspace
+
+workspace_data = WorkspaceSchema(
+    workspace_id=new_workspace_id,
+    title="My First AI Workspace",
+    description="A dedicated space for exploring AI concepts.",
+    user_id="user_alpha_001",
+    instructions="Default instructions for tasks in this workspace."
+    # chat_sessions can be omitted or initialized as an empty list
+)
+
+try:
+    created_workspace_id = ai_workspace.create(workspace_data)
+    print(f"Workspace created successfully with ID: {created_workspace_id}")
+except Exception as e:
+    print(f"Error creating workspace: {e}")
+```
+
+### Adding Knowledge (Uploading a Document)
+
+```python
+# Assuming 'created_workspace_id' is available from the previous step
+if 'created_workspace_id' in locals():
+    document_data = DocumentSchema(
+        workspace_id=created_workspace_id,
+        file_name="introduction_to_ai.txt",
+        file_mime="text/plain",
+        file_suffix=".txt",
+    )
+    
+    # Content for the document
+    document_content_texts = [
+        "Artificial intelligence (AI) is intelligence demonstrated by machines.",
+        "It encompasses various sub-fields like machine learning and natural language processing."
+    ]
+    
+    # Optional metadata for the document
+    document_metadata = {"source": "internal_notes", "version": "1.0"}
+
+    try:
+        document_id = ai_workspace.add_knowledge(
+            document=document_data,
+            raw_texts=document_content_texts,
+            metadata=document_metadata,
+            to_workspace=True  # This flag links the document to the workspace's document list
+        )
+        print(f"Document '{document_data.file_name}' added with ID: {document_id} to workspace {created_workspace_id}")
+
+        # Optionally, retrieve the document to verify
+        retrieved_doc = ai_workspace.document_client.get_document(document_id)
+        if retrieved_doc:
+            print(f"Successfully retrieved document: {retrieved_doc.file_name}")
+    except Exception as e:
+        print(f"Error adding document: {e}")
+else:
+    print("Workspace ID not found. Please create a workspace first.")
+
+```
+
+### Retrieving a Workspace
+
+```python
+# Assuming 'created_workspace_id' is available
+if 'created_workspace_id' in locals():
+    try:
+        retrieved_workspace = ai_workspace.find_workspace_by_id(created_workspace_id)
+        if retrieved_workspace:
+            print(f"Retrieved workspace: '{retrieved_workspace.title}' (ID: {retrieved_workspace.workspace_id})")
+            print(f"Instructions: {retrieved_workspace.instructions}")
+        else:
+            print(f"Workspace with ID {created_workspace_id} not found.")
+    except Exception as e:
+        print(f"Error retrieving workspace: {e}")
+else:
+    print("Workspace ID not found for retrieval.")
+```
+
+### Updating Workspace Instructions
+
+```python
+# Assuming 'created_workspace_id' is available
+if 'created_workspace_id' in locals():
+    new_instructions = "Focus on summarization tasks for all documents."
+    try:
+        success = ai_workspace.update_instructions(created_workspace_id, new_instructions)
+        if success:
+            print(f"Workspace instructions updated for ID: {created_workspace_id}")
+            # Verify by fetching the workspace again
+            updated_workspace = ai_workspace.find_workspace_by_id(created_workspace_id)
+            if updated_workspace:
+                print(f"New instructions: {updated_workspace.instructions}")
+        else:
+            print(f"Failed to update instructions for workspace ID: {created_workspace_id}")
+    except Exception as e:
+        print(f"Error updating instructions: {e}")
+else:
+    print("Workspace ID not found for updating instructions.")
+```
+
+### Adding a Chat Session to a Workspace
+
+```python
+# Assuming 'created_workspace_id' is available
+if 'created_workspace_id' in locals():
+    new_session_id = "chat_session_beta_002"
+    try:
+        success = ai_workspace.add_session(created_workspace_id, new_session_id)
+        if success:
+            print(f"Chat session '{new_session_id}' added to workspace ID: {created_workspace_id}")
+            # Verify by fetching the workspace again
+            workspace_with_session = ai_workspace.find_workspace_by_id(created_workspace_id)
+            if workspace_with_session and new_session_id in workspace_with_session.chat_sessions:
+                print(f"Verified: Session '{new_session_id}' is in chat_sessions: {workspace_with_session.chat_sessions}")
+        else:
+            print(f"Failed to add chat session to workspace ID: {created_workspace_id}")
+    except Exception as e:
+        print(f"Error adding chat session: {e}")
+else:
+    print("Workspace ID not found for adding a chat session.")
+```
+
+### Deleting a Workspace
+
+```python
+# Be cautious with this operation.
+# Assuming 'created_workspace_id' is available and you want to delete it.
+# if 'created_workspace_id' in locals():
+#     try:
+#         success = ai_workspace.delete_workspace(created_workspace_id)
+#         if success:
+#             print(f"Workspace with ID: {created_workspace_id} and its associated Qdrant collection deleted successfully.")
+#             # Try to find it again, it should fail or return None
+#             # verify_deleted_workspace = ai_workspace.find_workspace_by_id(created_workspace_id)
+#             # if not verify_deleted_workspace:
+#             #     print(f"Verified: Workspace {created_workspace_id} no longer exists.")
+#         else:
+#             print(f"Failed to delete workspace ID: {created_workspace_id}")
+#     except Exception as e:
+#         print(f"Error deleting workspace: {e}")
+# else:
+#     print("Workspace ID not found for deletion.")
+```
+(The delete operation is commented out by default in this example to prevent accidental data loss during example runs.)
+
+## Running Tests
+
+To run the test suite, ensure you have `pytest` installed (`pip install pytest`) and that your MongoDB and Qdrant instances are running and accessible with the configurations specified in your test environment (or `.env` file loaded by tests).
+
+Navigate to the project root directory and run:
+
+```bash
+pytest
+```
+
+The tests will cover various functionalities of the `Workspace` and `Document` clients, including creation, retrieval, updates, and deletions.
+
+## Project Structure
+
+The project is organized as follows:
+
+```
+openedu_ai_workspace/
+├── src/
+│   ├── ai_workspace/
+│   │   ├── __init__.py         # Makes 'ai_workspace' a package, exports main classes
+│   │   ├── database/           # Database interaction modules (mongo.py, qdrant.py)
+│   │   ├── exceptions/         # Custom exceptions and handlers
+│   │   ├── packages/           # Core logic for Workspace, Document, Embeddings
+│   │   ├── schemas/            # Pydantic models for data validation
+│   │   └── utils/              # Utility functions (e.g., logger)
+│   └── openedu_ai_workspace.egg-info/ # Packaging metadata
+├── tests/                      # Unit and integration tests
+│   ├── test_document.py
+│   └── test_workspace.py
+├── .gitignore
+├── pyproject.toml              # Project metadata and build configuration
+├── README.md                   # This file
+└── ...                         # Other configuration files
+```
+
+## Key Dependencies
+
+This package relies on several key libraries:
+
+*   `langchain-openai`: For Azure OpenAI embeddings.
+*   `langchain-qdrant`: For Qdrant vector store integration with LangChain.
+*   `pydantic`: For data validation and settings management.
+*   `pymongo`: The official Python driver for MongoDB.
+*   `qdrant-client`: The official Python client for Qdrant.
+*   `python-dotenv`: For loading environment variables from `.env` files.
+*   `sentence-transformers`: (Though not directly in `dependencies`, it's a common underlying library for embeddings if not using Azure OpenAI directly for all embedding tasks, or if other embedding models were considered).
+
+## Contributing
+
+Contributions are welcome! If you have suggestions for improvements or encounter any issues, please feel free to open an issue or submit a pull request on the project's repository.
+
+## License
+
+This project is licensed under the **MIT License**. See the `LICENSE` file for more details (if a `LICENSE` file is present in the repository).
