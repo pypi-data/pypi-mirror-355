@@ -1,0 +1,99 @@
+from pathlib import Path
+from typing import Any
+from pydantic_ai import models
+from alo_pyai_sdk.core import config_manager
+
+# Determine project root - assumes agent is run from project root
+# or that this module is discoverable relative to a project root in PYTHONPATH.
+# A more robust solution might involve environment variables or a discoverable marker.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent # agents/{agent_id}/config.py -> project_root
+
+def get_pydantic_ai_model(llm_config_name: str) -> models.Model:
+    """
+    Loads the specified LLM configuration from the project's alo_config.yaml
+    and returns an initialized Pydantic-AI Model instance.
+    """
+    global_config = config_manager.load_config(PROJECT_ROOT)
+    
+    if llm_config_name not in global_config.llms:
+        raise ValueError(f"LLM configuration '{llm_config_name}' not found in alo_config.yaml.")
+        
+    llm_conf = global_config.llms[llm_config_name]
+    
+    provider_map = {
+        "openai": models.OpenAIModel,
+        "anthropic": models.AnthropicModel,
+        "google-gla": models.GeminiModel, # Or GoogleModel if preferred and available
+        "google-vertex": models.GeminiModel, # Or GoogleModel with VertexAI provider
+        "groq": models.GroqModel,
+        "mistral": models.MistralModel,
+        "cohere": models.CohereModel,
+        "bedrock": models.BedrockConverseModel,
+        # Add other mappings as Pydantic-AI supports more providers directly
+        # or as we add more specific provider logic (e.g. for AzureOpenAI)
+    }
+    
+    model_class = provider_map.get(llm_conf.provider.lower())
+    
+    if not model_class:
+        # Fallback for OpenAI-compatible or other string-based model identifiers
+        # Pydantic-AI's infer_model will try to handle "provider:model_name" strings
+        # or direct model names if the provider SDK is installed.
+        # This path might require API keys to be in environment variables if not explicitly passed.
+        model_identifier = f"{llm_conf.provider}:{llm_conf.model_name}" if llm_conf.model_name else llm_conf.provider
+        if llm_conf.api_key and llm_conf.provider.lower() == "openai": # Special handling for OpenAIProvider if key is present
+             # This assumes OpenAIProvider is the target for generic "openai" or compatible APIs
+            provider_instance = models.OpenAIProvider(api_key=llm_conf.api_key, base_url=llm_conf.base_url)
+            # model_name here should be just the model part, e.g. "gpt-4o"
+            actual_model_name = llm_conf.model_name or "gpt-4o" # Fallback if not specified
+            return models.OpenAIModel(model_name=actual_model_name, provider=provider_instance)
+        elif llm_conf.provider.lower() == "google-vertex":
+            # Example for VertexAI, assuming google-auth is set up
+            provider_instance = models.GoogleVertexProvider(project_id=llm_conf.extra_args.get("project_id") if llm_conf.extra_args else None, region=llm_conf.extra_args.get("region") if llm_conf.extra_args else None)
+            return models.GeminiModel(model_name=llm_conf.model_name or "gemini-1.5-pro", provider=provider_instance)
+
+        # For other providers or if no API key for OpenAI, let infer_model try its best
+        # This relies on Pydantic-AI's internal mechanisms and env vars.
+        return models.infer_model(model_identifier)
+
+    # For directly mapped providers:
+    model_args: dict[str, Any] = {}
+    if llm_conf.api_key:
+        # Provider-specific API key handling might be needed if Pydantic-AI models
+        # don't uniformly accept 'api_key' in their constructors or through their default provider.
+        # For now, we rely on Pydantic-AI's infer_provider or specific provider classes.
+        # Example for OpenAI, Anthropic, etc., which often use env vars or explicit provider setup.
+        if llm_conf.provider.lower() in ["openai", "anthropic", "cohere", "groq", "mistral"]:
+             # These providers typically have their own Provider class that takes api_key
+            provider_instance_class = getattr(models, f"{llm_conf.provider.capitalize()}Provider", None)
+            if provider_instance_class:
+                provider_args = {"api_key": llm_conf.api_key}
+                if llm_conf.base_url and llm_conf.provider.lower() in ["openai", "mistral"]: # some providers take base_url
+                    provider_args["base_url"] = llm_conf.base_url
+                provider_instance = provider_instance_class(**provider_args)
+                model_args["provider"] = provider_instance
+            else: # Fallback if specific provider class not found, rely on infer_model with full string
+                 return models.infer_model(f"{llm_conf.provider}:{llm_conf.model_name}")
+
+
+    # Pass model_name for all known model classes
+    actual_model_name = llm_conf.model_name
+    if not actual_model_name:
+        # Provide a sensible default if not specified, though Pydantic-AI might have its own
+        if llm_conf.provider.lower() == "openai": actual_model_name = "gpt-4o"
+        elif llm_conf.provider.lower() == "anthropic": actual_model_name = "claude-3-5-sonnet-latest"
+        # Add more defaults as needed
+        else: actual_model_name = "default" # Placeholder, Pydantic-AI might error if this is not valid
+
+    return model_class(model_name=actual_model_name, **model_args)
+
+# Example of how agent_definition.py might use this:
+# from .config import get_pydantic_ai_model
+#
+# LLM_CONFIG_NAME = "{{ llm_config_name }}" # This would be templated
+# configured_model = get_pydantic_ai_model(LLM_CONFIG_NAME)
+#
+# agent = Agent(
+# model=configured_model,
+# ...
+# )
