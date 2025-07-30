@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: cadcutils
+Version: 1.5.5
+Summary: Generic CADC Python libary of utilities
+Home-page: http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca
+Author: Canadian Astronomy Data Centre
+Author-email: cadc@nrc-cnrc.gc.ca
+License: AGPLv3
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9, <4
+License-File: LICENSE
+Requires-Dist: setuptools>=36.0
+Requires-Dist: requests>=2.8
+Requires-Dist: lxml>=3.7.0
+Requires-Dist: html2text
+Requires-Dist: distro
+Requires-Dist: pyopenssl
+Requires-Dist: packaging
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov>=2.5.1; extra == "test"
+Requires-Dist: flake8>=3.4.1; extra == "test"
+Requires-Dist: funcsigs==1.0.2; extra == "test"
+Requires-Dist: mock>=2.0.0; extra == "test"
+Requires-Dist: xml-compare>=1.0.5; extra == "test"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
+cadcutils
+=========
+
+.. image:: https://img.shields.io/pypi/v/cadcutils.svg   
+    :target: https://pypi.python.org/pypi/cadcutils
+
+Canadian Astronomy Data Centre (CADC) library of utilities commonly used
+by CADC Python clients
+
+Command Line Interface API
+==========================
+This library installs a number of CLI applications. Please consult their
+helpers for details on how to invoke them.
+
+cadc-get-cert
+-------------
+Application that retrieves a CADC X509 user proxy certificate. This
+certificate is used to authenticate with a number of CADC clients.
+
+cadc-groups
+-----------
+Application that interacts with the CADC Group Management Service (GMS).
+GMS is used to check user membership in appropriate groups in order to
+determine authorization access to resources. The application is used
+to manipulate CADC groups.
+
+
+
