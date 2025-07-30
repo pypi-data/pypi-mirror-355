@@ -1,0 +1,25 @@
+[project]
+name = "terramcp"
+version = "0.1.5"
+description = "Terra Dashboard MCP - A MCP server for managing your Terra Dashboard."
+authors = [
+    { name = "Terra Team", email = "dev@tryterra.co" },
+    { name = "Sim Shang En", email = "shangen@tryterra.co"}
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp>=2.3.3",
+    "requests>=2.32.3",
+]
+
+[project.scripts]
+terramcp = "terramcp:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/terramcp"]
