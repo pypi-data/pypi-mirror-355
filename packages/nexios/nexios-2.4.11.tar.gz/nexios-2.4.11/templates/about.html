@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    
+    <h2>Our Team:</h2>
+    <div class="team">
+        {% for member in team %}
+        <div class="member">
+            <h3>{{ member.name|upper }}</h3>
+            <p>Role: {{ member.role }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
