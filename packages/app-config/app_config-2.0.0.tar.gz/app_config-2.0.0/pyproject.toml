@@ -1,0 +1,49 @@
+[project]
+name = "app_config"
+dynamic = ["version"]
+authors = [
+  { name="Criss Swaim", email="cswaim@tpginc.net" },
+]
+maintainers = [
+  { name="Criss Swaim", email="cswaim@tpginc.net" },
+  { name="Scott Allman", email="scott.m.allman@gmail.com"},
+]
+description = "Read a config file and create a config module which can be passed throughout an application. Reading and writing of the config file are based on configparser."
+readme = "README.md"
+# license = { file = "LICENSE" }
+keywords = ["config", "config file", "config module", "config generator", "application config", "application config file", "app config", "app config file", "tpg"]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: Apache Software License",
+]
+
+[project.urls]
+Repository = "https://gitlab.com/tpgllc/app_config"
+Customization = "https://gitlab.com/tpgllc/app_config/-/blob/main/doc/customizing.md"
+Issues = "https://gitlab.com/tpgllc/app_config/issues"
+Changelog = "https://gitlab.com/tpgllc/app_config/-/blob/main/doc/changelog.md"
+
+[project.scripts]
+app_config-init = "app_config.gen_config:run"
+
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm>=8", "build>=1.2.2", "packaging>=24.2", "twine>=6.0.1", "wheel>=0.45.1"]
+build-backend = "setuptools.build_meta"
+
+# ...
+#[tool.setuptools.packages]
+#find = {}  # Scan the project directory with the default parameters
+
+# OR
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+where = ["src"]  # ["."] by default
+#include = ["mypackage*"]  # ["*"] by default
+exclude = ["data", "dev"]  # empty by default
+#namespaces = false  # true by default
+
+[tool.setuptools_scm]
+version_file =  "src/app_config/__version__.py"
