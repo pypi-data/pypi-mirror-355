@@ -1,0 +1,49 @@
+# build所需环境
+[build-system]
+requires = [
+    "requests",
+    "pandas==1.5.3",
+    "numpy==1.26.4",
+    "tqdm",
+    "retry",
+    "jionlp",
+    "pymysql",
+    "lxml",
+    "hatchling",
+    "openpyxl"
+]
+build-backend = "hatchling.build"
+
+# 此项目的信息
+[project]
+name = "cnquant"
+dynamic = ["version"]
+license = {file = "LICENSE"}
+readme = "README.md"
+description = "A股量化交易工具"
+authors = [{name = "NiuGe", email="1091874347@qq.com"}]
+requires-python = '>=3.7'
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests",
+    "pandas==1.5.3",
+    "numpy==1.26.4",
+    "tqdm",
+    "retry",
+    "jionlp",
+    "lxml",
+    "pymysql",
+    "openpyxl"
+]  # 这个是安装cnquant时候自动安装的依赖
+
+[project.urls]
+homepage = "https://github.com/axiaoqi/cnquant"
+documentation = 'https://github.com/axiaoqi/cnquant/blob/main/README.md'
+"Bug Tracker" = "https://github.com/axiaoqi/cnquant/issues"
+
+[tool.hatch.version]
+path = "cnquant/__init__.py"

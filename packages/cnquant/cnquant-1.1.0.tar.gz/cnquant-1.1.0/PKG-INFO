@@ -1,0 +1,161 @@
+Metadata-Version: 2.4
+Name: cnquant
+Version: 1.1.0
+Summary: A股量化交易工具
+Project-URL: homepage, https://github.com/axiaoqi/cnquant
+Project-URL: documentation, https://github.com/axiaoqi/cnquant/blob/main/README.md
+Project-URL: Bug Tracker, https://github.com/axiaoqi/cnquant/issues
+Author-email: NiuGe <1091874347@qq.com>
+License: MIT License
+        
+        Copyright (c) 2024 axiaoqi
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: jionlp
+Requires-Dist: lxml
+Requires-Dist: numpy==1.26.4
+Requires-Dist: openpyxl
+Requires-Dist: pandas==1.5.3
+Requires-Dist: pymysql
+Requires-Dist: requests
+Requires-Dist: retry
+Requires-Dist: tqdm
+Description-Content-Type: text/markdown
+
+# cnquant
+A股程序化交易系统
+
+## 功能
+- 数据获取
+- 数据查询
+- 数据处理
+
+## update_data.py
+
+基础数据：
+- [x] 节假日，交易日数据【data/trading_day】
+- [x] 指数K线数据【data/klines/index_klines_em.py】
+- [x] 股票代码列表【data/symbol】
+- [x] 股票历史名称【data/history_name】
+
+其他数据
+- 股东数据【data/holder】
+  - [x] 最新日期十大股东数据
+  - [x] 最新日期十大流通股东数据
+  - [x] 股东数量数据
+- [x] 分红数据【data/dividend/dividend_ths】
+- 公司概况【data/company】
+  - [x] 基本信息【company_information.py】
+  - [x] ipo【ipo_information.py】
+- 经营分析【data/business】
+  - [x] 主营业务【同花顺、main_business_ths.py】
+  - [x] 经营范围【东方财富，跟同花顺主营业务差不多，但是没有同花顺细致，business_scope.py】
+  - [x] 主营构成分析【东方财富，main_business_composition_analysis.py】
+- 财务分析【data/finance】
+  - [x] 主要指标【main_index.py】
+- [x] 实际控制人【data/actual_controller.py】
+
+添加黑名单【data/blacklist.py】
+
+待添加数据
+
+
+TODO:
+- 最挣钱的公司【净利润最高的公司】
+- 毛利率最高的公司【挣钱的生意】
+- 分红最多的公司【最大方的公司】
+- 分红率最高的公司【股民最赚钱的公司】
+
+
+
+## 数据来源
+
+- ths：同花顺
+- em：东方财富
+- xq：雪球
+
+## 其他
+
+- 股票回测
+- 股票实盘交易
+
+- 股票代码列表
+  - 来源1：三个官方
+  - 来源2：东方财富--沪京深A股
+
+- 数据保存位置：~\cn_finance_data
+  - base_data：基础资料
+
+
+- 公司信息：省份、注册地址、办公地址、东财行业、上市日期、成立日期、注册资本(元)、员工人数、【em-公司概况】[api](https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_F10_BASIC_ORGINFO&columns=SECUCODE%2CSECURITY_CODE%2CSECURITY_NAME_ABBR%2CORG_CODE%2CORG_NAME%2CORG_NAME_EN%2CFORMERNAME%2CSTR_CODEA%2CSTR_NAMEA%2CSTR_CODEB%2CSTR_NAMEB%2CSTR_CODEH%2CSTR_NAMEH%2CSECURITY_TYPE%2CEM2016%2CTRADE_MARKET%2CINDUSTRYCSRC1%2CPRESIDENT%2CLEGAL_PERSON%2CSECRETARY%2CCHAIRMAN%2CSECPRESENT%2CINDEDIRECTORS%2CORG_TEL%2CORG_EMAIL%2CORG_FAX%2CORG_WEB%2CADDRESS%2CREG_ADDRESS%2CPROVINCE%2CADDRESS_POSTCODE%2CREG_CAPITAL%2CREG_NUM%2CEMP_NUM%2CTATOLNUMBER%2CLAW_FIRM%2CACCOUNTFIRM_NAME%2CORG_PROFILE%2CBUSINESS_SCOPE%2CTRADE_MARKETT%2CTRADE_MARKET_CODE%2CSECURITY_TYPEE%2CSECURITY_TYPE_CODE%2CEXPAND_NAME_ABBR%2CEXPAND_NAME_PINYIN&quoteColumns=&filter=(SECUCODE%3D%22600491.SH%22)&pageNumber=1&pageSize=1&sortTypes=&sortColumns=&source=HSF10&client=PC&v=0014519192270562975)
+- 发行资料：保荐机构、主承销商、【em-公司概况】[api](https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_PCF10_ORG_ISSUEINFO&columns=ALL&quoteColumns=&filter=(SECUCODE%3D%22600491.SH%22)&pageNumber=1&pageSize=1&sortTypes=&sortColumns=&source=HSF10&client=PC&v=048289232221027234)
+
+- 分红融资: 【em-分红融资】[api](https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_F10_DIVIDEND_MAIN&columns=ALL&quoteColumns=&filter=(SECUCODE%3D%22600519.SH%22)&pageNumber=1&pageSize=10&sortTypes=-1&sortColumns=NOTICE_DATE&source=HSF10&client=PC&v=07321251987315802)
+> 这个东方财富没有同花顺的数据好。
+  - 详细的资料，带股息率[api](https://datacenter-web.eastmoney.com/api/data/v1/get?sortColumns=REPORT_DATE&sortTypes=-1&pageSize=50&pageNumber=1&reportName=RPT_SHAREBONUS_DET&columns=ALL&quoteColumns=&js=%7B%22data%22%3A(x)%2C%22pages%22%3A(tp)%7D&source=WEB&client=WEB&filter=(SECURITY_CODE%3D%22600000%22))
+
+- 股东研究
+  - 股东人数
+  - 十大流通股东
+  - 十大股东
+- 股本结构【em不更新了。ths有更新】
+- 财务分析
+  - 主要指标已完成
+  - 三个分表api变动的【未完成】
+- 经营分析
+  - 主营范围
+  - 主营构成分析
+
+- 股票历史名称
+- 三大市场股票代码【未退市】
+- 指数K线数据【em，fq_type(0:, 1:, 2:,)】
+- 日K线数据
+- 两市成交额
+- 分钟K线数据【数据大，等等弄】
+
+- 交易日历【历史交易日历可以去看指数的日期】【当年的需要去交易所查看】
+- 股票黑名单【股票代码，股票名称，黑名单原因【1.2.3.列表】】
+  - 财务造假
+  - 大股东违规减持
+  - 欺诈发行
+
+- 已退市股票代码
+
+- 【没什么用，延后】
+  - 公司高管
+  - 资金流向
+  - 龙虎榜单
+
+## TODO
+可以写一个管理框架，然后数据更新模块接入就行了
+
+update_timestamp：数据加一行更新日期，后期读取数据，可以读取这个信息，然后对比最近一个交易日。如果这个日期大于最近一个交易日，则这个数据是最新的，否则不是最新的，则需要更新一下
+
+
+
+
+
+
+
+
