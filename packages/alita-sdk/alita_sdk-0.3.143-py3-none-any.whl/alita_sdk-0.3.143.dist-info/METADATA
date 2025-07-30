@@ -1,0 +1,263 @@
+Metadata-Version: 2.4
+Name: alita_sdk
+Version: 0.3.143
+Summary: SDK for building langchain agents using resources from Alita
+Author-email: Artem Rozumenko <artyom.rozumenko@gmail.com>, Mikalai Biazruchka <mikalai_biazruchka@epam.com>, Roman Mitusov <roman_mitusov@epam.com>, Ivan Krakhmaliuk <lifedjik@gmail.com>
+License-Expression: Apache-2.0
+Project-URL: Homepage, https://projectalita.ai
+Project-URL: Issues, https://github.com/ProjectAlita/alita-sdk/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sqlalchemy<2.0.36
+Requires-Dist: tiktoken>=0.7.0
+Requires-Dist: openai>=1.55.0
+Requires-Dist: python-dotenv~=1.0.1
+Requires-Dist: jinja2~=3.1.3
+Requires-Dist: pillow~=11.1.0
+Requires-Dist: requests~=2.3
+Requires-Dist: pydantic~=2.10.0
+Requires-Dist: chardet==5.2.0
+Requires-Dist: fastapi==0.115.9
+Requires-Dist: httpcore==1.0.7
+Requires-Dist: urllib3>=2
+Requires-Dist: certifi==2024.8.30
+Provides-Extra: runtime
+Requires-Dist: langchain_core==0.3.49; extra == "runtime"
+Requires-Dist: langchain<=0.3.22; extra == "runtime"
+Requires-Dist: langchain_community~=0.3.7; extra == "runtime"
+Requires-Dist: langchain-openai~=0.3.0; extra == "runtime"
+Requires-Dist: langgraph-checkpoint-sqlite~=2.0.0; extra == "runtime"
+Requires-Dist: langgraph-checkpoint-postgres~=2.0.1; extra == "runtime"
+Requires-Dist: langsmith==0.1.144; extra == "runtime"
+Requires-Dist: langgraph~=0.2.53; extra == "runtime"
+Requires-Dist: langchain_chroma~=0.2.2; extra == "runtime"
+Requires-Dist: langchain-unstructured~=0.1.6; extra == "runtime"
+Requires-Dist: langchain-postgres~=0.0.13; extra == "runtime"
+Requires-Dist: keybert==0.8.3; extra == "runtime"
+Requires-Dist: charset_normalizer==3.3.2; extra == "runtime"
+Requires-Dist: unstructured[local-inference]==0.16.23; extra == "runtime"
+Requires-Dist: unstructured_pytesseract==0.3.13; extra == "runtime"
+Requires-Dist: unstructured_inference==0.8.7; extra == "runtime"
+Requires-Dist: python-pptx==1.0.2; extra == "runtime"
+Requires-Dist: pdf2image==1.16.3; extra == "runtime"
+Requires-Dist: pikepdf==8.7.1; extra == "runtime"
+Requires-Dist: pypdf==4.3.1; extra == "runtime"
+Requires-Dist: pdfminer.six==20240706; extra == "runtime"
+Requires-Dist: opencv-python==4.11.0.86; extra == "runtime"
+Requires-Dist: python-docx==1.1.2; extra == "runtime"
+Requires-Dist: openpyxl==3.1.2; extra == "runtime"
+Requires-Dist: markdown==3.5.1; extra == "runtime"
+Requires-Dist: beautifulsoup4==4.12.2; extra == "runtime"
+Requires-Dist: gensim==4.3.3; extra == "runtime"
+Requires-Dist: chromadb<0.7.0; extra == "runtime"
+Requires-Dist: pgvector==0.2.5; extra == "runtime"
+Requires-Dist: scipy==1.13.1; extra == "runtime"
+Requires-Dist: pytesseract==0.3.13; extra == "runtime"
+Requires-Dist: reportlab==4.2.5; extra == "runtime"
+Requires-Dist: svglib==1.5.1; extra == "runtime"
+Requires-Dist: rlpycairo==0.3.0; extra == "runtime"
+Requires-Dist: cairocffi==1.7.1; extra == "runtime"
+Requires-Dist: docx2txt==0.8; extra == "runtime"
+Requires-Dist: mammoth==1.9.0; extra == "runtime"
+Requires-Dist: opentelemetry-exporter-otlp-proto-grpc==1.25.0; extra == "runtime"
+Requires-Dist: sentence-transformers==2.7.0; extra == "runtime"
+Provides-Extra: tools
+Requires-Dist: dulwich==0.21.6; extra == "tools"
+Requires-Dist: paramiko==3.3.1; extra == "tools"
+Requires-Dist: pygithub==2.3.0; extra == "tools"
+Requires-Dist: python-gitlab==4.5.0; extra == "tools"
+Requires-Dist: gitpython==3.1.43; extra == "tools"
+Requires-Dist: atlassian-python-api~=3.41; extra == "tools"
+Requires-Dist: atlassian_python_api==3.41.16; extra == "tools"
+Requires-Dist: jira==3.8.0; extra == "tools"
+Requires-Dist: qtest-swagger-client==0.0.3; extra == "tools"
+Requires-Dist: testrail-api==1.13.2; extra == "tools"
+Requires-Dist: azure-devops==7.1.0b4; extra == "tools"
+Requires-Dist: msrest==0.7.1; extra == "tools"
+Requires-Dist: python-graphql-client~=0.4.3; extra == "tools"
+Requires-Dist: zephyr-python-api==0.1.0; extra == "tools"
+Requires-Dist: pyral==1.6.0; extra == "tools"
+Requires-Dist: boto3>=1.37.23; extra == "tools"
+Requires-Dist: azure-core==1.30.2; extra == "tools"
+Requires-Dist: azure-identity==1.16.0; extra == "tools"
+Requires-Dist: azure-keyvault-keys==4.9.0; extra == "tools"
+Requires-Dist: azure-keyvault-secrets==4.8.0; extra == "tools"
+Requires-Dist: azure-mgmt-core==1.4.0; extra == "tools"
+Requires-Dist: azure-mgmt-resource==23.0.1; extra == "tools"
+Requires-Dist: azure-mgmt-storage==21.1.0; extra == "tools"
+Requires-Dist: azure-storage-blob==12.23.1; extra == "tools"
+Requires-Dist: azure-search-documents==11.5.2; extra == "tools"
+Requires-Dist: PyMySQL==1.1.1; extra == "tools"
+Requires-Dist: psycopg2-binary==2.9.10; extra == "tools"
+Requires-Dist: Office365-REST-Python-Client==2.5.14; extra == "tools"
+Requires-Dist: python-docx==1.1.2; extra == "tools"
+Requires-Dist: python-pptx==1.0.2; extra == "tools"
+Requires-Dist: pypdf2~=3.0.1; extra == "tools"
+Requires-Dist: FigmaPy==2018.1.0; extra == "tools"
+Requires-Dist: pandas==2.2.3; extra == "tools"
+Requires-Dist: factor_analyzer==0.5.1; extra == "tools"
+Requires-Dist: statsmodels==0.14.4; extra == "tools"
+Requires-Dist: tabulate==0.9.0; extra == "tools"
+Requires-Dist: tree_sitter==0.20.2; extra == "tools"
+Requires-Dist: tree-sitter-languages==1.10.2; extra == "tools"
+Requires-Dist: astor~=0.8.1; extra == "tools"
+Requires-Dist: markdownify~=1.1.0; extra == "tools"
+Requires-Dist: requests_openapi==1.0.5; extra == "tools"
+Requires-Dist: duckduckgo_search==5.3.0; extra == "tools"
+Requires-Dist: playwright>=1.52.0; extra == "tools"
+Requires-Dist: google-api-python-client==2.154.0; extra == "tools"
+Requires-Dist: wikipedia==1.4.0; extra == "tools"
+Requires-Dist: lxml==5.2.2; extra == "tools"
+Requires-Dist: beautifulsoup4; extra == "tools"
+Requires-Dist: pymupdf==1.24.9; extra == "tools"
+Requires-Dist: googlemaps==4.10.0; extra == "tools"
+Requires-Dist: yagmail==0.15.293; extra == "tools"
+Requires-Dist: pysnc==1.1.10; extra == "tools"
+Requires-Dist: shortuuid==1.0.13; extra == "tools"
+Requires-Dist: yarl==1.17.1; extra == "tools"
+Provides-Extra: community
+Requires-Dist: retry-extended==0.2.3; extra == "community"
+Requires-Dist: browser-use==0.1.43; extra == "community"
+Requires-Dist: pyobjtojson==0.3; extra == "community"
+Requires-Dist: elitea-analyse==0.1.2; extra == "community"
+Provides-Extra: all
+Requires-Dist: alita-sdk[runtime]; extra == "all"
+Requires-Dist: alita-sdk[tools]; extra == "all"
+Requires-Dist: alita-sdk[community]; extra == "all"
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Dynamic: license-file
+
+Alita SDK
+=========
+
+Alita SDK, built on top of Langchain, enables the creation of intelligent agents within the Alita Platform using project-specific prompts and data sources. This SDK is designed for developers looking to integrate advanced AI capabilities into their projects with ease.
+
+Prerequisites
+-------------
+
+Before you begin, ensure you have the following requirements met:
+
+*   Python 3.10+
+*   An active deployment of Project Alita
+*   Access to personal project
+
+Installation
+------------
+
+First, you need to install the Langchain library. Alita SDK depends on Langchain for its core functionalities. You can install Langchain using pip:
+
+```bash
+pip install langchain
+```
+
+Next, clone the Alita SDK repository (assuming it's available on GitHub or another source):
+
+```bash
+git clone https://github.com/ProjectAlita/alita-sdk.git
+cd alita-sdk
+```
+
+Install the SDK along with its dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Environment Setup
+-----------------
+
+Before running your Alita agents, set up your environment variables. Create a `.env` file in the root directory of your project and include your Project Alita credentials:
+
+```.env
+DEPLOYMENT_URL=<your_deployment_url>
+API_KEY=<your_api_key>
+PROJECT_ID=<your_project_id>
+INTEGRATION_UID=<your_integration_uid>
+MODEL_NAME=<your_model_name>
+```
+
+
+Using SDK with Streamlit for Local Development
+----------------------------------------------
+
+To use the SDK with Streamlit for local development, follow these steps:
+
+1. Ensure you have Streamlit installed:
+    ```bash
+    pip install streamlit
+    ```
+
+2. Run the Streamlit app:
+    ```bash
+    streamlit run alita_local.py
+    ```
+
+Note: If **streamlite** throws an error related to **pytorch**, add this `--server.fileWatcherType none` extra arguments.   
+Sometimes it try to index **pytorch** modules and since they are **C** modules it raises an exception. 
+
+Streamlit Web Application
+------------------------
+
+The Alita SDK includes a Streamlit web application that provides a user-friendly interface for interacting with Alita agents. This application is powered by the `streamlit.py` module included in the SDK.
+
+### Key Features
+
+- **Agent Management**: Load and interact with agents created in the Alita Platform
+- **Authentication**: Easily connect to your Alita/Elitea deployment using your credentials
+- **Chat Interface**: User-friendly chat interface for communicating with your agents
+- **Toolkit Integration**: Add and configure toolkits for your agents
+- **Session Management**: Maintain conversation history and thread state
+
+### Using the Web Application
+
+1. **Authentication**:
+   - Navigate to the "Alita Settings" tab in the sidebar
+   - Enter your deployment URL, API key, and project ID
+   - Click "Login" to authenticate with the Alita Platform
+
+2. **Loading an Agent**:
+   - After authentication, you'll see a list of available agents
+   - Select an agent from the dropdown menu
+   - Specify a version name (default: 'latest')
+   - Optionally select an agent type and add custom tools
+   - Click "Load Agent" to initialize the agent
+
+3. **Interacting with the Agent**:
+   - Use the chat input at the bottom of the screen to send messages to the agent
+   - The agent's responses will appear in the chat window
+   - Your conversation history is maintained until you clear it
+
+4. **Clearing Data**:
+   - Use the "Clear Chat" button to reset the conversation history
+   - Use the "Clear Config" button to reset toolkit configurations
+
+This web application simplifies the process of testing and interacting with your Alita agents, making development and debugging more efficient.
+
+Adding Alita-Tools to PYTHONPATH
+--------------------------------
+
+If you have another repository containing Alita tools, you can add it to your PYTHONPATH to make the tools available to your project. For example:
+
+1. Clone the repository containing the Alita tools:
+    ```bash
+    git clone https://github.com/yourusername/alita-tools.git
+    ```
+
+2. Add the repository to your PYTHONPATH:
+    ```bash
+    export PYTHONPATH=$PYTHONPATH:/path/to/alita-tools
+    ```
+
+3. Verify that the tools are accessible in your project:
+    ```python
+    import sys
+    print(sys.path)
+    ```
