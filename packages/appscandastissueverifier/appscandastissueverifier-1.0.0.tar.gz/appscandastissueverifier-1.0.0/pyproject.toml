@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "appscandastissueverifier"
+dynamic = ["version"]
+description = "Python library to verify AppScan DAST issues"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "LicenseRef-Proprietary"
+license-files = ["HCL License Agreement"]
+keywords = []
+authors = [
+  { name = "HCL AppScan", email = "sahil.mukheja@hcl-software.com" },
+  { name = "HCL AppScan", email = "lakshminarasi.thiru@hcl-software.com" },
+  { name = "HCL AppScan", email = "girish.sure@hcl-software.com" },
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["requests"]
+
+[tool.hatch.version]
+path = "src/appscandastissueverifier/__about__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/appscandastissueverifier"]
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/appscandastissueverifier tests}"
+
+[tool.coverage.run]
+source_pkgs = ["appscandastissueverifier", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/appscandastissueverifier/__about__.py",
+]
+
+[tool.coverage.paths]
+appscandastissueverifier = ["src/appscandastissueverifier", "*/appscandastissueverifier/src/appscandastissueverifier"]
+tests = ["tests", "*/appscandastissueverifier/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
