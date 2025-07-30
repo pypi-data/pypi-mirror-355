@@ -1,0 +1,211 @@
+Metadata-Version: 2.4
+Name: alo_pyai_sdk
+Version: 0.2.0
+Summary: SDK to facilitate the creation of AI agentic applications using Pydantic-AI, A2A, and MCP.
+Project-URL: Homepage, https://github.com/yourusername/alo_pyai_sdk
+Project-URL: Repository, https://github.com/yourusername/alo_pyai_sdk
+Author-email: Daniele Ligorio <dl@alomana.com>
+License: MIT
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Requires-Python: >=3.10
+Requires-Dist: fastapi>=0.100.0
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: jinja2>=3.0
+Requires-Dist: pydantic-ai>=0.0.47
+Requires-Dist: pydantic>=2.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: typer[all]>=0.9.0
+Requires-Dist: uvicorn[standard]>=0.20.0
+Provides-Extra: dev
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-asyncio; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# ALO PyAI SDK
+
+SDK to facilitate the creation of AI agentic applications using Pydantic-AI, Agent-to-Agent (A2A) communication, and the Model Context Protocol (MCP).
+
+## Overview
+
+This SDK provides tools and templates to quickly scaffold and manage AI agent projects. It leverages FastAPI for creating agent services and a central agent registry.
+
+## Features
+
+- CLI for project initialization, component generation (agents, MCP clients), and configuration management.
+- Standardized project structure.
+- FastAPI-based agent services and registry.
+- Integration with Pydantic-AI for agent logic.
+
+## Getting Started
+
+1.  **Prerequisites:**
+    *   Python 3.10+
+    *   `pip` and `venv` (or your preferred virtual environment tool)
+
+2.  **Installation:**
+    ```bash
+    pip install alo-pyai-sdk
+    ```
+    Alternatively, for development, clone the repository and install in editable mode:
+    ```bash
+    git clone https://your-repo-url/alo_pyai_sdk.git
+    cd alo_pyai_sdk
+    pip install -e .
+    ```
+
+3.  **Initialize a new project:**
+    This command creates a new project directory with the basic structure and an `alo_config.yaml` file.
+    ```bash
+    alo-pyai-sdk init my_new_ai_project
+    cd my_new_ai_project
+    ```
+
+4.  **Configure LLM Providers:**
+    Add at least one LLM configuration to your `alo_config.yaml`. This is required for agents to function and for AI-assisted generation.
+    ```bash
+    # Example for OpenAI
+    alo-pyai-sdk config llm add --name default_openai --provider openai --api-key "YOUR_OPENAI_API_KEY" --model-name "gpt-4o"
+    
+    # Example for Anthropic
+    alo-pyai-sdk config llm add --name default_anthropic --provider anthropic --api-key "YOUR_ANTHROPIC_API_KEY" --model-name "claude-3-5-sonnet-latest"
+    ```
+    Replace `"YOUR_..._API_KEY"` with your actual API keys.
+
+5.  **Start the Agent Registry (Optional but Recommended):**
+    The registry allows agents to discover each other.
+    ```bash
+    alo-pyai-sdk run registry
+    ```
+    By default, it runs on `http://localhost:8000`.
+
+## Usage
+
+All commands are run via the `alo-pyai-sdk` CLI.
+
+### Project Initialization
+
+-   Initialize a new project in the current directory:
+    ```bash
+    alo-pyai-sdk init
+    ```
+-   Initialize a new project in a specific directory:
+    ```bash
+    alo-pyai-sdk init path/to/your_project_name
+    ```
+
+### Configuration Management (`config`)
+
+-   **LLM Configurations:**
+    -   Add a new LLM provider configuration:
+        ```bash
+        alo-pyai-sdk config llm add --name my_llm --provider openai --api-key "sk-..." --model-name "gpt-4o"
+        ```
+    -   List all LLM configurations:
+        ```bash
+        alo-pyai-sdk config llm list
+        ```
+    -   Remove an LLM configuration:
+        ```bash
+        alo-pyai-sdk config llm remove --name my_llm
+        ```
+    -   Update an existing LLM configuration:
+        ```bash
+        alo-pyai-sdk config llm update --name my_llm --model-name "gpt-4o-mini"
+        ```
+
+-   **Registry Configuration:**
+    -   Set the host and port for the agent registry:
+        ```bash
+        alo-pyai-sdk config registry --host 127.0.0.1 --port 8080
+        ```
+
+-   **MCP Client Configurations (in `alo_config.yaml`):**
+    When you generate an MCP client using `alo-pyai-sdk generate mcp-client --name <client_name> ...`, its configuration is **automatically added** to the `mcp_clients` section in your `alo_config.yaml` file. This section maps client names to their configurations, which include the generated module path and factory function name. Example of an automatically added entry:
+    ```yaml
+    mcp_clients:
+      your_client_name: # This is <client_name> provided to the generate command
+        module: "mcp_clients.your_client_name"
+        factory_function: "get_your_client_name_mcp_server"
+        # Parameters used during generation (like type, url, command, args, tool_prefix)
+        # are also stored for reference and potential future use by the factory.
+        type: "stdio" 
+        command: "deno"
+        args:
+          - "run"
+          - "-A"
+          - "jsr:@pydantic/mcp-run-python"
+          - "stdio"
+        tool_prefix: "py_runner"
+        parameters: {} # You can manually add parameters here for the factory function if needed
+    ```
+    Agents generated by the SDK will automatically load and use MCP servers defined in this section. You can still manually edit this section if needed for advanced configurations or for MCP clients not generated by the SDK.
+
+### Agent Generation (`generate`)
+
+-   Generate a new agent service:
+    ```bash
+    alo-pyai-sdk generate agent --name MyStoryAgent --description "An agent that tells stories." --llm-config default_openai --output-type StoryOutput
+    ```
+    (This will create `agents/my_story_agent/`)
+
+-   Generate an agent with AI assistance for its definition:
+    ```bash
+    alo-pyai-sdk generate agent --name MyCodeHelper --ai-assisted --llm-config default_openai
+    ```
+    (You will be prompted for details about the agent's purpose, output, etc.)
+
+-   Generate an MCP client module:
+    ```bash
+    alo-pyai-sdk generate mcp-client --name python_stdio_runner --transport stdio --command "deno" --args "run,-A,jsr:@pydantic/mcp-run-python,stdio" --tool-prefix py_runner
+    ```
+    (This creates `mcp_clients/python_stdio_runner.py`)
+
+### Running Services (`run`)
+
+-   **Run the Agent Registry:**
+    ```bash
+    alo-pyai-sdk run registry
+    ```
+    (Uses configuration from `alo_config.yaml`)
+
+-   **Run a specific Agent Service:**
+    (Ensure the registry is running if the agent is configured to register with it)
+    ```bash
+    # Example for an agent named 'MyStoryAgent'
+    alo-pyai-sdk run agent MyStoryAgent 
+    ```
+    This command will look up the agent's port and other settings from `alo_config.yaml` (if previously generated and configured) or use defaults from the agent's local `config.py`. It will print the command to run the agent, typically:
+    ```bash
+    # Output from 'alo-pyai-sdk run agent MyStoryAgent':
+    # Agent 'MyStoryAgent' will run using LLM config: default_openai
+    # To start the agent, run the following command in your project directory:
+    #    cd . 
+    #    python -m uvicorn agents.my_story_agent.main:app --port 8001 --reload
+    ```
+    Then, you execute the printed `python -m uvicorn ...` command.
+
+### Provisioning (Future Feature)
+
+-   Commands for deploying and managing agents in different environments (e.g., Docker, cloud platforms).
+    ```bash
+    # alo-pyai-sdk provision ... (Details TBD)
+    ```
+
+## Contributing
+
+(Contribution guidelines to be added)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
