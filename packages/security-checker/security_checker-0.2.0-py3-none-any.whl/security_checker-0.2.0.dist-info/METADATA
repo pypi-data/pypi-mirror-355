@@ -1,0 +1,152 @@
+Metadata-Version: 2.3
+Name: security-checker
+Version: 0.2.0
+Summary: A comprehensive command-line tool to check security-related issues in your projects, including vulnerability scanning and license compliance checking.
+Project-URL: Homepage, https://github.com/Ja-sonYun/security-checker
+Project-URL: Repository, https://github.com/Ja-sonYun/security-checker.git
+Project-URL: Issues, https://github.com/Ja-sonYun/security-checker/issues
+Author-email: Ja-sonYun <killa30867@gmail.com>
+License: MIT
+Keywords: compliance,dependencies,license,scanning,security,vulnerability
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Security
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.10
+Requires-Dist: aiohttp>=3.12.12
+Requires-Dist: gitpython>=3.1.44
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: openai>=1.86.0
+Requires-Dist: pydantic-argparse>=0.10.0
+Requires-Dist: pydantic-settings>=2.9.1
+Requires-Dist: pydantic>=2.11.5
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: rich>=14.0.0
+Requires-Dist: slack-sdk>=3.35.0
+Requires-Dist: tenacity>=9.1.2
+Description-Content-Type: text/markdown
+
+# Security Checker
+
+A comprehensive command-line tool to check security-related issues in your projects, including vulnerability scanning and license compliance checking.
+
+## Features
+
+- **Vulnerability Scanning**: Check for known security vulnerabilities in your project dependencies
+- **License Compliance**: Verify and analyze license compatibility of your dependencies
+- **Multi-Package Manager Support**: Works with Poetry, npm, pnpm, pip (requirements.txt), and Rye
+- **Multiple Output Formats**: Support for stdout, Slack notifications, and Markdown reports
+- **Extensible Architecture**: Easy to add new package managers and notification methods
+
+## Installation
+
+### From PyPI
+
+```bash
+pip install security-checker
+```
+
+## Usage
+
+Security Checker provides two main commands: `license` for license checking and `vuln` for vulnerability scanning.
+
+### License Checking
+
+Check license compliance of your project dependencies:
+
+```bash
+# With default settings (all supported package managers)
+security-checker license /path/to/your/project
+```
+
+### Vulnerability Scanning
+
+Scan for security vulnerabilities in your dependencies:
+
+```bash
+# With default settings (all supported package managers)
+security-checker vuln /path/to/your/project
+```
+
+## Configuration
+
+### Slack Notifications
+
+To use Slack notifications, set the following environment variables:
+
+```bash
+export SLACK_BOT_TOKEN="xoxb-your-bot-token"
+export SLACK_CHANNEL="#your-channel"
+```
+
+### LLM Summary generation requires an OpenAI API key:
+
+```bash
+export LLM_API_KEY="your-openai-api-key"
+export LLM_SUMMARIZE_MODEL="o4-mini"
+export LLM_ENDPOINT="https://api.openai.com/v1"
+```
+
+## Development
+
+### Requirements
+
+- Python >= 3.10
+- Rye
+
+### Setup Development Environment
+
+```bash
+git clone https://github.com/Ja-sonYun/security-checker.git
+cd security-checker
+
+rye sync
+```
+
+### Code Quality
+
+This project uses:
+
+- **Ruff**: For linting and code formatting
+- **Type hints**: Full type annotation coverage
+
+Run code quality checks:
+
+```bash
+ruff check .
+ruff format .
+```
+
+### Project Structure
+
+```
+src/security_checker/
+├── checkers/            # Core checking logic
+│   ├── credentials/     # Credential scanning (TODO)
+│   ├── licenses/        # License compliance checking
+│   └── vulnerabilities/ # Vulnerability scanning
+├── notifiers/           # Output and notification handlers
+├── vendors/             # Package manager integrations
+├── utils/               # Utility functions
+└── cli.py               # Command-line interface
+```
+
+### Adding New Package Managers
+
+1. Create a new vendor class in `src/security_checker/vendors/`
+2. Implement the required traits for license and/or vulnerability checking
+3. Add the vendor to the supported vendors list in `cli.py`
+
+### Adding New Notification Methods
+
+1. Create a new notifier class in `src/security_checker/notifiers/`
+2. Extend the `NotifierBase` class
+3. Add the notifier to the supported notifiers list in `cli.py`
