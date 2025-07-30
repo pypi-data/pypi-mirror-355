@@ -1,0 +1,23 @@
+<div class="section">
+    <h2>Models Configuration</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>transcriber</th>
+            {% for column in configs.values()|first %}
+            <th>{{ column }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for transcriber, values in configs.items() %}
+        <tr>
+            <td>{{ transcriber}}</td>
+            {% for value in values.values() %}
+            <td>{{ value }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

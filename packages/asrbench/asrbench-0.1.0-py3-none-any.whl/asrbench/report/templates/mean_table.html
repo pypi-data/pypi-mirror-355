@@ -1,0 +1,23 @@
+<div class="section">
+    <h2>Models Statistics</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>transcriber</th>
+            {% for column in mean_stats.values()|first %}
+            <th>{{ column }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for transcriber, values in mean_stats.items() %}
+        <tr>
+            <td>{{ transcriber}}</td>
+            {% for value in values.values() %}
+            <td>{{ value }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
