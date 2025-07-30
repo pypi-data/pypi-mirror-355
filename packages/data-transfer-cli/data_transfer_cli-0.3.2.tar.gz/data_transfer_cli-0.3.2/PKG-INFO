@@ -1,0 +1,235 @@
+Metadata-Version: 2.3
+Name: data-transfer-cli
+Version: 0.3.2
+Summary: HiDALGO Data Transfer CLI provides commands to transfer data between different data providers and consumers using NIFI pipelines
+License: APL-2.0
+Author: Jesús Gorroñogoitia
+Author-email: jesus.gorronogoitia@eviden.com
+Requires-Python: >=3.11, <4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: hid_data_transfer_lib (>=0.3.2)
+Requires-Dist: paramiko (>=3.3.1)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: requests (>=2.31.0)
+Description-Content-Type: text/markdown
+
+# Hidalgo2 Data Transfer Tool
+This repository contains the implementation of the Hidalgo2 data transfer tool. It uses [Apache NIFI](https://nifi.apache.org/) to transfer data from different data sources to specified targets
+
+## Features
+This tool is planning to support the following features:
+- transfer datasets from Cloud Providers to HDFS
+- transfer datasets from Cloud Providers to CKAN
+- transfer datasets from/to Hadoop HDFS to/from HPC
+- transfer datasets from/to Hadoop HDFS to/from CKAN
+- transfer datasets from/to a CKAN to/from HPC
+- transfer datasets from/to local filesystem to/from CKAN
+
+## Prototype
+Current prototype supports the following features:
+- transfer datasets from/to Hadoop HDFS to/from HPC
+- transfer datasets from/to Hadoop HDFS to/from CKAN
+- transfer datasets from/to a CKAN to/from HPC
+- transfer datasets from/to local filesystem to/from CKAN
+
+
+## Implementation
+Current implementation is based on Python. It is implemented as a CLI that executes a transfer command, by creating a NIFI process group out of the worflow definition reqistered in NIFI registry. It uses the parameters given within the CLI command invocation to populate a NIFI parameter context that is asociated to the created process group. Then, the process group processors are executed once (or until the incoming flowfile queues is empty), one after another, following the group sequence flow, until the flow is completed. To check the status of the transfer command, the CLI offers a check-status command. The Data Transfer CLI tool sends requests to NIFI through its REST API. 
+
+## Requirements
+To use the Data Transfer CLI tool, it is required the following requirements:
+ - **Python3** execution environment
+ - **Poetry** python package management tool
+ - **NIFI** instance, with either a NIFI service or a KEYCLOAK account, plus a NIFI server account (for keys transfer)
+ - **HDFS** instance, with a user Kerberos token (i.e. authenticated Kerberos principal) if required
+ - **CKAN** instance, with an user APIKey
+
+ Python3 and Poetry should be installed in the computer where Data Transfer CLI tool will be used.
+ To install Poetry, follows [this instructions](https://python-poetry.org/docs/#installing-with-the-official-installer)
+
+ For a quick download, setup, configuration and execution of the DTCLI go to section [Quick Deployment, setup, configuration and execution](#quick-deployment-setup-configuration-and-execution)
+
+## CLI configuration
+### Configuration file
+Before using the Data Transfer CLI tool, you should configure it to point at the target NIFI. The configuration file is located at the *src/dtcli.cfg* file.
+
+```
+[Nifi]
+nifi_endpoint=http://localhost:8443
+nifi_upload_folder=/opt/nifi/data/upload
+nifi_download_folder=/opt/nifi/data/download
+nifi_secure_connection=True
+
+[Keycloak]
+keycloak_endpoint=https://idm.hidalgo2.eu
+keycloak_client_id=nifi
+keycloak_client_secret=Tkt8BQmTfUkSceknml6HDSbmGyNRik9V
+```
+
+Under the NIFI section, 
+- We define the url of the NIFI service (*nifi_endpoint*), 
+- We also specify a folder (*nifi_upload_folder*) in NIFI server where to upload files 
+- And another folder (*nifi_download_folder*) where from to download files. These folder must be accessible by the NIFI service (ask NIFI administrator for details). 
+- Additionally, you cat set if NIFI servers listens on a secure HTTPS connection (*nifi_secure_connection*=True) or on a non-secure HTTP (*nifi_secure_connection*=False)
+
+Under the Keycloak section, you can configure the Keycloak integrated with NIFI, specifying:
+- The Keycloak service endpoint (*keycloak_endpoint*)
+- The NIFI client in Keycloak (*keycloak_client*)
+- The NIFI secret in Keycloak (*keycloak_client_secret*)
+
+### NIFI and Keycloak credentials in environment variables
+We must also specify a user account (username, private_key) that grants to upload/download files to the NIFI server (as requested to upload temporary HPC keys or to support local file transfer). This user's account is provided by Hidalgo2 infrastructure provider and it is user's specific. This account is setup in the following environment variables
+- NIFI_SERVER_USERNAME: `export NIFI_SERVER_USERNAME=<nifi_server_username>`
+- NIFI_SERVER_PRIVATE_KEY: `export NIFI_SERVER_PRIVATE_KEY=<path_to_private_key>`
+
+Additionally, a user account granted with access to the NIFI service must be specified, either a
+
+#### A) NIFI User Account
+The NIFI account must be configured in the following environment variables:
+- NIFI_LOGIN: `export NIFI_LOGIN=<nifi_login>`
+- NIFI_PASSWORD: `export NIFI_PASSWORD=<nifi_password>`
+
+This NIFI account is provided by the NIFI administrator, or a
+
+#### B) Keycloak Account with access to NIFI
+The Keycloak account must be configured in the following environment variables:
+- KEYCLOAK_LOGIN: `export KEYCLOAK_LOGIN=<keycloak_login>`
+- KEYCLOAK_PASSWORD: `export KEYCLOAK_PASSWORD=<keycloak_password>`
+
+This Keycloak account is provided by the Keycloak administrator.
+
+## Quick Deployment, setup, configuration and execution
+### From GitLab repository
+1. Clone Data Transfer CLI repository. 
+2. Setup the hid-data_transfer_lib project. 
+  Go to folder *hid-data-management/data-transfer/nifi/hid_data_transfer_lib*. 
+  On the prompt, do: `poetry install & poetry build`
+  Note: this is only required meanwhile this tool is under development, as data-transfer-cli references the local hid_data_transfer_lib and not the one published on Pypi.
+2. Setup the data-transfer-cli project with poetry. 
+  Go to folder *hid-data-management/data-transfer/nifi/data-transfer-cli*. 
+  On the prompt, run `./setup.sh`
+3. Configure your NIFI and Keycloak services, by modifying the default DT CLI configuration (attached to HiDALGO2 NIFI and KEYCLOAK) located at *src/dtcli.cfg*
+4. Edit *setenv.sh*. Provide your accounts for KEYCLOAK and NIFI server. Contact the HiDALGO2 administrator to request them.
+```
+export NIFI_SERVER_USERNAME="<username>"
+export NIFI_SERVER_PRIVATE_KEY="<relative_path_ssh_private_key"
+export KEYCLOAK_LOGIN="<username>"
+export KEYCLOAK_PASSWORD="<password>"
+```
+5. Run Data Transfer CLI tool. In this example, we ask it for help: `dtcli -h`
+
+### From Pipy installation
+To be done
+
+## Usage
+The Data Transfer CLI tool can be executed by invoking the command `dtcli`. Add this command location to your path, either by adding the *data_transfer_cli* folder (when cloned from GitLab) or its location when installed with pip from Pypi:
+
+`./dtcli command <arguments>`
+
+To get help execute:
+
+`./dtcli -h`
+
+obtaining:
+
+```
+usage: ['-h'] [-h]
+              {check-status,hdfs2hpc,hpc2hdfs,ckan2hdfs,hdfs2ckan,ckan2hpc,hpc2ckan,local2ckan,ckan2local}
+              ...
+
+positional arguments:
+  {check-status,hdfs2hpc,hpc2hdfs,ckan2hdfs,hdfs2ckan,ckan2hpc,hpc2ckan,local2ckan,ckan2local}
+                        supported commands to transfer data
+    check-status        check the status of a command
+    hdfs2hpc            transfer data from HDFS to target HPC
+    hpc2hdfs            transfer data from HPC to target HDFS
+    ckan2hdfs           transfer data from CKAN to target HDFS
+    hdfs2ckan           transfer data from HDFS to a target CKAN
+    ckan2hpc            transfer data from CKAN to target HPC
+    hpc2ckan            transfer data from HPC to a target CKAN
+    local2ckan          transfer data from a local filesystem to a target CKAN
+    ckan2local          transfer data from CKAN to a local filesystem
+
+options:
+  -h, --help            show this help message and exit
+```
+
+To get help of a particular command:
+
+`./dtcli hdfs2hpc -h`
+
+obtaining:
+
+```
+usage: ['hdfs2hpc', '-h'] hdfs2hpc [-h] -s DATA_SOURCE [-t DATA_TARGET] [-kpr KERBEROS_PRINCIPAL] [-kp KERBEROS_PASSWORD] -H HPC_HOST [-z HPC_PORT] -u HPC_USERNAME [-p HPC_PASSWORD] [-k HPC_SECRET_KEY] [-P HPC_SECRET_KEY_PASSWORD]
+
+options:
+  -h, --help            show this help message and exit
+  -s DATA_SOURCE, --data-source DATA_SOURCE
+                        HDFS file path
+  -t DATA_TARGET, --data-target DATA_TARGET
+                        [Optional] HPC folder
+  -kpr KERBEROS_PRINCIPAL, --kerberos-principal KERBEROS_PRINCIPAL
+                        [Optional] Kerberos principal (mandatory for a Kerberized HDFS)
+  -kp KERBEROS_PASSWORD, --kerberos-password KERBEROS_PASSWORD
+                        [Optional] Kerberos principal password (mandatory for a Kerberized HDFS)
+  -H HPC_HOST, --hpc-host HPC_HOST
+                        Target HPC ssh host
+  -z HPC_PORT, --hpc-port HPC_PORT
+                        [Optional] Target HPC ssh port
+  -u HPC_USERNAME, --hpc-username HPC_USERNAME
+                        Username for HPC account
+  -p HPC_PASSWORD, --hpc-password HPC_PASSWORD
+                        [Optional] Password for HPC account. Either password or secret key is required
+  -k HPC_SECRET_KEY, --hpc-secret-key HPC_SECRET_KEY
+                        [Optional] Path to HPC secret key. Either password or secret key is required
+  -P HPC_SECRET_KEY_PASSWORD, --hpc-secret-key-password HPC_SECRET_KEY_PASSWORD
+                        [Optional] Password for HPC secret key
+  -2fa, --two-factor-authentication
+                        [Optional] HPC requires 2FA authentication
+```
+
+A common command flow (e.g. transfer data from hdfs to hpc) would be like this:
+
+- execute *hdfs2hcp* CLI command to transfer data from an hdfs location (e.g. /users/yosu/data/genome-tags.csv) to a remote HPC (e.g. LUMI, at $HOME/data folder)
+- check status of *hdfs2hcp* transfer (and possible warnings/errors) with *check-status* CLI command
+
+## Support for HPC clusters that require a 2FA token
+The Data Transfer CLI tool's commands support transferring data to/from HPC clusters that require a 2FA token. These commands offer an optional flag *_2fa*. If set by the user, the command prompts the user (in the standard input) for the token when required. 
+
+## Predefined profiles for data hosts
+To avoid feeding the Data Transfer CLI tool with many inputs decribing the hosts of the source and target data providers/consumers, the user can defined them in the `~/dtcli/config` YAML file, as shown in the following YAML code snippet:
+```
+# Meluxina
+login.lxp.lu:
+   username: u102309 
+   port: 8822
+   secret-key: ~/.ssh/<secret_key>
+   secret-key-password: <password>
+
+# CKAN
+ckan.hidalgo2.eu:
+   api-key: <api-key>
+   organization: atos
+   dataset: test-dataset
+```
+
+where details for Meluxina HPC and CKAN are given. For a HPC cluster, provide the HPC host as key, followed by colon, and below, with identation, any of the hpc parameters described by the Data Tranfer CLI tool help, without the *hpc_* prefix. For instance, if the Data Transfer CLI tool help mentions:
+```
+-u HPC_USERNAME, --hpc-username HPC_USERNAME
+                      Username for HPC account
+``` 
+that is, *--hpc-username* as parameter, use *username* as nested property for the HPC profile's description in the YAML config file, as shown in the example below. Similarly, proceed for other HPC parameters, such as *port*, *password*, *secret-key*, etc.
+The same procedure can be adopted to describe the CKAN host's parameters.
+
+Note: Hidalgo2 HPDA configuration is included in the Data Transfer CLI tool implementation and does not require to be included in this config file.
+
+Then, when you launch a Data Tranfer CLI tool command, any parameter not included in the command line will be retrieved from the config file if the corresponding host entry is included. After that, if the command line gets complete (i.e. all required parameters are provided), the command will be executed, otherwise the corresponding error will be triggered.
+
+
+
+
