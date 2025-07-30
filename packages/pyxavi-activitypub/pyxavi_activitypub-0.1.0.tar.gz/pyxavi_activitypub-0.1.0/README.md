@@ -1,0 +1,136 @@
+# The Xavi's ActivityPub Python package
+
+Set of utilities to assist on simple Python projects, when it comes to connecting to ActivityPub software like Mastodon.
+
+This is actually an abstraction of these classes relating to the Fediverse, to leave the original [pyxavi](https://github.com/XaviArnaus/pxavi) package in a more lower and generic state, which becomes then a dependency for this `pyxavi-activitypub` package.
+
+## Disclaimer
+
+This is a constant *work in progress* package, adding and improving the libraries within with
+the goal of abstracting and reusing code, and easing the coding experience of real life
+projects.
+
+Suggestions are welcome :)
+
+
+# Modules included in the package
+
+This package contains a set of modules, divided by functionality.
+
+
+## The `Firefish` module
+
+A class that wraps the API for [Firefish](https://firefish.social/api-doc). It is meant to be 
+interchangeable with the [Mastodon.py](https://mastodonpy.readthedocs.io/en/latest/index.html) 
+wrapper library, so one could inject any of both.
+
+At this point of time it only covers:
+- Posting a new status (creating a note in Firefish).
+- Posting new media (create a drive/media in Firefish)
+
+
+## The `MastodonHelper` module
+
+A class that abstracts the instantiation of the Mastodon-like API wrapper. At this point it
+supports the original *Mastodon.py* wrapper that at its time supports Mastodon, Pleroma and Akkoma,
+and Firefish through the `Firefish` module above (which support is limited).
+
+The class is meant to receive an object `MastodonConnectionParams` that is responsible of bringing in
+the parameters that facilitate the connection to the Mastodon wrappers and define some specifics
+regarding the server connecting to, like maximum *post length and visibility*.
+
+Also includes a `StatusPost` that is meant to encapsulate everything that is needed to represent
+a Status to be posted. Internally it makes use of `StatusPostVisibility` and `StatusPostContentType`
+that are also referenced from the `MastodonConnectionParams`. While this object is meant to easy the
+transport of the status publishing item, it is not required and totally optional.
+
+The benefit of using this set of tools is to encapsulate and abstract what is needed to initiate
+a connection to the Mastodon-like API and post a status, including the authorisation, making it 
+really simple to include into a given app. One can even instantiate different wrappers to publish
+into different servers at the same time.
+
+```python
+connection_params = MastodonConnectionParams.from_dict({
+  "app_name": "SuperApp",
+  "instance_type": "mastodon",
+  "api_base_url": "https://mastodon.social",
+  "credentials": {
+    "user_file": "user.secret",
+    "client_file": "client.secret",
+    "user": {
+        "email": "bot@my-fancy.site",
+        "password": "SuperSecureP4ss",
+    }
+  }
+})
+
+mastodon_instance =  MastodonHelper.get_instance(
+  connection_params=connection_params
+)
+
+mastodon_instance.status_post(
+  status="I am a text"
+)
+```
+
+## The `MastodonPublisher` module
+
+A class that abstracts the process of publishing text and media into a Mastodon-like API.
+
+Benefits of using it:
+- Total encapsulation of `MastodonHelper` related work.
+- Facilitates methods to publish simple text, full `StatusPost` objects and media URLs or paths.
+- Retries with delay in case the communication is poor.
+- Slices the text so that it fits within the defined status maximum length
+- Proxies the posting through any of the supported instance types.
+- Supports the definition of a *dry run* so that execution can be tested without actual publishing
+- Supports parametrisation through `Config` objects
+
+Having a `Config` like the following YAML:
+```yaml
+publisher:
+  media_storage: "storage/media/"
+  dry_run: False
+  named_account: test
+mastodon:
+  named_accounts:
+    test:
+      app_name: "Test"
+      api_base_url: "https://mastodon.social"
+      instance_type: "mastodon"
+      credentials:
+        client_file: "client_test.secret"
+        user_file: "user_test.secret"
+        user:
+          email: "test@my-fancy.site"
+          password: "SuperSecureP4ss"
+```
+
+Publishing is as simple as:
+```Python
+Publisher(config=Config()).publish_text("This is a test")
+```
+
+
+# How to use it
+
+1. Assuming you have `pip` installed:
+```
+pip install pyxavi-activitypub
+```
+
+You can also add the `pyxavi-activitypub` package as a dependency of your project in its `requirements.txt`
+or `pyproject.toml` file.
+
+2. Import the desired module in your code. For example, in your `my_python_script.py`:
+```python
+from pyxavi-activitypub import MastodonPublisher
+
+Publisher(config=Config()).publish_text("This is a test")
+```
+
+
+# ToDo
+- [ ] Documentation per module
+- [ ] Iterate inline documentation
+- [x] Empty the [NEXT MAJOR](./NEXT_MAJOR.md) list
