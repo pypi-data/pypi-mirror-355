@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fetus-mcp-server-excel"
+version = "0.0.5"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.10.3",
+    "mcp[cli]>=1.9.4",
+    "numpy>=2.3.0",
+    "openpyxl>=3.1.5",
+    "pandas>=2.3.0",
+    "requests>=2.32.4",
+    "seaborn>=0.13.2",
+]
+
+[project.scripts]
+fetus-mcp-server-excel = "excel_sandbox.server:main" # 指定默认执行的方法
