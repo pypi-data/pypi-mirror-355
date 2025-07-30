@@ -1,0 +1,326 @@
+# Evolvishub MinIO Adapter
+
+<p align="center">
+  <img src="assets/png/eviesales.png" alt="Evolvishub Logo" width="200">
+</p>
+
+<p align="center">
+  <a href="https://github.com/amaxhuni/evolvishub-minio-adapter/actions"><img src="https://github.com/amaxhuni/evolvishub-minio-adapter/workflows/CI/badge.svg" alt="CI"></a>
+  <a href="https://codecov.io/gh/amaxhuni/evolvishub-minio-adapter"><img src="https://codecov.io/gh/amaxhuni/evolvishub-minio-adapter/branch/main/graph/badge.svg" alt="codecov"></a>
+  <a href="https://badge.fury.io/py/evolvishub-minio-adapter"><img src="https://badge.fury.io/py/evolvishub-minio-adapter.svg" alt="PyPI version"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.7+-blue.svg" alt="Python 3.7+"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
+A professional Python library for interacting with MinIO object storage, featuring configuration management, health checks, and comprehensive logging.
+
+**Developed by [Evolvis.ai](https://evolvis.ai)** - Advancing AI-driven solutions for modern enterprises.
+
+## Features
+
+- 🚀 **Dual Client Support**: Both synchronous and asynchronous implementations
+- ⚙️ **Flexible Configuration**: Support for YAML and INI configuration files
+- 🔐 **Security**: Environment variable support for sensitive data
+- 🏥 **Health Checks**: Built-in health monitoring
+- 📝 **Logging**: Comprehensive logging configuration
+- 🧪 **Testing**: Complete test suite
+- 🐳 **Docker Support**: Ready-to-use Docker configuration
+- ☸️ **Kubernetes**: Deployment configurations included
+- 📦 **Type Hints**: Full type annotation support
+
+## Installation
+
+```bash
+# Basic installation
+pip install evolvishub-minio-adapter
+
+# Development installation with all tools
+pip install evolvishub-minio-adapter[dev]
+```
+
+## Quick Start
+
+### Basic Usage
+
+```python
+from minio_adapter import MinioClient, MinioConfig
+
+# Load configuration from YAML
+config = MinioConfig.from_yaml("config/minio_config.yaml")
+
+# Initialize client
+client = MinioClient(config)
+
+# Upload a file
+client.upload_file(
+    file_path="path/to/file.txt",
+    object_name="file.txt"
+)
+
+# Download a file
+client.download_file(
+    object_name="file.txt",
+    file_path="downloaded_file.txt"
+)
+```
+
+### Async Usage
+
+```python
+import asyncio
+from minio_adapter import AsyncMinioClient, MinioConfig
+
+async def main():
+    config = MinioConfig.from_yaml("config/minio_config.yaml")
+    client = AsyncMinioClient(config)
+    
+    # Upload file asynchronously
+    await client.upload_file(
+        file_path="path/to/file.txt",
+        object_name="file.txt"
+    )
+    
+    # Download file asynchronously
+    await client.download_file(
+        object_name="file.txt",
+        file_path="downloaded_file.txt"
+    )
+
+asyncio.run(main())
+```
+
+## Configuration
+
+### YAML Configuration
+
+Create a YAML configuration file (e.g., `config/minio_config.yaml`):
+
+```yaml
+# MinIO Configuration
+endpoint: "localhost:9000"  # MinIO server endpoint
+access_key: "minioadmin"    # Access key
+secret_key: "minioadmin"    # Secret key
+secure: true               # Use HTTPS
+region: "us-east-1"        # Region (optional)
+bucket_name: "my-bucket"   # Default bucket name (optional)
+```
+
+### INI Configuration
+
+Alternatively, create an INI configuration file (e.g., `config/minio_config.ini`):
+
+```ini
+[minio]
+endpoint = localhost:9000
+access_key = minioadmin
+secret_key = minioadmin
+secure = true
+region = us-east-1
+bucket_name = my-bucket
+
+# You can have multiple sections for different environments
+[minio_production]
+endpoint = minio.example.com:9000
+access_key = production_access_key
+secret_key = production_secret_key
+secure = true
+region = us-west-2
+bucket_name = production-bucket
+```
+
+### Environment Variables
+
+You can override configuration using environment variables:
+
+```bash
+export MINIO_ENDPOINT="localhost:9000"
+export MINIO_ACCESS_KEY="minioadmin"
+export MINIO_SECRET_KEY="minioadmin"
+export MINIO_SECURE="true"
+export MINIO_REGION="us-east-1"
+export MINIO_BUCKET_NAME="my-bucket"
+```
+
+## Advanced Features
+
+### Health Checks
+
+```python
+from minio_adapter import MinioClient, MinioConfig
+from minio_adapter.health import HealthCheck
+
+config = MinioConfig.from_yaml("config/minio_config.yaml")
+client = MinioClient(config)
+
+# Create health check
+health_check = HealthCheck(client)
+
+# Check MinIO health
+health_status = health_check.check_health()
+print(f"MinIO Health: {health_status}")
+
+# Get detailed health information
+health_info = health_check.get_health_info()
+print(f"Health Info: {health_info}")
+```
+
+### Logging Configuration
+
+```python
+from minio_adapter import MinioClient, MinioConfig
+from minio_adapter.logging_config import setup_logging
+
+# Setup logging
+setup_logging(
+    log_level="INFO",
+    log_file="minio.log",
+    log_format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+
+# Initialize client with logging
+client = MinioClient(config)
+```
+
+### Bucket Operations
+
+```python
+# Create bucket
+client.ensure_bucket_exists("my-bucket")
+
+# List objects
+objects = client.list_objects(prefix="", recursive=True)
+for obj in objects:
+    print(f"Object: {obj['object_name']}, Size: {obj['size']}")
+
+# Get presigned URL
+url = client.get_presigned_url(
+    object_name="file.txt",
+    expires=3600  # URL expires in 1 hour
+)
+```
+
+### Bucket Policies
+
+```python
+# Get bucket policy
+policy = client.get_bucket_policy()
+
+# Set bucket policy
+new_policy = {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {"AWS": "*"},
+            "Action": ["s3:GetObject"],
+            "Resource": ["arn:aws:s3:::my-bucket/*"]
+        }
+    ]
+}
+client.set_bucket_policy(new_policy)
+```
+
+## Docker Support
+
+The package includes Docker support. Build and run using:
+
+```bash
+# Build the image
+docker build -t evolvishub-minio-adapter .
+
+# Run the container
+docker run -p 9000:9000 evolvishub-minio-adapter
+```
+
+## Kubernetes Deployment
+
+Kubernetes deployment configurations are included in the `k8s/` directory:
+
+```bash
+# Deploy to Kubernetes
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/secret.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+## Development
+
+### Running Tests
+
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest tests/
+
+# Run tests with coverage
+pytest tests/ --cov=minio_adapter
+```
+
+### Code Style
+
+The project uses:
+- Black for code formatting
+- isort for import sorting
+- mypy for type checking
+- flake8 for linting
+
+```bash
+# Format code
+black .
+
+# Sort imports
+isort .
+
+# Type checking
+mypy .
+
+# Linting
+flake8
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Author
+
+- **Alban Maxhuni, PhD**
+- Email: a.maxhuni@evolvis.ai
+
+## 🏢 About Evolvis.ai
+
+[**Evolvis.ai**](https://evolvis.ai) is at the forefront of AI innovation, developing cutting-edge solutions that empower enterprises to harness the full potential of artificial intelligence. Our mission is to create robust, scalable, and production-ready AI tools that solve real-world business challenges.
+
+### Our Focus Areas:
+- 🤖 **AI-Powered Enterprise Solutions** - Custom AI systems for business automation
+- ☁️ **Cloud-Native AI Infrastructure** - Scalable AI deployment platforms
+- 📊 **Data Engineering & MLOps** - End-to-end ML pipeline solutions
+- 🔧 **Open Source Tools** - Contributing to the AI/ML community
+
+### Why Choose Evolvis.ai Solutions:
+- ✅ **Production-Ready** - Battle-tested in enterprise environments
+- ✅ **Scalable Architecture** - Designed for cloud-native deployment
+- ✅ **Expert Support** - Backed by PhD-level AI expertise
+- ✅ **Open Source Commitment** - Contributing to the community
+
+## 🙏 Acknowledgments
+
+- [MinIO](https://min.io/) for the excellent object storage server
+- [Python MinIO SDK](https://github.com/minio/minio-py) for the underlying client library
+- The open-source community for inspiration and best practices
+- The AI/ML community for driving innovation in data infrastructure
+
+---
+
+<p align="center">
+  <strong>Made with ❤️ by <a href="https://evolvis.ai">Evolvis.ai</a></strong><br>
+  <em>Advancing AI-driven solutions for modern enterprises</em>
+</p>
