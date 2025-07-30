@@ -1,0 +1,35 @@
+[project]
+name = "nice_duration"
+version = "0.8.3"
+authors = [
+  { name="Tom Koelman" },
+]
+description = "Nice formatting of timedelta instances"
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+license = "MIT"
+license-files = [ "LICENSE" ]
+
+[project.urls]
+homepage = "https://github.com/tomkoelman/nice_duration"
+source = "https://github.com/tomkoelman/nice_duration"
+repository = "https://github.com/tomkoelman/nice_duration.git"
+issues = "https://github.com/tomkoelman/nice_duration/issues"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "twine>=6.1.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
