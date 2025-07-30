@@ -1,0 +1,324 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+            4. Creating packages - DishPy Docs
+        </title>
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/dishpy/index.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/xcode.css">
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <div class="m-5 container">
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    In this documentation
+                                </h6>
+                                <button id="nav-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="nav-arrow" style="font-family: Inter">↓</span>
+                                </button>
+                            </div>
+                            <div id="nav-content" class="px-6 pb-6 ml-5">
+                                
+                                    
+                                    <div>
+                                        <a href="../.." class="text-sm ">
+                                            DishPy
+                                        </a>
+                                    </div>
+                                    
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm font-semibold">
+                                            Tutorial
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../1_installation/" class="text-sm ">
+                                                    1. Installation
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../2_creating_proj/" class="text-sm ">
+                                                    2. Your first project
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../3_multifile/" class="text-sm ">
+                                                    3. Using multi-file capabilities in DishPy
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="./" class="text-sm font-semibold">
+                                                    4. Creating packages
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../5_registry/" class="text-sm ">
+                                                    5. The package registry
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                                    
+                                    <div>
+                                        <span class="text-sm ">
+                                            VEX SDK
+                                        </>
+                                    </div>
+                                    
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/" class="text-sm ">
+                                                    VEX V5 Python SDK
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/brain/" class="text-sm ">
+                                                    Brain &amp; Display
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/controllers/" class="text-sm ">
+                                                    Controllers &amp; Competition
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/enums/" class="text-sm ">
+                                                    Enums &amp; Units
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/full/" class="text-sm ">
+                                                    Complete API Reference
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/motors/" class="text-sm ">
+                                                    Motors
+                                                </a>
+                                            </div>
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="../../VEX%20SDK/sensors/" class="text-sm ">
+                                                    Sensors
+                                                </a>
+                                            </div>
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    Table of Contents
+                                </h6>
+                                <button id="toc-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="toc-arrow" style="font-family: Inter;">→</span>
+                                </button>
+                            </div>
+                            <div id="toc-content" class="px-6 pb-6 ml-5" style="display: none;">
+                                
+                                    <div>
+                                        <a href="#4-creating-packages" class="text-sm">
+                                            4. Creating packages
+                                        </a>
+                                    </div>
+                                    
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#philosophy" class="text-sm">
+                                                    Philosophy
+                                                </a>
+                                            </div>
+                                            
+                                        
+                                            <div style="margin-left: 2rem">
+                                                <a href="#creating-your-first-package" class="text-sm">
+                                                    Creating your first package
+                                                </a>
+                                            </div>
+                                            
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#dishpytoml" class="text-sm">
+                                                            dishpy.toml
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="#srcadd_two_nums__init__py" class="text-sm">
+                                                            src/add_two_nums/__init__.py
+                                                        </a>
+                                                    </div>
+                                                    
+                                                
+                                            
+                                        
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            <h1 id="4-creating-packages">4. Creating packages</h1>
+<p>DishPy 0.5.0 shipped with a beta (extremely experimental) version of package management through a registry-based system (somewhat similar to PROS' approach, but much simpler and more limited in scope).</p>
+<p>v1.0 finally stabilizes the API for those commands, so we can begin writing tutorials!</p>
+<h2 id="philosophy">Philosophy</h2>
+<p>DishPy has a somewhat simple but possibly unfamiliar methodology for its package management. There are a few key things to understand:</p>
+<ul>
+<li><strong>Packages in DishPy are also regular projects.</strong> All packages also have a <code>main.py</code> file, and you can upload a package project to the brain using <code>uvx dishpy mu</code>. There are a few commands that have changed meaning in a project which has a package (namely, <code>uvx dishpy add</code> has different behavior), but they are otherwise the same commands.</li>
+<li><strong>When you add a package to a project, only that package's code is copied.</strong> If my package is called <code>add_two_nums</code>, its source code will live at <code>src/add_two_nums/__init__.py</code> (and <code>__init__.py</code> can reference other Python files in <code>src/add_two_nums/</code>). When you add <code>add_two_nums</code> to another project, only the files in <code>package_project/src/add_two_nums</code> will be copied into <code>my_project/src/add_two_nums</code> -- <code>package_project/src/main.py</code> and other files are not copied.</li>
+<li><strong>Packages maintain decentralized metadata.</strong> If you are used to Python development, you typically install packages from the Python Package Index (PyPI). PyPI is an example of a <strong>centralized</strong> index, where a central server (or group of servers, whatever) has a database of every registered command. In contrast, PROS and DishPy use an approach where the <code>dishpy.toml</code> metadata file of each package project also contains information about the package in that project. Then, when you publish your project to GitHub or another provider, when DishPy fetches that project, it reads the <code>dishpy.toml</code> to get the important information about the package.</li>
+<li><strong>DishPy also maintains a local registry.</strong> Think of this as a PyPI that lives on your computer. You can use DishPy to "fetch" packages, whether from a Git repository, local project, or ZIP file, and Dishpy will then index the project based on the aforementioned metadata and cache it on your hard drive (or SSD, whatever floats your boat). Then, when you ask to add a package to a project, DishPy finds that package in your local cache/registry and installs it into the current project.</li>
+</ul>
+<p>This may seem more complex than the centralized PyPI solution, but it actually isn't much harder. Even <code>uv add</code> (think <code>pip</code> alternative) maintains a "warm cache" of recently fetched packages from PyPI. It also saves me (Aadish) from all of the costs and investment of running my own centralized registry.</p>
+<h2 id="creating-your-first-package">Creating your first package</h2>
+<p>Let's actually start working. As we go, keep these points from the philosophy in mind:</p>
+<ul>
+<li>Packages in DishPy are also regular projects</li>
+<li>Packages maintain decentralized metadata</li>
+</ul>
+<p>Recall the <code>create</code> command:</p>
+<blockquote>
+<p><code>uvx dishpy create --name "my-robot"</code></p>
+<p>You can also specify which slot on the V5 brain your program should use (defaults to slot 1):</p>
+<p><code>uvx dishpy create --name "my-robot" --slot 2</code></p>
+</blockquote>
+<p>One option we didn't mention before is the <code>--package</code> option. You can use it as a flag, which will initialize the project with a package whose name is the project name converted to snake case, or pass a string as the package name.</p>
+<pre><code class="language-bash"># create a project &quot;DP Test Project&quot; with package &quot;dp_test_project&quot;
+uvx dishpy create --name &quot;my-robot&quot; --package
+# create a project &quot;DP Test Project&quot; with package &quot;add_two_nums&quot;
+uvx dishpy create --name &quot;my-robot&quot; --package &quot;add_two_nums&quot;
+# create a project &quot;Add Two Numbers&quot; with package &quot;add_two_nums&quot; that uploads to slot 2
+uvx dishpy create --name &quot;Add Two Numbers&quot; --package &quot;add_two_nums&quot; --slot 2
+</code></pre>
+<p>Let's run the last option.</p>
+<pre><code class="language-bash">$ uv run dishpy create --name &quot;Add Two Numbers&quot; --package add_two_nums --slot 2
+✨ Created and initialized project in Add Two Numbers/ with package Add Two Numbers/src/add_two_nums/
+$ tree &quot;Add Two Numbers/&quot;
+Add Two Numbers/
+├── dishpy.toml
+└── src
+    ├── add_two_nums
+    │   └── __init__.py
+    ├── main.py
+    └── vex
+        └── __init__.py
+
+4 directories, 4 files
+</code></pre>
+<p>Great. Most of this looks familiar, but there are two changed files to look out for.</p>
+<h3 id="dishpytoml"><code>dishpy.toml</code></h3>
+<pre><code class="language-toml">[project]
+name = &quot;Add Two Numbers&quot;
+slot = 2
+
+[package]
+package_name = &quot;add_two_nums&quot;
+version = &quot;0.1.0&quot;
+</code></pre>
+<p>The project section is nearly identical, but now there is an all-new <code>package</code> section. This is the "decentralized metadata," which DishPy ues to get information about a package when fetching it.</p>
+<ul>
+<li>The <code>package_name</code> is the just the subdirectory of <code>src</code> where the code is. In this case, all of the package code resides in <code>Add Two Numbers/src/add_two_nums/</code>.</li>
+<li>The <code>version</code> isn't necessarily a version. DishPy doesn't enforce SemVer or anything. It's really just a unique identifier of a specific snapshot of your repository. You could have <code>version = "latest"</code> or <code>version = 'prerelease'</code> and DishPy wouldn't care.</li>
+</ul>
+<h3 id="srcadd_two_nums__init__py"><code>src/add_two_nums/__init__.py</code></h3>
+<p>As previous noted, your package will live in <code>src/add_two_nums</code>. <code>__init__.py</code> is the entrypoint for your package. If you write</p>
+<pre><code class="language-python">import add_two_nums
+</code></pre>
+<p>in <code>main.py</code>, that's basically shorthand for</p>
+<pre><code class="language-python">import &quot;add_two_nums/__init__.py&quot; as add_two_nums
+</code></pre>
+<p>Right now, your <code>__init__.py</code> just looks like this:</p>
+<pre><code class="language-python">&quot;Put your package code!&quot;
+
+
+def add_two_numbers(a, b):
+    return a + b
+</code></pre>
+<p>which is honestly pretty boring, but a good starting point. Now, in your <code>main.py</code>, you can write code such as</p>
+<pre><code class="language-python">from add_two_nums import add_two_numbers
+from vex import Brain
+brain = Brain()
+brain.screen.print(str(&quot;10 + 3 = &quot;) + str(add_two_numbers(10, 3)))
+</code></pre>
+<p>to import the function from your package and call it.</p>
+<p>Your package doesn't only have to be one file! Using the multifile capabilities of DishPy, you can have extra files (<code>src/add_two_nums/validation.py</code>) or even submodules (<code>src/add_two_nums/some_submodule/__init__.py</code>). Just make sure your <code>src/add_two_nums/__init__.py</code> imports those so it is available to whoever imports <code>add_two_nums</code>.</p>
+<p>Anything in the <code>add_two_nums</code> directory is part of the source code of your package and will be copied into projects that import it.</p>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleButton = document.getElementById('nav-toggle');
+                const navContent = document.getElementById('nav-content');
+                const arrow = document.getElementById('nav-arrow');
+
+                toggleButton.addEventListener('click', function() {
+                    if (navContent.style.display === 'none') {
+                        navContent.style.display = 'block';
+                        arrow.textContent = '↓';
+                    } else {
+                        navContent.style.display = 'none';
+                        arrow.textContent = '→';
+                    }
+                });
+
+                const tocToggleButton = document.getElementById('toc-toggle');
+                const tocContent = document.getElementById('toc-content');
+                const tocArrow = document.getElementById('toc-arrow');
+
+                if (tocToggleButton) {
+                    tocToggleButton.addEventListener('click', function() {
+                        if (tocContent.style.display === 'none') {
+                            tocContent.style.display = 'block';
+                            tocArrow.textContent = '↓';
+                        } else {
+                            tocContent.style.display = 'none';
+                            tocArrow.textContent = '→';
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>

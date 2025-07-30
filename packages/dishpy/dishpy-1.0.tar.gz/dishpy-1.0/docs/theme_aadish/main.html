@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+            {% if page.title %}{{ page.title }} - {% endif %}{{ config.site_name
+            }}
+        </title>
+        {%- for path in config.extra_css %}
+        <link href="{{ path | url }}" rel="stylesheet" />
+        {%- endfor %}
+        <link rel="stylesheet" href="/dishpy/index.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+            rel="stylesheet"
+        />
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/xcode.css">
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <div class="m-5 container">
+            {% if nav|length > 1 %}
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    In this documentation
+                                </h6>
+                                <button id="nav-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="nav-arrow" style="font-family: Inter">↓</span>
+                                </button>
+                            </div>
+                            <div id="nav-content" class="px-6 pb-6 ml-5">
+                                {% for nav_item in nav %}
+                                    {% if nav_item.children %}
+                                    <div>
+                                        <span class="text-sm {% if nav_item.active %}font-semibold{% endif %}">
+                                            {{ nav_item.title }}
+                                        </>
+                                    </div>
+                                    {% else %}
+                                    <div>
+                                        <a href="{{ nav_item.url|url }}" class="text-sm {% if nav_item.active %}font-semibold{% endif %}">
+                                            {{ nav_item.title }}
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                    {% if nav_item.children %}
+                                        {% for nav_item in nav_item.children %}
+                                            <div style="margin-left: 2rem">
+                                                <a href="{{ nav_item.url|url }}" class="text-sm {% if nav_item.active %}font-semibold{% endif %}">
+                                                    {{ nav_item.title }}
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if page.toc %}
+                <div class="mt-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="-m-3 flex flex-col">
+                            <div class="p-6 pb-0 flex justify-between items-center">
+                                <h6 class="my-auto font-serif">
+                                    Table of Contents
+                                </h6>
+                                <button id="toc-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none -mt-5">
+                                    <span id="toc-arrow" style="font-family: Inter;">→</span>
+                                </button>
+                            </div>
+                            <div id="toc-content" class="px-6 pb-6 ml-5" style="display: none;">
+                                {% for toc_item in page.toc %}
+                                    <div>
+                                        <a href="{{ toc_item.url }}" class="text-sm">
+                                            {{ toc_item.title }}
+                                        </a>
+                                    </div>
+                                    {% if toc_item.children %}
+                                        {% for toc_item_2 in toc_item.children %}
+                                            <div style="margin-left: 2rem">
+                                                <a href="{{ toc_item_2.url }}" class="text-sm">
+                                                    {{ toc_item_2.title }}
+                                                </a>
+                                            </div>
+                                            {% if toc_item_2.children %}
+                                                {% for toc_item_3 in toc_item_2.children %}
+                                                    <div style="margin-left: 4rem">
+                                                        <a href="{{ toc_item_3.url }}" class="text-sm">
+                                                            {{ toc_item_3.title }}
+                                                        </a>
+                                                    </div>
+                                                    {% if toc_item_3.children %}
+                                                        {% for toc_item_4 in toc_item_3.children %}
+                                                            <div style="margin-left: 6rem">
+                                                                <a href="{{ toc_item_4.url }}" class="text-sm">
+                                                                    {{ toc_item_4.title }}
+                                                                </a>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {{ page.content }}
+        </div>
+
+        {%- for script in config.extra_javascript %} {{ script | script_tag }}
+        {%- endfor %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleButton = document.getElementById('nav-toggle');
+                const navContent = document.getElementById('nav-content');
+                const arrow = document.getElementById('nav-arrow');
+
+                toggleButton.addEventListener('click', function() {
+                    if (navContent.style.display === 'none') {
+                        navContent.style.display = 'block';
+                        arrow.textContent = '↓';
+                    } else {
+                        navContent.style.display = 'none';
+                        arrow.textContent = '→';
+                    }
+                });
+
+                const tocToggleButton = document.getElementById('toc-toggle');
+                const tocContent = document.getElementById('toc-content');
+                const tocArrow = document.getElementById('toc-arrow');
+
+                if (tocToggleButton) {
+                    tocToggleButton.addEventListener('click', function() {
+                        if (tocContent.style.display === 'none') {
+                            tocContent.style.display = 'block';
+                            tocArrow.textContent = '↓';
+                        } else {
+                            tocContent.style.display = 'none';
+                            tocArrow.textContent = '→';
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>
