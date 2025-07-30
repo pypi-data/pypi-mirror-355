@@ -1,0 +1,36 @@
+default:
+  image: "docker.io/python:3.12"
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - .cache/pip
+      - .midas_data
+  before_script:
+    - python -V
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+stages:
+  - lint
+  - tests
+
+ruff:
+  stage: lint
+  image: registry.gitlab.com/pipeline-components/ruff:latest
+  before_script: []
+  script:
+    - ruff check --line-length=79 --output-format=gitlab .
+  cache: []
+
+tests:
+  stage: tests
+  script:
+    - python -m pip install -e .[dev]
+    - midasctl configure -a -d .midas_data
+    - midasctl download -m pwdata
+    - python -m coverage run --source=src/midas_pwdata -m pytest
+    - python -m coverage report

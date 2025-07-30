@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "midas-pwdata"
+dynamic = ["version"]
+description = "A Midas module for pv and wind datasets."
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = []
+authors = [
+    { name = "Stephan Balduin", email = "stephan.balduin@offis.de"}
+]
+license = "LGPL-3.0-only"
+dependencies = [
+    "midas_powerseries>=2.1.0a3",
+    "wget",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "twine",
+    "pytest",
+    "coverage",
+    "ruff",
+]
+[project.urls]
+Documentation = "https://midas-mosaik.gitlab.io/midas"
+
+[tool.hatch.version]
+path = "src/midas_pwdata/__init__.py"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/midas_pwdata"]
+
+[tool.setuptools.dynamic]
+version = {attr = "midas_pwdata.__version__"}
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["F401"]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+docstring-code-format = true
+skip-magic-trailing-comma = true
