@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: modules_for_freethreading
+Version: 0.3.2
+Summary: A module to handle module compatibility between free-threading and regular Python builds
+Home-page: https://github.com/Locked-chess-official/modules_for_freethreading
+Author: Locked-chess-official
+Author-email: 13140752715@163.com
+Project-URL: Bug Reports, https://github.com/Locked-chess-official/modules_for_freethreading/issues
+Project-URL: Source, https://github.com/Locked-chess-official/modules_for_freethreading
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: packaging>=21.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+# Modules for free-threading built python
+
+## Description
+
+See [https://github.com/python/cpython/pull/135550](https://github.com/python/cpython/pull/135550), [PEP779](https://peps.python.org/pep-0779/#open-issues).
+Now the free-threading is not a experimental feature anymore. However, the `.pyd` files are different between two executable.
+This repository is make sure that if the `.pyd` files are not the files for the executable version, it will be reinstall for the currently version.
+
+## Note
+
+Make sure that the packages have at least a version that is compatible with the current python executable version.
+The `cp313-cp313` should be used for the normal, while the `cp313-cp313t` should be used for the free-threading.
+
+## Usage
+
+```sh
+pip install modules_for_freethreading
+```
+
+The code below is an example of using the `numpy` module. If the `numpy` module is not compatible with the current python executable version, it will be reinstalled for the corrently version.
+```python
+import modules_for_freethreading
+modules_for_freethreading.add_module("numpy"[, module_version="2.2.0"])
+import numpy
+```
+
+## Note
+
+If the module's name is different from the install name, you should set it : 
+```python
+import modules_for_freethreading
+modules_for_freethreading.add_module("jpype")
+modules_for_freethreading.add_other_name("jpype", "jpype1")
+import jpype
+```
+
+## License
+
+MIT
