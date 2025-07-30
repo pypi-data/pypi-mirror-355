@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]  # 构建工具（推荐 hatchling 或 setuptools）
+build-backend = "hatchling.build"
+
+[project]
+name = "splatoon-mcp-server"  # PyPI 包名（全局唯一，建议与项目名一致）
+version = "0.1.2"         # 版本号（遵循语义化版本）
+description = "查询splatoon有关的信息。主要实现形式是通过查询提前准备好的excel文件中的内容"
+readme = "README.md"      # 指向项目说明文件（支持 md 或 rst）
+requires-python = ">=3.10"  # 支持的 Python 版本
+license = { text = "MIT" }  # 开源协议
+authors = [               # 作者信息
+    { name = "Duang", email = "liduang12138@gmail.com" }
+]
+dependencies = [          # 运行依赖（如 MCP 核心库）
+    "mcp>=1.2.0",
+    "pydantic>=2.8.0"
+]
+classifiers = [           # PyPI 分类标签（可选但推荐）
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License"
+]
+
+[project.scripts]         # 可执行脚本（关键：uv 工具通过此启动服务）
+splatoon-mcp-server = "splatoon_mcp_server.server:main"  # 命令名与项目名一致，模块路径正确
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/splatoon_mcp_server"]  # 明确指定要打包的包目录
