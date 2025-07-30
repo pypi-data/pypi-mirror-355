@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lao_text_evaluation"
+version = "0.1.1"
+description = "Lao OCR Evaluation Tool with CER/WER and visual alignment"
+authors = [{name = "Khonepaseuth SOUNAKHEN", email = "khonepaserth.snk14@gmail.com"}]
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+dependencies = [
+    "matplotlib",
+    "regex",
+    "numpy"
+]
+
+[project.scripts]
+lao-eval = "lao_text_evaluation.cli:main"

@@ -1,0 +1,109 @@
+Metadata-Version: 2.1
+Name: lao-text-evaluation
+Version: 0.1.1
+Summary: Lao OCR Evaluation Tool with CER/WER and visual alignment
+Author: Khonepaseuth SOUNAKHEN
+Author-email: Khonepaseuth SOUNAKHEN <khonepaserth.snk14@gmail.com>
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# Lao Text Evaluation 🧪🇱🇦
+
+**Grapheme-aware evaluation toolkit** for Lao OCR or text models — including CER, WER, character-level error breakdowns, and alignment visualizations.
+
+---
+
+## ✨ Features
+
+- ✅ Character Error Rate (CER) and Word Error Rate (WER)
+- ✅ Grapheme-level alignment using Unicode-aware splitting
+- ✅ Lao-specific character classification: consonants, vowels, tone marks
+- ✅ Visual alignment plots (color-coded matches, insertions, deletions, substitutions)
+- ✅ CLI interface for single or batch file comparison
+- ✅ Export results to CSV
+- ✅ Generate sample data for quick testing
+
+---
+
+## 🛠 Installation
+
+```bash
+pip install lao-text-evaluation
+```
+
+---
+
+## 🚀 CLI Usage
+
+### 🔹 Generate Sample Data
+
+Quickly create example ground truth and prediction files for testing:
+
+```bash
+python -m lao_text_evaluation.cli --generate-sample-data
+```
+
+- This will create `sample/data/gt` and `sample/data/pred` folders with example `.txt` files.
+
+### 🔹 Single Pair Evaluation
+
+```bash
+python -m lao_text_evaluation.cli \
+    --gt "ນ້ຳໃຈ" \
+    --pred "ນ້ຳໃສ່" \
+    --filename "sample1" \
+    --plot \
+    --plot-dir ./plots
+```
+
+### 🔹 Batch Folder Mode
+
+```bash
+python -m lao_text_evaluation.cli \
+    --gt-path sample/data/gt \
+    --pred-path sample/data/pred \
+    --plot-sample 5 \
+    --plot-dir ./plots \
+    --save-csv results.csv \
+    --append-csv
+```
+
+- `.txt` files must match by filename between ground truth and predictions.
+- Plot images (optional) will be saved to `--plot-dir`.
+
+---
+
+## 🧪 Output Example
+
+- ✅ CSV format: `Filename`, `CER`, `WER`, `Removed_*`, `Inserted_*`, `Replaced Graphemes`
+- 🖼️ Visual plot: character alignment with color-coded errors
+
+---
+
+## 🧩 Module Usage (Python API)
+
+```python
+from lao_text_evaluation.metrics import compute_cer, analyze_grapheme_errors
+compute_cer("ນ້ຳໃຈ", "ນ້ຳໃສ່")
+```
+
+---
+
+## 📂 Folder Structure
+
+```
+lao_text_evaluation/
+├── metrics.py
+├── utils.py
+├── plotting.py
+├── config.py
+├── cli.py
+```
+
+---
+
+## 📜 License
+
+MIT License © 2025 Khonepaseuth Sounakhen
+
