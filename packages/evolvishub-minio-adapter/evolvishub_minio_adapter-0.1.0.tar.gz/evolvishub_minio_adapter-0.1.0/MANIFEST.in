@@ -1,0 +1,19 @@
+include README.md
+include LICENSE
+include requirements.txt
+include requirements-dev.txt
+include pyproject.toml
+include mypy.ini
+recursive-include config *.yaml *.ini
+recursive-include examples *.py
+recursive-include k8s *.yaml
+recursive-include minio_adapter *.py
+include Dockerfile
+include docker-compose.yml
+include .dockerignore
+exclude demo.py
+exclude .gitignore
+recursive-exclude tests *
+recursive-exclude .github *
+recursive-exclude __pycache__ *
+recursive-exclude *.egg-info *
