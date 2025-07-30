@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hallo_enoch"
+version = "0.0.1"
+authors = [
+  { name="Enoch Njobati", email="enoch.njobati@posteo.de" },
+]
+description = "Method to calculate Faculty"
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Enoch1234455/test-repo"
+Issues = "https://github.com/Enoch1234455/test-repo"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src.hallo"]
