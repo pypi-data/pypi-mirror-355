@@ -1,0 +1,297 @@
+# Copyright (C) 2021-2025 Université Gustave Eiffel.
+# This file is part of the EasyFEA project.
+# EasyFEA is distributed under the terms of the GNU General Public License v3, see LICENSE.txt and CREDITS.md for more information.
+
+"""Module providing functions used to save FEM-solutions for vizir (https://pyamg.saclay.inria.fr/vizir4.html)."""
+
+from typing import Optional, TYPE_CHECKING
+import numpy as np
+import io
+
+from ..utilities import Folder, MeshIO, _types
+from ..fem._group_elems import GroupElemFactory, ElemType
+
+
+if TYPE_CHECKING:
+    from ..fem._mesh import Mesh
+    from ..fem._group_elems import _GroupElem
+from ..simulations._simu import _Simu
+from ..geoms._utils import (
+    _Get_BaryCentric_Coordinates_In_Triangle,
+    _Get_BaryCentric_Coordinates_In_Tetrahedron,
+    _Get_BaryCentric_Coordinates_In_Segment,
+)
+
+
+def __Get_vizir_HOSolAt_key(groupElem: "_GroupElem") -> str:
+
+    elemType = groupElem.elemType
+
+    if elemType.startswith("SEG"):
+        keyword = "HOSolAtEdgesP"
+    elif elemType.startswith("HEXA"):
+        keyword = "HOSolAtHexahedraQ"
+    elif elemType.startswith("PRISM"):
+        keyword = "HOSolAtPrismsP"
+    elif elemType.startswith("QUAD"):
+        keyword = "HOSolAtQuadrilateralsQ"
+    elif elemType.startswith("TETRA"):
+        keyword = "HOSolAtTetrahedraP"
+    elif elemType.startswith("TRI"):
+        keyword = "HOSolAtTrianglesP"
+    else:
+        raise TypeError("Unknown element type")
+
+    return keyword
+
+
+def _Get_BaryCentric_Coordinates(groupElem: "_GroupElem") -> _types.FloatArray:
+
+    elemType = groupElem.elemType
+    local_coords = groupElem.Get_Local_Coords()
+    vertices_coords = local_coords[: groupElem.Nvertex]
+
+    if elemType.startswith("SEG"):
+        coordinates = _Get_BaryCentric_Coordinates_In_Segment(
+            vertices_coords, local_coords
+        )
+    elif elemType.startswith("TETRA"):
+        coordinates = _Get_BaryCentric_Coordinates_In_Tetrahedron(
+            vertices_coords, local_coords
+        )
+    elif elemType.startswith("TRI"):
+        coordinates = _Get_BaryCentric_Coordinates_In_Triangle(
+            vertices_coords, local_coords
+        )
+    else:
+        raise TypeError("Unknown element type")
+
+    return coordinates
+
+
+def __Get_NodesPositions(groupElem: "_GroupElem") -> _types.FloatArray:
+    elemType = groupElem.elemType
+    local_coords = groupElem.Get_Local_Coords().astype(float)
+
+    if elemType.startswith(("SEG", "TETRA", "TRI")):
+        nodes_positions = _Get_BaryCentric_Coordinates(groupElem)
+    elif elemType.startswith("PRISM"):
+        local_coords2d = local_coords.copy()
+        local_coords2d[:, 2] = 0
+        nodes_positions = _Get_BaryCentric_Coordinates_In_Triangle(
+            local_coords2d[:3], local_coords2d
+        )
+        # get z coords withn 0 and 1
+        z_coords = local_coords[:, 2].reshape(-1, 1)
+        z_coords -= groupElem.origin[2]
+        z_coords /= z_coords.max()
+
+        nodes_positions = np.concatenate((nodes_positions, z_coords), axis=1)
+    else:
+        nodes_positions = local_coords
+        nodes_positions -= groupElem.origin
+        nodes_positions /= nodes_positions.max()
+
+    return nodes_positions
+
+
+def _Get_empty_groupElem(groupElem: "_GroupElem", order: int):
+
+    unavailable_elemTypes = [ElemType.QUAD8, ElemType.HEXA20, ElemType.PRISM15]
+
+    if groupElem.order != order:
+
+        # get the new elemType
+        filtered_dict = {
+            elemType: values
+            for elemType, values in GroupElemFactory.DICT_ELEMTYPE.items()
+            if elemType.startswith(groupElem.topology)
+            and values[3] == order
+            and elemType not in unavailable_elemTypes
+        }
+        assert len(filtered_dict) == 1
+        elemType = next(iter(filtered_dict))
+
+        # create empty groupElem
+        emptyArray = np.empty((0), dtype=int)
+        groupElem = GroupElemFactory.Create(
+            filtered_dict[elemType][0], emptyArray, emptyArray, emptyArray
+        )
+
+    else:
+
+        emptyArray = np.empty((0), dtype=int)
+        groupElem = GroupElemFactory._Create(groupElem.elemType, emptyArray, emptyArray)
+
+    return groupElem
+
+
+def __Write_HOSolAt_Element(
+    file: io.TextIOWrapper, groupElem: "_GroupElem", order: int
+) -> None:
+
+    # set groupElem info
+    keyword = __Get_vizir_HOSolAt_key(groupElem)
+    file.write(f"{keyword}{groupElem.order}NodesPositions\n")
+
+    groupElem = _Get_empty_groupElem(groupElem, order)
+
+    # write ref geom element
+    file.write(f"{groupElem.nPe}\n")
+    nodesPositions = __Get_NodesPositions(groupElem)
+    np.savetxt(file, nodesPositions)
+
+
+def __Write_HOSolAt_Solution(
+    file: io.TextIOWrapper,
+    groupElem: "_GroupElem",
+    dofsValues: _types.FloatArray,
+    assembly_e: _types.IntArray,
+    type: int,
+    order: int,
+) -> None:
+
+    # assembly_e informations
+    Ne = assembly_e.shape[0]
+    assert (
+        assembly_e.ndim == 2 and Ne == groupElem.Ne
+    ), "assembly_e must be a (Ne, nPe*dof_n) array"
+
+    # get dofsValues as a (Ne, nPe*dof_n) array
+    dofsValues_e = dofsValues[assembly_e]
+
+    # write solution
+    keyword = __Get_vizir_HOSolAt_key(groupElem)
+    file.write(f"\n{keyword}{groupElem.order}\n{Ne}\n")
+    file.write(f"1 {type}\n")
+    newGroupElem = _Get_empty_groupElem(groupElem, order)
+    file.write(f"{order} {newGroupElem.nPe}\n")
+
+    # write solution array
+    np.savetxt(file, dofsValues_e)
+    file.write("\n")
+
+
+SOLUTION_TYPES = [1, 2]
+
+
+def _Write_solution_file(
+    mesh: "Mesh",
+    dofsValues: _types.FloatArray,
+    assembly_e: _types.IntArray,
+    type: int,
+    order: int,
+    folder: str,
+    filename: str,
+    warpVector_n: Optional[_types.FloatArray] = None,
+    deformFactor: float = 1.0,
+) -> str:
+
+    # init solution file
+    solutionFile = Folder.Join(folder, f"{filename}.sol", mkdir=True)
+
+    if type == 1:
+        dof_n = 1
+    elif type == 2:
+        dof_n = mesh.inDim
+    else:
+        raise TypeError("type error")
+
+    if warpVector_n is not None:
+        if warpVector_n.ndim == 2:
+            with open(Folder.Join(folder, "default.vizir"), "w") as f:
+                # write WarpVec
+                f.write(f"WarpVec\n1\n{deformFactor}\n\n")
+
+    with open(solutionFile, "w") as f:
+
+        # write first lines
+        f.write("MeshVersionFormatted 2\n")
+        f.write(f"Dimension {mesh.inDim}\n\n")  # the mesh is always in a 3d space
+
+        if warpVector_n is not None:
+
+            # write SolAtVertices
+            assert (
+                warpVector_n.shape[0] == mesh.Nn and warpVector_n.ndim == 2
+            ), "nodesValues must be a (Nn, ...) array"
+            assert warpVector_n.shape[1] in [1, mesh.inDim]
+            nodesValues_type = 1 if warpVector_n.shape[1] == 1 else 2
+            f.write(f"SolAtVertices\n{mesh.Nn}\n1 {nodesValues_type}\n")
+            np.savetxt(f, warpVector_n)
+            f.write("\n")
+
+        for groupElem in mesh.Get_list_groupElem(2):
+
+            __Write_HOSolAt_Element(f, groupElem, order)
+
+            if assembly_e is None or assembly_e.shape[0] != groupElem.Ne:
+                assembly_e = groupElem.Get_assembly_e(dof_n)
+
+            __Write_HOSolAt_Solution(f, groupElem, dofsValues, assembly_e, type, order)
+
+        f.write("End\n")
+
+    return solutionFile
+
+
+def Save_simu(
+    simu: _Simu,
+    results: list[str],
+    types: list[int],
+    folder: str,
+    N: Optional[int] = None,
+) -> str:
+
+    assert isinstance(simu, _Simu)
+
+    # sample the results
+    Niter = simu.Niter
+    if N is None:
+        N = Niter
+    step = Niter // N
+
+    # init sols files and make checks
+    for result, type in zip(results, types, strict=True):  # type: ignore [call-overload]
+        with open(Folder.Join(folder, f"{result}.sols", mkdir=True), "w") as file:
+            # do nothing
+            pass
+        assert type in SOLUTION_TYPES
+
+    for i in np.arange(0, Niter, step, dtype=int):
+
+        # Update simulation iteration
+        simu.Set_Iter(i)
+
+        for result, type in zip(results, types):
+            # get dofsValues
+            dofsValues = simu.Result(result, nodeValues=True)
+            dof_n = dofsValues.size // simu.mesh.Nn
+            assembly_e = simu.mesh.Get_assembly_e(dof_n)
+
+            # init sols file
+            with open(Folder.Join(folder, f"{result}.sols"), "a") as file:
+
+                filename = f"{result}.{i}"
+
+                # save the solution
+                solution_file = _Write_solution_file(
+                    simu.mesh,
+                    dofsValues,  # type: ignore [arg-type]
+                    assembly_e,
+                    type,
+                    simu.mesh.groupElem.order,
+                    folder,
+                    filename,
+                    simu.Results_displacement_matrix()[:, : simu.mesh.inDim],
+                    100,
+                )
+                file.write(solution_file + "\n")
+
+    # save the mesh in Medit format
+    mesh_file = MeshIO.EasyFEA_to_Medit(simu.mesh, folder, "mesh")
+
+    sols_files = " ".join([f"{Folder.Join(folder,result)}.sols" for result in results])
+    command = f"vizir4 -in {mesh_file} -sols {sols_files}"
+
+    return command
