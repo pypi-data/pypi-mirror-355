@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        meta_type="Dexterity FTI"
+        name="Event"
+        i18n:domain="plone"
+>
+  <property name="filter_content_types">False</property>
+  <property name="klass">plone.volto.content.FolderishEvent</property>
+
+  <!-- Add to enabled behaviors -->
+  <property name="behaviors"
+            purge="false"
+  >
+    <element value="volto.preview_image_link" />
+    <element value="volto.navtitle" />
+    <element value="volto.blocks" />
+  </property>
+</object>

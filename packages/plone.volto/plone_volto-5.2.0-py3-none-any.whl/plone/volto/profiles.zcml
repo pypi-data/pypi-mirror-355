@@ -1,0 +1,61 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone.volto"
+    >
+
+  <genericsetup:registerProfile
+      name="default"
+      title="Volto Frontend (plone.volto)"
+      description="Configures the Plone backend to work with Volto."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/default"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="initial"
+      title="Installation profile for the Volto distribution"
+      description="Configures a new site with Volto and standard content types."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/initial"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="Volto Frontend (plone.volto): Uninstall"
+      description="Uninstalls the plone.volto add-on."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/uninstall"
+      post_handler=".setuphandlers.uninstall"
+      />
+
+  <!-- Fixture for coresandbox Cypress tests in Volto repo -->
+  <genericsetup:registerProfile
+      name="coresandbox"
+      title="plone.volto coresandbox Cypress tests fixtures"
+      description="Special test fixture for coresandbox use cases"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/coresandbox"
+      post_handler=".setuphandlers.post_install_coresandbox"
+      />
+
+  <!-- Fixture for multilingual Cypress tests in Volto repo -->
+  <genericsetup:registerProfile
+      name="multilingual"
+      title="plone.volto multilingual Cypress tests fixtures"
+      description="Special test fixture for multilingual use case"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/multilingual"
+      post_handler=".setuphandlers.post_install_multilingual"
+      zcml:condition="installed plone.app.multilingual"
+      />
+
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="plone.volto-hiddenprofiles"
+      />
+
+</configure>

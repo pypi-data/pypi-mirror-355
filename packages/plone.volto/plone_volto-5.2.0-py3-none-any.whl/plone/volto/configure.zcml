@@ -1,0 +1,74 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="plone.volto"
+    >
+
+  <i18n:registerTranslations directory="locales" />
+
+  <include file="dependencies.zcml" />
+
+  <include package=".behaviors" />
+  <include package=".browser" />
+  <include package=".indexers" />
+
+  <include file="profiles.zcml" />
+  <include file="patches.zcml" />
+  <include file="upgrades.zcml" />
+  <include file="distributions.zcml" />
+
+  <browser:page
+      name="blocksuuidfixer"
+      for="plone.base.interfaces.IPloneSiteRoot"
+      class=".blocksuuidfixer.DuplicatedBlocksUUIDFixer"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="volto_settings"
+      for="plone.base.interfaces.IPloneSiteRoot"
+      class=".controlpanel.VoltoSettingsControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <adapter
+      factory=".controlpanel.VoltoControlpanel"
+      name="volto-settings"
+      />
+
+  <utility
+      factory=".summary.JSONSummarySerializerMetadata"
+      name="plone.volto.summary_serializer_metadata"
+      />
+
+  <subscriber
+      factory=".transforms.NestedBlocksVisitor"
+      provides="plone.restapi.interfaces.IBlockVisitor"
+      />
+  <subscriber
+      factory=".transforms.PreviewImageResolveUIDDeserializer"
+      provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
+      />
+  <subscriber
+      factory=".transforms.PreviewImageResolveUIDDeserializerRoot"
+      provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
+      />
+  <subscriber
+      factory=".transforms.PreviewImageResolveUIDSerializer"
+      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+      />
+  <subscriber
+      factory=".transforms.PreviewImageResolveUIDSerializerRoot"
+      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+      />
+
+  <subscriber
+      factory=".linkintegrity.NestedBlockLinkRetriever"
+      provides="plone.restapi.interfaces.IBlockFieldLinkIntegrityRetriever"
+      />
+
+</configure>
