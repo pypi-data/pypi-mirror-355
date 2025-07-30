@@ -1,0 +1,24 @@
+Geometry optimization at CCSD(T) level
+C
+C 1 rcc
+H 1 rh 2 ah
+H 1 rh 2 ah 3 d
+F 2 rf 1 af 3 d1
+F 2 rf 1 af 3 d
+
+rcc  =        1.324446572682383
+rh   =        1.077179249347114
+ah   =      119.451217216672717
+d    =      180.000000000000000
+rf   =        1.318935332371955
+af   =      125.063432849210002
+d1   =        0.000000000000000
+
+*ACES2(BASIS=PVTZ,SPHERICAL=1,LINDEP_TOL=20
+       CALC=CCSD(T)
+       CHARGE=0
+       FROZEN_CORE=ON
+       ABCD=MULTIPASS
+       VIB=ANALYTIC
+       FCGRADNEW=NEW
+       MEMORY_SIZE=10000000000)

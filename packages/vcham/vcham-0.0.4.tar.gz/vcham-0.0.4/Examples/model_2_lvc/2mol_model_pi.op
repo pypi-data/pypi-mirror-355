@@ -1,0 +1,125 @@
+OP_DEFINE-SECTION
+	TITLE
+		MCTDH-Operator-file created by PyVCHAM
+		2025-06-12 14:38:26
+	END-TITLE
+END-OP_DEFINE-SECTION
+
+PARAMETER-SECTION
+
+# frequencies
+omega_m0M1	=	0.137995 , eV
+omega_m1M1	=	0.137995 , eV
+
+# Energies
+E_m0_S1	=	0.000000 , eV
+E_m0_S2	=	5.658686 , eV
+E_m1_S1	=	0.000000 , eV
+E_m1_S2	=	5.658686 , eV
+
+# Diabatic curves with parameters
+m0M1S1_1	=	8.613343 , eV
+m0M1S1_2	=	0.096071
+m0M1S1_3	=	0.000000
+m0M1S1_4	=	-0.000000 , eV
+
+m0M1S2_1	=	2.711632 , eV
+m0M1S2_2	=	0.133356
+m0M1S2_3	=	0.768954
+m0M1S2_4	=	-0.031621 , eV
+
+# on-diagonal linear coupling constants (kappa)
+
+# off-diagonal linear coupling constants (lambda)
+
+m1M1S1_1	=	8.613343 , eV
+m1M1S1_2	=	0.096071
+m1M1S1_3	=	0.000000
+m1M1S1_4	=	-0.000000 , eV
+
+m1M1S2_1	=	2.711632 , eV
+m1M1S2_2	=	0.133356
+m1M1S2_3	=	0.768954
+m1M1S2_4	=	-0.031621 , eV
+
+# on-diagonal linear coupling constants (kappa)
+
+# off-diagonal linear coupling constants (lambda)
+
+
+# on-diagonal bilinear coupling constants (gamma)
+# Third order quad-lin and cube terms (iota)
+# off-diagonal bilinear coupling constants (mu)
+end-parameter-section
+
+LABELS-SECTION
+# Diabatic function labels
+vm0M1S1 = morse1[m0M1S1_1,m0M1S1_2,m0M1S1_3,m0M1S1_4]
+vm0M1S2 = morse1[m0M1S2_1,m0M1S2_2,m0M1S2_3,m0M1S2_4]
+vm1M1S1 = morse1[m1M1S1_1,m1M1S1_2,m1M1S1_3,m1M1S1_4]
+vm1M1S2 = morse1[m1M1S2_1,m1M1S2_2,m1M1S2_3,m1M1S2_4]
+end-labels-section
+
+HAMILTONIAN-SECTION
+------------------------------------------------------------------
+modes | v1 | v2 | el1
+modes | el2
+------------------------------------------------------------------
+
+# Kinetic Energy
+
+# Molecule 0 
+
+omega_m0M1	|1	KE
+
+# Potential for Harmonic oscillator
+
+# Electronic States
+E_m0_S1	|3	S1&1
+E_m0_S2	|3	S2&2
+
+# Lambda
+
+# Kappa
+
+# Quartic potential
+
+# Morse/Anti-Morse potential
+1.0	|1	vm0M1S1	|3	S1&1
+1.0	|1	vm0M1S2	|3	S2&2
+
+# Molecule 1 
+
+omega_m1M1	|2	KE
+
+# Potential for Harmonic oscillator
+
+# Electronic States
+E_m1_S1	|4	S1&1
+E_m1_S2	|4	S2&2
+
+# Lambda
+
+# Kappa
+
+# Quartic potential
+
+# Morse/Anti-Morse potential
+1.0	|2	vm1M1S1	|4	S1&1
+1.0	|2	vm1M1S2	|4	S2&2
+
+
+# Dipole interaction for Molecules 0-1
+
+0.00000000 |3 S1&1 |4 S1&1
+0.00000000 |3 S1&1 |4 S1&2
+0.00000000 |3 S1&1 |4 S2&2
+0.00000000 |3 S1&2 |4 S1&1
+0.00000000 |3 S1&2 |4 S1&2
+0.00000000 |3 S1&2 |4 S2&2
+0.00000000 |3 S2&2 |4 S1&1
+0.00000000 |3 S2&2 |4 S1&2
+0.00000000 |3 S2&2 |4 S2&2
+END-HAMILTONIAN-SECTION
+
+END-OPERATOR

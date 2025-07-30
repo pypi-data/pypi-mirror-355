@@ -1,0 +1,489 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vcham.symm_vcham &mdash; PyVCHAM 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyVCHAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../vcham.html">PyVCHAM package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyVCHAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vcham.symm_vcham</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vcham.symm_vcham</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.logging_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SymmetryMask">
+<a class="viewcode-back" href="../../vcham.html#vcham.symm_vcham.SymmetryMask">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SymmetryMask</span><span class="p">:</span>
+    <span class="c1"># Only abelian groups</span>
+    <span class="n">product_tables</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ci&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;cs&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="p">(</span><span class="s2">&quot;A&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;A&#39;&quot;</span><span class="p">):</span> <span class="s2">&quot;A&#39;&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">):</span> <span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;A&#39;&quot;</span><span class="p">):</span> <span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">):</span> <span class="s2">&quot;A&#39;&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;c2&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">):</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">):</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">):</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">):</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;c2h&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;Bg&quot;</span><span class="p">):</span> <span class="s2">&quot;Bg&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;Bu&quot;</span><span class="p">):</span> <span class="s2">&quot;Bu&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Bg&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;Bg&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Bg&quot;</span><span class="p">,</span> <span class="s2">&quot;Bg&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Bg&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;Bu&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Bg&quot;</span><span class="p">,</span> <span class="s2">&quot;Bu&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;Bg&quot;</span><span class="p">):</span> <span class="s2">&quot;Bu&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;Bu&quot;</span><span class="p">):</span> <span class="s2">&quot;Bg&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Bu&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;Bu&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Bu&quot;</span><span class="p">,</span> <span class="s2">&quot;Bg&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Bu&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;Bg&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Bu&quot;</span><span class="p">,</span> <span class="s2">&quot;Bu&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;c2v&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="p">(</span><span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;A1&quot;</span><span class="p">):</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;A2&quot;</span><span class="p">):</span> <span class="s2">&quot;A2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">):</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">):</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A2&quot;</span><span class="p">,</span> <span class="s2">&quot;A1&quot;</span><span class="p">):</span> <span class="s2">&quot;A2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A2&quot;</span><span class="p">,</span> <span class="s2">&quot;A2&quot;</span><span class="p">):</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A2&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">):</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A2&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">):</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;A1&quot;</span><span class="p">):</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;A2&quot;</span><span class="p">):</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">):</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">):</span> <span class="s2">&quot;A2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;A1&quot;</span><span class="p">):</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;A2&quot;</span><span class="p">):</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">):</span> <span class="s2">&quot;A2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">):</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;d2&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">):</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">):</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">):</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B3&quot;</span><span class="p">):</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">):</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">):</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">):</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B3&quot;</span><span class="p">):</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">):</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">):</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">):</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;B3&quot;</span><span class="p">):</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">):</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">):</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">):</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3&quot;</span><span class="p">,</span> <span class="s2">&quot;B3&quot;</span><span class="p">):</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;d2h&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;B1g&quot;</span><span class="p">):</span> <span class="s2">&quot;B1g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;B2g&quot;</span><span class="p">):</span> <span class="s2">&quot;B2g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;B3g&quot;</span><span class="p">):</span> <span class="s2">&quot;B3g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;B1u&quot;</span><span class="p">):</span> <span class="s2">&quot;B1u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;B2u&quot;</span><span class="p">):</span> <span class="s2">&quot;B2u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="s2">&quot;B3u&quot;</span><span class="p">):</span> <span class="s2">&quot;B3u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1g&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;B1g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1g&quot;</span><span class="p">,</span> <span class="s2">&quot;B1g&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1g&quot;</span><span class="p">,</span> <span class="s2">&quot;B2g&quot;</span><span class="p">):</span> <span class="s2">&quot;B3g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1g&quot;</span><span class="p">,</span> <span class="s2">&quot;B3g&quot;</span><span class="p">):</span> <span class="s2">&quot;B2g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1g&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;B1u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1g&quot;</span><span class="p">,</span> <span class="s2">&quot;B1u&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1g&quot;</span><span class="p">,</span> <span class="s2">&quot;B2u&quot;</span><span class="p">):</span> <span class="s2">&quot;B3u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1g&quot;</span><span class="p">,</span> <span class="s2">&quot;B3u&quot;</span><span class="p">):</span> <span class="s2">&quot;B2u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2g&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;B2g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2g&quot;</span><span class="p">,</span> <span class="s2">&quot;B1g&quot;</span><span class="p">):</span> <span class="s2">&quot;B3g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2g&quot;</span><span class="p">,</span> <span class="s2">&quot;B2g&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2g&quot;</span><span class="p">,</span> <span class="s2">&quot;B3g&quot;</span><span class="p">):</span> <span class="s2">&quot;B1g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2g&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;B2u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2g&quot;</span><span class="p">,</span> <span class="s2">&quot;B1u&quot;</span><span class="p">):</span> <span class="s2">&quot;B3u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2g&quot;</span><span class="p">,</span> <span class="s2">&quot;B2u&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2g&quot;</span><span class="p">,</span> <span class="s2">&quot;B3u&quot;</span><span class="p">):</span> <span class="s2">&quot;B1u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3g&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;B3g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3g&quot;</span><span class="p">,</span> <span class="s2">&quot;B1g&quot;</span><span class="p">):</span> <span class="s2">&quot;B2g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3g&quot;</span><span class="p">,</span> <span class="s2">&quot;B2g&quot;</span><span class="p">):</span> <span class="s2">&quot;B1g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3g&quot;</span><span class="p">,</span> <span class="s2">&quot;B3g&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3g&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;B3u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3g&quot;</span><span class="p">,</span> <span class="s2">&quot;B1u&quot;</span><span class="p">):</span> <span class="s2">&quot;B2u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3g&quot;</span><span class="p">,</span> <span class="s2">&quot;B2u&quot;</span><span class="p">):</span> <span class="s2">&quot;B1u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3g&quot;</span><span class="p">,</span> <span class="s2">&quot;B3u&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;B1g&quot;</span><span class="p">):</span> <span class="s2">&quot;B1u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;B2g&quot;</span><span class="p">):</span> <span class="s2">&quot;B2u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;B3g&quot;</span><span class="p">):</span> <span class="s2">&quot;B3u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;B1u&quot;</span><span class="p">):</span> <span class="s2">&quot;B1g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;B2u&quot;</span><span class="p">):</span> <span class="s2">&quot;B2g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;Au&quot;</span><span class="p">,</span> <span class="s2">&quot;B3u&quot;</span><span class="p">):</span> <span class="s2">&quot;B3g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1u&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;B1u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1u&quot;</span><span class="p">,</span> <span class="s2">&quot;B1g&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1u&quot;</span><span class="p">,</span> <span class="s2">&quot;B2g&quot;</span><span class="p">):</span> <span class="s2">&quot;B3u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1u&quot;</span><span class="p">,</span> <span class="s2">&quot;B3g&quot;</span><span class="p">):</span> <span class="s2">&quot;B2u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1u&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;B1g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1u&quot;</span><span class="p">,</span> <span class="s2">&quot;B1u&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1u&quot;</span><span class="p">,</span> <span class="s2">&quot;B2u&quot;</span><span class="p">):</span> <span class="s2">&quot;B3g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B1u&quot;</span><span class="p">,</span> <span class="s2">&quot;B3u&quot;</span><span class="p">):</span> <span class="s2">&quot;B2g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2u&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;B2u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2u&quot;</span><span class="p">,</span> <span class="s2">&quot;B1g&quot;</span><span class="p">):</span> <span class="s2">&quot;B3u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2u&quot;</span><span class="p">,</span> <span class="s2">&quot;B2g&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2u&quot;</span><span class="p">,</span> <span class="s2">&quot;B3g&quot;</span><span class="p">):</span> <span class="s2">&quot;B1u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2u&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;B2g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2u&quot;</span><span class="p">,</span> <span class="s2">&quot;B1u&quot;</span><span class="p">):</span> <span class="s2">&quot;B3g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2u&quot;</span><span class="p">,</span> <span class="s2">&quot;B2u&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B2u&quot;</span><span class="p">,</span> <span class="s2">&quot;B3u&quot;</span><span class="p">):</span> <span class="s2">&quot;B1g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3u&quot;</span><span class="p">,</span> <span class="s2">&quot;Ag&quot;</span><span class="p">):</span> <span class="s2">&quot;B3u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3u&quot;</span><span class="p">,</span> <span class="s2">&quot;B1g&quot;</span><span class="p">):</span> <span class="s2">&quot;B2u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3u&quot;</span><span class="p">,</span> <span class="s2">&quot;B2g&quot;</span><span class="p">):</span> <span class="s2">&quot;B1u&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3u&quot;</span><span class="p">,</span> <span class="s2">&quot;B3g&quot;</span><span class="p">):</span> <span class="s2">&quot;Au&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3u&quot;</span><span class="p">,</span> <span class="s2">&quot;Au&quot;</span><span class="p">):</span> <span class="s2">&quot;B3g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3u&quot;</span><span class="p">,</span> <span class="s2">&quot;B1u&quot;</span><span class="p">):</span> <span class="s2">&quot;B2g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3u&quot;</span><span class="p">,</span> <span class="s2">&quot;B2u&quot;</span><span class="p">):</span> <span class="s2">&quot;B1g&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s2">&quot;B3u&quot;</span><span class="p">,</span> <span class="s2">&quot;B3u&quot;</span><span class="p">):</span> <span class="s2">&quot;Ag&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_product_table</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sym_point_group</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the product table for a given symmetry point group.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sym_point_group : str</span>
+<span class="sd">            The symmetry point group.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            The product table for the given symmetry point group.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the symmetry point group is unknown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sym_point_group</span> <span class="o">=</span> <span class="n">sym_point_group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">sym_point_group</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">product_tables</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown symmetry point group: </span><span class="si">{</span><span class="n">sym_point_group</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">product_tables</span><span class="p">[</span><span class="n">sym_point_group</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SymmetryMask.get_total_sym_irrep">
+<a class="viewcode-back" href="../../vcham.html#vcham.symm_vcham.SymmetryMask.get_total_sym_irrep">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_sym_irrep</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vc_system</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the totally symmetric irreducible representation for a given symmetry point group.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vc_system : object</span>
+<span class="sd">            An object with a ``symmetry_point_group`` attribute.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The totally symmetric irreducible representation.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If ``vc_system`` does not have a ``symmetry_point_group`` attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">vc_system</span><span class="p">,</span> <span class="s2">&quot;symmetry_point_group&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;vc_system must have a &#39;symmetry_point_group&#39; attribute&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;vc_system must have a &#39;symmetry_point_group&#39; attribute&quot;</span><span class="p">)</span>
+        <span class="n">sym_point_group</span> <span class="o">=</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">symmetry_point_group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_product_table</span><span class="p">(</span><span class="n">sym_point_group</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">state1</span><span class="p">,</span> <span class="n">state2</span><span class="p">),</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">state1</span> <span class="o">==</span> <span class="n">state2</span> <span class="ow">and</span> <span class="n">state1</span> <span class="o">==</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_jt_effects</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">jt_effects</span><span class="p">,</span> <span class="n">n_normal_modes</span><span class="p">,</span> <span class="n">n_states</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate Jahn-Teller effects parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        jt_effects : list of dict</span>
+<span class="sd">            List of JT effect dictionaries.</span>
+<span class="sd">        n_normal_modes : int</span>
+<span class="sd">            Number of normal modes.</span>
+<span class="sd">        n_states : int</span>
+<span class="sd">            Number of states.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If mode or state indices are not of the correct type.</span>
+<span class="sd">        IndexError</span>
+<span class="sd">            If mode or state indices are out of bounds.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If state_pairs or types are malformed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">effect</span> <span class="ow">in</span> <span class="n">jt_effects</span><span class="p">:</span>
+            <span class="n">mode_index</span> <span class="o">=</span> <span class="n">effect</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span>
+            <span class="n">state_pairs</span> <span class="o">=</span> <span class="n">effect</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;state_pairs&quot;</span><span class="p">)</span>
+            <span class="n">types</span> <span class="o">=</span> <span class="n">effect</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;types&quot;</span><span class="p">)</span>
+            <span class="c1"># active = effect.get(&quot;active&quot;, True)  # Not used in validation but present in effect</span>
+
+            <span class="c1"># Validate mode index</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mode_index</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JT effect &#39;mode&#39; must be an integer, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">mode_index</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">mode_index</span> <span class="o">&lt;</span> <span class="n">n_normal_modes</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JT effect mode index </span><span class="si">{</span><span class="n">mode_index</span><span class="si">}</span><span class="s2"> out of bounds for </span><span class="si">{</span><span class="n">n_normal_modes</span><span class="si">}</span><span class="s2"> modes&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Validate state_pairs and types</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state_pairs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;JT effect &#39;state_pairs&#39; must be a list&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;JT effect &#39;types&#39; must be a list&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state_pairs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">types</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of &#39;state_pairs&#39; must equal number of &#39;types&#39; in JT effect&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Validate each state pair</span>
+            <span class="k">for</span> <span class="n">pair_idx</span><span class="p">,</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">state_pairs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State pair at index </span><span class="si">{</span><span class="n">pair_idx</span><span class="si">}</span><span class="s2"> must be a 2-element list/tuple&quot;</span><span class="p">)</span>
+                <span class="n">state_a</span><span class="p">,</span> <span class="n">state_b</span> <span class="o">=</span> <span class="n">pair</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state_a</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state_b</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State indices in pair </span><span class="si">{</span><span class="n">pair_idx</span><span class="si">}</span><span class="s2"> must be integers&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">state_a</span> <span class="o">&lt;</span> <span class="n">n_states</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">state_b</span> <span class="o">&lt;</span> <span class="n">n_states</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State indices </span><span class="si">{</span><span class="n">state_a</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">state_b</span><span class="si">}</span><span class="s2"> out of bounds for </span><span class="si">{</span><span class="n">n_states</span><span class="si">}</span><span class="s2"> states&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SymmetryMask.create_symmetry_matrix">
+<a class="viewcode-back" href="../../vcham.html#vcham.symm_vcham.SymmetryMask.create_symmetry_matrix">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_symmetry_matrix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">vc_system</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a symmetry matrix based on the given parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vc_system : object</span>
+<span class="sd">            An object containing the necessary attributes:</span>
+<span class="sd">              - symmetry_point_group : str</span>
+<span class="sd">                The symmetry point group.</span>
+<span class="sd">              - number_normal_modes : int</span>
+<span class="sd">                Number of normal modes.</span>
+<span class="sd">              - number_states : int</span>
+<span class="sd">                Number of states.</span>
+<span class="sd">              - symmetry_modes : list</span>
+<span class="sd">                List of symmetry modes.</span>
+<span class="sd">              - symmetry_states : list</span>
+<span class="sd">                List of symmetry states.</span>
+<span class="sd">              - coupling_with_gs : bool</span>
+<span class="sd">                Whether the ground state is coupled.</span>
+<span class="sd">              - totally_sym_irrep : str</span>
+<span class="sd">                The totally symmetric irreducible representation.</span>
+<span class="sd">              - jt_effects : list of dict, optional</span>
+<span class="sd">                Each dictionary specifies a JT effect with keys:</span>
+<span class="sd">                  * &#39;mode&#39;: int, index of the normal mode where the JT effect occurs</span>
+<span class="sd">                  * &#39;state_pairs&#39;: list of tuples/lists, each containing two state indices</span>
+<span class="sd">                  * &#39;types&#39;: list of str, JT effect types for each state pair</span>
+<span class="sd">                  * &#39;active&#39;: bool, optional (default True), whether the effect is optimized</span>
+<span class="sd">                  * &#39;source&#39;: int, optional, mode index for parameter copying if inactive</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Symmetry matrix of shape (n_normal_modes, n_states, n_states).</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        AttributeError</span>
+<span class="sd">            If vc_system lacks required attributes.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If symmetry operations or JT effects are invalid.</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If mode or state indices are not integers.</span>
+<span class="sd">        IndexError</span>
+<span class="sd">            If mode or state indices are out of bounds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Extract and normalize attributes from vc_system</span>
+            <span class="n">sym_point_group</span> <span class="o">=</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">symmetry_point_group</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">n_normal_modes</span> <span class="o">=</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">number_normal_modes</span>
+            <span class="n">n_states</span> <span class="o">=</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">number_states</span>
+            <span class="n">sym_modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">mode</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">symmetry_modes</span><span class="p">]</span>
+            <span class="n">sym_states</span> <span class="o">=</span> <span class="p">[</span><span class="n">state</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">symmetry_states</span><span class="p">]</span>
+            <span class="n">coupling_with_gs</span> <span class="o">=</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">coupling_with_gs</span>
+            <span class="n">total_sym_irrep</span> <span class="o">=</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">totally_sym_irrep</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="n">jt_effects</span> <span class="o">=</span> <span class="n">vc_system</span><span class="o">.</span><span class="n">jt_effects</span> <span class="ow">or</span> <span class="p">[]</span>
+
+            <span class="c1"># Validate JT effects early</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_jt_effects</span><span class="p">(</span><span class="n">jt_effects</span><span class="p">,</span> <span class="n">n_normal_modes</span><span class="p">,</span> <span class="n">n_states</span><span class="p">)</span>
+
+            <span class="c1"># Initialize symmetry matrix</span>
+            <span class="n">symmetry_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_normal_modes</span><span class="p">,</span> <span class="n">n_states</span><span class="p">,</span> <span class="n">n_states</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+            <span class="c1"># Get product table for efficiency</span>
+            <span class="n">product_table</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_product_table</span><span class="p">(</span><span class="n">sym_point_group</span><span class="p">)</span>
+
+            <span class="c1"># Precompute intermediate symmetries for each mode and state_i</span>
+            <span class="n">inter_sym_cache</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">sym_mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sym_modes</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">state_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sym_states</span><span class="p">):</span>
+                    <span class="n">inter_sym</span> <span class="o">=</span> <span class="n">product_table</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">state_i</span><span class="p">,</span> <span class="n">sym_mode</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">inter_sym</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product not found for </span><span class="si">{</span><span class="n">state_i</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">sym_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">inter_sym_cache</span><span class="p">[(</span><span class="n">nmode</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">inter_sym</span>
+
+            <span class="c1"># Populate symmetry matrix</span>
+            <span class="k">for</span> <span class="n">nmode</span><span class="p">,</span> <span class="n">sym_mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sym_modes</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_states</span><span class="p">):</span>
+                    <span class="n">inter_sym</span> <span class="o">=</span> <span class="n">inter_sym_cache</span><span class="p">[(</span><span class="n">nmode</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_states</span><span class="p">):</span>
+                        <span class="n">state_j</span> <span class="o">=</span> <span class="n">sym_states</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                        <span class="n">product</span> <span class="o">=</span> <span class="n">product_table</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">inter_sym</span><span class="p">,</span> <span class="n">state_j</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">product</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product not found for </span><span class="si">{</span><span class="n">inter_sym</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">state_j</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">sym_mode</span> <span class="o">==</span> <span class="n">total_sym_irrep</span><span class="p">:</span>
+                            <span class="c1"># Symmetric mode: diagonal elements = 1 (kappa), off-diagonal = 0</span>
+                            <span class="n">symmetry_matrix</span><span class="p">[</span><span class="n">nmode</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span> <span class="k">else</span> <span class="mf">0.0</span>
+                        <span class="k">elif</span> <span class="n">product</span> <span class="o">==</span> <span class="n">total_sym_irrep</span><span class="p">:</span>
+                            <span class="c1"># Non-symmetric mode: 1 if product is totally symmetric, unless ground state decoupled</span>
+                            <span class="n">symmetry_matrix</span><span class="p">[</span><span class="n">nmode</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">coupling_with_gs</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="mf">1.0</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">symmetry_matrix</span><span class="p">[</span><span class="n">nmode</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+            <span class="c1"># Apply Jahn-Teller effects</span>
+            <span class="k">if</span> <span class="n">jt_effects</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Jahn-Teller effect detected, applying </span><span class="si">%d</span><span class="s2"> effects&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">jt_effects</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">effect</span> <span class="ow">in</span> <span class="n">jt_effects</span><span class="p">:</span>
+                    <span class="n">mode_index</span> <span class="o">=</span> <span class="n">effect</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span>
+                    <span class="n">state_pairs</span> <span class="o">=</span> <span class="n">effect</span><span class="p">[</span><span class="s2">&quot;state_pairs&quot;</span><span class="p">]</span>
+                    <span class="n">active</span> <span class="o">=</span> <span class="n">effect</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;active&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">state_a</span><span class="p">,</span> <span class="n">state_b</span> <span class="ow">in</span> <span class="n">state_pairs</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">active</span><span class="p">:</span>
+                            <span class="c1"># Active JT effect: off-diagonal coupling</span>
+                            <span class="n">symmetry_matrix</span><span class="p">[</span><span class="n">mode_index</span><span class="p">,</span> <span class="n">state_a</span><span class="p">,</span> <span class="n">state_b</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+                            <span class="n">symmetry_matrix</span><span class="p">[</span><span class="n">mode_index</span><span class="p">,</span> <span class="n">state_b</span><span class="p">,</span> <span class="n">state_a</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="c1"># Inactive JT effect: diagonal elements for parameter copying</span>
+                            <span class="n">symmetry_matrix</span><span class="p">[</span><span class="n">mode_index</span><span class="p">,</span> <span class="n">state_a</span><span class="p">,</span> <span class="n">state_a</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+                            <span class="n">symmetry_matrix</span><span class="p">[</span><span class="n">mode_index</span><span class="p">,</span> <span class="n">state_b</span><span class="p">,</span> <span class="n">state_b</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+            <span class="k">return</span> <span class="n">symmetry_matrix</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;vc_system is missing an expected attribute: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+            <span class="k">raise</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;An error occurred while creating the symmetry matrix: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+            <span class="k">raise</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Emilio Rodríguez Cuenca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

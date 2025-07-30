@@ -1,0 +1,1012 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyVCHAM package &mdash; PyVCHAM 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=47de8214"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="PyVCHAM documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyVCHAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PyVCHAM package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-vcham.vcham_system">VCHam Object</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.vcham_system.VCSystem"><code class="docutils literal notranslate"><span class="pre">VCSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.elements"><code class="docutils literal notranslate"><span class="pre">VCSystem.elements</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.reference_geometry"><code class="docutils literal notranslate"><span class="pre">VCSystem.reference_geometry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.vc_type"><code class="docutils literal notranslate"><span class="pre">VCSystem.vc_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.units"><code class="docutils literal notranslate"><span class="pre">VCSystem.units</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.number_normal_modes"><code class="docutils literal notranslate"><span class="pre">VCSystem.number_normal_modes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.number_states"><code class="docutils literal notranslate"><span class="pre">VCSystem.number_states</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.displacement_vector"><code class="docutils literal notranslate"><span class="pre">VCSystem.displacement_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.database_abinitio"><code class="docutils literal notranslate"><span class="pre">VCSystem.database_abinitio</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.coupling_with_gs"><code class="docutils literal notranslate"><span class="pre">VCSystem.coupling_with_gs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.symmetry_point_group"><code class="docutils literal notranslate"><span class="pre">VCSystem.symmetry_point_group</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.totally_sym_irrep"><code class="docutils literal notranslate"><span class="pre">VCSystem.totally_sym_irrep</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.symmetry_modes"><code class="docutils literal notranslate"><span class="pre">VCSystem.symmetry_modes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.symmetry_states"><code class="docutils literal notranslate"><span class="pre">VCSystem.symmetry_states</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.vib_freq"><code class="docutils literal notranslate"><span class="pre">VCSystem.vib_freq</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.energy_shift"><code class="docutils literal notranslate"><span class="pre">VCSystem.energy_shift</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.vcham"><code class="docutils literal notranslate"><span class="pre">VCSystem.vcham</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.diab_funct"><code class="docutils literal notranslate"><span class="pre">VCSystem.diab_funct</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.symmetry_matrix"><code class="docutils literal notranslate"><span class="pre">VCSystem.symmetry_matrix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.jt_effects"><code class="docutils literal notranslate"><span class="pre">VCSystem.jt_effects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.dipole_matrix"><code class="docutils literal notranslate"><span class="pre">VCSystem.dipole_matrix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.add_dipole_matrix"><code class="docutils literal notranslate"><span class="pre">VCSystem.add_dipole_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.vcham_system.VCSystem.add_geometry"><code class="docutils literal notranslate"><span class="pre">VCSystem.add_geometry()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-vibronic-coupling-hamiltonian-module">Linear vibronic coupling Hamiltonian module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.lvc.LVCHam"><code class="docutils literal notranslate"><span class="pre">LVCHam</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.lvc.LVCHam.initialize_loss_function"><code class="docutils literal notranslate"><span class="pre">LVCHam.initialize_loss_function()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.lvc.LVCHam.initialize_params"><code class="docutils literal notranslate"><span class="pre">LVCHam.initialize_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.lvc.LVCHam.optimize"><code class="docutils literal notranslate"><span class="pre">LVCHam.optimize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-vcham.couplingfunct">Coupling Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.couplingfunct.linear_coupling"><code class="docutils literal notranslate"><span class="pre">linear_coupling()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-vcham.diabfunct">Diabatic Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#available-potential-types">Available Potential Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.diabfunct.general_morse"><code class="docutils literal notranslate"><span class="pre">general_morse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.diabfunct.general_quartic_potential"><code class="docutils literal notranslate"><span class="pre">general_quartic_potential()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.diabfunct.harmonic_oscillator"><code class="docutils literal notranslate"><span class="pre">harmonic_oscillator()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-vcham.constants">Constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.constants.H"><code class="docutils literal notranslate"><span class="pre">H</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.constants.C"><code class="docutils literal notranslate"><span class="pre">C</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.constants.AU_TO_J"><code class="docutils literal notranslate"><span class="pre">AU_TO_J</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.constants.CM1_TO_AU"><code class="docutils literal notranslate"><span class="pre">CM1_TO_AU</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.constants.AU_TO_EV"><code class="docutils literal notranslate"><span class="pre">AU_TO_EV</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-vcham.utils">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.utils.DipoleInteraction"><code class="docutils literal notranslate"><span class="pre">DipoleInteraction</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.utils.DipoleInteraction.molecules"><code class="docutils literal notranslate"><span class="pre">DipoleInteraction.molecules</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.utils.DipoleInteraction.pairs_interacting"><code class="docutils literal notranslate"><span class="pre">DipoleInteraction.pairs_interacting</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.utils.Molecule"><code class="docutils literal notranslate"><span class="pre">Molecule</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.utils.Molecule.molecule_idx"><code class="docutils literal notranslate"><span class="pre">Molecule.molecule_idx</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.utils.Molecule.interacting_states"><code class="docutils literal notranslate"><span class="pre">Molecule.interacting_states</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.utils.Molecule.CM"><code class="docutils literal notranslate"><span class="pre">Molecule.CM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vcham.utils.Molecule.rot_angles"><code class="docutils literal notranslate"><span class="pre">Molecule.rot_angles</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.utils.VCSystem_to_json"><code class="docutils literal notranslate"><span class="pre">VCSystem_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.utils.eulerMatrix"><code class="docutils literal notranslate"><span class="pre">eulerMatrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.utils.json_to_mctdh"><code class="docutils literal notranslate"><span class="pre">json_to_mctdh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.utils.merge_jsons"><code class="docutils literal notranslate"><span class="pre">merge_jsons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.utils.rotate_dipole_matrix"><code class="docutils literal notranslate"><span class="pre">rotate_dipole_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vcham.utils.rotate_geometry"><code class="docutils literal notranslate"><span class="pre">rotate_geometry()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyVCHAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">PyVCHAM package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/vcham.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyvcham-package">
+<h1>PyVCHAM package<a class="headerlink" href="#pyvcham-package" title="Link to this heading"></a></h1>
+<section id="module-vcham.vcham_system">
+<span id="vcham-object"></span><h2>VCHam Object<a class="headerlink" href="#module-vcham.vcham_system" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vcham.vcham_system.</span></span><span class="sig-name descname"><span class="pre">VCSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'eV'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_normal_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacement_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_abinitio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coupling_with_gs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetry_point_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">totally_sym_irrep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetry_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetry_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vib_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vcham</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diab_funct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetry_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jt_effects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dipole_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/vcham_system.html#VCSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.vcham_system.VCSystem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Initialize the VCSystem object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elements</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>reference_geometry</strong> (<em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>vc_type</strong> (<em>str</em>)</p></li>
+<li><p><strong>units</strong> (<em>str</em>)</p></li>
+<li><p><strong>number_normal_modes</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>number_states</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>displacement_vector</strong> (<em>List</em><em>[</em><em>ndarray</em><em> | </em><em>Any</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>database_abinitio</strong> (<em>List</em><em>[</em><em>ndarray</em><em> | </em><em>Any</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>coupling_with_gs</strong> (<em>bool</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>symmetry_point_group</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>totally_sym_irrep</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>symmetry_modes</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>symmetry_states</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>vib_freq</strong> (<em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>energy_shift</strong> (<em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>vcham</strong> (<em>List</em><em>[</em><em>ndarray</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>diab_funct</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>symmetry_matrix</strong> (<em>List</em><em>[</em><em>ndarray</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>jt_effects</strong> (<em>List</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>dipole_matrix</strong> (<em>List</em><em>[</em><em>ndarray</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.elements">
+<span class="sig-name descname"><span class="pre">elements</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.elements" title="Link to this definition"></a></dt>
+<dd><p>List of element symbols in the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.reference_geometry">
+<span class="sig-name descname"><span class="pre">reference_geometry</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.reference_geometry" title="Link to this definition"></a></dt>
+<dd><p>Reference geometry of the system, given as a NumPy array of shape (n_atoms, 3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.vc_type">
+<span class="sig-name descname"><span class="pre">vc_type</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.vc_type" title="Link to this definition"></a></dt>
+<dd><p>Type of the vibrational coupling system, e.g., “linear”, “quadratic”, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, default “linear”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.units">
+<span class="sig-name descname"><span class="pre">units</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.units" title="Link to this definition"></a></dt>
+<dd><p>Units for the energy and frequency values, e.g., “eV”, “Hartree”, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, default “eV”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.number_normal_modes">
+<span class="sig-name descname"><span class="pre">number_normal_modes</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.number_normal_modes" title="Link to this definition"></a></dt>
+<dd><p>Number of normal modes in the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.number_states">
+<span class="sig-name descname"><span class="pre">number_states</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.number_states" title="Link to this definition"></a></dt>
+<dd><p>Number of electronic states considered in the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.displacement_vector">
+<span class="sig-name descname"><span class="pre">displacement_vector</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.displacement_vector" title="Link to this definition"></a></dt>
+<dd><p>List of displacement vectors for each normal mode, where each vector is a NumPy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of np.ndarray, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.database_abinitio">
+<span class="sig-name descname"><span class="pre">database_abinitio</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.database_abinitio" title="Link to this definition"></a></dt>
+<dd><p>List of ab initio data arrays, where each array corresponds to a state and contains energy values for different displacements.
+It is a list of NumPy arrays, each of shape (n_states, n_displacements). Overall shape is (number_normal_modes, number_states, n_displacements).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of np.ndarray, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.coupling_with_gs">
+<span class="sig-name descname"><span class="pre">coupling_with_gs</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.coupling_with_gs" title="Link to this definition"></a></dt>
+<dd><p>Whether the system is coupled with the ground state (GS).
+If not provided, it will be initialized as True. It is useful for highly excited states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.symmetry_point_group">
+<span class="sig-name descname"><span class="pre">symmetry_point_group</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.symmetry_point_group" title="Link to this definition"></a></dt>
+<dd><p>The point group symmetry of the system, e.g., “C2v”, “Cs”, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.totally_sym_irrep">
+<span class="sig-name descname"><span class="pre">totally_sym_irrep</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.totally_sym_irrep" title="Link to this definition"></a></dt>
+<dd><p>The totally symmetric irreducible representation of the system. It is automatically computed from the symmetry point group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.symmetry_modes">
+<span class="sig-name descname"><span class="pre">symmetry_modes</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.symmetry_modes" title="Link to this definition"></a></dt>
+<dd><p>List of irreps corresponding to the normal modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.symmetry_states">
+<span class="sig-name descname"><span class="pre">symmetry_states</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.symmetry_states" title="Link to this definition"></a></dt>
+<dd><p>List of irreps corresponding to the electronic states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.vib_freq">
+<span class="sig-name descname"><span class="pre">vib_freq</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.vib_freq" title="Link to this definition"></a></dt>
+<dd><p>Vibrational frequencies for the normal modes, given as a NumPy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.energy_shift">
+<span class="sig-name descname"><span class="pre">energy_shift</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.energy_shift" title="Link to this definition"></a></dt>
+<dd><p>Energy shifts for the states, given as a NumPy array. It is computed from the ab initio database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.vcham">
+<span class="sig-name descname"><span class="pre">vcham</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.vcham" title="Link to this definition"></a></dt>
+<dd><p>List of vibrational coupling Hamiltonian matrices, where each matrix is a NumPy array.
+It is used to store the Hamiltonian for each normal mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of np.ndarray, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.diab_funct">
+<span class="sig-name descname"><span class="pre">diab_funct</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.diab_funct" title="Link to this definition"></a></dt>
+<dd><p>List of diabatic function names for each normal mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.symmetry_matrix">
+<span class="sig-name descname"><span class="pre">symmetry_matrix</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.symmetry_matrix" title="Link to this definition"></a></dt>
+<dd><p>List of symmetry matrices, where each matrix is a NumPy array.
+It is used to store the symmetry operations for the system. It is computed from the symmetry variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of np.ndarray, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.jt_effects">
+<span class="sig-name descname"><span class="pre">jt_effects</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.jt_effects" title="Link to this definition"></a></dt>
+<dd><p>List of Jahn-Teller (JT) effects, where each effect is a dictionary containing:
+- ‘mode’: int, the index of the normal mode.
+- ‘state_pairs’: list, pairs of states coupled by the JT effect.
+- ‘types’: list, JT effect types for each state pair.
+Optionally, if a JT effect is inactive (‘active’: False), it must include:
+- ‘source’: int, the mode index to copy parameters from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of dict, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.dipole_matrix">
+<span class="sig-name descname"><span class="pre">dipole_matrix</span></span><a class="headerlink" href="#vcham.vcham_system.VCSystem.dipole_matrix" title="Link to this definition"></a></dt>
+<dd><p>List of dipole matrices, where each matrix is a NumPy array.
+It is used to store the dipole moments for the system. The dimensions of the dipole matrix should be (n_states, n_states, 3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of np.ndarray, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.add_dipole_matrix">
+<span class="sig-name descname"><span class="pre">add_dipole_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dipole_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/vcham_system.html#VCSystem.add_dipole_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.vcham_system.VCSystem.add_dipole_matrix" title="Link to this definition"></a></dt>
+<dd><p>Add or update the dipole matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dipole_matrix</strong> (<em>np.ndarray</em>) – The dipole matrix to be added or updated. It should be a 3D numpy array where each slice corresponds to a state and each vector corresponds to a mode.
+The dipole matrix should have dimensions (n_states, n_states, 3). The last dimension represents the x, y, z components of the dipole moment.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vcham.vcham_system.VCSystem.add_geometry">
+<span class="sig-name descname"><span class="pre">add_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/vcham_system.html#VCSystem.add_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.vcham_system.VCSystem.add_geometry" title="Link to this definition"></a></dt>
+<dd><p>Add or update the reference geometry.</p>
+<p>This method processes the provided geometry, ensures it is centered at the center of mass (COM), and updates the system’s reference geometry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>geometry</strong> (<em>list</em><em> of </em><em>tuple</em><em> or </em><em>str</em>) – <p>The geometry data to be added or updated. It can be provided in two formats:
+1. A list of tuples, where each tuple contains an element symbol and its coordinates:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>e.g., [(“H”, [0.0, 0.0, 0.0]), (“O”, [0.0, 0.0, 1.0]), …].</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>A string path to an XYZ file containing the geometry.</p></li>
+</ol>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="linear-vibronic-coupling-hamiltonian-module">
+<h2>Linear vibronic coupling Hamiltonian module<a class="headerlink" href="#linear-vibronic-coupling-hamiltonian-module" title="Link to this heading"></a></h2>
+<dl class="py class" id="module-vcham.lvc">
+<dt class="sig sig-object py" id="vcham.lvc.LVCHam">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vcham.lvc.</span></span><span class="sig-name descname"><span class="pre">LVCHam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normal_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VCSystem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funct_guess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nepochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/lvc.html#LVCHam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.lvc.LVCHam" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Builder and optimizer for a Linear Vibronic Coupling (LVC) Hamiltonian.</p>
+<p>This class extracts parameters from a VCSystem object, prepares both
+diagonal (on-diagonal) and off-diagonal terms, and performs gradient-based
+optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normal_mode</strong> (<em>int</em>)</p></li>
+<li><p><strong>VCSystem</strong> (<em>Any</em>)</p></li>
+<li><p><strong>funct_guess</strong> (<em>Any</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>nepochs</strong> (<em>int</em>)</p></li>
+<li><p><strong>optimization</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="vcham.lvc.LVCHam.initialize_loss_function">
+<span class="sig-name descname"><span class="pre">initialize_loss_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'huber'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/lvc.html#LVCHam.initialize_loss_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.lvc.LVCHam.initialize_loss_function" title="Link to this definition"></a></dt>
+<dd><p>Set up the loss function for optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<em>str</em>) – Name of the loss function (e.g., “huber”, “mse”). Defaults to “huber”.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments for the loss function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – If the specified loss function is not supported.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vcham.lvc.LVCHam.initialize_params">
+<span class="sig-name descname"><span class="pre">initialize_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda_guess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jt_guess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa_guess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/lvc.html#LVCHam.initialize_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.lvc.LVCHam.initialize_params" title="Link to this definition"></a></dt>
+<dd><p>Initialize TensorFlow variables for optimization based on symmetry and Jahn-Teller (JT) effects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lambda_guess</strong> (<em>float</em>) – Initial guess for off-diagonal lambda parameters. Defaults to 0.1.</p></li>
+<li><p><strong>jt_guess</strong> (<em>float</em>) – Initial guess for JT off-diagonal parameters. Defaults to 0.01.</p></li>
+<li><p><strong>kappa_guess</strong> (<em>float</em>) – Initial guess for on-diagonal kappa parameters. Defaults to 0.1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vcham.lvc.LVCHam.optimize">
+<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/lvc.html#LVCHam.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.lvc.LVCHam.optimize" title="Link to this definition"></a></dt>
+<dd><p>Perform gradient-based optimization or build the Hamiltonian directly if no optimization is needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-vcham.couplingfunct">
+<span id="coupling-functions"></span><h2>Coupling Functions<a class="headerlink" href="#module-vcham.couplingfunct" title="Link to this heading"></a></h2>
+<p>This module provides coupling functions for the vibronic coupling Hamiltonian.</p>
+<p>Currently, the module supports linear coupling, with a design that allows extension to additional coupling types.</p>
+<p>New coupling functions can be added by defining a new function and updating the <code class="xref py py-data docutils literal notranslate"><span class="pre">COUPLING_TYPES</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">coupling_funct</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">n_var</span></code>, and <code class="xref py py-data docutils literal notranslate"><span class="pre">initial_guesses</span></code> dictionaries accordingly.</p>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="#vcham.couplingfunct.linear_coupling" title="vcham.couplingfunct.linear_coupling"><code class="xref py py-func docutils literal notranslate"><span class="pre">linear_coupling()</span></code></a>: Computes the linear coupling function.</p></li>
+</ul>
+</section>
+<section id="variables">
+<h3>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">COUPLING_TYPES</span></code>: List of supported coupling types.</p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">coupling_funct</span></code>: Dictionary mapping coupling types to their implementation functions.</p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">n_var</span></code>: Dictionary specifying the number of parameters per coupling function.</p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">initial_guesses</span></code>: Dictionary of default initial parameter guesses for each coupling type.</p></li>
+</ul>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.couplingfunct.linear_coupling">
+<span class="sig-prename descclassname"><span class="pre">vcham.couplingfunct.</span></span><span class="sig-name descname"><span class="pre">linear_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/couplingfunct.html#linear_coupling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.couplingfunct.linear_coupling" title="Link to this definition"></a></dt>
+<dd><p>Compute the linear coupling function.</p>
+<p>The linear coupling is defined as:</p>
+<div class="math notranslate nohighlight">
+\[f(q) = k_1 \cdot q\]</div>
+<p>where <span class="math notranslate nohighlight">\(q\)</span> is the displacement along a normal mode, and <span class="math notranslate nohighlight">\(k_1\)</span> is the linear coupling constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>tf.Tensor</em>) – Tensor of displacements, typically along a normal mode, with dtype tf.float32.</p></li>
+<li><p><strong>k1</strong> (<em>tf.Tensor</em><em> or </em><em>float</em>) – Coupling constant as a tensor or scalar. If a float is provided, it is converted to a <code class="docutils literal notranslate"><span class="pre">tf.Tensor</span></code> with dtype tf.float32.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of computed linear coupling values with dtype tf.float32.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vcham.diabfunct">
+<span id="diabatic-functions"></span><h2>Diabatic Functions<a class="headerlink" href="#module-vcham.diabfunct" title="Link to this heading"></a></h2>
+<p>This module contains the diabatic functions.</p>
+<p>New diabatic functions can be added by defining a new function and updating the
+<code class="xref py py-data docutils literal notranslate"><span class="pre">potential_functions</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">n_var</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">initial_guesses</span></code>, and
+<code class="xref py py-data docutils literal notranslate"><span class="pre">kappa_compatible</span></code> dictionaries accordingly.</p>
+<section id="available-potential-types">
+<h3>Available Potential Types<a class="headerlink" href="#available-potential-types" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ho&quot;</span></code>: Harmonic oscillator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;morse&quot;</span></code>: General Morse potential</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;antimorse&quot;</span></code>: Anti-Morse potential (uses general_morse with negative alpha)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;quartic&quot;</span></code>: General quartic potential</p></li>
+</ul>
+</section>
+<section id="id1">
+<h3>Functions<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="#vcham.diabfunct.harmonic_oscillator" title="vcham.diabfunct.harmonic_oscillator"><code class="xref py py-func docutils literal notranslate"><span class="pre">harmonic_oscillator()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#vcham.diabfunct.general_quartic_potential" title="vcham.diabfunct.general_quartic_potential"><code class="xref py py-func docutils literal notranslate"><span class="pre">general_quartic_potential()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#vcham.diabfunct.general_morse" title="vcham.diabfunct.general_morse"><code class="xref py py-func docutils literal notranslate"><span class="pre">general_morse()</span></code></a></p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Variables<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">potential_functions</span></code></p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">n_var</span></code></p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">initial_guesses</span></code></p></li>
+<li><p><code class="xref py py-data docutils literal notranslate"><span class="pre">kappa_compatible</span></code></p></li>
+</ul>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.diabfunct.general_morse">
+<span class="sig-prename descclassname"><span class="pre">vcham.diabfunct.</span></span><span class="sig-name descname"><span class="pre">general_morse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/diabfunct.html#general_morse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.diabfunct.general_morse" title="Link to this definition"></a></dt>
+<dd><p>Compute the general Morse potential.</p>
+<p>The Morse potential models anharmonic bond stretching in diatomic molecules, widely used in quantum chemistry for potential energy surfaces.</p>
+<p>The potential is:</p>
+<div class="math notranslate nohighlight">
+\[V(q) = D_e \left(1 - e^{-\alpha (q - q_0)}\right)^2 - D_e \left(1 - e^{-\alpha q_0}\right)^2\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(D_e\)</span> is the dissociation energy.
+- <span class="math notranslate nohighlight">\(\alpha\)</span> is the range parameter (well width).
+- <span class="math notranslate nohighlight">\(q_0\)</span> is the equilibrium bond distance.
+- The offset ensures <span class="math notranslate nohighlight">\(V(0) = 0\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>tf.Tensor</em>) – Tensor of displacements (bond lengths), broadcast-compatible shape, dtype tf.float32.</p></li>
+<li><p><strong>params</strong> (<em>list</em>) – List with three elements:
+- <cite>De</cite>: Dissociation energy, scalar or tensor.
+- <cite>alpha</cite>: Range parameter, scalar or tensor.
+- <cite>q0</cite>: Equilibrium bond distance, scalar or tensor.
+All broadcast-compatible with <cite>q</cite>.</p></li>
+<li><p><strong>gs</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of potential energy values, matching <cite>q</cite>’s shape.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.diabfunct.general_quartic_potential">
+<span class="sig-prename descclassname"><span class="pre">vcham.diabfunct.</span></span><span class="sig-name descname"><span class="pre">general_quartic_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/diabfunct.html#general_quartic_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.diabfunct.general_quartic_potential" title="Link to this definition"></a></dt>
+<dd><p>Compute the general quartic potential for a diabatic state.</p>
+<p>This function computes a quartic potential with quadratic and quartic terms, ideal for modeling anharmonic vibrational effects, such as bond stretching, in quantum chemistry.</p>
+<p>The potential is defined as:</p>
+<div class="math notranslate nohighlight">
+\[V(q) = \frac{1}{2} \omega^2 q^2 + \frac{1}{2} k_2 q^2 + \frac{1}{24} k_3 q^4\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(q\)</span> is the displacement along a normal mode.
+- <span class="math notranslate nohighlight">\(\omega\)</span> is the mode frequency.
+- <span class="math notranslate nohighlight">\(k_2\)</span> is an additional quadratic coefficient.
+- <span class="math notranslate nohighlight">\(k_3\)</span> is the quartic coefficient introducing anharmonicity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>tf.Tensor</em>) – Tensor of displacements, broadcast-compatible shape, dtype tf.float32.</p></li>
+<li><p><strong>omega</strong> (<em>tf.Tensor</em>) – Tensor of mode frequency, scalar or broadcast-compatible with <cite>q</cite>, dtype tf.float32.</p></li>
+<li><p><strong>params</strong> (<em>list</em>) – List with two elements:
+- <cite>k2</cite>: Quadratic coefficient.
+- <cite>k3</cite>: Quartic coefficient.
+Both scalar or broadcast-compatible with <cite>q</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of potential energy values, matching <cite>q</cite>’s shape.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.diabfunct.harmonic_oscillator">
+<span class="sig-prename descclassname"><span class="pre">vcham.diabfunct.</span></span><span class="sig-name descname"><span class="pre">harmonic_oscillator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/diabfunct.html#harmonic_oscillator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.diabfunct.harmonic_oscillator" title="Link to this definition"></a></dt>
+<dd><p>Compute the harmonic oscillator potential.</p>
+<p>The potential is given by:</p>
+<div class="math notranslate nohighlight">
+\[V(q) = \frac{1}{2} \omega^2 q^2 + \frac{1}{2} k_1 q^2\]</div>
+<p>where:
+- <span class="math notranslate nohighlight">\(q\)</span> is the displacement along a normal mode.
+- <span class="math notranslate nohighlight">\(\omega\)</span> is the frequency of the mode.
+- <span class="math notranslate nohighlight">\(k_1\)</span> is an additional quadratic coupling constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>tf.Tensor</em>) – Tensor of displacements along a normal mode, with shape suitable for broadcasting. Must be dtype tf.float32.</p></li>
+<li><p><strong>omega</strong> (<em>tf.Tensor</em>) – Tensor representing the mode frequency, scalar or broadcast-compatible with <cite>q</cite>. Must be dtype tf.float32.</p></li>
+<li><p><strong>params</strong> (<em>list</em>) – List with one element, <cite>k1</cite>, the quadratic constant, scalar or broadcast-compatible with <cite>q</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of diabatic potential energy values, matching the shape of <cite>q</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-vcham.constants">
+<span id="constants"></span><h2>Constants<a class="headerlink" href="#module-vcham.constants" title="Link to this heading"></a></h2>
+<p>This module contains physical constants and conversion factors.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="vcham.constants.H">
+<span class="sig-prename descclassname"><span class="pre">vcham.constants.</span></span><span class="sig-name descname"><span class="pre">H</span></span><a class="headerlink" href="#vcham.constants.H" title="Link to this definition"></a></dt>
+<dd><p>Planck’s constant (J·s)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="vcham.constants.C">
+<span class="sig-prename descclassname"><span class="pre">vcham.constants.</span></span><span class="sig-name descname"><span class="pre">C</span></span><a class="headerlink" href="#vcham.constants.C" title="Link to this definition"></a></dt>
+<dd><p>Speed of light in vacuum (m/s)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="vcham.constants.AU_TO_J">
+<span class="sig-prename descclassname"><span class="pre">vcham.constants.</span></span><span class="sig-name descname"><span class="pre">AU_TO_J</span></span><a class="headerlink" href="#vcham.constants.AU_TO_J" title="Link to this definition"></a></dt>
+<dd><p>Hartree to Joule conversion factor (J)</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="vcham.constants.CM1_TO_AU">
+<span class="sig-prename descclassname"><span class="pre">vcham.constants.</span></span><span class="sig-name descname"><span class="pre">CM1_TO_AU</span></span><a class="headerlink" href="#vcham.constants.CM1_TO_AU" title="Link to this definition"></a></dt>
+<dd><p>Conversion factor from wavenumbers (cm^-1) to atomic units</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="vcham.constants.AU_TO_EV">
+<span class="sig-prename descclassname"><span class="pre">vcham.constants.</span></span><span class="sig-name descname"><span class="pre">AU_TO_EV</span></span><a class="headerlink" href="#vcham.constants.AU_TO_EV" title="Link to this definition"></a></dt>
+<dd><p>Conversion factor from atomic units to electron volts (eV)</p>
+</dd></dl>
+
+</section>
+<section id="module-vcham.utils">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-vcham.utils" title="Link to this heading"></a></h2>
+<p>Utility functions for PyVCHAM package.
+This module provides various utility functions for handling molecular geometries,
+rotating geometries, encoding data to JSON, and processing VCHAM parameters.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="vcham.utils.DipoleInteraction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vcham.utils.</span></span><span class="sig-name descname"><span class="pre">DipoleInteraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairs_interacting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/utils.html#DipoleInteraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.utils.DipoleInteraction" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class representing dipole interactions between pairs of molecules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecules</strong> (<em>List</em><em>[</em><a class="reference internal" href="#vcham.utils.Molecule" title="vcham.utils.Molecule"><em>Molecule</em></a><em>]</em>)</p></li>
+<li><p><strong>pairs_interacting</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.utils.DipoleInteraction.molecules">
+<span class="sig-name descname"><span class="pre">molecules</span></span><a class="headerlink" href="#vcham.utils.DipoleInteraction.molecules" title="Link to this definition"></a></dt>
+<dd><p>List of Molecule objects involved in the dipole interactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[‘Molecule’]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.utils.DipoleInteraction.pairs_interacting">
+<span class="sig-name descname"><span class="pre">pairs_interacting</span></span><a class="headerlink" href="#vcham.utils.DipoleInteraction.pairs_interacting" title="Link to this definition"></a></dt>
+<dd><p>List of tuples specifying which pairs of molecules (by their indices in the <cite>molecules</cite> list)
+interact via dipole interactions. If None, all possible unique pairs are used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[List[Tuple[int, int]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vcham.utils.Molecule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vcham.utils.</span></span><span class="sig-name descname"><span class="pre">Molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interacting_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CM</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rot_angles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/utils.html#Molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.utils.Molecule" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a molecule in the VCHAM system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecule_idx</strong> (<em>int</em>)</p></li>
+<li><p><strong>interacting_states</strong> (<em>List</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>CM</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>rot_angles</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.utils.Molecule.molecule_idx">
+<span class="sig-name descname"><span class="pre">molecule_idx</span></span><a class="headerlink" href="#vcham.utils.Molecule.molecule_idx" title="Link to this definition"></a></dt>
+<dd><p>Index of the molecule in the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.utils.Molecule.interacting_states">
+<span class="sig-name descname"><span class="pre">interacting_states</span></span><a class="headerlink" href="#vcham.utils.Molecule.interacting_states" title="Link to this definition"></a></dt>
+<dd><p>List of interacting states for the molecules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[List[int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.utils.Molecule.CM">
+<span class="sig-name descname"><span class="pre">CM</span></span><a class="headerlink" href="#vcham.utils.Molecule.CM" title="Link to this definition"></a></dt>
+<dd><p>Center of mass of the molecule in Bohr units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vcham.utils.Molecule.rot_angles">
+<span class="sig-name descname"><span class="pre">rot_angles</span></span><a class="headerlink" href="#vcham.utils.Molecule.rot_angles" title="Link to this definition"></a></dt>
+<dd><p>Euler angles for the molecule’s rotation (degrees).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float, float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.utils.VCSystem_to_json">
+<span class="sig-prename descclassname"><span class="pre">vcham.utils.</span></span><span class="sig-name descname"><span class="pre">VCSystem_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VCSystem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">general_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vcham_data.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rewrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/utils.html#VCSystem_to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.utils.VCSystem_to_json" title="Link to this definition"></a></dt>
+<dd><p>Convert a VCSystem object to JSON and save to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>VCSystem</strong> (<em>object</em>) – The VCSystem instance.</p></li>
+<li><p><strong>general_data</strong> (<em>dict</em><em>, </em><em>optional</em>) – General data to include.</p></li>
+<li><p><strong>output_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the output JSON file.</p></li>
+<li><p><strong>rewrite</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to overwrite an existing file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.utils.eulerMatrix">
+<span class="sig-prename descclassname"><span class="pre">vcham.utils.</span></span><span class="sig-name descname"><span class="pre">eulerMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xhi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/utils.html#eulerMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.utils.eulerMatrix" title="Link to this definition"></a></dt>
+<dd><p>Generate a rotation matrix for Euler angles in ZYZ convention.
+This function constructs a 3x3 rotation matrix based on the provided Euler angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xhi</strong> (<em>float</em>) – Euler angle in radians for the first rotation about the Z-axis.</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – Euler angle in radians for the second rotation about the Y-axis.</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Euler angle in radians for the third rotation about the Z-axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 3x3 rotation matrix corresponding to the Euler angles in ZYZ convention.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.utils.json_to_mctdh">
+<span class="sig-prename descclassname"><span class="pre">vcham.utils.</span></span><span class="sig-name descname"><span class="pre">json_to_mctdh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/utils.html#json_to_mctdh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.utils.json_to_mctdh" title="Link to this definition"></a></dt>
+<dd><p>Reads a JSON file and writes a single MCTDH operator file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infile</strong> (<em>str</em>) – JSON file path.</p></li>
+<li><p><strong>outfile</strong> (<em>str</em>) – Output MCTDH operator file path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.utils.merge_jsons">
+<span class="sig-prename descclassname"><span class="pre">vcham.utils.</span></span><span class="sig-name descname"><span class="pre">merge_jsons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">infiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rewrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/utils.html#merge_jsons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.utils.merge_jsons" title="Link to this definition"></a></dt>
+<dd><p>Reads multiple JSON files and writes a single JSON file file by concatenating
+them with proper indexing offsets and possible coupling terms coming from the functions
+specified in the functions list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infiles</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – One or more JSON file paths.</p></li>
+<li><p><strong>outfile</strong> (<em>str</em>) – Output MCTDH operator file path.</p></li>
+<li><p><strong>molecules</strong> (<em>List</em><em>[</em><a class="reference internal" href="#vcham.utils.Molecule" title="vcham.utils.Molecule"><em>Molecule</em></a><em>]</em>)</p></li>
+<li><p><strong>interactions</strong> (<em>Any</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>rewrite</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.utils.rotate_dipole_matrix">
+<span class="sig-prename descclassname"><span class="pre">vcham.utils.</span></span><span class="sig-name descname"><span class="pre">rotate_dipole_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dipole_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xhi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/utils.html#rotate_dipole_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.utils.rotate_dipole_matrix" title="Link to this definition"></a></dt>
+<dd><p>Rotate a dipole moment matrix using Euler angles in ZYZ convention.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dipole_matrix</strong> (<em>np.ndarray</em>) – A 3D array of shape (Nstates, Nstates, 3) representing the dipole moments.</p></li>
+<li><p><strong>xhi</strong> (<em>float</em>) – Euler angle in radians for the first rotation about the Z-axis.</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – Euler angle in radians for the second rotation about the Y-axis.</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Euler angle in radians for the third rotation about the Z-axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 3D array of shape (Nstates, Nstates, 3) representing the rotated dipole moments.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vcham.utils.rotate_geometry">
+<span class="sig-prename descclassname"><span class="pre">vcham.utils.</span></span><span class="sig-name descname"><span class="pre">rotate_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xhi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vcham/utils.html#rotate_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vcham.utils.rotate_geometry" title="Link to this definition"></a></dt>
+<dd><p>Rotate a 3D geometry using Euler angles in ZYZ convention.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<em>np.ndarray</em>) – A 2D array of shape (Natoms, 3) representing the coordinates of atoms.</p></li>
+<li><p><strong>xhi</strong> (<em>float</em>) – Euler angle in radians for the first rotation about the Z-axis.</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – Euler angle in radians for the second rotation about the Y-axis.</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Euler angle in radians for the third rotation about the Z-axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2D array of shape (Natoms, 3) representing the rotated coordinates of atoms.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="PyVCHAM documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Emilio Rodríguez Cuenca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

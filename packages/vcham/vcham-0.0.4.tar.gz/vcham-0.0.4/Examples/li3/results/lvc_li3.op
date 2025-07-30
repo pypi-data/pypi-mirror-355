@@ -1,0 +1,99 @@
+OP_DEFINE-SECTION
+	TITLE
+		MCTDH-Operator-file created by PyVCHAM
+		2025-06-17 13:24:52
+	END-TITLE
+END-OP_DEFINE-SECTION
+
+PARAMETER-SECTION
+
+# frequencies
+omega_m0M1	=	0.048298 , eV
+omega_m0M2	=	0.048298 , eV
+omega_m0M3	=	0.038252 , eV
+
+# Energies
+E_m0_S1	=	0.000000 , eV
+E_m0_S2	=	0.016198 , eV
+
+# Diabatic curves with parameters
+m0M1S1_1	=	-0.028214 , eV
+
+m0M1S2_1	=	-0.028214 , eV
+
+m0M2S1_1	=	-0.028214 , eV
+
+m0M2S2_1	=	-0.028214 , eV
+
+m0M3S1_1	=	2.537062 , eV
+m0M3S1_2	=	-0.086860
+m0M3S1_3	=	0.000000
+m0M3S1_4	=	-0.000000 , eV
+
+m0M3S2_1	=	2.685689 , eV
+m0M3S2_2	=	-0.086302
+m0M3S2_3	=	0.000000
+m0M3S2_4	=	-0.000000 , eV
+
+# on-diagonal linear coupling constants (kappa)
+kappa_m0M2S1	=	0.043556 , eV
+kappa_m0M2S2	=	-0.043556 , eV
+
+# off-diagonal linear coupling constants (lambda)
+lam_m0M1S1S2 = 0.043556 , eV
+
+
+# on-diagonal bilinear coupling constants (gamma)
+# Third order quad-lin and cube terms (iota)
+# off-diagonal bilinear coupling constants (mu)
+end-parameter-section
+
+LABELS-SECTION
+# Diabatic function labels
+vm0M3S1 = morse1[m0M3S1_1,m0M3S1_2,m0M3S1_3,m0M3S1_4]
+vm0M3S2 = morse1[m0M3S2_1,m0M3S2_2,m0M3S2_3,m0M3S2_4]
+end-labels-section
+
+HAMILTONIAN-SECTION
+------------------------------------------------------------------
+modes | v1 | v2 | v3 | el
+------------------------------------------------------------------
+
+# Kinetic Energy
+
+# Molecule 0 
+
+omega_m0M1	|1	KE
+omega_m0M2	|2	KE
+omega_m0M3	|3	KE
+
+# Potential for Harmonic oscillator
+0.5*omega_m0M1	|1	q^2
+0.5*omega_m0M2	|2	q^2
+
+# Electronic States
+E_m0_S1	|4	S1&1
+E_m0_S2	|4	S2&2
+
+# Lambda
+lam_m0M1S1S2	|1	q	|4	S1&2
+
+# Kappa
+kappa_m0M2S1	|2	q	|4	S1&1
+kappa_m0M2S2	|2	q	|4	S2&2
+
+# Harmonic potential
+0.500000*m0M1S1_1	|1	q^2	|4	S1&1
+0.500000*m0M1S2_1	|1	q^2	|4	S2&2
+0.500000*m0M2S1_1	|2	q^2	|4	S1&1
+0.500000*m0M2S2_1	|2	q^2	|4	S2&2
+
+# Quartic potential
+
+# Morse/Anti-Morse potential
+1.0	|3	vm0M3S1	|4	S1&1
+1.0	|3	vm0M3S2	|4	S2&2
+
+END-HAMILTONIAN-SECTION
+
+END-OPERATOR

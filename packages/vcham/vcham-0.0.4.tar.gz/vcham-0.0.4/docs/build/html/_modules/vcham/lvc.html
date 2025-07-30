@@ -1,0 +1,726 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vcham.lvc &mdash; PyVCHAM 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyVCHAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../vcham.html">PyVCHAM package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyVCHAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vcham.lvc</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vcham.lvc</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">diabfunct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">couplingfunct</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.logging_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LVCHam">
+<a class="viewcode-back" href="../../vcham.html#vcham.lvc.LVCHam">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LVCHam</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builder and optimizer for a Linear Vibronic Coupling (LVC) Hamiltonian.</span>
+
+<span class="sd">    This class extracts parameters from a VCSystem object, prepares both</span>
+<span class="sd">    diagonal (on-diagonal) and off-diagonal terms, and performs gradient-based</span>
+<span class="sd">    optimization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">normal_mode</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">VCSystem</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">funct_guess</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nepochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3000</span><span class="p">,</span>
+        <span class="n">optimization</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the LVCHam instance with system references and configuration.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            normal_mode (int): The vibrational mode index to process.</span>
+<span class="sd">            VCSystem (Any): Object containing system data (displacements, energies, etc.).</span>
+<span class="sd">            funct_guess (Optional[Any]): Initial guesses for diabatic function parameters. Defaults to None.</span>
+<span class="sd">            nepochs (int): Number of optimization epochs. Defaults to 3000.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If `normal_mode` is invalid or `VCSystem` lacks required attributes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_constructor_input</span><span class="p">(</span><span class="n">normal_mode</span><span class="p">,</span> <span class="n">VCSystem</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span> <span class="o">=</span> <span class="n">normal_mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span> <span class="o">=</span> <span class="n">VCSystem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guess_params</span> <span class="o">=</span> <span class="n">funct_guess</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nepochs</span> <span class="o">=</span> <span class="n">nepochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimization</span> <span class="o">=</span> <span class="n">optimization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>  <span class="c1"># Configurable optimizer</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">----- Initializing LVC Hamiltonian Builder -----&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Normal mode: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">normal_mode</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_object_params</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_internal_variables</span><span class="p">()</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Public Methods</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="LVCHam.initialize_params">
+<a class="viewcode-back" href="../../vcham.html#vcham.lvc.LVCHam.initialize_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">lambda_guess</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">jt_guess</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">kappa_guess</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize TensorFlow variables for optimization based on symmetry and Jahn-Teller (JT) effects.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lambda_guess (float): Initial guess for off-diagonal lambda parameters. Defaults to 0.1.</span>
+<span class="sd">            jt_guess (float): Initial guess for JT off-diagonal parameters. Defaults to 0.01.</span>
+<span class="sd">            kappa_guess (float): Initial guess for on-diagonal kappa parameters. Defaults to 0.1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">on_diag_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_on_diag_coupling_param</span><span class="p">(</span><span class="n">kappa_guess</span><span class="o">=</span><span class="n">kappa_guess</span><span class="p">)</span>
+        <span class="n">off_diag_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_off_diag_coupling_param</span><span class="p">(</span><span class="n">lambda_guess</span><span class="o">=</span><span class="n">lambda_guess</span><span class="p">,</span> <span class="n">jt_guess</span><span class="o">=</span><span class="n">jt_guess</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntotal_param</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">funct_param</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_param</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_param</span><span class="p">,</span> 
+                      <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;jt_on_param&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">param</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ntotal_param</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Total parameters to optimize: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntotal_param</span><span class="p">)</span>
+
+        <span class="c1"># Store indices in VCSystem for bookkeeping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">idx_dict</span><span class="p">[</span><span class="s2">&quot;kappa&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">on_diag_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">idx_dict</span><span class="p">[</span><span class="s2">&quot;jt_on&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">on_diag_idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">idx_dict</span><span class="p">[</span><span class="s2">&quot;lambda&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">off_diag_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">idx_dict</span><span class="p">[</span><span class="s2">&quot;jt_off&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">off_diag_idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="LVCHam.initialize_loss_function">
+<a class="viewcode-back" href="../../vcham.html#vcham.lvc.LVCHam.initialize_loss_function">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize_loss_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;huber&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set up the loss function for optimization.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fn (str): Name of the loss function (e.g., &quot;huber&quot;, &quot;mse&quot;). Defaults to &quot;huber&quot;.</span>
+<span class="sd">            **kwargs: Additional arguments for the loss function.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: If the specified loss function is not supported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">loss_fn_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;huber&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">Huber</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="s2">&quot;mse&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">MeanSquaredError</span><span class="p">(),</span>
+            <span class="s2">&quot;mae&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">MeanAbsoluteError</span><span class="p">(),</span>
+            <span class="s2">&quot;msle&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">MeanSquaredLogarithmicError</span><span class="p">(),</span>
+            <span class="s2">&quot;logcosh&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">LogCosh</span><span class="p">(),</span>
+            <span class="s2">&quot;kld&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">KLDivergence</span><span class="p">(),</span>
+            <span class="s2">&quot;poisson&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">Poisson</span><span class="p">(),</span>
+            <span class="s2">&quot;cosine&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">CosineSimilarity</span><span class="p">(),</span>
+            <span class="s2">&quot;sparse&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(),</span>
+            <span class="s2">&quot;binary&quot;</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">BinaryCrossentropy</span><span class="p">(),</span>
+        <span class="p">}</span>
+        <span class="n">fn_lower</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fn_lower</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">loss_fn_map</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loss function &#39;</span><span class="si">{</span><span class="n">fn_lower</span><span class="si">}</span><span class="s2">&#39; not supported.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">loss_fn_map</span><span class="p">[</span><span class="n">fn_lower</span><span class="p">](</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LVCHam.optimize">
+<a class="viewcode-back" href="../../vcham.html#vcham.lvc.LVCHam.optimize">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform gradient-based optimization or build the Hamiltonian directly if no optimization is needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_inactive_mode</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntotal_param</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping optimization: mode inactive or no parameters.&quot;</span><span class="p">)</span>
+            <span class="n">final_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_vcham_tensor</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot_results</span><span class="p">(</span><span class="n">final_tensor</span><span class="p">,</span> <span class="n">loss_history</span><span class="o">=</span><span class="p">[])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_finalize_output</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="n">t_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">best_loss</span><span class="p">,</span> <span class="n">patience</span><span class="p">,</span> <span class="n">patience_counter</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">loss_history</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Optimizing mode </span><span class="si">%d</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nepochs</span><span class="p">):</span>
+            <span class="n">loss_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_train_step</span><span class="p">())</span>
+            <span class="n">loss_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_val</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">step</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Step </span><span class="si">%d</span><span class="s2">, Loss: </span><span class="si">%.6f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">loss_val</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">loss_val</span> <span class="o">&lt;</span> <span class="n">best_loss</span> <span class="o">-</span> <span class="mf">1e-5</span><span class="p">:</span>
+                <span class="n">best_loss</span> <span class="o">=</span> <span class="n">loss_val</span>
+                <span class="n">patience_counter</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">patience_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">patience_counter</span> <span class="o">&gt;=</span> <span class="n">patience</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Early stopping at step </span><span class="si">%d</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_start</span>
+        <span class="n">final_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_vcham_tensor</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plot_results</span><span class="p">(</span><span class="n">final_tensor</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;active_jt_states&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_jt</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Final loss: </span><span class="si">%.6f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">best_loss</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Optimization completed in </span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span><span class="p">,</span> <span class="n">elapsed_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_finalize_output</span><span class="p">()</span></div>
+
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_plot_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">final_tensor_np</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visualize the optimized eigenvalues and loss history.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            final_tensor_np (np.ndarray): Eigenvalues of the Hamiltonian [n_states, n_disp].</span>
+<span class="sd">            loss_history (List[float]): Loss values per epoch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">disp_np</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> 
+                   <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">)</span>
+        <span class="n">data_db_np</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_db</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_db</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_db</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coupling_with_gs</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">final_tensor_np</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">disp_np</span><span class="p">,</span> <span class="n">final_tensor_np</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;State </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">disp_np</span><span class="p">,</span> <span class="n">data_db_np</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_plot_labels</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Ground state</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">disp_np</span><span class="p">,</span> <span class="n">final_tensor_np</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Ground State&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">disp_np</span><span class="p">,</span> <span class="n">data_db_np</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_plot_labels</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+            <span class="c1"># Excited states</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">final_tensor_np</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">disp_np</span><span class="p">,</span> <span class="n">final_tensor_np</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;State </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">disp_np</span><span class="p">,</span> <span class="n">data_db_np</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_plot_labels</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">loss_history</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Loss&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Internal Methods: Building the TensorFlow Graph</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+
+    <span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_vcham_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct the Hamiltonian tensor and compute its eigenvalues.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: Eigenvalues [n_states, n_disp].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">diag_vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_diagonal_potentials</span><span class="p">()</span>
+        <span class="c1"># logger.info(&quot;Diagonal potential tensor shape: %s&quot;, diag_vals.shape)</span>
+        <span class="n">vcham_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">diag_vals</span><span class="p">))</span>
+        <span class="c1"># logger.info(&quot;Diagonalized Hamiltonian tensor shape: %s&quot;, vcham_tensor.shape)</span>
+
+        <span class="n">idx_all</span><span class="p">,</span> <span class="n">vals_all</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_param</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jt_off_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span><span class="p">)]:</span>
+            <span class="n">lam_idx</span><span class="p">,</span> <span class="n">lam_vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collect_off_diagonal_contributions</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+            <span class="n">idx_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lam_idx</span><span class="p">)</span>
+            <span class="n">vals_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lam_vals</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">idx_all</span><span class="p">:</span>
+            <span class="n">vcham_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tensor_scatter_nd_add</span><span class="p">(</span><span class="n">vcham_tensor</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">idx_all</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> 
+                                                    <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">vals_all</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">vcham_tensor</span> <span class="o">=</span> <span class="p">(</span><span class="n">vcham_tensor</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">vcham_tensor</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">vcham_tensor</span><span class="p">))</span>
+
+    <span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_train_step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute one optimization step.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: Loss value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+            <span class="n">loss_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_function</span><span class="p">()</span>
+        <span class="n">grads</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss_val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="p">)</span>
+        <span class="n">grads</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">clip_by_global_norm</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">loss_val</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Internal Helpers: On/Off Diagonal, Potential Assembly, JT Handling</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_diagonal_potentials</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute diagonal potential terms for each state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: Diagonal potentials [n_states, n_disp].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_disp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">diag_per_state</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">idx_offset</span><span class="p">,</span> <span class="n">jt_idx_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nstates</span><span class="p">):</span>
+            <span class="n">func_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diab_functions</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_jt_states</span><span class="p">:</span>
+                <span class="n">pot_term</span><span class="p">,</span> <span class="n">idx_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_potential_non_jt</span><span class="p">(</span><span class="n">func_type</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">idx_offset</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_jt_states</span><span class="p">:</span>
+                <span class="n">pot_term</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_potential_jt</span><span class="p">(</span><span class="n">func_type</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">jt_idx_offset</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inactive_jt_states</span><span class="p">:</span>
+                <span class="n">pot_term</span><span class="p">,</span> <span class="n">jt_idx_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_potential_jt_inactive</span><span class="p">(</span><span class="n">func_type</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">jt_idx_offset</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pot_term</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_disp</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">diag_per_state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pot_term</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">diag_per_state</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_potential_non_jt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">idx_offset</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build potential for non-JT states.&quot;&quot;&quot;</span>
+        <span class="n">n_disp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">func_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">potential_functions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_disp</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">idx_offset</span>
+
+        <span class="n">n_vars</span> <span class="o">=</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">n_var</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">func_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">params_chunk</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">funct_param</span><span class="p">[</span><span class="n">idx_offset</span><span class="p">:</span><span class="n">idx_offset</span> <span class="o">+</span> <span class="n">n_vars</span><span class="p">]</span> <span class="k">if</span> <span class="n">n_vars</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">funct_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> 
+                        <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">params_chunk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">idx_offset</span> <span class="o">+=</span> <span class="n">n_vars</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assemble_on_diag_term</span><span class="p">(</span><span class="n">state_idx</span><span class="p">,</span> <span class="n">func_type</span><span class="p">,</span> <span class="n">params_chunk</span><span class="p">),</span> <span class="n">idx_offset</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_potential_jt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">jt_idx_offset</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build potential for active JT states.&quot;&quot;&quot;</span>
+        <span class="n">n_disp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">func_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">potential_functions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_disp</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="n">n_vars</span> <span class="o">=</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">n_var</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">func_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">params_chunk</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span><span class="p">[</span><span class="n">jt_idx_offset</span><span class="p">:</span><span class="n">jt_idx_offset</span> <span class="o">+</span> <span class="n">n_vars</span><span class="p">]</span> <span class="k">if</span> <span class="n">n_vars</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> 
+                        <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assemble_on_diag_term</span><span class="p">(</span><span class="n">state_idx</span><span class="p">,</span> <span class="n">func_type</span><span class="p">,</span> <span class="n">params_chunk</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_potential_jt_inactive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">jt_idx_offset</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build potential for inactive JT states.&quot;&quot;&quot;</span>
+        <span class="n">n_disp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">func_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">potential_functions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n_disp</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">jt_idx_offset</span>
+
+        <span class="n">n_vars</span> <span class="o">=</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">n_var</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">func_type</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">params_chunk</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span><span class="p">[</span><span class="n">jt_idx_offset</span><span class="p">:</span><span class="n">jt_idx_offset</span> <span class="o">+</span> <span class="n">n_vars</span><span class="p">]</span> <span class="k">if</span> <span class="n">n_vars</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> 
+                        <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">params_chunk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">jt_idx_offset</span> <span class="o">+=</span> <span class="n">n_vars</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assemble_on_diag_term</span><span class="p">(</span><span class="n">state_idx</span><span class="p">,</span> <span class="n">func_type</span><span class="p">,</span> <span class="n">params_chunk</span><span class="p">),</span> <span class="n">jt_idx_offset</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_assemble_on_diag_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">func_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">param_var</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assemble a single diagonal potential term.&quot;&quot;&quot;</span>
+        <span class="n">disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span>
+        <span class="n">e0_shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e0_shifts</span><span class="p">[</span><span class="n">state_idx</span><span class="p">]</span>
+        <span class="n">pot_fn</span> <span class="o">=</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">potential_functions</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span>
+
+        <span class="n">base_term</span> <span class="o">=</span> <span class="n">pot_fn</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega</span><span class="p">,</span> <span class="n">param_var</span><span class="p">)</span> <span class="k">if</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">kappa_compatible</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="k">else</span> <span class="n">pot_fn</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="n">param_var</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">kappa_compatible</span><span class="p">[</span><span class="n">func_name</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sym_mode</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_sym_irrep</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">state_idx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_idx</span><span class="p">:</span>
+                <span class="n">kappa_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_param</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa_idx</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">state_idx</span><span class="p">)]</span>
+                <span class="n">base_term</span> <span class="o">+=</span> <span class="n">couplingfunct</span><span class="o">.</span><span class="n">linear_coupling</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="n">kappa_val</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">inactive_mode</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;active_jt_state_map&quot;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">active_jt_state_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">st_id</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">st_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_jt_states</span><span class="p">))}</span>
+                <span class="n">k_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_jt_state_map</span><span class="p">[</span><span class="n">state_idx</span><span class="p">]</span>
+                <span class="n">kappa_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span><span class="p">[</span><span class="n">k_idx</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign_k_params</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">k_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sign_k_params</span>
+                <span class="n">base_term</span> <span class="o">+=</span> <span class="n">couplingfunct</span><span class="o">.</span><span class="n">linear_coupling</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="n">kappa_val</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sign_k_params</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">state_idx</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">func_name</span> <span class="o">==</span> <span class="s2">&quot;morse&quot;</span> <span class="ow">or</span> <span class="n">func_name</span> <span class="o">==</span> <span class="s2">&quot;antimorse&quot;</span><span class="p">:</span>
+            <span class="n">base_term</span> <span class="o">=</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">general_morse</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="n">param_var</span><span class="p">,</span> <span class="n">gs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">base_term</span> <span class="o">+</span> <span class="n">e0_shift</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_collect_off_diagonal_contributions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">param_var</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gather off-diagonal terms.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">idx_list</span> <span class="ow">or</span> <span class="n">param_var</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="n">n_disp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">coupling_fn</span> <span class="o">=</span> <span class="n">couplingfunct</span><span class="o">.</span><span class="n">coupling_funct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coupling_order</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">coupling_fn</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Coupling &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">coupling_order</span><span class="si">}</span><span class="s2">&#39; not implemented.&quot;</span><span class="p">)</span>
+
+        <span class="n">indices</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">st1</span><span class="p">,</span> <span class="n">st2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">idx_list</span><span class="p">):</span>
+            <span class="n">p_val</span> <span class="o">=</span> <span class="n">param_var</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">param_var</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">param_var</span>
+            <span class="n">update_vals</span> <span class="o">=</span> <span class="n">coupling_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">,</span> <span class="n">p_val</span><span class="p">)</span>
+            <span class="n">disp_indices</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">n_disp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="n">idx1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">disp_indices</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">n_disp</span><span class="p">],</span> <span class="n">st1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">n_disp</span><span class="p">],</span> <span class="n">st2</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">idx2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">disp_indices</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">n_disp</span><span class="p">],</span> <span class="n">st2</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">n_disp</span><span class="p">],</span> <span class="n">st1</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">indices</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">idx1</span><span class="p">,</span> <span class="n">idx2</span><span class="p">])</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">update_vals</span><span class="p">,</span> <span class="n">update_vals</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">indices</span><span class="p">,</span> <span class="n">values</span>
+
+    <span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cost_function</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the optimization loss.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_db</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_vcham_tensor</span><span class="p">()))</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Jahn-Teller Handling</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_diab_fn_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare parameters based on JT effects.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inactive_mode</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">eff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span> <span class="k">for</span> <span class="n">eff</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_non_jt_param</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_jt_param</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_jt_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle JT parameter preparation.&quot;&quot;&quot;</span>
+        <span class="n">current_effects</span> <span class="o">=</span> <span class="p">[</span><span class="n">eff</span> <span class="k">for</span> <span class="n">eff</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span> <span class="k">if</span> <span class="n">eff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">]</span>
+        <span class="n">inactive_effects</span> <span class="o">=</span> <span class="p">[</span><span class="n">eff</span> <span class="k">for</span> <span class="n">eff</span> <span class="ow">in</span> <span class="n">current_effects</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">eff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;active&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span>
+        <span class="n">active_effects</span> <span class="o">=</span> <span class="p">[</span><span class="n">eff</span> <span class="k">for</span> <span class="n">eff</span> <span class="ow">in</span> <span class="n">current_effects</span> <span class="k">if</span> <span class="n">eff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;active&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span>
+
+        <span class="n">jt_state_pairs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">inactive_effects</span><span class="p">:</span>
+            <span class="n">source_mode</span> <span class="o">=</span> <span class="n">inactive_effects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">source_mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inactive JT effect requires a &#39;source&#39; key.&quot;</span><span class="p">)</span>
+            <span class="n">jt_state_pairs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="n">eff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;state_pairs&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">for</span> <span class="n">eff</span> <span class="ow">in</span> <span class="n">inactive_effects</span><span class="p">],</span> <span class="p">[]))</span>
+            <span class="n">total_jt_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gather_jt_states</span><span class="p">(</span><span class="n">jt_state_pairs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="p">,</span> <span class="s2">&quot;jt_params&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">source_mode</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">jt_params</span><span class="p">:</span>
+                <span class="n">source_jt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">jt_params</span><span class="p">[</span><span class="n">source_mode</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">source_jt</span><span class="p">[</span><span class="s2">&quot;on&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;jt_on_param_inactive&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">source_jt</span><span class="p">[</span><span class="s2">&quot;off&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;jt_off_param_inactive&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sign_k_params</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">active_jt_states</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">total_jt_states</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inactive_mode</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">non_jt_states</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nstates</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">total_jt_states</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nstates</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">summary_output</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_jt_states</span> <span class="k">else</span> <span class="s2">&quot;JT&quot;</span>
+                <span class="k">return</span>
+
+        <span class="n">jt_state_pairs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="n">eff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;state_pairs&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="k">for</span> <span class="n">eff</span> <span class="ow">in</span> <span class="n">active_effects</span><span class="p">],</span> <span class="p">[]))</span>
+        <span class="n">active_jt_states</span><span class="p">,</span> <span class="n">inactive_jt_states</span><span class="p">,</span> <span class="n">total_jt_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classify_jt_state_pairs</span><span class="p">(</span><span class="n">jt_state_pairs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_jt_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inactive_jt_states</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">active_jt_states</span><span class="p">)),</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">inactive_jt_states</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">non_jt_states</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nstates</span><span class="p">))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">total_jt_states</span><span class="p">))</span>
+
+        <span class="n">diab_non_jt</span><span class="p">,</span> <span class="n">diab_jt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">diab_functions</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_jt_states</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">diab_functions</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_jt_states</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_var_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_var_jt</span> <span class="o">=</span> <span class="p">[</span><span class="n">diabfunct</span><span class="o">.</span><span class="n">n_var</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">diab_non_jt</span><span class="p">],</span> <span class="p">[</span><span class="n">diabfunct</span><span class="o">.</span><span class="n">n_var</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">diab_jt</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">funct_param</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">diabfunct</span><span class="o">.</span><span class="n">initial_guesses</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">diab_non_jt</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> 
+                                           <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;funct_param&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">diabfunct</span><span class="o">.</span><span class="n">initial_guesses</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">diab_jt</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> 
+                                           <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;jt_on_param&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nstates</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">summary_output</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_jt_states</span> <span class="k">else</span> <span class="s2">&quot;JT&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_non_jt_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepare parameters for a mode that has no JT effects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">non_jt_states</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nstates</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">guess_params</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">diabfunct</span><span class="o">.</span><span class="n">initial_guesses</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">diab_functions</span>
+            <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">diabfunct</span><span class="o">.</span><span class="n">n_var</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">diab_functions</span>
+        <span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;n_var_list (non-JT): </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">flat_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guess_params</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">funct_param</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">flat_guess</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;funct_param&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">funct_param</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_save_jt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save JT parameters to VCSystem.&quot;&quot;&quot;</span>
+        <span class="n">jt_values</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;on&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;jt_on_param&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">jt_values</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">][</span><span class="s2">&quot;on&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">jt_values</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">][</span><span class="s2">&quot;off&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">_append_jt_param</span><span class="p">(</span><span class="n">jt_values</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Saved JT parameters for mode </span><span class="si">%d</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gather_jt_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jt_state_pairs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Collect JT states from pairs.&quot;&quot;&quot;</span>
+        <span class="n">total_states</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">jt_state_pairs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;JT state pairs must be 2-element lists/tuples.&quot;</span><span class="p">)</span>
+            <span class="n">total_states</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">total_states</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_classify_jt_state_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jt_state_pairs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">set</span><span class="p">,</span> <span class="nb">set</span><span class="p">,</span> <span class="nb">set</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Classify JT states.&quot;&quot;&quot;</span>
+        <span class="n">active</span><span class="p">,</span> <span class="n">inactive</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">jt_state_pairs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;JT state pairs must be 2-element lists/tuples.&quot;</span><span class="p">)</span>
+            <span class="n">active</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">inactive</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">total</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">active</span><span class="p">,</span> <span class="n">inactive</span><span class="p">,</span> <span class="n">total</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Core Initialization</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_object_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract and convert VCSystem parameters.&quot;&quot;&quot;</span>
+        <span class="n">sys_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span>
+        <span class="n">nm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nstates</span> <span class="o">=</span> <span class="n">sys_</span><span class="o">.</span><span class="n">number_states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">sys_</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">[</span><span class="n">nm</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_db</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">sys_</span><span class="o">.</span><span class="n">database_abinitio</span><span class="p">[</span><span class="n">nm</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diab_functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">func</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">sys_</span><span class="o">.</span><span class="n">diab_funct</span><span class="p">[</span><span class="n">nm</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_diabatic_functions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coupling_with_gs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">omega</span> <span class="o">=</span> <span class="n">sys_</span><span class="o">.</span><span class="n">coupling_with_gs</span><span class="p">,</span> <span class="n">sys_</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e0_shifts</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">sys_</span><span class="o">.</span><span class="n">energy_shift</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symmetry_mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">sys_</span><span class="o">.</span><span class="n">symmetry_matrix</span><span class="p">[</span><span class="n">nm</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symmetry_point_group</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sym_mode</span> <span class="o">=</span> <span class="n">sys_</span><span class="o">.</span><span class="n">symmetry_point_group</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">sys_</span><span class="o">.</span><span class="n">symmetry_modes</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_sym_irrep</span> <span class="o">=</span> <span class="n">sys_</span><span class="o">.</span><span class="n">jt_effects</span><span class="p">,</span> <span class="n">sys_</span><span class="o">.</span><span class="n">totally_sym_irrep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coupling_order</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys_</span><span class="p">,</span> <span class="s2">&quot;vc_type&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coupling_order</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">couplingfunct</span><span class="o">.</span><span class="n">COUPLING_TYPES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Coupling &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">coupling_order</span><span class="si">}</span><span class="s2">&#39; not implemented.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx_dict</span> <span class="o">=</span> <span class="n">sys_</span><span class="o">.</span><span class="n">idx_dict</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_constructor_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normal_mode</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">VCSystem</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate constructor inputs.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">normal_mode</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">normal_mode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Normal mode must be a non-negative integer.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">VCSystem</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">VCSystem</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> 
+                                  <span class="p">[</span><span class="s2">&quot;displacement_vector&quot;</span><span class="p">,</span> <span class="s2">&quot;database_abinitio&quot;</span><span class="p">,</span> <span class="s2">&quot;diab_funct&quot;</span><span class="p">,</span> <span class="s2">&quot;vib_freq&quot;</span><span class="p">,</span> <span class="s2">&quot;symmetry_matrix&quot;</span><span class="p">,</span> <span class="s2">&quot;symmetry_point_group&quot;</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;VCSystem must provide required attributes.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_diabatic_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check diabatic function validity.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">diab_functions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">func</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">potential_functions</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported diabatic function: </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_internal_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up internal variables.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary_output</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nstates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_idx</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntotal_param</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">funct_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_var_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># On-diagonal &amp; Off-diagonal Parameter Generation</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_on_diag_coupling_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kappa_guess</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate on-diagonal parameters.&quot;&quot;&quot;</span>
+        <span class="n">diag_sym_mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">diag_part</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_mask</span><span class="p">)</span>
+        <span class="c1"># There is no kappa for the ground state (int(idx[0]) == 0)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_idx</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">diag_sym_mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> 
+                          <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">diabfunct</span><span class="o">.</span><span class="n">kappa_compatible</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">diab_functions</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">])]]]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_idx</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_guess</span><span class="p">(</span><span class="n">kappa_guess</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa_idx</span><span class="p">),</span> <span class="s2">&quot;kappa_param&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_idx</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">summary_output</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;kappa&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_idx</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">diag_sym_mask</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_on_idx</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_off_diag_coupling_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lambda_guess</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">jt_guess</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate off-diagonal parameters.&quot;&quot;&quot;</span>
+        <span class="n">upper_tri</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">band_part</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">diag_part</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_mask</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_idx</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">upper_tri</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_idx</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lambda_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_guess</span><span class="p">(</span><span class="n">lambda_guess</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_idx</span><span class="p">),</span> <span class="s2">&quot;lambda_param&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_jt_off_diag</span><span class="p">(</span><span class="n">jt_guess</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_diab_fn_variables</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_idx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_idx</span>
+    
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_jt_off_diag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jt_guess</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Identify JT off-diagonal terms (symmetry_mask == 2) and initialize JT parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        jt_guess : float, optional</span>
+<span class="sd">            Initial guess for JT off-diagonal parameters (default: 0.01).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">upper_tri</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">band_part</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">diag_part</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_mask</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">jt_off_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">upper_tri</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_idx</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">jt_off_tensor</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;JT off-diagonal pairs: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_idx</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_idx</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_guess</span><span class="p">(</span>
+                <span class="n">jt_guess</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jt_off_idx</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;jt_off_param&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jt_off_param</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># Utility and Validation</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_inactive_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the mode is inactive.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">eff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">eff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;active&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">eff</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span> <span class="ow">or</span> <span class="p">[])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_guess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">guess</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">n_pairs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;param&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert guess to a TensorFlow variable.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">guess</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="n">arr_guess</span> <span class="o">=</span> <span class="p">[</span><span class="n">guess</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_pairs</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">guess</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">n_pairs</span><span class="p">:</span>
+            <span class="n">arr_guess</span> <span class="o">=</span> <span class="p">(</span><span class="n">guess</span> <span class="o">*</span> <span class="p">((</span><span class="n">n_pairs</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">guess</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:</span><span class="n">n_pairs</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Guess must be a scalar or list of length &lt;= </span><span class="si">{</span><span class="n">n_pairs</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">arr_guess</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_plot_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set common plot labels.&quot;&quot;&quot;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Q_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="si">}</span><span class="s2"> - irrep: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sym_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Energy [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">})</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_finalize_output</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Store results in VCSystem.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">summary_output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary_output</span>
+        <span class="c1"># If NaNs are present, set them to zero but just a list [x,x,x] not [[x,x,x]]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">param</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="k">else</span> <span class="n">param</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">is_nan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span><span class="p">)</span>
+        <span class="c1"># Store optimized parameters in VCSystem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VCSystem</span><span class="o">.</span><span class="n">optimized_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">normal_mode</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Emilio Rodríguez Cuenca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

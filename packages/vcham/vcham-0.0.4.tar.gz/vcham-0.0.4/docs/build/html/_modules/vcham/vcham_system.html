@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vcham.vcham_system &mdash; PyVCHAM 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyVCHAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../vcham.html">PyVCHAM package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyVCHAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vcham.vcham_system</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vcham.vcham_system</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.logging_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.symm_vcham</span><span class="w"> </span><span class="kn">import</span> <span class="n">SymmetryMask</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="VCSystem">
+<a class="viewcode-back" href="../../vcham.html#vcham.vcham_system.VCSystem">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VCSystem</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize the VCSystem object.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    elements : list of str, optional</span>
+<span class="sd">        List of element symbols in the system.</span>
+<span class="sd">    reference_geometry : np.ndarray, optional</span>
+<span class="sd">        Reference geometry of the system, given as a NumPy array of shape (n_atoms, 3).</span>
+<span class="sd">    vc_type : str, default &quot;linear&quot;</span>
+<span class="sd">        Type of the vibrational coupling system, e.g., &quot;linear&quot;, &quot;quadratic&quot;, etc.</span>
+<span class="sd">    units : str, default &quot;eV&quot;</span>
+<span class="sd">        Units for the energy and frequency values, e.g., &quot;eV&quot;, &quot;Hartree&quot;, etc.</span>
+<span class="sd">    number_normal_modes : int, optional</span>
+<span class="sd">        Number of normal modes in the system.</span>
+<span class="sd">    number_states : int, optional</span>
+<span class="sd">        Number of electronic states considered in the system.</span>
+<span class="sd">    displacement_vector : list of np.ndarray, optional</span>
+<span class="sd">        List of displacement vectors for each normal mode, where each vector is a NumPy array.</span>
+<span class="sd">    database_abinitio : list of np.ndarray, optional</span>
+<span class="sd">        List of ab initio data arrays, where each array corresponds to a state and contains energy values for different displacements.</span>
+<span class="sd">        It is a list of NumPy arrays, each of shape (n_states, n_displacements). Overall shape is (number_normal_modes, number_states, n_displacements).</span>
+<span class="sd">    coupling_with_gs : bool, optional</span>
+<span class="sd">        Whether the system is coupled with the ground state (GS).</span>
+<span class="sd">        If not provided, it will be initialized as True. It is useful for highly excited states.</span>
+<span class="sd">    symmetry_point_group : str, optional</span>
+<span class="sd">        The point group symmetry of the system, e.g., &quot;C2v&quot;, &quot;Cs&quot;, etc.</span>
+<span class="sd">    totally_sym_irrep : str, optional</span>
+<span class="sd">        The totally symmetric irreducible representation of the system. It is automatically computed from the symmetry point group.</span>
+<span class="sd">    symmetry_modes : list of str, optional</span>
+<span class="sd">        List of irreps corresponding to the normal modes.</span>
+<span class="sd">    symmetry_states : list of str, optional</span>
+<span class="sd">        List of irreps corresponding to the electronic states.</span>
+<span class="sd">    vib_freq : np.ndarray, optional</span>
+<span class="sd">        Vibrational frequencies for the normal modes, given as a NumPy array.</span>
+<span class="sd">    energy_shift : np.ndarray, optional</span>
+<span class="sd">        Energy shifts for the states, given as a NumPy array. It is computed from the ab initio database.</span>
+<span class="sd">    vcham : list of np.ndarray, optional</span>
+<span class="sd">        List of vibrational coupling Hamiltonian matrices, where each matrix is a NumPy array.</span>
+<span class="sd">        It is used to store the Hamiltonian for each normal mode.</span>
+<span class="sd">    diab_funct : list of str, optional</span>
+<span class="sd">        List of diabatic function names for each normal mode.</span>
+<span class="sd">    symmetry_matrix : list of np.ndarray, optional</span>
+<span class="sd">        List of symmetry matrices, where each matrix is a NumPy array.</span>
+<span class="sd">        It is used to store the symmetry operations for the system. It is computed from the symmetry variables.</span>
+<span class="sd">    jt_effects : list of dict, optional</span>
+<span class="sd">        List of Jahn-Teller (JT) effects, where each effect is a dictionary containing:</span>
+<span class="sd">        - &#39;mode&#39;: int, the index of the normal mode.</span>
+<span class="sd">        - &#39;state_pairs&#39;: list, pairs of states coupled by the JT effect.</span>
+<span class="sd">        - &#39;types&#39;: list, JT effect types for each state pair.</span>
+<span class="sd">        Optionally, if a JT effect is inactive (&#39;active&#39;: False), it must include:</span>
+<span class="sd">        - &#39;source&#39;: int, the mode index to copy parameters from.</span>
+<span class="sd">    dipole_matrix : list of np.ndarray, optional</span>
+<span class="sd">        List of dipole matrices, where each matrix is a NumPy array.</span>
+<span class="sd">        It is used to store the dipole moments for the system. The dimensions of the dipole matrix should be (n_states, n_states, 3).</span>
+
+<span class="sd">     &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reference_geometry</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">vc_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+        <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;eV&quot;</span><span class="p">,</span>
+        <span class="n">number_normal_modes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">number_states</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">displacement_vector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">database_abinitio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">coupling_with_gs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">symmetry_point_group</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">totally_sym_irrep</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">symmetry_modes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">symmetry_states</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">vib_freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">energy_shift</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">vcham</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">diab_funct</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">symmetry_matrix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">jt_effects</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dipole_matrix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">atomic_weights</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="mf">1.00782503223</span><span class="p">,</span> 
+            <span class="s2">&quot;He&quot;</span><span class="p">:</span> <span class="mf">4.00260325413</span><span class="p">,</span>
+            <span class="s2">&quot;Li&quot;</span><span class="p">:</span> <span class="mf">6.938</span><span class="p">,</span>        
+            <span class="s2">&quot;Be&quot;</span><span class="p">:</span> <span class="mf">9.0121831</span><span class="p">,</span>    
+            <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mf">10.806</span><span class="p">,</span>        
+            <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mf">12.0096</span><span class="p">,</span>       
+            <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mf">14.00643</span><span class="p">,</span>      
+            <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mf">15.99903</span><span class="p">,</span>      
+            <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mf">18.998403163</span><span class="p">,</span>  
+            <span class="s2">&quot;Ne&quot;</span><span class="p">:</span> <span class="mf">20.1797</span><span class="p">,</span>      
+            <span class="s2">&quot;Na&quot;</span><span class="p">:</span> <span class="mf">22.98976928</span><span class="p">,</span>  
+            <span class="s2">&quot;Mg&quot;</span><span class="p">:</span> <span class="mf">24.304</span><span class="p">,</span>       
+            <span class="s2">&quot;Al&quot;</span><span class="p">:</span> <span class="mf">26.9815385</span><span class="p">,</span>   
+            <span class="s2">&quot;Si&quot;</span><span class="p">:</span> <span class="mf">28.084</span><span class="p">,</span>       
+            <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="mf">30.973761998</span><span class="p">,</span>  
+            <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="mf">32.059</span><span class="p">,</span>        
+            <span class="s2">&quot;Cl&quot;</span><span class="p">:</span> <span class="mf">35.446</span><span class="p">,</span>       
+            <span class="s2">&quot;Ar&quot;</span><span class="p">:</span> <span class="mf">39.792</span><span class="p">,</span>
+            <span class="s2">&quot;X&quot;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Placeholder for unknown elements</span>
+            <span class="s2">&quot;Ghost&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># Placeholder for ghost atoms       </span>
+        <span class="p">}</span>
+        <span class="c1"># Basic parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vc_type</span> <span class="o">=</span> <span class="n">vc_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span> <span class="o">=</span> <span class="n">number_normal_modes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_states</span> <span class="o">=</span> <span class="n">number_states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vib_freq</span> <span class="o">=</span> <span class="n">vib_freq</span>
+        <span class="c1"># The energy shift passed in is replaced by the computed shift below.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_shift</span> <span class="o">=</span> <span class="n">energy_shift</span>
+
+        <span class="c1"># Input data lists are defaulted to empty lists if not provided.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span> <span class="o">=</span> <span class="n">displacement_vector</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_abinitio</span> <span class="o">=</span> <span class="n">database_abinitio</span> <span class="ow">or</span> <span class="p">[]</span>
+
+        <span class="c1"># Symmetry-related variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coupling_with_gs</span> <span class="o">=</span> <span class="n">coupling_with_gs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symmetry_point_group</span> <span class="o">=</span> <span class="n">symmetry_point_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totally_sym_irrep</span> <span class="o">=</span> <span class="n">totally_sym_irrep</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">if</span> <span class="n">totally_sym_irrep</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symmetry_modes</span> <span class="o">=</span> <span class="n">symmetry_modes</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symmetry_states</span> <span class="o">=</span> <span class="n">symmetry_states</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symmetry_matrix</span> <span class="o">=</span> <span class="n">symmetry_matrix</span>
+
+        <span class="c1"># Jahn-Teller effect parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span> <span class="o">=</span> <span class="n">jt_effects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jt_params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Stores JT parameters keyed by mode.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dipole_matrix</span> <span class="o">=</span> <span class="n">dipole_matrix</span>
+
+        <span class="c1"># Additional data storage for output and optimization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary_output</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimized_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Parameters for fitting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vcham</span> <span class="o">=</span> <span class="n">vcham</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diab_funct</span> <span class="o">=</span> <span class="n">diab_funct</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference_geometry</span> <span class="o">=</span> <span class="n">reference_geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">elements</span>
+
+        <span class="c1"># Validate essential inputs and convert arrays where needed.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_essential_inputs</span><span class="p">()</span>
+
+        <span class="c1"># Compute energy shifts from the ab initio database.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_energy_shifts</span><span class="p">()</span>
+
+        <span class="c1"># Create lvc_data dictionary containing all relevant information.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lvc_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_lvc_data</span><span class="p">()</span>
+
+        <span class="c1"># Initialize dictionaries/lists that depend on the number of normal modes.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;number_normal_modes must be provided.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;number_normal_modes must be provided.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;jt_on&quot;</span><span class="p">:</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">)],</span>
+            <span class="s2">&quot;jt_off&quot;</span><span class="p">:</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">)],</span>
+            <span class="s2">&quot;kappa&quot;</span><span class="p">:</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">)],</span>
+            <span class="s2">&quot;lambda&quot;</span><span class="p">:</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">)],</span>
+        <span class="p">}</span>
+        <span class="c1"># Initialize the number of diabatic parameters for each mode and state.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_diab_params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_states</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="c1"># Pre-allocate output storage lists per mode.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary_output</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimized_params</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="VCSystem.add_geometry">
+<a class="viewcode-back" href="../../vcham.html#vcham.vcham_system.VCSystem.add_geometry">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add or update the reference geometry.</span>
+
+<span class="sd">        This method processes the provided geometry, ensures it is centered at the center of mass (COM), and updates the system&#39;s reference geometry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        geometry : list of tuple or str</span>
+<span class="sd">            The geometry data to be added or updated. It can be provided in two formats:</span>
+<span class="sd">            1. A list of tuples, where each tuple contains an element symbol and its coordinates:</span>
+<span class="sd">                - e.g., [(&quot;H&quot;, [0.0, 0.0, 0.0]), (&quot;O&quot;, [0.0, 0.0, 1.0]), ...].</span>
+<span class="sd">            2. A string path to an XYZ file containing the geometry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Geometry is given by a dictionary of element and xyz coordinates</span>
+
+        <span class="n">elements</span><span class="p">,</span> <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="n">centered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_centered</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">coords</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">centered</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Geometry is not centered. Centering...&quot;</span><span class="p">)</span>
+            <span class="c1"># Center the geometry at the center of mass (COM)</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_center_geometry</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">coords</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference_geometry</span> <span class="o">=</span> <span class="n">coords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">elements</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lvc_data</span><span class="p">[</span><span class="s2">&quot;elements&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">elements</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lvc_data</span><span class="p">[</span><span class="s2">&quot;reference_geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">coords</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reference geometry updated.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VCSystem.add_dipole_matrix">
+<a class="viewcode-back" href="../../vcham.html#vcham.vcham_system.VCSystem.add_dipole_matrix">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_dipole_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dipole_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add or update the dipole matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dipole_matrix : np.ndarray</span>
+<span class="sd">            The dipole matrix to be added or updated. It should be a 3D numpy array where each slice corresponds to a state and each vector corresponds to a mode.</span>
+<span class="sd">            The dipole matrix should have dimensions (n_states, n_states, 3). The last dimension represents the x, y, z components of the dipole moment.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dipole_matrix</span> <span class="o">=</span> <span class="n">dipole_matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lvc_data</span><span class="p">[</span><span class="s2">&quot;dipole_matrix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">dipole_matrix</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dipole matrix updated.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_append_jt_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jt_values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append or update the JT parameters for a given mode.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        jt_values : dict</span>
+<span class="sd">            Dictionary with keys:</span>
+<span class="sd">                - &#39;mode&#39;: int, the mode index.</span>
+<span class="sd">                - &#39;params&#39;: dict, typically containing keys such as &#39;on&#39; and &#39;off&#39;.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the &#39;mode&#39; key is missing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">jt_values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;JT parameter dictionary must include a &#39;mode&#39; key.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;JT parameter dictionary must include a &#39;mode&#39; key.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">jt_params</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">jt_values</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stored JT parameters for mode </span><span class="si">%d</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_params</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_jt_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate Jahn-Teller effect inputs.</span>
+
+<span class="sd">        Each entry in jt_effects must be a dictionary with the keys:</span>
+<span class="sd">            - &#39;mode&#39;: int, the index of the normal mode.</span>
+<span class="sd">            - &#39;state_pairs&#39;: list, pairs of states coupled by the JT effect.</span>
+<span class="sd">            - &#39;types&#39;: list, JT effect types for each state pair.</span>
+<span class="sd">        Optionally, if a JT effect is inactive (&#39;active&#39;: False), it must include:</span>
+<span class="sd">            - &#39;source&#39;: int, the mode index to copy parameters from.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If any of the validations fail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>  <span class="c1"># No JT effects to validate</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;jt_effects must be provided as a list of dictionaries.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;jt_effects must be provided as a list of dictionaries.&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">effect</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Each entry in jt_effects must be a dictionary.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each entry in jt_effects must be a dictionary.&quot;</span><span class="p">)</span>
+
+            <span class="n">required_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span> <span class="s2">&quot;state_pairs&quot;</span><span class="p">,</span> <span class="s2">&quot;types&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">effect</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;JT effect is missing required key: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JT effect is missing required key: &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">effect</span><span class="p">[</span><span class="s2">&quot;state_pairs&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&#39;state_pairs&#39; must be a list.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;state_pairs&#39; must be a list.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">effect</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&#39;types&#39; must be a list.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;types&#39; must be a list.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">effect</span><span class="p">[</span><span class="s2">&quot;state_pairs&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">effect</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">]):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;The number of &#39;state_pairs&#39; must equal the number of &#39;types&#39;.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The number of &#39;state_pairs&#39; must equal the number of &#39;types&#39;.&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s2">&quot;active&quot;</span> <span class="ow">in</span> <span class="n">effect</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">effect</span><span class="p">[</span><span class="s2">&quot;active&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;The &#39;active&#39; key, if provided, must be a boolean.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The &#39;active&#39; key, if provided, must be a boolean.&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">effect</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;active&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="s2">&quot;source&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">effect</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Inactive JT effects must include a &#39;source&#39; key.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inactive JT effects must include a &#39;source&#39; key.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_essential_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate essential inputs for the system and ensure that</span>
+<span class="sd">        all elements in data lists are numpy arrays.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If required inputs are missing.</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            If symmetry_point_group is provided and is not a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_abinitio</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;Both database_abinitio and displacement_vector must be provided &quot;</span>
+                <span class="s2">&quot;for the computation of the vertical shifts.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Ensure that all entries in database_abinitio are np.ndarray.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_abinitio</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">arr</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_abinitio</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Ensure that all entries in displacement_vector are np.ndarray.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">arr</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Validate and process symmetry-related inputs.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">symmetry_point_group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_point_group</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;symmetry_point_group must be a string.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;symmetry_point_group must be a string.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">totally_sym_irrep</span> <span class="o">=</span> <span class="n">SymmetryMask</span><span class="o">.</span><span class="n">_get_total_sym_irrep</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Total symmetry irrep: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">totally_sym_irrep</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">symmetry_matrix</span> <span class="o">=</span> <span class="n">SymmetryMask</span><span class="o">.</span><span class="n">create_symmetry_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Symmetry matrix successfully created.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_energy_shifts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the vertical energy shifts from the ab initio database.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Array of vertical energy shifts for each state.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If no zero displacement is found for mode 0.</span>
+<span class="sd">        IndexError</span>
+<span class="sd">            If the zero displacement index is out of bounds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">displacement_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;displacement_vector is empty. Cannot compute energy shifts.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;displacement_vector is empty. Cannot compute energy shifts.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Find indices where the displacement is effectively zero.</span>
+        <span class="n">close_to_zero_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">displacement_mode</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">close_to_zero_indices</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No zero displacement found in displacement_vector for mode 0.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No zero displacement found in displacement_vector for mode 0.&quot;</span><span class="p">)</span>
+
+        <span class="n">zero_index</span> <span class="o">=</span> <span class="n">close_to_zero_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">mode_0_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_abinitio</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">zero_index</span> <span class="o">&gt;=</span> <span class="n">mode_0_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Zero displacement index </span><span class="si">%d</span><span class="s2"> is out of bounds (max index: </span><span class="si">%d</span><span class="s2">).&quot;</span><span class="p">,</span>
+                <span class="n">zero_index</span><span class="p">,</span>
+                <span class="n">mode_0_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Zero displacement index is out of bounds for displacement dimension.&quot;</span><span class="p">)</span>
+
+        <span class="n">e0_constants</span> <span class="o">=</span> <span class="n">mode_0_data</span><span class="p">[:,</span> <span class="n">zero_index</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Computed vertical energy shifts: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">e0_constants</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">e0_constants</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_lvc_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a dictionary containing system data for the LVC calculation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dictionary with keys such as &#39;reference_geometry&#39;, &#39;units&#39;,</span>
+<span class="sd">            &#39;number_normal_modes&#39;, &#39;number_states&#39;, and others.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lvc_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">],</span>
+            <span class="s2">&quot;reference_geometry&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">reference_geometry</span><span class="p">],</span>
+            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">],</span>
+            <span class="s2">&quot;number_normal_modes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">],</span>
+            <span class="s2">&quot;number_states&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">number_states</span><span class="p">],</span>
+            <span class="s2">&quot;coupling_with_gs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coupling_with_gs</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;symmetry_point_group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_point_group</span><span class="p">],</span>
+            <span class="s2">&quot;totally_sym_irrep&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">totally_sym_irrep</span><span class="p">],</span>
+            <span class="s2">&quot;symmetry_modes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_modes</span><span class="p">],</span>
+            <span class="s2">&quot;symmetry_states&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_states</span><span class="p">],</span>
+            <span class="s2">&quot;vib_freq&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">],</span>
+            <span class="s2">&quot;energy_shift&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">energy_shift</span><span class="p">],</span>
+            <span class="s2">&quot;dipole_matrix&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dipole_matrix</span><span class="p">],</span>
+            <span class="s2">&quot;lvcham&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vcham</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">lvc_data</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a string representation of the VCSystem object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;VCSystem(vc_type=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vc_type</span><span class="si">}</span><span class="s2">&#39;, units=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;number_normal_modes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="si">}</span><span class="s2">, number_states=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_states</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;symmetry_point_group=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symmetry_point_group</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;jt_effects=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">jt_effects</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+        <span class="p">)</span>
+    
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads an XYZ file and returns a list of (element, [x, y, z]) tuples.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            file_path (str): Path to the XYZ file.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Tuple[str, List[float]]]: List of atoms with their coordinates.</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            FileNotFoundError: If the file does not exist.</span>
+<span class="sd">            ValueError: If the file is malformed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">num_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;First line must be an integer number of atoms.&quot;</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">num_atoms</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File does not contain enough lines for the specified number of atoms.&quot;</span><span class="p">)</span>
+            
+            <span class="n">atoms</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">num_atoms</span><span class="p">]:</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Line &#39;</span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; does not have enough columns.&quot;</span><span class="p">)</span>
+                <span class="n">element</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">coords</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]]</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Coordinates in line &#39;</span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; are not numbers.&quot;</span><span class="p">)</span>
+                <span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">element</span><span class="p">,</span> <span class="n">coords</span><span class="p">))</span>
+            
+            <span class="k">return</span> <span class="n">atoms</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes geometry input and returns elements and coordinates.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            input_data: List of (element, [x, y, z]).</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple[List[str], np.ndarray]: (elements, coords), where coords is a NumPy array of shape (n_atoms, 3).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Input data could be a list of tuples (element, [x, y, z]) or a string path to an XYZ file</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">input_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_xyz</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input data must be a list of tuples or a string path to an XYZ file.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each atom must be a tuple of (element, [x, y, z]).&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Coordinates must be a list of three floats.&quot;</span><span class="p">)</span>
+        <span class="c1"># Extract elements and coordinates</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">]</span>
+        <span class="n">coords_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">]</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">elements</span><span class="p">,</span> <span class="n">coords</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_com</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the center of mass (COM) of the geometry.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            elements: List of element symbols.</span>
+<span class="sd">            coords: NumPy array of coordinates, shape (n_atoms, 3).</span>
+<span class="sd">            atomic_weights: Dictionary of atomic weights for each element.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: The center of mass vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Do it case insensitive</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">el</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">]</span>
+        <span class="c1"># Check if all elements are in the atomic weights dictionary</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_weights</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Some elements are not in the atomic weights dictionary.&quot;</span><span class="p">)</span>
+        <span class="c1"># Convert elements to atomic weights</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">atomic_weights</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">])</span>
+        <span class="n">total_mass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span>
+        <span class="n">com</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">masses</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">coords</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_mass</span>
+        <span class="k">return</span> <span class="n">com</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_centered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the geometry is centered at the center of mass.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            elements: List of element symbols.</span>
+<span class="sd">            coords: NumPy array of coordinates, shape (n_atoms, 3).</span>
+<span class="sd">            atomic_weights: Dictionary of atomic weights for each element.</span>
+<span class="sd">            tol: Tolerance for considering COM as zero (default: 1e-6).</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the center of mass is at origin within tolerance, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">com</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_com</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">coords</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">com</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_center_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Centers the geometry at the center of mass (COM) if it isn&#39;t already.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            elements: List of element symbols.</span>
+<span class="sd">            coords: NumPy array of coordinates, shape (n_atoms, 3).</span>
+<span class="sd">            atomic_weights: Dictionary of atomic weights for each element.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: The centered coordinates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_centered</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+            <span class="n">com</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_com</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">coords</span><span class="p">)</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">-</span> <span class="n">com</span>
+        <span class="k">return</span> <span class="n">coords</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Emilio Rodríguez Cuenca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

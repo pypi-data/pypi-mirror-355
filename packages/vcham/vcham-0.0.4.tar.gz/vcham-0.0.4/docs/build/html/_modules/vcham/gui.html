@@ -1,0 +1,635 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vcham.gui &mdash; PyVCHAM 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyVCHAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../vcham.html">vcham package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyVCHAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vcham.gui</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vcham.gui</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ttk</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.figure</span><span class="w"> </span><span class="kn">import</span> <span class="n">Figure</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.backends.backend_tkagg</span><span class="w"> </span><span class="kn">import</span> <span class="n">FigureCanvasTkAgg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.diabfunct</span><span class="w"> </span><span class="kn">import</span> <span class="n">potential_functions</span><span class="p">,</span> <span class="n">kappa_compatible</span><span class="p">,</span> <span class="n">general_morse_gs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.couplingfunct</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear_coupling</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_to_tensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.logging_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GuessImprover">
+<a class="viewcode-back" href="../../vcham.html#vcham.gui.GuessImprover">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GuessImprover</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Tkinter application for dynamic parameter adjustment.</span>
+
+<span class="sd">    This application creates a GUI that displays a matplotlib plot</span>
+<span class="sd">    and provides entries and sliders for adjusting parameters. It</span>
+<span class="sd">    uses a given &#39;system&#39; object (VCSystem) and an &#39;initial_guess&#39;</span>
+<span class="sd">    object to configure and update the display.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Application.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        system : Any</span>
+<span class="sd">            An object containing attributes such as n_diab_params,</span>
+<span class="sd">            diab_funct, displacement_vector, database_abinitio,</span>
+<span class="sd">            vib_freq, energy_shift, symmetry_matrix, symmetry_modes,</span>
+<span class="sd">            totally_sym_irrep, units, etc.</span>
+<span class="sd">        initial_guess : Any</span>
+<span class="sd">            The initial guess values used in the application.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Core references</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">system</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">optimized_params</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dynamic Parameter Adjustment&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Default mode/state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="c1"># Lists to hold dynamically created widgets for easy cleanup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sliders</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">tk</span><span class="o">.</span><span class="n">Scale</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Create the matplotlib figure and embed it into the Tkinter interface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvasTkAgg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span> <span class="n">master</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">get_tk_widget</span><span class="p">()</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Create frames for mode/state selection and diabatic function info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_mode_state_frame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_diabfunct_frame</span><span class="p">()</span>
+
+        <span class="c1"># Create kappa frame if needed</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">symmetry_modes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">totally_sym_irrep</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">kappa_compatible</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">diab_funct</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_create_kappa_frame</span><span class="p">()</span>
+
+        <span class="n">separator</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">)</span>
+        <span class="n">separator</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">params_label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Parameters&quot;</span><span class="p">)</span>
+        <span class="n">params_label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1"># Create entries and sliders for parameter adjustment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bound</span> <span class="o">=</span> <span class="mf">40.0</span>
+        <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][:</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">lower_bound</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_params</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="n">lower_bound</span><span class="p">:</span><span class="n">upper_bound</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_entries_and_sliders</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound</span><span class="p">)</span>
+
+        <span class="c1"># Draw initial plot using default parameter values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_draw_plot</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">default_params</span><span class="p">)</span>
+
+        <span class="c1"># Create button to output all parameters and kappa values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_output_button</span><span class="p">()</span>
+
+    <span class="c1"># ---------------------------</span>
+    <span class="c1"># Public Methods</span>
+    <span class="c1"># ---------------------------</span>
+
+<div class="viewcode-block" id="GuessImprover.run">
+<a class="viewcode-back" href="../../vcham.html#vcham.gui.GuessImprover.run">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start the Tkinter main loop.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span></div>
+
+
+    <span class="c1"># ---------------------------</span>
+    <span class="c1"># UI Setup</span>
+    <span class="c1"># ---------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_mode_state_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the frame for modifying the mode and state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mode_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">mode_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">mode_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Mode:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode_entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">mode_frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode_entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span>
+
+        <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">mode_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;State:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">mode_frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">))</span>
+
+        <span class="n">save_button_state</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+            <span class="n">mode_frame</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Modify Mode/State&quot;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_plot_from_states</span>
+        <span class="p">)</span>
+        <span class="n">save_button_state</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_diabfunct_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the frame that displays diabatic function information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">diabfunct_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">diabfunct_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="n">diab_funct_label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">diabfunct_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Diabatic function:&quot;</span><span class="p">)</span>
+        <span class="n">diab_funct_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">diabfunct_label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span>
+            <span class="n">diabfunct_frame</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">diab_funct</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span><span class="si">}</span><span class="s2"> potential&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diabfunct_label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_kappa_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a frame with an entry and button for entering a kappa value.</span>
+<span class="sd">        Only shown if the mode corresponds to the totally symmetric irreducible representation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Kappa:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa_frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_entry</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1"># Set the default kappa value from the initial guess</span>
+        <span class="n">default_kappa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">default_kappa</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span> <span class="o">=</span> <span class="n">default_kappa</span>
+
+        <span class="n">kappa_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa_frame</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Update Kappa&quot;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_kappa_value</span>
+        <span class="p">)</span>
+        <span class="n">kappa_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_output_button</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a button that outputs all parameters and kappas as nested lists,</span>
+<span class="sd">        and pickles them to a file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Output All Parameters&quot;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_all_parameters</span>
+        <span class="p">)</span>
+        <span class="n">output_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="c1"># ---------------------------</span>
+    <span class="c1"># Handlers and Callbacks</span>
+    <span class="c1"># ---------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_kappa_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the kappa value from the entry field and optionally redraw the plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa_entry</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Kappa value updated to: </span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span>
+            <span class="n">current_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">())</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_draw_plot</span><span class="p">(</span><span class="o">*</span><span class="n">current_values</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Please enter a valid numeric value for kappa.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_output_all_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve and log the nested lists of parameters and kappas, then store them via pickle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters_nested</span><span class="p">,</span> <span class="n">kappas_nested</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_nested_parameters_and_kappas</span><span class="p">()</span>
+        <span class="n">all_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="n">parameters_nested</span><span class="p">,</span> <span class="s2">&quot;kappas&quot;</span><span class="p">:</span> <span class="n">kappas_nested</span><span class="p">}</span>
+
+        <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;initial_guess_gui.pkl&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">all_params</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;All parameters saved successfully to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_plot_from_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the plot when the user changes the mode/state. Rebuild</span>
+<span class="sd">        the parameter sliders/entries accordingly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_entry</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_entry</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+            <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][:</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                <span class="n">lower_bound</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">default_params</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="n">lower_bound</span><span class="p">:</span><span class="n">upper_bound</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">diabfunct_label</span><span class="o">.</span><span class="n">config</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">diab_funct</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span><span class="si">}</span><span class="s2"> potential&quot;</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_entries_and_sliders</span><span class="p">(</span><span class="n">default_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound</span><span class="p">)</span>
+            <span class="n">function_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">diab_funct</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">symmetry_modes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">totally_sym_irrep</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">kappa_compatible</span><span class="p">[</span><span class="n">function_type</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;kappa_frame&quot;</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_create_kappa_frame</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                        <span class="n">default_kappa</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_entry</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">default_kappa</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span> <span class="o">=</span> <span class="n">default_kappa</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;kappa_frame&quot;</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">kappa_frame</span><span class="o">.</span><span class="n">pack_forget</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_draw_plot</span><span class="p">(</span><span class="o">*</span><span class="n">default_params</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;State updated to: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Please enter a valid integer for the mode/state.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ---------------------------</span>
+    <span class="c1"># Parameter and Kappa Logic</span>
+    <span class="c1"># ---------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_nested_parameters_and_kappas</span><span class="p">(</span>
+        <span class="bp">self</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build and return two nested lists:</span>
+
+<span class="sd">        1. parameters_nested: A list (per mode) of lists (per state)</span>
+<span class="sd">           containing the diabatic function parameters.</span>
+<span class="sd">        2. kappas_nested: A list (per mode) of lists (per state)</span>
+<span class="sd">           containing the corresponding kappa values. If a state</span>
+<span class="sd">           has no kappa, we store an empty list instead.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (parameters_nested, kappas_nested)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters_nested</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">kappas_nested</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">num_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">mode_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_modes</span><span class="p">):</span>
+            <span class="n">mode_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">mode_kappas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># Retrieve the parameter tensor for this mode</span>
+            <span class="n">params_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="n">lower_bound</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># Loop over states based on the number of diabatic parameters</span>
+            <span class="k">for</span> <span class="n">state_idx</span><span class="p">,</span> <span class="n">num_params</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">]):</span>
+                <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">lower_bound</span> <span class="o">+</span> <span class="n">num_params</span>
+                <span class="n">state_params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">params_array</span><span class="p">[</span><span class="n">lower_bound</span><span class="p">:</span><span class="n">upper_bound</span><span class="p">])</span>
+                <span class="n">mode_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_params</span><span class="p">)</span>
+                <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">upper_bound</span>
+
+                <span class="c1"># Check if we have a kappa for this state</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">summary_output</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">][</span><span class="n">state_idx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kappa&quot;</span>
+                <span class="p">):</span>
+                    <span class="n">kappa_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                    <span class="n">state_kappa</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">kappa_array</span><span class="p">[</span><span class="n">state_idx</span><span class="p">])</span>
+                    <span class="n">mode_kappas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_kappa</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">mode_kappas</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>  <span class="c1"># or 0.0, if preferred</span>
+
+            <span class="n">parameters_nested</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode_params</span><span class="p">)</span>
+            <span class="n">kappas_nested</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode_kappas</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">parameters_nested</span><span class="p">,</span> <span class="n">kappas_nested</span>
+
+<div class="viewcode-block" id="GuessImprover.save_values">
+<a class="viewcode-back" href="../../vcham.html#vcham.gui.GuessImprover.save_values">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the current slider values back to the initial guess and</span>
+<span class="sd">        optionally save the kappa value.</span>
+
+<span class="sd">        NOTE: This modifies the numpy array returned by .numpy().</span>
+<span class="sd">        If your `initial_guess` references an actual tf.Variable,</span>
+<span class="sd">        reassigning to that tensor might be necessary to fully persist changes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Update parameter values</span>
+        <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][:</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">lower_bound</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">n_diab_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="c1"># Get the numpy array from the tensor</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">slider</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sliders</span><span class="p">):</span>
+            <span class="n">arr</span><span class="p">[</span><span class="n">lower_bound</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">slider</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        
+        <span class="c1"># Convert the updated array back to a tensor and reassign it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+        <span class="c1"># If a kappa value exists, update it</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">summary_output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;kappa&quot;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">kappa_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                <span class="n">kappa_arr</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">kappa_arr</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error updating kappa value: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span>
+
+        <span class="c1"># Saving changes to a file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;initial_guess_gui.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_guess</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Values saved successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># ---------------------------</span>
+    <span class="c1"># UI for Parameter Controls</span>
+    <span class="c1"># ---------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_clear_entries_and_sliders</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove all dynamically created entries, sliders, labels, and frames</span>
+<span class="sd">        to prepare for a fresh set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">widget_groups</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sliders</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">widget_list</span> <span class="ow">in</span> <span class="n">widget_groups</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="n">widget_list</span><span class="p">:</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">pack_forget</span><span class="p">()</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="n">widget_list</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_entries_and_sliders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">bound</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create entry fields and sliders for each parameter.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        default_values : List[float]</span>
+<span class="sd">            The default parameter values to display.</span>
+<span class="sd">        bound : float</span>
+<span class="sd">            The bound for the slider (from -bound to bound).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_entries_and_sliders</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">default_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">default_values</span><span class="p">):</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+            <span class="n">label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;k</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+            <span class="n">entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">)</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">default_val</span><span class="p">))</span>
+            <span class="c1"># Bind to re-draw the plot on Enter press</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Return&gt;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_plot_from_entry</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+            <span class="n">slider</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span>
+                <span class="n">frame</span><span class="p">,</span>
+                <span class="n">from_</span><span class="o">=-</span><span class="n">bound</span><span class="p">,</span>
+                <span class="n">to</span><span class="o">=</span><span class="n">bound</span><span class="p">,</span>
+                <span class="n">resolution</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+                <span class="n">orient</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">HORIZONTAL</span><span class="p">,</span>
+                <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_update_plot_from_sliders</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">slider</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">default_val</span><span class="p">)</span>
+            <span class="n">slider</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ew&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sliders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slider</span><span class="p">)</span>
+
+            <span class="c1"># Only add the &quot;Save Values&quot; button in the last row</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">default_values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">save_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span>
+                    <span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Save Values&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save_values</span>
+                <span class="p">)</span>
+                <span class="n">save_button</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_plot_from_sliders</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the plot when a slider value changes.</span>
+<span class="sd">        Synchronize the entry fields with slider values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">slider</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">slider</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sliders</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_draw_plot</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="c1"># Sync entry fields</span>
+        <span class="k">for</span> <span class="n">entry</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_plot_from_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the plot when an entry field is modified (e.g. pressing &lt;Return&gt;).</span>
+<span class="sd">        Sync the slider positions to match the new entry values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">())</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">slider</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sliders</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+                <span class="n">slider</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_draw_plot</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Please enter valid numeric values in the entries.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ---------------------------</span>
+    <span class="c1"># Plotting</span>
+    <span class="c1"># ---------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_draw_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clear the current figure and redraw the plot with the provided parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        *args : float</span>
+<span class="sd">            Parameter values to pass to the potential function(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+        <span class="n">n_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">number_states</span>
+        <span class="n">disp_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">displacement_vector</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">])</span>
+        <span class="n">db_abinitio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">database_abinitio</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">])</span>
+
+        <span class="c1"># Plot the reference data for each state</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_states</span><span class="p">):</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">disp_vector</span><span class="p">,</span> <span class="n">db_abinitio</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="c1"># Compute the min value from the second state&#39;s data to adjust y-limits</span>
+        <span class="k">if</span> <span class="n">n_states</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">min_value</span> <span class="o">=</span> <span class="n">db_abinitio</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span>
+            <span class="n">max_value</span> <span class="o">=</span> <span class="n">db_abinitio</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">min_value</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">max_values</span> <span class="o">=</span> <span class="mf">8.0</span>
+
+        <span class="c1"># Retrieve parameters for the potential</span>
+        <span class="n">function_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">diab_funct</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Mode: </span><span class="si">%d</span><span class="s2">, State: </span><span class="si">%d</span><span class="s2">, Diab func: </span><span class="si">%s</span><span class="s2">, params: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">function_type</span><span class="p">,</span> <span class="n">args</span>
+        <span class="p">)</span>
+
+        <span class="n">potential_fn</span> <span class="o">=</span> <span class="n">potential_functions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">function_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">potential_fn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Unknown function type &#39;</span><span class="si">%s</span><span class="s2">&#39; encountered.&quot;</span><span class="p">,</span> <span class="n">function_type</span><span class="p">)</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Displacement [Q]&quot;</span><span class="p">)</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Energy [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="n">e0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">energy_shift</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+        <span class="n">omega</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">vib_freq</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">]</span>
+        <span class="n">total_sym_irrep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">totally_sym_irrep</span>
+        <span class="n">sym_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">symmetry_modes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">]</span>
+
+        <span class="c1"># Evaluate potential, possibly including kappa</span>
+        <span class="k">if</span> <span class="n">kappa_compatible</span><span class="p">[</span><span class="n">function_type</span><span class="p">]</span> <span class="ow">and</span> <span class="n">sym_mode</span> <span class="o">==</span> <span class="n">total_sym_irrep</span><span class="p">:</span>
+                <span class="c1"># Wrap the function to include kappa if needed</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">potential_fn_with_kappa</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">om</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">(</span>
+                    <span class="n">linear_coupling</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="n">potential_fn</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">om</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="p">)</span>
+
+            <span class="n">y_vals</span> <span class="o">=</span> <span class="n">potential_fn_with_kappa</span><span class="p">(</span><span class="n">disp_vector</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="n">e0</span>
+        <span class="k">elif</span> <span class="n">function_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ho&quot;</span><span class="p">,</span> <span class="s2">&quot;quartic&quot;</span><span class="p">]:</span>
+            <span class="n">y_vals</span> <span class="o">=</span> <span class="n">potential_fn</span><span class="p">(</span><span class="n">disp_vector</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="n">e0</span>
+        <span class="k">elif</span> <span class="n">function_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;morse&quot;</span><span class="p">,</span> <span class="s2">&quot;antimorse&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">y_vals</span> <span class="o">=</span> <span class="n">general_morse_gs</span><span class="p">(</span><span class="n">disp_vector</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="n">e0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># e.g., &quot;morse&quot;, etc.</span>
+            <span class="n">y_vals</span> <span class="o">=</span> <span class="n">potential_fn</span><span class="p">(</span><span class="n">disp_vector</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="n">e0</span>
+
+        <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">disp_vector</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span> <span class="s2">&quot;r-&quot;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Displacement [Q]&quot;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Energy [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">units</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Set typical plot limits based on state</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">])</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="n">min_value</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">max_value</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Emilio Rodríguez Cuenca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

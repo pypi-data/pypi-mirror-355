@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vcham"
+version = "0.0.4"
+description = "A Vibronic Coupling Hamiltonian Tool"
+readme = "README.md"
+license = {file = "LICENSE.md"}
+authors = [{ name = "Emilio Rodríguez Cuenca", email = "emilioerc@gmail.com" }]
+keywords = ["MCTHD", "vibronic", "coupling","Hamiltonian", "diabatization", "diabatic"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.9, <3.13"
+dependencies = [
+  "tensorflow>=2.17.0",
+  "numpy",
+  "matplotlib",
+  "sphinx",
+  "sphinx_rtd_theme",
+
+]
+[project.urls]
+Gitlab = "https://gitlab.com/tc-heidelberg/pyvcham"

@@ -1,0 +1,547 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>\(\text{Li}_3 \text{ Model}\) &mdash; PyVCHAM 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyVCHAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../vcham.html">PyVCHAM package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyVCHAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="math notranslate nohighlight">\(\text{Li}_3 \text{ Model}\)</span></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Examples/li3/li3_model.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="\text{Li}_3-\text{-Model}">
+<h1><span class="math notranslate nohighlight">\(\text{Li}_3 \text{ Model}\)</span><a class="headerlink" href="#\text{Li}_3-\text{-Model}" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">vcham</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This is an example of a Linear Vibronic Coupling (LVC) calculation using the vcham package.</span>
+<span class="sd">The molecular system studied is Li3, which is a triatomic molecule consisting of three lithium atoms in D3h symmetry.</span>
+<span class="sd">The GS is doubly degenerate at this symmetry. We will observe E x e Jahn-Teller (JT) effect in this system.</span>
+
+<span class="sd">We will build the database from the abinitio data. Both the database and the displacement</span>
+<span class="sd">data will be saved in a list of numpy arrays. This is because it might be that the</span>
+<span class="sd">range of the displacement data is not the same for all coordinates.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;\nThis is an example of a Linear Vibronic Coupling (LVC) calculation using the vcham package.\nThe molecular system studied is Li3, which is a triatomic molecule consisting of three lithium atoms in D3h symmetry.\nThe GS is doubly degenerate at this symmetry. We will observe E x e Jahn-Teller (JT) effect in this system.\n\nWe will build the database from the abinitio data. Both the database and the displacement\ndata will be saved in a list of numpy arrays. This is because it might be that the\nrange of the displacement data is not the same for all coordinates.\n\n&#39;
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the number of states and normal modes</span>
+<span class="n">number_states</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">number_normal_modes</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">all_q</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">all_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="c1"># Define the normal modes to process</span>
+<span class="n">normal_modes_to_process</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="c1"># This is done because the first two modes are degenerate (1, 1) and the third mode is different (3).</span>
+
+<span class="c1"># Loop over selected normal modes</span>
+<span class="k">for</span> <span class="n">normal_mode</span> <span class="ow">in</span> <span class="n">normal_modes_to_process</span><span class="p">:</span>
+    <span class="n">mode_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># For each state (root 1 for ground state, root 2 for core-excited in this case)</span>
+    <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="c1"># Construct the filename and load the data</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;li3_abinitio/gs</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s1">_v</span><span class="si">{</span><span class="n">normal_mode</span><span class="si">}</span><span class="s1">.dat&#39;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="c1"># Assume data columns: first column = displacement (x), second column = energy (y)</span>
+        <span class="n">displacements</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span>  <span class="c1"># Scale displacement as needed</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Create a DataFrame for clarity (optional)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;disp&#39;</span><span class="p">:</span> <span class="n">displacements</span><span class="p">,</span> <span class="s1">&#39;gs&#39;</span><span class="p">:</span> <span class="n">energies</span><span class="p">})</span>
+        <span class="c1"># Shift the energies and convert from atomic units to eV</span>
+        <span class="n">adjusted_energies</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;gs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="o">+</span> <span class="mf">22.35342994</span><span class="p">)</span> <span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">AU_TO_EV</span>
+        <span class="n">mode_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adjusted_energies</span><span class="p">)</span>
+
+    <span class="c1"># Convert the data for this mode to a numpy array and store the displacement vector</span>
+    <span class="n">all_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mode_data</span><span class="p">))</span>
+    <span class="n">all_q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;disp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+
+<span class="c1"># The dimensions of the all_q and all_data lists are:</span>
+<span class="c1"># all_q: (number_normal_modes, number of displacements)</span>
+<span class="c1"># all_data: (number_normal_modes, number_states, number of displacements)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">for</span> <span class="n">mode_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="c1"># Plot data for each state</span>
+    <span class="k">for</span> <span class="n">state_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_states</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">all_q</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">],</span>
+            <span class="n">all_data</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">][</span><span class="n">state_idx</span><span class="p">],</span>
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;State </span><span class="si">{</span><span class="n">state_idx</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$Q_</span><span class="se">{{</span><span class="si">{</span><span class="n">mode_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="se">}}</span><span class="s2">$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy [a.u]&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Normal Mode </span><span class="si">{</span><span class="n">mode_idx</span><span class="si">}</span><span class="s2"> Ab initio Data&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_li3_li3_model_4_0.png" src="../../_images/Examples_li3_li3_model_4_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_li3_li3_model_4_1.png" src="../../_images/Examples_li3_li3_model_4_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_li3_li3_model_4_2.png" src="../../_images/Examples_li3_li3_model_4_2.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define vibrational frequencies in cm^-1 and convert to eV</span>
+<span class="n">vib_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">389.55</span><span class="p">,</span> <span class="mf">389.55</span><span class="p">,</span> <span class="mf">308.52</span><span class="p">])</span> <span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">CM1_TO_AU</span> <span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">AU_TO_EV</span>
+
+<span class="c1"># Define Jahn-Teller effects</span>
+<span class="n">jt_effects</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>                 <span class="c1"># Normal mode index where the JT effect is active</span>
+        <span class="s1">&#39;state_pairs&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>   <span class="c1"># State pair(s) coupled by the JT effect</span>
+        <span class="s1">&#39;types&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Exe&#39;</span><span class="p">],</span>          <span class="c1"># JT effect type(s)</span>
+        <span class="s1">&#39;active&#39;</span><span class="p">:</span> <span class="kc">True</span>             <span class="c1"># This mode is actively optimized</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>                 <span class="c1"># Another normal mode where the same JT effect applies</span>
+        <span class="s1">&#39;state_pairs&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>   <span class="c1"># Same state pairs as in mode 0</span>
+        <span class="s1">&#39;types&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Exe&#39;</span><span class="p">],</span>          <span class="c1"># Same JT type</span>
+        <span class="s1">&#39;active&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>           <span class="c1"># This mode is inactive; parameters will be copied from mode 0</span>
+        <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">0</span>                <span class="c1"># Indicates that parameters from mode 0 should be reused</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="c1"># Define diabatic function types for each mode based on the abinitio data.</span>
+<span class="c1"># Antimorse means that the asymptotic behavior is at negative displacement.</span>
+<span class="n">diab_f_each_mode</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ho&quot;</span><span class="p">,</span> <span class="s2">&quot;ho&quot;</span><span class="p">,</span> <span class="s2">&quot;antimorse&quot;</span><span class="p">]</span>
+<span class="c1"># For each mode, replicate the chosen diabatic function for all states.</span>
+<span class="n">diabatic_functions</span> <span class="o">=</span> <span class="p">[[</span><span class="n">mode_type</span><span class="p">]</span> <span class="o">*</span> <span class="n">system</span><span class="o">.</span><span class="n">number_states</span> <span class="k">for</span> <span class="n">mode_type</span> <span class="ow">in</span> <span class="n">diab_f_each_mode</span><span class="p">]</span>
+
+<span class="c1"># Create the VCSystem object</span>
+<span class="n">system</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">VCSystem</span><span class="p">(</span>
+    <span class="n">vc_type</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">,</span>
+    <span class="n">number_normal_modes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># For HCCF: 3N-5 vibrational modes</span>
+    <span class="n">number_states</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>        <span class="c1"># Ground state + 1 core-excited state (2 states total)</span>
+    <span class="n">coupling_with_gs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Core-excitation: gs-ce couplings are (or are not) accounted</span>
+    <span class="n">symmetry_point_group</span><span class="o">=</span><span class="s2">&quot;Cs&quot;</span><span class="p">,</span>
+    <span class="n">symmetry_states</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">],</span>
+    <span class="n">symmetry_modes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;A&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;A&#39;&quot;</span><span class="p">],</span>
+    <span class="n">vib_freq</span><span class="o">=</span><span class="n">vib_freq</span><span class="p">,</span>
+    <span class="n">diab_funct</span><span class="o">=</span><span class="n">diabatic_functions</span><span class="p">,</span>
+    <span class="n">displacement_vector</span><span class="o">=</span><span class="n">all_q</span><span class="p">,</span>
+    <span class="n">database_abinitio</span><span class="o">=</span><span class="n">all_data</span><span class="p">,</span>
+    <span class="n">jt_effects</span><span class="o">=</span><span class="n">jt_effects</span>
+<span class="p">)</span>
+<span class="c1"># Note: Energy shifts are nonzero because of the calculation issues in the abinitio data (the distances are not optimized for the method).</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 12:32:29,446 [INFO] vcham.vcham_system: Total symmetry irrep: A&#39;
+2025-06-12 12:32:29,447 [INFO] vcham.symm_vcham: Jahn-Teller effect detected, applying 2 effects
+2025-06-12 12:32:29,448 [INFO] vcham.vcham_system: Symmetry matrix successfully created.
+2025-06-12 12:32:29,449 [INFO] vcham.vcham_system: Computed vertical energy shifts: [0.         0.01619812]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the LVC Hamiltonian for each normal mode</span>
+<span class="c1"># and optimize the parameters</span>
+
+<span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">LVCHam</span><span class="p">(</span><span class="n">normal_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">VCSystem</span><span class="o">=</span><span class="n">system</span><span class="p">,</span> <span class="n">nepochs</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">initialize_params</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">initialize_loss_function</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 13:43:21,300 [INFO] vcham.lvc:
+
+----- Initializing LVC Hamiltonian Builder -----
+2025-06-12 13:43:21,301 [INFO] vcham.lvc: Normal mode: 0
+2025-06-12 13:43:21,322 [INFO] vcham.lvc: JT off-diagonal pairs: [[0, 1]]
+2025-06-12 13:43:21,326 [INFO] vcham.lvc: Total parameters to optimize: 2
+2025-06-12 13:43:21,327 [INFO] vcham.lvc: Optimizing mode 0...
+2025-06-12 13:43:21,899 [INFO] vcham.lvc: Step 0, Loss: 8.535259
+2025-06-12 13:43:21,952 [INFO] vcham.lvc: Step 100, Loss: 6.840737
+2025-06-12 13:43:21,995 [INFO] vcham.lvc: Step 200, Loss: 5.148804
+2025-06-12 13:43:22,038 [INFO] vcham.lvc: Step 300, Loss: 3.461690
+2025-06-12 13:43:22,081 [INFO] vcham.lvc: Step 400, Loss: 1.787459
+2025-06-12 13:43:22,124 [INFO] vcham.lvc: Step 500, Loss: 0.202611
+2025-06-12 13:43:22,167 [INFO] vcham.lvc: Step 600, Loss: 0.000159
+2025-06-12 13:43:22,210 [INFO] vcham.lvc: Step 700, Loss: 0.000159
+2025-06-12 13:43:22,253 [INFO] vcham.lvc: Step 800, Loss: 0.000159
+2025-06-12 13:43:22,297 [INFO] vcham.lvc: Step 900, Loss: 0.000159
+2025-06-12 13:43:22,340 [INFO] vcham.lvc: Step 1000, Loss: 0.000159
+2025-06-12 13:43:22,383 [INFO] vcham.lvc: Step 1100, Loss: 0.000159
+2025-06-12 13:43:22,430 [INFO] vcham.lvc: Step 1200, Loss: 0.000159
+2025-06-12 13:43:22,480 [INFO] vcham.lvc: Step 1300, Loss: 0.000159
+2025-06-12 13:43:22,530 [INFO] vcham.lvc: Step 1400, Loss: 0.000159
+2025-06-12 13:43:22,580 [INFO] vcham.lvc: Step 1500, Loss: 0.000159
+2025-06-12 13:43:22,627 [INFO] vcham.lvc: Step 1600, Loss: 0.000159
+2025-06-12 13:43:22,671 [INFO] vcham.lvc: Step 1700, Loss: 0.000159
+2025-06-12 13:43:22,714 [INFO] vcham.lvc: Step 1800, Loss: 0.000159
+2025-06-12 13:43:22,758 [INFO] vcham.lvc: Step 1900, Loss: 0.000159
+2025-06-12 13:43:22,801 [INFO] vcham.lvc: Step 2000, Loss: 0.000159
+2025-06-12 13:43:22,843 [INFO] vcham.lvc: Step 2100, Loss: 0.000159
+2025-06-12 13:43:22,886 [INFO] vcham.lvc: Step 2200, Loss: 0.000159
+2025-06-12 13:43:22,931 [INFO] vcham.lvc: Step 2300, Loss: 0.000159
+2025-06-12 13:43:22,979 [INFO] vcham.lvc: Step 2400, Loss: 0.000159
+2025-06-12 13:43:23,024 [INFO] vcham.lvc: Step 2500, Loss: 0.000159
+2025-06-12 13:43:23,070 [INFO] vcham.lvc: Step 2600, Loss: 0.000159
+2025-06-12 13:43:23,116 [INFO] vcham.lvc: Step 2700, Loss: 0.000159
+2025-06-12 13:43:23,161 [INFO] vcham.lvc: Step 2800, Loss: 0.000159
+2025-06-12 13:43:23,204 [INFO] vcham.lvc: Step 2900, Loss: 0.000159
+2025-06-12 13:43:23,247 [INFO] vcham.lvc: Step 3000, Loss: 0.000159
+2025-06-12 13:43:23,290 [INFO] vcham.lvc: Step 3100, Loss: 0.000159
+2025-06-12 13:43:23,333 [INFO] vcham.lvc: Step 3200, Loss: 0.000159
+2025-06-12 13:43:23,376 [INFO] vcham.lvc: Step 3300, Loss: 0.000159
+2025-06-12 13:43:23,418 [INFO] vcham.lvc: Step 3400, Loss: 0.000159
+2025-06-12 13:43:23,464 [INFO] vcham.lvc: Step 3500, Loss: 0.000159
+2025-06-12 13:43:23,510 [INFO] vcham.lvc: Step 3600, Loss: 0.000159
+2025-06-12 13:43:23,557 [INFO] vcham.lvc: Step 3700, Loss: 0.000159
+2025-06-12 13:43:23,604 [INFO] vcham.lvc: Step 3800, Loss: 0.000159
+2025-06-12 13:43:23,652 [INFO] vcham.lvc: Step 3900, Loss: 0.000159
+2025-06-12 13:43:23,695 [INFO] vcham.lvc: Step 4000, Loss: 0.000159
+2025-06-12 13:43:23,738 [INFO] vcham.lvc: Step 4100, Loss: 0.000159
+2025-06-12 13:43:23,782 [INFO] vcham.lvc: Step 4200, Loss: 0.000159
+2025-06-12 13:43:23,829 [INFO] vcham.lvc: Step 4300, Loss: 0.000159
+2025-06-12 13:43:23,876 [INFO] vcham.lvc: Step 4400, Loss: 0.000159
+2025-06-12 13:43:23,921 [INFO] vcham.lvc: Step 4500, Loss: 0.000159
+2025-06-12 13:43:23,967 [INFO] vcham.lvc: Step 4600, Loss: 0.000159
+2025-06-12 13:43:24,013 [INFO] vcham.lvc: Step 4700, Loss: 0.000159
+2025-06-12 13:43:24,060 [INFO] vcham.lvc: Step 4800, Loss: 0.000159
+2025-06-12 13:43:24,105 [INFO] vcham.lvc: Step 4900, Loss: 0.000159
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_li3_li3_model_6_1.png" src="../../_images/Examples_li3_li3_model_6_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_li3_li3_model_6_2.png" src="../../_images/Examples_li3_li3_model_6_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 13:43:24,305 [INFO] vcham.vcham_system: Stored JT parameters for mode 0: {&#39;on&#39;: array([-0.02821378], dtype=float32), &#39;off&#39;: array([0.04355574], dtype=float32)}
+2025-06-12 13:43:24,306 [INFO] vcham.lvc: Saved JT parameters for mode 0.
+2025-06-12 13:43:24,306 [INFO] vcham.lvc: Final loss: 0.000160
+2025-06-12 13:43:24,306 [INFO] vcham.lvc: Optimization completed in 2.82 seconds.
+2025-06-12 13:43:24,308 [INFO] vcham.lvc:
+
+----- Initializing LVC Hamiltonian Builder -----
+2025-06-12 13:43:24,309 [INFO] vcham.lvc: Normal mode: 1
+2025-06-12 13:43:24,312 [INFO] vcham.lvc: JT off-diagonal pairs: []
+2025-06-12 13:43:24,313 [INFO] vcham.lvc: Total parameters to optimize: 2
+2025-06-12 13:43:24,313 [INFO] vcham.lvc: Skipping optimization: mode inactive or no parameters.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_li3_li3_model_6_4.png" src="../../_images/Examples_li3_li3_model_6_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 13:43:24,444 [INFO] vcham.lvc:
+
+----- Initializing LVC Hamiltonian Builder -----
+2025-06-12 13:43:24,445 [INFO] vcham.lvc: Normal mode: 2
+2025-06-12 13:43:24,447 [INFO] vcham.lvc: JT off-diagonal pairs: []
+2025-06-12 13:43:24,447 [INFO] vcham.lvc: n_var_list (non-JT): [3, 3]
+2025-06-12 13:43:24,448 [INFO] vcham.lvc: Total parameters to optimize: 6
+2025-06-12 13:43:24,449 [INFO] vcham.lvc: Optimizing mode 2...
+2025-06-12 13:43:24,748 [INFO] vcham.lvc: Step 0, Loss: 6044.231445
+2025-06-12 13:43:24,801 [INFO] vcham.lvc: Step 100, Loss: 940.675049
+2025-06-12 13:43:24,842 [INFO] vcham.lvc: Step 200, Loss: 144.578339
+2025-06-12 13:43:24,884 [INFO] vcham.lvc: Step 300, Loss: 19.798859
+2025-06-12 13:43:24,927 [INFO] vcham.lvc: Step 400, Loss: 1.039244
+2025-06-12 13:43:24,972 [INFO] vcham.lvc: Step 500, Loss: 0.006001
+2025-06-12 13:43:25,016 [INFO] vcham.lvc: Step 600, Loss: 0.005834
+2025-06-12 13:43:25,062 [INFO] vcham.lvc: Step 700, Loss: 0.005660
+2025-06-12 13:43:25,104 [INFO] vcham.lvc: Step 800, Loss: 0.005475
+2025-06-12 13:43:25,145 [INFO] vcham.lvc: Step 900, Loss: 0.005279
+2025-06-12 13:43:25,187 [INFO] vcham.lvc: Step 1000, Loss: 0.005074
+2025-06-12 13:43:25,229 [INFO] vcham.lvc: Step 1100, Loss: 0.004861
+2025-06-12 13:43:25,269 [INFO] vcham.lvc: Step 1200, Loss: 0.004642
+2025-06-12 13:43:25,311 [INFO] vcham.lvc: Step 1300, Loss: 0.004418
+2025-06-12 13:43:25,352 [INFO] vcham.lvc: Step 1400, Loss: 0.004189
+2025-06-12 13:43:25,394 [INFO] vcham.lvc: Step 1500, Loss: 0.003959
+2025-06-12 13:43:25,435 [INFO] vcham.lvc: Step 1600, Loss: 0.003726
+2025-06-12 13:43:25,476 [INFO] vcham.lvc: Step 1700, Loss: 0.003494
+2025-06-12 13:43:25,517 [INFO] vcham.lvc: Step 1800, Loss: 0.003264
+2025-06-12 13:43:25,558 [INFO] vcham.lvc: Step 1900, Loss: 0.003036
+2025-06-12 13:43:25,600 [INFO] vcham.lvc: Step 2000, Loss: 0.002811
+2025-06-12 13:43:25,641 [INFO] vcham.lvc: Step 2100, Loss: 0.002592
+2025-06-12 13:43:25,683 [INFO] vcham.lvc: Step 2200, Loss: 0.002379
+2025-06-12 13:43:25,724 [INFO] vcham.lvc: Step 2300, Loss: 0.002174
+2025-06-12 13:43:25,768 [INFO] vcham.lvc: Step 2400, Loss: 0.001977
+2025-06-12 13:43:25,813 [INFO] vcham.lvc: Step 2500, Loss: 0.001789
+2025-06-12 13:43:25,878 [INFO] vcham.lvc: Step 2600, Loss: 0.001611
+2025-06-12 13:43:25,920 [INFO] vcham.lvc: Step 2700, Loss: 0.001444
+2025-06-12 13:43:25,962 [INFO] vcham.lvc: Step 2800, Loss: 0.001289
+2025-06-12 13:43:26,003 [INFO] vcham.lvc: Step 2900, Loss: 0.001146
+2025-06-12 13:43:26,045 [INFO] vcham.lvc: Step 3000, Loss: 0.001015
+2025-06-12 13:43:26,086 [INFO] vcham.lvc: Step 3100, Loss: 0.000896
+2025-06-12 13:43:26,127 [INFO] vcham.lvc: Step 3200, Loss: 0.000790
+2025-06-12 13:43:26,167 [INFO] vcham.lvc: Step 3300, Loss: 0.000697
+2025-06-12 13:43:26,208 [INFO] vcham.lvc: Step 3400, Loss: 0.000615
+2025-06-12 13:43:26,249 [INFO] vcham.lvc: Step 3500, Loss: 0.000544
+2025-06-12 13:43:26,291 [INFO] vcham.lvc: Step 3600, Loss: 0.000484
+2025-06-12 13:43:26,331 [INFO] vcham.lvc: Step 3700, Loss: 0.000435
+2025-06-12 13:43:26,372 [INFO] vcham.lvc: Step 3800, Loss: 0.000394
+2025-06-12 13:43:26,413 [INFO] vcham.lvc: Step 3900, Loss: 0.000361
+2025-06-12 13:43:26,453 [INFO] vcham.lvc: Step 4000, Loss: 0.000335
+2025-06-12 13:43:26,495 [INFO] vcham.lvc: Step 4100, Loss: 0.000314
+2025-06-12 13:43:26,535 [INFO] vcham.lvc: Step 4200, Loss: 0.000299
+2025-06-12 13:43:26,576 [INFO] vcham.lvc: Step 4300, Loss: 0.000288
+2025-06-12 13:43:26,616 [INFO] vcham.lvc: Step 4400, Loss: 0.000280
+2025-06-12 13:43:26,657 [INFO] vcham.lvc: Step 4500, Loss: 0.000274
+2025-06-12 13:43:26,698 [INFO] vcham.lvc: Step 4600, Loss: 0.000270
+2025-06-12 13:43:26,739 [INFO] vcham.lvc: Step 4700, Loss: 0.000267
+2025-06-12 13:43:26,779 [INFO] vcham.lvc: Step 4800, Loss: 0.000266
+2025-06-12 13:43:26,821 [INFO] vcham.lvc: Step 4900, Loss: 0.000265
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_li3_li3_model_6_6.png" src="../../_images/Examples_li3_li3_model_6_6.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_li3_li3_model_6_7.png" src="../../_images/Examples_li3_li3_model_6_7.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 13:43:27,171 [INFO] vcham.lvc: Final loss: 0.000269
+2025-06-12 13:43:27,172 [INFO] vcham.lvc: Optimization completed in 2.41 seconds.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define general system information for output</span>
+<span class="n">general_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;molecule&quot;</span><span class="p">:</span> <span class="s2">&quot;Li3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;calculation_info&quot;</span><span class="p">:</span> <span class="s2">&quot;Ground state and first excited state&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;CASSCF(3,7)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;basis&quot;</span><span class="p">:</span> <span class="s2">&quot;cc-pvtz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;software&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenMolcas&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;additional_info&quot;</span><span class="p">:</span> <span class="s2">&quot;-&quot;</span>
+<span class="p">}</span>
+<span class="c1"># Add the reference geometry to the system</span>
+<span class="n">ref_geom</span> <span class="o">=</span> <span class="s2">&quot;li3_abinitio/geo_v1_00.xyz&quot;</span>
+<span class="n">system</span><span class="o">.</span><span class="n">add_geometry</span><span class="p">(</span><span class="n">ref_geom</span><span class="p">)</span>
+
+<span class="c1"># Define the JSON filename for saving the VCSystem data</span>
+<span class="n">filename_json</span> <span class="o">=</span> <span class="s2">&quot;results/lvc_li3.json&quot;</span>
+
+<span class="c1"># Convert the VCSystem to JSON and save it</span>
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">VCSystem_to_json</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">general_data</span><span class="p">,</span> <span class="n">filename_json</span><span class="p">,</span> <span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Define the output operator filename</span>
+<span class="n">output_op</span> <span class="o">=</span> <span class="s2">&quot;results/lvc_li3.op&quot;</span>
+
+<span class="c1"># Generate the MCTDH operator file from the JSON data</span>
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">json_to_mctdh</span><span class="p">(</span><span class="n">infile</span><span class="o">=</span><span class="n">filename_json</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="n">output_op</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 13:45:44,088 [INFO] vcham.vcham_system: Reference geometry updated.
+2025-06-12 13:45:44,091 [INFO] vcham.utils: Warning: Overwriting existing file results/lvc_li3.json
+2025-06-12 13:45:44,093 [INFO] vcham.utils: Data successfully saved to results/lvc_li3.json
+2025-06-12 13:45:44,094 [INFO] vcham.utils: No interactions found.
+2025-06-12 13:45:44,095 [INFO] vcham.utils: MCTDH operator file successfully written to: results/lvc_li3.op
+</pre></div></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Emilio Rodríguez Cuenca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

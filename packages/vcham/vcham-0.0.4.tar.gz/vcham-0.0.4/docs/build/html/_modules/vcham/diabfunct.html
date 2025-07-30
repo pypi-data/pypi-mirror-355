@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vcham.diabfunct &mdash; PyVCHAM 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyVCHAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../vcham.html">PyVCHAM package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyVCHAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">vcham.diabfunct</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vcham.diabfunct</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the diabatic functions.</span>
+
+<span class="sd">New diabatic functions can be added by defining a new function and updating the </span>
+<span class="sd">:data:`potential_functions`, :data:`n_var`, :data:`initial_guesses`, and </span>
+<span class="sd">:data:`kappa_compatible` dictionaries accordingly.</span>
+
+<span class="sd">Available Potential Types</span>
+<span class="sd">-------------------------</span>
+<span class="sd">- ``&quot;ho&quot;``: Harmonic oscillator</span>
+<span class="sd">- ``&quot;morse&quot;``: General Morse potential</span>
+<span class="sd">- ``&quot;antimorse&quot;``: Anti-Morse potential (uses general_morse with negative alpha)</span>
+<span class="sd">- ``&quot;quartic&quot;``: General quartic potential</span>
+
+<span class="sd">Functions</span>
+<span class="sd">---------</span>
+<span class="sd">- :func:`harmonic_oscillator`</span>
+<span class="sd">- :func:`general_quartic_potential`</span>
+<span class="sd">- :func:`general_morse`</span>
+
+<span class="sd">Variables</span>
+<span class="sd">---------</span>
+<span class="sd">- :data:`potential_functions`</span>
+<span class="sd">- :data:`n_var`</span>
+<span class="sd">- :data:`initial_guesses`</span>
+<span class="sd">- :data:`kappa_compatible`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+
+<div class="viewcode-block" id="harmonic_oscillator">
+<a class="viewcode-back" href="../../vcham.html#vcham.diabfunct.harmonic_oscillator">[docs]</a>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">harmonic_oscillator</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the harmonic oscillator potential.</span>
+
+<span class="sd">    The potential is given by:</span>
+
+<span class="sd">    .. math:: V(q) = \\frac{1}{2} \\omega^2 q^2 + \\frac{1}{2} k_1 q^2</span>
+
+<span class="sd">    where:</span>
+<span class="sd">    - :math:`q` is the displacement along a normal mode.</span>
+<span class="sd">    - :math:`\\omega` is the frequency of the mode.</span>
+<span class="sd">    - :math:`k_1` is an additional quadratic coupling constant.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : tf.Tensor</span>
+<span class="sd">        Tensor of displacements along a normal mode, with shape suitable for broadcasting. Must be dtype tf.float32.</span>
+<span class="sd">    omega : tf.Tensor</span>
+<span class="sd">        Tensor representing the mode frequency, scalar or broadcast-compatible with `q`. Must be dtype tf.float32.</span>
+<span class="sd">    params : list</span>
+<span class="sd">        List with one element, `k1`, the quadratic constant, scalar or broadcast-compatible with `q`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tf.Tensor</span>
+<span class="sd">        Tensor of diabatic potential energy values, matching the shape of `q`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k1</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">k1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">k1</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">HALF</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HALF</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">+</span> <span class="n">HALF</span> <span class="o">*</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">q</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="general_quartic_potential">
+<a class="viewcode-back" href="../../vcham.html#vcham.diabfunct.general_quartic_potential">[docs]</a>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">general_quartic_potential</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the general quartic potential for a diabatic state.</span>
+
+<span class="sd">    This function computes a quartic potential with quadratic and quartic terms, ideal for modeling anharmonic vibrational effects, such as bond stretching, in quantum chemistry.</span>
+
+<span class="sd">    The potential is defined as:</span>
+
+<span class="sd">    .. math:: V(q) = \\frac{1}{2} \\omega^2 q^2 + \\frac{1}{2} k_2 q^2 + \\frac{1}{24} k_3 q^4</span>
+
+<span class="sd">    where:</span>
+<span class="sd">    - :math:`q` is the displacement along a normal mode.</span>
+<span class="sd">    - :math:`\\omega` is the mode frequency.</span>
+<span class="sd">    - :math:`k_2` is an additional quadratic coefficient.</span>
+<span class="sd">    - :math:`k_3` is the quartic coefficient introducing anharmonicity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : tf.Tensor</span>
+<span class="sd">        Tensor of displacements, broadcast-compatible shape, dtype tf.float32.</span>
+<span class="sd">    omega : tf.Tensor</span>
+<span class="sd">        Tensor of mode frequency, scalar or broadcast-compatible with `q`, dtype tf.float32.</span>
+<span class="sd">    params : list</span>
+<span class="sd">        List with two elements:</span>
+<span class="sd">        - `k2`: Quadratic coefficient.</span>
+<span class="sd">        - `k3`: Quartic coefficient.</span>
+<span class="sd">        Both scalar or broadcast-compatible with `q`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tf.Tensor</span>
+<span class="sd">        Tensor of potential energy values, matching `q`’s shape.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">k2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">k2</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">k3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">k3</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">HALF</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">ONE_OVER_24</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">HALF</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">HALF</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">ONE_OVER_24</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="general_morse">
+<a class="viewcode-back" href="../../vcham.html#vcham.diabfunct.general_morse">[docs]</a>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">general_morse</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">gs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the general Morse potential.</span>
+
+<span class="sd">    The Morse potential models anharmonic bond stretching in diatomic molecules, widely used in quantum chemistry for potential energy surfaces.</span>
+
+<span class="sd">    The potential is:</span>
+
+<span class="sd">    .. math:: V(q) = D_e \\left(1 - e^{-\\alpha (q - q_0)}\\right)^2 - D_e \\left(1 - e^{-\\alpha q_0}\\right)^2</span>
+
+<span class="sd">    where:</span>
+<span class="sd">    - :math:`D_e` is the dissociation energy.</span>
+<span class="sd">    - :math:`\\alpha` is the range parameter (well width).</span>
+<span class="sd">    - :math:`q_0` is the equilibrium bond distance.</span>
+<span class="sd">    - The offset ensures :math:`V(0) = 0`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : tf.Tensor</span>
+<span class="sd">        Tensor of displacements (bond lengths), broadcast-compatible shape, dtype tf.float32.</span>
+<span class="sd">    params : list</span>
+<span class="sd">        List with three elements:</span>
+<span class="sd">        - `De`: Dissociation energy, scalar or tensor.</span>
+<span class="sd">        - `alpha`: Range parameter, scalar or tensor.</span>
+<span class="sd">        - `q0`: Equilibrium bond distance, scalar or tensor.</span>
+<span class="sd">        All broadcast-compatible with `q`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tf.Tensor</span>
+<span class="sd">        Tensor of potential energy values, matching `q`’s shape.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">De</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">q0</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">De</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">De</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">gs</span><span class="p">:</span>
+        <span class="n">q0</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">q0</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">q0</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">ONE</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="c1"># Compute the vertical offset at q=0</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">De</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">q0</span><span class="p">)</span> <span class="o">-</span> <span class="n">ONE</span><span class="p">)</span>
+
+    <span class="n">morse</span> <span class="o">=</span> <span class="n">De</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="n">q0</span><span class="p">))</span> <span class="o">-</span> <span class="n">ONE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">morse</span> <span class="o">-</span> <span class="n">offset</span></div>
+
+
+
+<span class="c1"># Potential Functions Dictionary</span>
+<span class="n">potential_functions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ho&quot;</span><span class="p">:</span> <span class="n">harmonic_oscillator</span><span class="p">,</span>
+    <span class="s2">&quot;morse&quot;</span><span class="p">:</span> <span class="n">general_morse</span><span class="p">,</span>
+    <span class="s2">&quot;antimorse&quot;</span><span class="p">:</span> <span class="n">general_morse</span><span class="p">,</span>
+    <span class="s2">&quot;quartic&quot;</span><span class="p">:</span> <span class="n">general_quartic_potential</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Number of Variables for Each Function</span>
+<span class="n">n_var</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ho&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;morse&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;antimorse&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;quartic&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Initial Guesses for Each Potential Type</span>
+<span class="n">initial_guesses</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ho&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">]),</span>
+    <span class="s2">&quot;morse&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+    <span class="s2">&quot;antimorse&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+    <span class="s2">&quot;quartic&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">]),</span>
+<span class="p">}</span>
+
+<span class="c1"># Kappa Compatibility (those functions that could be used together with kappa)</span>
+<span class="n">kappa_compatible</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ho&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;morse&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>      <span class="c1"># Morse potential has in its definition q - q0</span>
+    <span class="s2">&quot;antimorse&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># Morse potential has in its definition q - q0</span>
+    <span class="s2">&quot;quartic&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Emilio Rodríguez Cuenca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

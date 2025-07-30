@@ -1,0 +1,100 @@
+{
+  "general_data":   {
+    "molecule": "Li3",
+    "calculation_info": "Ground state and first excited state",
+    "method": "CASSCF(3,7)",
+    "basis": "cc-pvtz",
+    "software": "OpenMolcas",
+    "additional_info": "-"
+  },
+  "vcham_data":   {
+    "elements": [
+      ["LI", "LI", "LI"]
+    ],
+    "reference_geometry": [
+      [
+        [0.0, -0.0, 1.508216],
+        [0.0, -1.637459, -0.754108],
+        [0.0, 1.637459, -0.754108]
+      ]
+    ],
+    "units": ["eV"],
+    "number_normal_modes": [3],
+    "number_states": [2],
+    "coupling_with_gs": ["Yes"],
+    "symmetry_point_group": ["Cs"],
+    "totally_sym_irrep": ["A'"],
+    "symmetry_modes": [
+      ["A''", "A'", "A'"]
+    ],
+    "symmetry_states": [
+      ["A'", "A''"]
+    ],
+    "vib_freq": [
+      [0.0482980444996531, 0.0482980444996531, 0.03825160490061089]
+    ],
+    "energy_shift": [
+      [0.0, 0.016198121890692568]
+    ],
+    "dipole_matrix": [null],
+    "lvcham": [
+      [
+                {
+          "mode": 0,
+          "diagonal": [
+                        {
+              "state": 0,
+              "diab_funct": "ho",
+              "parameters": [-0.028213778510689735]
+            },
+                        {
+              "state": 1,
+              "diab_funct": "ho",
+              "parameters": [-0.028213778510689735]
+            }
+          ],
+          "non-diagonal":           {
+            "idx": [
+              [0, 1]
+            ],
+            "lambda": [0.043555743992328644]
+          }
+        },
+                {
+          "mode": 1,
+          "diagonal": [
+                        {
+              "state": 0,
+              "diab_funct": "ho",
+              "parameters": [-0.028213778510689735],
+              "kappa": 0.043555743992328644
+            },
+                        {
+              "state": 1,
+              "diab_funct": "ho",
+              "parameters": [-0.028213778510689735],
+              "kappa": -0.043555743992328644
+            }
+          ],
+          "non-diagonal": null
+        },
+                {
+          "mode": 2,
+          "diagonal": [
+                        {
+              "state": 0,
+              "diab_funct": "antimorse",
+              "parameters": [2.537062168121338, -0.0868598148226738, 0.0]
+            },
+                        {
+              "state": 1,
+              "diab_funct": "antimorse",
+              "parameters": [2.6856894493103027, -0.0863015428185463, 0.0]
+            }
+          ],
+          "non-diagonal": null
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,853 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>\(\text{Model 2 molecules}\) &mdash; PyVCHAM 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyVCHAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../vcham.html">PyVCHAM package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyVCHAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="math notranslate nohighlight">\(\text{Model 2 molecules}\)</span></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/Examples/2mol/model.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="\text{Model-2-molecules}">
+<h1><span class="math notranslate nohighlight">\(\text{Model 2 molecules}\)</span><a class="headerlink" href="#\text{Model-2-molecules}" title="Link to this heading"></a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">vcham</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 14:31:53.710025: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE4.1 SSE4.2, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-06-12 14:31:57,218 [INFO] root: Logging configuration successfully loaded.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This is an example of a VC model of a simple 1D system which consists of 2 electronic states.</span>
+<span class="sd">The model is build from a database of a real system, precisely the full dimensional model of FCHO molecule.</span>
+<span class="sd">We just take one of the coordinates and build a 1D model from it.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;\nThis is an example of a VC model of a simple 1D system which consists of 2 electronic states.\nThe model is build from a database of a real system, precisely the full dimensional model of FCHO molecule.\nWe just take one of the coordinates and build a 1D model from it.\n&#39;
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a database in eV with all the abinitio data</span>
+<span class="n">step</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span> <span class="o">+</span> <span class="n">step</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+<span class="n">nmodes</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">data_gs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">data_val</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">data_carbon</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">all_q</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">path</span>  <span class="o">=</span> <span class="s2">&quot;abinitio_data/&quot;</span>
+<span class="n">min_scf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;geo_v1_00.json&quot;</span><span class="p">))[</span><span class="s2">&quot;ground_state&quot;</span><span class="p">][</span><span class="s2">&quot;scf_energy&quot;</span><span class="p">])</span>
+<span class="n">min_mp2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;geo_v1_00.json&quot;</span><span class="p">))[</span><span class="s2">&quot;ground_state&quot;</span><span class="p">][</span><span class="s2">&quot;mp2_correction&quot;</span><span class="p">])</span>
+<span class="n">min_mp3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;geo_v1_00.json&quot;</span><span class="p">))[</span><span class="s2">&quot;ground_state&quot;</span><span class="p">][</span><span class="s2">&quot;mp3_correction&quot;</span><span class="p">])</span>
+<span class="n">min_gs</span> <span class="o">=</span> <span class="n">min_scf</span> <span class="o">+</span> <span class="n">min_mp2</span> <span class="o">+</span> <span class="n">min_mp3</span>
+
+<span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nmodes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">temp_gs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">temp_val</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">temp_carbon</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">temp_q</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">disp</span> <span class="ow">in</span> <span class="n">q</span><span class="p">:</span>
+        <span class="n">geo</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;geo_v</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">disp</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">path2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}{</span><span class="n">geo</span><span class="si">}</span><span class="s2">.json&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">path2</span><span class="p">))</span>
+        <span class="n">scf</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ground_state&quot;</span><span class="p">][</span><span class="s2">&quot;scf_energy&quot;</span><span class="p">]</span>
+        <span class="n">mp2</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ground_state&quot;</span><span class="p">][</span><span class="s2">&quot;mp2_correction&quot;</span><span class="p">]</span>
+        <span class="n">mp3</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ground_state&quot;</span><span class="p">][</span><span class="s2">&quot;mp3_correction&quot;</span><span class="p">]</span>
+        <span class="n">gs_energy</span> <span class="o">=</span> <span class="n">scf</span> <span class="o">+</span> <span class="n">mp2</span> <span class="o">+</span> <span class="n">mp3</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;valence&quot;</span><span class="p">][</span><span class="s2">&quot;excitation_energy&quot;</span><span class="p">]</span>
+        <span class="n">carbon</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;carbon_core&quot;</span><span class="p">][</span><span class="s2">&quot;excitation_energy&quot;</span><span class="p">]</span>
+
+        <span class="c1"># gs_energy should be below a threshold</span>
+        <span class="k">if</span> <span class="n">gs_energy</span> <span class="o">-</span> <span class="n">min_gs</span> <span class="o">&lt;</span> <span class="mf">0.4</span><span class="p">:</span>
+            <span class="n">temp_gs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gs_energy</span><span class="p">)</span>
+            <span class="n">temp_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">temp_carbon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">carbon</span><span class="p">)</span>
+            <span class="n">temp_q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">disp</span><span class="p">)</span>
+
+    <span class="n">temp_gs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp_gs</span><span class="p">)</span>
+    <span class="n">temp_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp_val</span><span class="p">)</span>
+    <span class="n">temp_carbon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp_carbon</span><span class="p">)</span>
+    <span class="n">temp_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp_q</span><span class="p">)</span>
+
+    <span class="n">temp_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">temp_val</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">temp_val</span> <span class="o">=</span> <span class="p">((</span><span class="n">temp_val</span> <span class="o">+</span> <span class="n">temp_gs</span><span class="p">)</span> <span class="o">-</span> <span class="n">min_gs</span><span class="p">)</span><span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">AU_TO_EV</span>
+
+    <span class="n">temp_carbon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">temp_carbon</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">temp_carbon</span> <span class="o">=</span> <span class="p">((</span><span class="n">temp_carbon</span> <span class="o">+</span> <span class="n">temp_gs</span><span class="p">)</span> <span class="o">-</span> <span class="n">min_gs</span><span class="p">)</span><span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">AU_TO_EV</span>
+    <span class="n">temp_gs</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp_gs</span> <span class="o">-</span> <span class="n">min_gs</span><span class="p">)</span><span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">AU_TO_EV</span>
+
+
+    <span class="n">all_q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_q</span><span class="p">)</span>
+    <span class="n">data_gs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_gs</span><span class="p">)</span>
+    <span class="n">data_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_val</span><span class="p">)</span>
+    <span class="n">data_carbon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_carbon</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_pyvcham</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">q_pyvcham</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmodes</span><span class="p">):</span>
+    <span class="n">data_mode</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data_mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_gs</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">data_mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_val</span><span class="p">[</span><span class="n">mode</span><span class="p">][</span><span class="n">state</span><span class="p">])</span>
+    <span class="n">q_pyvcham</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_q</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">data_pyvcham</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_mode</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating the VC system object</span>
+<span class="n">vib_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1113.0039</span><span class="p">])</span> <span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">CM1_TO_AU</span> <span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">AU_TO_EV</span>  <span class="c1"># in eV</span>
+
+<span class="c1"># Guess diabatic function for each mode</span>
+<span class="n">diab_f_each_mode</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;morse&quot;</span><span class="p">]</span>
+<span class="n">diab_funct_mode</span> <span class="o">=</span> <span class="p">[[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">diab_f_each_mode</span><span class="p">]</span>
+
+<span class="n">system</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">VCSystem</span><span class="p">(</span>
+    <span class="n">vc_type</span><span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;eV&quot;</span><span class="p">,</span>
+    <span class="n">number_normal_modes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">number_states</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>         <span class="c1"># GS + 1 excited state</span>
+    <span class="n">coupling_with_gs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">symmetry_point_group</span><span class="o">=</span><span class="s2">&quot;Cs&quot;</span><span class="p">,</span>
+    <span class="n">symmetry_states</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;A&#39;&#39;&quot;</span><span class="p">],</span>
+    <span class="n">symmetry_modes</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;A&#39;&quot;</span><span class="p">],</span>
+    <span class="n">vib_freq</span><span class="o">=</span> <span class="n">vib_freq</span><span class="p">,</span>  <span class="c1"># to eV</span>
+    <span class="n">diab_funct</span><span class="o">=</span> <span class="n">diab_funct_mode</span><span class="p">,</span>
+    <span class="n">displacement_vector</span><span class="o">=</span> <span class="p">[</span><span class="n">q_pyvcham</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
+    <span class="n">database_abinitio</span><span class="o">=</span><span class="p">[</span><span class="n">data_pyvcham</span><span class="p">[</span><span class="mi">2</span><span class="p">][:</span><span class="mi">2</span><span class="p">]],</span>
+
+<span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 14:31:57,560 [INFO] vcham.vcham_system: Total symmetry irrep: A&#39;
+2025-06-12 14:31:57,561 [INFO] vcham.vcham_system: Symmetry matrix successfully created.
+2025-06-12 14:31:57,562 [INFO] vcham.vcham_system: Computed vertical energy shifts: [1.08275176e-11 5.65868614e+00]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setting up the model parameters</span>
+
+<span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">number_normal_modes</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">LVCHam</span><span class="p">(</span><span class="n">normal_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span><span class="n">VCSystem</span><span class="o">=</span><span class="n">system</span><span class="p">,</span><span class="n">nepochs</span><span class="o">=</span><span class="mi">7000</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">initialize_params</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">initialize_loss_function</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 14:31:57,584 [INFO] vcham.lvc:
+
+----- Initializing LVC Hamiltonian Builder -----
+2025-06-12 14:31:57,585 [INFO] vcham.lvc: Normal mode: 0
+2025-06-12 14:31:57,592 [INFO] vcham.lvc: JT off-diagonal pairs: []
+2025-06-12 14:31:57,593 [INFO] vcham.lvc: n_var_list (non-JT): [3, 3]
+2025-06-12 14:31:57,595 [INFO] vcham.lvc: Total parameters to optimize: 6
+2025-06-12 14:31:57,596 [INFO] vcham.lvc: Optimizing mode 0...
+2025-06-12 14:31:58,435 [INFO] vcham.lvc: Step 0, Loss: 437.938171
+2025-06-12 14:31:58,480 [INFO] vcham.lvc: Step 100, Loss: 104.772614
+2025-06-12 14:31:58,511 [INFO] vcham.lvc: Step 200, Loss: 23.677525
+2025-06-12 14:31:58,541 [INFO] vcham.lvc: Step 300, Loss: 3.879044
+2025-06-12 14:31:58,570 [INFO] vcham.lvc: Step 400, Loss: 0.130279
+2025-06-12 14:31:58,600 [INFO] vcham.lvc: Step 500, Loss: 0.098261
+2025-06-12 14:31:58,630 [INFO] vcham.lvc: Step 600, Loss: 0.079562
+2025-06-12 14:31:58,660 [INFO] vcham.lvc: Step 700, Loss: 0.066586
+2025-06-12 14:31:58,688 [INFO] vcham.lvc: Step 800, Loss: 0.056806
+2025-06-12 14:31:58,718 [INFO] vcham.lvc: Step 900, Loss: 0.049139
+2025-06-12 14:31:58,747 [INFO] vcham.lvc: Step 1000, Loss: 0.042984
+2025-06-12 14:31:58,776 [INFO] vcham.lvc: Step 1100, Loss: 0.037962
+2025-06-12 14:31:58,805 [INFO] vcham.lvc: Step 1200, Loss: 0.033818
+2025-06-12 14:31:58,835 [INFO] vcham.lvc: Step 1300, Loss: 0.030365
+2025-06-12 14:31:58,864 [INFO] vcham.lvc: Step 1400, Loss: 0.027463
+2025-06-12 14:31:58,893 [INFO] vcham.lvc: Step 1500, Loss: 0.025006
+2025-06-12 14:31:58,923 [INFO] vcham.lvc: Step 1600, Loss: 0.022907
+2025-06-12 14:31:58,953 [INFO] vcham.lvc: Step 1700, Loss: 0.021100
+2025-06-12 14:31:58,982 [INFO] vcham.lvc: Step 1800, Loss: 0.019530
+2025-06-12 14:31:59,011 [INFO] vcham.lvc: Step 1900, Loss: 0.018154
+2025-06-12 14:31:59,045 [INFO] vcham.lvc: Step 2000, Loss: 0.016935
+2025-06-12 14:31:59,076 [INFO] vcham.lvc: Step 2100, Loss: 0.015847
+2025-06-12 14:31:59,105 [INFO] vcham.lvc: Step 2200, Loss: 0.014866
+2025-06-12 14:31:59,135 [INFO] vcham.lvc: Step 2300, Loss: 0.013974
+2025-06-12 14:31:59,164 [INFO] vcham.lvc: Step 2400, Loss: 0.013156
+2025-06-12 14:31:59,193 [INFO] vcham.lvc: Step 2500, Loss: 0.012403
+2025-06-12 14:31:59,222 [INFO] vcham.lvc: Step 2600, Loss: 0.011704
+2025-06-12 14:31:59,251 [INFO] vcham.lvc: Step 2700, Loss: 0.011053
+2025-06-12 14:31:59,280 [INFO] vcham.lvc: Step 2800, Loss: 0.010446
+2025-06-12 14:31:59,309 [INFO] vcham.lvc: Step 2900, Loss: 0.009877
+2025-06-12 14:31:59,338 [INFO] vcham.lvc: Step 3000, Loss: 0.009343
+2025-06-12 14:31:59,366 [INFO] vcham.lvc: Step 3100, Loss: 0.008843
+2025-06-12 14:31:59,395 [INFO] vcham.lvc: Step 3200, Loss: 0.008374
+2025-06-12 14:31:59,424 [INFO] vcham.lvc: Step 3300, Loss: 0.007934
+2025-06-12 14:31:59,453 [INFO] vcham.lvc: Step 3400, Loss: 0.007523
+2025-06-12 14:31:59,482 [INFO] vcham.lvc: Step 3500, Loss: 0.007138
+2025-06-12 14:31:59,510 [INFO] vcham.lvc: Step 3600, Loss: 0.006779
+2025-06-12 14:31:59,539 [INFO] vcham.lvc: Step 3700, Loss: 0.006444
+2025-06-12 14:31:59,568 [INFO] vcham.lvc: Step 3800, Loss: 0.006133
+2025-06-12 14:31:59,597 [INFO] vcham.lvc: Step 3900, Loss: 0.005844
+2025-06-12 14:31:59,626 [INFO] vcham.lvc: Step 4000, Loss: 0.005577
+2025-06-12 14:31:59,655 [INFO] vcham.lvc: Step 4100, Loss: 0.005329
+2025-06-12 14:31:59,684 [INFO] vcham.lvc: Step 4200, Loss: 0.005101
+2025-06-12 14:31:59,712 [INFO] vcham.lvc: Step 4300, Loss: 0.004892
+2025-06-12 14:31:59,742 [INFO] vcham.lvc: Step 4400, Loss: 0.004708
+2025-06-12 14:31:59,770 [INFO] vcham.lvc: Step 4500, Loss: 0.004522
+2025-06-12 14:31:59,799 [INFO] vcham.lvc: Step 4600, Loss: 0.004362
+2025-06-12 14:31:59,828 [INFO] vcham.lvc: Step 4700, Loss: 0.004214
+2025-06-12 14:31:59,857 [INFO] vcham.lvc: Step 4800, Loss: 0.004081
+2025-06-12 14:31:59,886 [INFO] vcham.lvc: Step 4900, Loss: 0.003958
+2025-06-12 14:31:59,914 [INFO] vcham.lvc: Step 5000, Loss: 0.003851
+2025-06-12 14:31:59,944 [INFO] vcham.lvc: Step 5100, Loss: 0.003749
+2025-06-12 14:31:59,972 [INFO] vcham.lvc: Step 5200, Loss: 0.003659
+2025-06-12 14:32:00,001 [INFO] vcham.lvc: Step 5300, Loss: 0.003579
+2025-06-12 14:32:00,029 [INFO] vcham.lvc: Step 5400, Loss: 0.003508
+2025-06-12 14:32:00,059 [INFO] vcham.lvc: Step 5500, Loss: 0.003444
+2025-06-12 14:32:00,088 [INFO] vcham.lvc: Step 5600, Loss: 0.003388
+2025-06-12 14:32:00,116 [INFO] vcham.lvc: Step 5700, Loss: 0.003335
+2025-06-12 14:32:00,146 [INFO] vcham.lvc: Step 5800, Loss: 0.003292
+2025-06-12 14:32:00,174 [INFO] vcham.lvc: Step 5900, Loss: 0.003253
+2025-06-12 14:32:00,203 [INFO] vcham.lvc: Step 6000, Loss: 0.003220
+2025-06-12 14:32:00,231 [INFO] vcham.lvc: Step 6100, Loss: 0.003190
+2025-06-12 14:32:00,277 [INFO] vcham.lvc: Step 6200, Loss: 0.003169
+2025-06-12 14:32:00,306 [INFO] vcham.lvc: Step 6300, Loss: 0.003144
+2025-06-12 14:32:00,335 [INFO] vcham.lvc: Step 6400, Loss: 0.003126
+2025-06-12 14:32:00,364 [INFO] vcham.lvc: Step 6500, Loss: 0.003114
+2025-06-12 14:32:00,393 [INFO] vcham.lvc: Step 6600, Loss: 0.003099
+2025-06-12 14:32:00,422 [INFO] vcham.lvc: Step 6700, Loss: 0.003092
+2025-06-12 14:32:00,451 [INFO] vcham.lvc: Step 6800, Loss: 0.003081
+2025-06-12 14:32:00,479 [INFO] vcham.lvc: Step 6900, Loss: 0.003075
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_2mol_model_6_1.png" src="../../_images/Examples_2mol_model_6_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_2mol_model_6_2.png" src="../../_images/Examples_2mol_model_6_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 14:32:00,748 [INFO] vcham.lvc: Final loss: 0.003072
+2025-06-12 14:32:00,749 [INFO] vcham.lvc: Optimization completed in 2.91 seconds.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Defining the geometry of the system</span>
+<span class="n">geometry</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">0.5</span><span class="p">]),</span>  <span class="c1"># X means Ghost atom</span>
+            <span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">])]</span>
+
+<span class="c1"># Adding the geometry to the system</span>
+<span class="n">system</span><span class="o">.</span><span class="n">add_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+
+<span class="c1"># Defining the general data of the system</span>
+<span class="n">general_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;molecule&quot;</span><span class="p">:</span> <span class="s2">&quot;diatomic model&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;calculation_info&quot;</span><span class="p">:</span> <span class="s2">&quot;Valence excitation&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 14:32:54,683 [INFO] vcham.vcham_system: Reference geometry updated.
+</pre></div></div>
+</div>
+</section>
+<section id="\Sigma^+-transition">
+<h1><span class="math notranslate nohighlight">\(\Sigma^+\)</span> transition<a class="headerlink" href="#\Sigma^+-transition" title="Link to this heading"></a></h1>
+<p>Only the z-component is non-zero for the transition dipole</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Defining the dipole matrix</span>
+<span class="n">dipole_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="p">])</span>
+<span class="c1"># The dipole matrix size should be (number_states, number_states, 3). The last dimension corresponds to the x, y, z components of the dipole moment.</span>
+<span class="c1"># Adding the dipole matrix to the system</span>
+<span class="n">system</span><span class="o">.</span><span class="n">add_dipole_matrix</span><span class="p">(</span><span class="n">dipole_matrix</span><span class="p">)</span>
+
+<span class="c1"># Saving the system to a JSON file and converting it to MCTDH format</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;model_sigma_plus&quot;</span>
+<span class="n">filename_json</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">VCSystem_to_json</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">general_data</span><span class="p">,</span> <span class="n">filename_json</span><span class="p">,</span><span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">output_file</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.op&quot;</span>
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">json_to_mctdh</span><span class="p">(</span><span class="n">filename_json</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 14:34:23,065 [INFO] vcham.vcham_system: Dipole matrix updated.
+2025-06-12 14:34:23,069 [INFO] vcham.utils: Warning: Overwriting existing file model_sigma_plus.json
+2025-06-12 14:34:23,071 [INFO] vcham.utils: Data successfully saved to model_sigma_plus.json
+2025-06-12 14:34:23,072 [INFO] vcham.utils: No interactions found.
+2025-06-12 14:34:23,073 [INFO] vcham.utils: MCTDH operator file successfully written to: model_sigma_plus.op
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now let us create a supersystem with the model consisting of two identical subsystems.</span>
+<span class="c1"># The two subsystems will be placed at a distance of 10 Bohr.</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">r_angstrom</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">BOHR_TO_ANGSTROM</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distance in Angstrom: </span><span class="si">{</span><span class="n">r_angstrom</span><span class="si">}</span><span class="s2">, Distance in Bohr: </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># We have to define the molecules and interactions between them</span>
+<span class="c1"># Define the two molecules with their interacting states and positions</span>
+<span class="c1"># The first molecule is at the origin, the second one is at (0, 0, r)</span>
+<span class="c1"># The two molecules will be parallel to the z-axis, but you can change the rotation angles to make them perpendicular or at any other angle.</span>
+
+<span class="n">mol1</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">interacting_states</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">CM</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span> <span class="n">rot_angles</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="n">mol2</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">interacting_states</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">CM</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">r</span><span class="p">]),</span> <span class="n">rot_angles</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">))</span> <span class="c1"># Parallel to the z-axis</span>
+<span class="c1"># mol2 = vcham.utils.Molecule(molecule_idx=1, interacting_states=[0,1],CM=np.array([0.0, 0.0, r]), rot_angles=(np.pi/2,np.pi/2,0.0)) # Perpendicular to the z-axis</span>
+
+<span class="c1"># Define interactions among molecules</span>
+<span class="c1"># In this case, we will use the dipole-dipole interaction.</span>
+<span class="n">int1</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">DipoleInteraction</span><span class="p">(</span><span class="n">molecules</span><span class="o">=</span><span class="p">[</span><span class="n">mol1</span><span class="p">,</span><span class="n">mol2</span><span class="p">])</span>
+
+<span class="c1"># Save the interaction data to a JSON file</span>
+<span class="c1"># The infiles are the JSON files of the individual molecules, which we will use to merge them into a single JSON file.</span>
+<span class="c1"># The outfile is the name of the output JSON file, which will contain the merged data of the two molecules and their interaction.</span>
+<span class="c1"># The molecules and interactions are passed as lists, so you can add more molecules and interactions if needed.</span>
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">merge_jsons</span><span class="p">(</span><span class="n">infiles</span><span class="o">=</span><span class="p">[</span><span class="n">filename_json</span><span class="p">,</span> <span class="n">filename_json</span><span class="p">],</span>
+                  <span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;2mol_model_sigma_plus.json&quot;</span><span class="p">,</span>
+                  <span class="n">molecules</span><span class="o">=</span><span class="p">[</span><span class="n">mol1</span><span class="p">,</span> <span class="n">mol2</span><span class="p">],</span>
+                  <span class="n">interactions</span><span class="o">=</span><span class="p">[</span><span class="n">int1</span><span class="p">],</span>
+                  <span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span>
+                  <span class="p">)</span>
+
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">json_to_mctdh</span><span class="p">(</span><span class="s2">&quot;2mol_model_sigma_plus.json&quot;</span><span class="p">,</span> <span class="s2">&quot;2mol_model_sigma_plus.op&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 14:38:26,038 [INFO] vcham.utils: Reading 2 JSON files and merging them.
+2025-06-12 14:38:26,039 [INFO] vcham.utils:
+Molecule 0 new geometry in the fixed lab frame:
+[[ 0.   0.  -0.5]
+ [ 0.   0.   0.5]]
+
+2025-06-12 14:38:26,040 [INFO] vcham.utils:
+Molecule 1 new geometry in the fixed lab frame:
+[[ 0.   0.  -0.5]
+ [ 0.   0.   0.5]]
+
+2025-06-12 14:38:26,040 [INFO] vcham.utils: Calculating dipole interaction for pair Molecule0 - Molecule1
+
+2025-06-12 14:38:26,042 [INFO] vcham.utils: Warning: Overwriting existing file 2mol_model_sigma_plus.json
+2025-06-12 14:38:26,043 [INFO] vcham.utils: Data successfully saved to 2mol_model_sigma_plus.json
+2025-06-12 14:38:26,045 [INFO] vcham.utils: Interactions found!
+2025-06-12 14:38:26,045 [INFO] vcham.utils: Dipole interactions found!
+2025-06-12 14:38:26,046 [INFO] vcham.utils: MCTDH operator file successfully written to: 2mol_model_sigma_plus.op
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Distance in Angstrom: 5.2917721067, Distance in Bohr: 10
+</pre></div></div>
+</div>
+</section>
+<section id="\Pi^*-transition">
+<h1><span class="math notranslate nohighlight">\(\Pi^*\)</span> transition<a class="headerlink" href="#\Pi^*-transition" title="Link to this heading"></a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dipole_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="p">])</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">add_dipole_matrix</span><span class="p">(</span><span class="n">dipole_matrix</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;model_pi&quot;</span>
+<span class="n">filename_json</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">VCSystem_to_json</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">general_data</span><span class="p">,</span> <span class="n">filename_json</span><span class="p">,</span><span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">output_file</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.op&quot;</span>
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">json_to_mctdh</span><span class="p">(</span><span class="n">filename_json</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+
+<span class="c1"># import importlib</span>
+<span class="c1"># importlib.reload(utils)</span>
+<span class="c1"># importlib.reload(constants)</span>
+<span class="n">degree_to_radian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">135</span><span class="o">*</span> <span class="n">degree_to_radian</span>  <span class="c1"># 135 degrees in radians</span>
+<span class="n">r</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">r_angstrom</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">vcham</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">BOHR_TO_ANGSTROM</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distance in Angstrom: </span><span class="si">{</span><span class="n">r_angstrom</span><span class="si">}</span><span class="s2">, Distance in Bohr: </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Position molecules in space</span>
+<span class="c1"># mol1 = utils.Molecule(molecule_idx=0, interacting_states=[0,1],CM=np.array([0.0, 0.0, 0.0]), rot_angles=(0.0, 0.0, 0.0))</span>
+<span class="c1"># mol2 = utils.Molecule(molecule_idx=1, interacting_states=[0,1],CM=np.array([0.0, r, 0.0]), rot_angles=(0.0,np.pi/2,0.0)) # Parallel to the z-axis</span>
+<span class="c1"># mol1 = utils.Molecule(molecule_idx=0, interacting_states=[0,1],CM=np.array([0.0, 0.0, 0.0]), rot_angles=(0.0, 0.0, -np.pi/4))</span>
+<span class="c1"># mol2 = utils.Molecule(molecule_idx=1, interacting_states=[0,1],CM=np.array([0.0, 0.0, r]), rot_angles=(0.0,0.0,np.pi/4)) # Perpendicular to the z-axis</span>
+
+<span class="n">mol1</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">interacting_states</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">CM</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span> <span class="n">rot_angles</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="n">mol2</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">molecule_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">interacting_states</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">CM</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">r</span><span class="p">]),</span> <span class="n">rot_angles</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">))</span> <span class="c1"># Perpendicular to the z-axis</span>
+
+<span class="c1"># Define interactions among molecules</span>
+<span class="n">int1</span> <span class="o">=</span> <span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">DipoleInteraction</span><span class="p">(</span><span class="n">molecules</span><span class="o">=</span><span class="p">[</span><span class="n">mol1</span><span class="p">,</span><span class="n">mol2</span><span class="p">])</span>
+<span class="c1"># Save the interaction data to a JSON file</span>
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">merge_jsons</span><span class="p">(</span><span class="n">infiles</span><span class="o">=</span><span class="p">[</span><span class="n">filename_json</span><span class="p">,</span> <span class="n">filename_json</span><span class="p">],</span>
+                  <span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;2mol_model_pi.json&quot;</span><span class="p">,</span>
+                  <span class="n">molecules</span><span class="o">=</span><span class="p">[</span><span class="n">mol1</span><span class="p">,</span> <span class="n">mol2</span><span class="p">],</span>
+                  <span class="n">interactions</span><span class="o">=</span><span class="p">[</span><span class="n">int1</span><span class="p">],</span>
+                  <span class="n">rewrite</span><span class="o">=</span><span class="kc">True</span>
+                  <span class="p">)</span>
+
+<span class="n">vcham</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">json_to_mctdh</span><span class="p">(</span><span class="s2">&quot;2mol_model_pi.json&quot;</span><span class="p">,</span> <span class="s2">&quot;2mol_model_pi.op&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2025-06-12 14:38:26,701 [INFO] vcham.vcham_system: Dipole matrix updated.
+2025-06-12 14:38:26,705 [INFO] vcham.utils: Warning: Overwriting existing file model_pi.json
+2025-06-12 14:38:26,707 [INFO] vcham.utils: Data successfully saved to model_pi.json
+2025-06-12 14:38:26,709 [INFO] vcham.utils: No interactions found.
+2025-06-12 14:38:26,709 [INFO] vcham.utils: MCTDH operator file successfully written to: model_pi.op
+2025-06-12 14:38:26,711 [INFO] vcham.utils: Reading 2 JSON files and merging them.
+2025-06-12 14:38:26,712 [INFO] vcham.utils:
+Molecule 0 new geometry in the fixed lab frame:
+[[ 0.   0.  -0.5]
+ [ 0.   0.   0.5]]
+
+2025-06-12 14:38:26,713 [INFO] vcham.utils:
+Molecule 1 new geometry in the fixed lab frame:
+[[ 0.   0.  -0.5]
+ [ 0.   0.   0.5]]
+
+2025-06-12 14:38:26,713 [INFO] vcham.utils: Calculating dipole interaction for pair Molecule0 - Molecule1
+
+2025-06-12 14:38:26,714 [INFO] vcham.utils: Warning: Overwriting existing file 2mol_model_pi.json
+2025-06-12 14:38:26,717 [INFO] vcham.utils: Data successfully saved to 2mol_model_pi.json
+2025-06-12 14:38:26,718 [INFO] vcham.utils: Interactions found!
+2025-06-12 14:38:26,718 [INFO] vcham.utils: Dipole interactions found!
+2025-06-12 14:38:26,719 [INFO] vcham.utils: MCTDH operator file successfully written to: 2mol_model_pi.op
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Distance in Angstrom: 5.2917721067, Distance in Bohr: 10
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># After creating the operator files, we can load the data from the MCTDH simulation.</span>
+<span class="c1"># This is the case of the sigma plus model, which is a 1D model with two electronic states in parallel orientation.</span>
+<span class="n">path_folder</span> <span class="o">=</span> <span class="s2">&quot;abinitio_data&quot;</span>
+<span class="n">data_sigma_plus_para10</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_folder</span><span class="si">}</span><span class="s2">/pop_10bohr_sigma_plus.txt&quot;</span><span class="p">)</span>
+
+<span class="n">mol1_p</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">mol2_p</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data_sigma_plus_para10</span><span class="p">),</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol1_p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_sigma_plus_para10</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data_sigma_plus_para10</span><span class="p">),</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol2_p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_sigma_plus_para10</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">mol1_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol1_p</span><span class="p">)</span>
+<span class="n">mol2_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol2_p</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is the case of the sigma plus model, which is a 1D model with two electronic states in perpendicular orientation.</span>
+<span class="n">data_sigma_plus_ortho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_folder</span><span class="si">}</span><span class="s2">/pop_10bohr_sigma_plus_ortho.txt&quot;</span><span class="p">)</span>
+<span class="n">mol1_o</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">mol2_o</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data_sigma_plus_ortho</span><span class="p">),</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol1_o</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_sigma_plus_ortho</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data_sigma_plus_ortho</span><span class="p">),</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol2_o</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_sigma_plus_ortho</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">mol1_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol1_o</span><span class="p">)</span>
+<span class="n">mol2_o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol2_o</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="n">fontsize</span><span class="p">})</span>
+<span class="c1">#make subplots for each mode</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 1 0°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol2_p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 2 0°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_o</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 1 90°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol2_o</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 2 90°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
+<span class="c1"># plt.title(&quot;$\Sigma^+$ transition&quot;, fontsize=fontsize)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time (fs)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 0, &#39;Time (fs)&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_2mol_model_16_1.png" src="../../_images/Examples_2mol_model_16_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now changing the distance between the molecules to 15 and 20 Bohr</span>
+<span class="n">data_sigma_plus_para15</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_folder</span><span class="si">}</span><span class="s2">/pop_15bohr_sigma_plus_para.txt&quot;</span><span class="p">)</span>
+<span class="n">data_sigma_plus_para20</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_folder</span><span class="si">}</span><span class="s2">/pop_20bohr_sigma_plus_para.txt&quot;</span><span class="p">)</span>
+
+<span class="n">mol1_p15</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">mol2_p15</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data_sigma_plus_para15</span><span class="p">),</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol1_p15</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_sigma_plus_para15</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data_sigma_plus_para15</span><span class="p">),</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol2_p15</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_sigma_plus_para15</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">mol1_p15</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol1_p15</span><span class="p">)</span>
+<span class="n">mol2_p15</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol2_p15</span><span class="p">)</span>
+<span class="n">mol1_p20</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">mol2_p20</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data_sigma_plus_para20</span><span class="p">),</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol1_p20</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_sigma_plus_para20</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">data_sigma_plus_para20</span><span class="p">),</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol2_p20</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_sigma_plus_para20</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">mol1_p20</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol1_p20</span><span class="p">)</span>
+<span class="n">mol2_p20</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol2_p20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;10 Bohr&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol2_p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_p15</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;15 Bohr&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol2_p15</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_p20</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;20 Bohr&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol2_p20</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time (fs)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x197c5a6f0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_2mol_model_17_1.png" src="../../_images/Examples_2mol_model_17_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="n">fontsize</span><span class="p">})</span>
+<span class="c1">#make subplots for each mode</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 1 0°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol2_p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 2 0°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_o</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 1 90°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol2_o</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 2 90°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;$\Sigma^+$ transition&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (fs)&quot;</span><span class="p">)</span>
+<span class="c1"># less spacecing between subplots</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;$\Pi$ transition&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_p</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mol 1 0°&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">)</span>
+
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.0, 60.0)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_2mol_model_18_1.png" src="../../_images/Examples_2mol_model_18_1.png" />
+</div>
+</div>
+</section>
+<section id="\text-{FCHO-Single-molecule}">
+<h1><span class="math notranslate nohighlight">\(\text {FCHO Single molecule}\)</span><a class="headerlink" href="#\text-{FCHO-Single-molecule}" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracting data from MCTDH calculations for the single molecule and 15 Bohr distance</span>
+
+<span class="n">data_single</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_folder</span><span class="si">}</span><span class="s2">/pop_single.txt&quot;</span><span class="p">)</span>
+<span class="n">data_10b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_folder</span><span class="si">}</span><span class="s2">/pop_15bohr.txt&quot;</span><span class="p">)</span>
+
+<span class="n">mol1_10b</span> <span class="o">=</span><span class="p">[]</span>
+<span class="n">mol2_10b</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_10b</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol1_10b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_10b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_10b</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="n">mol2_10b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_10b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">mol1_10b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol1_10b</span><span class="p">)</span>
+<span class="n">mol2_10b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol2_10b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Define the colors for the plots</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:purple&#39;</span><span class="p">,</span> <span class="s1">&#39;tab:brown&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="c1"># keep color consistent with previous plots</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data_single</span><span class="p">[:,</span> <span class="n">state</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;S</span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">state</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol2_10b</span><span class="p">[:,</span> <span class="n">state</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">state</span><span class="p">],</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">state</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mol1_10b</span><span class="p">[:,</span> <span class="n">state</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;S</span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">state</span><span class="p">])</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (fs)&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (fs)&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0012</span><span class="p">,</span> <span class="mf">0.0002</span><span class="p">))</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_yticks</span><span class="p">()])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Population&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x19b331ca0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/Examples_2mol_model_21_1.png" src="../../_images/Examples_2mol_model_21_1.png" />
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Emilio Rodríguez Cuenca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
