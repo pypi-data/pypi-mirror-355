@@ -1,0 +1,142 @@
+[tool.poetry]
+name = "ha-synthetic-sensors"
+version = "1.0.1"
+description = "A Home Assistant package for creating synthetic sensors from YAML configuration with mathematical formulas"
+authors = ["SpanPanel"]
+readme = "README.md"
+packages = [
+    {include = "ha_synthetic_sensors", from = "src"},
+]
+
+[tool.poetry.urls]
+Homepage = "https://github.com/SpanPanel/ha-synthetic-sensors"
+Issues = "https://github.com/SpanPanel/ha-synthetic-sensors/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.13.2,<3.14"
+# Core dependencies for synthetic sensors
+pyyaml = "^6.0.0"
+simpleeval = "^1.0.3"
+voluptuous = ">=0.15.2"
+jsonschema = "^4.17.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-asyncio = "^0.26.0"
+pytest-cov = "^6.0.0"
+bandit = "^1.8.0"
+twine = "^6.0.1"
+pre-commit = "^4.0.0"
+black = "^25.1.0"
+ruff = "^0.11.0"
+mypy = "^1.15.0"
+types-PyYAML = "^6.0.0"
+types-jsonschema = "^4.0.0"
+homeassistant-stubs = "*"
+
+[tool.poetry.group.test.dependencies]
+homeassistant = ">=2025.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+exclude = [
+    ".*_cache/",
+    "dist/",
+    "venv/",
+    ".venv/",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "T20",    # flake8-print
+    "SIM",    # flake8-simplify
+    "RUF",    # ruff-specific rules
+]
+
+ignore = [
+    "E501",   # line too long - following Home Assistant's approach
+    # May conflict with the formatter
+    "W191",
+    "E111",
+    "E114",
+    "E117",
+]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+combine-as-imports = true
+split-on-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+exclude = [
+    "^examples/.*\\.py$",
+    "^tests/.*\\.py$",
+    "^docs/.*\\.py$",
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "homeassistant.*",
+    "voluptuous.*",
+    "simpleeval.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "examples.*"
+ignore_errors = true
+
+[tool.coverage.run]
+source = ["src/ha_synthetic_sensors"]
+omit = [
+    "tests/*",
+    "*/tests/*",
+    "*/.venv/*",
+    "*/venv/*",
+]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+# Add markers for our new test types
+markers = [
+    "ha_integration: marks tests as requiring real Home Assistant (deselect with '-m \"not ha_integration\"')"
+]
+# Filter out warnings from dependencies we can't control
+filterwarnings = [
+    "ignore:Inheritance class HomeAssistantApplication from web.Application is discouraged:DeprecationWarning:homeassistant.components.http",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+
+[tool.black]
+line-length = 999  # Effectively disable line length restrictions (following HA approach)
