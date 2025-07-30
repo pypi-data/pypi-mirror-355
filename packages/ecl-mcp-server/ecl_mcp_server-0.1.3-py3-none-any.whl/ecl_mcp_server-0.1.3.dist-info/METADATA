@@ -1,0 +1,219 @@
+Metadata-Version: 2.4
+Name: ecl-mcp-server
+Version: 0.1.3
+Summary: A Model Context Protocol server providing tools to access ECL(Elastic Cloud Log) for usage by LLMs
+Project-URL: Documentation, https://ecloud.10086.cn/op-help-center/doc/article/72980
+License: Apache-2.0
+License-File: LICENSE
+License-File: licenses/Authlib.txt
+License-File: licenses/Pygments.txt
+License-File: licenses/annotated-types.txt
+License-File: licenses/anyio.txt
+License-File: licenses/certifi.txt
+License-File: licenses/cffi.txt
+License-File: licenses/click.txt
+License-File: licenses/cryptography.txt
+License-File: licenses/exceptiongroup.txt
+License-File: licenses/fastmcp.txt
+License-File: licenses/h11.txt
+License-File: licenses/httpcore.txt
+License-File: licenses/httpx-sse.txt
+License-File: licenses/httpx.txt
+License-File: licenses/idna.txt
+License-File: licenses/markdown-it-py.txt
+License-File: licenses/mcp.txt
+License-File: licenses/mdurl.txt
+License-File: licenses/openapi-pydantic.txt
+License-File: licenses/pycparser.txt
+License-File: licenses/pydantic-settings.txt
+License-File: licenses/pydantic.txt
+License-File: licenses/pydantic_core.txt
+License-File: licenses/python-dateutil.txt
+License-File: licenses/python-dotenv.txt
+License-File: licenses/python-multipart.txt
+License-File: licenses/pytz.txt
+License-File: licenses/rich.txt
+License-File: licenses/shellingham.txt
+License-File: licenses/six.txt
+License-File: licenses/sniffio.txt
+License-File: licenses/sse-starlette.txt
+License-File: licenses/starlette.txt
+License-File: licenses/typer.txt
+License-File: licenses/typing-inspection.txt
+License-File: licenses/uvicorn.txt
+Keywords: 10086.cn,ECL,journal,llm,mcp
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Requires-Dist: fastmcp>=2.7.0
+Requires-Dist: mcp[cli]>=1.9.2
+Requires-Dist: pydantic>=2.11.5
+Requires-Dist: python-dateutil>=2.9.0.post0
+Requires-Dist: pytz>=2025.2
+Requires-Dist: typer>=0.16.0
+Description-Content-Type: text/markdown
+
+# ECL MCP Server
+
+This project integrates China Mobile Cloud Logging (ECL) with MCP (Model Context Protocol), providing tool capabilities for log querying, log overview, log group management, log topic management, alarm management, dashboards, and data processing.
+
+## Tools
+
+| Module    | Tool Name                       | Description                                       |
+|-----------|---------------------------------|---------------------------------------------------|
+| default   | get_current_datetime            | Get current datetime                              |
+|           | get_log                         | Query raw log content                             |
+|           | query_alarm_product_topn        | Query top 5 alarm resource types                  |
+|           | query_alarm_trend               | Query 7-day alarm trends                          |
+|           | query_alarm_log_group_topn      | Query top 5 alarm log topics                      |
+| group     | create_log_group                | Create new log group                              |
+|           | update_log_group                | Edit log group                                    |
+|           | delete_log_group                | Delete log group                                  |
+|           | query_log_group_list            | Query log group list                              |
+| theme     | create_index_set                | Create new log topic                              |
+|           | update_index_set                | Edit log topic                                    |
+|           | delete_index_set                | Delete log topic                                  |
+|           | query_log_theme_list            | Query log topic list                              |
+| alarm     | query_alarm_policy_detail       | Query alarm policy details                        |
+|           | query_alarm_policy_list         | Query alarm policy list                           |
+|           | query_alarm_record_list         | Query real-time alarm records                     |
+|           | query_alarm_record_list_history | Query historical alarm records                    |
+|           | confirm_alarm_record            | Acknowledge real-time alarms                      |
+|           | delete_alarm_policy             | Delete alarm policy                               |
+| dashboard | query_dashboard_statistics      | Query dashboard list                              |
+|           | create_dashboard                | Create new dashboard                              |
+|           | delete_dashboard                | Delete dashboard                                  |
+|           | query_dashboard_chart           | Query charts under dashboard                      |
+|           | edit_dashboard                  | Edit chart                                        |
+|           | delete_dashboard_chart          | Delete chart                                      |
+|           | query_chart_data                | Query chart data                                  |
+| etl       | list_log_fn                     | Query data processing rules list                  |
+|           | query_log_fn                    | Query data processing rule details                |
+|           | delete_log_fn                   | Delete data processing rule                       |
+|           | update_log_fn_status            | Modify data processing rule enable/disable status |
+
+## Installation
+
+### Using uv (recommended)
+
+When using [`uv`](https://docs.astral.sh/uv/) no specific installation is needed. We will
+use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *ecl-mcp-server*.
+
+```bash
+uvx ecl-mcp-server
+```
+
+### Using PIP
+
+Alternatively you can install `ecl-mcp-server` via pip:
+
+```bash
+pip install ecl-mcp-server
+```
+
+After installation, you can run it as a script using:
+
+```bash
+python -m ecl-mcp-server
+```
+
+## Configuration
+
+### Configure for Cursor.app
+
+Configure the MCP Server in Cursor.app's settings page,
+
+![cursor_setting.png](imgs/cursor_setting.png)
+
+<details>
+<summary>Using uvx</summary>
+
+```json
+{
+  "mcpServers": {
+    "time": {
+      "command": "uvx",
+      "args": [
+        "ecl-mcp-server",
+        "your_access_key",
+        "your_secret_key"
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Using pip Installation</summary>
+
+```json
+{
+  "mcpServers": {
+    "time": {
+      "command": "python",
+      "args": [
+        "-m",
+        "ecl-mcp-server",
+        "your_access_key",
+        "your_secret_key"
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+### Customization - Launching ecl-mcp-server with Custom Arguments
+
+ecl-mcp-server supports custom launch arguments or reading parameters from environment variables.
+
+Launching Command: `ecl-mcp-server [OPTIONS] ACCESS_KEY SECRET_KEY`
+
+Available arguments:
+
+| Argument            | Required | Env Variable Key                 | Description                                                                                                                                                                                                                        | Default |
+|---------------------|----------|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| access_key          | Yes      | ECLOUD_JOURNAL_ACCESS_KEY        | AccessKey required for China Mobile Cloud API gateway. See: https://ecloud.10086.cn/op-help-center/doc/article/42472 <br>Recommended to pass via environment variable.                                                             | /       |
+| secret_key          | Yes      | ECLOUD_JOURNAL_SECRET_KEY        | SecretKey required for China Mobile Cloud API gateway. See: https://ecloud.10086.cn/op-help-center/doc/article/42472 <br>Recommended to pass via environment variable.                                                             | /       |
+| --port              | No       | /                                | Port number for ecl-mcp-server.                                                                                                                                                                                                    | 8000    |
+| --transport         | No       | /                                | Transport protocol. Options: [stdio, sse, streamable-http]                                                                                                                                                                         | stdio   |
+| --log-level         | No       | /                                | Logging level. Options: [DEBUG, INFO, WARNING, ERROR, CRITICAL]                                                                                                                                                                    | INFO    |
+| --preferred-pool-id | No       | ECLOUD_JOURNAL_PREFERRED_POOL_ID | Default resource pool ID when accessing ecl-mcp-server. Some requests require explicit pool ID specification, otherwise needs to be specified in conversation.                                                                     | None    |
+| --module -m         | No       | /                                | Only load tools from specified modules. Options: [default, group, theme, alarm, dashboard, etl, all]. Options' meanings, please see [Available Tools](#Tools).<br>Can be specified multiple times: `--module group --module theme` | default |
+| --timezone -tz      | No       | /                                | Set timezone. Can be float for offset (e.g. 8 or -5.5) or timezone name (e.g. Asia/Shanghai)                                                                                                                                       | 8       |
+
+For more usage help, you can view the help documentation using the `--help` parameter: `uvx ecl-mcp-server --help`
+
+## Interaction Examples
+
+1. How many log themes do I have?
+
+   ![question_how_many_log_themes_do_I_have.png](imgs/question_how_many_log_themes_do_I_have.png)
+
+2. Query original logs for a specific theme
+
+   ![question_get_log.png](imgs/question_get_log.png)
+
+## Dependencies
+
+This project relies on the following open source components. Many thanks to the open source community for their contributions! All dependencies follow their official licenses (see [License Section](#License)).
+
+- fastmcp
+- mcp[cli]
+- pydantic
+- python-dateutil
+- pytz
+- typer
+
+## License
+
+- This project is licensed under Apache-2.0. See [LICENSE](LICENSE) file for details.
+- Licenses for dependencies: All dependencies follow their respective official licenses. See [dependencies-licenses](dependencies-licenses.md) for details. Also refer to the project's [licenses](licenses) directory, which is included in the distribution package.
+
