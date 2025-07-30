@@ -1,0 +1,394 @@
+Metadata-Version: 2.4
+Name: claude-command
+Version: 0.6.0
+Summary: Claude Command - AI command center for Claude Code
+Project-URL: Homepage, https://github.com/shaneholloman/mcp-claude-command
+Project-URL: Repository, https://github.com/shaneholloman/mcp-claude-command
+Project-URL: Issues, https://github.com/shaneholloman/mcp-claude-command/issues
+Author: Shane Holloman
+License: MIT
+License-File: LICENSE
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Requires-Dist: anthropic
+Requires-Dist: fastmcp
+Requires-Dist: google-generativeai
+Requires-Dist: openai
+Provides-Extra: dev
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Claude Command MCP Server
+
+Real-time AI command center with unified naming, session indexing, and multi-provider orchestration.
+
+> [!IMPORTANT]
+> **System Prompt**: Development standards and procedures are documented in `.air/prompts/system.prompt.md` - this is the most important file for understanding how to work with this codebase.
+
+## Overview
+
+Claude Command is an MCP (Model Context Protocol) server that enables sophisticated AI mission orchestration across multiple providers. Built with fastMCP, it features a unified naming system, JSONL session indexing, and segregated conversation management for different mission types.
+
+## Features
+
+- **Mission-Based Architecture**: Specialized AI interactions (brainstorm, recon, query, review)
+- **Multi-Provider Support**: Gemini, OpenAI, and Anthropic models
+- **Unified Naming System**: `{mission-type}-{subject-slug}-{timestamp}` pattern
+- **JSONL Session Index**: Efficient append-only session tracking
+- **Segregated Conversations**: Provider isolation for reconnaissance missions
+- **Search & Discovery**: Full-text search across all sessions
+- **Real-Time Streaming**: Watch conversations unfold live via `tail -f`
+- **Session Management**: Persistent conversation storage and retrieval
+
+## Architecture
+
+Built using fastMCP framework with modular mission system and unified session management:
+
+```flow
+Claude Code CLI ↔ fastMCP Server ↔ Mission System ↔ [Gemini ↔ OpenAI ↔ Anthropic]
+                                        ↓
+                        [Query | Review | Brainstorm | Recon]
+                                        ↓
+                      [Unified Naming | JSONL Index | Session Management]
+```
+
+### Mission Types
+
+- **Brainstorm**: Shared conversation history (group forum style)
+- **Recon**: Private conversation history per provider (segregated intelligence)
+- **Review**: Iterative conversation history per provider (code feedback)
+- **Query**: Stateless execution (no conversation history)
+
+## Installation
+
+### Prerequisites
+
+- [Claude Code CLI](https://claude.ai/code)
+- Python 3.10+
+- API keys for desired providers
+
+### Install Dependencies
+
+```bash
+git clone https://github.com/shaneholloman/mcp-claude-command
+cd mcp-claude-command
+uv sync
+```
+
+### Configure API Keys
+
+Set environment variables:
+
+```bash
+export GEMINI_API_KEY="your_gemini_key"
+export OPENAI_API_KEY="your_openai_key"
+export ANTHROPIC_API_KEY="your_anthropic_key"
+```
+
+### Add to Claude Code
+
+Install as a global UV tool and configure with Claude CLI:
+
+```bash
+# Install claude-command globally
+uv tool install .
+
+# Configure with Claude CLI
+claude mcp add claude-command claude-command \
+  -e GEMINI_API_KEY="$GEMINI_API_KEY" \
+  -e CLAUDE_COMMAND_OPENAI_API_KEY="$OPENAI_API_KEY" \
+  -e CLAUDE_COMMAND_ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" \
+  --scope user
+
+# Verify configuration
+claude mcp list
+claude mcp get claude-command
+```
+
+> [!IMPORTANT]
+> Restart Claude's CLI after configuration.
+
+## Usage
+
+### Available Tools
+
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `claude_command_query` | Multi-provider query or conversation | `mission_prompt`, `providers`, `temperature` |
+| `claude_command_brainstorm` | Creative collaboration with shared context | `topic`, `context`, `providers`, `temperature` |
+| `claude_command_recon` | Independent reconnaissance with segregated conversations | `mission_prompt`, `providers`, `temperature` |
+| `claude_command_review` | Code review with iterative feedback | `code`, `focus`, `providers`, `temperature` |
+| `claude_command_missions_list` | List mission runs with optional filtering | `mission_type` |
+| `claude_command_missions_search` | Search mission runs by content | `query` |
+| `claude_command_missions_rebuild_index` | Rebuild mission index from files | - |
+| `claude_command_status` | Server health and configuration | - |
+| `claude_command_conversations_list` | List conversation files | - |
+
+### Mission Examples
+
+#### Brainstorm Mission (Shared History)
+
+```bash
+# All providers collaborate with shared conversation context
+claude_command_brainstorm topic="API testing strategies" context="Microservices architecture" providers="gemini,openai,anthropic"
+```
+
+**Result Files:**
+
+- `brainstorms/brainstorm-api-testing-strategies-2025-06-16-14-30-22.json`
+- `conversations/brainstorm-api-testing-strategies.jsonl` (shared context)
+- Stream files: `streams/brainstorm-api-testing-strategies-2025-06-16-14-30-22-{provider}.md`
+
+#### Recon Mission (Segregated History)
+
+```bash
+# Each provider maintains private conversation with Claude
+claude_command_recon mission_prompt="What are the latest security vulnerabilities?" providers="gemini,openai,anthropic"
+```
+
+**Result Files:**
+
+- `recons/recon-latest-security-vulnerabilities-2025-06-16-14-30-22.json`
+- `missions/mission-recon-2025-06-16-14-30-22/` containing:
+  - `gemini-context.jsonl` (private conversation)
+  - `openai-context.jsonl` (private conversation)
+  - `anthropic-context.jsonl` (private conversation)
+
+#### Query Mission (Stateless)
+
+```bash
+# Independent responses with no conversation history
+claude_command_query mission_prompt="Explain GraphQL vs REST" providers="gemini,openai,anthropic"
+```
+
+### Mission Management
+
+#### List Mission Runs
+
+```bash
+# List all mission runs
+claude_command_missions_list
+
+# Filter by mission type
+claude_command_missions_list mission_type="recon"
+```
+
+#### Search Mission Runs
+
+```bash
+# Search by content
+claude_command_missions_search query="API security"
+claude_command_missions_search query="machine learning"
+```
+
+#### Rebuild Index
+
+```bash
+# Rebuild mission index from existing files
+claude_command_missions_rebuild_index
+```
+
+## File Organization
+
+### Unified Naming Pattern
+
+All mission files follow the pattern: `{mission-type}-{subject-slug}-{timestamp}.{extension}`
+
+**Examples:**
+
+- `brainstorm-api-testing-strategies-2025-06-16-14-30-22.json`
+- `recon-security-vulnerabilities-2025-06-16-14-30-22.json`
+- `query-graphql-vs-rest-comparison-2025-06-16-14-30-22.json`
+
+### Directory Structure
+
+```tree
+~/claude-command/
+├── index.jsonl                  # JSONL mission index (searchable)
+├── brainstorms/                 # Brainstorm mission results
+│   └── brainstorm-{subject-slug}-{timestamp}.json
+├── recons/                      # Recon mission results
+│   └── recon-{subject-slug}-{timestamp}.json
+├── queries/                     # Query mission results
+│   └── query-{subject-slug}-{timestamp}.json
+├── reviews/                     # Review mission results
+│   └── review-{subject-slug}-{timestamp}.json
+├── conversations/               # Shared conversation files (JSONL)
+│   └── brainstorm-{subject-slug}.jsonl
+├── missions/                    # Segregated conversation sessions
+│   └── mission-recon-{timestamp}/
+│       ├── gemini-context.jsonl
+│       ├── openai-context.jsonl
+│       └── anthropic-context.jsonl
+├── streams/                     # Real-time streaming files
+│   ├── {mission}-{subject}-{timestamp}-{provider}.md
+│   └── {mission}-{subject}-{timestamp}-summary.md
+└── histories/                   # Complete provider histories
+    ├── recon-{provider}-complete.jsonl
+    └── review-{provider}-complete.jsonl
+```
+
+### File Types
+
+- **Mission Results**: JSON files with structured mission outcomes
+- **Conversations**: JSONL files for shared conversation history
+- **Session Contexts**: JSONL files for provider-specific conversations
+- **Stream Files**: Markdown files with real-time conversation streams
+- **Mission Index**: JSONL file with searchable mission run metadata
+
+## Mission Index System
+
+### JSONL Mission Index
+
+The `index.jsonl` file contains one JSON object per line, enabling efficient append operations:
+
+```jsonl
+{"id":"recon-api-security-2025-06-16-14-30-22","mission_type":"recon","subject":"API Security","subject_slug":"api-security","timestamp":"2025-06-16-14-30-22","mission_prompt":"What are API security best practices?","providers":["gemini","openai","anthropic"],"result_files":{"main":"/path/to/result.json","summary":"/path/to/summary.md"},"created_at":"2025-06-16T14:30:22.123456"}
+```
+
+### Mission Discovery
+
+- **List by Type**: Filter mission runs by mission type (brainstorm, recon, query, review)
+- **Full-Text Search**: Search across subjects, prompts, and mission IDs
+- **Chronological**: Mission runs automatically sorted by timestamp (newest first)
+- **Rebuild**: Reconstruct index from existing files when needed
+
+## Mission Architecture
+
+### Conversation History Patterns
+
+#### Brainstorm (Shared History)
+
+- All providers see shared conversation in `conversations/brainstorm-{subject}.jsonl`
+- Group forum dynamics with cross-provider awareness
+- Each round builds on all previous responses
+
+#### Recon (Segregated History)
+
+- Each provider maintains private conversation in `missions/mission-recon-{timestamp}/{provider}-context.jsonl`
+- Complete provider isolation prevents cross-contamination
+- Independent intelligence gathering for unbiased comparison
+
+#### Review (Iterative History)
+
+- Provider-specific conversation history in `missions/mission-review-{timestamp}/{provider}-context.jsonl`
+- Iterative code review conversations with context building
+- Each provider builds on their own review history
+
+#### Query (Stateless)
+
+- No conversation history maintained
+- Each execution is completely independent
+- Pure request-response pattern
+
+### Real-Time Streaming
+
+Watch live conversations with `tail -f`:
+
+```bash
+# Watch specific provider
+tail -f ~/claude-command/streams/recon-api-security-2025-06-16-14-30-22-gemini.md
+
+# Watch summary
+tail -f ~/claude-command/streams/recon-api-security-2025-06-16-14-30-22-summary.md
+
+# Multi-pane viewing (tmux commands provided in summary files)
+```
+
+## Configuration
+
+### Environment Variables
+
+- `GEMINI_API_KEY` - Gemini API key
+- `OPENAI_API_KEY` - OpenAI API key
+- `ANTHROPIC_API_KEY` - Anthropic API key
+- `CONVERSATIONS_DIR` - Base directory (default: `~/claude-command`)
+- `DEFAULT_TEMPERATURE` - Default temperature (default: 0.7)
+
+### Default Models
+
+- **Gemini**: `gemini-2.0-flash-exp`
+- **OpenAI**: `gpt-4`
+- **Anthropic**: `claude-3-5-sonnet-20241022`
+
+## Development
+
+### Project Structure
+
+```tree
+src/claude_command/
+├── server.py                    # MCP server with session management tools
+├── settings.py                  # Configuration management
+├── missions/                    # Mission implementations
+│   ├── brainstorm.py           # Shared conversation missions
+│   ├── recon.py                # Segregated conversation missions
+│   ├── query.py                # Stateless query missions
+│   └── review.py               # Iterative review missions
+├── storage/                     # Storage and session management
+│   ├── manager.py              # Session index and file operations
+│   └── naming.py               # Unified naming utilities
+├── utils/                       # General utilities
+│   └── text.py                 # Text processing and slug generation
+├── streaming.py                 # Real-time streaming infrastructure
+├── dialog/                      # Conversation management
+└── clients/                     # AI provider implementations
+```
+
+### Local Development
+
+```bash
+git clone https://github.com/shaneholloman/mcp-claude-command
+cd mcp-claude-command
+uv sync
+uv run python -m claude_command --gemini-api-key YOUR_KEY
+```
+
+### Testing
+
+Run comprehensive mission testing:
+
+```bash
+# Test all mission types with all providers
+python3 -c "
+from src.claude_command.missions.brainstorm import execute_brainstorm
+from src.claude_command.missions.recon import execute_recon
+from src.claude_command.missions.query import execute_query
+
+# Test brainstorm (shared history)
+execute_brainstorm('AI testing strategies', 'Validation approach', 'gemini,openai,anthropic', 0.3, True)
+
+# Test recon (segregated history)
+execute_recon('API security patterns', 'gemini,openai,anthropic', 0.3, True)
+
+# Test query (stateless)
+execute_query('GraphQL vs REST', 'gemini,openai,anthropic', 0.3, True)
+"
+```
+
+## Migration Ready
+
+This system is designed for seamless migration to React TypeScript + Convex:
+
+- **API-Style Naming**: Predictable patterns for database schema
+- **JSONL Format**: Efficient append operations map to database inserts
+- **Mission Index**: Ready for real-time search with Convex snapshots
+- **Structured Data**: JSON mission results translate directly to database records
+
+## Requirements
+
+- Claude Code CLI (will NOT work with Claude Desktop)
+- At least one API key (Gemini, OpenAI, or Anthropic)
+- Python 3.10+
+- uv package manager
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
