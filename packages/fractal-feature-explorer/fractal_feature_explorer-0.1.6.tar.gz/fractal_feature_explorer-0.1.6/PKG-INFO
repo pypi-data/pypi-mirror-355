@@ -1,0 +1,33 @@
+Metadata-Version: 2.4
+Name: fractal-feature-explorer
+Version: 0.1.6
+Project-URL: homepage, https://github.com/fractal-analytics-platform/fractal-feature-explorer
+Project-URL: repository, https://github.com/fractal-analytics-platform/fractal-feature-explorer
+Author-email: lorenzo <lorenzo.cerrone@uzh.ch>
+License: BSD-3-Clause
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Typing :: Typed
+Requires-Python: <3.13,>=3.12
+Requires-Dist: matplotlib
+Requires-Dist: ngio<0.4.0,>=0.3.2
+Requires-Dist: orjson
+Requires-Dist: plotly
+Requires-Dist: rich
+Requires-Dist: streamlit
+Requires-Dist: urllib3
+Provides-Extra: dev
+Requires-Dist: devtools; extra == 'dev'
+Requires-Dist: notebook; extra == 'dev'
+Requires-Dist: pre-commit; extra == 'dev'
+Requires-Dist: psrecord[plot]; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Requires-Dist: watchdog; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: devtools; extra == 'test'
+Requires-Dist: pytest; extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
