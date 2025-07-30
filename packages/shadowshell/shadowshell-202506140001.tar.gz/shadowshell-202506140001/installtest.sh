@@ -1,0 +1,4 @@
+#!/bin/bash
+# author: shadow shell
+
+python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps shadowshell --upgrade
