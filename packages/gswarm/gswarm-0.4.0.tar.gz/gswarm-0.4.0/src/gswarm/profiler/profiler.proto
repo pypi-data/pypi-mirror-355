@@ -1,0 +1,161 @@
+syntax = "proto3";
+
+package gswarm_profiler;
+
+// Message definitions
+message GPUInfo {
+    int32 physical_idx = 1;
+    string name = 2;
+}
+
+message InitialInfo {
+    string hostname = 1;
+    repeated GPUInfo gpus = 2;
+}
+
+message GPUMetric {
+    int32 physical_idx = 1;
+    string name = 2;
+    double gpu_util = 3;
+    double mem_util = 4;
+    double dram_bw_gbps_rx = 5;
+    double dram_bw_gbps_tx = 6;
+    double nvlink_bw_gbps_rx = 7;
+    double nvlink_bw_gbps_tx = 8;
+}
+
+message P2PLink {
+    int32 local_gpu_physical_id = 1;
+    string local_gpu_name = 2;
+    int32 remote_gpu_physical_id = 3;
+    string remote_gpu_name = 4;
+    string type = 5;
+    double aggregated_max_bandwidth_gbps = 6;
+}
+
+// New message for system metrics
+message SystemMetrics {
+    double dram_util = 1;  // System RAM utilization percentage
+    double disk_util = 2;  // Disk utilization percentage
+}
+
+message MetricsUpdate {
+    string hostname = 1;
+    repeated GPUMetric gpus_metrics = 2;
+    repeated P2PLink p2p_links = 3;
+    SystemMetrics system_metrics = 4;  // Add system metrics
+    double timestamp = 5;  // Unix timestamp when the metrics were collected
+}
+
+message ConnectResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message StatusResponse {
+    int32 freq = 1;
+    bool enable_bandwidth_profiling = 2;
+    bool enable_nvlink_profiling = 3;
+    bool is_profiling = 4;
+    string output_filename = 5;
+    int32 frame_id_counter = 6;
+    repeated string connected_clients = 7;
+    string active_sessions_json = 8;  // JSON string with detailed session info
+}
+
+message StartProfilingRequest {
+    string name = 1;
+    repeated string report_metrics = 2;
+}
+
+message StartProfilingResponse {
+    bool success = 1;
+    string message = 2;
+    string output_file = 3;
+}
+
+message StopProfilingRequest {
+    string name = 1;  // Optional: if not provided, stops all sessions
+}
+
+message StopProfilingResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message Empty {}
+
+// Missing message types
+message ReadClusterStatusRequest {}
+
+message ReadNodeStatusRequest {
+    string node_id = 1;
+}
+
+message NodeStatus {
+    string node_id = 1;
+    repeated GPUStatus gpus = 2;
+}
+
+message GPUStatus {
+    int32 gpu_id = 1;
+    double utilization = 2;
+    int64 memory_used = 3;
+    int64 memory_total = 4;
+    double dram_bandwidth = 5;
+    double nvlink_bandwidth = 6;
+    double temperature = 7;
+    double power = 8;
+}
+
+message ClusterStatusResponse {
+    bool success = 1;
+    string message = 2;
+    string cluster_id = 3;
+    repeated NodeStatus nodes = 4;
+}
+
+message NodeStatusResponse {
+    bool success = 1;
+    string message = 2;
+    NodeStatus node_status = 3;
+}
+
+message SetBandwidthProfilingRequest {
+    bool enable = 1;
+}
+
+message SetBandwidthProfilingResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message SetNVLinkProfilingRequest {
+    bool enable = 1;
+}
+
+message SetNVLinkProfilingResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Service definition
+service ProfilerService {
+    // Client connects and sends initial info, then streams metrics
+    rpc Connect(InitialInfo) returns (ConnectResponse);
+    
+    // Client streams metrics to head node
+    rpc StreamMetrics(stream MetricsUpdate) returns (Empty);
+    
+    // Head node control endpoints
+    rpc GetStatus(Empty) returns (StatusResponse);
+    rpc StartProfiling(StartProfilingRequest) returns (StartProfilingResponse);
+    rpc StopProfiling(StopProfilingRequest) returns (StopProfilingResponse);
+    rpc Exit(Empty) returns (Empty);
+    
+    // Missing service methods
+    rpc ReadClusterStatus(ReadClusterStatusRequest) returns (ClusterStatusResponse);
+    rpc ReadNodeStatus(ReadNodeStatusRequest) returns (NodeStatusResponse);
+    rpc SetBandwidthProfiling(SetBandwidthProfilingRequest) returns (SetBandwidthProfilingResponse);
+    rpc SetNVLinkProfiling(SetNVLinkProfilingRequest) returns (SetNVLinkProfilingResponse);
+} 
