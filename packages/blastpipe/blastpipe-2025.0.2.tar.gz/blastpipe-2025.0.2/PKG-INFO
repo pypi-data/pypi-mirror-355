@@ -1,0 +1,186 @@
+Metadata-Version: 2.3
+Requires-Python: >=3.10, <3.14
+Name: blastpipe
+Version: 2025.0.2
+Author: Eden Ross Duff MSc
+Author-email: help@oziproject.dev
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Intended Audience :: Other Audience
+Classifier: Natural Language :: English
+Classifier: Typing :: Typed
+Classifier: Environment :: Other Environment
+License-File: LICENSE.txt
+License: Apache-2.0
+Summary: OZI Project utility library.
+Provides-Dist: msgspec
+Provides-Extra: ci
+Requires-Dist: tox>4; extra=="ci"
+Requires-Dist: tox-gh>1.2; extra=="ci"
+Provides-Extra: fix
+Requires-Dist: black; extra=="fix"
+Requires-Dist: ruff>=0.1.6; extra=="fix"
+Requires-Dist: autoflake; extra=="fix"
+Requires-Dist: isort; extra=="fix"
+Provides-Extra: dev
+Requires-Dist: python-semantic-release; extra=="dev"
+Requires-Dist: sigstore; extra=="dev"
+Requires-Dist: cibuildwheel; extra=="dev"
+Requires-Dist: twine; extra=="dev"
+Requires-Dist: Flake8-pyproject; extra=="dev"
+Requires-Dist: bandit[toml]; extra=="dev"
+Requires-Dist: black; extra=="dev"
+Requires-Dist: flake8; extra=="dev"
+Requires-Dist: flake8-annotations; extra=="dev"
+Requires-Dist: flake8-broken-line; extra=="dev"
+Requires-Dist: flake8-bugbear; extra=="dev"
+Requires-Dist: flake8-comprehensions; extra=="dev"
+Requires-Dist: flake8-datetimez; extra=="dev"
+Requires-Dist: flake8-docstring-checker; extra=="dev"
+Requires-Dist: flake8-eradicate; extra=="dev"
+Requires-Dist: flake8-fixme; extra=="dev"
+Requires-Dist: flake8-leading-blank-lines; extra=="dev"
+Requires-Dist: flake8-no-pep420; extra=="dev"
+Requires-Dist: flake8-pyi; extra=="dev"
+Requires-Dist: flake8-pytest-style; extra=="dev"
+Requires-Dist: flake8-quotes; extra=="dev"
+Requires-Dist: flake8-tidy-imports; extra=="dev"
+Requires-Dist: flake8-type-checking; extra=="dev"
+Requires-Dist: isort; extra=="dev"
+Requires-Dist: mypy; extra=="dev"
+Requires-Dist: pyright; extra=="dev"
+Requires-Dist: readme-renderer; extra=="dev"
+Requires-Dist: coverage[toml]; extra=="dev"
+Requires-Dist: pytest; extra=="dev"
+Requires-Dist: hypothesis[all]; extra=="dev"
+Requires-Dist: pytest-asyncio; extra=="dev"
+Requires-Dist: pytest-cov; extra=="dev"
+Requires-Dist: pytest-randomly; extra=="dev"
+Requires-Dist: pytest-tcpclient; extra=="dev"
+Requires-Dist: pytest-xdist; extra=="dev"
+Provides-Extra: dist
+Requires-Dist: python-semantic-release; extra=="dist"
+Requires-Dist: sigstore; extra=="dist"
+Requires-Dist: cibuildwheel; extra=="dist"
+Requires-Dist: twine; extra=="dist"
+Provides-Extra: lint
+Requires-Dist: Flake8-pyproject; extra=="lint"
+Requires-Dist: bandit[toml]; extra=="lint"
+Requires-Dist: black; extra=="lint"
+Requires-Dist: flake8; extra=="lint"
+Requires-Dist: flake8-annotations; extra=="lint"
+Requires-Dist: flake8-broken-line; extra=="lint"
+Requires-Dist: flake8-bugbear; extra=="lint"
+Requires-Dist: flake8-comprehensions; extra=="lint"
+Requires-Dist: flake8-datetimez; extra=="lint"
+Requires-Dist: flake8-docstring-checker; extra=="lint"
+Requires-Dist: flake8-eradicate; extra=="lint"
+Requires-Dist: flake8-fixme; extra=="lint"
+Requires-Dist: flake8-leading-blank-lines; extra=="lint"
+Requires-Dist: flake8-no-pep420; extra=="lint"
+Requires-Dist: flake8-pyi; extra=="lint"
+Requires-Dist: flake8-pytest-style; extra=="lint"
+Requires-Dist: flake8-quotes; extra=="lint"
+Requires-Dist: flake8-tidy-imports; extra=="lint"
+Requires-Dist: flake8-type-checking; extra=="lint"
+Requires-Dist: isort; extra=="lint"
+Requires-Dist: mypy; extra=="lint"
+Requires-Dist: pyright; extra=="lint"
+Requires-Dist: readme-renderer; extra=="lint"
+Provides-Extra: test
+Requires-Dist: coverage[toml]; extra=="test"
+Requires-Dist: pytest; extra=="test"
+Requires-Dist: hypothesis[all]; extra=="test"
+Requires-Dist: pytest-asyncio; extra=="test"
+Requires-Dist: pytest-cov; extra=="test"
+Requires-Dist: pytest-randomly; extra=="test"
+Requires-Dist: pytest-tcpclient; extra=="test"
+Requires-Dist: pytest-xdist; extra=="test"
+Description-Content-Type: text/x-rst
+
+
+.. OZI
+  Classifier: License-Expression :: Apache-2.0 WITH LLVM-exception
+  Classifier: License-File :: LICENSE.txt
+
+.. README.rst
+   Part of the OZI Project, under the Apache License v2.0 with LLVM Exceptions.
+   See LICENSE.txt for license information.
+
+=========
+blastpipe
+=========
+
+|ozi-badge| |py-version-badge| |openssf-badge| |slsa-level3-badge| |fossa-badge| |semantic-release-badge| |bandit-badge|
+
+A simple utility library, used as a slice demonstration for using
+Meson+OZI as a Python packaging management layer and for OZI Project experiments.
+
+Includes msgspec linked with mimalloc.
+
+.. image:: https://raw.githubusercontent.com/OZI-Project/brand/main/images/blastpipe-logo.svg
+  :align: left
+  :width: 90
+  :target: https://oziproject.dev/
+
+Contributing
+^^^^^^^^^^^^
+
+Contributions are what make the open source community such an amazing place to
+learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and
+create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the repository
+2. Create your Feature Branch (``git checkout -b feature/AmazingFeature``)
+3. Commit your Changes (``git commit -m 'Add some AmazingFeature'``)
+4. Push to the Branch (``git push origin feature/AmazingFeature``)
+5. Open a Pull Request
+
+Bug Reports
+^^^^^^^^^^^
+
+1. Create an issue with the tag "bug" with a descriptive title stating the issue succinctly.
+2. Fill out the issue template with the information requested.
+
+If you have any proposed changes related to a bug, if an Issue has not been created please
+complete the above instructions.
+The next steps are similar to the steps needed to create a feature pull request.
+
+License
+^^^^^^^
+
+blastpipe is released under the terms of the 2.0 version of the Apache License
+with LLVM exception.
+
+.. image:: https://raw.githubusercontent.com/sigstore/community/main/artwork/badge/sigstore_codesigned_purple.png
+ :align: right
+ :height: 140
+ :target: https://www.sigstore.dev/
+
+.. |py-version-badge| image:: https://img.shields.io/pypi/pyversions/ozi
+    :alt: PyPI - Python Version
+.. |slsa-level3-badge| image:: https://slsa.dev/images/gh-badge-level3.svg
+.. |fossa-badge| image:: https://app.fossa.com/api/projects/git%2Bgithub.com%2Frjdbcm%2Fblastpipe.svg?type=shield
+    :target: https://app.fossa.com/projects/git%2Bgithub.com%2Frjdbcm%2Fblastpipe?ref=badge_large
+    :alt: License Compliance
+.. |openssf-badge| image:: https://bestpractices.coreinfrastructure.org/projects/7515/badge
+    :target: https://bestpractices.coreinfrastructure.org/projects/7515
+    :alt: Open Source Security Foundation self-certification status
+.. |semantic-release-badge| image:: https://img.shields.io/badge/semantic--release-gitmoji-e10079?logo=semantic-release
+    :target: https://github.com/python-semantic-release/python-semantic-release
+    :alt: Automatic Semantic Versioning for Python projects
+.. |bandit-badge| image:: https://img.shields.io/badge/security-%E2%9C%94%20bandit-yellow.svg
+    :target: https://github.com/PyCQA/bandit
+    :alt: Security Status
+.. |ozi-badge| image:: https://raw.githubusercontent.com/OZI-Project/brand/main/images/ozi-badge.svg
+    :target: https://oziproject.dev
+    :alt: OZI Project

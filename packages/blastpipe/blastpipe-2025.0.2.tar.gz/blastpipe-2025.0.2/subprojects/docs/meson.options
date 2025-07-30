@@ -1,0 +1,42 @@
+# Copyright 2023 Ross J. Duff MSc
+# The copyright holder licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+
+#   http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+option('highlight_language'     , type: 'string' , value: 'python3')
+option('autodoc_typehints'      , type: 'string' , value: 'description')
+option('autodoc_class_signature', type: 'string' , value: 'separated')
+option('add_module_names'    , type: 'boolean', value: true)
+option('html_show_sphinx'    , type: 'boolean', value: false)
+option('gettext_compact'     , type: 'boolean', value: false)
+option('numfig'              , type: 'boolean', value: true)
+option('python_display_short_literal_types' ,
+                               type: 'boolean', value: true)
+option('html_theme'        , type: 'string' , value: 'sphinxawesome_theme')
+option('locale_dirs'       , type: 'array'  , value: ['locale/'])  # path is example but recommended.
+option('html_static_path'  , type: 'array'  , value: ['_static'])
+option('templates_path'    , type: 'array'  , value: ['_templates'])
+option('exclude_patterns'  , type: 'array'  , value: ['_build', 'Thumbs.db', '.DS_Store'])
+option('sphinx_ext'        , type: 'array'  ,
+value: ['sphinx.ext.autodoc',
+        'sphinx.ext.autosectionlabel',
+        'sphinx.ext.autosummary',
+        'sphinx.ext.coverage',
+        'sphinx.ext.doctest',
+        'sphinx.ext.duration',
+        'sphinx.ext.extlinks',
+        'sphinx.ext.githubpages',
+        'sphinx.ext.ifconfig',
+        'sphinx.ext.napoleon',
+        'sphinx.ext.todo',
+        'sphinx.ext.viewcode',
+        'sphinxawesome_theme.highlighting'])
