@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: deepforest-modal-app
+Version: 0.1.0
+Summary: Modal app for training and inference of DeepForest models
+Author-email: Martí Bosch <marti.bosch@epfl.ch>
+License: GPL-3.0
+Project-URL: Repository, https://github.com/martibosch/deepforest-modal-app
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: modal
+Requires-Dist: geopandas>=1.0.0
+Requires-Dist: rasterio>=1.0.0
+Provides-Extra: dev
+Requires-Dist: build; extra == "dev"
+Requires-Dist: commitizen; extra == "dev"
+Requires-Dist: pip; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: toml; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Provides-Extra: doc
+Requires-Dist: myst-parser; extra == "doc"
+Requires-Dist: nbsphinx; extra == "doc"
+Requires-Dist: pydata-sphinx-theme; extra == "doc"
+Requires-Dist: sphinx; extra == "doc"
+Requires-Dist: sphinxemoji; extra == "doc"
+Provides-Extra: test
+Requires-Dist: coverage[toml]; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: ruff; extra == "test"
+Dynamic: license-file
+
+[![PyPI version fury.io](https://badge.fury.io/py/deepforest-modal-app.svg)](https://pypi.python.org/pypi/deepforest-modal-app/)
+[![Documentation Status](https://readthedocs.org/projects/deepforest-modal-app/badge/?version=latest)](https://deepforest-modal-app.readthedocs.io/en/latest/?badge=latest)
+[![CI/CD](https://github.com/martibosch/deepforest-modal-app/actions/workflows/tests.yml/badge.svg)](https://github.com/martibosch/deepforest-modal-app/blob/main/.github/workflows/tests.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/martibosch/deepforest-modal-app/main.svg)](https://results.pre-commit.ci/latest/github/martibosch/deepforest-modal-app/main)
+[![GitHub license](https://img.shields.io/github/license/martibosch/deepforest-modal-app.svg)](https://github.com/martibosch/deepforest-modal-app/blob/main/LICENSE)
+
+# DeepForest modal app
+
+Modal app for *serverless* [DeepForest](https://github.com/weecology/DeepForest) model inference, training/fine tuning of tree crown detection and species classification models.
+
+See [an example notebook showcasing the features using the TreeAI Database](https://deepforest-modal-app.readthedocs.io/en/latest/treeai-example.html)
+
+![comparison](https://github.com/martibosch/deepforest-modal-app/raw/main/docs/figures/comparison.png)
+*Example annotations from the TreeAI Database (left), predictions with the DeepForest pre-trained tree crown model (center) and with the fine-tuned model (right).*
+
+## Installation
+
+```bash
+pip install deepforest-modal-app
+```
+
+## Acknowledgements
+
+- A big thank you to [Charles Frye](https://github.com/charlesfrye) and [Thomas Capelle](https://github.com/tcapelle) for helping me to get started with [Modal](https://modal.com).
+- This package was created with the [martibosch/cookiecutter-geopy-package](https://github.com/martibosch/cookiecutter-geopy-package) project template.
