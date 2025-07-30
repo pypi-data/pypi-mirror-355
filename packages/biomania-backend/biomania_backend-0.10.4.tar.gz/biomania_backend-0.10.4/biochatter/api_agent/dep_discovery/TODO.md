@@ -1,0 +1,7 @@
+- [x] unitary
+- [ ] binary
+- [x] use AST as interface 
+- [x] construct API dependency graph
+- [ ] convert API calling codes into dependency graph json
+- [ ] logging to file
+- [x] test if an edge is optional

@@ -1,0 +1,567 @@
+{
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+        {
+            "api": "sc.pp.neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_pca\"]",
+                "adata.varm[\"PCs\"]",
+                "adata.uns[\"pca\"]",
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"distances\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "id": "sc.pp.neighbors"
+        },
+        {
+            "api": "sc.tl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_umap\"]",
+                "adata.uns[\"umap\"]"
+            ],
+            "id": "sc.tl.umap"
+        },
+        {
+            "api": "sc.pl.scatter",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "id": "sc.pl.scatter"
+        },
+        {
+            "api": "sc.tl.leiden",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"leiden\"]",
+                "adata.uns[\"leiden\"]"
+            ],
+            "id": "sc.tl.leiden"
+        },
+        {
+            "api": "sc.pl.umap",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "id": "sc.pl.umap"
+        },
+        {
+            "api": "sc.tl.louvain",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obs[\"louvain\"]",
+                "adata.uns[\"louvain\"]"
+            ],
+            "id": "sc.tl.louvain"
+        },
+        {
+            "api": "sc.pl.heatmap",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "var_names": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "var_names": "list",
+                "groupby": "str"
+            },
+            "id": "sc.pl.heatmap"
+        },
+        {
+            "api": "sc.pl.dotplot",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "var_names": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "var_names": "list",
+                "groupby": "str"
+            },
+            "id": "sc.pl.dotplot"
+        },
+        {
+            "api": "sc.pl.violin",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "keys": [
+                    "TMSB4X",
+                    "MALAT1",
+                    "B2M"
+                ],
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "keys": "list",
+                "groupby": "str"
+            },
+            "id": "sc.pl.violin"
+        },
+        {
+            "api": "sc.pl.dendrogram",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "id": "sc.pl.dendrogram"
+        },
+        {
+            "api": "sc.tl.diffmap",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.obsm[\"X_diffmap\"]",
+                "adata.uns[\"diffmap_evals\"]"
+            ],
+            "id": "sc.tl.diffmap"
+        },
+        {
+            "api": "sc.pl.diffmap",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "id": "sc.pl.diffmap"
+        },
+        {
+            "api": "sc.pp.log1p",
+            "prep": "",
+            "args": {
+                "data": "adata"
+            },
+            "arg_types": {
+                "data": "object"
+            },
+            "produce": [
+                "adata.X"
+            ],
+            "special": [
+                1
+            ],
+            "id": "sc.pp.log1p"
+        },
+        {
+            "api": "sc.pp.highly_variable_genes",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "produce": [
+                "adata.var[\"highly_variable\"]",
+                "adata.var[\"means\"]",
+                "adata.var[\"dispersions\"]",
+                "adata.var[\"dispersions_norm\"]",
+                "adata.var[\"variances\"]",
+                "adata.var[\"variances_norm\"]",
+                "adata.var[\"highly_variable_rank\"]",
+                "adata.var[\"highly_variable_nbatches\"]",
+                "adata.var[\"highly_variable_intersection\"]"
+            ],
+            "_comment": "These products are curated from doc, from 'variances' to the end are actually non-existent.Products are not always fully generated, such as the current case.When testing dependencies, results would show non-existent dependencies. Although we already fixed this problem in dependency finder program,this is still a problematic software design making return values unclear and unfixed.We should encourage fixed api name, arguments and return values.In the meanwhile, returning an object is acceptable only if it is fixed.Note that we hope products can be automatically extracted from doc through LLM.If doc provides vague information products, then we believe it is poorly designed.",
+            "id": "sc.pp.highly_variable_genes"
+        },
+        {
+            "api": "sc.pl.highly_variable_genes",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "id": "sc.pl.highly_variable_genes"
+        },
+        {
+            "api": "sc.pl.pca",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "color": "louvain"
+            },
+            "arg_types": {
+                "adata": "object",
+                "color": "str"
+            },
+            "id": "sc.pl.pca"
+        },
+        {
+            "api": "sc.tl.embedding_density",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "produce": [
+                "adata.obs[\"umap_density\"]",
+                "adata.uns[\"umap_density_params\"]"
+            ],
+            "id": "sc.tl.embedding_density"
+        },
+        {
+            "api": "sc.pl.embedding_density",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "basis": "umap"
+            },
+            "arg_types": {
+                "adata": "object",
+                "basis": "str"
+            },
+            "id": "sc.pl.embedding_density"
+        },
+        {
+            "api": "sc.tl.rank_genes_groups",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "produce": [
+                "adata.uns[\"rank_genes_groups\"]"
+            ],
+            "id": "sc.tl.rank_genes_groups"
+        },
+        {
+            "api": "sc.pl.rank_genes_groups_dotplot",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "id": "sc.pl.rank_genes_groups_dotplot"
+        },
+        {
+            "api": "sc.pl.correlation_matrix",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "groupby": "leiden"
+            },
+            "arg_types": {
+                "adata": "object",
+                "groupby": "str"
+            },
+            "id": "sc.pl.correlation_matrix"
+        },
+        {
+            "id": "root"
+        }
+    ],
+    "edges": [
+        {
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "source": "sc.pp.neighbors",
+            "target": "sc.tl.umap",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "source": "sc.pp.neighbors",
+            "target": "sc.tl.leiden",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "source": "sc.pp.neighbors",
+            "target": "sc.tl.louvain",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.uns[\"neighbors\"]",
+                "adata.obsp[\"connectivities\"]"
+            ],
+            "source": "sc.pp.neighbors",
+            "target": "sc.tl.diffmap",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.obsm[\"X_pca\"]"
+            ],
+            "source": "sc.pp.neighbors",
+            "target": "sc.pl.pca",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.obsm[\"X_umap\"]"
+            ],
+            "source": "sc.tl.umap",
+            "target": "sc.pl.scatter",
+            "optional": true,
+            "arg": "basis=umap"
+        },
+        {
+            "depend_on": [
+                "adata.obsm[\"X_umap\"]"
+            ],
+            "source": "sc.tl.umap",
+            "target": "sc.pl.umap",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.obsm[\"X_umap\"]"
+            ],
+            "source": "sc.tl.umap",
+            "target": "sc.tl.embedding_density",
+            "optional": true,
+            "arg": "basis=umap"
+        },
+        {
+            "depend_on": [
+                "adata.obsm[\"X_umap\"]"
+            ],
+            "source": "sc.tl.umap",
+            "target": "sc.pl.embedding_density",
+            "optional": true,
+            "arg": "basis=umap"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"leiden\"]"
+            ],
+            "source": "sc.tl.leiden",
+            "target": "sc.pl.umap",
+            "optional": true,
+            "arg": "color=leiden"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"leiden\"]"
+            ],
+            "source": "sc.tl.leiden",
+            "target": "sc.pl.diffmap",
+            "optional": true,
+            "arg": "color=leiden"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"leiden\"]"
+            ],
+            "source": "sc.tl.leiden",
+            "target": "sc.tl.rank_genes_groups",
+            "optional": true,
+            "arg": "groupby=leiden"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"leiden\"]"
+            ],
+            "source": "sc.tl.leiden",
+            "target": "sc.pl.rank_genes_groups_dotplot",
+            "optional": true,
+            "arg": "groupby=leiden"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"leiden\"]"
+            ],
+            "source": "sc.tl.leiden",
+            "target": "sc.pl.correlation_matrix",
+            "optional": true,
+            "arg": "groupby=leiden"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ],
+            "source": "sc.tl.louvain",
+            "target": "sc.pl.heatmap",
+            "optional": true,
+            "arg": "groupby=louvain"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ],
+            "source": "sc.tl.louvain",
+            "target": "sc.pl.dotplot",
+            "optional": true,
+            "arg": "groupby=louvain"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ],
+            "source": "sc.tl.louvain",
+            "target": "sc.pl.violin",
+            "optional": true,
+            "arg": "groupby=louvain"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ],
+            "source": "sc.tl.louvain",
+            "target": "sc.pl.dendrogram",
+            "optional": true,
+            "arg": "groupby=louvain"
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"louvain\"]"
+            ],
+            "source": "sc.tl.louvain",
+            "target": "sc.pl.pca",
+            "optional": true,
+            "arg": "color=louvain"
+        },
+        {
+            "depend_on": [
+                "adata.obsm[\"X_diffmap\"]"
+            ],
+            "source": "sc.tl.diffmap",
+            "target": "sc.pl.diffmap",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.X"
+            ],
+            "source": "sc.pp.log1p",
+            "target": "sc.pp.highly_variable_genes",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.X"
+            ],
+            "source": "sc.pp.log1p",
+            "target": "sc.pl.highly_variable_genes",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.var[\"dispersions_norm\"]",
+                "adata.var[\"highly_variable\"]",
+                "adata.var[\"means\"]",
+                "adata.var[\"dispersions\"]"
+            ],
+            "source": "sc.pp.highly_variable_genes",
+            "target": "sc.pl.highly_variable_genes",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.obs[\"umap_density\"]",
+                "adata.uns[\"umap_density_params\"]"
+            ],
+            "source": "sc.tl.embedding_density",
+            "target": "sc.pl.embedding_density",
+            "optional": false
+        },
+        {
+            "depend_on": [
+                "adata.uns[\"rank_genes_groups\"]"
+            ],
+            "source": "sc.tl.rank_genes_groups",
+            "target": "sc.pl.rank_genes_groups_dotplot",
+            "optional": false
+        },
+        {
+            "source": "root",
+            "target": "sc.pp.neighbors",
+            "optional": false
+        },
+        {
+            "source": "root",
+            "target": "sc.pp.log1p",
+            "optional": false
+        }
+    ]
+}
