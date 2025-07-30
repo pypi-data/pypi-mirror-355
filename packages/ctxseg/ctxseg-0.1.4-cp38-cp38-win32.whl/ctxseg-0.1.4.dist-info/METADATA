@@ -1,0 +1,116 @@
+Metadata-Version: 2.1
+Name: ctxseg
+Version: 0.1.4
+Summary: Official package for Segmentation by Context (CTX-SEG)
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: mne
+
+![pypi](https://github.com/johnsonjzhou/ctxseg/actions/workflows/pypi.yml/badge.svg)
+
+# CTXSEG
+
+[Installation](#installation) | [CTXSEG](#module-ctxseg) | [CTXGEN](#module-ctxgen) | [Examples](#examples)
+
+Official repository for Segmentation by Context (CTXSEG) and Context Generation (CTXGEN).
+
+### Installation
+
+This package is available on [PyPI](https://pypi.org/project/ctxseg/).
+
+```shell
+pip install ctxseg
+```
+
+The package provides two modules:
+
+```python
+import ctxseg
+import ctxgen
+```
+
+### Comparison
+
+{% include experiments/results_table.md %}
+
+
+### Module: ctxseg
+
+CTXSEG is a method of creating variable-size segments (aka. adaptive segmentation) in multi-channel time-series signals, such as electroencephalography (EEG), by finding statistical differences in the frequency spectrum. It can be readily used in a pre-processing step of existing machine learning pipelines.
+
+Main namespaces:
+- [ctxseg.segment_signal](#ctxsegsegment_signal)
+
+#### ctxseg.segment_signal
+
+```python
+segment_signal(x: np.ndarray, w: int, s: int = 1, alpha: float = 0.05, win_fn: Union[str, np.ndarray] = "hamming", engine: Literal["c", "npy"] = "c")
+```
+
+Performs adaptive segmentation on a signal shape `(C, N)` using CTXSEG with two-sliding windows and paired t-test on log-magnitude frequency spectrum, derived from windowed FFT. `C`: is channels. `N`: is signal length.
+
+Parameters:
+- `x`: Signal as a NumPy array with shape `(C, N)`.
+- `w`: Window size (samples).
+- `s`: Stride (samples).
+- `alpha`: Paired t-test significance threshold for boundary discovery.
+- `win_fn`: Window function for FFT, either as a NumPy array or a named string compatible with [scipy.signal.windows](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.windows.get_window.html#get-window).
+- `engine`: Backend implementation: `c` (C/C++ compiled) or `npy` (Python/NumPy).
+
+Returns:
+
+- A boolean NumPy array indicating segment boundaries, shape `(C, N)`.
+
+### Module: ctxgen
+
+CTXGEN is a synthetic signal generator, that uses multiple leaky integrate-and-fire (LIF) spiking neuron model, based on user-definable signal characteristics while maintaining the randomness of real EEG signals.
+
+Main namespaces:
+- [ctxgen.CtxGen](#ctxgenctxgen)
+- [ctxgen.CtxGen.generate_signal](#ctxgenctxgengenerate_signal)
+
+### ctxgen.CtxGen
+
+```python
+CtxGen(n_neurons: int = 500, sfreq: int = 256, sfreq_gen: int = 2048, v_thresh: int = 24, tau: float = 0.02, verbose: bool = True)
+```
+
+`CtxGen` constructor.
+
+Parameters:
+- `n_neurons`: Number of LIF models to use.
+- `sfreq`: Output sample frequency (Hz).
+- `sfreq_gen`: Internal sample frequency for signal generation (Hz).
+- `v_thresh`: Threshold for resetting membrane potential.
+- `tau`: Time constant.
+
+### ctxgen.CtxGen.generate_signal
+
+```python
+generate_signal(states: List[Tuple[int, int]], pad: int = 8, seed: int = 42, as_raw: bool = True)
+```
+
+Generate the signal by supplying signal characteristics in the form of context states, which are tuples of firing rate and time duration.
+
+Parameters:
+- `states`: Context states as a list of tuple(firing rate in Hz, duration in secs). For example, `[(2, 360), (40, 1)]` means 2 Hz for 360 secs then 40 Hz for 1 sec.
+- `pad`: Amount of seconds to pad each state to avoid artifacts.
+- `seed`: Random seed.
+- `as_raw`: Return the signal as a [mne.io.Raw](https://mne.tools/stable/generated/mne.io.Raw.html).
+
+Returns, either:
+- [mne.io.Raw](https://mne.tools/stable/generated/mne.io.Raw.html) if `as_raw=True`, or
+- Tuple of (signal, firing_rates), both as NumPy arrays, if `as_raw=False`.
+
+### Examples
+
+Code examples are available in `/tests`.
+
+Below is a performance comparison between backend implementations while segmenting a 6 minute signal on Apple M2 Max. [[Source](/tests/test_ctxseg.py)]
+
+```
+C engine took: 0.195 secs
+NumPy engine took: 3.108 secs
+```
