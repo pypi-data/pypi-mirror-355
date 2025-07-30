@@ -1,0 +1,70 @@
+use {
+    crate::*,
+    gluesql_core::{ast::DataType, data::Literal, error::ValueError, prelude::Value},
+    std::borrow::Cow,
+};
+
+test_case!(types, {
+    let g = get_tester!();
+
+    g.run("CREATE TABLE TableB (id BOOLEAN);").await;
+    g.run("CREATE TABLE TableC (uid INTEGER NOT NULL, null_val INTEGER NULL);")
+        .await;
+    g.run("INSERT INTO TableB VALUES (FALSE);").await;
+    g.run("INSERT INTO TableC VALUES (1, NULL);").await;
+
+    let test_cases = [
+        (
+            "INSERT INTO TableB SELECT uid FROM TableC;",
+            Err(ValueError::IncompatibleDataType {
+                data_type: DataType::Boolean,
+                value: Value::I64(1),
+            }
+            .into()),
+        ),
+        (
+            "INSERT INTO TableC (uid) VALUES ('A')",
+            Err(ValueError::IncompatibleLiteralForDataType {
+                data_type: DataType::Int,
+                literal: format!("{:?}", Literal::Text(Cow::Owned("A".to_owned()))),
+            }
+            .into()),
+        ),
+        (
+            "INSERT INTO TableC VALUES (NULL, 30);",
+            Err(ValueError::NullValueOnNotNullField.into()),
+        ),
+        (
+            "INSERT INTO TableC SELECT null_val FROM TableC;",
+            Err(ValueError::NullValueOnNotNullField.into()),
+        ),
+        (
+            "UPDATE TableC SET uid = TRUE;",
+            Err(ValueError::IncompatibleLiteralForDataType {
+                data_type: DataType::Int,
+                literal: format!("{:?}", Literal::Boolean(true)),
+            }
+            .into()),
+        ),
+        (
+            "UPDATE TableC SET uid = (SELECT id FROM TableB LIMIT 1) WHERE uid = 1",
+            Err(ValueError::IncompatibleDataType {
+                data_type: DataType::Int,
+                value: Value::Bool(false),
+            }
+            .into()),
+        ),
+        (
+            "UPDATE TableC SET uid = NULL;",
+            Err(ValueError::NullValueOnNotNullField.into()),
+        ),
+        (
+            "UPDATE TableC SET uid = (SELECT null_val FROM TableC);",
+            Err(ValueError::NullValueOnNotNullField.into()),
+        ),
+    ];
+
+    for (sql, expected) in test_cases {
+        g.test(sql, expected).await;
+    }
+});
