@@ -1,0 +1,10 @@
+[console_scripts]
+iolanta=iolanta.cli:app
+sparqlspace=iolanta.sparqlspace.cli:app
+
+[iolanta.plugins]
+base=iolanta:IolantaBase
+
+[rdf.plugins.queryprocessor]
+sparqlspace=iolanta.sparqlspace.processor:GlobalSPARQLProcessor
+
