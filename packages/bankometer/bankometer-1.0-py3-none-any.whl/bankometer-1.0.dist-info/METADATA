@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: bankometer
+Version: 1.0
+Summary: A command-line tool for managing bank transactions with support for multiple banks and filters.
+Home-page: https://github.com/fantastic001/bankometer
+Author: Stefan Nožinić
+Author-email: Stefan Nožinić <stefan@lugons.org>
+License-Expression: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: piecash
+Requires-Dist: requests
+Requires-Dist: pandas
+Requires-Dist: setuptools
+Requires-Dist: orgasm-package
+Requires-Dist: lxml
+Requires-Dist: tabulate
+Requires-Dist: sqlalchemy
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+
+
+# Introduction 
+
+Bankometer is a tool for managing your bank accounts 
+
+# Bankometer Configuration and Usage Guide
+
+
+In order to get configuration parameters you can modify, execute:
+
+    python scripts/detect_function_calls.py  bankometer/ get_config_ --exclude get_config_location
+
+Every configuration parameter can be changed in configuration file and overwritten by using 
+environment variable. 
+
+For instance, `url` can be specified in configuration file and can be modified using `BANKOMETER_URL` environment variable. 
+
+Configuration file is specified using `BANKOMETER_CONFIG` and default location is at `~/.config/bankometer.json`
+
+
+# Configuration reference 
+
+| param              | type   | default                                                                                                                                                                                                                                                                      | doc                                  |
+|:-------------------|:-------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------|
+| plugin_search_path | list   | ["'/usr/local/share/' + PROJECT_NAME + '/plugins'", "'/usr/share/' + PROJECT_NAME + '/plugins'", "os.path.join(os.path.expanduser('~'), '.' + PROJECT_NAME, 'plugins')", "os.path.join(os.path.expanduser('~'), '.local', 'share', PROJECT_NAME, 'plugins')", 'os.getcwd()'] | List of plugin search paths          |
+| disabled_plugins   | list   | []                                                                                                                                                                                                                                                                           | List of plugins to disable           |
+| plugins            | list   | []                                                                                                                                                                                                                                                                           | List of plugins to load              |
+| account_aliases    | dict   | {}                                                                                                                                                                                                                                                                           | Aliases for accounts in gnucash file |
