@@ -1,0 +1,110 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ucode-sdk"
+version = "1.0.1"
+description = "UCode Python SDK - A simple and efficient way to interact with the UCode API"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Javohir Udevs", email = "javohirabdusamatov@gmail.com"}
+]
+maintainers = [
+    {name = "Javohir Udevs", email = "javohirabdusamatov@gmail.com"}
+]
+keywords = ["ucode", "api", "sdk", "rest", "client", "database", "crud", "mongodb", "postgresql"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Internet :: WWW/HTTP",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "requests>=2.25.0",
+    "urllib3>=1.26.0",
+    "paho-mqtt>=1.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.8",
+    "mypy>=0.800",
+    "twine>=3.0",
+    "wheel>=0.36",
+    "build>=0.7.0",
+]
+async = [
+    "aiohttp>=3.7.0",
+]
+test = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "pytest-mock>=3.0",
+    "responses>=0.18.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Javohir-A/ucode_sdk_python.git"
+Documentation = "https://docs.u-code.io/python-sdk"
+Repository = "https://github.com/Javohir-A/ucode_sdk_python.git"
+"Bug Reports" = "https://github.com/Javohir-A/ucode_sdk_python.git/issues"
+Changelog = "https://github.com/ucode-io/ucode-python-sdk/blob/main/CHANGELOG.md"
+"Source Code" = "https://github.com/ucode-io/ucode-python-sdk"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ucode_sdk*"]
+exclude = ["tests*", "docs*", "examples*"]
+
+[tool.setuptools.package-data]
+ucode_sdk = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers"
+testpaths = [
+    "tests",
+]
