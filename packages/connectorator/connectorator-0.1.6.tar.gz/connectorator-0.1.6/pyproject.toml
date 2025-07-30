@@ -1,0 +1,63 @@
+[project]
+name = "connectorator"
+version = "0.1.6"
+description = "Allows to connect interfaces"
+authors = [
+    {name = "m.garin",email = "m.garin@tinkoff.ru"}
+]
+license = {text = "FREE TO USE WITHOUT RESTRICTIONS"}
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "requests (>=2.32.4,<3.0.0)",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+mypy = "^1.16.0"
+ruff = "^0.11.13"
+
+[tool.black]
+line-length = 120
+
+
+[tool.ruff]
+# https://docs.astral.sh/ruff/settings
+extend-exclude = ["__init__.py"]
+line-length = 120
+lint.pydocstyle.convention = "google"
+lint.select = [
+    "N",    # pep8-naming
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "E",    # pycodestyle.error
+    "W",    # pycodestyle.warning
+    "F",    # pyflakes
+    "S",    # flake8-bandit
+    "D",    # pydocstyle
+    "I",    # isort
+    "C90",  # maccabe
+    "C4",   # flake8-comprehensions
+    "COM",  # flake8-commas
+    "DTZ",  # flake8-datetimez
+    "ERA",  # flake8-eradicate
+    "SLOT", # flake8-slots
+]
+lint.ignore = [
+    "D100",   # Missing docstring in public module
+    "D101",   # Missing docstring in public class
+    "D102",   # Missing docstring in public method
+    "D103",   # Missing docstring in public function
+    "D105",   # Missing docstring in magic method
+    "D106",   # Missing docstring in public nested class
+    "D107",   # Missing docstring in `__init__`
+    "S101",   # Use of `assert` detected
+    "S311",   # Standard pseudo-random generators are not suitable for cryptographic purposes
+    "ERA001", # Remove commented-out code
+]
+

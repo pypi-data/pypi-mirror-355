@@ -1,0 +1,29 @@
+Metadata-Version: 2.3
+Name: connectorator
+Version: 0.1.6
+Summary: Allows to connect interfaces
+License: FREE TO USE WITHOUT RESTRICTIONS
+Author: m.garin
+Author-email: m.garin@tinkoff.ru
+Requires-Python: >=3.9
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Requires-Dist: requests (>=2.32.4,<3.0.0)
+Description-Content-Type: text/markdown
+
+Allows to connect interfaces. Clutchs when cables are pluggin and unplugging.
+
+Usage:
+from connectorator import Connnector
+
+x = Connnector('et0', 'et10')
+x.status
+x.connect()
+x.disconnect()
+
