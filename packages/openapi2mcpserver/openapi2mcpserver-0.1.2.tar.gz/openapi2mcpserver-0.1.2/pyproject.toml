@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openapi2mcpserver"
+version = "0.1.2"
+authors = [
+    {name = "Jewei", email = "jiweifong@qq.com"}
+]
+description = "OpenAPI to MCP服务器，提供OpenAPI转换为MCP功能"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "fastmcp>=0.1.0",
+    "python-dotenv>=0.19.0",
+    "httpx>=0.24.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jeweis/openapi2mcpserver"
+"Bug Tracker" = "https://github.com/jeweis/openapi2mcpserver/issues"
+
+[project.scripts]
+openapi2mcpserver = "server:main"
+
+[tool.setuptools]
+packages = ["openapi2mcpserver"]
