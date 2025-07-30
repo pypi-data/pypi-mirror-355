@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "HandsON-BuildHat-API"
+version = "1.0.2"
+description = "A third-party API for controlling LEGO SPIKE devices"
+authors = [
+  { name="HandsON Technology", email="caffeine.reload@gmail.com" }
+]
+license = {text = "Proprietary - Personal/Educational Use Only"}
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "pyserial>=3.5"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourname/HandsON-BuildHat-API"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
