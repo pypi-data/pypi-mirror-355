@@ -1,0 +1,10 @@
+[console_scripts]
+devpi-clear-search-index = devpi_web.clear_index:clear_index
+
+[devpi_server]
+devpi-web = devpi_web.main
+devpi-web-whoosh = devpi_web.whoosh_index
+
+[devpi_web]
+devpi-web-null = devpi_web.null_index
+devpi-web-whoosh = devpi_web.whoosh_index

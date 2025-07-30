@@ -1,0 +1,118 @@
+
+
+=========
+Changelog
+=========
+
+
+
+
+.. towncrier release notes start
+
+5.0.1 (2025-06-15)
+==================
+
+Bug Fixes
+---------
+
+- Fix traceback during unpacking of documentation in some cases.
+
+
+
+5.0.0 (2025-06-12)
+==================
+
+Deprecations and Removals
+-------------------------
+
+- Removed ``macros.pt``, the contained macros have all been moved to separate templates. See other news entries for details.
+
+- Remove support for Python below 3.9. In the future end of life Python 3 versions aren't supported anymore.
+
+- Future releases will more often require newer devpi-server than before.
+
+
+
+Bug Fixes
+---------
+
+- Fix #930: remove remaining uses of unmaintained py library.
+
+
+
+Other Changes
+-------------
+
+- style.css: Added styling for readme/description code block / literals.
+
+- macros.pt (``navigation`` macro): Move ``breadcrumbs`` out of ``navigation`` macro to separate ``header_breadcrumbs.pt`` template.
+
+- macros.pt (``head`` macro): Move ``favicon`` out of ``head`` macro to separate ``favicon.pt`` template.
+
+- macros.pt: Move ``footer`` macro to separate ``footer.pt`` template.
+
+- macros.pt: Move ``head`` macro to separate ``head.pt`` template.
+
+- macros.pt: Move ``headcss`` macro to separate ``html_head_css.pt`` template.
+
+- macros.pt: Move ``headscript`` macro to separate ``html_head_scripts.pt`` template.
+
+- macros.pt: Move ``logo`` macro to separate ``logo.pt`` template.
+
+- macros.pt: Move ``navigation`` macro to separate ``header.pt`` template.
+
+- macros.pt: Move ``query_doc`` macro to separate ``query_doc.pt`` template.
+
+- macros.pt: Move ``rootaboveuserindexlist`` macro to separate ``root_above_user_index_list.pt`` template.
+
+- macros.pt: Move ``rootbelowuserindexlist`` macro to separate ``root_below_user_index_list.pt`` template.
+
+- macros.pt: Move ``search`` macro to separate ``header_search.pt`` template.
+
+- macros.pt: Move ``status`` macro to separate ``header_status.pt`` template.
+
+- macros.pt: Move ``statusbadge`` macro to separate ``status_badge.pt`` template.
+
+- macros.pt: Move ``versions`` macro to separate ``footer_versions.pt`` template.
+
+
+
+4.3.0 (2024-10-16)
+==================
+
+Features
+--------
+
+- index.pt, project.pt, version.pt: Fix #1062: Added a link to download the documentation as zip-file to the index, project and version view.
+
+
+
+4.2.3 (2024-09-19)
+==================
+
+Bug Fixes
+---------
+
+- Fix deprecation warnings from devpi-server 6.13.0.
+
+- Lazily evaluate file information. Especially with devpi-postgresql this safes many database accesses on most pages.
+
+- Guard against missing doczip files, which can happen on replicas during replication.
+
+- Increase threshold for index status from 60 s to 300 s for warnings and from 300 s to 3600 s for fatal.
+
+
+
+4.2.2 (2024-04-20)
+==================
+
+Bug Fixes
+---------
+
+- style.css: Always let content be full browser height. This also gives more height with some documentation themes when content is short.
+
+- style.css: set ``scrollbar-gutter: stable`` on ``body`` to prevent jumping content in documentation iframe.
+
+- Fix #970: overwrite fixed html/body heights like ``100%`` in documentation iframe content.
+
+

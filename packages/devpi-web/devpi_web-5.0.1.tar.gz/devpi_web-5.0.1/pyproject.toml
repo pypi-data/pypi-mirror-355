@@ -1,0 +1,195 @@
+# SPDX-License-Identifier: MIT
+
+[build-system]
+requires = ["setuptools", "setuptools_changelog_shortener", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+dynamic = ["version", "readme"]
+name = "devpi-web"
+description = "devpi-web: a web view for devpi-server"
+dependencies = [
+    "Whoosh<3",
+    "attrs>=22.2.0",
+    "beautifulsoup4>=4.3.2,!=4.12.1",
+    "defusedxml",
+    "devpi-server>=6.13.0",
+    "devpi-common>=4.0.0",
+    "docutils>=0.11",
+    "pygments>=1.6",
+    "pyramid>=2",
+    "pyramid-chameleon",
+    "readme-renderer[md]>=23.0",
+    "tomli; python_version < '3.11'"
+]
+license = "MIT"
+license-files = ["LICENSE"]
+maintainers = [
+    {name = "Florian Schulze", email = "mail@pyfidelity.com"}
+]
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+]
+
+
+[project.urls]
+"Bug Tracker" = "https://github.com/devpi/devpi/issues"
+"Changelog" = "https://github.com/devpi/devpi/blob/main/web/CHANGELOG"
+"Documentation" = "https://doc.devpi.net"
+"Homepage" = "https://devpi.net"
+"Source Code" = "https://github.com/devpi/devpi"
+
+
+[project.scripts]
+devpi-clear-search-index = "devpi_web.clear_index:clear_index"
+
+
+[project.entry-points.devpi_server]
+devpi-web = "devpi_web.main"
+devpi-web-whoosh = "devpi_web.whoosh_index"
+
+
+[project.entry-points.devpi_web]
+devpi-web-null = "devpi_web.null_index"
+devpi-web-whoosh = "devpi_web.whoosh_index"
+
+
+[tool.ruff]
+extend = "../pyproject.toml"
+target-version = "py39"
+
+
+[tool.ruff.format]
+exclude = [
+    "devpi_web/clear_index.py",
+    "devpi_web/config.py",
+    "devpi_web/description.py",
+    "devpi_web/doczip.py",
+    "devpi_web/hookspecs.py",
+    "devpi_web/indexing.py",
+    "devpi_web/main.py",
+    "devpi_web/null_index.py",
+    "devpi_web/views.py",
+    "devpi_web/whoosh_index.py",
+    "tests/conftest.py",
+    "tests/test_indexing.py",
+    "tests/test_main.py",
+    "tests/test_theme.py",
+    "tests/test_views.py",
+    "tests/test_views_docs.py",
+    "tests/test_views_misc.py",
+    "tests/test_views_search.py",
+    "tests/test_views_toxresults.py",
+    "tests/test_whoosh_index.py",
+]
+
+
+[tool.ruff.lint]
+extend-ignore = [
+    "A001", # cleanup later - variable name shadows builtin
+    "A002", # cleanup later - argument name shadows builtin
+    "ARG001", # maybe cleanup later - unused function argument
+    "ARG002", # maybe cleanup later - unused method argument
+    "ARG005", # maybe cleanup later - unused lambda argument
+    "B007", # maybe cleanup later
+    "B008", # cleanup later
+    "B904", # maybe cleanup later
+    "BLE001", # cleanup soon - blind exception
+    "C400", # maybe cleanup later - rewrite as list comprehension
+    "C401", # maybe cleanup later - rewrite as set comprehension
+    "C402", # maybe cleanup later - rewrite as dict comprehension
+    "C405", # cleanup soon - set literal instead of set call
+    "ERA001", # cleanup soon
+    "FBT002", # cleanup soon - boolean positional argument
+    "FIX002", # cleanup later - todo
+    "FLY002", # maybe cleanup later - f-string instead of join
+    "G002", # cleanup soon - logging statement uses %
+    "I001", # maybe cleanup later - import block unsorted
+    "PERF401", # maybe cleanup later - list comprehension
+    "PERF402", # maybe cleanup later - list copy
+    "PIE804", # cleanup later
+    "PIE808", # maybe cleanup later
+    "PLR0912", # maybe cleanup later
+    "PLR1730", # maybe cleanup later
+    "PLW2901", # maybe cleanup later
+    "PT006", # maybe cleanup later - wrong type for pytest.mark.parametrize
+    "RET502", # maybe cleanup later - implicit return None
+    "RET503", # maybe cleanup later - missing return
+    "RET504", # maybe cleanup later - unnecessary assignment before return
+    "RET505", # maybe cleanup later - unnecessary elif after return
+    "RET507", # maybe cleanup later - unnecessary elif after continue
+    "RET508", # maybe cleanup later - unnecessary else after break
+    "RUF005", # cleanup later
+    "RUF012", # cleanup later
+    "RUF100", # after soon to cleanup
+    "RSE102", # maybe cleanup later
+    "SIM102", # maybe cleanup later
+    "SIM108", # cleanup later
+    "UP004", # cleanup later - inherit from 'object'
+    "UP012", # false positives (bug in ruff?) - unnecessary utf-8 encode
+    "UP025", # maybe cleanup later - unicode literals
+    "UP030", # cleanup later - implicit references for positional format fields
+    "UP032", # cleanup later - f-string instead of format
+]
+
+
+[tool.setuptools]
+packages = [
+    "devpi_web",
+]
+
+
+[tool.setuptools.dynamic]
+version = {attr = "devpi_web.__version__"}
+readme = {file = ["README.rst", "CHANGELOG.short.rst"]}
+
+
+[tool.setuptools_changelog_shortener]
+read_from = "CHANGELOG"
+write_to = "CHANGELOG.short.rst"
+count = 5
+delimiter = "^==+"
+title = "=========\nChangelog\n========="
+
+
+[tool.towncrier]
+package = "devpi_web"
+filename = "CHANGELOG"
+directory = "news/"
+title_format = "{version} ({project_date})"
+template = "news/_template.rst"
+
+  [[tool.towncrier.type]]
+  directory = "removal"
+  name = "Deprecations and Removals"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "feature"
+  name = "Features"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "bugfix"
+  name = "Bug Fixes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "other"
+  name = "Other Changes"
+  showcontent = true
