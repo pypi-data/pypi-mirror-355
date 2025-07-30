@@ -1,0 +1,51 @@
+Metadata-Version: 2.4
+Name: ifi_data_draft
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: marimo>=0.13.6
+Requires-Dist: pandas==2.2.1
+Requires-Dist: polars>=1.29.0
+Requires-Dist: psycopg2>=2.9.10
+Requires-Dist: pytest>=8.4.0
+Requires-Dist: python-dateutil==2.9.0
+Requires-Dist: python-dotenv==0.21.0
+Requires-Dist: requests>=2.32.3
+Requires-Dist: ruff>=0.11.8
+Requires-Dist: sqlalchemy==2.0.38
+
+# Deployment
+
+## Requirements
+
+- `git`
+- `docker` and `docker-compose`
+- `mise` or `just` (for convenience)
+
+## Setup
+
+```bash
+git clone git@gitlab.tu-clausthal.de:ifi-data/api.git
+cd api/draft
+mise trust
+mise install
+just start
+```
+
+# Usage
+
+TODO
+
+# TODOs
+
+- [ ] support insertion via REST api
+- [ ] visualization (using `grafana`)
+- [ ] config file management (at least for `cli`)
+- [ ] docs site
+- [ ] support read/append only
+
+## Ideas
+
+- [ ] duckdb and [duckdbui](https://github.com/duckdb/duckdb-ui)
+- [ ] hyperfunctions for efficient time-related queries (https://docs.timescale.com/api/latest/hyperfunctions/time-weighted-calculations/time_weight/)
