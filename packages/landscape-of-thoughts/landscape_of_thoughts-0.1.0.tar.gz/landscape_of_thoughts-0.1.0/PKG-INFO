@@ -1,0 +1,236 @@
+Metadata-Version: 2.4
+Name: landscape-of-thoughts
+Version: 0.1.0
+Summary: Visualizing the Reasoning Process of Large Language Models
+Project-URL: Paper, https://arxiv.org/abs/2503.22165
+Project-URL: Homepage, https://github.com/tmlr-group/landscape-of-thoughts
+Project-URL: Bug Tracker, https://github.com/tmlr-group/landscape-of-thoughts/issues
+Project-URL: Documentation, https://github.com/tmlr-group/landscape-of-thoughts
+Author: Zhanke Zhou, Zhaocheng Zhu, Xuan Li, Mikhail Galkin, Xiao Feng, Sanmi Koyejo, Jian Tang, Bo Han
+License: MIT
+License-File: LICENSE.md
+Keywords: landscape,llm,reasoning,thoughts,visualization
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.10
+Requires-Dist: aiohttp>=3.11.13
+Requires-Dist: aiosignal>=1.3.2
+Requires-Dist: anyio>=4.8.0
+Requires-Dist: async-timeout>=5.0.1
+Requires-Dist: attrs>=25.1.0
+Requires-Dist: certifi>=2025.1.31
+Requires-Dist: charset-normalizer>=3.4.1
+Requires-Dist: datasets>=3.3.2
+Requires-Dist: fastapi>=0.115.11
+Requires-Dist: filelock>=3.17.0
+Requires-Dist: fire>=0.7.0
+Requires-Dist: fsspec>=2024.12.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: huggingface-hub>=0.29.2
+Requires-Dist: joblib>=1.4.2
+Requires-Dist: kaleido>=0.2.1
+Requires-Dist: matplotlib>=3.10.0
+Requires-Dist: nbformat>=4.2.0
+Requires-Dist: numpy>=2.1.3
+Requires-Dist: openai>=1.65.5
+Requires-Dist: pandas>=2.2.3
+Requires-Dist: pillow>=11.1.0
+Requires-Dist: plotly>=5.24.0
+Requires-Dist: pydantic>=2.10.6
+Requires-Dist: pylatexenc>=2.10.0
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: requests>=2.32.3
+Requires-Dist: scikit-learn>=1.6.1
+Requires-Dist: scipy>=1.15.2
+Requires-Dist: sympy>=1.13.1
+Requires-Dist: together>=1.5.5
+Requires-Dist: tokenizers>=0.21.0
+Requires-Dist: tqdm>=4.67.1
+Requires-Dist: transformers>=4.49.0
+Requires-Dist: typer>=0.15.2
+Requires-Dist: urllib3>=2.3.0
+Requires-Dist: uvicorn>=0.34.0
+Provides-Extra: dev
+Requires-Dist: black>=23.0.0; extra == 'dev'
+Requires-Dist: flake8>=6.0.0; extra == 'dev'
+Requires-Dist: isort>=5.10.0; extra == 'dev'
+Requires-Dist: pytest>=7.0.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+<div align="center">
+
+<h1>Landscape of Thoughts</h1>
+<h3>Visualizing the Reasoning Process of Large Language Models</h3>
+
+[![Paper](https://img.shields.io/badge/arXiv-2503.22165-b31b1b)](https://arxiv.org/abs/2503.22165)
+[![Hugging Face Datasets](https://img.shields.io/badge/%F0%9F%A4%97-Datasets-blue)](https://huggingface.co/datasets/GazeEzio/Landscape-Data)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1IgLREaEw-FeJbKn9NfYGIyaex2QhgCT2?usp=sharing)
+
+|     ![demo](assets/demo.png)     |
+| :------------------------------: |
+| Diagram of Landscape of Thoughts |
+
+</div>
+
+---
+
+> [!NOTE]
+> Before start analysing your own data, you may need to setup model as described in [setup model](doc/setup_model.md).
+
+## 📋 Overview
+
+Landscape of Thoughts (LoT) is a framework for visualizing and analyzing the reasoning paths of Large Language Models (LLMs). This library provides tools to:
+
+1. Sample reasoning traces from LLMs using various methods (CoT, ToT, MCTS)
+2. Calculate distances between reasoning steps
+3. Visualize the reasoning landscape through dimensional projection
+
+## 🐍 Setting up Environment
+
+```bash
+# Create environment
+conda create -n landscape python=3.10
+conda activate landscape
+pip3 install -r requirements.txt
+# Use --use-pep517 flag to avoid deprecation warning with fire package
+pip install fire --use-pep517
+```
+
+## 🚄 Simplified API
+
+You can use our unified script (`main.py`) that combines all three steps into a single command:
+
+```bash
+python main.py \
+  --task all \
+  --model_name meta-llama/Llama-3.2-1B-Instruct \
+  --dataset_name aqua \
+  --method cot \
+  --num_samples 10 \
+  --start_index 0 \
+  --end_index 5 \
+  --plot_type method \
+  --output_dir figures/landscape \
+  --local \
+  --local_api_key token-abc123 \
+  --port 8000 # <== this should align with the port you used to host the model
+```
+
+The `task` parameter can be set to:
+
+- `sample`: Only run the sampling step
+- `calculate`: Only run the calculation step
+- `plot`: Only run the visualization step
+- `all`: Run the complete pipeline
+
+This unified approach simplifies the workflow by handling all steps with consistent parameters and proper sequencing.
+
+## 🧩 Library Usage
+
+For more advanced usage, you can directly import functions from the `lot` package or use the main function:
+
+```python
+from lot import sample, calculate, plot
+
+# Sample reasoning traces
+features, metrics = sample(
+    model_name="meta-llama/Meta-Llama-3-8B-Instruct-Lite",
+    dataset_name="aqua",
+    method="cot",
+    num_samples=10,
+    start_index=0,
+    end_index=5
+)
+
+# Calculate distance matrices
+distance_matrices = calculate(
+    model_name="meta-llama/Meta-Llama-3-8B-Instruct-Lite",
+    dataset_name="aqua",
+    method="cot",
+    start_index=0,
+    end_index=5
+)
+
+# Generate visualizations
+plot(
+    model_name="Meta-Llama-3-8B-Instruct-Lite",
+    dataset_name="aqua",
+    method="cot",
+)
+```
+
+## 🔧 Key Parameters
+
+- `model_name`: Name of the LLM to use (e.g., meta-llama/Meta-Llama-3-8B-Instruct-Lite)
+- `dataset_name`: Dataset to use for reasoning tasks (e.g., aqua)
+- `method`: Reasoning method (cot, tot, mcts, l2m)
+- `num_samples`: Number of reasoning traces to collect per example
+
+## 📊 Supported Datasets
+
+Support any (multiple) choice question data structured as follows:
+
+```json
+{
+  "question": XXX,
+  "options": ["A)XX", "B)XX", "C)XX"],
+  "answer": "C"
+}
+```
+
+## 🛠️ Creating Custom Datasets
+
+You can create your own custom datasets to use with the Landscape of Thoughts framework. The framework supports multiple-choice question datasets in JSONL format.
+
+For detailed instructions on creating, validating, and using custom datasets, see our [Custom Datasets Guide](./doc/custom_datasets.md).
+
+## 🤖 Supported Models
+
+All open-source models are accessible via API, either vllm, or API provider, as long as the log probability of each token is accessible. An example is given as follows for using `Qwen/Qwen2.5-3B-Instruct`
+
+Host the model locally using vllm:
+
+```bash
+vllm serve Qwen/Qwen2.5-3B-Instruct \
+  --api-key "token-api-123" \
+  --download_dir YOUR_MODEL_PATH \
+  --port 8000
+```
+
+Then run the following command to use the model:
+
+```bash
+python main.py \
+  --task all \
+  --model_name Qwen/Qwen2.5-3B-Instruct \ # <== change to your model name
+  --dataset_name aqua \
+  --method cot \
+  --num_samples 10 \
+  --start_index 0 \
+  --end_index 5 \
+  --plot_type method \
+  --output_dir figures/landscape \
+  --local \
+  --local_api_key token-abc123
+```
+
+## 📜 Citation
+
+```bibtex
+@article{
+  title={Landscape of Thoughts: Visualizing the Reasoning Process of Large Language Models},
+  author={Zhanke Zhou and Zhaocheng Zhu and Xuan Li and Mikhail Galkin and Xiao Feng and Sanmi Koyejo and Jian Tang and Bo Han},
+  journal={arXiv preprint arXiv:2503.22165},
+  year={2025},
+  url={https://arxiv.org/abs/2503.22165},
+}
+```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
