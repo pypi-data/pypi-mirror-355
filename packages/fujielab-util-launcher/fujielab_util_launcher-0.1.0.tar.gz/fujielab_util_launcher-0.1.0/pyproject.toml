@@ -1,0 +1,52 @@
+[project]
+name = "fujielab-util-launcher"
+version = "0.1.0"
+description = "Fujielab Utility Launcher GUI"
+authors = [
+    { name = "Shinya Fujie", email = "shinya.fujie@p.chibakoudai.jp"}
+]
+maintainers = [
+    { name = "Shinya Fujie", email = "shinya.fujie@p.chibakoudai.jp" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "Apache-2.0" }
+keywords = ["launcher", "gui", "utility"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Utilities",
+    "Environment :: X11 Applications :: Qt"
+]
+dependencies = [
+    "PyQt5>=5.15.0",
+    "PyYAML>=6.0"
+]
+
+[project.scripts]
+fujielab-launcher = "fujielab.util.launcher.run:main"
+
+[project.urls]
+"Homepage" = "https://github.com/fujielab/fujielab-util-launcher"
+"Bug Tracker" = "https://github.com/fujielab/fujielab-util-launcher/issues"
+"Documentation" = "https://github.com/fujielab/fujielab-util-launcher#readme"
+"Source Code" = "https://github.com/fujielab/fujielab-util-launcher"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["fujielab.util.launcher"]
+package-data = { "fujielab.util.launcher" = ["resources/*"] }
+
+[tool.setuptools.package-dir]
+fujielab = "fujielab"
