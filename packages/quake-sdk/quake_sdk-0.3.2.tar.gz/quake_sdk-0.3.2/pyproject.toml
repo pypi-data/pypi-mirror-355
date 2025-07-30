@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "quake-sdk"
+version = "0.3.2"
+description = ""
+authors = ["John Doe <johndoe@example.com>"]
+readme = "quake_sdk_py/README.md"
+packages = [
+    { include = "quake_sdk", from = "quake_sdk_py" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+requests = "^2.31.0"
+pydantic = "^2.7.0"
+pyrate-limiter = {version = "^3.7.0", python = ">=3.11,<4.0"}
+
+[tool.poetry.group.redis.dependencies]
+redis = "^5.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0" 
+# Add other dev dependencies like pytest-asyncio if needed by other tests
+python-dotenv = "^1.1.0"
+ty = "^0.0.1a10"
+types-setuptools = "^80.9.0.20250529"
+mypy = "^1.16.0"
+types-requests = "^2.32.4.20250611"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
