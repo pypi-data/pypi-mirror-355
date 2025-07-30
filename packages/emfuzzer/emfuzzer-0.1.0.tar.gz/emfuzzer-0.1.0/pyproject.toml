@@ -1,0 +1,123 @@
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "emfuzzer"
+description="Experiments runner for embedded environments"
+version = "0.0.0"  # set by poetry
+requires-python = ">= 3.13"
+dependencies = [
+  "paramiko==3.5.1",
+]
+authors = [
+    {name = "Konrad Grochowski", email = "Konrad.Grochowski@pw.edu.pl"},
+    {name = "Krzysztof Cabaj", email = "Krzysztof.Cabaj@pw.edu.pl"},
+]
+readme = "README.md"
+license = { text = "MIT" }
+license-files = ["LICEN[CS]E.*"]
+keywords = [
+  "embedded",
+  "fuzzing",
+  "testing",
+  "experiments",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Embedded Systems",
+  "Topic :: Software Development :: Testing",
+]
+
+[project.urls]
+GitHub="https://github.com/ZBOSK-II/emfuzzer"
+ChangeLog="https://github.com/ZBOSK-II/emfuzzer/blob/master/CHANGELOG.md"
+
+[project.scripts]
+emfuzzer = "emfuzzer.__main__:main"
+
+[tool.poetry]
+packages = [{include = "emfuzzer"}]
+requires-poetry = ">=2.1.2"
+
+[tool.poetry.requires-plugins]
+poetry-git-version-plugin = ">=2.0.1"
+poetry-plugin-export = ">=1.9"
+
+[tool.poetry-git-version-plugin]
+release_type = "dev"
+local = true
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+black = "25.1.0"
+codespell = "2.4.1"
+flake8 = "7.2.0"
+flake8-pyproject = "1.2.3"
+isort = "6.0.1"
+mypy = "1.16.0"
+pylint = "3.3.7"
+pytest = "8.3.5"
+types-paramiko = "3.5.0.20250516"
+
+[tool.mypy]
+strict = true
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+line_length = 100
+
+[tool.flake8]
+max-line-length = 100
+exclude = [
+  "__pycache__",
+  ".venv",
+  ".poetry",
+]
+
+[tool.pytest.ini_options]
+pythonpath = "."
+testpaths = "tests"
+
+[tool.pylint.main]
+ignore = [
+  "__pycache__",
+  ".venv",
+  ".git",
+  ".poetry",
+]
+jobs = 0
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.logging]
+logging-format-style = "new"
+
+[tool.pylint."messages control"]
+disable = [
+  "missing-function-docstring",
+  "missing-class-docstring", # TODO ?
+  "logging-fstring-interpolation",
+]
+enable = [
+  "useless-suppression",
+]
+
+[tool.pylint.imports]
+allow-reexport-from-package = true
+
+[tool.codespell]
+skip = "poetry.lock"
+check-filenames = true
+count = true
