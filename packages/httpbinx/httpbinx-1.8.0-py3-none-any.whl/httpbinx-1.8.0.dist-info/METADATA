@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: httpbinx
+Version: 1.8.0
+Summary: HTTP Request & Response Service, written in Python + FastAPI.
+Author-Email: Leo <imleowoo@outlook.com>
+Maintainer-Email: Leo <imleowoo@outlook.com>
+License: MIT License
+         
+         Copyright (c) 2021 Leo
+         
+         Permission is hereby granted, free of charge, to any person obtaining a copy
+         of this software and associated documentation files (the "Software"), to deal
+         in the Software without restriction, including without limitation the rights
+         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         copies of the Software, and to permit persons to whom the Software is
+         furnished to do so, subject to the following conditions:
+         
+         The above copyright notice and this permission notice shall be included in all
+         copies or substantial portions of the Software.
+         
+         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+         SOFTWARE.
+         
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Project-URL: Homepage, https://github.com/imleowoo/httpbinx
+Project-URL: Repository, https://github.com/imleowoo/httpbinx
+Requires-Python: >=3.8
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: starlette
+Requires-Dist: jinja2
+Requires-Dist: brotli
+Requires-Dist: python-multipart
+Provides-Extra: test
+Requires-Dist: httpx; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-mock; extra == "test"
+Requires-Dist: pytest-xdist; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Description-Content-Type: text/markdown
+
+![![cover](httpbinx/static/images/httpbinx_cover.png)](https://raw.githubusercontent.com/imleowoo/httpbinx/main/httpbinx/static/images/httpbinx_cover.png)
+
+[![thanks](https://img.shields.io/badge/thanks-httpbin-green)](https://github.com/postmanlabs/httpbin)
+![python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
+
+# httpbinx
+
+HTTP Request & Response Service, written in Python + FastAPI.
+
+## Deployed at:
+
+- **https://httpbinx.wooe.cc**
+
+## Reference Project
+
+A  [Kenneth Reitz](http://kennethreitz.org/bitcoin) Project. See https://github.com/postmanlabs/httpbin
+
+## Quick Start
+
+## Installation
+
+### PyPI
+
+**[httpbinx](https://pypi.org/project/httpbinx/)** is available on PyPI
+
+```shell
+$ pip install httpbinx
+```
+
+### Source Code
+
+```shell
+$ git clone https://github.com/imleowoo/httpbinx.git
+$ python setup.py install # or `pip install .`
+```
+
+## Run it
+
+### Run directly
+
+```shell
+$ httpbinx server --host=0.0.0.0 --port=80
+```
+
+### Run with Docker
+
+```shell
+$ docker pull leowoo/httpbinx:latest
+$ docker run -p 80:80 --name httpbinx leowoo/httpbinx:latest
+```
+
+### It starts running
+
+```text
+INFO:     Started server process [17044]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:80 (Press CTRL+C to quit)
+...
+```
