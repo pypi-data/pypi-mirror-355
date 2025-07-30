@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "boulder-opal-scale-up-sdk"
+version = "1.0.0"
+description = "Q-CTRL Boulder Opal Scale Up Python SDK"
+license = "Apache-2.0"
+authors = ["Q-CTRL <support@q-ctrl.com>"]
+maintainers = ["Q-CTRL <support@q-ctrl.com>"]
+homepage = "https://q-ctrl.com"
+keywords = [
+    "black opal",
+    "boulder opal",
+    "fire opal",
+    "nisq",
+    "open controls",
+    "q control",
+    "q ctrl",
+    "q-control",
+    "q-ctrl",
+    "qcontrol",
+    "qctrl",
+    "quantum",
+    "quantum algorithms",
+    "quantum circuits",
+    "quantum coding",
+    "quantum coding software",
+    "quantum computing",
+    "quantum control",
+    "quantum control software",
+    "quantum control theory",
+    "quantum engineering",
+    "quantum error correction",
+    "quantum firmware",
+    "quantum fundamentals",
+    "quantum sensing",
+    "qubit",
+    "qudit"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: System :: Distributed Computing"
+]
+packages = [
+    { include = "boulderopalscaleupsdk" },
+]
+
+[tool.poetry.urls]
+LinkedIn = "https://www.linkedin.com/company/q-ctrl/"
+Facebook = "https://www.facebook.com/qctrl"
+X = "https://x.com/qctrlHQ"
+YouTube = "https://www.youtube.com/qctrl"
+GitHub = "https://github.com/qctrl"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+attrs = "^25.1.0"
+async-timeout = { version = "^4.0.3", python = "<3.11" }
+qctrl-client = "^10.1.0"
+googleapis-common-protos = "^1.69.2"
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.setuptools_scm]
+root = "../.."
+git_describe_command = ['git', 'describe', '--dirty', '--tags', '--long', '--match', 'boulder-opal-scale-up-sdk-*']
