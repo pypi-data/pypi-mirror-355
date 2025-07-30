@@ -1,0 +1,56 @@
+Metadata-Version: 2.4
+Name: django-notify-framework
+Version: 0.0.8
+Summary: Easy-to-integrate Django notification library with WebSocket support for real-time updates. (under development)
+Home-page: https://github.com/RahulSaini3125/django_notify_framework
+Author: Rahul Saini
+Author-email: rahulsaini5123@outlook.com
+License: MIT
+Classifier: Framework :: Django
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django>=3.2
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# django-notify
+
+**django-notify** is a simple, plug-and-play Django notification library that supports real-time notifications using Django Channels. It is designed to be **easy to integrate**, **flexible**, and supports **offline message queuing** for users who are not currently connected.
+
+![PyPI - Django Version](https://img.shields.io/badge/Django-3.2%2B-blue)  
+![MIT License](https://img.shields.io/badge/license-MIT-green)
+
+---
+
+## 🚀 Features
+
+- 🔌 Easy integration into any Django project
+- 📡 Real-time notifications via WebSocket using **Django Channels**
+- 💤 Queues messages for offline users and delivers them on reconnect
+- 🧠 Supports multiple types of notifications:
+  - System Notification (System → User)
+  - Single Notification (User → User)
+  - Group Notification (User → Many Users)
+  - Broadcast Notification (User/System → All/Selected Users)
+- ✅ Simple API: send via function or method chaining
+- 📦 Designed for extensibility
+
+---
+
+## 📦 Installation
+
+```bash
+pip install django-notify-framework
+
