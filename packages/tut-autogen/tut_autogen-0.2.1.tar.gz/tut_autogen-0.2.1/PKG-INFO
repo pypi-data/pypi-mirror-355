@@ -1,0 +1,43 @@
+Metadata-Version: 2.3
+Name: tut-autogen
+Version: 0.2.1
+Summary: 一个使用AutoGen框架的多智能体编排教程项目，演示如何创建和协调多个AI智能体完成复杂任务
+Author: leebin
+Author-email: xjd.binlee@qq.com
+Requires-Python: >=3.12
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: autogen (>=0.9.2)
+Requires-Dist: autogen-agentchat (>=0.6.1)
+Requires-Dist: autogen-ext (>=0.6.1)
+Requires-Dist: fastmcp (>=2.7.1)
+Requires-Dist: loguru (>=0.7.3)
+Requires-Dist: mcp (>=1.9.3)
+Requires-Dist: openai (>=1.85.0)
+Requires-Dist: pandas (>=2.3.0)
+Description-Content-Type: text/markdown
+
+# AutoGen 学习项目
+
+## 项目简介
+这是一个使用微软AutoGen框架的学习项目，用于探索和研究自动生成AI代理的开发与应用。
+
+## 参考链接
+- 官方文档: [https://microsoft.github.io/autogen/stable//index.html](https://microsoft.github.io/autogen/stable//index.html)
+
+## TODO
+- [x] 搭建基础AutoGen环境
+- [x] 创建第一个对话代理
+- [x] 实现多代理协作场景
+- [x] 编写使用示例和文档
+- [x] 多任务不同编排方案GraphFlow
+- [ ] Autogen的状态管理
+- [ ] Autogen支持分布式
+- [ ] 添加自定义功能模块
+- [ ] 工具调用项目实战案例
+- [ ] 性能优化与调优
+
+## 发布
+
+- 发布到: PyPI twine upload --repository pypi dist/*
