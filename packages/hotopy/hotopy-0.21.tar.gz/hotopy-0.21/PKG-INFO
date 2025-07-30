@@ -1,0 +1,89 @@
+Metadata-Version: 2.4
+Name: hotopy
+Version: 0.21
+Summary: A toolbox for X-ray holo-tomography in Python
+Project-URL: homepage, https://gitlab.gwdg.de/irp/hotopy
+Project-URL: repository, https://gitlab.gwdg.de/irp/hotopy.git
+Project-URL: documentation, https://irp.pages.gwdg.de/hotopy/
+Author-email: Jens Lucht <jens.lucht@uni-goettingen.de>, Paul Meyer <paul.meyer@uni-goettingen.de>, "Leon M. Lohse" <llohse@uni-goettingen.de>
+License: GPL-3.0-or-later
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.10
+Requires-Dist: matplotlib
+Requires-Dist: numpy>=2
+Requires-Dist: pooch>=1.2
+Requires-Dist: ptwt
+Requires-Dist: scikit-image
+Requires-Dist: scipy
+Requires-Dist: torch
+Requires-Dist: tqdm
+Provides-Extra: dev
+Requires-Dist: pre-commit>=4.1.0; extra == 'dev'
+Requires-Dist: ruff>=0.7.2; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: ipykernel; extra == 'docs'
+Requires-Dist: nbsphinx; extra == 'docs'
+Requires-Dist: pydata-sphinx-theme; extra == 'docs'
+Requires-Dist: sphinx; extra == 'docs'
+Requires-Dist: sphinxcontrib-bibtex; extra == 'docs'
+Provides-Extra: tomo
+Requires-Dist: astra-toolbox>=2.3.0; extra == 'tomo'
+Description-Content-Type: text/markdown
+
+HoToPy - A toolbox for X-ray holo-tomography in Python
+
+# HoToPy
+
+## Installation
+
+### pip installation
+
+HoToPy can be installed through pip by running
+```commandline
+pip install hotopy
+```
+for a basic HoToPy installation. 
+
+The basic version does not contain the [`astra-toolbox`][astra] for tomographic reconstructions. If you intend to use
+the _tomographic reconstruction functions_ in `hotopy.tomo` you can install its dependencies either by running
+```commandline
+pip install hotopy[tomo]
+```
+or you can have a look at the [astra-toolbox][astra] documentation for an installation method that fits your needs.
+
+## Getting started
+
+You can find examples in the dedicated [HoToPy-Examples repository](https://gitlab.gwdg.de/irp/hotopy-examples).
+
+## Documentation
+
+https://irp.pages.gwdg.de/hotopy/
+
+## Citation
+
+If you use HoToPy, please cite
+
+```
+@misc{Lucht2025hotopy,
+      title={HoToPy: A toolbox for X-ray holo-tomography in Python},
+      author={Jens Lucht and Paul Meyer and Leon Merten Lohse and Tim Salditt},
+      year={2025},
+      eprint={2506.11567},
+      archivePrefix={arXiv},
+      primaryClass={physics.optics},
+      url={https://arxiv.org/abs/2506.11567},
+}
+```
+
+[holotomo]: https://gitlab.gwdg.de/irp/holotomotoolbox
+[astra]: https://astra-toolbox.com/
+[mircomamba]: https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html

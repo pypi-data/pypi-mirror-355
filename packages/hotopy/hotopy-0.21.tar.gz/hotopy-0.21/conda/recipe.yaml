@@ -1,0 +1,58 @@
+# Build conda-like package from cloned repository.
+# Extracts all information from pyproject.toml
+# recipev2 to be used with rattler-build
+# WARNING: --output-dir must be set to out of path
+#
+# Jens Lucht and Leon M. Lohse, 2024-2025
+
+context:
+  git_repo_url: ${{ load_from_file("pyproject.toml").project.urls.repository }}
+#  latest_tag: ${{ git.latest_tag( git_repo_url ) }}
+#  version: ${{ latest_tag[1:] }} # drop leading v 
+  version: ${{ load_from_file("pyproject.toml").project.version }}
+
+package:
+  name: ${{ load_from_file("pyproject.toml").project.name }} 
+  version: ${{ version }}
+
+source:
+  path: ..
+  use_gitignore: true
+#  git: ${{ git_repo_url }}
+#  tag: "v${{ version }}"
+
+build:
+  noarch: python
+  script:
+    - python -m build -wnx -Cbuild-dir=builddir
+    - python -m pip install dist/*.whl
+
+  # Don't run tests -- missing ptwt dependency
+  #tests:
+  #- python:
+  #    imports:
+  #      - hotopy
+
+requirements:
+  host:
+    - python >= 3.10
+    # _MUST_ be in host section
+    - pip
+    - python-build
+    - hatchling
+  run:
+    - numpy >= 2
+    - scipy
+    - pytorch
+    - scikit-image
+    - tqdm
+    - matplotlib
+    - pooch >= 1.2
+    # - ptwt  # FIXME does not exist as conda package :(
+
+about:
+  homepage:  ${{ load_from_file("pyproject.toml").project.urls.homepage }}
+  repository: ${{ git_repo_url }}
+  license: GPL-3.0-or-later
+  summary: ${{ load_from_file("pyproject.toml").project.description }}
+

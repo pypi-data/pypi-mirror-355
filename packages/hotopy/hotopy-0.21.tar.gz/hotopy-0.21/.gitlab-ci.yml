@@ -1,0 +1,137 @@
+image: python:3.12
+
+stages:
+  - lint
+  - build
+  - deploy
+
+
+ruff-check:
+  stage: lint
+  script:
+    - pip install --no-cache-dir ruff
+    - ruff check -o ruff-check.log src/
+  artifacts:
+    when: on_failure
+    paths:
+      - ruff-check.log
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+
+ruff-format:
+  stage: lint
+  script:
+    - pip install --no-cache-dir ruff
+    - ruff format --check src/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+
+sphinx:
+  stage: lint
+  script:
+    - apt-get update -y
+    - apt-get install -y pandoc
+    - pip install --no-cache-dir sphinx pydata-sphinx-theme sphinxcontrib-bibtex
+    - pip install --no-cache-dir numpy scipy ipykernel nbsphinx tqdm
+    - cd doc
+    - tmp=$(mktemp -d)
+    - sphinx-build -b html source $tmp
+    - code=$?
+    - rm -rf $tmp
+    - exit $code
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+
+build_conda:
+  stage: build
+  image: mambaorg/micromamba
+  #  image: condaforge/miniforge3
+  script:
+    - micromamba install -c conda-forge rattler-build -y --quiet
+    - rattler-build build --experimental --recipe conda/recipe.yaml --output-dir /tmp/rattler/
+    - mkdir conda-dist
+    - cp -r /tmp/rattler/noarch conda-dist/
+  artifacts:
+    paths:
+      - conda-dist/noarch/*
+  rules:
+    # run only if tag in format 'vXXX' is created
+    - if: $CI_COMMIT_TAG =~ /^v\S+/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+
+build_whl:
+  stage: build
+  script:
+    - pip install --no-cache-dir build
+    - python -m build
+  artifacts:
+    paths:
+      - dist
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\S+/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+
+pages:
+  stage: deploy
+  script:
+    - apt-get update -y
+    - apt-get install -y pandoc
+    - pip install --no-cache-dir sphinx pydata-sphinx-theme sphinxcontrib-bibtex 
+    - pip install --no-cache-dir numpy scipy ipykernel nbsphinx tqdm
+    - cd doc
+    - sphinx-build -b html source build
+    - mv build ../public
+    - echo 'Done'
+  artifacts:
+    paths:
+      - public
+  rules:
+    # run only if tag in format 'vXXX' is created
+    - if: $CI_COMMIT_TAG =~ /^v\S+/
+
+
+upload_conda:
+  stage: deploy
+  dependencies:
+    - build_conda
+  script:
+    - apt-get update -q && apt-get install -q -y --no-install-recommends curl
+    - PKG_VERSION=${CI_COMMIT_TAG:1} # strip first character
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file conda-dist/noarch/hotopy-*.conda "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hotopy/${PKG_VERSION}/"'
+  rules:
+    # run only if tag in format 'vXXX' is created
+    - if: $CI_COMMIT_TAG =~ /^v\S+/
+
+
+upload_whl:
+  stage: deploy
+  dependencies:
+    - build_whl
+  script:
+    - pip install --no-cache-dir twine
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+  rules:
+    # run only if tag in format 'vXXX' is created
+    - if: $CI_COMMIT_TAG =~ /^v\S+/
+
+    #
+    #condabuild:
+    #  rules:
+    #    # run only if tag in format 'vXXX' is created
+    #    - if: $CI_COMMIT_TAG =~ /^v\S+/
+    #  stage: release
+    #  image: condaforge/miniforge3 
+    #  script:
+    #    - apt-get update -q && apt-get install -q -y --no-install-recommends curl
+    #    - conda install conda-build -y --quiet
+    #    - mkdir /opt/target
+    #    - conda-build --output-folder /opt/target .
+    #    - VERS=$(sed -rn 's/version\s?=\s?"(.+)"/\1/p' pyproject.toml)
+    #    - echo $VERS
+    #    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file /opt/target/noarch/hotopy-*.tar.bz2 "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/conda/${VERS}/hotopy-${VERS}-${CI_COMMIT_SHORT_SHA}.tar.bz2"'
+

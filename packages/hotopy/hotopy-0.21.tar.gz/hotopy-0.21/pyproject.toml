@@ -1,0 +1,77 @@
+[project]
+name = "hotopy"
+version = "0.21"
+description = "A toolbox for X-ray holo-tomography in Python"
+authors = [
+ { name = "Jens Lucht", email = "jens.lucht@uni-goettingen.de"},
+ { name = "Paul Meyer", email = "paul.meyer@uni-goettingen.de"},
+ { name = "Leon M. Lohse", email = "llohse@uni-goettingen.de"},
+]
+requires-python = ">=3.10"
+dependencies = [
+  "matplotlib",
+  "scipy",
+  "numpy>=2",
+  "pooch>=1.2",
+  "torch",
+  "scikit-image",
+  "tqdm",
+  "ptwt",
+]
+# full license text can be found in LICENSE file at the projects root.
+license = {"text"="GPL-3.0-or-later"}
+readme = "README.md"
+classifiers = [
+  # Maturety of the project
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  # Specify the Python versions we support.
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  # Specify the license
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+homepage = "https://gitlab.gwdg.de/irp/hotopy"
+repository = "https://gitlab.gwdg.de/irp/hotopy.git"
+documentation = "https://irp.pages.gwdg.de/hotopy/"
+
+[project.optional-dependencies]
+tomo = [
+  "astra-toolbox>=2.3.0",
+]
+docs = [
+  "sphinx",
+  "pydata-sphinx-theme",
+  "sphinxcontrib-bibtex",
+  "nbsphinx",
+  "ipykernel",
+]
+dev = [
+  "ruff>=0.7.2",
+  "pre-commit>=4.1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# copy from .flake8
+select = ["C","E","F","W","B","B9", "NPY"]
+ignore = [
+  "E501",  # line too long
+  "B007",  # loop variable unused
+  "C901",  # too complex structures
+]
