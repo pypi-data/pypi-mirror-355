@@ -1,0 +1,82 @@
+Metadata-Version: 2.4
+Name: midas_client
+Version: 1.0.23
+Summary: A Python client library to access the midas_server backend.
+Author-email: Anthony Baxter <anthonybaxter819@gmail.com>
+License: Apache-2.0
+Keywords: midas,client,backend,API
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: backports.tarfile==1.2.0
+Requires-Dist: certifi==2024.7.4
+Requires-Dist: cffi==1.17.1
+Requires-Dist: charset-normalizer==3.3.2
+Requires-Dist: cryptography==44.0.1
+Requires-Dist: docutils==0.21.2
+Requires-Dist: idna==3.7
+Requires-Dist: importlib_metadata==8.6.1
+Requires-Dist: jaraco.classes==3.4.0
+Requires-Dist: jaraco.context==6.0.1
+Requires-Dist: jaraco.functools==4.1.0
+Requires-Dist: jeepney==0.8.0
+Requires-Dist: keyring==25.6.0
+Requires-Dist: markdown-it-py==3.0.0
+Requires-Dist: mbinary==1.0.26
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: more-itertools==10.5.0
+Requires-Dist: nh3==0.2.20
+Requires-Dist: numpy==1.26.4
+Requires-Dist: packaging==24.1
+Requires-Dist: pandas==2.2.2
+Requires-Dist: pkginfo==1.12.0
+Requires-Dist: pycparser==2.22
+Requires-Dist: Pygments==2.19.1
+Requires-Dist: pyproject_hooks==1.2.0
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: python-dotenv==1.0.1
+Requires-Dist: pytz==2024.1
+Requires-Dist: readme_renderer==44.0
+Requires-Dist: requests==2.32.3
+Requires-Dist: requests-toolbelt==1.0.0
+Requires-Dist: rfc3986==2.0.0
+Requires-Dist: rich==13.9.4
+Requires-Dist: SecretStorage==3.3.3
+Requires-Dist: six==1.16.0
+Requires-Dist: tzdata==2024.1
+Requires-Dist: urllib3==2.3.0
+Requires-Dist: zipp==3.21.0
+
+# Midas-client
+
+A Rust-based client library designed to interact with the `midas-server`, providing a streamlined interface for accessing data. It is built on top of the `mbinary` library for binary encoding, but offers a higher-level abstraction that enables both streaming data and saving it to binary MBN-encoded files.
+
+## Features
+
+- **Stream Data**: Fetch live or historical data directly from the `midas-server` in real-time.
+- **Save to File**: Save data to a binary MBN-encoded file for efficient storage and retrieval.
+- **Built on mbinary**: Leverages the high-performance binary encoding capabilities of the `mbinary` library.
+
+## Installation
+
+You can install `midas-client` directly from [PyPI](https://pypi.org/project/midas-client/):
+
+```bash
+pip install midas-client
+```
+
+## Documentation
+
+Detailed documentation is coming soon. Stay tuned for examples and usage guides!
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests to improve the library.
+
+## License
+
+Licensed under the [Apache-2.0 License](LICENSE).
