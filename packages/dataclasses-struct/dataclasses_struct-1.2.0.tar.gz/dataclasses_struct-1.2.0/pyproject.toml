@@ -1,0 +1,73 @@
+[project]
+name = "dataclasses-struct"
+version = "1.2.0"
+description = "Converting dataclasses to and from fixed-length binary data using struct"
+readme = "README.md"
+authors = [
+    { name = "Harry Mander", email = "harrymander96@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.9.0"
+dependencies = [
+    "typing-extensions>=4.12.2 ; python_full_version < '3.11'",
+]
+
+[project.urls]
+Homepage = "https://github.com/harrymander/dataclasses-struct"
+Repository = "https://github.com/harrymander/dataclasses-struct"
+Documentation = "https://github.com/harrymander/dataclasses-struct/blob/main/README.md#usage"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.16.0",
+    "pytest>=8.3.4",
+    "pytest-cov>=5.0.0",
+    "pytest-mypy-plugins>=3.1.2",
+    "ruff>=0.9.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+markers = [
+    "cc: marks a test as requiring a C compiler"
+]
+
+[tool.coverage.run]
+source = ["dataclasses_struct/"]
+omit = ["dataclasses_struct/ext/**/*.py", "dataclasses_struct/_typing.py"]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+    "B", # flake8-bugbear
+    "E", "W", # pycodestyle errors and warnings
+    "F", # pyflakes
+    "I", # isort
+    "RUF", # ruff-specific
+    "UP", # pyupgrade
+]
