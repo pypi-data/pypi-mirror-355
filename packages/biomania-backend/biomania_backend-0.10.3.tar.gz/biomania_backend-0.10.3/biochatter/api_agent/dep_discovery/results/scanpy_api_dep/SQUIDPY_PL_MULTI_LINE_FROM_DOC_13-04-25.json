@@ -1,0 +1,206 @@
+[
+    [
+        {
+            "api": "sq.gr.co_occurrence",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "cluster_key": "cell type"
+            },
+            "arg_types": {
+                "adata": "object",
+                "cluster_key": "str"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.uns[\"cell type_co_occurrence\"]"
+            ]
+        },
+        {
+            "api": "sq.pl.co_occurrence",
+            "query": "",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "cluster_key": "cell type",
+                "clusters": [
+                    "basal CK tumor cell",
+                    "T cells"
+                ]
+            },
+            "arg_types": {
+                "adata": "object",
+                "cluster_key": "str",
+                "clusters": "list"
+            },
+            "depend_on": [
+                "adata.uns[\"cell type_co_occurrence\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sq.gr.spatial_neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsp[\"spatial_connectivities\"]",
+                "adata.obsp[\"spatial_distances\"]",
+                "adata.uns[\"spatial_neighbors\"]"
+            ],
+            "_comment": "The produce key spatial_neighbor is incorrectly written as spatial in doc."
+        },
+        {
+            "api": "sq.gr.nhood_enrichment",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "cluster_key": "cell type"
+            },
+            "arg_types": {
+                "adata": "object",
+                "cluster_key": "str"
+            },
+            "depend_on": [
+                "adata.obsp[\"spatial_connectivities\"]"
+            ],
+            "produce": [
+                "adata.uns[\"cell type_nhood_enrichment\"]"
+            ]
+        },
+        {
+            "api": "sq.pl.nhood_enrichment",
+            "query": "visualize neighborhood enrichment of cell types.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "cluster_key": "cell type"
+            },
+            "arg_types": {
+                "adata": "object",
+                "cluster_key": "str"
+            },
+            "depend_on": [
+                "adata.uns[\"cell type_nhood_enrichment\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sq.gr.spatial_neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsp[\"spatial_connectivities\"]",
+                "adata.obsp[\"spatial_distances\"]",
+                "adata.uns[\"spatial_neighbors\"]"
+            ]
+        },
+        {
+            "api": "sq.gr.interaction_matrix",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "cluster_key": "cell type"
+            },
+            "arg_types": {
+                "adata": "object",
+                "cluster_key": "str"
+            },
+            "depend_on": [
+                "adata.obsp[\"spatial_connectivities\"]"
+            ],
+            "produce": [
+                "adata.uns[\"cell type_interactions\"]"
+            ]
+        },
+        {
+            "api": "sq.pl.interaction_matrix",
+            "query": "visualize interaction matrix of cell types.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "cluster_key": "cell type"
+            },
+            "arg_types": {
+                "adata": "object",
+                "cluster_key": "str"
+            },
+            "depend_on": [
+                "adata.uns[\"cell type_interactions\"]"
+            ]
+        }
+    ],
+    [
+        {
+            "api": "sq.gr.spatial_neighbors",
+            "prep": "",
+            "args": {
+                "adata": "adata"
+            },
+            "arg_types": {
+                "adata": "object"
+            },
+            "depend_on": [],
+            "produce": [
+                "adata.obsp[\"spatial_connectivities\"]",
+                "adata.obsp[\"spatial_distances\"]",
+                "adata.uns[\"spatial_neighbors\"]"
+            ]
+        },
+        {
+            "api": "sq.gr.centrality_scores",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "cluster_key": "cell type"
+            },
+            "arg_types": {
+                "adata": "object",
+                "cluster_key": "str"
+            },
+            "depend_on": [
+                "adata.obsp[\"spatial_connectivities\"]"
+            ],
+            "produce": [
+                "adata.uns[\"cell type_centrality_scores\"]"
+            ]
+        },
+        {
+            "api": "sq.pl.centrality_scores",
+            "query": "visualize centrality scores of cell types.",
+            "prep": "",
+            "args": {
+                "adata": "adata",
+                "cluster_key": "cell type",
+                "figsize": [
+                    20,
+                    5
+                ],
+                "s": 200
+            },
+            "arg_types": {
+                "adata": "object",
+                "cluster_key": "str",
+                "figsize": "tuple",
+                "s": "int"
+            },
+            "depend_on": [
+                "adata.uns[\"cell type_centrality_scores\"]"
+            ],
+            "_comment": "figsize and s are not necessary arguments, but they are used in the example since I found the figure is too poor and scatter too small to be visible to users if not setting them."
+        }
+    ]
+]
