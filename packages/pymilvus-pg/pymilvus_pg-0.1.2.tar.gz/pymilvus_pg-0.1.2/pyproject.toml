@@ -1,0 +1,63 @@
+[project]
+name = "pymilvus-pg"
+version = "0.1.2"
+description = "Sync Milvus data to PostgreSQL for validation"
+authors = [
+    { name = "zhuwenxing", email = "wenxing.zhu@zilliz.com" },
+]
+dependencies = [
+    "pymilvus>=2.5.10",
+    "psycopg2-binary>=2.9.9",
+    "deepdiff>=8.5.0",
+    "loguru>=0.7.0",
+    "dotenv>=0.9.9",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+includes = [
+    "src/pymilvus_pg",
+]
+excludes = [
+    "example",
+    "tests",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    ".mypy_cache",
+    ".vscode",
+]
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "UP",
+]
+ignore = [
+    "E501",
+]
