@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pic2stl"
+version = "10.0.12"
+authors = [
+  { name="niljub", email="dickergamer@tutanota.com" },
+]
+description = "img2stl is a Python package that converts an image to a 3D STL models."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "numpy==1.26.4",
+  "numpy-stl==3.1.1", 
+  "pillow==10.3.0", 
+  "python-utils==3.8.2",
+  "scipy==1.13.0",
+  "trimesh==4.3.2", 
+  "typing-extensions==4.11.0",
+  "cairosvg>=2.5.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/niljub/pic2stl/"
+Issues = "https://github.com/niljub/pic2stl/issues"
