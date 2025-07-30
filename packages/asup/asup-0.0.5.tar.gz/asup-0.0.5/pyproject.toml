@@ -1,0 +1,66 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "asup"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Viktor Hronec", email = "zamr666@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "linkify-it-py==2.0.3",
+  "markdown-it-py[linkify,plugins]==3.0.0",
+  "mdit-py-plugins==0.4.2",
+  "mdurl==0.1.2",
+  "platformdirs==4.3.8",
+  "pygments==2.19.1",
+  "rich==14.0.0",
+  "textual==3.3.0",
+  "typing-extensions==4.14.0",
+  "uc-micro-py==1.0.3"
+]
+
+[project.scripts]
+asup = "asup.entrypoint:asup"
+
+#[tool.hatch.build]
+#include = [
+#  "src/asup/sample.json",
+#  "src/asup/__about__.py",
+#  "src/asup/entrypoint.py",
+#  "src/asup/app.py",
+#  "src/asup/tasks.py",
+#  "src/asup/__init__.py",
+#]
+
+[project.urls]
+Documentation = "https://github.com/Viktor Hronec/asup#readme"
+Issues = "https://github.com/Viktor Hronec/asup/issues"
+Source = "https://github.com/Viktor Hronec/asup"
+
+[tool.hatch.version]
+path = "src/asup/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/asup}"
