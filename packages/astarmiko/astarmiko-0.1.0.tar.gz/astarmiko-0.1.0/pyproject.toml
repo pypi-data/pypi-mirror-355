@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astarmiko"
+version = "0.1.0"
+description = "Async SSH automation for enterprise network equipment"
+authors = [
+  { name="Andrey Starkov", email="astar@andreystarkov.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+    "netmiko",
+    "aiofiles",
+    "asyncssh",
+    "tqdm",
+    "textfsm",
+    "pyyaml",
+    "requests",
+    "pysnmp",
+    "astarconf"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/astaraiki/astarmiko"
+
+[project.scripts]
+acm = "astarmiko.scripts.acm:main"
+fh = "astarmiko.scripts.fh:main"
+
