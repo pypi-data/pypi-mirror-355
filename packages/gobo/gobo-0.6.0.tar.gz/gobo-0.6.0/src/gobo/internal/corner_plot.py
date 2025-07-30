@@ -1,0 +1,606 @@
+from __future__ import annotations
+
+import logging
+import math
+import warnings
+from typing import Callable, Concatenate, ParamSpec, Any, Iterable
+
+import numpy as np
+import numpy.typing as npt
+from bokeh.colors import Color
+from bokeh.core.enums import Place
+from bokeh.layouts import layout
+from bokeh.models import Range1d, Toolbar, PanTool, WheelZoomTool, BoxZoomTool, ResetTool, Band, ColumnDataSource, \
+    Column
+from bokeh.palettes import varying_alpha_palette
+from bokeh.plotting import figure, show
+from scipy import stats
+
+from gobo.internal.palette import default_discrete_palette
+
+P = ParamSpec('P')
+
+logger = logging.getLogger(__name__)
+
+
+def create_histogram_figure(array: npt.NDArray) -> figure:
+    figure_ = figure()
+    add_1d_histogram_to_figure(figure_, array)
+    return figure_
+
+
+def add_1d_histogram_to_figure(figure_, array):
+    hist, edges = np.histogram(array, density=True, bins=30)
+    figure_.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:], line_color="white")
+
+
+def create_scatter_figure(array0: npt.NDArray, array1: npt.NDArray) -> figure:
+    figure_ = figure()
+    add_2d_scatter_to_figure(figure_, array0, array1, )
+    return figure_
+
+
+def add_2d_scatter_to_figure(
+        figure_,
+        array0,
+        array1,
+        *,
+        color: Color = default_discrete_palette.blue
+):
+    figure_.scatter(array0, array1, size=3, alpha=0.5, color=color)
+
+
+def create_2d_kde_credible_interval_figure(array0: npt.NDArray, array1: npt.NDArray,
+                                           credible_intervals: npt.NDArray | None = None,
+                                           alphas: npt.NDArray | None = None) -> figure:
+    if credible_intervals is None:
+        credible_intervals = [0.39346934, 0.86466472, 0.988891]  # Equivalent of 1,2,3-sigma for 2D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    figure_ = figure()
+    add_2d_kde_credible_interval_to_figure(figure_, array0, array1, credible_intervals=credible_intervals,
+                                           alphas=alphas)
+    return figure_
+
+
+def add_2d_kde_credible_interval_to_figure(
+        figure_: figure,
+        array0: npt.NDArray,
+        array1: npt.NDArray,
+        *,
+        color: Color = default_discrete_palette.blue,
+        credible_intervals: npt.NDArray | None = None,
+        alphas: npt.NDArray | None = None
+):
+    if credible_intervals is None:
+        credible_intervals = [0.39346934, 0.86466472, 0.988891]  # Equivalent of 1,2,3-sigma for 2D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    combined_marginal_2d_array = np.stack([array0, array1], axis=0)
+    kde = stats.gaussian_kde(combined_marginal_2d_array)
+    contour_x_plotting_range = get_padded_range_for_array(array0)
+    contour_y_plotting_range = get_padded_range_for_array(array1)
+    x_positions = np.linspace(*contour_x_plotting_range, 1000)
+    y_positions = np.linspace(*contour_y_plotting_range, 1000)
+    x_meshgrid, y_meshgrid = np.meshgrid(x_positions, y_positions)
+    positions = np.vstack([x_meshgrid.ravel(), y_meshgrid.ravel()])
+    z_meshgrid = kde(positions).reshape(x_meshgrid.shape)
+    add_contour_to_figure(figure_, x_meshgrid, y_meshgrid, z_meshgrid, color, credible_intervals, alphas)
+
+
+def add_contour_to_figure(figure_: figure, x_meshgrid, y_meshgrid, z_meshgrid, color: Color,
+                          credible_intervals: npt.NDArray, alphas: npt.NDArray):
+    z = z_meshgrid.ravel()
+    sorted_z = np.sort(z)[::-1]
+    cumulative_density = np.cumsum(sorted_z) / np.sum(sorted_z)
+    threshold_indexes = np.searchsorted(cumulative_density, credible_intervals)
+    thresholds = sorted_z[threshold_indexes]
+    thresholds = thresholds[::-1]
+    thresholds = np.concatenate([thresholds, np.array([np.max(sorted_z)])])
+    figure_.contour(x=x_meshgrid, y=y_meshgrid, z=z_meshgrid, levels=thresholds,
+                    fill_color=color, fill_alpha=alphas)
+
+
+def create_1d_kde_credible_interval_figure(array: npt.NDArray) -> figure:
+    figure_ = figure()
+    add_1d_kde_credible_interval_to_figure(figure_, array)
+    return figure_
+
+
+def create_multi_distribution_1d_kde_credible_interval_figure(
+        arrays: list[npt.NDArray],
+        colors: Iterable[Color] = default_discrete_palette,
+        credible_intervals: npt.NDArray | None = None,
+        alphas: npt.NDArray | None = None
+) -> figure:
+    if credible_intervals is None:
+        credible_intervals = [0.6827, 0.9545, 0.9973]  # Equivalent of 1,2,3-sigma for 1D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    figure_ = figure()
+    for array, color in zip(arrays, colors):
+        add_1d_kde_credible_interval_to_figure(figure_, array, color=color, credible_intervals=credible_intervals,
+                                               alphas=alphas)
+    return figure_
+
+
+def add_1d_histogram_credible_interval_to_figure(
+        figure_: figure, array: npt.NDArray, color: Color,
+    credible_intervals: npt.NDArray | None = None,
+    alphas: npt.NDArray | None = None
+):
+    if credible_intervals is None:
+        credible_intervals = [0.6827, 0.9545, 0.9973]  # Equivalent of 1,2,3-sigma for 1D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    histogram_values, histogram_edges = np.histogram(array, bins=60, density=True)
+    histogram_centers = (histogram_edges[1:] + histogram_edges[:-1]) / 2
+    add_1d_credible_interval_contour_to_figure(figure_, histogram_centers, histogram_values, color,
+                                               credible_intervals, alphas)
+
+
+def create_multi_distribution_1d_histogram_credible_interval_figure(
+        arrays: list[npt.NDArray],
+        colors: Iterable[Color] = default_discrete_palette,
+        credible_intervals: npt.NDArray | None = None,
+        alphas: npt.NDArray | None = None
+) -> figure:
+    if credible_intervals is None:
+        credible_intervals = [0.6827, 0.9545, 0.9973]  # Equivalent of 1,2,3-sigma for 1D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    figure_ = figure()
+    for array, color in zip(arrays, colors):
+        add_1d_histogram_credible_interval_to_figure(figure_, array, color, credible_intervals=credible_intervals,
+                                                     alphas=alphas)
+    return figure_
+
+
+def create_1d_histogram_credible_interval_figure(
+        array: npt.NDArray,
+        *,
+        color: Color = default_discrete_palette.blue
+) -> figure:
+    figure_ = figure()
+    add_1d_histogram_credible_interval_to_figure(figure_, array, color)
+    return figure_
+
+
+def create_multi_distribution_2d_kde_credible_interval_figure(
+        array_pairs: list[tuple[npt.NDArray, npt.NDArray]],
+        colors: Iterable[Color] = default_discrete_palette,
+) -> figure:
+    figure_ = figure()
+    for array_pair, color in zip(array_pairs, colors):
+        add_2d_kde_credible_interval_to_figure(figure_, *array_pair, color=color)
+    return figure_
+
+
+def create_multi_distribution_2d_histogram_figure(
+        array_pairs: list[tuple[npt.NDArray, npt.NDArray]],
+        colors: Iterable[Color] = default_discrete_palette,
+) -> figure:
+    figure_ = figure()
+    for array_pair, color in zip(array_pairs, colors):
+        add_2d_histogram_to_figure(figure_, *array_pair, color=color)
+    return figure_
+
+
+def create_multi_distribution_2d_histogram_credible_interval_contour_figure(
+        array_pairs: list[tuple[npt.NDArray, npt.NDArray]],
+        colors: Iterable[Color] = default_discrete_palette,
+        credible_intervals: npt.NDArray | None = None,
+        alphas: npt.NDArray | None = None
+) -> figure:
+    if credible_intervals is None:
+        credible_intervals = [0.39346934, 0.86466472, 0.988891]  # Equivalent of 1,2,3-sigma for 2D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    figure_ = figure()
+    for array_pair, color in zip(array_pairs, colors):
+        add_2d_histogram_credible_interval_contour_to_figure(
+            figure_, *array_pair, color=color, credible_intervals=credible_intervals, alphas=alphas)
+    return figure_
+
+
+def create_2d_histogram_credible_interval_contour_figure(
+        array0: npt.NDArray,
+        array1: npt.NDArray,
+        *,
+        color: Color = default_discrete_palette.blue
+) -> figure:
+    figure_ = figure()
+    add_2d_histogram_credible_interval_contour_to_figure(figure_, array0, array1, color=color)
+    return figure_
+
+
+def add_2d_histogram_to_figure(
+        figure_: figure,
+        array0: npt.NDArray,
+        array1: npt.NDArray,
+        *,
+        color: Color = default_discrete_palette.blue
+):
+    histogram_values, histogram_edges0, histogram_edges1 = np.histogram2d(array0, array1, bins=30, density=True)
+    histogram_maximum = np.max(histogram_values)
+    histogram_normalized = histogram_values / histogram_maximum
+    image_width = histogram_edges0[-1] - histogram_edges0[0]
+    image_height = histogram_edges1[-1] - histogram_edges1[0]
+    image_anchor0 = histogram_edges0[0]
+    image_anchor1 = histogram_edges1[0]
+    palette = varying_alpha_palette(color.to_rgb().to_hex())
+    figure_.image(image=[np.transpose(histogram_normalized)], x=image_anchor0, y=image_anchor1, dw=image_width,
+                  dh=image_height, palette=palette)
+
+
+def add_2d_histogram_credible_interval_contour_to_figure(
+        figure_: figure,
+        array0: npt.NDArray,
+        array1: npt.NDArray,
+        *,
+        color: Color = default_discrete_palette.blue,
+        credible_intervals: npt.NDArray | None = None,
+        alphas: npt.NDArray | None = None
+):
+    if credible_intervals is None:
+        credible_intervals = [0.39346934, 0.86466472, 0.988891]  # Equivalent of 1,2,3-sigma for 2D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    histogram_values, histogram_edges0, histogram_edges1 = np.histogram2d(array0, array1, bins=[30, 30], density=True)
+    histogram_centers0 = (histogram_edges0[1:] + histogram_edges0[:-1]) / 2
+    histogram_centers1 = (histogram_edges1[1:] + histogram_edges1[:-1]) / 2
+    x_meshgrid, y_meshgrid = np.meshgrid(histogram_centers0, histogram_centers1)
+    z_meshgrid = np.transpose(histogram_values)
+    add_contour_to_figure(figure_, x_meshgrid, y_meshgrid, z_meshgrid, color, credible_intervals, alphas)
+
+
+def add_1d_kde_credible_interval_to_figure(
+        figure_: figure,
+        array: npt.NDArray,
+        *,
+        color: Color = default_discrete_palette.blue,
+        credible_intervals: npt.NDArray | None = None,
+        alphas: npt.NDArray | None = None
+):
+    if credible_intervals is None:
+        credible_intervals = [0.6827, 0.9545, 0.9973]  # Equivalent of 1,2,3-sigma for 1D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    kde = stats.gaussian_kde(array)
+    distribution_plotting_range = get_padded_range_for_array(array)
+    # Evaluate the KDE on a grid
+    plotting_positions = np.linspace(*distribution_plotting_range, 1000)
+    distribution_values = kde(plotting_positions)
+    add_1d_credible_interval_contour_to_figure(figure_, plotting_positions, distribution_values, color,
+                                               credible_intervals=credible_intervals, alphas=alphas)
+
+
+def add_1d_credible_interval_contour_to_figure(
+        figure_, distribution_positions, distribution_values,
+        color: Color = default_discrete_palette.blue,
+        credible_intervals: npt.NDArray | None = None,
+        alphas: npt.NDArray | None = None
+):
+    if credible_intervals is None:
+        credible_intervals = [0.6827, 0.9545, 0.9973]  # Equivalent of 1,2,3-sigma for 1D standard deviations.
+    if alphas is None:
+        alpha_interval = 1 / (len(credible_intervals) + 1)
+        alphas = [alpha_interval * (credible_interval_index + 1)
+                  for credible_interval_index in range(len(credible_intervals))]
+    else:
+        if len(alphas) != len(credible_intervals):
+            raise ValueError(f'The number of alphas passed ({len(alphas)} passed) must match the number of credible '
+                             f'intervals ({len(credible_intervals)} passed).')
+    alphas = np.array([0.1, 0.3, 0.5])
+    credible_interval_thresholds = credible_intervals
+    plotting_position_threshold_indexes = get_indexes_for_thresholds(credible_interval_thresholds,
+                                                                     distribution_positions, distribution_values)
+    interval_segment_plotting_positions_array, interval_segment_values_array = create_segments_for_indexes(
+        plotting_position_threshold_indexes, distribution_positions, distribution_values)
+    for credible_interval_threshold_index in range(len(credible_interval_thresholds)):
+        lower_segment_positions = interval_segment_plotting_positions_array[credible_interval_threshold_index + 1]
+        upper_segment_positions = interval_segment_plotting_positions_array[-(credible_interval_threshold_index + 2)]
+        lower_segment_values = interval_segment_values_array[credible_interval_threshold_index + 1]
+        upper_segment_values = interval_segment_values_array[-(credible_interval_threshold_index + 2)]
+        lower_column_data_source = ColumnDataSource(data={
+            'base': lower_segment_positions,
+            'lower': np.zeros_like(lower_segment_values),
+            'upper': lower_segment_values,
+        })
+        upper_column_data_source = ColumnDataSource(data={
+            'base': upper_segment_positions,
+            'lower': np.zeros_like(upper_segment_values),
+            'upper': upper_segment_values,
+        })
+        lower_band = Band(source=lower_column_data_source, base='base', lower='lower', upper='upper',
+                          fill_color=color, fill_alpha=alphas[credible_interval_threshold_index])
+        upper_band = Band(source=upper_column_data_source, base='base', lower='lower', upper='upper',
+                          fill_color=color, fill_alpha=alphas[credible_interval_threshold_index])
+        figure_.add_layout(lower_band)
+        figure_.add_layout(upper_band)
+    median_position_index = plotting_position_threshold_indexes[
+        math.floor(plotting_position_threshold_indexes.shape[0] / 2)]
+    median_value = distribution_values[median_position_index]
+    median_position = distribution_positions[median_position_index]
+    figure_.line(x=[median_position, median_position], y=[0, median_value], color=color)
+    figure_.line(x=distribution_positions, y=distribution_values, color=color)
+
+
+def create_segments_for_indexes(
+        plotting_position_threshold_indexes: npt.NDArray,
+        distribution_positions: npt.NDArray,
+        distribution_values: npt.NDArray
+) -> (npt.NDArray, npt.NDArray):
+    interval_segment_plotting_positions_array = np.split(distribution_positions, plotting_position_threshold_indexes)
+    interval_segment_values_array = np.split(distribution_values, plotting_position_threshold_indexes)
+    # Fill the gaps between intervals.
+    for split_index in reversed(range(len(interval_segment_plotting_positions_array) - 1)):
+        interval_segment_plotting_positions_array[split_index] = np.append(
+            interval_segment_plotting_positions_array[split_index],
+            interval_segment_plotting_positions_array[split_index + 1][0]
+        )
+        interval_segment_values_array[split_index] = np.append(
+            interval_segment_values_array[split_index],
+            interval_segment_values_array[split_index + 1][0]
+        )
+    return interval_segment_plotting_positions_array, interval_segment_values_array
+
+
+def get_indexes_for_thresholds(credible_interval_thresholds, distribution_positions, distribution_values):
+    if isinstance(credible_interval_thresholds, list):
+        credible_interval_thresholds = np.array(credible_interval_thresholds)
+    half_credible_interval_thresholds = credible_interval_thresholds / 2
+    quantile_thresholds = np.concatenate([
+        0.5 - half_credible_interval_thresholds[::-1],  # The lower bounds of the intervals.
+        np.array([0.5]),  # The median.
+        0.5 + half_credible_interval_thresholds,  # The upper bounds of the intervals.
+    ])
+    threshold_values = np.quantile(distribution_positions, quantile_thresholds, weights=distribution_values,
+                                   method='inverted_cdf')
+    plotting_position_threshold_indexes = np.searchsorted(distribution_positions, threshold_values)
+    return plotting_position_threshold_indexes
+
+
+def get_range_1d_for_array(array: npt.NDArray, padding_fraction: float = 0.05) -> Range1d:
+    range_start, range_end = get_padded_range_for_array(array, padding_fraction)
+    range_1d = Range1d(start=range_start, end=range_end)
+    return range_1d
+
+
+def get_padded_range_for_array(array, padding_fraction: float = 0.05) -> (float, float):
+    array_minimum = np.min(array)
+    array_maximum = np.max(array)
+    array_difference = array_maximum - array_minimum
+    padding = padding_fraction * array_difference
+    range_start = array_minimum - padding
+    range_end = array_maximum + padding
+    return range_start, range_end
+
+
+def create_corner_plot(
+        array: npt.NDArray,
+        *,
+        marginal_1d_figure_function: Callable[
+            Concatenate[npt.NDArray, P], figure] = create_1d_histogram_credible_interval_figure,
+        marginal_2d_figure_function: Callable[
+            Concatenate[
+                npt.NDArray, npt.NDArray, P], figure] = create_2d_histogram_credible_interval_contour_figure,
+        dimension_labels: list[str] | None = None,
+        subfigure_size: int = 200,
+        subfigure_min_border: int = 5,
+        end_axis_minimum_border: int = 100,
+        sub_figure_kwargs: dict[Any, Any] = None,
+        # Deprecated keyword parameters.
+        labels: list[str] | None = None,
+):
+    if dimension_labels is not None and labels is not None:
+        raise ValueError('Both `dimension_labels` and `labels` cannot be set at the same time.')
+    if labels is not None:
+        warnings.warn('`labels` is deprecated and will be removed in the future. '
+                      'Please use `dimension_labels` instead.', UserWarning)
+        dimension_labels = labels
+
+
+    if sub_figure_kwargs is None:
+        sub_figure_kwargs = {}
+    assert len(array.shape) == 2
+
+    # Prepare shared components.
+    number_of_parameters = array.shape[1]
+    x_ranges = [get_range_1d_for_array(array[:, index])
+                for index in range(number_of_parameters)]
+    y_ranges = [get_range_1d_for_array(array[:, index])
+                for index in range(number_of_parameters)]
+    tools = [PanTool(), WheelZoomTool(), BoxZoomTool(), ResetTool()]
+    toolbar = Toolbar(tools=tools)
+
+    plots = []
+
+    for row_index in range(number_of_parameters):
+        row_figures: list[figure] = []
+        for column_index in range(number_of_parameters):
+            figure_ = None
+            if row_index == column_index:  # 1D marginal distribution figures.
+                marginal_1d_array = array[:, row_index]
+                logger.info(f'Creating 1D marginal figure for row {row_index}, column {column_index}.')
+                figure_ = marginal_1d_figure_function(marginal_1d_array, **sub_figure_kwargs)
+            if row_index > column_index:  # 2D marginal distribution figures.
+                marginal_2d_array0 = array[:, column_index]
+                marginal_2d_array1 = array[:, row_index]
+                logger.info(f'Creating 2D marginal figure for row {row_index}, column {column_index}.')
+                figure_ = marginal_2d_figure_function(marginal_2d_array0, marginal_2d_array1, **sub_figure_kwargs)
+            if figure_ is not None:
+                compose_figure_for_corner_plot_position(figure_, column_index, row_index, number_of_parameters,
+                                                        dimension_labels, x_ranges, y_ranges, toolbar, subfigure_size,
+                                                        subfigure_min_border, end_axis_minimum_border)
+                row_figures.append(figure_)
+        plots.append(row_figures)
+
+    # Create a grid plot
+    layout_ = layout(*plots)
+
+    # Display the plot
+    show(layout_)
+
+
+def create_multi_distribution_corner_plot(
+        arrays: list[npt.NDArray],
+        *,
+        marginal_1d_figure_function: Callable[
+            Concatenate[
+                list[npt.NDArray], P], figure] = create_multi_distribution_1d_histogram_credible_interval_figure,
+        marginal_2d_figure_function: Callable[
+            Concatenate[list[tuple[npt.NDArray, npt.NDArray]], P], figure
+        ] = create_multi_distribution_2d_histogram_credible_interval_contour_figure,
+        dimension_labels: list[str] | None = None,
+        subfigure_size: int = 200,
+        subfigure_min_border: int = 5,
+        end_axis_minimum_border: int = 100,
+        sub_figure_kwargs: dict[Any, Any] = None,
+        # Deprecated keyword parameters.
+        labels: list[str] | None = None,
+) -> Column:
+    if dimension_labels is not None and labels is not None:
+        raise ValueError('Both `dimension_labels` and `labels` cannot be set at the same time.')
+    if labels is not None:
+        warnings.warn('`labels` is deprecated and will be removed in the future. '
+             'Please use `dimension_labels` instead.', UserWarning)
+        dimension_labels = labels
+
+    if sub_figure_kwargs is None:
+        sub_figure_kwargs = {}
+
+    number_of_dimensions = arrays[0].shape[1]
+    for array in arrays:
+        assert len(array.shape) == 2
+        assert array.shape[1] == number_of_dimensions
+
+    if dimension_labels is not None and len(dimension_labels) != number_of_dimensions:
+        raise ValueError('`labels` must be the same length as the number of dimensions.')
+
+    # Prepare shared components.
+    concatenated_array = np.concatenate(arrays, axis=0)
+    x_ranges = [get_range_1d_for_array(concatenated_array[:, index])
+                for index in range(number_of_dimensions)]
+    y_ranges = [get_range_1d_for_array(concatenated_array[:, index])
+                for index in range(number_of_dimensions)]
+    tools = [PanTool(), WheelZoomTool(), BoxZoomTool(), ResetTool()]
+    toolbar = Toolbar(tools=tools)
+
+    plots = []
+
+    for row_index in range(number_of_dimensions):
+        row_figures: list[figure] = []
+        for column_index in range(number_of_dimensions):
+            figure_ = None
+            if row_index == column_index:  # 1D marginal distribution figures.
+                marginal_1d_arrays = [array[:, row_index] for array in arrays]
+                logger.info(f'Creating 1D marginal figure for row {row_index}, column {column_index}.')
+                figure_ = marginal_1d_figure_function(marginal_1d_arrays, **sub_figure_kwargs)
+            if row_index > column_index:  # 2D marginal distribution figures.
+                marginal_2d_array_pairs = [(array[:, column_index], array[:, row_index]) for array in arrays]
+                logger.info(f'Creating 2D marginal figure for row {row_index}, column {column_index}.')
+                figure_ = marginal_2d_figure_function(marginal_2d_array_pairs, **sub_figure_kwargs)
+            if figure_ is not None:
+                compose_figure_for_corner_plot_position(figure_, column_index, row_index, number_of_dimensions,
+                                                        dimension_labels, x_ranges, y_ranges, toolbar, subfigure_size,
+                                                        subfigure_min_border, end_axis_minimum_border)
+                row_figures.append(figure_)
+        plots.append(row_figures)
+
+    # Create a grid plot
+    layout_ = layout(*plots)
+
+    return layout_
+
+
+def compose_figure_for_corner_plot_position(figure_: figure, column_index: int, row_index: int,
+                                            number_of_dimensions: int, labels: list[str] | None,
+                                            x_ranges: list[Range1d], y_ranges: list[Range1d], toolbar: Toolbar,
+                                            subfigure_size: int, subfigure_min_border: int,
+                                            end_axis_minimum_border: int):
+    if labels is None:
+        labels = [None] * number_of_dimensions
+    if row_index == column_index:  # 1D marginal distribution figures.
+        if len(figure_.left) > 0:
+            axis = figure_.left.pop(0)
+            figure_.add_layout(axis, Place.right)
+        figure_.min_border = subfigure_min_border
+        if column_index == 0:
+            figure_.min_border_left = end_axis_minimum_border
+    if row_index > column_index:  # 2D marginal distribution figures.
+        figure_.min_border = subfigure_min_border
+        if column_index == 0:
+            figure_.min_border_left = end_axis_minimum_border
+            figure_.yaxis.axis_label = labels[row_index]
+        else:
+            figure_.yaxis.visible = False
+        figure_.y_range = y_ranges[row_index]
+    if row_index == number_of_dimensions - 1:
+        figure_.min_border_bottom = end_axis_minimum_border
+        figure_.xaxis.axis_label = labels[column_index]
+        figure_.xaxis.major_label_orientation = math.tau / 8
+    else:
+        figure_.xaxis.visible = False
+    if row_index == number_of_dimensions - 1 and column_index == number_of_dimensions - 1:
+        figure_.toolbar_location = Place.below
+    else:
+        figure_.toolbar_location = None
+    figure_.frame_width = subfigure_size
+    figure_.frame_height = subfigure_size
+    figure_.x_range = x_ranges[column_index]
+    figure_.toolbar = toolbar
+    figure_.xaxis.ticker.desired_num_ticks = 3
+    figure_.yaxis.ticker.desired_num_ticks = 4
+    # figure_.xaxis.ticker.mantissas = np.linspace(0.5,9.5,19).tolist()
+    # figure_.yaxis.ticker.mantissas = np.linspace(0.5,9.5,19).tolist()
+    figure_.xaxis.ticker.mantissas = np.linspace(1, 9, 9).tolist()
+    figure_.yaxis.ticker.mantissas = np.linspace(1, 9, 9).tolist()
