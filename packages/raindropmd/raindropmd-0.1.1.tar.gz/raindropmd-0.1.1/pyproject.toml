@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "raindropmd"
+version = "0.1.1"
+description = "Raindrop.io CSV to Zettelkasten Markdown CLI"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "click",
+    "rich",
+    "jinja2"
+]
+
+[project.scripts]
+raindropmd = "raindropmd.cli:main"
