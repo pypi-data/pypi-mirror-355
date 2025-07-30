@@ -1,0 +1,97 @@
+Metadata-Version: 2.4
+Name: devdraft-sdk
+Version: 1.0.4
+Summary: Devdraft Payment & Business Management API
+Home-page: https://github.com/devraftengineer/devdraft-sdk-python
+Download-URL: https://github.com/devraftengineer/devdraft-sdk-python/archive/refs/tags/v1.0.4.tar.gz
+Author: Devdraft
+Author-email: engineering@devdraft.ai
+Keywords: Devdraft,API,Payment,Business Management
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: urllib3>=1.15
+Requires-Dist: six>=1.10
+Requires-Dist: certifi
+Requires-Dist: python-dateutil
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: download-url
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Devdraft SDK
+
+A Python library for Devdraft's Payment & Business Management API.
+
+## Project Description
+
+Devdraft SDK provides a comprehensive solution for integrating cryptocurrency and traditional payment methods into your applications. It offers a robust set of tools for payment processing, business management, and seamless integration with the Devdraft platform.
+
+## Setup
+
+You can install this package using pip:
+
+```bash
+pip install devdraft-sdk
+```
+
+Or using easy_install:
+
+```bash
+easy_install devdraft-sdk
+```
+
+## Setting up a Devdraft Account
+
+1. Sign up for a Devdraft account at [https://console.devdraft.ai/](https://console.devdraft.ai/)
+2. Once logged in, navigate to the Apps section
+3. Create a new app to get your API credentials
+4. You'll receive two important credentials:
+   - x-client-key
+   - x-client-secret
+
+## Usage
+
+To use the SDK, you'll need to configure it with your API credentials:
+
+```python
+import devdraft_ai_sdk
+
+# Configure API client
+configuration = devdraft_ai_sdk.Configuration()
+configuration.api_key['x-client-key'] = 'YOUR_CLIENT_KEY'
+configuration.api_key['x-client-secret'] = 'YOUR_CLIENT_SECRET'
+
+# Create API client instance
+api_client = devdraft_ai_sdk.ApiClient(configuration)
+```
+
+For detailed API documentation and examples, visit our [API Reference](https://docs.devdraft.ai).
+
+## Features
+
+- Cryptocurrency payment processing
+- Traditional payment method integration
+- Business management tools
+- Real-time transaction monitoring
+- Comprehensive API coverage
+
+## Support
+
+For support, please visit our [documentation](https://docs.devdraft.ai) or contact our support team at support@devdraft.ai.
