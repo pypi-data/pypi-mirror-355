@@ -1,0 +1,31 @@
+[project]
+name = "schore"
+version = "0.0.3"
+description = "Core classes for scheduling problems' definition"
+readme = "README.md"
+authors = [
+    { name = "JuneTech", email = "junetech0@gmail.com" }
+]
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2.3",
+]
+
+[project.urls]
+Repository = "https://github.com/junetech/schore.git"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pandas-stubs>=2.2.3.250308",
+    "pytest>=8.3.5",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
