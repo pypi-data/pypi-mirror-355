@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "same-version"
+version = "6.1.0"
+description = "Automatically ensures your software version metadata is consistent across key project files."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+keywords = ["open science", "FAIR", "version", "software quality", "DevOps", "CI/CD", "GitHub Action", "pyproject.toml", "package.json", "setup.py", "codemeta.json", ".zenodo.json", "Zenodo", "CodeMeta", "CITATION.cff", "CFF", "citation", "metadata", "harmonization"]
+authors = [
+  { name = "Will Riley", email = "wanderingwill@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Version Control",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Utilities"
+]
+
+dependencies = ["pyyaml>=6.0.2", "tomli>=2.2.1", "verple>=1.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/willynilly/same-version"
+Documentation = "https://github.com/willynilly/same-version#readme"
+Issues = "https://github.com/willynilly/same-version/issues"
+Source = "https://github.com/willynilly/same-version"
+
+[project.optional-dependencies]
+testing = [
+    "pytest>=8.3.5",
+]
+dev = [
+    "ruff>=0.11.12",
+    "pre-commit>=4.2.0"
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.hatch.build]
+include = ["src/same_version/**", "CITATION.cff"]
+license-files = ["LICEN[CS]E*"]
+sources = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["same_version"]
+
+[project.scripts]
+same-version = "same_version.main:main"
