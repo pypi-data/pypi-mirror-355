@@ -1,0 +1,50 @@
+[project]
+name = "fexcel"
+version = "0.0.6"
+description = "A simple Excel files mocker based on faker and pyexcel"
+readme = "README.md"
+authors = [{ name = "Manel Caireta", email = "m.caireta@altostratus.es" }]
+requires-python = ">=3.10"
+dependencies = [
+    "faker>=36.2.2",
+    "pyexcel>=0.7.1",
+]
+
+[project.scripts]
+fexcel = "fexcel.__main__:main"
+
+[project.optional-dependencies]
+xls = [
+    "pyexcel-xls>=0.7.1",
+]
+xlsx = [
+    "pyexcel-xlsx>=0.6.1",
+]
+ods = [
+    "pyexcel-ods3>=0.6.1",
+]
+csv = [
+    "chardet>=5.2.0",
+    "pyexcel-io>=0.6.7",
+]
+all = [
+    "chardet>=5.2.0",
+    "pyexcel-io>=0.6.7",
+    "pyexcel-ods3>=0.6.1",
+    "pyexcel-xls>=0.7.1",
+    "pyexcel-xlsx>=0.6.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "pytest-sugar>=1.0.0",
+]
+
+[tool.coverage.report]
+exclude_also = ["if __name__ == .__main__.:", "def main", "@abstractmethod"]
