@@ -1,0 +1,53 @@
+Metadata-Version: 2.4
+Name: wowool-russian
+Version: 3.0.1
+Summary: Wowool NLP russian Package
+Description-Content-Type: text/markdown
+
+# Wowool NLP russian Package
+This package contains the language file and domains for russian.
+To use this package, you need to install the wowool-sdk package and request a license file at info@wowool.com
+
+## Usage
+
+```python
+from wowool.sdk import Pipeline
+from pathlib import Path
+input_text = Path("input.txt").read_text()
+pipeline = Pipeline("russian,entity")
+doc = pipeline(input_text)
+print(doc)
+```
+
+## Domains
+
+### russian-entity.dom_info
+
+| Entity | Description | Sample |
+| ------ | ----------- | ------ |
+| Address |captures the Street, City and the complete Address | ул. Варварка, д. 3, пом. 60 109012, г. Москва |
+| City |Name of a city | Москва |
+| Company |Name of a company | Лукойл |
+| Country |Name of a country | Польша |
+| Date |Date and Month | 26 декабря 2018 |
+| Email |Email address | info@eyeontext.com |
+| Event |Something that happens | Московский международный кинофестиваль |
+| GivenName |First name of a Person | Ярослав |
+| MoneyAmount |Amount of money | 1280 рублей |
+| Month |Name of a month | октябрь |
+| Organization |Name of an Organization | Медицинский центр Глениглс |
+| Person |Name of a Person, it captures as well the PersonGiv (first name) and PersonFam (family name) | Поплавский Алексей Алексеевич |
+| Url |Url | https://www.eyeontext.com |
+| WeekDay |Day of the week | пятница |
+| WorldRegion |A geographical place, like a continent, a region, a county, etc. | Сектор Газа |
+
+
+### russian-dates.dom_info
+
+| Entity | Description | Sample |
+| ------ | ----------- | ------ |
+| Date |An attribute will resolve the absolute date from the date that has been set | 13/01/2021 |
+| TimePhrase |A phrase expressing time, including dates | vier jaar geleden |
+
+
+
