@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cvglue"
+authors = [
+  { name="Lamply", email="lamplykyz@gmail.com" },
+]
+description = "Glue tools of computer vision"
+keywords = [
+    "computer vision"
+]
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests",
+    "IPython",
+    "termcolor",
+    "deepdiff",
+    "albumentations >= 1.1.0",
+    "numpy",
+    "opencv-python",
+    "matplotlib",
+    "scikit-image",
+    "scikit-learn",
+    "imageio-ffmpeg",
+    "lpips",
+    "pytest",
+    "onnx",
+    "onnxruntime-gpu",
+    "torch >= 1.6.0"
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/Lamply/CVGlue"
+Issues = "https://github.com/Lamply/CVGlue/issues"
+
+[project.optional-dependencies]
+option1 = [
+  "insightface",
+  "face_recognition"
+]
+
+[tool.hatch.version]
+path = "cvglue/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["cvglue"]
+include = [
+  "cvglue/*.json",
+  "cvglue/*.pth",
+  "cvglue/*.onnx",
+  "cvglue/*.yaml"
+]
