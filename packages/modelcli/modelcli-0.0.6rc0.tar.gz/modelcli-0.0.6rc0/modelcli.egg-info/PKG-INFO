@@ -1,0 +1,54 @@
+Metadata-Version: 2.4
+Name: modelcli
+Version: 0.0.6rc0
+Summary: Universal CLI for sending prompts to any LLM model and provider.
+Home-page: https://github.com/Tomigambii/modelcli
+Author: Tomás Gambirassi
+Author-email: tomasgambirassi@gmail.com
+Project-URL: Bug Tracker, https://github.com/Tomigambii/modelcli/issues
+Project-URL: Source Code, https://github.com/Tomigambii/modelcli
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+
+# modelcli
+
+`modelcli` is a universal command-line interface to interact with any LLM provider or local model.
+
+## Installation
+
+```bash
+pip install .
+```
+
+## Commands
+
+### Add a model
+```bash
+modelcli configure-model --name mymodel --url http://localhost:11434/v1/chat/completions --key none --model llama3
+```
+
+### Use predefined commands
+```bash
+modelcli summarize "This is a long article..." --model mymodel
+modelcli translate "Hola mundo" --language english --model mymodel
+modelcli email "Meeting canceled" --tone formal --model mymodel
+```
+
+### Run a custom prompt
+```bash
+modelcli custom "List 3 interesting facts about Saturn" --model mymodel
+```
