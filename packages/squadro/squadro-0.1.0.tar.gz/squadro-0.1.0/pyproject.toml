@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["squadro"]
+include = ["squadro*"]
+
+#[tool.setuptools.package-data]
+#myModule = ["*.pt"]
+
+[project]
+name = "squadro"
+version = "0.1.0"
+authors = [
+    { name = "Martin" },
+]
+description = "Squadro board game"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'Pillow',
+    "igraph",
+    'matplotlib',
+    'numpy',
+    'pandas',
+    "plotly",
+    'pydantic',
+    'pygame',
+    'torch',
+]
+
+
+[project.optional-dependencies]
+all = ["squadro[dev, testing]"]
+dev = [
+    "black",
+    "isort",
+    "flake8",
+    "flake8-pyproject",
+    "nox",
+    "notebook",
+    'pip-tools',
+    'build',
+]
+testing = [
+    "pytest",
+    "pytest-cov",
+    "pytest-env",
+    "pytest-html",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/MartinBraquet/squadro"
+"Bug Tracker" = "https://github.com/MartinBraquet/squadro/issues"
