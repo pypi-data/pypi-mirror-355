@@ -1,0 +1,19 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="onealpha",                     # Package name
+    version="0.1.3",                     # Version
+    author="Alok Vishwakarma",                  # Your name
+    author_email="alokvishwakarma@theonealpha.com",  # Your email
+    description="TheOneAlpha Data Downloader: In this update, we enhanced the test.py file to ensure all endpoints are properly accessed and tested.",  # Short description
+    long_description=open("README.md").read(), # Long description
+    long_description_content_type="text/markdown",  # README format
+    packages=find_packages(),           # Auto-detect packages
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires=">=3.11",
+    install_requires=[],  
+)
