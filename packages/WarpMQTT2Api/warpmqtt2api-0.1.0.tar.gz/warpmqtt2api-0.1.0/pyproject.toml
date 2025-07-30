@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "WarpMQTT2Api"
+
+authors = [
+  { name = "Wolfgang Fahl", email = "wf@bitplan.com" }
+]
+maintainers = [
+  { name = "Wolfgang Fahl", email = "wf@bitplan.com" }
+]
+readme = "README.md"
+license = "Apache-2.0"
+
+dependencies = [
+	# https://pypi.org/project/pybasemkit/
+	# https://github.com/WolfgangFahl/pybasemkit
+	# Python base module kit: YAML/JSON I/O, structured logging, CLI tooling, shell execution, and remote pydevd debug support.
+	"pybasemkit>=0.0.3",
+	# https://pypi.org/project/pylodstorage/
+	"pylodstorage>=0.16.4",
+]
+requires-python = ">=3.10"
+
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13"
+]
+
+keywords = [
+  "Tinkerforge",
+  "Warp3",
+  "MQTT",
+  "Warp",
+  "solar charging",
+  "PV surplus",
+  "wallbox integration",
+  "energy monitoring",
+  "smart charging",
+  "home automation"
+]
+
+dynamic = ["version", "description"]
+
+[project.urls]
+Home = "https://github.com/WolfgangFahl/WarpMQTT2Api"
+Documentation = "https://wiki.bitplan.com/index.php/WarpMQTT2Ap"
+Source = "https://github.com/WolfgangFahl/WarpMQTT2Api"
+
+[tool.hatch.version]
+path = "warp/__init__.py"
+
+[project.optional-dependencies]
+test = []
+
+[tool.hatch.build.targets.wheel]
+only-include = ["warp"]
+
+[tool.hatch.build.targets.wheel.sources]
+"osprojects" = "warp"
+
+
+[project.scripts]
+warp3 = "warp.warp3:main"
+
+
+
