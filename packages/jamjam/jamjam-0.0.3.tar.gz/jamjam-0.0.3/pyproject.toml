@@ -1,0 +1,187 @@
+# Python package configuration.
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "jamjam"
+version = "0.0.3"
+readme = 'README.rst'
+# from https://choosealicense.com/licenses/gpl-3.0/
+license = "GPL-3.0"
+
+requires-python = ">=3.11"
+dependencies = [
+    # https://typing-extensions.readthedocs.io/
+    "typing_extensions>=4.12.0",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    # tooling:
+    "mypy",
+    "pre-commit",
+    "pytest",
+    # docs:
+    "sphinx",
+    "furo",
+]
+
+
+[project.scripts]
+"jj.info" = "jamjam._scripts.info:main"
+"jj.idle" = "jamjam._scripts.idle:main"
+"jj.dark" = "jamjam._scripts.dark:main"
+
+[tool.mypy]
+# https://mypy.readthedocs.io/en/stable/config_file.html
+#
+# Config is annoying as there're many ways to enable options.
+# (1) Individual Options
+# (2) Error Codes:
+# (3) Umbrella flags like 'strict' and 'extra-checks'
+#
+# Prioritize (1) over (2) where possible, never use (3).
+# Layout of options matches webpage.
+#
+# https://mypy.readthedocs.io/en/stable/config_file.html#platform-configuration
+always_true = []
+always_false = []
+#
+# https://mypy.readthedocs.io/en/stable/config_file.html#disallow-dynamic-typing
+disallow_any_unimported = true
+disallow_any_expr = false
+disallow_any_decorated = false
+disallow_any_explicit = false
+disallow_any_generics = false
+disallow_subclassing_any = true
+#
+# https://mypy.readthedocs.io/en/stable/config_file.html#untyped-definitions-and-calls
+disallow_untyped_calls = true
+untyped_calls_exclude = []
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+#
+# https://mypy.readthedocs.io/en/stable/config_file.html#configuring-warnings
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = false
+warn_unreachable = true
+#
+# https://mypy.readthedocs.io/en/stable/config_file.html#miscellaneous-strictness-flags
+allow_redefinition = true
+local_partial_types = false
+# enable_error_code = ...  # moved below.
+extra_checks = true
+implicit_reexport = false
+strict_equality = false
+strict_bytes = true
+#
+# https://mypy.readthedocs.io/en/stable/config_file.html#configuring-error-messages
+show_column_numbers = true
+show_error_code_links = true
+#
+# https://mypy.readthedocs.io/en/stable/config_file.html#miscellaneous
+warn_unused_configs = true
+#
+# https://mypy.readthedocs.io/en/stable/error_code_list2.html
+# Commented codes are intentionally off and/or set elsewhere.
+enable_error_code = [
+    # "type-arg",            # see disallow_any_generics
+    # "no-untyped-def",      # see disallow_untyped_defs
+    # "redundant-cast",      # see warn_redundant_casts
+    "redundant-self",
+    # "comparison-overlap",  # see strict_equality
+    # "no-untyped-call",     # see disallow_untyped_calls
+    # "no-any-return",       # see warn_return_any
+    # "no-any-unimported",   # see disallow_any_unimported
+    # "unreachable",         # see warn_unreachable
+    "deprecated",
+    "redundant-expr",
+    "possibly-undefined",
+    "truthy-bool",
+    "truthy-iterable",
+    "ignore-without-code",
+    # "explicit-override",
+    "unused-awaitable",
+    # "unused-ignore",       # see warn_unused_ignores
+    "mutable-override",
+    "unimported-reveal",
+    # "explicit-any",        # see disallow_any_explicit
+]
+
+
+[tool.ruff]
+# see: https://docs.astral.sh/ruff/rules/
+target-version = "py311"
+output-format = "concise"
+line-length = 61
+
+format.preview = true
+format.docstring-code-format = true
+format.skip-magic-trailing-comma = true
+
+lint.preview = true
+lint.select = ["ALL"]
+lint.ignore = [
+    "A001",    # builtin-variable-shadowing                 # Often *good* to do imho.
+    "ANN401",  # any-type
+    "B905",    # zip-without-explicit-strict
+    "COM812",  # missing-trailing-comma
+    "CPY001",  # missing-copyright-notice
+    "D102",    # undocumented-public-method                 # Disabled due to https://github.com/astral-sh/ruff/issues/8085
+    "D105",    # undocumented-magic-method
+    "D107",    # undocumented-public-init
+    "D203",    # one-blank-line-before-class
+    "D213",    # multi-line-summary-second-line
+    "D300",    # triple-single-quotes
+    "D400",    # missing-trailing-period
+    "D415",    # missing-terminal-punctuation
+    "D418",    # overload-with-docstring
+    "DOC201",  # docstring-missing-returns
+    "DOC501",  # docstring-missing-exception
+    "E202",    # whitespace-before-close-bracket            # Handled by ruff format
+    "E221",    # multiple-spaces-before-operator            # Handled by ruff format
+    "E241",    # multiple-spaces-after-comma                # Handled by ruff format
+    "E501",    # line-too-long                              # Handled by ruff format
+    "E741",    # ambiguous-variable-name
+    "FIX002",  # line-contains-todo
+    "ISC001",  # single-line-implicit-string-concatenation
+    "PLC0105", # type-name-incorrect-variance
+    "PLR2004", # magic-value-comparison
+    "PLW2901", # redefined-loop-name                        # Fine for small loops
+    "PLW3201", # bad-dunder-method-name
+    "PT013",   # pytest-incorrect-pytest-import
+    "PYI025",  # unaliased-collections-abc-set-import
+    "RET504",  # unnecessary-assign
+    "S311",    # suspicious-non-cryptographic-random-usage  # Pseudo-random fine for these use cases
+    "TC001",   # typing-only-first-party-import
+    "TC002",   # typing-only-third-party-import
+    "TC003",   # typing-only-standard-library-import
+    "TC006",   # runtime-cast-value
+    "TD002",   # missing-todo-author
+    "TD003",   # missing-todo-link
+]
+lint.extend-per-file-ignores."docs/conf.py" = [
+    "A001",   # builtin-variable-shadowing
+    "INP001", # implicit-namespace-package;
+]
+lint.extend-per-file-ignores."tests/**" = [
+    "D100",    # undocumented-public-module
+    "D103",    # undocumented-public-function
+    "INP001",  # implicit-namespace-package
+    "PLC2701", # import-private-name
+    "S101",    # assert
+]
+lint.extend-per-file-ignores."jamjam/_scripts/*" = [
+    "T201", # print
+]
+
+lint.isort.split-on-trailing-comma = false
+lint.isort.extra-standard-library = ["typing_extensions"]
