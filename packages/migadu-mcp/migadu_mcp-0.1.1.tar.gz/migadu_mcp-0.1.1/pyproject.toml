@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "migadu-mcp"
+version = "0.1.1"
+description = "FastMCP server for managing Migadu mailboxes, identities, forwardings, aliases, and rewrites"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Michael Broel", email = "Michael@Michaelzag.com" }
+]
+license = { text = "MIT" }
+keywords = ["mcp", "migadu", "email", "fastmcp", "server"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Email",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "fastmcp>=2.8.1",
+    "httpx>=0.28.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.8.0",
+    "mypy>=1.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Michaelzag/migadu-mcp"
+Repository = "https://github.com/Michaelzag/migadu-mcp"
+Issues = "https://github.com/Michaelzag/migadu-mcp/issues"
+
+[project.scripts]
+migadu-mcp = "migadu_mcp.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["migadu_mcp*"]
