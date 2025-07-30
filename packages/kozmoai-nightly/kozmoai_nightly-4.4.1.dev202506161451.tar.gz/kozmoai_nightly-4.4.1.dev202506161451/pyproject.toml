@@ -1,0 +1,111 @@
+[tool.poetry]
+name = "kozmoai-nightly"
+version = "4.4.1.dev202506161451"
+description = "Investment research for everyone, anywhere."
+authors = ["KozmoAI Team <hello@kozmoai.co>"]
+license = "AGPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "kozmoai" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9.21,<3.13"
+kozmoai-core = "^1.4.2"
+kozmoai-platform-api = "^1.1.4"
+
+kozmoai-benzinga = "^1.4.0"
+kozmoai-bls = "^1.1.0"
+kozmoai-cftc = "^1.1.0"
+kozmoai-econdb = "^1.3.0"
+kozmoai-federal-reserve = "^1.4.0"
+kozmoai-fmp = "^1.4.1"
+kozmoai-fred = "^1.4.1"
+kozmoai-imf = "^1.1.0"
+kozmoai-intrinio = "^1.4.0"
+kozmoai-oecd = "^1.4.0"
+kozmoai-polygon = "^1.4.0"
+kozmoai-sec = "^1.4.1"
+kozmoai-tiingo = "^1.4.0"
+kozmoai-tradingeconomics = "^1.4.0"
+kozmoai-us-eia = "^1.1.0"
+kozmoai-yfinance = "^1.4.1"
+
+kozmoai-commodity = "^1.3.0"
+kozmoai-crypto = "^1.4.0"
+kozmoai-currency = "^1.4.0"
+kozmoai-derivatives = "^1.4.0"
+kozmoai-economy = "^1.4.0"
+kozmoai-equity = "^1.4.0"
+kozmoai-etf = "^1.4.0"
+kozmoai-fixedincome = "^1.4.2"
+kozmoai-index = "^1.4.0"
+kozmoai-news = "^1.4.0"
+kozmoai-regulators = "^1.4.1"
+
+# Community dependencies
+kozmoai-alpha-vantage = { version = "^1.4.0", optional = true }
+kozmoai-biztoc = { version = "^1.4.0", optional = true }
+kozmoai-cboe = { version = "^1.4.0", optional = true }
+kozmoai-deribit = { version = "^1.0.0", optional = true }
+kozmoai-ecb = { version = "^1.4.1", optional = true }
+kozmoai-finra = { version = "^1.4.0", optional = true }
+kozmoai-finviz = { version = "^1.3.0", optional = true }
+kozmoai-government-us = { version = "^1.4.0", optional = true }
+kozmoai-multpl = { version = "^1.1.0", optional = true }
+kozmoai-nasdaq = { version = "^1.4.0", optional = true }
+kozmoai-seeking-alpha = { version = "^1.4.0", optional = true }
+kozmoai-stockgrid = { version = "^1.4.0", optional = true }
+kozmoai-tmx = { version = "^1.3.0", optional = true }
+kozmoai-tradier = { version = "^1.3.0", optional = true }
+kozmoai-wsj = { version = "^1.4.0", optional = true }
+
+kozmoai-charting = { version = "^2.3.2", optional = true }
+kozmoai-econometrics = { version = "^1.5.1", optional = true }
+kozmoai-quantitative = { version = "^1.4.1", optional = true }
+kozmoai-technical = { version = "^1.4.1", optional = true }
+
+[tool.poetry.extras]
+alpha_vantage = ["kozmoai-alpha-vantage"]
+biztoc = ["kozmoai-biztoc"]
+cboe = ["kozmoai-cboe"]
+charting = ["kozmoai-charting"]
+ecb = ["kozmoai-ecb"]
+econometrics = ["kozmoai-econometrics"]
+finra = ["kozmoai-finra"]
+finviz = ["kozmoai-finviz"]
+government_us = ["kozmoai-government-us"]
+nasdaq = ["kozmoai-nasdaq"]
+multpl = ["kozmoai-multpl"]
+quantitative = ["kozmoai-quantitative"]
+seeking_alpha = ["kozmoai-seeking-alpha"]
+stockgrid = ["kozmoai-stockgrid"]
+technical = ["kozmoai-technical"]
+tmx = ["kozmoai-tmx"]
+tradier = ["kozmoai-tradier"]
+wsj = ["kozmoai-wsj"]
+
+
+all = [
+    "kozmoai-alpha-vantage",
+    "kozmoai-biztoc",
+    "kozmoai-cboe",
+    "kozmoai-charting",
+    "kozmoai-deribit",
+    "kozmoai-ecb",
+    "kozmoai-econometrics",
+    "kozmoai-finra",
+    "kozmoai-finviz",
+    "kozmoai-government-us",
+    "kozmoai-multpl",
+    "kozmoai-nasdaq",
+    "kozmoai-quantitative",
+    "kozmoai-seeking-alpha",
+    "kozmoai-stockgrid",
+    "kozmoai-technical",
+    "kozmoai-tmx",
+    "kozmoai-tradier",
+    "kozmoai-wsj",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
