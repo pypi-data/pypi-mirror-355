@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "kivy-garden-posani"
+version = "0.3.0"
+description = "Automatically animates changes in widget positions"
+authors = ["Nattōsai Mitō <flow4re2c@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "kivy_garden", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+kivy = "^2.2.1"
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
