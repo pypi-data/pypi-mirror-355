@@ -1,0 +1,122 @@
+import webbrowser
+
+from textual import on
+from textual.app import ComposeResult
+from textual.binding import Binding
+from textual.containers import Container, Horizontal, VerticalScroll
+from textual.screen import ModalScreen
+from textual.widgets import Footer, Markdown
+
+HELP_MARKDOWN_TOP = """\
+# [Texase](https://github.com/steenlysgaard/texase?tab=readme-ov-file#texase)
+
+## Key bindings
+
+"""
+
+HELP_MARKDOWN_LEFT = """\
+### Navigation
+
+- `Arrow keys`: Move cursor
+- `Home/End`: Go to top/bottom
+
+### Manipulation
+
+- `Space`: Mark/unmark row
+- `u`: Unmark row
+- `U`: Unmark all rows
+- `#`: Delete marked rows (prompts y/n)
+- `x`: Export marked rows to file (prompts for filename)
+- `i`: Import rows from file (prompts for filename)
+
+### Editing
+
+- `e`: Edit field (if editable)
+- `d`: Delete currently selected key-value-pair
+- `k`: Add key-value-pair (prompts for key and value)
+
+### More information
+
+- `v`: View marked rows (if no rows are marked then view current row)
+- `Enter`: Open details
+
+"""
+
+HELP_MARKDOWN_RIGHT = """\
+### Filtering and searching
+
+- `/`: Filter rows (prompts for filter string)
+- `Ctrl-s`: Search rows (prompts for search string)
+
+### Table appearance
+
+- `s`: Sort by current column
+- `+`: Add column
+- `-`: Remove current selected column
+
+### Misc
+
+- `g`: Update table (from database)
+- `Ctrl-g`: Hide all boxes, show only table
+- `?`: Toggle this help
+- `q`: Quit
+
+"""
+
+HELP_MARKDOWN_BOTTOM = """\
+## Links
+
+- [ASE DB](https://wiki.fysik.dtu.dk/ase/ase/db/db.html#module-ase.db)
+- [ASE units](https://wiki.fysik.dtu.dk/ase/ase/units.html#units)
+"""
+
+
+class HelpScreen(ModalScreen):
+    BINDINGS = [
+        ("?", "pop_screen", "Toggle this help"),
+        Binding("q", "pop_screen", "Hide help", show=False),
+        Binding("ctrl+g", "pop_screen", "Hide help", show=False),
+    ]
+
+    DEFAULT_CSS = """
+        HelpScreen {
+            align: center middle;
+        }
+
+        #help-screen-container {
+            width: auto;
+            max-width: 80%;
+            height: auto;
+            max-height: 90%;
+            padding: 2 4;
+            align: center middle;
+            background: $panel;
+        }
+
+        Container > VerticalScroll > Horizontal > Markdown {
+            width: 50%;
+        }
+
+        Container > VerticalScroll > Horizontal {
+            height: auto;
+        }
+"""
+
+    def compose(self) -> ComposeResult:
+        with Container(id="help-screen-container"):
+            with VerticalScroll():
+                yield Markdown(HELP_MARKDOWN_TOP, id="help-markdown-top")
+                with Horizontal():
+                    yield Markdown(HELP_MARKDOWN_LEFT, id="help-markdown-left")
+                    yield Markdown(HELP_MARKDOWN_RIGHT, id="help-markdown-right")
+                yield Markdown(HELP_MARKDOWN_BOTTOM, id="help-markdown-bottom")
+        yield Footer()
+
+    @on(Markdown.LinkClicked)
+    def open_url(self, event: Markdown.LinkClicked) -> None:
+        webbrowser.open(event.href)
+        event.stop()
+
+    def action_pop_screen(self) -> None:
+        """Pop the help screen off the stack."""
+        self.app.pop_screen()
