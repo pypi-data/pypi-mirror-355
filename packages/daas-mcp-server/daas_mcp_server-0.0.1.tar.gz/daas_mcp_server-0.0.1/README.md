@@ -1,0 +1,121 @@
+# CVAD Model Context Protocol (MCP) Server
+
+A Model Context Protocol (MCP) server implementation for DaaS that provides AI assistants with the ability to interact with DaaS environments.
+
+## Overview
+
+The DaaS MCP Server extends AI capabilities to Citrix Virtual Apps and Desktops environments by providing a set of tools that allow AI assistants to:
+
+- Query and retrieve VDA machine information
+- Perform administrative actions like restarting machines
+- Access monitoring data through OData interfaces
+
+This server implements the Model Context Protocol (MCP), a standardized way for AI agents to interact with external systems and tools.
+
+## Features
+
+- **VDA Machine Management**: Query VDA machines with filtering capabilities and perform operations like restart
+- **Authentication**: Secure integration with Citrix Cloud authentication mechanisms
+- **Monitoring Integration**: Access to CVAD monitoring data through OData interfaces
+- **Sensitive Operations Control**: Built-in mechanisms to identify and control access to sensitive operations
+
+## Installation
+
+### Prerequisites
+
+- Python 3.13 or higher
+- [uv](https://github.com/astral-sh/uv) - Fast Python package manager and installer
+- Access to Citrix Cloud APIs
+
+### Setup
+
+1. Clone the repository
+2. Navigate to the project directory:
+
+   ```bash
+   cd daas-mcp
+   ```
+
+3. Install the package and its dependencies with uv sync:
+
+   ```bash
+   uv sync
+   ```
+
+### Configuration
+
+1. Copy the example environment file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit the `.env` file with your Citrix Cloud API endpoints and other required settings.
+
+## Usage
+
+### Starting the Server
+
+To start the CVAD MCP Server using uv:
+
+```bash
+uv run ./src/server.py
+```
+
+The server uses Server-Sent Events (SSE) as the transport mechanism.
+
+### Available Tools
+
+The CVAD MCP Server provides the following tools:
+
+- `get_vda_machines`: Retrieves information about VDA machines with filtering capabilities
+- `restart_vda_machine`: Initiates a restart operation on a specified VDA machine
+
+## Development
+
+### Development Dependencies
+
+Install the development dependencies with uv:
+
+```bash
+uv sync -G dev
+```
+
+For rich output formatting support:
+
+```bash
+uv sync -G rich
+```
+
+### Code Quality
+
+This project uses Ruff for linting and formatting. To run the linter:
+
+```bash
+uv run ruff check
+```
+
+To format the code:
+
+```bash
+uv run ruff format
+```
+
+## Project Structure
+
+- `src/`: Main package directory
+  - `server.py`: MCP server implementation
+  - `tools.py`: Tool implementations for interacting with CVAD
+  - `constants.py`: Project constants
+  - `resources.py`: Resource implementations
+  - `utils/`: Utility modules for authentication, logging, etc.
+
+## Security Considerations
+
+- The server identifies sensitive operations that require special permissions
+- Authentication is handled through Citrix Cloud authentication mechanisms
+- Token caching is implemented securely
+
+## License
+
+Copyright (c) 2025. Cloud Software Group, Inc. All Rights Reserved. Confidential & Proprietary.
