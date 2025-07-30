@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "ProFed"
+version = "0.6.2"
+description = "A benchmark for proximity-based non-IID Federated Learning"
+authors = ["Davide Domini <davide.domini@unibo.it>"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/davidedomini/ProFed"
+repository = "https://github.com/davidedomini/ProFed"
+include = [
+    "LICENSE",
+]
+classifiers = [
+    "Topic :: System :: Benchmark",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+packages = [
+    { include = "ProFed", from = "src" },
+]
+
+[tool.poetry.urls]
+"Changelog" = "https://github.com/davidedomini/ProFed/blob/main/CHANGELOG.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+torch = "^2.7.0"
+numpy = "^2.2.2"
+torchvision = "^0.22.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
