@@ -1,0 +1,112 @@
+[project]
+name = "fastapi-task-worker"
+version = "0.1.0"
+description = "Fastapi Task Worker"
+readme = "README.md"
+authors = []
+requires-python = ">=3.12"
+dependencies = [
+    "aio-pika>=9.5.5",
+    "fastapi>=0.115.12",
+    "pydantic>=2.11.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "freezegun>=1.5.1",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "pytest-cov>=6.1.1",
+    "pytest-random-order>=1.1.1",
+    "ruff>=0.11.10",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D",  # Ignore docstring errors
+    "TC002",  # Ignore typing-only-third-party-import
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "ANN",
+    "G004",
+    "PLR2004",
+    "S101",
+    "S104",
+    "S105",
+    "S106",
+    "SLF001",
+]
+
+[tool.mypy]
+strict = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+enable_error_code = "ignore-without-code"
+mypy_path = "stubs/"
+plugins = [
+  "pydantic.mypy",
+]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+ignore_errors = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = false
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--random-order"
+filterwarnings = [
+    "error",
+]
+
+[tool.coverage.report]
+sort = "cover"
+fail_under = 100
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "if typing.TYPE_CHECKING:",
+    "if TYPE_CHECKING",
+    "if __name__ == '__main__':",
+    "@abstractmethod",
+    "@abstractclassmethod",
+    "@abstractstaticmethod",
+    "@abc.abstractmethod",
+    "@abc.abstractclassmethod",
+    "@abc.abstractstaticmethod",
+    "(msg = .*\\n\\s*)?raise NotImplementedError.*",
+    "(msg = .*\\n\\s*)?raise InvalidStateError.*",
+    "class .*\\btyping.Protocol\\):",
+    "class .*\\bProtocol\\):",
+    "@typing.overload",
+    "@overload",
+    "case _:(\\n\\s*msg = .*)?\\n\\s*raise NotImplementedError.*",
+    "case _:(\\n\\s*msg = .*)?\\n\\s*raise InvalidStateError.*",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["fastapi_task_worker"]
+concurrency = ["multiprocessing", "thread"]
+parallel = true
+sigterm = true
