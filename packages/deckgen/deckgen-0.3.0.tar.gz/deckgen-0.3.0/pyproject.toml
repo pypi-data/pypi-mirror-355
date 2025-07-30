@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "deckgen"
+version = "0.3.0"
+description = "Tool to create anki decks using generative AI"
+authors = ["Manuel Gil <manuelgilsitio@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "prompteng"},
+    { include = "deckgen"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.1.0"
+
+[tool.poetry.group.test]
+optional=true
+
+[tool.poetry.scripts]
+test = "deckgen.entry:main"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.4.0"
+
+[tool.poetry.group.develop.dependencies]
+mlflow = "^3.1.0"
+ipython = "^9.3.0"
+jupyter = "^1.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
