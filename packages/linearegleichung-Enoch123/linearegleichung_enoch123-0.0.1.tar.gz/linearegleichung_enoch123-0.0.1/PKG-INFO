@@ -1,0 +1,168 @@
+Metadata-Version: 2.4
+Name: linearegleichung_Enoch123
+Version: 0.0.1
+Summary: Method to calculate Faculty
+Project-URL: Homepage, https://github.com/Enoch1234455/test-repo
+Project-URL: Issues, https://github.com/Enoch1234455/test-repo
+Author-email: Enoch Njobati <enoch.njobati@posteo.de>
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+
+Sure! Here’s a tailored `README.md` for your **`linearegleichung_Enoch123.py`** project, adapting the style and structure from your factorial example:
+
+```markdown
+# 🧮 Linear Equation Calculator
+
+[![Python Version](https://img.shields.io/badge/Python-3.6%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+A simple Python script to solve a linear equation of the form:
+```
+
+ax + by + c = 0
+
+```
+
+It calculates the value of **y** for a given **x**, based on user-input coefficients.
+This project is beginner-friendly and demonstrates basic input handling and arithmetic operations in Python.
+
+---
+
+## 🚀 Features
+
+- Calculates **y** from given \(a, b, c, x\)
+- Handles division by zero (when coefficient b = 0)
+- Provides clear input instructions and error messages
+- No external dependencies
+
+---
+
+## 📂 File Structure
+
+```
+
+📁 linearegleichung_Enoch123/
+│
+├── linearegleichung_Enoch123.py # Main Python script
+└── README.md # Project documentation
+
+````
+
+---
+
+## 🧾 Code Overview
+
+```python
+def calculate_linear_equation():
+    """
+    Calculates y in the equation ax + by + c = 0,
+    solving for y = -(a*x + c) / b.
+    """
+
+    print("Linear Equation: ax + by + c = 0")
+    print("You will be asked to enter 4 numeric values:")
+    print("  a (coefficient of x)")
+    print("  b (coefficient of y)")
+    print("  c (constant term)")
+    print("  x (value to compute y)")
+    print("Example: For the equation 2x - 3y + 6 = 0 and x = 4,")
+    print("         you would enter: a = 2, b = -3, c = 6, x = 4\n")
+
+    try:
+        a = float(input("Enter coefficient a: "))
+        b = float(input("Enter coefficient b (not zero): "))
+        c = float(input("Enter constant c: "))
+        x = float(input("Enter value for x: "))
+
+        if b == 0:
+            raise ZeroDivisionError("Coefficient 'b' cannot be zero.")
+
+        y = (-a * x - c) / b
+        print(f"\nThe value of y is: {y}")
+
+    except ValueError:
+        print("\nInvalid input. Please enter numeric values only.")
+    except ZeroDivisionError as e:
+        print(f"\nError: {e}")
+
+calculate_linear_equation()
+````
+
+---
+
+## 🧪 Sample Output
+
+```
+Linear Equation: ax + by + c = 0
+You will be asked to enter 4 numeric values:
+  a (coefficient of x)
+  b (coefficient of y)
+  c (constant term)
+  x (value to compute y)
+Example: For the equation 2x - 3y + 6 = 0 and x = 4,
+         you would enter: a = 2, b = -3, c = 6, x = 4
+
+Enter coefficient a: 2
+Enter coefficient b (not zero): -3
+Enter constant c: 6
+Enter value for x: 4
+
+The value of y is: 1.3333333333333333
+```
+
+---
+
+## 🔧 How to Use
+
+1. **Clone the repository**:
+
+```bash
+git clone https://github.com/Enoch1234455/linearegleichung_Enoch123.git
+cd linearegleichung_Enoch123
+```
+
+2. **Run the script**:
+
+```bash
+python linearegleichung_Enoch123.py
+```
+
+3. **Follow the prompts** to enter the coefficients and the value for x.
+
+---
+
+## 💡 Enhancements (Optional Ideas)
+
+You can extend this project by:
+
+- Adding support for solving **systems of linear equations**
+- Creating a **graphical plot** of the linear equation
+- Adding a **command-line interface (CLI)** with arguments
+- Including **unit tests** for validation
+- Handling **multiple input values** in one run
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🙌 Contributing
+
+Feel free to fork the repo, open issues, or submit pull requests! Contributions are welcome.
+
+---
+
+## 📬 Contact
+
+Made with ❤️ by [Enoch123](https://github.com/Enoch1234455)
+
+```
+
+
+```

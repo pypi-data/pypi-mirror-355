@@ -1,0 +1,41 @@
+def calculate_linear_equation():
+    """
+    This function calculates the value of 'y' in a linear equation of the form:
+        ax + by + c = 0
+    It solves for y: y = -(a * x + c) / b
+    All user inputs and calculations are handled within this function.
+    """
+    
+    print("Linear Equation: ax + by + c = 0")
+    print("You will be asked to enter 4 numeric values:")
+    print("  a (coefficient of x)")
+    print("  b (coefficient of y)")
+    print("  c (constant term)")
+    print("  x (value to compute y)")
+    print("Example: For the equation 2x - 3y + 6 = 0 and x = 4,")
+    print("         you would enter: a = 2, b = -3, c = 6, x = 4\n")
+
+    try:
+        # Prompt the user for the coefficients and x value
+        a = float(input("Enter coefficient a: "))
+        b = float(input("Enter coefficient b (not zero): "))
+        c = float(input("Enter constant c: "))
+        x = float(input("Enter value for x: "))
+
+        # Prevent division by zero
+        if b == 0:
+            raise ZeroDivisionError("Coefficient 'b' cannot be zero (division by zero).")
+
+        # Calculate y based on the rearranged linear equation
+        y = (-a * x - c) / b
+
+        # Display the result
+        print(f"\nThe value of y is: {y}")
+
+    except ValueError:
+        print("\nInvalid input. Please enter numeric values only.")
+    except ZeroDivisionError as e:
+        print(f"\nError: {e}")
+
+# Run the function directly
+calculate_linear_equation()
