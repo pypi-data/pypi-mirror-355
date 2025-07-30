@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "go-server-sdk"
+version = "1.4.2"
+authors = [
+    {name = "enols", email = "2575169674@qq.com"}
+]
+description = "Python SDK for go-server distributed task scheduling system"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+]
+dependencies = [
+    "requests>=2.25.0",
+    "websocket-client>=1.0.0",
+    "typing-extensions>=3.7.4; python_version<'3.8'",
+]
+
+[project.urls]
+Homepage = "https://github.com/go-enols/go-server"
+Repository = "https://github.com/go-enols/go-server"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-asyncio>=0.18.0",
+    "black>=22.0",
+    "flake8>=4.0",
+    "mypy>=0.950",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
