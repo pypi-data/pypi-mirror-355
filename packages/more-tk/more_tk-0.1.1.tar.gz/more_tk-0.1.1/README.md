@@ -1,0 +1,16 @@
+# more_tk
+### What is more_tk
+more_tk is a very simple python package made to be used like [tkinter](https://tkinter.com/), it's almost the same but the commands do not have the same name as in tk, our names are a bit more complicated, this module is not the best one, you can still use it as a challenge for harder syntax tkinter.
+
+### Basic commands
+#### Setup the window
+To setup a window do:  
+`app = mtk` to setup the basic window, not to mainloop it, do `mtk_mainloop()` and it will mainloop your app whatever the name is.
+
+#### Advanced window commands
+There is more things to make your window better in mtk, you can set the size of the window with `geo`, to use geo, make sure the format is the next: "{x}x{y}", so the size of your window in x and y. There is also `title`, title as the name says, it sets the title of the window, you can put whatever you want but make sure to put something because if empty, the name of the window will be "Wrapped by more_tk". There is also the `bg` parameter to set the background of the window, it can be a color name exemple blue or an #hex, if you set nothing, the window background will simply be white. There is also a last parameter, the `full` parameter, you can set it to "True" or "False", True to make the window fullscreen and Flase for it to not be fullscreen.
+
+#### Basic commands
+There are two basic commands, `label_mtk` and `button_mtk`. 
+
+To make a button, simply do `label_mtk()`, for the parameters of the label, do `text` to setup the text, if not text is set, the text will be "No Text, define the text" so make sure to define it, then, there is `bg_mtk` which you can set the background color of the button, you can choose basic colors and also use hex. There is also `fg_mtk` which is used for the color of the text. All of those also go with `label_mtk()`, the exact same parameters.
