@@ -1,0 +1,122 @@
+Metadata-Version: 2.4
+Name: badgie
+Version: 0.13.2
+Summary: Add all the badges with Badgie!
+Author-email: Digital Safety Research Institute <contact@dsri.org>
+License: MIT
+Project-URL: Home, https://gitlab.com/saferatday0/badgie
+Project-URL: Issues, https://gitlab.com/saferatday0/badgie/-/issues
+Keywords: badge,template,markdown
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Utilities
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: attrs==25.3.0
+Requires-Dist: certifi==2025.4.26
+Requires-Dist: charset-normalizer==3.4.2
+Requires-Dist: idna==3.10
+Requires-Dist: python-gitlab==6.0.0
+Requires-Dist: pyyaml==6.0.2
+Requires-Dist: requests==2.32.3
+Requires-Dist: requests-toolbelt==1.0.0
+Requires-Dist: termcolor==3.1.0
+Requires-Dist: urllib3==2.4.0
+Dynamic: license-file
+
+# Badgie
+
+<!-- BADGIE TIME -->
+
+[![pipeline status](https://img.shields.io/gitlab/pipeline-status/saferatday0/badgie?branch=main)](https://gitlab.com/saferatday0/badgie/-/commits/main)
+[![coverage report](https://img.shields.io/gitlab/pipeline-coverage/saferatday0/badgie?branch=main)](https://gitlab.com/saferatday0/badgie/-/commits/main)
+[![latest release](https://img.shields.io/gitlab/v/release/saferatday0/badgie)](https://gitlab.com/saferatday0/badgie/-/releases)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![cici enabled](https://img.shields.io/badge/%E2%9A%A1_cici-enabled-c0ff33)](https://gitlab.com/saferatday0/cici)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
+<!-- END BADGIE TIME -->
+
+Badgie scans the contents of your repository and adds badges based on what it
+finds.
+
+> Do not use this software unless you are an active collaborator on the
+> associated research project.
+>
+> This project is an output of an ongoing, active research project. It is
+> published without warranty, is subject to change at any time, and has not been
+> certified, tested, assessed, or otherwise assured of safety by any person or
+> organization. Use at your own risk.
+
+## Using Badgie
+
+Install Badgie:
+
+```bash
+python3 -m pip install badgie
+```
+
+Add Badgie tags to your README:
+
+```md
+<!-- BADGIE TIME -->
+<!-- END BADGIE TIME -->
+```
+
+Run Badgie:
+
+```bash
+badgie -w README.md
+```
+
+And enjoy magic badges:
+
+```md
+<!-- BADGIE TIME -->
+<!-- END BADGIE TIME -->
+```
+
+### Use as a pre-commit hook
+
+Badgie can be used as a pre-commit hook, so you can get fresh badges on every
+commit.
+
+Add the following to a `.pre-commit-config.yaml` file. Note the empty
+`rev` tag:
+
+```yaml
+repos:
+  - repo: https://gitlab.com/saferatday0/badgie
+    rev: ""
+    hooks:
+      - id: badgie
+```
+
+Run `pre-commit autoupdate` to pin to the latest version:
+
+```bash
+pre-commit autoupdate
+```
+
+Run `pre-commit` directly or install as a hook:
+
+```bash
+# directly
+pre-commit
+
+# as a Git hook
+pre-commit install
+git commit -m "..."
+```
