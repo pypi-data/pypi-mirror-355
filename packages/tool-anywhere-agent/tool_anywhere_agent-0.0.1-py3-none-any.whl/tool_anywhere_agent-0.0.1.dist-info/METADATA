@@ -1,0 +1,96 @@
+Metadata-Version: 2.4
+Name: tool-anywhere-agent
+Version: 0.0.1
+Summary: A LangGraph-based agent for tool calling capabilities
+Author: Mad Professor
+Maintainer: Mad Professor
+License: MIT License
+        
+        Copyright (c) 2025 Mad Professor
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE. 
+Project-URL: Homepage, https://github.com/madprofessor42/tool_anywhere_agent
+Project-URL: Repository, https://github.com/madprofessor42/tool_anywhere_agent
+Project-URL: Documentation, https://github.com/madprofessor42/tool_anywhere_agent#readme
+Project-URL: Issues, https://github.com/madprofessor42/tool_anywhere_agent/issues
+Keywords: ai,langchain,langgraph,agent,tools,llm
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: langchain>=0.3.25
+Requires-Dist: langchain-community>=0.3.25
+Requires-Dist: langchain-openai>=0.3.22
+Requires-Dist: langgraph>=0.4.8
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: typing-extensions>=4.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: flake8>=6.0; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Requires-Dist: pre-commit>=3.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=5.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.0; extra == "docs"
+Dynamic: license-file
+
+# Tool Anywhere Agent
+
+A production-ready LangGraph agent that enables tool calling for any LLM, regardless of native tool support.
+
+## Overview
+
+Tool Anywhere Agent provides a clean, efficient way to add tool calling capabilities to any language model. Built on LangGraph's agent architecture, it integrates seamlessly into existing workflows while maintaining optimal performance.
+
+## Key Features
+
+**Native LangGraph Architecture**: Built as a genuine LangGraph agent with proper state management, routing, and tool execution nodes.
+
+**Automatic Prompt Engineering**: Dynamically generates system prompts based on your tools - no manual prompt crafting required.
+
+**Efficient Request Pattern**: Uses a direct model→route→tools flow instead of multi-step planning, reducing LLM API calls.
+
+**Smart State Management**: Automatically tracks completed tool calls to prevent redundant operations.
+
+**Custom System Role**: You can specify a custom system role to control the agent's behavior and persona by passing.
+
+**Custom Output Parser**: You can define and use your own Pydantic output parser for structured responses.
+
+**Zero Configuration**: Works out of the box with any LangChain tools and models.
+
+## Installation
+
+```bash
+pip install tool-anywhere-agent
+```
+
+## License
+
+MIT License
