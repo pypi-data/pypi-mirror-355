@@ -1,0 +1,110 @@
+# QLS – Quantum Liability Scanner 🚀🔐  
+
+Detect secret leaks, crypto misuse **and** post-quantum risk in a single command.
+
+```console
+pip install qls-pro                 # one-shot install
+qls scan-code . --strict --report pdf
+
+⚠️ Blocks CI if hard-coded keys or HIGH quantum risk are found
+
+📝 Generates Markdown and styled PDF reports with copy-paste fixes
+
+🔄 --auto-rotate instantly creates a new AWS key, patches .env, disables the leaked one
+
+🔮 Shows Years-to-Break estimates and Hybrid-TLS readiness
+
+Features
+Pillar ------	What QLS does
+Secrets Scanner	 Finds AWS access / secret keys, JWT secrets, PEM private-key blocks
+AES Scanner  	Flags MODE_ECB, hard-coded AES keys & IVs
+JWT Scanner	Detects alg:none, HS-algo downgrades
+TLS Quantum Risk	Key size, sig alg, Quantum Risk (HIGH/MEDIUM) & Breach-by-Year ETA
+Hybrid-TLS Tester	✅ badge if server negotiates Kyber/P-256 hybrid groups
+Key-Rotation Helper	qls rotate-keys report.json --execute --revoke patches .env, disables old key
+CI Gate	--strict exit-code 1 when secrets or HIGH risk still present
+
+Quick start
+--------------
+# Scan local repo – quick proof
+qls scan-code .
+
+# Exhaustive scan + Markdown report
+qls scan-code myproj --all --report md
+
+# Scan & auto-rotate AWS keys
+qls scan-code . --strict --auto-rotate --report pdf
+
+Scan a website’s TLS cert
+--------------
+qls scan-tls example.com --report md
+
+CI / CD integration
+--------------
+<details> <summary><strong>GitHub Actions</strong></summary>
+name: qls-scan
+on: [push, pull_request]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with: { python-version: '3.11' }
+    - run: pip install qls-pro
+    - run: qls scan-code . --strict --report md
+
+</details> <details> <summary><strong>pre-commit hook</strong></summary>
+
+repos:
+-   repo: https://github.com/your-org/qls-pro
+    rev: v0.3.0
+    hooks:
+    - id: qls
+      args: [scan-code, ., --strict]
+</details>
+
+One-shot key rotation
+--------------
+# After any scan, the latest report is stored here:
+qls rotate-keys reports/qls_last.json --execute --revoke
+
+Command reference
+--------------
+qls scan-code PATH        # scan files / folders
+qls scan-tls  DOMAIN      # scan TLS certificate
+qls rotate-keys REPORT    # rotate leaked AWS creds
+
+Flags:
+  --all            report every finding per file
+  --report md|pdf  save human-readable report
+  --strict         exit 1 if HIGH risk or secrets found
+  --auto-rotate    rotate AWS keys immediately after scan
+
+Installation options
+--------------
+Method	Command
+PyPI	pip install qls-pro
+Docker	docker run --rm ghcr.io/you/qls:0.3 scan-code /project
+Source	clone repo → pip install -e .
+
+Licensing
+--------------
+QLS-Pro is proprietary software.
+By installing you accept the EULA in LICENSE.txt.
+For commercial use or evaluation, purchase a licence key at TBD.
+
+Roadmap
+--------------
+SOC 2 / HIPAA control-mapping appendix
+
+Azure & GCP key-rotation helpers
+
+Slack / Teams bot notifications
+
+SaaS dashboard (trend graphs, multi-repo)
+
+Questions or feature requests?
+--------------
+Email lucastwi11@gmail.com – we’d love to hear from you!
