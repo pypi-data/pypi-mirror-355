@@ -1,0 +1,83 @@
+Metadata-Version: 2.4
+Name: text_console
+Version: 2.0.3
+Summary: ('A customizable Tkinter-based text console widget, in which a user types in commands to be sent to the Python interpreter.',)
+Home-page: https://github.com/Ircama/text_console
+Author: Ircama
+License: EUPL-1.2
+Keywords: shell console tkinter
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Requires-Python: >3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
+# text_console
+
+*text_console* is a customizable, Tkinter-based interactive shell widget that lets users type commands into a console pane and have them evaluated in your application’s Python environment. It supports arrows and command history. It’s designed for embedding in GUI apps, debugging, scripting, and educational tools as an API Playground.
+
+It can also be used as a standalone Python command interpreter.
+
+This program is similar to [wxPython Shell](https://github.com/wxWidgets/wxPython-Classic/blob/master/wx/py/shell.py), implemented using Tkinter.
+
+## Key Features
+
+- **Live code execution**
+
+  Send single- or multi-line Python code to the interpreter and see results immediately.
+
+- **Integrated application context**
+
+  Access and modify your app’s variables and functions via the console_locals namespace.
+
+- **Advanced editing**
+    - **Keyboard shortcuts:** all standard keyboard shortcut are allowed
+    - **Multiline editing:** Single line and multiline editing is allowed, also with copy/paste features. When pressing enter within an edited line, a popup appears to ask the requested action (execute the command, add a new line, abort). Shift-Enter is also allowed.
+    - **Prompt Protection:** The prompt area (`>>> ` or `... `) is protected. The cursor cannot move into or before the prompt, and editing actions (insertion, deletion) are blocked in the prompt area.
+    - **Smart Arrow Navigation:** Left and right arrow keys skip over prompt tags and any protected regions, ensuring the cursor only lands in editable areas. Arrow navigation also respects line boundaries and prompt positions.
+    - **Home/End Navigation:** The `Home` and `End` keys move the cursor to the beginning or end of the current line, but never into the prompt area.
+    - **Undo/Redo Support:** Full undo/redo support is enabled (`Ctrl+Z`/`Ctrl+Y`), with fine-grained control for character-by-character undo.
+    - **Tab and Shift+Tab:** Pressing `Tab` inserts four spaces. Pressing `Shift+Tab` removes up to four spaces.
+    - **Selection Awareness:** Editing and navigation actions are aware of text selection. For example, custom arrow key logic is bypassed when a selection is active.
+    - **Clear Console:** The console can be cleared with a single command, automatically restoring the prompt and positioning the cursor for new input.
+
+- **Command history**
+
+  Navigate previous commands with ↑/↓ arrows; history is saved to a file you choose.
+
+- **Cut/Copy/Paste/Clear**
+
+  Right-click context menu (and customizable via context_menu_items) for text editing.
+
+- **Customizable UI**
+
+  The package provides flexibility to customize:
+
+  - `history_file`: Change the location of the history file
+  - `console_locals`: Add custom variables and functions to the console's namespace
+  - `context_menu_items`: Modify the right-click context menu
+  - `show_about_message`: Customize the about dialog content
+  - `show_help_content`: Customize the help window content
+  - `create_menu`: Override to completely customize the menu bar
+
+- **Subclass-friendly**
+
+  Extend the TextConsole class and override any of the above to fit your needs.
+
+
+Full information and usage details at the [text_console GitHub repository](https://github.com/Ircama/text_console).
