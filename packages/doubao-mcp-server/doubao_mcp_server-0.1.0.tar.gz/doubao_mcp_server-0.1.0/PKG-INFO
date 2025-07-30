@@ -1,0 +1,131 @@
+Metadata-Version: 2.4
+Name: doubao-mcp-server
+Version: 0.1.0
+Summary: 主要实现的是火山引擎的提供的豆包文生图、文生视频、图生视频MCP-Server
+Author-email: wwzhouhui <75271002@qq.com>
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: mcp[cli]>=1.9.4
+Requires-Dist: requests>=2.31.0
+Requires-Dist: openai>=1.86.0
+
+# 豆包 AI 生成 MCP 服务器
+
+本项目是一个基于模型上下文协议 (MCP) 的服务器，集成了火山引擎豆包大模型的多种 AI 内容生成能力，包括文生图、文生视频和图生视频。
+
+## ✨ 功能介绍
+
+- **文生图**: 根据文本描述生成高质量图片。
+- **文生视频**: 根据文本描述生成视频片段。
+- **图生视频**: 结合输入图片和文本描述生成动态视频。
+- **动态密钥配置**: 支持在服务运行时通过工具动态设置 API Key。
+- **辅助工具**: 提供将本地图片转换为 Base64 编码的工具，方便图生视频功能的使用。
+- **资源查询**: 可以查询服务器当前支持的模型、配置等信息。
+
+## ⚙️ 安装指南
+
+在安装和运行此项目之前，请确保您的环境中已安装 Python 3.13 或更高版本。
+
+1.  **克隆或下载项目**
+    将本项目代码下载到您的本地计算机。
+
+2.  **安装依赖**
+    在项目根目录下，使用 `pip` 安装所需的依赖包。
+
+    ```bash
+    pip install .
+    ```
+
+    此命令会自动处理 `pyproject.toml` 文件中定义的所有依赖项，包括 `mcp-sdk`, `requests`, 和 `openai`。
+
+## 🚀 使用说明
+
+安装完成后，您可以通过 `mcp` 命令行工具连接并使用此服务器。
+
+### 1. 启动服务器
+
+在项目根目录下运行以下命令来启动 MCP 服务器：
+
+```bash
+mcp_ai_server
+```
+
+服务器将在标准输入/输出 (stdio) 模式下运行。
+
+### 2. 连接服务器
+
+打开一个新的终端窗口，使用 `mcp` 客户端连接到服务器：
+
+```bash
+mcp connect --name doubao-ai --command mcp_ai_server
+```
+
+### 3. 设置 API 密钥
+
+在使用任何生成功能之前，您必须先设置您的火山引擎豆包 API 密钥。请访问[火山引擎开放平台](https://www.volcengine.com/openapi)获取您的密钥。
+
+```bash
+mcp use doubao-ai/set_api_key --args '{"api_key": "YOUR_API_KEY"}'
+```
+
+### 4. 使用工具
+
+#### 文生图 (`text_to_image`)
+
+根据提示词生成一张图片。
+
+**示例:**
+
+```bash
+mcp use doubao-ai/text_to_image --args '{"prompt": "一只可爱的猫在草地上晒太阳", "size": "1024x1024"}'
+```
+
+#### 文生视频 (`text_to_video`)
+
+根据提示词生成一段视频。
+
+**示例:**
+
+```bash
+mcp use doubao-ai/text_to_video --args '{"prompt": "海浪拍打着沙滩", "duration": "5"}'
+```
+
+#### 图生视频 (`image_to_video`)
+
+这是一个两步过程：首先将本地图片编码为 Base64，然后使用它和提示词生成视频。
+
+**步骤 1: 编码图片**
+
+使用 `encode_image_to_base64` 工具将您的图片文件转换为 Base64 字符串。
+
+```bash
+mcp use doubao-ai/encode_image_to_base64 --args '{"image_path": "/path/to/your/image.jpg"}'
+```
+
+**步骤 2: 生成视频**
+
+复制上一步输出的 `base64_string` 值，并将其用于 `image_to_video` 工具。
+
+```bash
+mcp use doubao-ai/image_to_video --args '{"prompt": "让图片里的人物动起来", "image_base64": "PASTE_YOUR_BASE64_STRING_HERE"}'
+```
+
+## 🛠️ 可用工具和资源
+
+### 工具 (Tools)
+
+- `set_api_key`: 设置 API 密钥。
+- `text_to_image`: 根据文本生成图片。
+- `text_to_video`: 根据文本生成视频。
+- `image_to_video`: 根据图片和文本生成视频。
+- `encode_image_to_base64`: 将本地图片文件编码为 Base64 字符串。
+
+### 资源 (Resources)
+
+- `config://models`: 获取当前可用的 AI 模型列表。
+- `config://settings`: 获取服务器的基础配置信息，如支持的图片尺寸和视频比例。
+
+**查询可用模型:**
+
+```bash
+mcp access doubao-ai/config://models
