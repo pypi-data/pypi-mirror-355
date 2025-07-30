@@ -1,0 +1,111 @@
+Metadata-Version: 2.4
+Name: Pharmalyzer
+Version: 0.1.0
+Summary: Cheminformatics toolkit for property calculation, filtering, and QSAR modeling
+Author: [Sorour Hassani]
+Author-email: Sorour Hassani <s.hassani@alum.semnan.ac.ir>
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: Licence.txt
+Requires-Dist: rdkit
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Dynamic: author
+Dynamic: license-file
+
+# Pharmalyzer
+
+**Pharmalyzer** is a Python package for data preprocessing, screening, and early-stage analysis of chemical datasets.
+It provides a set of rule-based and RDKit-powered tools for screening, filtering, and assessing compounds' ADME properties.It enables fast and reliable computation of physicochemical and pharmacokinetic properties from SMILES strings, supporting cheminformatics and drug discovery workflows.
+
+## Features
+
+- **Physicochemical Properties**: MW, LogP, TPSA, H-bond donors/acceptors, etc.
+- **ADME Prediction**: GI absorption, BBB permeability, logKp, excretion
+- **Rule-Based Filtering**: Lipinski, Veber, Ghose, PAINS, Brenk filters
+- **QSAR Modeling Tools**: Encoding, feature selection, scaling, outlier detection
+- **Similarity & Integration**: Compound comparison, data merging
+- **ChEMBL Integration**: Fetch data directly from the ChEMBL database
+
+
+
+
+## Installation
+
+```bash
+pip install Pharmalyzer-0.1-py3-none-any.whl
+
+---
+
+## 🧪 Quickstart Example
+
+```python
+from Pharmalyzer import cleaner, Drug_rules, ADME
+
+# Load a sample CSV file containing SMILES
+import pandas as pd
+df = pd.read_csv("Pharmalyzer/Pharmalyzer/sample_data.csv")
+
+# Clean the data
+df_clean = cleaner.clean_smiles(df, smiles_col="SMILES")
+
+# Apply Lipinski rule filter
+df_lipinski = Drug_rules.lipinski_filter(df_clean)
+
+# Calculate ADME properties
+df_adme = ADME.calculate_properties(df_lipinski)
+
+print(df_adme.head())
+```
+
+---
+
+## 🧰 Module Overview
+
+| Module | Description |
+|--------|-------------|
+| `cleaner.py` | Standardizes, removes salts, and cleans SMILES strings |
+| `Drug_rules.py` | Filters compounds using rules like Lipinski, Ghose, PAINS |
+| `ADME.py` | Computes key ADME properties and predictions |
+| `toxicity.py` | Predicts potential toxicity risks |
+| `qsar.py` | Builds and evaluates QSAR models |
+| `encoder.py`, `scaler.py` | Preprocessing tools for ML pipelines |
+| `chembl_client.py` | Fetches compound data from ChEMBL |
+| `feature_selection.py` | Feature reduction and selection techniques |
+| `filtering.py`, `outliers.py` | Additional data cleaning tools |
+| `integrate.py`, `similarity.py` | Merging datasets, Tanimoto similarity calculations |
+
+---
+
+## 🖼️ Before vs After Cleaning (Example Visualization)
+
+> *(Replace with actual plot)*
+
+```python
+from Pharmalyzer import cleaner
+import matplotlib.pyplot as plt
+
+# Before cleaning
+df = pd.read_csv("sample_data.csv")
+print("Before:", len(df))
+
+# After cleaning
+df_clean = cleaner.clean_smiles(df)
+print("After:", len(df_clean))
+```
+
+![cleaning_comparison.png](docs/images/cleaning_comparison.png)
+
+---
+
+## License
+
+MIT License
+
+## Author
+
+Created by [Your Name]  
+📧 s.hassani@alum.semnan.ac.ir & sorour.hasani@gmail.com
