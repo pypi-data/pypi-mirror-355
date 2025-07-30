@@ -1,0 +1,202 @@
+# WinUp 🚀
+
+**A ridiculously Pythonic and powerful framework for building beautiful desktop applications.**
+
+WinUp is a modern UI framework for Python that wraps the power of PySide6 (Qt) in a simple, declarative, and developer-friendly API. It's designed to let you build applications faster, write cleaner code, and enjoy the development process.
+
+---
+
+## Why WinUp? (Instead of raw PySide6 or Tkinter)
+
+Desktop development in Python can feel clunky. WinUp was built to fix that.
+
+| Feature                 | WinUp Way ✨                                                                   | Raw PySide6 / Tkinter Way 😟                                                                |
+| ----------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| **Layouts**             | `ui.Column([...])`, `ui.Row([...])`                                            | `QVBoxLayout()`, `QHBoxLayout()`, `layout.addWidget()`, `pack()`, `grid()`                  |
+| **Styling**             | `props={"background-color": "blue", "font-size": "16px"}`                      | Manual QSS strings, `widget.setStyleSheet(...)`, complex style objects.                     |
+| **State Management**    | `state.bind("user.name", label)`                                               | Manual callback functions, getters/setters, `StringVar()`, boilerplate everywhere.          |
+| **Two-Way Binding**     | `state.bind_two_way("form.email", email_input)`                                | Non-existent. Requires manual `on_change` handlers to update state and UI.                  |
+| **Developer Tools**     | **Built-in Hot Reloading**, code profiler, and window tools out of the box.    | Non-existent. Restart the entire app for every single UI change.                            |
+| **Code Structure**      | Reusable, self-contained components with `@component`.                         | Often leads to large, monolithic classes or procedural scripts.                             |
+
+**In short, WinUp provides the "killer features" of modern web frameworks (like React or Vue) for the desktop, saving you time and letting you focus on what matters: your application's logic.**
+
+---
+
+## Core Features
+
+*   **Declarative & Pythonic UI:** Build complex layouts with simple `Row` and `Column` objects instead of clunky box layouts.
+*   **Component-Based Architecture:** Use the `@component` decorator to create modular and reusable UI widgets from simple functions.
+*   **Powerful Styling System:** Style your widgets with simple Python dictionaries using `props`. Create global "CSS-like" classes with `style.add_style_dict`.
+*   **Reactive State Management:**
+    *   **One-Way Binding:** Automatically update your UI when your data changes with `state.bind()`.
+    *   **Two-Way Binding:** Effortlessly sync input widgets with your state using `state.bind_two_way()`.
+    *   **Subscriptions:** Trigger any function in response to state changes with `state.subscribe()`.
+*   **Developer-Friendly Tooling:**
+    *   **Hot Reloading:** See your UI changes instantly without restarting your app.
+    *   **Profiler:** Easily measure the performance of any function with the `@profiler.measure()` decorator.
+    *   **Window Tools:** Center, flash, or manage your application window with ease.
+*   **Flexible Data Layer:** Includes simple, consistent connectors for SQLite, PostgreSQL, MySQL, MongoDB, and Firebase.
+
+---
+
+## Installation
+
+```bash
+pip install winup
+```
+
+
+---
+
+## Getting Started: Hello, WinUp!
+
+Creating an application is as simple as defining a main component and running it.
+
+```python
+# hello_world.py
+import winup
+from winup import ui
+
+# The @component decorator is optional for the main component, but good practice.
+@winup.component
+def App():
+    """This is our main application component."""
+    return ui.Column(
+        props={
+            "alignment": "AlignCenter", 
+            "spacing": 20
+        },
+        children=[
+            ui.Label("👋 Hello, WinUp!", props={"font-size": "24px"}),
+            ui.Button("Click Me!", on_click=lambda: print("Button clicked!"))
+        ]
+    )
+
+if __name__ == "__main__":
+    winup.run(main_component=App, title="My First WinUp App")
+```
+
+---
+
+## Core Concepts
+
+### UI & Layouts
+
+WinUp abstracts away Qt's manual layout system. You build UIs by composing `Row` and `Column` components.
+
+```python
+def App():
+    return ui.Column(  # Arranges children vertically
+        children=[
+            ui.Label("Top"),
+            ui.Row(    # Arranges children horizontally
+                children=[
+                    ui.Button("Left"),
+                    ui.Button("Right")
+                ],
+                props={"spacing": 10}
+            ),
+            ui.Label("Bottom")
+        ],
+        props={"spacing": 15, "margin": "20px"}
+    )
+```
+
+### Styling
+
+You can style any widget by passing a `props` dictionary. Props can be CSS-like properties, or special keywords like `class` and `id`.
+
+For more complex applications, you can define reusable "classes" in a global stylesheet.
+
+```python
+# Define global styles
+winup.style.add_style_dict({
+    ".btn-primary": {
+        "background-color": "#007bff",
+        "color": "white",
+        "border-radius": "5px",
+        "padding": "10px"
+    },
+    ".btn-primary:hover": {
+        "background-color": "#0056b3"
+    }
+})
+
+# Use the class in a component
+def App():
+    return ui.Button("Primary Button", props={"class": "btn-primary"})
+```
+
+### State Management
+
+WinUp's global `state` object is the single source of truth for your application's data.
+
+**One-Way Binding:** The UI updates automatically when the state changes.
+
+```python
+winup.state.set("counter", 0)
+
+def App():
+    label = ui.Label()
+    winup.state.bind("counter", label)  # Bind the label's text to the 'counter' state
+
+    def increment():
+        winup.state.set("counter", winup.state.get("counter") + 1)
+
+    return ui.Column([
+        label,
+        ui.Button("Increment", on_click=increment)
+    ])
+```
+
+**Two-Way Binding:** The UI updates the state, and the state updates the UI.
+
+```python
+winup.state.set("username", "Guest")
+
+def App():
+    # This input field will now always be in sync with the 'username' state
+    name_input = ui.Input(props={"class": "form-input"})
+    winup.state.bind_two_way("username", name_input)
+    
+    # This label will also update automatically
+    greeting = ui.Label()
+    winup.state.bind("username", greeting, transform=lambda u: f"Hello, {u}!")
+
+    return ui.Column([name_input, greeting])
+```
+
+### Developer Tools
+
+**Hot Reloading:**
+The easiest way to enable hot reloading is with the `dev` flag in the `run` command. This will watch the file containing your main component and reload it on save.
+
+```python
+if __name__ == "__main__":
+    # The 'dev' flag is deprecated, setup is now manual per showcase
+    # For more control, see the hot_reload_showcase.py example
+    winup.run(main_component=App, title="My App")
+```
+*For more complex hot-reloading scenarios, you can use `winup.hot_reload(file_path, callback)` to gain fine-grained control.*
+
+**Profiler:**
+Simply add the `@profiler.measure()` decorator to any function to measure its execution time. Results are printed when the application closes.
+
+```python
+from winup import profiler
+
+@profiler.measure
+def some_expensive_function():
+    # ...
+```
+
+---
+
+## Contributing
+
+WinUp is an open-source project. Contributions are welcome!
+
+## License
+
+This project is licensed under the Apache 2.0 License. 
