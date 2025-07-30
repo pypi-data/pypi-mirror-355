@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gaston-spatial"
+version = "0.0.3"
+authors = [
+  { name="Uthsav Chitra", email="uchitra@princeton.edu" },
+  { name="Brian Arnold", email="brianjohnarnold@gmail.com" },
+  { name="Hirak Sarkar", email="hirak@princeton.edu" },
+  { name="Cong Ma", email="congma@princeton.edu" },
+  { name="Ben Raphael", email="braphael@cs.princeton.edu" },
+]
+description = "GASTON: interpretable deep learning model for spatial transcriptomics"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "torch",
+    "matplotlib",
+    "pandas",
+    "scikit-learn",
+    "numpy",
+    "jupyterlab",
+    "seaborn",
+    "tqdm",
+    "scipy"
+]
+license = {text = "BSD"}
+keywords = ["spatial transcriptomics", "neural network", "tissue layer"]
+
+[project.optional-dependencies]
+docs = [
+    "ipython",
+    "ipywidgets>=8.0.0",
+    "sphinx>=5.3",
+    "sphinx-autodoc-annotation",
+    "sphinx-autodoc-typehints>=1.10.3",
+    "sphinx_rtd_theme",
+    "sphinxcontrib-bibtex>=2.3.0",
+    "sphinxcontrib-spelling>=7.6.2",
+    "nbsphinx>=0.8.1",
+    "myst-nb>=0.17.1",
+    "sphinx_copybutton>=0.5.0",
+]
+
+[project.scripts]
+gaston = "gaston.__main__:main"
+
+[project.urls]
+"Homepage" = "https://github.com/raphael-group/GASTON"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["gaston*"]
