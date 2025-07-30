@@ -1,0 +1,25 @@
+Metadata-Version: 2.4
+Name: williballenthin-native-ida-plugin
+Version: 0.1.0
+Summary: Example IDA Plugin (native)
+Author-email: Willi Ballenthin <wballenthin@google.com>
+License-Expression: Apache-2.0
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
+# native-ida-plugin
+
+## Build
+
+Have the following installed:
+  - cmake
+  - zig
+  - just
+  - python, with package `build`
+
+```
+$ export IDASDK=~/.idapro/sdk/idasdk91/
+$ just build
+```
+
+Then find the output file in `dist/native_ida_plugin-0.1.0-py3-none-any.whl`.
