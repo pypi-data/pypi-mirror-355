@@ -1,0 +1,522 @@
+<robot name="tilburg_hand">
+<link name="handbase_and_motors">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/handbase_and_motors_visual.stl"/>
+</geometry>
+<material name="handbase_and_motors_material">
+<color rgba="0.48025371616954676268 0.55962959983300863964 0.71854259391827068892 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/handbase_and_motors_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.0063231880635111958541 0.059166211976903963776 0.045934964979787121231" rpy="0 0 0"/>
+<mass value="0.28178803834106336268" />
+<inertia ixx="0.00067479837566076703286" ixy="-7.3877407536089589359e-05"  ixz="-1.0533082862400745564e-05" iyy="0.00042405475895190521737" iyz="-9.4994196897235107756e-05" izz="0.00093007797747239335639" />
+</inertial>
+</link>
+
+<link name="thumb_mcp">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/thumb_mcp_visual.stl"/>
+</geometry>
+<material name="thumb_mcp_material">
+<color rgba="0.8715577999874954962 0.93708953468775291196 0.97640857550790749464 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/thumb_mcp_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="-0.0033600775926570952169 0.010424522894181607532 0.014011215787481592562" rpy="0 0 0"/>
+<mass value="0.025926069401923192148" />
+<inertia ixx="4.4399104485736787273e-06" ixy="-3.4917877770628311482e-08"  ixz="-9.7704767889725042879e-10" iyy="2.9606889798102084275e-06" iyz="-6.3470618322076886872e-09" izz="4.3750070206393303985e-06" />
+</inertial>
+</link>
+
+<link name="test_thumb_roll_mcp">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/test_thumb_roll_mcp_visual.stl"/>
+</geometry>
+<material name="test_thumb_roll_mcp_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/test_thumb_roll_mcp_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="-0.0005039672281920148933 0.0036743685632994417187 0.0089118279603472155825" rpy="0 0 0"/>
+<mass value="0.0051287039329138989913" />
+<inertia ixx="4.7323640887210725423e-07" ixy="-9.4999133642132942891e-09"  ixz="2.4782435803510997671e-08" iyy="1.0882826140156199833e-06" iyz="2.2580937145705835271e-08" izz="9.5493268485594980581e-07" />
+</inertial>
+</link>
+
+<link name="proximal_phalange">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/proximal_phalange_visual.stl"/>
+</geometry>
+<material name="proximal_phalange_material">
+<color rgba="0.9956979799051590696 0.95112992787379224691 0.82526698885155824748 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/proximal_phalange_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.0002904639384216124178 -0.024800000051891549213 -0.01399958089494991384" rpy="0 0 0"/>
+<mass value="0.044225817961420874069" />
+<inertia ixx="1.8308890457324966471e-05" ixy="-3.5936603296784633351e-14"  ixz="-9.6898647394335205543e-09" iyy="4.9474565014718373002e-06" iyz="5.058930834937883391e-14" izz="1.7756142881086489833e-05" />
+</inertial>
+</link>
+
+<link name="thumb_distal">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/thumb_distal_visual.stl"/>
+</geometry>
+<material name="thumb_distal_material">
+<color rgba="0.51372549019607838261 0.41568627450980394356 0.73333333333333328152 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/thumb_distal_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.036312704875636675483 4.7117898958441706281e-05 -0.013293393572910428002" rpy="0 0 0"/>
+<mass value="0.012789999999999999286" />
+<inertia ixx="1.7752364883833929187e-06" ixy="-1.6918103540503509408e-07"  ixz="-2.3482182150621535997e-08" iyy="5.8383766301988901224e-06" iyz="1.4128110819174756501e-09" izz="5.1778902830570294773e-06" />
+</inertial>
+</link>
+
+<joint name="thumb_ip" type="revolute">
+<origin xyz="3.4694469519536141888e-17 -0.049600000000000060707 9.7144514654701197287e-17" rpy="5.0133508455729330598e-16 -8.6221177766906998823e-16 -1.5708045754382742309" />
+<parent link="proximal_phalange" />
+<child link="thumb_distal" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="0" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="thumb_mcp" type="revolute">
+<origin xyz="0.013099999999999951961 -1.0747745632991301257e-06 0.018499999999999988676" rpy="-1.5707963267948970021 0.0090811737873742626875 -1.5707963267948945596" />
+<parent link="test_thumb_roll_mcp" />
+<child link="proximal_phalange" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="0" upper="1.5707963267948966"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="thumb_mcp_rot" type="revolute">
+<origin xyz="-0.016990000000000005098 2.7755575615628913511e-17 0.014000000000000047129" rpy="-1.5707963267949134334 -1.5559189330125544615 1.5707963267948636954" />
+<parent link="thumb_mcp" />
+<child link="test_thumb_roll_mcp" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-1.74533" upper="0.0"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="thumb_cmc" type="revolute">
+<origin xyz="0.046237949428272764885 0.061997874544228892546 0.052985195963821972442" rpy="-1.5711874448153599904 -0.031220099242314166416 3.0520494222274052731" />
+<parent link="handbase_and_motors" />
+<child link="thumb_mcp" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="0" upper="1.5707963267948966"/><joint_properties friction="0.0"/>
+</joint>
+
+<link name="mcp_3">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/mcp_3_visual.stl"/>
+</geometry>
+<material name="mcp_3_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/mcp_3_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="-0.00048757018941857077632 0.01552426096286131825 -0.011740544565663400128" rpy="0 0 0"/>
+<mass value="0.00917754777096114506" />
+<inertia ixx="2.0625611699813236881e-06" ixy="4.3831217354323665951e-08"  ixz="-6.4788341743740047447e-09" iyy="2.1120223567893432855e-06" iyz="-1.8442060380049372449e-07" izz="2.0086961558323115767e-06" />
+</inertial>
+</link>
+
+<link name="proximal_phalange_2">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/proximal_phalange_2_visual.stl"/>
+</geometry>
+<material name="proximal_phalange_2_material">
+<color rgba="0.9956979799051590696 0.95112992787379224691 0.82526698885155824748 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/proximal_phalange_2_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.00029046393842168489671 -0.024800000051891542274 -0.013999580894949929452" rpy="0 0 0"/>
+<mass value="0.044225817961420874069" />
+<inertia ixx="1.8308890457324929202e-05" ixy="-3.5936574386981959489e-14"  ixz="-9.6898647394043640921e-09" iyy="4.9474565014718262888e-06" iyz="5.0589295485201164555e-14" izz="1.7756142881086483057e-05" />
+</inertial>
+</link>
+
+<link name="middle_phalange">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/middle_phalange_visual.stl"/>
+</geometry>
+<material name="middle_phalange_material">
+<color rgba="0.95906407733097198687 0.81962609073959558081 0.77741092048716042839 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/middle_phalange_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.029911520090219467782 0.00075866026438140964517 -0.013842445959140936909" rpy="0 0 0"/>
+<mass value="0.025618103642226990047" />
+<inertia ixx="3.023879479602711123e-06" ixy="-1.7310386681594647058e-07"  ixz="-4.4512978482242229928e-08" iyy="6.4527723010808108335e-06" iyz="8.4553527842237981819e-09" izz="5.4702959397353014074e-06" />
+</inertial>
+</link>
+
+<link name="distal_finalshape">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/distal_finalshape_visual.stl"/>
+</geometry>
+<material name="distal_finalshape_material">
+<color rgba="0.51372549019607838261 0.41568627450980394356 0.73333333333333328152 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/distal_finalshape_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.028181974469441178899 -0.00010983152833683033944 -0.013308437459480876308" rpy="0 0 0"/>
+<mass value="0.0090499999999999972827" />
+<inertia ixx="1.2811798877868672461e-06" ixy="-1.163278184994101453e-07"  ixz="-1.8074440360678045571e-08" iyy="2.9399223141641904087e-06" iyz="1.4288856191570815985e-09" izz="2.4082964920750440144e-06" />
+</inertial>
+</link>
+
+<joint name="index_dip" type="revolute">
+<origin xyz="0.042299999999999809974 -6.9388939039072283776e-17 -1.0000000000037756465e-05" rpy="0.001738700836876063598 0.00015196585467140078982 -0.087180325685089751775" />
+<parent link="middle_phalange" />
+<child link="distal_finalshape" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="index_pip" type="revolute">
+<origin xyz="3.1918911957973250537e-16 -0.04959999999999997744 1.5959455978986625269e-16" rpy="5.5803885817828984216e-15 -8.4548524865307854367e-15 -1.657792724587988431" />
+<parent link="proximal_phalange_2" />
+<child link="middle_phalange" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="index_mcp" type="revolute">
+<origin xyz="0.013099999999999986655 0.032500000000000014988 -0.0065989252254366956296" rpy="1.5707963267948878983 -1.4983235905511675945 1.5707963267950428854" />
+<parent link="mcp_3" />
+<child link="proximal_phalange_2" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="index_mcp_abadd" type="revolute">
+<origin xyz="0.054037853042018031691 0.1203459971482293972 0.064995488529681150203" rpy="0.00039106558967476920223 0.0010611375685024263156 -0.089425032086997993663" />
+<parent link="handbase_and_motors" />
+<child link="mcp_3" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.4363323129985824" upper="0.4363323129985824"/><joint_properties friction="0.0"/>
+</joint>
+
+<link name="mcp_3_2">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/mcp_3_2_visual.stl"/>
+</geometry>
+<material name="mcp_3_2_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/mcp_3_2_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="-0.00048757018941854990543 0.01552426096286128876 -0.011740544565663407067" rpy="0 0 0"/>
+<mass value="0.00917754777096114506" />
+<inertia ixx="2.062561169981322841e-06" ixy="4.3831217354323632864e-08"  ixz="-6.4788341743740047447e-09" iyy="2.1120223567893441325e-06" iyz="-1.8442060380049377743e-07" izz="2.0086961558323124237e-06" />
+</inertial>
+</link>
+
+<link name="proximal_phalange_3">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/proximal_phalange_3_visual.stl"/>
+</geometry>
+<material name="proximal_phalange_3_material">
+<color rgba="0.9956979799051590696 0.95112992787379224691 0.82526698885155824748 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/proximal_phalange_3_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.00029046393842160677995 -0.02480000005189162901 -0.013999580894949983229" rpy="0 0 0"/>
+<mass value="0.044225817961420874069" />
+<inertia ixx="1.8308890457325071503e-05" ixy="-3.5936615683991762171e-14"  ixz="-9.6898647394255713486e-09" iyy="4.9474565014718660993e-06" iyz="5.0589277911844061274e-14" izz="1.7756142881086615194e-05" />
+</inertial>
+</link>
+
+<link name="middle_phalange_2">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/middle_phalange_2_visual.stl"/>
+</geometry>
+<material name="middle_phalange_2_material">
+<color rgba="0.95906407733097198687 0.81962609073959558081 0.77741092048716042839 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/middle_phalange_2_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.029911520090219693296 0.0007586602643813540256 -0.013842445959140973338" rpy="0 0 0"/>
+<mass value="0.025618103642226990047" />
+<inertia ixx="3.0238794796027594039e-06" ixy="-1.7310386681593029754e-07"  ixz="-4.4512978482237246992e-08" iyy="6.4527723010809548291e-06" iyz="8.4553527842238709738e-09" izz="5.4702959397353979692e-06" />
+</inertial>
+</link>
+
+<link name="distal_finalshape_2">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/distal_finalshape_2_visual.stl"/>
+</geometry>
+<material name="distal_finalshape_2_material">
+<color rgba="0.51372549019607838261 0.41568627450980394356 0.73333333333333328152 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/distal_finalshape_2_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.028181974469441210124 -0.00010983152833683729188 -0.013308437459480876308" rpy="0 0 0"/>
+<mass value="0.0090499999999999972827" />
+<inertia ixx="1.2811798877868672461e-06" ixy="-1.1632781849941002618e-07"  ixz="-1.8074440360678042263e-08" iyy="2.9399223141641904087e-06" iyz="1.4288856191570716724e-09" izz="2.4082964920750448615e-06" />
+</inertial>
+</link>
+
+<joint name="middle_dip" type="revolute">
+<origin xyz="0.042300000000000198552 -1.6653345369377348106e-16 -9.999999999937142503e-06" rpy="0.0017387008300872675102 0.00015196593235497962487 -0.087180370366868986665" />
+<parent link="middle_phalange_2" />
+<child link="distal_finalshape_2" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="middle_pip" type="revolute">
+<origin xyz="1.1102230246251565404e-16 -0.049600000000000199485 5.2041704279304212832e-17" rpy="-1.5892235444292667961e-15 4.8444863572084064632e-16 -1.6578006686243138557" />
+<parent link="proximal_phalange_3" />
+<child link="middle_phalange_2" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="middle_mcp" type="revolute">
+<origin xyz="0.013099999999999998798 0.032499999999999973355 -0.0065989252254367025685" rpy="1.570796326794896558 -1.5009016985784600084 1.5707963267949498487" />
+<parent link="mcp_3_2" />
+<child link="proximal_phalange_3" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="middle_mcp_abadd" type="revolute">
+<origin xyz="0.0099559964291687785831 0.12237173835311652981 0.065041520020057114193" rpy="0.00048192873513079105031 0.0010230786639372582182 -0.002288523573776898596" />
+<parent link="handbase_and_motors" />
+<child link="mcp_3_2" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.4363323129985824" upper="0.4363323129985824"/><joint_properties friction="0.0"/>
+</joint>
+
+<link name="mcp_3_3">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/mcp_3_3_visual.stl"/>
+</geometry>
+<material name="mcp_3_3_material">
+<color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/mcp_3_3_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="-0.00048757018941855695274 0.01552426096286128876 -0.011740544565663407067" rpy="0 0 0"/>
+<mass value="0.00917754777096114506" />
+<inertia ixx="2.0625611699813236881e-06" ixy="4.3831217354323606394e-08"  ixz="-6.4788341743740063991e-09" iyy="2.1120223567893441325e-06" iyz="-1.8442060380049377743e-07" izz="2.0086961558323124237e-06" />
+</inertial>
+</link>
+
+<link name="proximal_phalange_4">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/proximal_phalange_4_visual.stl"/>
+</geometry>
+<material name="proximal_phalange_4_material">
+<color rgba="0.9956979799051590696 0.95112992787379224691 0.82526698885155824748 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/proximal_phalange_4_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.00029046393842164201652 -0.024800000051891580438 -0.013999580894949965881" rpy="0 0 0"/>
+<mass value="0.044225817961420874069" />
+<inertia ixx="1.8308890457324969859e-05" ixy="-3.5936604225562799659e-14"  ixz="-9.6898647394310638279e-09" iyy="4.9474565014718373002e-06" iyz="5.0589286587210713583e-14" izz="1.7756142881086523714e-05" />
+</inertial>
+</link>
+
+<link name="middle_phalange_3">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/middle_phalange_3_visual.stl"/>
+</geometry>
+<material name="middle_phalange_3_material">
+<color rgba="0.95906407733097198687 0.81962609073959558081 0.77741092048716042839 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/middle_phalange_3_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.029911520090219436557 0.00075866026438157975649 -0.013842445959140884867" rpy="0 0 0"/>
+<mass value="0.025618103642226990047" />
+<inertia ixx="3.0238794796026929118e-06" ixy="-1.7310386681595650262e-07"  ixz="-4.4512978482249945868e-08" iyy="6.4527723010807362946e-06" iyz="8.4553527842163750631e-09" izz="5.470295939735264985e-06" />
+</inertial>
+</link>
+
+<link name="distal_finalshape_3">
+<visual>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/distal_finalshape_3_visual.stl"/>
+</geometry>
+<material name="distal_finalshape_3_material">
+<color rgba="0.51372549019607838261 0.41568627450980394356 0.73333333333333328152 1.0"/>
+</material>
+</visual>
+<collision>
+<origin xyz="0 0 0" rpy="0 -0 0" />
+<geometry>
+<mesh filename="tilburg_hand/distal_finalshape_3_collision.stl"/>
+</geometry>
+</collision>
+<inertial>
+<origin xyz="0.02818197446944123094 -0.00010983152833684597905 -0.013308437459480883247" rpy="0 0 0"/>
+<mass value="0.0090499999999999972827" />
+<inertia ixx="1.2811798877868676696e-06" ixy="-1.163278184994101453e-07"  ixz="-1.807444036067802241e-08" iyy="2.9399223141641895617e-06" iyz="1.4288856191570869752e-09" izz="2.4082964920750440144e-06" />
+</inertial>
+</link>
+
+<joint name="ring_dip" type="revolute">
+<origin xyz="0.042299999999999726708 2.0816681711721685133e-16 -9.9999999999891842073e-06" rpy="0.0017387009902209401083 0.00015196410013764438955 -0.087179316580978591378" />
+<parent link="middle_phalange_3" />
+<child link="distal_finalshape_3" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="ring_pip" type="revolute">
+<origin xyz="1.249000902703301108e-16 -0.049600000000000088463 4.336808689942017736e-17" rpy="2.1752348186576580796e-15 -9.5680841721845257856e-18 -1.6578072192277912844" />
+<parent link="proximal_phalange_4" />
+<child link="middle_phalange_3" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="ring_mcp" type="revolute">
+<origin xyz="0.013099999999999993594 0.032499999999999973355 -0.0065989252254367095074" rpy="1.5707963267948881203 -1.5033465169176927212 1.5707963267949596187" />
+<parent link="mcp_3_3" />
+<child link="proximal_phalange_4" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.0873" upper="1.6580963267948965"/><joint_properties friction="0.0"/>
+</joint>
+
+<joint name="ring_mcp_abadd" type="revolute">
+<origin xyz="-0.034637173587144465259 0.1200014474080923349 0.068095947121425387527" rpy="0.0005691350169239626838 0.00097725667710355824946 0.084847977470873234274" />
+<parent link="handbase_and_motors" />
+<child link="mcp_3_3" />
+<axis xyz="0 0 1"/>
+<limit effort="0.35" velocity="8" lower="-0.4363323129985824" upper="0.4363323129985824"/><joint_properties friction="0.0"/>
+</joint>
+
+
+</robot>
