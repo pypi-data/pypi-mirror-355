@@ -1,0 +1,250 @@
+---
+title: Census data quality
+author: (insert name here)
+date: last-modified
+format:
+    html:
+        code-fold: true
+        embed-resources: true
+        toc: true
+        toc-location: left
+        grid:
+            body-width: 1000px
+            margin-width: 50px
+jupyter: python3
+editor: source
+execute: 
+  warning: false
+  message: false
+---
+# Census data quality
+
+## Introduction
+
+Add some introductory test stating the purpose and context of the data as well as introducing the report.
+
+The dimensions of data quality listed below are explained on more detail in the [DQHub website](https://www.gov.uk/government/publications/the-government-data-quality-framework/the-government-data-quality-framework#Data-quality-dimensions).
+
+Any additional information about processes that will resolve issues reported in this document can go here at a high-level. Specific actions to address particular issues may be better placed with the analysis reported below.
+
+It is a good idea to reference organsiational goals at this point. Use visualisations to relate the quality of the data being reported on back to those goals. These don't have to be charts, but make use of being able to include pngs, or generate mermaid diagrams. The example below is bespoke, but there are examples of others at [mermaid.js.org](https://mermaid.js.org/intro/).
+
+```{mermaid}
+flowchart LR
+read["PRREAD (GRADE)"]
+pread["KS1_PSREAD"]
+readps[KS1READPS]
+readps_p[KS1READPS_P]
+ks1av[KS1AVERAGEPS]
+ks1grp["KS1GROUP (for prior attainment LMH)"]
+ks1avgrp["KS1AVERAGE_GRP_P (for progress)"]
+sln["SCHRES
+LARES
+NATRES"]
+eks["ENDKS
+DISC3"]
+
+read-->|lookup|readps-->readps_p-->ks1av-->ks1grp
+eks-->readps
+ks1av-->ks1avgrp
+pread-->|lookup|readps_p
+eks-->readps_p
+sln-->ks1av
+eks-->ks1av
+eks-->ks1avgrp
+
+```
+
+```{python}
+#| echo: false
+    # load data and import any modules required
+    import pandas as pd
+    from dfeqa import load_census, get_default_conn, get_table_metadata, fd, barchart, valid_upn, valid_name_regex
+
+    df = load_census(202324, NCYear = "R", term = "Autumn", columns = ["AcademicYear", "CensusTerm", "URN", "DOB", "Forename", "UPN", "PupilMatchingRefAnonymous"])
+    reference = load_census(202223, NCYear = "R", term = "Autumn", columns = ["AcademicYear", "CensusTerm", "URN", "DOB", "Forename", "UPN", "PupilMatchingRefAnonymous"])
+
+```
+
+```{python}
+#| label: tbl-org-goals
+#| echo: False
+
+
+from dfeqa import status_summary
+status_summary([
+    "Improve the skills pipeline",
+    "Level up education standards",
+    "Support the most disadvantaged and vulnerable children",
+    "High quality early education and childcare"],
+    ['grey', 'green', 'grey', 'grey'])
+
+```
+
+## Data Quality Reporting
+
+### Completeness
+
+Completeness describes the degree to which records are present.
+
+```{python}
+#| label: fig-completeness
+#| fig-cap: "Completeness of data: comparison with data from the previous year"
+
+chartdata = pd.DataFrame([
+    {'year':'this_year', 'record count':df.shape[0]},{'year':'last_year', 'record count':reference.shape[0]}
+    ])
+barchart(chartdata = chartdata, cats = 'year',values = 'record count', groups = 'year')
+
+```
+
+### Uniqueness
+
+Uniqueness describes the degree to which there is no duplication in records. This means that the data contains only one record for each entity it represents, and each value is stored once.
+
+```{python}
+#| label: fig-uniqueness
+#| fig-cap: "Uniqueness of data: comparison with data from the previous year"
+
+chartdata = pd.DataFrame([
+    {'year':'this_year', 'proportion unique':df['UPN'].nunique() / df.shape[0]},
+    {'year':'last_year', 'proportion unique':reference['UPN'].nunique() / reference.shape[0]}
+    ])
+barchart(chartdata, cats = 'year',values = 'proportion unique', groups = 'year')
+
+```
+
+It may be more helpful to see the number of records that _aren't_ unique.
+
+```{python}
+#| label: fig-not-uniqueness
+#| tbl-cap: "Duplicated UPNs compared with the previous year"
+
+chartdata = fd([
+    df.groupby('UPN')['UPN'].count(),
+    reference.groupby('UPN')['UPN'].count()
+    ], ids=['this','last'], long=1).rename(columns={'value': 'number of duplications'})
+
+barchart(chartdata[chartdata['number of duplications']>1], cats = 'number of duplications',values = 'count',groups='group')
+
+```
+
+
+### Consistency
+
+Consistency describes the degree to which values in a data set do not contradict other values representing the same entity. For example, a mother’s date of birth should be before her child’s.
+
+In this example we are looking for consistency within the same dataset, but if we were doing this for real we could include previous year or mutliple census in the same year, as well as other datasets entirely where the same data items were collected - National Curriculum assessments for example.
+
+`PupilMatchingRefAnonymous` (PMRA) and `UPN` should both relate to the same pupil. Let's see if that's the case...
+
+```{python}
+#| label: fig-inconsistent-pk
+#| fig-cap: "Number of UPNs associated with a single PMRA"
+
+chartdata = fd([
+    df.groupby('PupilMatchingRefAnonymous')['UPN'].nunique(),
+    reference.groupby('PupilMatchingRefAnonymous')['UPN'].nunique()
+    ], ids=['this','last'], long=1).rename(columns={'value':'number of UPNs'})
+
+barchart(chartdata[chartdata['number of UPNs']>1], cats = 'number of UPNs',values = 'count',groups='group')
+
+```
+
+If they are truly the same pupils, then the dates of birth should be consistent too.
+
+```{python}
+#| label: fig-inconsistent-dob
+#| fig-cap: "Number of DOBs associated with a single PMRA"
+
+chartdata = fd([
+    df.groupby('PupilMatchingRefAnonymous')['DOB'].nunique(),
+    reference.groupby('PupilMatchingRefAnonymous')['DOB'].nunique()
+    ], ids=['this','last'], long=1).rename(columns={'value':'number of DOBs'})
+
+barchart(chartdata[chartdata['number of DOBs']>1], cats = 'number of DOBs',values = 'count',groups='group')
+
+
+```
+
+Those 18 instances of PMRs associated with 2 records with different dates of birth would certainly be worth following up.
+
+### Timeliness
+
+Timeliness describes the degree to which the data is an accurate reflection of the period that they represent, and that the data and its values are up to date.
+
+This dataset refers to a census where the data reflects a point in time - even if those variables change in real time, the census values should not change. Other datasets will benefit from analyses to monitor change or reference datasets collected at different times.
+
+### Validity
+
+Validity describes the degree to which the data is in the range and format expected. For example, date of birth does not exceed the present day and is within a reasonable range.
+
+This could easily be the biggest section of the report if handled badly. Ideally this section should report by exception - the failures, or an overview (all 500 columns contain values within specified range) and refer to appendices for detail.
+
+For example we might check that UPNs are valid, or that names are valid. We wouldn't report all passes here for every field, but might report by exception and include data for all columns in an appendix.
+
+```{python}
+#| label: tbl-upn-validity
+#| tbl-cap: "UPN validity checks"
+
+pd.DataFrame(df['UPN'].apply(valid_upn).value_counts())
+
+```
+
+```{python}
+#| label: tbl-name-validity
+#| tbl-cap: "Forename validity checks"
+
+pd.DataFrame(df['Forename'].str.match(pat=valid_name_regex).value_counts())
+
+```
+
+```{python}
+#| label: tbl-name-validity-stripped
+#| tbl-cap: "Forename validity checks (without trailing spaces)"
+
+pd.DataFrame(df['Forename'].str.strip().str.match(pat=valid_name_regex).value_counts())
+
+```
+
+### Accuracy
+
+Accuracy describes the degree to which data matches reality.
+
+In the case of a census it may  be difficult to determine accuracy beyond validity and consistency. One approach to gaining some measure of assurance of accuracy is to consider what an aggregate measure might look like if the data were accurate or inaccurate.
+
+For example, our dates of birth might all be valid and consistent, but if they were all in January we would be concerned over the accuracy of the data, as might happen if there were an issue recording the correct month in the data collection.
+
+In a dataset covering most children in the country of a certain age, we would expect there to be similar numbers of pupils born in each month of the year, with a few more in months with 31 days and a few less in february. It doesn't quite work out that way, so using the previous year as a comparison is better. Some variables might have a uniform distribution and can be presented along with a straight line to show where the expected distribution would lie, but other variables are better presented with a reference dataset.
+
+```{python}
+#| label: fig-month-freq
+#| fig-cap: "Month of birth: comparison with data from the previous year"
+
+dob_data = fd([df['DOB'].dt.month.astype(int), reference['DOB'].dt.month.astype(int)], ids=['this year', 'last year'], long=True)
+barchart(dob_data, cats='value', values='count', groups='group')
+
+```
+
+
+### User needs and trade-offs
+
+Are there any hot-topics or issues which have occurred in the past which require monitoring?
+
+## Interpretation, conclusion and recommendation
+
+In summary, what does it all mean? What purposes can the data be used for?
+
+## Appendices
+
+Lists of columns, tables, metadata, etc.
+
+### column names in table
+
+```{python}
+#| label: tbl-census-columns
+#| tbl-cap: "Metadata for all columns in CensusSeasonSSA_MasterView"
+
+pd.DataFrame(get_table_metadata(conn = get_default_conn(), tablename='tier0.CensusSeasonSSA_MasterView')['columns']).style.set_properties(**{'text-align': 'left'}).hide()
+
+```
