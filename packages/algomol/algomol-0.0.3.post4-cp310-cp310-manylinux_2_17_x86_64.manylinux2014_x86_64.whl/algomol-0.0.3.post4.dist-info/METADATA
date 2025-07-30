@@ -1,0 +1,160 @@
+Metadata-Version: 2.2
+Name: algomol
+Version: 0.0.3.post4
+Summary: A Python/C++ library for fast detection of chemical equivalent (or magnetic equivalent) atoms in molecules, useful for assigning/computing peaks in NMR spectroscopy.
+Author-Email: AlgoMol LLC <lanl2vz@algomol.com>
+License: Proprietary
+Classifier: License :: Other/Proprietary License
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
+# AlgoMol Core Library
+
+AlgoMol Core is a C++ library for fast molecular graph representation and equivalence detection with Python bindings.
+
+## Overview
+
+AlgoMol Core provides a robust framework for molecular modeling with specific focus on:
+- Chemical and topological equivalence detection
+- VSEPR geometry modeling of molecular structures
+
+For more information, visit our official website at [algomol.com](https://www.algomol.com).
+
+## Features
+
+- **Equivalence Classes**: Generate equivalence classes based on topological or geometrical properties
+- **Stereochemistry Support**: Correctly handles cis/trans isomerism and other stereochemical features
+- **VSEPR Geometry**: Assign and manage molecular geometries based on VSEPR
+- **Python Bindings**: Use the library directly from Python with full API support
+
+## Installation
+
+### Requirements
+
+- C++17 compatible compiler (GCC 7+, Clang 5+, MSVC 2019+)
+- CMake 3.15 or newer
+- Python 3.9+ (for Python bindings)
+- pybind11 (for Python bindings)
+
+### Python Package
+
+AlgoMol is also available as a Python package:
+
+```bash
+pip install algomol
+```
+
+## Usage
+
+### C++ API
+
+```cpp
+#include "AlgoMol/molecules.hpp"
+
+int main() {
+    // Create a molecule
+    auto molecule = std::make_shared<AlgoMol::molecules::MolGraph>("ethane");
+    
+    // Add atoms
+    molecule->addAtom(1, AlgoMol::elements::_CARBON);
+    molecule->addAtom(2, AlgoMol::elements::_CARBON);
+    molecule->addAtom(3, AlgoMol::elements::_HYDROGEN);
+    molecule->addAtom(4, AlgoMol::elements::_HYDROGEN);
+    molecule->addAtom(5, AlgoMol::elements::_HYDROGEN);
+    molecule->addAtom(6, AlgoMol::elements::_HYDROGEN);
+    molecule->addAtom(7, AlgoMol::elements::_HYDROGEN);
+    molecule->addAtom(8, AlgoMol::elements::_HYDROGEN);
+    
+    // Add bonds
+    molecule->addBond(1, 2, AlgoMol::bonds::BondType::SINGLE);
+    molecule->addBond(1, 3, AlgoMol::bonds::BondType::SINGLE);
+    molecule->addBond(1, 4, AlgoMol::bonds::BondType::SINGLE);
+    molecule->addBond(1, 5, AlgoMol::bonds::BondType::SINGLE);
+    molecule->addBond(2, 6, AlgoMol::bonds::BondType::SINGLE);
+    molecule->addBond(2, 7, AlgoMol::bonds::BondType::SINGLE);
+    molecule->addBond(2, 8, AlgoMol::bonds::BondType::SINGLE);
+    
+    // Initialize the molecule
+    molecule->init();
+    
+    // Generate equivalence classes
+    molecule->generateEquivalenceClasses(AlgoMol::molecules::QueryTypeFlag::TOPOLOGICAL);
+    
+    // Get equivalence classes
+    auto classes = molecule->getEquivalenceClasses(AlgoMol::molecules::QueryTypeFlag::TOPOLOGICAL);
+}
+```
+
+### Python API
+
+```python
+import algomol
+
+# Create a molecule
+molecule = algomol.MolGraph("ethane")
+
+# Add atoms
+molecule.add_atom(1, 6)  # Carbon (atomic number 6)
+molecule.add_atom(2, 6)  # Carbon
+molecule.add_atom(3, 1)  # Hydrogen (atomic number 1)
+molecule.add_atom(4, 1)  # Hydrogen
+molecule.add_atom(5, 1)  # Hydrogen
+molecule.add_atom(6, 1)  # Hydrogen
+molecule.add_atom(7, 1)  # Hydrogen
+molecule.add_atom(8, 1)  # Hydrogen
+
+# Add bonds
+molecule.add_bond(1, 2, algomol.BondType.SINGLE)
+molecule.add_bond(1, 3, algomol.BondType.SINGLE)
+molecule.add_bond(1, 4, algomol.BondType.SINGLE)
+molecule.add_bond(1, 5, algomol.BondType.SINGLE)
+molecule.add_bond(2, 6, algomol.BondType.SINGLE)
+molecule.add_bond(2, 7, algomol.BondType.SINGLE)
+molecule.add_bond(2, 8, algomol.BondType.SINGLE)
+
+# Initialize the molecule
+molecule.init_mol()
+
+# Generate equivalence classes
+molecule.generate_equivalence_classes(algomol.QueryTypeFlag.TOPOLOGICAL)
+
+# Get equivalence classes
+classes = molecule.get_equivalence_classes(algomol.QueryTypeFlag.TOPOLOGICAL)
+```
+
+## API Reference
+
+### Core Classes
+
+- `MolGraph`: Main class for molecular graph representation
+- `Atom<Element>`: Templated class for atoms of different elements
+- `Bond<BondType>`: Templated class for different bond types
+- `Geometry<GeometryType>`: Templated class for VSEPR geometries
+
+### Key Functions
+
+- `addAtom()`: Add an atom to a molecule
+- `addBond()`: Add a bond between atoms
+- `init()`: Initialize a molecule after adding atoms and bonds
+- `generateEquivalenceClasses()`: Compute equivalence classes
+- `isTopologyEquivalent()`: Check if two atoms are topologically equivalent
+- `isChemicallyEquivalent()`: Check if two atoms are chemically equivalent
+- `setCisAtoms()`: Set cis stereochemistry
+- `setOrientations()`: Set atom orientations
+
+## License
+
+AlgoMol Core is proprietary software, owned exclusively by AlgoMol LLC. 
+All rights reserved. This software and its source code are confidential 
+and cannot be redistributed, modified, or used without explicit written 
+permission from AlgoMol LLC. This is NOT open source software.
+
+Copyright © AlgoMol LLC. Unauthorized use, reproduction, or distribution 
+is strictly prohibited.
+
+## Contact
+
+For questions and support, please contact: lanl2vz@algomol.com
+
+
+Visit our official website at [algomol.com](https://www.algomol.com) for more information.
