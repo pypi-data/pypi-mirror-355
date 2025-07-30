@@ -1,0 +1,113 @@
+services:
+  # NATS JetStream (message broker)
+  nats:
+    image: nats:2.10
+    container_name: langhook-nats
+    command: ["-js", "-m", "8222"]
+    ports:
+      - "4222:4222"  # NATS API
+      - "8222:8222"  # Monitoring
+    volumes:
+      - nats-data:/data
+    networks:
+      - langhook
+    # No health check needed - NATS starts quickly and reliably
+    # Health will be verified through dependency chain
+
+  # Redis (for rate limiting)
+  redis:
+    image: redis:7-alpine
+    container_name: langhook-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - langhook
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # PostgreSQL (for subscription metadata)
+  postgres:
+    image: postgres:15-alpine
+    container_name: langhook-postgres
+    environment:
+      POSTGRES_DB: langhook
+      POSTGRES_USER: langhook
+      POSTGRES_PASSWORD: langhook
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - langhook
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U langhook"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Stream initialization service
+  langhook-streams:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: langhook-streams-init
+    environment:
+      - NATS_URL=nats://nats:4222
+    depends_on:
+      nats:
+        condition: service_started
+    networks:
+      - langhook
+    command: ["bash", "/app/scripts/init-streams.sh"]
+    restart: "no"
+
+  # LangHook Services (consolidated ingest + map)
+  langhook:
+    profiles:
+      - docker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: langhook-services
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=false
+      - LOG_LEVEL=INFO
+      - NATS_URL=nats://nats:4222
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_DSN=postgresql://langhook:langhook@postgres:5432/langhook
+      - MAX_BODY_BYTES=1048576
+      - RATE_LIMIT=200/minute
+      - MAPPINGS_DIR=/app/mappings
+      - EVENT_LOGGING_ENABLED=false  # Set to true to enable event logging to PostgreSQL
+    env_file:
+      - .env
+    depends_on:
+      nats:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      langhook-streams:
+        condition: service_completed_successfully
+    networks:
+      - langhook
+    restart: unless-stopped
+
+
+volumes:
+  nats-data:
+  redis-data:
+  postgres-data:
+
+networks:
+  langhook:
+    driver: bridge
