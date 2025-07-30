@@ -1,0 +1,19 @@
+# {{ title }}
+[Link]({{ url }})
+
+{% if created %}**Created:** {{ created }}{% endif %}
+{% if favorite %}⭐ Favorite{% endif %}
+
+### My Custom Section
+This is a custom section for every bookmark.
+
+{% if excerpt %}
+> {{ excerpt }}
+{% endif %}
+
+### Another Section
+Add anything you want here!
+
+{% if personal_note %}
+**Personal Note:** {{ personal_note }}
+{% endif %}

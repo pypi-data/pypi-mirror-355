@@ -1,0 +1,14 @@
+## [{{ title }}]({{ url }})
+{% if cover %}![cover image]({{ cover }})
+{% endif %}{% if tags %}**Tags:** {{ tags }}
+{% endif %}{% if created %}**Created:** {{ created }}
+{% endif %}{% if favorite %}⭐ **Favorite**
+{% endif %}
+{% if excerpt %}
+_Excerpt:_ {{ excerpt }}
+{% endif %}{% if note %}
+_Note:_ {{ note }}
+{% endif %}{% if highlights %}
+### Highlights:
+{% for h in highlights %}> {{ h }}
+{% endfor %}{% endif %}
