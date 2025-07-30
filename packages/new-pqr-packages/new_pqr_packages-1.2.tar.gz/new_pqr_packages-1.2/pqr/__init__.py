@@ -1,0 +1,1 @@
+print('This is special file inside abc package  will automatically run during import of the package')
