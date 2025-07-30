@@ -1,0 +1,59 @@
+[project]
+name = "litebaseio"
+dynamic = ["version"]
+description = "Python SDK for Litebase Storage and Stream APIs"
+authors = [
+    { name = "Litebase", email = "support@litebase.io" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+dependencies = [
+    "httpx>=0.24.0",
+    "pydantic>=2.0",
+]
+
+[project.urls]
+Homepage = "https://litebase.io"
+Repository = "https://github.com/litebaseio/litebase-py"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "black",
+    "ruff",
+    "mypy",
+    "pre-commit",
+    "build",
+    "twine",
+]
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src",
+    "tests",
+    "examples",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+select = ["E", "F", "I", "B", "UP"] # (errors, formatting, imports, bug risks, upgrades)
+
+[tool.mypy]
+strict = true
+python_version = "3.8"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
