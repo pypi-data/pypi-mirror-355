@@ -1,0 +1,26 @@
+[project]
+name = "llm-fragments-sourcehut"
+version = "0.1.2"
+description = "Load SourceHut repository contents as LLM fragments"
+readme = "README.md"
+authors = [{name = "Amolith"}]
+license = "Apache-2.0"
+requires-python = ">=3.9"
+dependencies = [
+    "llm"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://git.sr.ht/~amolith/llm-fragments-sourcehut"
+Changelog = "https://git.sr.ht/~amolith/llm-fragments-sourcehut/refs"
+Issues = "https://todo.sr.ht/~amolith/public-tracker"
+
+[project.entry-points.llm]
+fragments_sourcehut = "llm_fragments_sourcehut"
+
+[project.optional-dependencies]
+test = ["pytest"]
