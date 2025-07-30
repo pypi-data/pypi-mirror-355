@@ -1,0 +1,19 @@
+[project]
+name = "zhuqiyang-mcp-dev"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "root", email = "qiqitao320@qq.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "mcp[cli]>=1.9.4",
+]
+
+[project.scripts]
+zhuqiyang-mcp-dev = "zhuqiyang_mcp_dev:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
