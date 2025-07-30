@@ -1,0 +1,81 @@
+Metadata-Version: 2.1
+Name: lazytrainer
+Version: 0.1.2
+Summary: Lazy ML: Because training models shouldn't need more energy than your morning coffee.
+Author: Mr. Phantom
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# LazyTrainer
+
+**Train your regression models with zero drama.**  
+LazyTrainer helps you get started with machine learning model training in the simplest way possible — no unnecessary complications.
+
+---
+
+## Why LazyTrainer?
+
+This project was created by **MrFayntom** with a clear goal in mind:
+
+> "I made LazyTrainer for beginners who want to train machine learning models but feel overwhelmed by all the complexity.  
+> LazyTrainer wraps it up into a clean, lazy workflow so you can focus on *what matters* — learning and iterating."
+
+---
+
+## What it Does
+
+- Automatically preprocesses your data
+- Handles categorical encoding and scaling
+- Trains a regression model (SGD for now)
+- Evaluates performance (MAE, R², Accuracy)
+- Plots predictions
+- Saves the model, scaler, and encoders
+
+---
+
+## Installation
+
+```bash
+pip install lazyml
+```
+---
+
+# LazyML – Quick Start Guide
+
+For full details, visit the official GitHub repository:  
+: [https://github.com/mrfayntom/LazyML](https://github.com/mrfayntom/LazyML)
+
+---
+
+## Minimal Workflow Example
+
+```python
+from lazyml.trainer import LazyTrainer
+
+# Initialize the trainer
+trainer = LazyTrainer(
+    data_path="path/to/your/data.csv",          # Path to your CSV file
+    target_col="TargetColumn",                  # Column name you want to predict
+    features=["Feature1", "Feature2", "Feature3"],  # List of input feature column names
+    categorical_cols=["Feature3"]               # List of categorical feature names (if any)
+)
+
+# Train the model
+trainer.train()
+
+# Evaluate the model
+trainer.evaluate()
+
+# Plot prediction summary
+trainer.plot_summary()
+
+# Save model, scaler and encoders
+trainer.save()
+trainer.save_scaler()
+trainer.save_encoders()
+```
+— **Mr. Phantom**
+
+
