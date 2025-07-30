@@ -1,0 +1,56 @@
+site_name: buildstock-fetch
+repo_url: https://github.com/switchbox-data/buildstock-fetch
+site_url: https://switchbox-data.github.io/buildstock-fetch
+site_description: This library simplifies downloading building characteristics and load curve data from NREL's ResStock and ComStock projects.
+site_author: Switchbox
+edit_uri: edit/main/docs/
+repo_name: switchbox-data/buildstock-fetch
+copyright: Maintained by <a href="https://switchbox-data.com">switchbox-data</a>.
+
+nav:
+  - Home: index.md
+  - Modules: modules.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["buildstock_fetch"]
+          options:
+            show_source: true
+            show_root_heading: true
+            heading_level: 2
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/switchbox-data/buildstock-fetch
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/buildstock-fetch
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
