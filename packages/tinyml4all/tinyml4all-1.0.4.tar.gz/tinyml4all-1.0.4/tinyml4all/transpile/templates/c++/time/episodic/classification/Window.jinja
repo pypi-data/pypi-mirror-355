@@ -1,0 +1,49 @@
+class Window {
+    public:
+        const uint16_t length = {{ window.length_count }};
+        float data[{{ window.input_dtypes | length }}][{{ window.length_count }}];
+
+        /**
+         * Constructor
+         */
+        Window() : head(0) {
+        }
+
+        /**
+         * Feed data
+         */
+        void operator()(Input& input) {
+            if (isReady())
+                shift();
+
+            {% for var in window.input_dtypes %}
+                data[{{ loop.index0 }}][head] = input.{{ var.name | var() }};
+            {% endfor %}
+
+            head++;
+        }
+
+        /**
+         * Test if new chunk of data is available
+         */
+        bool isReady() {
+            return head >= {{ window.length_count }};
+        }
+
+    protected:
+        uint32_t head;
+
+        void shift() {
+            // cap head
+            if (head >= {{ window.length_count }})
+                head = {{ window.length_count }};
+
+            // shift data to the left by {{ window.shift_count }}
+            for (uint16_t ax = 0; ax < {{ window.input_dtypes | length }}; ax++) {
+                for (uint16_t i = 0; i < {{ window.length_count - window.shift_count }}; i++)
+                    data[ax][i] = data[ax][i + {{ window.shift_count }}];
+            }
+
+            head = {{ window.length_count }} - {{ window.shift_count }};
+        }
+};

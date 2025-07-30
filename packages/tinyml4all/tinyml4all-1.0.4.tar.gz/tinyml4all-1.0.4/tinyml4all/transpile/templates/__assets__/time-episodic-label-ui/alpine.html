@@ -1,0 +1,43 @@
+<div class="mt-8">
+    <!-- labels -->
+    <div class="grid md:grid-cols-2 gap-4 md:gap-8">
+        <div>
+            <table class="w-full [&_tr]:border-b [&_tr]:border-slate-200 [&_th,td]:px-2 [&_td,th]:py-2">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="text-left">Label</th>
+                        <th class="text-left">Source</th>
+                        <th class="text-right">Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody x-show="events.length > 0">
+                    <template x-for="e in events">
+                        <tr>
+                            <td class="text-center">
+                                <button class="text-red-500 cursor-pointer" @click="removeEvent(e.t)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </td>
+                            <td class="text-left" x-text="e.label"></td>
+                            <td class="text-left" x-text="e.__source__"></td>
+                            <td class="text-right" x-text="e.t.substr(0, 23)"></td>
+                        </tr>
+                    </template>
+                </tbody>
+                <tbody x-show="events.length === 0">
+                    <tr>
+                        <td class="text-center" colspan="2">No labelled events yet</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- code -->
+        <div>
+            <pre class="bg-slate-800 text-slate-100 p-4 rounded text-sm overflow-x-scroll"><code x-text="fileOutput"></code></pre>
+        </div>
+    </div>
+</div>

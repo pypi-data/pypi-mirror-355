@@ -1,0 +1,66 @@
+/**
+ * {{ this }}
+ */
+class {{ class_name or "Moments" }} {
+    public:
+
+        void operator()(Window& window, Input& input) {
+            {% for column, variants in outputs.items() %}
+                // dimension: {{ column }}
+                extract(window.data[{{ loop.index0 }}] + window.length - {{ count }}, {{ variants | spread(object="input.", pointer=True) }} );
+            {% endfor %}
+        }
+
+    protected:
+
+        void extract(float *array, float *minimum, float *maximum, float *average, float *absminimum, float *absmaximum, float *absaverage, float *stddev) {
+            const float inverseCount = {{ 1 / count }}f;
+            float sum = 0;
+            float absum = 0;
+            float m = {{ FLOAT_MAX }};
+            float M = {{ FLOAT_MIN }};
+            float absm = {{ FLOAT_MAX }};
+            float absM = 0;
+
+            // first pass (min, max, mean)
+            for (uint16_t i = 0; i < {{ count }}; i++) {
+                const float v = array[i];
+                const float a = math::absolute(v);
+
+                sum += v;
+                absum += a;
+
+                if (v < m) m = v;
+                if (v > M) M = v;
+                if (a < absm) absm = a;
+                if (a > absM) absM = a;
+            }
+
+            const float mean = sum * inverseCount;
+            float var = 0;
+            float skew = 0;
+            float kurtosis = 0;
+
+            *minimum = m;
+            *maximum = M;
+            *average = mean;
+            *absminimum = absm;
+            *absmaximum = absM;
+            *absaverage = absum * inverseCount;
+
+            // second pass (std, skew, kurtosis)
+            for (uint16_t i = 0; i < {{ count }}; i++) {
+                const float v = array[i];
+                const float d = v - mean;
+                const float s = pow(d, 3);
+
+                var += d * d;
+                //skew += s;
+                //kurtosis += s * d; // a.k.a. d^4
+            }
+
+            *stddev = std::sqrt(var * inverseCount);
+            //*skew = sk / pow(var, 1.5) * inverseCount;
+            //*kurtosis = kurt / pow(var, 2) * inverseCount;
+        }
+};

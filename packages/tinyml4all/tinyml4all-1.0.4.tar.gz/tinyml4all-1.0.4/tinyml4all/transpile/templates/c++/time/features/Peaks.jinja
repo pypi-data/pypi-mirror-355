@@ -1,0 +1,32 @@
+/**
+ * {{ this }}
+ */
+class {{ class_name or "Peaks" }} {
+    public:
+
+        void operator()(Window& window, Input& input) {
+            {% for var in outputs %}
+                // dimension: {{ column }}
+                extract(window.data[{{ loop.index0 }}] + window.length - {{ count }}, &(input.{{ var | var }}));
+            {% endfor %}
+        }
+
+    protected:
+
+        void extract(float *array, float *peaksCount) {
+            const float thres = (np::maximum(array, {{ count }}) - np::minimum(array, {{ count }})) * {{ peak_magnitude }}f;
+            uint16_t peaks = 0;
+
+            for (uint16_t i = 1; i < {{ count }} - 1; i++) {
+                const float prev = array[i - 1];
+                const float curr = array[i];
+                const float next = array[i + 1];
+
+                // check if peak
+                if (math::absolute(curr - prev) > thres && math::absolute(curr - next) > thres)
+                    peaks++;
+            }
+
+            *peaksCount = peaks / {{ count - 2 }}.0f;
+        }
+};

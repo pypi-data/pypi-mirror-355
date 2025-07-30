@@ -1,0 +1,28 @@
+/**
+ * {{ this }}
+ */
+class {{ class_name or "CountAboveMean" }} {
+    public:
+
+        void operator()(Window& window, Input& input) {
+            {% for var in outputs %}
+                // dimension: {{ column }}
+                extract(window.data[{{ loop.index0 }}] + window.length - {{ count }}, &(input.{{ var | var }}));
+            {% endfor %}
+        }
+
+    protected:
+
+        void extract(float *array, float *countAboveMean) {
+            const float mean = np::mean(array, {{ count }});
+            uint32_t count = 0;
+
+            // second pass (count)
+            for (uint16_t i = 0; i < {{ count }}; i++) {
+                if (array[i] > mean)
+                    count++;
+            }
+
+            *countAboveMean = count / {{ count }}f;
+        }
+};

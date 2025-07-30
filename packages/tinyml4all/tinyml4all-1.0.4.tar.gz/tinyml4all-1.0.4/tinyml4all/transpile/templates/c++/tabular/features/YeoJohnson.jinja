@@ -1,0 +1,39 @@
+/**
+ * {{ this }}
+ */
+class {{ class_name }} {
+    public:
+
+        void operator()(Input& input, Output& output) {
+            {% for var, lambda in zip(working_dtypes, lambdas) %}
+            input.{{ var.name | var() }} = f(input.{{ var.name | var() }}, {{ lambda }}f);
+            {% endfor %}
+        }
+
+        /**
+         * Always ready
+         */
+        bool isReady() {
+            return true;
+        }
+
+    protected:
+
+        /**
+         * Apply Box-Cox transformation
+         */
+        float f(const float x, const float lambda) {
+            if (x >= 0) {
+                if (math::abs(lambda) < 1e-6)
+                    return math::log(1 + x);
+                else
+                    return (math::pow(x + 1, lambda) - 1) / lambda;
+            }
+
+            // x < 0
+            if (math::abs(lambda - 2) < 1e-6)
+                return -math::log(1 - x);
+            else
+                return (1 - math::pow(1 - x, 2 - lambda)) / (2 - lambda);
+        }
+};

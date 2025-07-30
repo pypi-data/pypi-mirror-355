@@ -1,0 +1,30 @@
+{% for tree in trees %}{{ tree.convert_to("c++", class_name=tree | var) }}{% endfor %}
+
+class {{ class_name or "RandomForest" }} {
+    public:
+        void operator()(Input& input, Output& output) {
+            Output treeOutput;
+
+            output.regression.value = 0;
+
+            // iterate over trees
+            {% for tree in trees %}
+                tree{{ loop.index }}(input, treeOutput);
+                output.regression.value += treeOutput.regression.value;
+            {% endfor %}
+
+            output.regression.value /= {{ trees | length }};
+        }
+
+        /**
+         * Always ready
+         */
+        bool isReady() {
+            return true;
+        }
+
+    protected:
+        {% for tree in trees %}
+            {{ tree | var }} tree{{ loop.index}};
+        {% endfor %}
+};

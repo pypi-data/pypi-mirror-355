@@ -1,0 +1,12 @@
+{% if left[i] != right[i] %}
+    if (input.{{ input_dtypes[features[i]] | var }} < {{ thresholds[i] }}f) {
+        {% with i = left[i] %}{% include "./_tree" %}{% endwith %}
+    }
+    else {
+        {% with i = right[i] %}{% include "./_tree" %}{% endwith %}
+    }
+{% else %}
+    output.classification.idx = {{ classes[i].argmax() }};
+    output.classification.confidence = {{ classes.flatten()[classes[i].argmax()] }};
+    return;
+{% endif %}

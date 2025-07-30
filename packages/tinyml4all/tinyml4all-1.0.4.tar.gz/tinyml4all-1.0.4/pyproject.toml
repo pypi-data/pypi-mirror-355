@@ -1,0 +1,55 @@
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "tinyml4all"
+authors = [{name = "Simone Salerno", email = "info@salernosimone.com"}]
+description = "Train Machine Learning pipelines in Python, run on any embedded device"
+version = "1.0.4"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+dependencies = [
+  "cached-property",
+  "contourpy",
+  "cycler",
+  "deprecation",
+  "durations",
+  "fonttools",
+  "hexdump",
+  "jinja2",
+  "jinja2-workarounds",
+  "joblib",
+  "kiwisolver",
+  "markupsafe",
+  "matplotlib",
+  "mpmath",
+  "numpy",
+  "packaging",
+  "pandas",
+  "pillow",
+  "prettytable",
+  "pyparsing",
+  "pyserial",
+  "python-dateutil",
+  "python-ulid",
+  "pytz",
+  "scikit-learn",
+  "scipy",
+  "seaborn",
+  "six",
+  "sympy",
+  "threadpoolctl",
+  "tqdm",
+  "tzdata",
+  "wcwidth",
+  "azure-cognitiveservices-speech",
+  "PyQt5"
+]
+
+[project.urls]
+Home = "https://salernosimone.com/tinyml4all"
+Github = "https://github.com/salernosimone/tinyml4all-python"
+
+[project.optional-dependencies]
+tensorflow = ["tensorflow==2.15.1"]

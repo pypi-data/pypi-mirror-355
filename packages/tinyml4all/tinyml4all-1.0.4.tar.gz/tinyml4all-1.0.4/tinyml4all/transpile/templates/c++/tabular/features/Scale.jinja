@@ -1,0 +1,45 @@
+/**
+ * {{ this }}
+ */
+class {{ class_name }} {
+    public:
+
+        void operator()(Input& input, Output& output) {
+            {% if method.startswith("l") %}
+                float norm = 0;
+            {% endif %}
+
+            {% if scales is not none %}
+                {% for var, scale, offset in zip(working_dtypes, scales, offsets) %}
+                    input.{{ var.name | var() }} = (input.{{ var.name | var() }} - {{ offset }}f) * {{ 1 / scale }}f;
+                {% endfor %}
+            {% elif method == "l1" %}
+                {% for var in working_dtypes %}
+                    norm += std::abs(input.{{ var.name | var() }});
+                {% endfor %}
+            {% elif method == "l2" %}
+                {% for var in working_dtypes %}
+                    norm += std::pow(input.{{ var.name | var() }}, 2);
+                {% endfor %}
+            {% elif method == "lmax" %}
+                {% for var in working_dtypes %}
+                    norm = std::max(norm, std::abs(input.{{ var.name | var() }}));
+                {% endfor %}
+            {% endif %}
+
+            {% if method.startswith("l") %}
+                if (norm > 0) {
+                    {% for var in working_dtypes %}
+                        input.{{ var.name | var() }} /= norm;
+                    {% endfor %}
+                }
+            {% endif %}
+        }
+
+        /**
+         * Always ready
+         */
+        bool isReady() {
+            return true;
+        }
+};

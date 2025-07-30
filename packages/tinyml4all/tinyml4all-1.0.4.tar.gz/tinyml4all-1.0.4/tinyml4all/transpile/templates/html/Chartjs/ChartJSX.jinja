@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart</title>
+    <script defer src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+    <style>
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        function percent(scale, percent) {
+            const m = scale.min
+            const M = scale.max
+            const r = M - m
+
+            return m + percent * r
+        }
+
+        window.charts = {{ charts | to_json }}
+    </script>
+    <script>{{ asset("build/chartjs.js") }}</script>
+</body>
+</html>

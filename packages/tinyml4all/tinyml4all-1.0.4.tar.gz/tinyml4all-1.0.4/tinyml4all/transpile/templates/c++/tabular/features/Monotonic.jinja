@@ -1,0 +1,38 @@
+class {{ class_name or "Monotonic" }} {
+    public:
+
+        /**
+         * Perform monotonic transformations
+         */
+        void operator()(Input& input, Output& output) {
+            {% for var in working_dtypes %}
+                {
+                    const float x = input.{{ var | var() }};
+
+                    {% for fn in this.functions %}
+                        {% set o = fn + "(" + var.name + ")" %}
+                        {% if fn == "square" %}
+                            input.{{ o | var }} = std::pow(x, 2);
+                        {% elif fn == "cube" %}
+                            input.{{ o | var }} = std::pow(x, 3);
+                        {% elif fn == "sqrt" %}
+                            input.{{ o | var }} = math::sqrt(x);
+                        {% elif fn == "inverse" %}
+                            input.{{ o | var }} = math::divide(1, x);
+                        {% elif fn == "log" %}
+                            input.{{ o | var }} = math::log(x);
+                        {% elif fn == "exp" %}
+                            input.{{ o | var }} = math::exp(x);
+                        {% endif %}
+                    {% endfor %}
+                }
+            {% endfor %}
+        }
+
+        /**
+         * Always ready
+         */
+        bool isReady() {
+            return true;
+        }
+};

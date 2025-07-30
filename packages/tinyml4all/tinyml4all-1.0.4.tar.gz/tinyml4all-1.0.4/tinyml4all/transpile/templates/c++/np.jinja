@@ -1,0 +1,51 @@
+namespace np {
+    /**
+     * Array mean
+     */
+    float mean(float *array, const uint16_t count) {
+        float sum = 0;
+
+        for (uint16_t i = 0; i < count; i++)
+            sum += array[i];
+
+        return sum / count;
+    }
+
+    /**
+     * Array abs mean
+     */
+    float absmean(float *array, const uint16_t count) {
+        float sum = 0;
+
+        for (uint16_t i = 0; i < count; i++)
+            sum += abs(array[i]);
+
+        return sum / count;
+    }
+
+    /**
+     * Array maximum
+     */
+    float maximum(float *array, const uint16_t count) {
+        float maximum = array[0];
+
+        for (uint16_t i = 1; i < count; i++)
+            if (array[i] > maximum)
+                maximum = array[i];
+
+        return maximum;
+    }
+
+    /**
+     * Array minimum
+     */
+    float minimum(float *array, const uint16_t count) {
+        float minimum = array[0];
+
+        for (uint16_t i = 1; i < count; i++)
+            if (array[i] < minimum)
+                minimum = array[i];
+
+        return minimum;
+    }
+}

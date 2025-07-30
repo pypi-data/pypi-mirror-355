@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <title>Capture images</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body x-data="App()" @keyup.s.alt="capture" class="w-screen h-screen flex justify-center items-center bg-black">
+    <div class="flex flex-col gap-4 text-slate-100 text-center">
+        <div>
+            <img :src="src" class="mx-auto" />
+        </div>
+        <p x-text="status">...</p>
+        <button @click="capture" class="mx-auto bg-indigo-600 text-white rounded-md px-8 py-2 cursor-pointer hover:bg-indigo-700">
+            Capture (⌥ + s)
+        </button>
+    </div>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    <script>
+        document.addEventListener("alpine:init", () => {
+            Alpine.data("App", () => ({
+                src: "/" + (+new Date()) + ".jpg",
+                status: "...",
+
+                init() {
+                    // refresh image
+                    setInterval(() => this.src = `/${+(new Date())}.jpg`, 50);
+                },
+
+                capture: function() {
+                    fetch('/capture', {method: 'POST'})
+                    .then(res => res.text())
+                    .then(text => {
+                        this.status = text || "..."
+                        setTimeout(() => this.status = "...", 1500)
+                    })
+                }
+            }))
+        });
+    </script>
+</body>
+</html>

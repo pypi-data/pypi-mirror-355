@@ -1,0 +1,50 @@
+namespace math {
+    /**
+     * Absolute value
+     */
+    inline float absolute(float x) {
+        return x >= 0 ? x : -x;
+    }
+
+    /**
+     * Alias of max
+     */
+    inline float largest(float x, float y) {
+        return x > y ? x : y;
+    }
+
+    /**
+     * Alias of min
+     */
+    inline float least(float x, float y) {
+        return x < y ? x : y;
+    }
+
+    /**
+     * Square root (absolute value)
+     */
+    inline float sqrt(float x) {
+        return std::sqrt(math::absolute(x));
+    }
+
+    /**
+     * Division (0 safe)
+     */
+    inline float divide(float n, float d) {
+        return math::absolute(d) > 0.000001 ? n / d : n;
+    }
+
+    /**
+     * Log(1 + abs(x))
+     */
+    inline float log(float x) {
+        return std::log(1 + math::absolute(x));
+    }
+
+    /**
+     * Exp(abs(x)) with x <= 30
+     */
+    inline float exp(float x) {
+        return math::absolute(x) <= 30 ? std::exp(math::absolute(x)) : 0;
+    }
+}

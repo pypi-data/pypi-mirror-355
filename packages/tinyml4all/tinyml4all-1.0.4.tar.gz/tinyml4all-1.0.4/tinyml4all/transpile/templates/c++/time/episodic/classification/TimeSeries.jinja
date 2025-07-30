@@ -1,0 +1,10 @@
+/**
+ * Time series for episodic classification
+ * {{ this }}
+ */
+class {{ class_name or "TimeSeries" }} {
+    public:
+        const uint32_t length = {{ this | length }};
+        const float data[{{ data | to_shape }}] = {{ data | to_array }};
+        const char T[{{ T | length }}][{{ T[0] | length }} + 1] = {{ T | to_array }};
+};

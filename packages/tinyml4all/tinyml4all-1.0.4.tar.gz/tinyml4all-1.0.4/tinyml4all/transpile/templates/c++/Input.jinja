@@ -1,0 +1,19 @@
+/**
+ * Handle all inputs of the chain
+ * (from outside and internal)
+ */
+class Input {
+    public:
+        {% for var in variables.all %}
+            {{ var.c_type() }} {{ var.name | var() }};
+        {% endfor %}
+
+        /**
+         * Copy from other input
+         */
+        void copyFrom(Input& other) {
+            {% for var in variables.all %}
+                {{ var.name | var() }} = other.{{ var.name | var() }};
+            {% endfor %}
+        }
+};

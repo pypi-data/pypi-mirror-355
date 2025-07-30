@@ -1,0 +1,61 @@
+/**
+ * Binary classification chain
+ * {{ this }}
+ */
+ // feature extractors
+{% for extr in window.features %}
+{{ extr.convert_to("c++", class_name=extr | var()) }}
+{% endfor %}
+
+// ovr block
+{% for block in blocks %}
+{{ block.convert_to("c++", class_name=block | var()) }}
+{% endfor %}
+
+// chain
+class {{ class_name }} {
+    public:
+
+    {{ class_name }}() : ready(false) {
+
+    }
+
+    void operator()(Window& window, Input& input, Output& output) {
+        extractFeatures(window, input);
+
+        // ovr
+        {% for block in blocks %}
+            block{{ loop.index }}(input, output);
+
+            if (!block{{ loop.index }}.isReady()) {
+                ready = false;
+                return;
+            }
+        {% endfor %}
+
+        ready = true;
+    }
+
+    bool isReady() {
+        return ready;
+    }
+
+    protected:
+        bool ready;
+
+        {% for extr in window.features %}
+            {{ extr | var() }} extr{{ loop.index }};
+        {% endfor %}
+
+        {% for block in blocks %}
+            // {{ block }}
+            {{ block | var() }} block{{ loop.index }};
+        {% endfor %}
+
+        void extractFeatures(Window& window, Input& input) {
+            {% for extr in window.features %}
+                extr{{ loop.index }}(window, input);
+            {% endfor %}
+        }
+
+};

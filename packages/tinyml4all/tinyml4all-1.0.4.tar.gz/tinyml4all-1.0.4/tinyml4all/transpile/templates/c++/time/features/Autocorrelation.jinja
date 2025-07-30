@@ -1,0 +1,32 @@
+/**
+ * {{ this }}
+ */
+class {{ class_name or "Autocorrelation" }} {
+    public:
+
+        void operator()(Window& window, Input& input) {
+            {% for var in outputs %}
+                // dimension: {{ column }}
+                extract(window.data[{{ loop.index0 }}] + window.length - {{ count }}, &(input.{{ var | var }}));
+            {% endfor %}
+        }
+
+    protected:
+
+        void extract(float *array, float *autocorrelation) {
+            const float mean = np::mean(array, {{ count }});
+            float num = 0;
+            float den = (array[0] - mean) * (array[0] - mean);
+
+            // second pass (autocorrelation)
+            for (uint16_t i = 1; i < {{ count }}; i++) {
+                const float current = array[i - 1] - mean;
+                const float next = array[i] - mean;
+
+                num += current * next;
+                den += next * next;
+            }
+
+            *autocorrelation = num / den;
+        }
+};
