@@ -1,0 +1,139 @@
+[tool.poetry]
+name = "rush-py"
+version = "5.2.3"
+description = "Python SDK for interacting with the Rush API and modules"
+authors = ["Ryan Swart <ryan.swart@qdx.co>", "Sean Laguna <sean.laguna@qdx.co>"]
+readme = "README.md"
+packages = [{ include = "rush" }]
+documentation = "https://talo.github.io/rush-py"
+homepage = "https://rush.qdx.co"
+
+[tool.poetry.scripts]
+# rush = "rush.__main__:main"
+
+[tool.poetry.dependencies]
+python = "^3.10,<3.13"
+
+aiofiles = "^23.2.1"
+backoff = "^2.2.1"
+httpx = "^0.26.0"
+nest-asyncio = "^1.6.0"
+pdb-tools = "^2.5.0"
+pydantic = "^2.6.0"
+typing-extensions = "^4.9.0"
+websockets = "^12"
+
+[tool.poetry.group.dev.dependencies]
+ariadne-codegen = "0.13.0"
+black = { extras = ["jupyter"], version = "~=23.9.1" }
+flake8 = "~=6.1.0"
+isort = "~=5.12.0"
+#jupyter-contrib-nbextensions = "^0.7.0"
+jupyter = "^1.1.1"
+nbdev = "^2.3.29"
+notebook = "^7.2.2"
+parso = "^0.8.3"
+pdoc = "^14.4.0"
+pip = "~=23.2.1"
+py3Dmol = "^2.0.4"
+pytest = "~=8.2"
+pytest-xdist = "~=3.3.1"
+qdx-py = ">0.6.2"
+pickleshare = "^0.7.5"
+#jupyterlab-lsp = "^5.1.0"
+rdkit = "^2024.3.5"
+#ipykernel = "^6.29.0"
+pytest-asyncio = "^0.25.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool]
+[tool.black]
+line-length = 110
+include = '\.pyi?$'
+
+
+[tool.isort]
+line_length = 110
+profile = "black"
+
+[tool.pydocstyle]
+ignore = ["D202", "D105"]
+match = "(?!test_).*.py"
+
+[tool.pyright]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/*venv*",
+    "result",
+    "setup.py",
+]
+ignore = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/*venv*",
+    "rush/graphql_client",
+    "result",
+    "setup.py",
+    "utils",
+]
+reportIncompatibleMethodOverride = "none"
+reportIncompatibleVariableOverride = "none"
+reportMissingImports = true
+reportMissingTypeStubs = "none"
+reportUnknownMemberType = "none"
+reportUnknownVariableType = "none"
+typeCheckingMode = "strict"
+useLibraryCodeForTypes = true
+
+[[tool.pyright.executionEnvironments]]
+root = ""
+
+[[tool.pyright.executionEnvironments]]
+extraPaths = [""]
+root = "tests"
+
+[tool.pytest]
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.setuptools]
+[tool.setuptools.packages]
+[tool.setuptools.packages.find]
+exclude = ["test", "tests"]
+where = [""]
+
+[tool.ariadne-codegen]
+schema_path = "schema.graphql"
+queries_path = "gql"
+target_package_path = "./rush"
+plugins = ["ariadne_codegen.contrib.shorter_results.ShorterResultsPlugin"]
+skip_validation_rules = ["NoUnusedFragments", "UniqueFragmentNames"]
+
+[tool.ariadne-codegen.scalars.DateTime]
+type = "datetime.datetime"
+
+[tool.ariadne-codegen.scalars.UserId]
+type = "uuid.UUID"
+
+[tool.ariadne-codegen.scalars.AccountId]
+type = "uuid.UUID"
+
+[tool.ariadne-codegen.scalars.ArgumentId]
+type = "uuid.UUID"
+
+[tool.ariadne-codegen.scalars.ModuleId]
+type = "uuid.UUID"
+
+[tool.ariadne-codegen.scalars.ModuleInstanceId]
+type = "uuid.UUID"
+
+[tool.ariadne-codegen.scalars.ObjectDescriptorId]
+type = "uuid.UUID"
