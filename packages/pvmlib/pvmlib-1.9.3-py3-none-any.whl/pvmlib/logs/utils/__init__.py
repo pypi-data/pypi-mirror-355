@@ -1,0 +1,1 @@
+from .dicctionary_types import LogLevelColors, LogType
