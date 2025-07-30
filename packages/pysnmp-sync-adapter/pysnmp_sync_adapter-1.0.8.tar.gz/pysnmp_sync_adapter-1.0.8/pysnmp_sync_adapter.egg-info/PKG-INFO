@@ -1,0 +1,77 @@
+Metadata-Version: 2.4
+Name: pysnmp-sync-adapter
+Version: 1.0.8
+Summary: Lightweight Synchronous wrapper adapters for PySNMP AsyncIO HLAPI
+Author: Ircama
+License: EUPL-1.2
+Project-URL: Homepage, https://github.com/Ircama/pysnmp-sync-adapter
+Project-URL: Repository, https://github.com/Ircama/pysnmp-sync-adapter
+Keywords: snmp synchronous pysnmp
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENCE.txt
+Requires-Dist: pysnmp>=7.0.0
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# pysnmp-sync-adapter
+
+[![PyPI](https://img.shields.io/pypi/v/pysnmp-sync-adapter.svg?maxAge=2592000)](https://pypi.org/project/pysnmp-sync-adapter/)
+[![PyPI download month](https://img.shields.io/pypi/dm/pysnmp-sync-adapter.svg)](https://pypi.python.org/pypi/pysnmp-sync-adapter/)
+
+**Lightweight Synchronous Adapter for PySNMP AsyncIO HLAPI**
+
+---
+
+This package provides lightweight, blocking wrappers around the `pysnmp.hlapi.v1arch.asyncio` and `pysnmp.hlapi.v3arch.asyncio` modules of PySNMP, enabling synchronous use of the SNMP high-level API in PySNMP v7+ without requiring direct `asyncio` management. It preserves the flexibility of PySNMP’s asyncio-based architecture and includes a compatibility layer for various legacy interfaces. The two additional functions `parallel_get_sync` and `cluster_varbinds` enable efficient, high-performance concurrent SNMP queries in a blocking context.
+
+## Features
+
+- Drop-in synchronous alternatives to PySNMP's async-HLAPI: `get_cmd_sync`, `next_cmd_sync`, `set_cmd_sync`, `bulk_cmd_sync`, `walk_cmd_sync`, `bulk_walk_cmd_sync`.
+- Supports both **v1arch** and **v3arch** PySNMP v7+ architectures, automatically selected or configurable via the `PYSNMP_ARCH` environment variable.
+- Supports both **IPv4** and **IPv6** transport targets via `UdpTransportTarget` and `Udp6TransportTarget`.
+- Reuses or creates the default **shared event loop** (`asyncio.get_event_loop()`), ensuring integration efficiency.
+- Sync wrappers accept an optional **`timeout`** parameter (in seconds) that limits the total execution time using `asyncio.wait_for()`.
+- Minimizes connection overhead by **reusing pre-created transport instances** when calling `create_transport()`.
+- The add-on `parallel_get_sync` function executes multiple SNMP GET requests concurrently in a blocking context. It is complemented by `cluster_varbinds`, an ancillary utility that normalizes and clusters OIDs into ordered chunks for efficient batching. Together, they enable high-throughput querying of large OID sets without requiring asyncio, reducing per-PDU overhead while preserving request order.
+- In addition, through the `pysnmp_sync_adapter.legacy_wrappers` compatibility layer, it supports:
+  - the [Python SNMP library](https://github.com/pysnmp/pysnmp) v5.0.24 HLAPI
+  - the [`etingof/pysnmp`](https://github.com/etingof/pysnmp) v5 HLAPI
+- Also, through `the pysnmp_sync_adapter.cmdgen_wrappers` compatibility layer, it runs code written against the `cmdgen` SNMP library appearing in `pysnmp.entity.rfc3413.oneliner`.
+
+These adapters allow to call the familiar HLAPI functions in a purely synchronous style (e.g. in scripts, GUIs like Tkinter, or blocking contexts) without having to manage `asyncio` directly. This restores the synchronous experience familiar from earlier [PySNMP](https://github.com/lextudio/pysnmp) versions. Native sync HLAPI wrappers were [deprecated](https://github.com/lextudio/pysnmp/issues/104) in recent releases in favor of `asyncio`.
+
+### Provided Methods
+
+| Synchronous Function | AsyncIO Equivalent              |
+| -------------------- | ------------------------------- |
+| `get_cmd_sync`       | `get_cmd`                       |
+| `next_cmd_sync`      | `next_cmd`                      |
+| `set_cmd_sync`       | `set_cmd`                       |
+| `bulk_cmd_sync`      | `bulk_cmd`                      |
+| `walk_cmd_sync`      | `walk_cmd` (async-gen)          |
+| `bulk_walk_cmd_sync` | `bulk_walk_cmd` (async-gen)     |
+| `create_transport`   | Synchronously awaits the async `create()` factory on `UdpTransportTarget` and `Udp6TransportTarget` |
+
+| Add-on Function      | Description                     |
+| -------------------- | ------------------------------- |
+| `parallel_get_sync`  | Parallel `get_cmd`              |
+| `cluster_varbinds`   | Normalize and cluster OID lists |
+
+
+Full information and usage details at the [pysnmp-sync-adapter GitHub repository](https://github.com/Ircama/pysnmp-sync-adapter).
