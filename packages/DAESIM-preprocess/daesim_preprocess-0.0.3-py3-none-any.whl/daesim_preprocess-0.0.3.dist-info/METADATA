@@ -1,0 +1,48 @@
+Metadata-Version: 2.4
+Name: DAESIM_preprocess
+Version: 0.0.3
+Summary: Harvesting environmental forcing data for running the Dynamic Agro-Ecosystem Simulator (DAESIM)
+Author-email: Christopher Bradley <christopher.bradley@anu.edu.au>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/ChristopherBradley/DAESIM_preprocess
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: rioxarray
+Requires-Dist: pandas
+Requires-Dist: scipy
+Requires-Dist: requests
+Requires-Dist: pysheds
+Requires-Dist: owslib
+Requires-Dist: pyproj
+Requires-Dist: matplotlib
+Requires-Dist: netcdf4
+Provides-Extra: dev
+Requires-Dist: jupyter; extra == "dev"
+Requires-Dist: jupytext; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Dynamic: license-file
+
+# DAESIM_preprocess
+Harvesting environmental forcing data for running the Dynamic Agro-Ecosystem Simulator (DAESIM)
+
+
+# Setup locally
+1. Download and install Miniconda from https://www.anaconda.com/download/success
+2. Add the miniconda filepath to your ~/.zhrc, e.g. export PATH="/opt/miniconda3/bin:$PATH" 
+3. brew install gdal
+4. git clone https://github.com/ChristopherBradley/DAESIM_preprocess.git
+5. cd DAESIM_preprocess
+6. conda env create -f environment.yml
+7. conda activate DAESIM_preprocess
+8. pytest
+
+# Uploading to pypi
+1. python3 -m build
+2. twine upload dist/*
+3. Enter the API token
+4. Check it out at https://pypi.org/project/DAESIM-preprocess
