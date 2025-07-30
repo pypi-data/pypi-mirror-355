@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+version = "v0.2.12"
+
+name = "clay_streamlit_one"  # Must be unique on PyPI
+description = "A minimal streamlit app framework"
+authors = [
+    { name = "Ariel E.", email = "ariel@claysciences.com" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+
+dependencies = [
+    "streamlit>=1.23",
+    "loguru"
+]
+
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/claysciences/clay_streamlit_one"
+
+[project.optional-dependencies]
+dev = ["bumpver"]
