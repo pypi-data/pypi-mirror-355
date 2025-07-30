@@ -1,0 +1,104 @@
+Metadata-Version: 2.4
+Name: k-peg-hanoi
+Version: 0.2.4
+Summary: Tower of Hanoi (using k peg)
+Project-URL: docs, https://saitotsutomu.github.io/k-peg-hanoi/
+Project-URL: homepage, https://github.com/SaitoTsutomu/k-peg-hanoi
+Author-email: Saito Tsutomu <tsutomu7@hotmail.co.jp>
+License: Apache-2.0
+License-File: LICENSE
+Classifier: Development Status :: 1 - Planning
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Requires-Python: >=3.11
+Requires-Dist: fire>=0.7.0
+Description-Content-Type: text/markdown
+
+# Tower of Hanoi (using k peg)
+
+## Install
+
+```
+pip install k-peg-hanoi
+```
+
+## Usage (`hanoi {disk#} {rod#}`)
+
+See `hanoi --help`
+
+```
+$ hanoi 3 3
+  =               
+ ===              
+=====             
+0----------------
+
+ ===              
+=====         =   
+1----------------
+
+=====  ===    =   
+2----------------
+
+        =         
+=====  ===        
+3----------------
+
+        =         
+       ===  ===== 
+4----------------
+
+  =    ===  ===== 
+5----------------
+
+             ===  
+  =         ===== 
+6----------------
+
+              =   
+             ===  
+            ===== 
+7----------------
+```
+
+```
+$ hanoi 3 4
+  =                     
+ ===                    
+=====                   
+0----------------------
+
+ ===                    
+=====   =               
+1----------------------
+
+=====   =    ===        
+2----------------------
+
+        =    ===  ===== 
+3----------------------
+
+                   ===  
+        =         ===== 
+4----------------------
+
+                    =   
+                   ===  
+                  ===== 
+5----------------------
+```
+
+```
+$ hanoi 4 4 --text
+#1 disk 1 from 0 to 1
+#2 disk 2 from 0 to 3
+#3 disk 3 from 0 to 2
+#4 disk 2 from 3 to 2
+#5 disk 4 from 0 to 3
+#6 disk 2 from 2 to 0
+#7 disk 3 from 2 to 3
+#8 disk 2 from 0 to 3
+#9 disk 1 from 1 to 3
+```
