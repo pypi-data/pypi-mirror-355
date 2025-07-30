@@ -1,0 +1,69 @@
+Metadata-Version: 2.4
+Name: umaxbot
+Version: 0.1.3
+Summary: Async framework for building bots for MAX messenger (aiogram-style)
+Home-page: https://github.com/werdset/maxbot
+Author: werdset
+Author-email: vladimirwerdset@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Framework :: AsyncIO
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: pydantic>=1.10.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# maxbot
+
+Асинхронный Python-фреймворк для создания ботов в мессенджере [MAX](https://max.ru).
+
+🎯 Синтаксис как у `aiogram`  
+🚀 Поддержка polling  
+💬 Inline-кнопки  
+📦 Простая отправка сообщений
+
+## Установка
+
+```bash
+pip install umaxbot
+```
+
+## Пример
+
+```python
+from maxbot.bot import Bot
+from maxbot.dispatcher import Dispatcher
+from maxbot.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
+
+bot = Bot("YourToken")
+dp = Dispatcher(bot)
+
+@dp.message()
+async def on_message(message: Message):
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="👋 Поздороваться", callback_data="hello")]
+    ])
+    await bot.send_message(
+        chat_id = message.sender.id,
+        text="Привет! Нажми на кнопку ниже:",
+        notify=True,
+        reply_markup=keyboard,
+        format="markdown"
+    )
+
+@dp.callback()
+async def on_callback(cb):
+    if cb.payload == "hello":
+        await bot.send_message(cb.user.id, "Приятно познакомиться!")
+
+```
