@@ -1,0 +1,37 @@
+[project]
+name = "ygg-torrent-mcp"
+version = "1.3.2"
+description = "Ygg Torrent MCP Server"
+authors = [{ name = "philogicae" }]
+requires-python = ">=3.10,<4.0"
+readme = "README.md"
+license = "MIT"
+dependencies = [
+    "bencodepy>=0.9.5",
+    "requests>=2.32.4",
+    "fastmcp>=2.8.1",
+    "fastapi>=0.115.12",
+]
+
+[project.urls]
+Repository = "https://github.com/philogicae/ygg-torrent-mcp"
+Release = "https://github.com/philogicae/ygg-torrent-mcp/releases"
+DeepWiki = "https://deepwiki.com/philogicae/ygg-torrent-mcp"
+
+[project.scripts]
+ygg-torrent-mcp = "ygg_torrent.__main__:cli"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.13",
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.0.0",
+    "mypy>=1.16.0",
+]
+
+[tool.hatch.build]
+include = ["ygg_torrent"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
