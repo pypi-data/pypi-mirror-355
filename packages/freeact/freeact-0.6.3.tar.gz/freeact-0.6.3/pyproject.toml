@@ -1,0 +1,91 @@
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry]
+name = "freeact"
+version = "0.6.3"
+description = "A lightweight library for code-action based agents"
+homepage = "https://github.com/gradion-ai/freeact"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [
+    "Martin Krasser <martin@gradion.ai>",
+    "Christoph Stumpf <chris@gradion.ai>",
+]
+packages = [
+    { include = "freeact" },
+]
+
+[tool.poetry.dependencies]
+aioconsole = "^0.8.1"
+aiofiles = "^24.1"
+google-genai = "^1.2"
+ipybox = "^0.4.5"
+litellm = "1.69.1"
+prefixed = "^0.9.0"
+prompt_toolkit = "^3.0"
+python = "^3.11,<3.14"
+python-dotenv = "^1.0"
+rich = "^13.9"
+typer = "^0.12.5"
+langfuse = "^2.60.3"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.5.48"
+mkdocstrings-python = "^1.12.2"
+
+[tool.poetry.group.eval]
+optional = true
+
+[tool.poetry.group.eval.dependencies]
+openai = "^1.59.0"
+datasets = "^3.2.0"
+pandas = "^2.2.3"
+matplotlib = "^3.10.0"
+seaborn = "^0.13.2"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0"
+invoke = "^2.2"
+pytest = "^8.3"
+pytest-asyncio = "^0.25.3"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "package"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["F401"]
+
+[tool.mypy]
+python_version = 3.11
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "aiofiles",
+    "aiofiles.os",
+    "dateutil.relativedelta",
+    "dateutil.parser",
+    "requests",
+    "requests.exceptions",
+    "yaml"
+]
+ignore_missing_imports = true
+
+[tool.poetry-dynamic-versioning]
+enable = false
+vcs = "git"
+pattern = "default-unprefixed"
+style = "pep440"
+
+[tool.poetry.scripts]
+freeact = "freeact.__main__:main"
