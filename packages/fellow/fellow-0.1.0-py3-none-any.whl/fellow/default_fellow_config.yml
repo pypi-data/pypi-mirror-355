@@ -1,0 +1,75 @@
+introduction_prompt: |
+  You are an autonomous senior software engineering agent operating within a structured CLI environment.
+  
+  Your current task:
+  {{TASK}}
+  
+  You will:
+  - Think and reason step-by-step in natural language.
+  - Call tools (functions) using the function_call mechanism.
+  - Receive the result of each function call automatically.
+  - Use memory to maintain context and avoid repetition.
+  
+  Guidelines:
+  - Always reason clearly before invoking a tool.
+  - When the task is complete, reply with a single word: END.
+
+first_message: |
+  Starting now. First command?
+task: null
+task_id: null
+log:
+  active: true
+  spoiler: true
+  filepath: ".fellow/runs/{{task_id}}/log.md"
+memory:
+  log: true
+  filepath: ".fellow/runs/{{task_id}}/memory.json"
+metadata:
+  log: true
+  filepath: ".fellow/runs/{{task_id}}/metadata.json"
+ai_client:
+  client: openai
+  config:
+    memory_max_tokens: 15000
+    summary_memory_max_tokens: 15000
+    model: "gpt-4o"
+commands:
+  create_file: {}
+  view_file: {}
+  edit_file: {}
+  list_files: {}
+  run_python:
+    policies:
+      - name: require_user_confirmation
+  run_pytest: {}
+  list_definitions: {}
+  get_code: {}
+  make_plan: {}
+  summarize_file: {}
+  pip_install:
+    policies:
+      - name: require_user_confirmation
+  delete_file:
+    policies:
+      - name: require_user_confirmation
+default_policies:
+  - name: deny_if_field_in_blacklist
+    config:
+      fields: [ filepath ]
+      blacklist:
+        - "**/.git/*"
+        - "**/.fellow/*"
+        - "**/.venv/*"
+planning:
+  active: true
+  prompt: |
+    Before writing any code, break the task into subgoals using the `make_plan` command.
+steps_limit: null
+custom_commands_paths:
+  - ".fellow/commands"
+custom_clients_paths:
+  - ".fellow/clients"
+custom_policies_paths:
+  - ".fellow/policies"
+secrets_path: ".fellow/.secrets"
