@@ -1,0 +1,1 @@
+from .deepfake_detection import PipelineDeepfakeDetection
