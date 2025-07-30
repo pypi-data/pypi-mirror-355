@@ -1,0 +1,124 @@
+[tool.poetry]
+name = "flexvector"
+version = "0.1.3rc1"
+description = "A simple and intuitive vector database abstraction layer"
+readme = "README.md"
+authors = ["Ndamulelo Nemakhavhani <info@rihonegroup.com>"]
+packages = [{ include = "flexvector", from = "./src" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+keywords = ["vector database", "embeddings", "similarity search", "rag", "ai"]
+homepage = "https://github.com/ndamulelonemakh/flexvector"
+repository = "https://github.com/ndamulelonemakh/flexvector.git"
+
+[tool.poetry.dependencies]
+python = ">=3.11, <3.13"
+# Core dependencies (always required)
+pydantic-settings = "^2.7.0"
+loguru = "^0.7.3"
+langchain = "^0.3.23"
+langchain-community = "^0.3.21"
+requests = "^2.32.3"
+pyyaml = "^6.0.2"
+toml = "^0.10.2"
+chromadb = "^0.5.23"
+langchain-chroma = "^0.2.3"
+openai = "^1.58.1"
+anthropic = "^0.49.0"
+langchain-openai = "^0.2.14"
+langchain-docling = "^0.2.0"
+trafilatura = "^2.0.0"
+tavily-python = "^0.5.0"
+llama-index = "^0.12.40"
+
+# Optional dependencies
+qdrant-client = {version = "^1.12.2", optional = true}
+langchain-qdrant = {version = "^0.2.0", optional = true}
+llama-index-vector-stores-qdrant = {version = "^0.4.2", optional = true}
+
+weaviate-client = {version = "^4.10.2", optional = true}
+langchain-weaviate = {version = "^0.0.4", optional = true}
+llama-index-vector-stores-weaviate = {version = "*", optional = true}
+
+sqlalchemy = {version = "^2.0.36", optional = true}
+psycopg-binary = {version = "^3.2.3", optional = true}
+psycopg2-binary = {version = "^2.9.10", optional = true}
+pgvector = {version = "^0.3.6", optional = true}
+langchain-postgres = {version = "^0.0.14", optional = true}
+llama-index-vector-stores-postgres = {version = "^0.4.1", optional = true}
+
+pymilvus = {version = "^2.5.10", optional = true}
+langchain-milvus = {version = "^0.2.0", optional = true}
+llama-index-vector-stores-milvus = {version = "*", optional = true}
+fastembed = "^0.7.0"
+
+[tool.poetry.extras]
+qdrant = [
+    "qdrant-client",
+    "langchain-qdrant",
+    "llama-index-vector-stores-qdrant"
+]
+weaviate = [
+    "weaviate-client",
+    "langchain-weaviate",
+    "llama-index-vector-stores-weaviate",
+]
+pgvector = [
+    "sqlalchemy",
+    "psycopg-binary",
+    "psycopg2-binary",
+    "pgvector",
+    "langchain-postgres",
+    "llama-index-vector-stores-postgres",
+]
+milvus = [
+    "pymilvus",
+    "langchain-milvus",
+    "llama-index-vector-stores-milvus"
+]
+
+full = [
+    "qdrant-client",
+    "langchain-qdrant",
+    "weaviate-client",
+    "langchain-weaviate", 
+    "sqlalchemy",
+    "psycopg-binary",
+    "psycopg2-binary",
+    "pgvector",
+    "langchain-postgres",
+    "pymilvus",
+    "langchain-milvus",
+    "llama-index",
+    "llama-index-vector-stores-postgres",
+    "llama-index-vector-stores-qdrant",
+    "llama-index-vector-stores-weaviate",
+    "llama-index-vector-stores-milvus",
+]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+black = "^25.1.0"
+isort = "^6.0.1"
+flake8 = "^7.2.0"
+mypy = "^1.15.0"
+twine = "^6.1.0"
+build = "^1.2.2.post1"
+mcp-server-time = "^0.6.2"
+mcp-server-fetch = "^2025.4.7"
+tox = "^4.25.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+flexvector = "flexvector.cli:main"
+flexv = "flexvector.cli:main"

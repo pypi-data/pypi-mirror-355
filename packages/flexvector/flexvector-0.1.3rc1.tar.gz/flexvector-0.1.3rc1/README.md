@@ -1,0 +1,273 @@
+# [![PyPI Version](https://img.shields.io/pypi/v/flexvector.svg)](https://pypi.org/project/flexvector) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+# Flex Vector
+
+A simple and intuitive vector database abstraction layer supporting multiple vector stores.
+
+![CI](https://github.com/ndamulelonemakh/flexvector/actions/workflows/publish-to-pypi.yml/badge.svg)
+
+## Features
+
+- Unified interface for multiple vector databases
+- **Default:** Chroma (included in base installation - lightweight, file-based)
+- **Optional Vector Databases:**
+    - [x] Qdrant (`pip install flexvector[qdrant]`)
+    - [x] Weaviate (`pip install flexvector[weaviate]`)
+    - [x] PGVector (`pip install flexvector[pgvector]`)
+    - [x] Milvus (`pip install flexvector[milvus]`)
+    - [ ] Azure AI Search (coming soon)
+    - ...and more to come!
+- [x] LangChain native support (included in base installation)
+- [x] Command-line interface for common operations
+- [x] FastEmbed fallback for embeddings (no API keys required)
+- [x] Flexible data loading from files, direct data, or URIs
+- [ ] LlamaIndex native support (Coming soon)
+- [ ] Async support for all operations
+
+## Installation
+
+FlexVector comes with Chroma as the default vector database (lightweight and file-based). You can install additional vector databases as needed:
+
+### Base Installation (includes Chroma)
+```bash
+pip install flexvector
+```
+
+### Install with Specific Vector Databases
+
+**Qdrant:**
+```bash
+pip install flexvector[qdrant]
+```
+
+**Weaviate:**
+```bash
+pip install flexvector[weaviate]
+```
+
+**PGVector (PostgreSQL):**
+```bash
+pip install flexvector[pgvector]
+```
+
+**Milvus:**
+```bash
+pip install flexvector[milvus]
+```
+
+**Full installation
+```bash
+pip install flexvector[full]
+```
+
+### CLI Tool
+
+Add the CLI tool to your path:
+
+```
+# After installation, use the 'flexvector' command directly
+flexvector --help
+```
+
+
+## Quick Start
+
+### Environment Variables
+
+* See [env.example](./env.example) for a list of environment variables you can set.
+
+**Note:** If no OpenAI API key is provided, FlexVector automatically falls back to [FastEmbed](https://github.com/qdrant/fastembed) with the `BAAI/bge-small-en-v1.5` model, which provides free, high-quality embeddings without requiring any API keys.
+
+
+### Using the Python API
+
+```python
+from flexvector import VectorDBFactory
+from flexvector.config import settings
+from flexvector.core import Document
+
+# Check which vector databases are available
+print("Available:", VectorDBFactory.list_available())
+print("Installed:", VectorDBFactory.list_installed())
+
+# Initialize client with configuration
+# Use "chroma" (default), "qdrant", "weaviate", "pg", or "milvus" 
+try:
+    client = VectorDBFactory.get("qdrant", settings)
+except ImportError as e:
+    print(f"Error: {e}")
+    # Fallback to default Chroma
+    client = VectorDBFactory.get("chroma", settings)
+
+# Load documents from file or directory
+docs = client.load(collection_name="my_collection", path="path/to/document.txt")
+
+# Or create and add documents directly
+from langchain_core.documents import Document
+
+doc = Document(page_content="Hello world", metadata={"source": "example"})
+client.from_langchain("my_collection", [doc])
+
+# Search
+results = client.search(
+    collection_name="my_collection",
+    query="hello",
+    top_k=5
+)
+
+# Delete collection
+client.remove_collection("my_collection")
+
+# Delete documents
+```
+
+### Embedding Options
+
+FlexVector supports multiple embedding providers:
+
+1. **OpenAI Embeddings** (default when API key provided):
+   - Models: `text-embedding-3-small`, `text-embedding-3-large`, etc.
+   - Requires: `OPENAI_API_KEY` environment variable
+   - High quality, configurable dimensions
+
+2. **FastEmbed** (automatic fallback):
+   - Model: `BAAI/bge-small-en-v1.5` (512 dimensions)
+   - Requires: No API key needed
+   - Free, fast, and runs locally
+   - Good quality for most use cases
+
+
+### Using the Command Line Interface
+
+**Check available vector databases:**
+```bash
+flexvector list-databases
+```
+
+This command shows:
+- 📦 All available vector database types
+- ✅ Which ones are currently installed
+- 💡 Installation commands for missing dependencies
+
+Load documents from a file:
+```bash
+flexvector load --input-file examples/files/data.txt --collection my_documents
+
+# Or using python
+python cli.py load --input-file examples/files/data.txt --collection my_documents
+```
+
+Load documents from a directory:
+```bash
+flexvector load --input-dir examples/files --collection research_papers
+```
+
+**Use a specific vector database:**
+```bash
+# With Qdrant (requires: pip install flexvector[qdrant])
+flexvector load --db-type qdrant --input-file data.txt --collection docs
+
+# With Weaviate (requires: pip install flexvector[weaviate])  
+flexvector search --db-type weaviate --query "AI research" --collection papers
+
+# With PGVector (requires: pip install flexvector[pgvector])
+flexvector load --db-type pg --input-dir ./docs --collection knowledge_base
+```
+
+Search for documents:
+```bash
+flexvector search --query "What is vector database?" --collection my_documents --top-k 5
+```
+
+Delete a collection:
+```bash
+flexvector delete --collection my_documents
+```
+
+## Advanced Configuration
+
+FlexVector supports multiple configuration methods for different deployment environments:
+
+### Configuration Sources (in priority order)
+
+1. **CLI arguments** (highest priority) - Direct command-line overrides
+2. **Environment variables** - Runtime environment settings  
+3. **Configuration files** - YAML, TOML, or JSON files
+4. **Default values** (lowest priority) - Built-in fallback values
+
+---
+
+1. **Create a configuration file**:
+   ```bash
+   flexvector init-config --config-file flexvector.yaml
+   ```
+
+2. **Edit the configuration file** for your environment:
+   ```yaml
+   # flexvector.yaml
+   environments:
+     development:
+       CHROMA_DB_FILE: "./data/vectorstores/chroma-dev"
+       EMBEDDING_MODEL: "text-embedding-3-small"
+     production:
+       CHROMA_HTTP_URL: "https://prod-chroma.example.com"
+       EMBEDDING_MODEL: "text-embedding-3-large"
+   
+   # Default settings
+   EMBEDDING_DIMENSION: 512
+   ```
+
+3. **Use environment-specific settings**:
+   ```bash
+   # Development
+   python cli.py load --input-dir ./docs --environment development
+   
+   # Production  
+   python cli.py search --query "AI" --environment production
+   ```
+
+### .env File Support
+
+```bash
+cp env.example .env
+# Edit .env with your local settings
+```
+
+📖 **[See full configuration documentation](docs/dynamic_configuration.md)** for advanced configuration patterns, multiple environments, and security best practices.
+
+
+## Documentation
+
+For more usage info, see [docs](./docs/).
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+# Appendix: Use Cases
+
+
+*This package aims to be a versatile tool for various AI applications, including but not limited to:*
+
+### Research and Development
+- **Prototyping**: Quickly test different vector databases without changing your application code
+- **A/B Testing**: Compare performance across different vector stores for your specific use case
+- **Academic Research**: Study vector search behavior with a standardized interface
+
+
+### RAG Pipeline Integration
+Build robust Retrieval Augmented Generation (RAG) systems with a database-agnostic approach:
+- **ETL Workflows**: Create efficient extract-transform-load pipelines that process documents and store embeddings without locking into a specific vector database
+- **Multi-modal RAG**: Store and retrieve text, images, and other data types with the same consistent interface
+- **Hybrid Search Systems**: Combine semantic search with traditional keyword search for improved retrieval quality
+
+### Research and Development
+- **Prototyping**: Quickly test different vector databases without changing your application code
+- **A/B Testing**: Compare performance across different vector stores for your specific use case
+- **Academic Research**: Study vector search behavior with a standardized interface
+
