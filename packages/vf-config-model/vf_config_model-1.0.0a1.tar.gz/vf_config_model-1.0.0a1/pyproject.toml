@@ -1,0 +1,25 @@
+[project]
+name = "vf-config-model"
+version = "1.0.0a1"
+description = "Shared client configuration models for Verbaflo"
+authors = [{ name = "Raj Kamal", email = "raj.kamal@verbaflo.com" }]
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+    "pydantic>=2.0.0",
+    "typing-extensions>=4.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/verbaflo/config-model"
+Repository = "https://github.com/verbaflo/config-model.git"
+Documentation = "https://github.com/verbaflo/config-model#readme"
+
+[tool.setuptools]
+packages = ["vf_config_model"]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
