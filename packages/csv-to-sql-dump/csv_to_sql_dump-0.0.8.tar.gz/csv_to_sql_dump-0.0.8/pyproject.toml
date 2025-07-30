@@ -1,0 +1,26 @@
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "csv_to_sql_dump"
+version = "0.0.8"
+authors = [
+    { name="Liu Zuo Lin", email="zlliu246@gmail.com" },
+]
+description = "From .csv file, create .sql dump containing CREATE and INSERT statements."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pandas",
+]
+
+[project.urls]
+Homepage = "https://github.com/zlliu246/csv_to_sql_dump"
+Issues = "https://github.com/zlliu246/csv_to_sql_dump/issues"
