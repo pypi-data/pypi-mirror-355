@@ -1,0 +1,33 @@
+cx_oracle==8.3.0
+networkx==3.4.2
+numpy==2.2.5
+pandas==2.2.3
+openpyxl==3.1.5
+psycopg2_binary==2.9.10
+pwinput==1.0.3
+pyodbc==5.2.0
+pytest==8.3.5
+rapidfuzz==3.13.0
+rich==14.0.0
+sentence_transformers==4.1.0
+torch==2.7.0
+accelerate==1.7.0
+huggingface_hub==0.31.2
+
+[cuda118]
+bitsandbytes==0.46.0
+
+[cuda118:platform_system == "Linux" and platform_machine == "x86_64"]
+torch==2.7.0+cu118
+
+[cuda126]
+bitsandbytes==0.46.0
+
+[cuda126:platform_system == "Linux" and platform_machine == "x86_64"]
+torch==2.7.0+cu126
+
+[cuda128]
+bitsandbytes==0.46.0
+
+[cuda128:platform_system == "Linux" and platform_machine == "x86_64"]
+torch==2.7.0+cu128
