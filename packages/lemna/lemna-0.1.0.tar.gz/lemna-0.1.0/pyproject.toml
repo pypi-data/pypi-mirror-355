@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lemna"
+version = "0.1.0"
+description = "Toolset for analysis of plant growth in wells."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Jon Snow", email = "jms8@comcast.net" }]
+license = { text = "MIT" }
+
+dependencies = [
+  "Click",
+  "opencv-python",
+  "numpy",
+  "toml",
+  "scikit-learn"
+]
+
+[project.scripts]
+lemna = "app.cli:cli"
