@@ -1,0 +1,109 @@
+Metadata-Version: 2.4
+Name: server_system_monitor
+Version: 0.1.1
+Summary: A server system monitor for linux to linux
+Author-email: FaboBorgesLima <fabo.borges.lima@gmail.com>
+Maintainer-email: FaboBorgesLima <fabo.borges.lima@gmail.com>
+License: The MIT License (MIT)
+        
+        Copyright (c) 2025 Flávio Borges de Lima
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Keywords: monitor,system,server,remote
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: paramiko
+Provides-Extra: dev
+Requires-Dist: check-manifest; extra == "dev"
+Provides-Extra: test
+Requires-Dist: coverage; extra == "test"
+Dynamic: license-file
+
+# Server System Monitor
+
+This is package can monitor a server ping, CPU and memory using SSH, but in a short time it will be able to monitor disk usage.
+
+All of the methods are wrappers to common Linux commands like:
+
+```python
+Monitor.from_user_password("example.com","pwd","user").server_client.send_ram()
+```
+
+is the same as:
+
+```shell
+ssh user@example.com "free"
+```
+
+## Commands and wrappers
+
+`ConnectionMonitor` wrappers:
+
+| command | wrapper  |
+| ------- | -------- |
+| ping    | get_ping |
+
+`ServerClientMonitor` wrappers:
+
+| command | wrapper  |
+| ------- | -------- |
+| free    | send_ram |
+| mpstat  | send_cpu |
+
+## Quick usage
+
+For monitoring connection specs and server's system specs at the same time you can use the `Monitor` object:
+
+```python
+from server_system_monitor import Monitor
+
+monitor = Monitor.from_user_password("example.com","pwd","user")
+
+ram = monitor.server_client.send_ram()
+
+ping = monitor.connection.get_ping()
+
+print(ram)
+print(ping)
+```
+
+But if only one is necessary you can use `ConnectionMonitor` (for connection specs) or `ServerClientMonitor` (for server specs):
+
+```python
+from server_system_monitor import ServerClientMonitor,ConnectionMonitor
+
+server_client_monitor = ServerClientMonitor.from_user_password("example.com","pwd","user")
+
+connection_monitor = ConnectionMonitor("example.com")
+
+ram = server_client_monitor.send_ram()
+
+ping = connection_monitor.get_ping()
+
+print(ram)
+print(ping)
+```
+
+## License
+
+The server-system-monitor library is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

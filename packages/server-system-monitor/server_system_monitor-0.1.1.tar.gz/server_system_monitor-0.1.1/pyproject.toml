@@ -1,0 +1,41 @@
+
+[project]
+
+name = 'server_system_monitor'
+
+readme = "README.md"
+
+keywords = ["monitor", "system", "server","remote"]
+
+authors = [
+  { name = "FaboBorgesLima", email = "fabo.borges.lima@gmail.com" },
+]
+
+maintainers = [
+  { name = "FaboBorgesLima", email = "fabo.borges.lima@gmail.com" },
+]
+
+dependencies = ["paramiko"]
+
+version = '0.1.1'
+
+description = 'A server system monitor for linux to linux'
+
+classifiers = [
+  "Intended Audience :: Developers",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+]
+
+license = {file = "LICENSE"}
+
+[project.optional-dependencies]
+
+dev = ["check-manifest"]
+test = ["coverage"]
+
+[tool.setuptools.packages.find]
+
+where = ["."]  
+include = ["server_system_monitor"] 
+exclude = ["server"]  
