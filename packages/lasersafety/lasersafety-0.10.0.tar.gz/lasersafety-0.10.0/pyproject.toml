@@ -1,0 +1,42 @@
+[project]
+name = "lasersafety"
+version = "0.10.0"
+description = "A package for the computations of EN207 and EN208"
+authors = [{ name = "Yoann Piétri", email = "me@nanoy.fr" }]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["numpy (>=2.2.4,<3.0.0)"]
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+[project.urls]
+repository = "https://github.com/nanoy42/lasersafety/"
+documentation = "https://lasersafety.readthedocs.io/"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+pylint = "^3.3.6"
+mypy = "^1.15.0"
+coverage = "^7.8.0"
+sphinx = "^8.2.3"
+sphinx-rtd-theme = "^3.0.2"
+myst-parser = "^4.0.1"
+sphinx-argparse-cli = "^1.19.0"
+sphinxcontrib-programoutput = "^0.18"
+sphinx-prompt = "^1.9.0"
+sphinx-exec-code = "^0.16"
+docstr-coverage = "^2.3.2"
+coverage-badge = "^1.1.2"
+
+[project.scripts]
+lasersafety = "lasersafety.__main__:main"
