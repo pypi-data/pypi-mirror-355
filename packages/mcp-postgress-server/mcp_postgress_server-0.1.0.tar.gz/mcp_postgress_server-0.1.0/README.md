@@ -1,0 +1,32 @@
+# DB Analytics MCP
+
+An MCP server that connects to a PostgreSQL database and does deep web search to answer all your questions. This package allows you to connect your own PostgreSQL database and ask questions about your data and compare it with what's going on in world. The system uses both your database and web search to provide insightful answers.
+
+## Features
+- Natural language Q&A over your own PostgreSQL database
+- Web search integration for up-to-date information
+- Powered by LangChain, OpenAI, and PostgreSQL
+
+## Installation
+
+### 1. Install via MCP Client
+If you are using the MCP client, you can install the Analytics MCP server directly from the MCP client interface. Follow the instructions in the MCP client to add a new server and provide the package name:
+
+```sh
+pip install employee-analytics-mcp
+```
+
+### 2. Add to MCP Server via Cursor Settings
+If you are using the MCP server and want to add this tool, you can do so via the Cursor settings:
+
+1. Open Cursor.
+2. Go to **Settings > Cusor settings -> MCP -> Add new Global MCP Server** 
+3. Configure your environment variables for PostgreSQL and API keys as needed.
+
+
+## Usage
+After installation and configuration, you can start the MCP server and use the `analyse_db` tool to ask any natural language question about your data or the web.
+
+---
+
+For more details, see the code and docstrings in the package.
