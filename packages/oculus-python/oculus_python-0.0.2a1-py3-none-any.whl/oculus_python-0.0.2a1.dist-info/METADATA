@@ -1,0 +1,60 @@
+Metadata-Version: 2.4
+Name: oculus-python
+Version: 0.0.2a1
+Summary: A python library for importing and exporting Blueprint Subsea Oculus imaging sonar log files.
+Author-email: Fletcher Thompson <fletho@aqua.dtu.dk>
+Project-URL: Homepage, https://gitlab.gbar.dtu.dk/fletho/oculus-python
+Project-URL: Issues, https://gitlab.gbar.dtu.dk/fletho/oculus-python/-/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: netCDF4
+Requires-Dist: xarray
+Requires-Dist: dask
+Requires-Dist: opencv-python
+Requires-Dist: rosbags
+Dynamic: license-file
+
+# README
+
+`oculus-python`, a python library for importing and exporting [Blueprint Subsea Oculus imaging sonar](https://www.blueprintsubsea.com/oculus/) log files.
+
+## Supported log import/export types
+
+| Type          | Import | Export |
+|---------------|--------|--------|
+| v1 .oculus    | X | X      |
+| v2 .oculus    | X | X\*    |
+| [APL ROS1](https://github.com/apl-ocean-engineering/sonar_image_proc.git)  | X | -      |
+| netCDF4       | - | X      |
+| HEVC .mp4     | - | X      |
+| Lossless .avi | - | X      |
+
+\* Experimental.
+
+## Installation
+
+`pip install oculus-python`
+
+## CLI Usage
+
+For these examples, assume you have a .oculus log file called "test.oculus"
+
+Convert to NETCDF4:
+
+`bps_oculus_io test.oculus --output netcdf4`
+
+Convert to lossy video:
+
+`bps_oculus_io test.oculus --output hevc --param color=True`
+
+Convert to lossless video:
+
+`bps_oculus_io test.oculus --output lossless --param color=True`
+
+## Python Usage
+
+See the [examples](https://gitlab.gbar.dtu.dk/fletho/oculus-python/-/tree/main/examples) folder for some simple usages.
