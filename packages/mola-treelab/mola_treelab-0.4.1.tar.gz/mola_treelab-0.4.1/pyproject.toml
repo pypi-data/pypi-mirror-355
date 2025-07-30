@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/treelab/__init__.py"
+
+[project]
+name = "mola-treelab"
+license = { text = "LGPL-3.0-only" }
+dynamic = ["version"]
+authors = [
+  { name="Luis Bernardos", email="luisfco.bernardos@gmail.com" },
+  { name="Thomas Bontemps", email="thomas.bontemps@hotmail.fr" }
+]
+description = "MOLA-treelab is an ONERA code that implements an interface to CGNS"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "numpy>=1.21.0",
+  "h5py>=3.7.0",
+  'matplotlib>3.6.2; python_version >= "3.8"',
+  'pyside6',
+  'pyqt5; python_version < "3.8"', # required for compatibility with matplotlib backend
+  "qtvscodestyle",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+]
+
+[project.urls]
+Homepage = "https://github.com/Luispain/treelab"
+Issues = "https://github.com/Luispain/treelab/issues"
+
+[project.gui-scripts]
+treelab = "treelab.gui.main:launch"
+
+[tool.hatch.build]
+include = ["LICENSE"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/treelab"]
