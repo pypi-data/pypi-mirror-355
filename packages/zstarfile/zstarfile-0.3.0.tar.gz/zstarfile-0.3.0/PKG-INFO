@@ -1,0 +1,93 @@
+Metadata-Version: 2.4
+Name: zstarfile
+Version: 0.3.0
+Summary: tarfile extension with additional compression algorithms and PEP 706 by default
+Author-email: Maxwell G <maxwell@gtmx.me>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Development Status :: 3 - Alpha
+Classifier: Typing :: Typed
+License-File: LICENSE
+Requires-Dist: zstarfile[lz4] ; extra == "all"
+Requires-Dist: zstarfile[zstandard] ; extra == "all"
+Requires-Dist: pymarkdownlnt ; extra == "codeqa"
+Requires-Dist: ruff>=0.2.0 ; extra == "codeqa"
+Requires-Dist: reuse ; extra == "codeqa"
+Requires-Dist: zstarfile[codeqa] ; extra == "dev"
+Requires-Dist: zstarfile[formatters] ; extra == "dev"
+Requires-Dist: zstarfile[test] ; extra == "dev"
+Requires-Dist: zstarfile[typing] ; extra == "dev"
+Requires-Dist: nox ; extra == "dev"
+Requires-Dist: black ; extra == "formatters"
+Requires-Dist: isort ; extra == "formatters"
+Requires-Dist: lz4 ; extra == "lz4"
+Requires-Dist: zstarfile[all] ; extra == "test"
+Requires-Dist: pytest ; extra == "test"
+Requires-Dist: zstarfile[all] ; extra == "typing"
+Requires-Dist: mypy ; extra == "typing"
+Requires-Dist: pytest ; extra == "typing"
+Requires-Dist: typing_extensions ; extra == "typing"
+Requires-Dist: nox ; extra == "typing"
+Requires-Dist: pyzstd ; extra == "zstandard"
+Project-URL: Changelog, https://git.sr.ht/~gotmax23/zstarfile/tree/main/item/NEWS.md
+Project-URL: Homepage, https://sr.ht/~gotmax23/zstarfile
+Project-URL: Mailing List, https://lists.sr.ht/~gotmax23/zstarfile
+Project-URL: Source, https://git.sr.ht/~gotmax23/zstarfile
+Provides-Extra: all
+Provides-Extra: codeqa
+Provides-Extra: dev
+Provides-Extra: formatters
+Provides-Extra: lz4
+Provides-Extra: test
+Provides-Extra: typing
+Provides-Extra: zstandard
+
+<!--
+Copyright (C) 2024 Maxwell G <maxwell@gtmx.me>
+SPDX-License-Identifier: MIT
+-->
+
+# zstarfile
+
+[![builds.sr.ht status](https://builds.sr.ht/~gotmax23/zstarfile/commits/main.svg)](https://builds.sr.ht/~gotmax23/zstarfile/commits/main?)
+
+[![copr build status][badge-copr]][link-copr] (gotmax23/zstarfile)
+
+[![copr build status][badge-copr-dev]][link-copr-dev] (gotmax23/zstarfile-dev)
+
+tarfile extension with additional compression algorithms and PEP 706 by default
+
+## Links
+
+- [zstarfile project hub](https://sr.ht/~gotmax23/zstarfile)
+- [zstarfile git.sr.ht repo](https://git.sr.ht/~gotmax23/zstarfile)
+- [zstarfile tracker](https://todo.sr.ht/~gotmax23/zstarfile)
+- [zstarfile mailing list][archives] ([~gotmax/zstarfile@lists.sr.ht][mailto])
+
+[archives]: https://lists.sr.ht/~gotmax23/zstarfile
+[mailto]: mailto:~gotmax/zstarfile@lists.sr.ht
+
+## Contributing
+
+See [CONTRIBUTING.md](https://git.sr.ht/~gotmax23/zstarfile/tree/main/item/CONTRIBUTING.md).
+
+## License
+
+This repository is licensed under
+
+    SPDX-License-Identifer: MIT
+
+[badge-copr]: https://copr.fedorainfracloud.org/coprs/gotmax23/zstarfile/package/python-zstarfile/status_image/last_build.png
+[link-copr]: https://copr.fedorainfracloud.org/coprs/gotmax23/zstarfile/
+[badge-copr-dev]: https://copr.fedorainfracloud.org/coprs/gotmax23/zstarfile-dev/package/python-zstarfile/status_image/last_build.png
+[link-copr-dev]: https://copr.fedorainfracloud.org/coprs/gotmax23/zstarfile-dev/
+

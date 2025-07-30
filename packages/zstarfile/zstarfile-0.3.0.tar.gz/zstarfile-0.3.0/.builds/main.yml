@@ -1,0 +1,30 @@
+# Copyright (C) 2024 Maxwell G <maxwell@gtmx.me>
+# SPDX-License-Identifier: MIT
+---
+
+image: fedora/latest
+packages:
+  - nox
+  - python3.9
+  - python3.10-devel
+  - python3.11-devel
+  - python3.12-devel
+  - python3.13-devel
+  - python3.14-devel
+sources:
+  - https://git.sr.ht/~gotmax23/zstarfile
+secrets: []
+  # gotmax23/zstarfile-dev webhook
+  # -
+tasks:
+  - copr-webhook: |
+      cd zstarfile
+      nox -e releaserr -- \
+        copr-webhook ~/.copr-dev-hook --branch origin/main --skip-if-missing
+  - nox-test: |
+      cd zstarfile
+      nox -v -e test
+  - nox-lint: |
+      cd zstarfile
+      nox -v -e lint
+

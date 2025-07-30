@@ -1,0 +1,26 @@
+# Copyright (C) 2024 Maxwell G <maxwell@gtmx.me>
+# SPDX-License-Identifier: MIT
+---
+
+image: fedora/latest
+packages:
+  - mock
+  - mock-core-configs
+  - nox
+  - rpm-build
+  - rpmdevtools
+  - rpmlint
+sources:
+  - "https://git.sr.ht/~gotmax23/zstarfile"
+artifacts:
+  - zstarfile/results_zstarfile.tar.gz
+tasks:
+  - setup: |
+      sudo usermod -aG mock $USER
+  - mockbuild-epel9: |
+      cd zstarfile
+      nox -e mockbuild -- --resultdir results_zstarfile --postinstall -r alma+epel-9-x86_64
+      tar cvf results_zstarfile.tar.gz results_zstarfile
+  - rpmlint: |
+      cd zstarfile
+      rpmlint -r python-zstarfile.rpmlintrc results_zstarfile/*.rpm
