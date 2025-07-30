@@ -1,0 +1,41 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "forastero"
+version = "1.2.1"
+description = "cocotb verification framework with the batteries included"
+authors = ["Peter Birch <peter@lightlogic.co.uk>"]
+license = "Apache-2.0"
+readme = "README.md"
+documentation = "http://forastero.intuity.io"
+keywords = ["cocotb", "verification", "verilog", "systemverilog"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+cocotb = "^1.9.2"
+tabulate = "^0.9.0"
+yappi = "^1.6.0"
+
+[tool.poetry.group.dev.dependencies]
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.6.9"
+mkdocstrings = {extras = ["python"], version = "^0.29.0"}
+ruff = "^0.7.2"
+pre-commit = "^3.6.2"
+pytest = "^8.1.1"
+
+[tool.ruff]
+target-version = "py311"
+# Character length of 88 is compatible with Black
+line-length = 100
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+unfixable = []
+# See https://beta.ruff.rs/docs/rules
+select = ["E", "F", "B", "UP", "N", "W", "I", "A", "C4", "PTH", "RUF"]
+ignore = [
+    "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
+]
