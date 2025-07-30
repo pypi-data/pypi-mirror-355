@@ -1,0 +1,1 @@
+# Utils module for the cursor client MCP server 

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lax-mcp-flow-generation-cursor-client"
+version = "0.0.3"
+description = "LAX MCP Flow Generation Cursor Client Server"
+readme = "lax_mcp_flow_generation_cursor_client/README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "Parinthapat Pengpun", email = "ppengpun@cognitus.com"},
+]
+license = {text = "MIT"}
+keywords = ["mcp", "flow", "generation", "cursor", "client"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "fastmcp~=2.6.0",
+]
+
+[project.scripts]
+lax-mcp-flow-gen = "lax_mcp_flow_generation_cursor_client:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lax_mcp_flow_generation_cursor_client"]
