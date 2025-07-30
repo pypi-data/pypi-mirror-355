@@ -1,0 +1,51 @@
+[project]
+name = "unlock-pdf"
+version = "0.4.1"
+description = "Unlocks editing permissions of PDFs that don't have a password"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pikepdf>=8.5.3",
+    "pyside6>=6.2.2.1",
+]
+authors = [
+    {name = "Elvis Mak", email = "elvishcmak@gmail.com"}
+]
+license = "MIT"
+keywords = ["pdf", "unlock", "tool", "productivty", "decrypt"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black",
+    "isort",
+    "mypy",
+]
+gui = [
+    "pyside6",  # or another GUI library of your choice
+]
+
+[project.urls]
+Homepage = "https://github.com/elvishcm/unlock_pdf"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2.post1",
+]
+
+[project.scripts]
+unlock_pdf_cli = "tools.unlock_pdf_cli:main"
+
+[project.gui-scripts]
+unlock_pdf_gui = "tools.unlock_pdf_gui:main"
+
+[tool.hatch.build.targets.sdist]
+packages = ["src/tools", "src/unlock_pdf"]
+ignore-vcs = false
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tools", "src/unlock_pdf"]
