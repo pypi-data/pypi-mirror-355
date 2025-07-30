@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fellow"
+version = "0.1.0"
+description = "Fellow CLI tool is a command line development assistant"
+readme = { file = "README.md", content-type = "text/markdown" }
+urls = { "Homepage" = "https://github.com/ManuelZierl/fellow", "Source" = "https://github.com/ManuelZierl/fellow", "Tracker" = "https://github.com/ManuelZierl/fellow/issues" }
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Manuel Zierl", email = "manuel.zierl@web.de" }
+]
+dependencies = [
+    "httpx>=0.28.1",
+    "openai>=1.69.0",
+    "tiktoken>=0.9.0",
+    "pexpect>=4.9.0",
+    "pydantic~=2.11.0",
+    "PyYAML~=6.0.2",
+    "google-genai>=1.11.0",
+]
+classifiers = [
+    # License
+    "License :: OSI Approved :: MIT License",
+    # Python versions
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    # Typing
+    "Typing :: Typed",
+    # Development status
+    "Development Status :: 4 - Beta",
+    # Intended use
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Environment :: Console",
+    # Topics
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries",
+    # OS
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+fellow = "fellow.main:main"
+
+[tool.setuptools.packages.find]
+exclude = ["tests*"]
+include = ["fellow", "fellow.*"]
+
+[tool.setuptools.package-data]
+fellow = ["default_fellow_config.yml", "py.typed"]
