@@ -1,0 +1,97 @@
+[project]
+name = "deepgraph"
+description = "Analyze Data with Pandas-based Networks."
+readme = "README.rst"
+authors = [
+    {name="Dominik Traxl", email="dominik.traxl@posteo.org"}
+]
+license = "BSD-2-Clause"
+license-files = ["LICENSE"]
+classifiers=[
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Cython",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dynamic = ["version"]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.21.6",
+    "pandas>=1.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/deepgraph/deepgraph/"
+Documentation = "https://deepgraph.readthedocs.io"
+Repository = "https://github.com/deepgraph/deepgraph/"
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.1"]
+basemap = ["basemap>=2.0"]
+tables = ["tables>=3.7"]
+scipy = ["scipy>=1.5.4"]
+networkx = ["networkx>=2.4"]
+all = [
+    "matplotlib>=3.1",
+    "basemap>=2.0",
+    "tables>=3.7",
+    "scipy>=1.5.4",
+    "networkx>=2.4"
+]
+
+[dependency-groups]
+dev = [
+    "notebook>=7.4.3",
+    "cython>=3.0.12",
+    "pytest>=7.3.2",
+    "sphinx>=1.8",
+    "sphinx_rtd_theme>=0.5"
+]
+doc = [
+    "sphinx>=1.8",
+    "sphinx_rtd_theme>=0.5"
+]
+
+[build-system]
+requires = [
+    "wheel",
+    "setuptools>=61.0",
+    "numpy>=2.0.0",
+    "cython>3"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {""="src"}
+
+[tool.cibuildwheel]
+before-all = "uname -a"
+build-frontend = "build[uv]"
+enable = ["pypy"]
+skip = [
+    "pp*i686",
+    "pp311-win_amd64",
+]
+test-requires = [
+    "pytest",
+]
+test-extras = [
+    "tables",
+    "scipy",
+    "networkx"
+]
+test-command = "pytest {project}/tests -v"
+test-skip = [
+    "cp39-*",
+    "pp*linux*",
+    "*win*",
+    "*mac*",
+    "*i686*",
+    "*musllinux*"
+]
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
