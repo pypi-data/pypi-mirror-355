@@ -1,0 +1,36 @@
+[project]
+name = "mcp-google-workspace"
+version = "0.6.1"
+description = "MCP Server to connect to Google Workspace (Gmail & Calendar)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+ "beautifulsoup4>=4.12.3",
+ "google-api-python-client>=2.154.0",
+ "httplib2>=0.22.0",
+ "mcp>=1.3.0",
+ "oauth2client==4.1.3",
+ "python-dotenv>=1.0.1",
+ "pytz>=2024.2",
+ "requests>=2.32.3",
+ "aiohttp>=3.9.0",
+ "packaging>=23.0",
+]
+[[project.authors]]
+name = "Olivier de Beuf de Rijcker"
+email = "olivier@markov.bot"
+
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_gsuite"]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.389",
+]
+
+[project.scripts]
+mcp-google-workspace = "mcp_gsuite:main"
