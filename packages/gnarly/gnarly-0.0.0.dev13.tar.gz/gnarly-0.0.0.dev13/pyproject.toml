@@ -1,0 +1,23 @@
+[project]
+name = "gnarly"
+version = "0.0.0dev13"
+description = "A sophisticated, general-use abstraction layer for the lazy."
+readme = "README.md"
+authors = [{ name = "K. LeBryce", email = "k.lebryce@pm.me" }]
+requires-python = ">=3.10"
+dependencies = [
+    "python-dotenv>=1.1.0",
+    "starch",
+]
+
+[project.scripts]
+gnarly = "gnarly:main"
+chatgpt = "gnarly.utils.llm.chatgpt:main"
+claude = "gnarly.utils.llm.claude:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+starch = { path = "../starch" }
