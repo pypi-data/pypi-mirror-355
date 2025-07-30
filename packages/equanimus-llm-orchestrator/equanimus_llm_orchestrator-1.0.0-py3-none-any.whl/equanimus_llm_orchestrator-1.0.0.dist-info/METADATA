@@ -1,0 +1,217 @@
+Metadata-Version: 2.4
+Name: equanimus-llm-orchestrator
+Version: 1.0.0
+Summary: Orchestrator of conversational flows with LLMs in multiple modes, such as copilot, clone, RAG, and transcription.
+Author-email: Gislenne Moia <gislenne.moia@govone.digital>
+Keywords: AI agent,LLM,orchestrator,copilot,transcription,clone,RAG
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: aiohappyeyeballs==2.6.1
+Requires-Dist: aiohttp==3.12.8
+Requires-Dist: aiosignal==1.3.2
+Requires-Dist: annotated-types==0.7.0
+Requires-Dist: anyio==4.9.0
+Requires-Dist: asgiref==3.8.1
+Requires-Dist: attrs==25.3.0
+Requires-Dist: backoff==2.2.1
+Requires-Dist: bcrypt==4.3.0
+Requires-Dist: boto3==1.38.29
+Requires-Dist: botocore==1.38.29
+Requires-Dist: build==1.2.2.post1
+Requires-Dist: cachetools==5.5.2
+Requires-Dist: certifi==2025.4.26
+Requires-Dist: charset-normalizer==3.4.2
+Requires-Dist: chromadb==1.0.12
+Requires-Dist: click==8.2.1
+Requires-Dist: coloredlogs==15.0.1
+Requires-Dist: dataclasses-json==0.6.7
+Requires-Dist: Deprecated==1.2.18
+Requires-Dist: distro==1.9.0
+Requires-Dist: durationpy==0.10
+Requires-Dist: fastapi==0.115.9
+Requires-Dist: filelock==3.18.0
+Requires-Dist: flatbuffers==25.2.10
+Requires-Dist: frozenlist==1.6.2
+Requires-Dist: fsspec==2025.5.1
+Requires-Dist: google-auth==2.40.2
+Requires-Dist: googleapis-common-protos==1.70.0
+Requires-Dist: grpcio==1.72.1
+Requires-Dist: h11==0.16.0
+Requires-Dist: hf-xet==1.1.2
+Requires-Dist: httpcore==1.0.9
+Requires-Dist: httptools==0.6.4
+Requires-Dist: httpx==0.28.1
+Requires-Dist: httpx-sse==0.4.0
+Requires-Dist: huggingface-hub==0.32.4
+Requires-Dist: humanfriendly==10.0
+Requires-Dist: idna==3.10
+Requires-Dist: importlib_metadata==8.6.1
+Requires-Dist: importlib_resources==6.5.2
+Requires-Dist: Jinja2==3.1.6
+Requires-Dist: jiter==0.10.0
+Requires-Dist: jmespath==1.0.1
+Requires-Dist: joblib==1.5.1
+Requires-Dist: jsonpatch==1.33
+Requires-Dist: jsonpointer==3.0.0
+Requires-Dist: jsonschema==4.24.0
+Requires-Dist: jsonschema-specifications==2025.4.1
+Requires-Dist: kubernetes==32.0.1
+Requires-Dist: langchain==0.3.25
+Requires-Dist: langchain-aws==0.2.24
+Requires-Dist: langchain-chroma==0.2.4
+Requires-Dist: langchain-community==0.3.24
+Requires-Dist: langchain-core==0.3.63
+Requires-Dist: langchain-huggingface==0.2.0
+Requires-Dist: langchain-ollama==0.3.3
+Requires-Dist: langchain-openai==0.3.19
+Requires-Dist: langchain-text-splitters==0.3.8
+Requires-Dist: langgraph==0.4.8
+Requires-Dist: langgraph-checkpoint==2.0.26
+Requires-Dist: langgraph-checkpoint-postgres==2.0.21
+Requires-Dist: langgraph-prebuilt==0.2.2
+Requires-Dist: langgraph-sdk==0.1.70
+Requires-Dist: langsmith==0.3.44
+Requires-Dist: markdown-it-py==3.0.0
+Requires-Dist: MarkupSafe==3.0.2
+Requires-Dist: marshmallow==3.26.1
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: mmh3==5.1.0
+Requires-Dist: mpmath==1.3.0
+Requires-Dist: multidict==6.4.4
+Requires-Dist: mypy_extensions==1.1.0
+Requires-Dist: networkx==3.5
+Requires-Dist: numpy==2.2.6
+Requires-Dist: oauthlib==3.2.2
+Requires-Dist: ollama==0.5.1
+Requires-Dist: onnxruntime==1.22.0
+Requires-Dist: openai==1.84.0
+Requires-Dist: opentelemetry-api==1.33.1
+Requires-Dist: opentelemetry-exporter-otlp-proto-common==1.33.1
+Requires-Dist: opentelemetry-exporter-otlp-proto-grpc==1.33.1
+Requires-Dist: opentelemetry-instrumentation==0.54b1
+Requires-Dist: opentelemetry-instrumentation-asgi==0.54b1
+Requires-Dist: opentelemetry-instrumentation-fastapi==0.54b1
+Requires-Dist: opentelemetry-proto==1.33.1
+Requires-Dist: opentelemetry-sdk==1.33.1
+Requires-Dist: opentelemetry-semantic-conventions==0.54b1
+Requires-Dist: opentelemetry-util-http==0.54b1
+Requires-Dist: orjson==3.10.18
+Requires-Dist: ormsgpack==1.10.0
+Requires-Dist: overrides==7.7.0
+Requires-Dist: packaging==24.2
+Requires-Dist: pillow==11.2.1
+Requires-Dist: posthog==4.2.0
+Requires-Dist: propcache==0.3.1
+Requires-Dist: protobuf==5.29.5
+Requires-Dist: psycopg==3.2.9
+Requires-Dist: psycopg-pool==3.2.6
+Requires-Dist: pyasn1==0.6.1
+Requires-Dist: pyasn1_modules==0.4.2
+Requires-Dist: pydantic==2.11.5
+Requires-Dist: pydantic-settings==2.9.1
+Requires-Dist: pydantic_core==2.33.2
+Requires-Dist: Pygments==2.19.1
+Requires-Dist: PyPika==0.48.9
+Requires-Dist: pyproject_hooks==1.2.0
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: python-dotenv==1.1.0
+Requires-Dist: PyYAML==6.0.2
+Requires-Dist: referencing==0.36.2
+Requires-Dist: regex==2024.11.6
+Requires-Dist: requests==2.32.3
+Requires-Dist: requests-oauthlib==2.0.0
+Requires-Dist: requests-toolbelt==1.0.0
+Requires-Dist: rich==14.0.0
+Requires-Dist: rpds-py==0.25.1
+Requires-Dist: rsa==4.9.1
+Requires-Dist: s3transfer==0.13.0
+Requires-Dist: safetensors==0.5.3
+Requires-Dist: scikit-learn==1.6.1
+Requires-Dist: scipy==1.15.3
+Requires-Dist: sentence-transformers==4.1.0
+Requires-Dist: setuptools==80.9.0
+Requires-Dist: shellingham==1.5.4
+Requires-Dist: six==1.17.0
+Requires-Dist: sniffio==1.3.1
+Requires-Dist: SQLAlchemy==2.0.41
+Requires-Dist: starlette==0.45.3
+Requires-Dist: sympy==1.14.0
+Requires-Dist: tenacity==9.1.2
+Requires-Dist: threadpoolctl==3.6.0
+Requires-Dist: tiktoken==0.9.0
+Requires-Dist: tokenizers==0.21.1
+Requires-Dist: torch==2.7.0
+Requires-Dist: tqdm==4.67.1
+Requires-Dist: transformers==4.52.4
+Requires-Dist: typer==0.16.0
+Requires-Dist: typing-inspect==0.9.0
+Requires-Dist: typing-inspection==0.4.1
+Requires-Dist: typing_extensions==4.14.0
+Requires-Dist: urllib3==2.4.0
+Requires-Dist: uvicorn==0.34.3
+Requires-Dist: uvloop==0.21.0
+Requires-Dist: watchfiles==1.0.5
+Requires-Dist: websocket-client==1.8.0
+Requires-Dist: websockets==15.0.1
+Requires-Dist: wrapt==1.17.2
+Requires-Dist: xxhash==3.5.0
+Requires-Dist: yarl==1.20.0
+Requires-Dist: zipp==3.22.0
+Requires-Dist: zstandard==0.23.0
+
+# LLM Orchestrator
+
+Orquestrador de fluxos conversacionais com Modelos de Linguagem (LLMs) em múltiplos modos, incluindo **copiloto**, **clone**, **RAG (Geração Aumentada por Recuperação)** e **transcrição**.
+
+## 🚀 Visão Geral
+
+`llm_orchestrator` é uma biblioteca que gerencia interações com LLMs através de uma interface unificada. Ele carrega e configura modelos de linguagem e de embedding, define modos conversacionais e executa fluxos usando pipelines baseados em agentes inteligentes.
+
+## ✨ Funcionalidades
+
+- ✅ Integração fácil com diversos provedores de LLM  
+- 🧠 Suporte a múltiplos modos de conversa:
+  - `copilot`: respostas assistivas  
+  - `clone`: simula histórico de mensagens anterior  
+  - `rag`: gera respostas com base em documentos recuperados  
+  - `transcription`: processa e responde a áudios/textos transcritos  
+- ⚙️ Orquestração de workflows com agentes  
+- 🧩 Suporte a embeddings para casos de uso avançados  
+
+## 🧰 Instalação
+
+```bash
+pip install llm_orchestrator
+```
+
+## 🧠 Modos de Conversa
+| Modo            | Descrição                                        |
+| --------------- | ------------------------------------------------ |
+| `copilot`       | Comportamento assistivo geral                    |
+| `clone`         | Responde com base no histórico de mensagens      |
+| `rag`           | Usa documentos externos para melhorar a resposta |
+| `transcription` | Projetado para lidar com entrada de áudio        |
+
+## 📂 Estrutura do Projeto
+```
+llm_orchestrator/
+├── init.py # Inicialização do pacote
+├── README.md # Documentação principal do projeto
+├── requirements.txt # Dependências do projeto
+├── config.py # Configurações globais e carregamento de env
+├── run_chat.py # Script principal para executar conversas
+├── adapters/ # Integrações com LLMs e embeddings
+├── agents/ # Agentes e definição dos fluxos principais
+├── chat_prompts/ # Templates de prompts para os modos de chat
+├── connectVDB/ # Conexões com banco de dados vetorial (VDB)
+├── core/ # Utilitários centrais, constantes e helpers
+├── document_loaders/ # Carregadores de documentos (PDFs, textos, etc.)
+├── engine.tldr/ # Engine principal (ex: fluxo de TLDR)
+├── modes_pretrained/ # Modos de comportamento pré-treinados
+```
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request com melhorias.
+
+## 📄 Licença
+Licença MIT
