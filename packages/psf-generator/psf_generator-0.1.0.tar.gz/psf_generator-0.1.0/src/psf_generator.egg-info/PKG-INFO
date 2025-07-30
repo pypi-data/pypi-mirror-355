@@ -1,0 +1,106 @@
+Metadata-Version: 2.4
+Name: psf-generator
+Version: 0.1.0
+Summary: PSF Generator: a PyTorch-based library to simulate point spread functions for microscopy.
+Author-email: Yan Liu <yan.liu@epfl.ch>, Vasiliki Stergiopoulou <vasiliki.stergiopoulou@epfl.ch>, Jonathan Dong <jonathan.dong@epfl.ch>, Jonathan Chuah <jonathan.chuahwenjie@epfl.ch>, Daniel Sage <daniel.sage@epfl.ch>
+Maintainer-email: Yan Liu <yan.liu@epfl.ch>, Vasiliki Stergiopoulou <vasiliki.stergiopoulou@epfl.ch>, Jonathan Dong <jonathan.dong@epfl.ch>
+License: MIT License
+        
+        Copyright (c) 2024 Biomedical Imaging Group, EPFL
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/Biomedical-Imaging-Group/psf_generator
+Project-URL: Documentation, https://psf-generator.readthedocs.io/
+Project-URL: Repository, https://github.com/Biomedical-Imaging-Group/psf_generator.git
+Project-URL: Bug Tracker, https://github.com/Biomedical-Imaging-Group/psf_generator/issues
+Project-URL: Changelog, https://github.com/Biomedical-Imaging-Group/psf_generator/CHANGELOG.md
+Keywords: point-spread-function,pytorch,deep learning,fluorescence microscopy,imaging,optical system,psf engineering,light propagation
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: matplotlib>=3.6.1
+Requires-Dist: numpy>=1.23.4
+Requires-Dist: scipy>=1.9.1
+Requires-Dist: torch>=2.0.0
+Requires-Dist: zernikepy>=0.0.5
+Requires-Dist: scikit-image
+Dynamic: license-file
+
+# PSF-Generator
+
+[![MIT License](https://img.shields.io/github/license/Biomedical-Imaging-Group/psf_generator)](https://github.com/Biomedical-Imaging-Group/psf_generator/raw/main/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/psf-generator.svg?color=green)](https://pypi.org/project/psf-generator)
+[![Python Version](https://img.shields.io/pypi/pyversions/psf-generator.svg?color=green)](https://python.org)
+
+***
+Welcome to the psf-generator library!
+
+This library implements various physical models that compute the point spread function (PSF) of optical microscopes. 
+PSF characterizes the response of an imaging system to a point source and is crucial for tasks such as 
+deconvolution, correction of aberrations, and characterization of the system.
+
+We classify these models in two types---scalar or vectorial--- and in both cases the PSF integral can be computed in Cartesian or spherical coordinate systems. 
+This results in the following four 
+_propagators_
+
+| Name of propagator             |         Other names         |
+|--------------------------------|:---------------------------:|
+| `ScalarCartesianPropagator`    | simple/scalar Fourier model |
+| `ScalarSphericalPropagator`    |       Kirchhoff model       |
+| `VectorialCartesianPropagator` |   vectorial Fourier model   |
+| `VectorialSphericalPropagator` |     Richards-Wolf model     |
+
+For details on the theory, please refer to our paper
+[Revisiting PSF models: unifying framework and high-performance implementation](https://arxiv.org/html/2502.03170v1).
+
+# Documentation
+Documentation can be found here: https://psf-generator.readthedocs.io/
+
+# Installation
+
+## Basic Installation
+
+```
+pip install psf-generator
+```
+
+That's it for the basic installation; you're ready to go!
+
+## Developer Installation
+
+If you're interested in experimenting with the code base, please clone the repository and install it using the following commands:
+```
+git clone git@github.com:Biomedical-Imaging-Group/psf_generator.git
+cd psf_generator
+pip install -e .
+```
+
+# Demos
+
+Jupyter Notebook demos can be found under `demos/`.
+
+# Napari Plugin
+You can find our Napari plugin [here](https://github.com/Biomedical-Imaging-Group/napari-psfgenerator).
+
+# Cite Us
+
+TODO
