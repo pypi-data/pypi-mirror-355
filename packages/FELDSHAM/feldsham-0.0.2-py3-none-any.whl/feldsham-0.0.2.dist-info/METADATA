@@ -1,0 +1,149 @@
+Metadata-Version: 2.4
+Name: FELDSHAM
+Version: 0.0.2
+Summary: Реализация схемы разделения секрета Фельдмана-Шамира
+Author: Alexander
+Author-email: lloollfox@mail.ru
+License: MIT
+Project-URL: Source Repository, https://github.com/A-Sharan1/
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: sympy>=1.7
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: summary
+
+#  Feldman-Shamir Secret Sharing
+Python - реализация схемы совместного использования секретов Фельдмана-Шамира с возможностью проверки (VSS) - пороговой криптосистемы, которая позволяет разделить секрет на общие ресурсы со свойствами проверяемости.
+## Ключевые особенности
+
+- ** Совместное использование секретов с возможностью проверки **: Участники могут проверить действительность своих акций
+- ** Пороговая криптография **: Секрет может быть восстановлен только при объединении достаточного количества акций
+- ** Обязательства Фельдмана **: Для проверки используются гомоморфные обязательства
+- ** Арифметика простых полей **: Работает с большими простыми полями для обеспечения безопасности
+- ** Гибкие параметры **: Настраиваемый порог и количество общих ресурсов
+
+- **BOLD TEXT**: description
+### Быстрый старт
+``markdown
+
+```python
+from feldman_shamir import FeldmanShamirSecretSharing, generate_prime, find_generator
+```
+
+### 1. Сгенерируйте криптографические параметры
+### (в рабочей среде они должны быть исправлены и доступны заранее)
+```python
+prime = generate_prime(256)  # 256-bit prime
+generator = find_generator(prime)
+```
+### 2. Инициализируйте схему
+```python
+scheme = FeldmanShamirSecretSharing(prime, generator)
+```
+
+# 3. Определите секрет и параметры совместного
+```python
+secret = 0xDEADBEEF  # Ваш секрет (должен быть < prime)
+total_shares = 5      # Общее количество акций для создания
+threshold = 3         # Минимальные доли, необходимые для восстановления
+```
+
+### 4. Генерируем доли и обязательства
+```python
+shares, coefficients = scheme.generate_shares(secret, total_shares, threshold)
+commitments = scheme.generate_commitments(coefficients)
+```
+
+### 5. Проверьте долю (должно быть возвращено значение True)
+```python
+is_valid = scheme.verify_share(shares[0], commitments)
+```
+
+### 6. Восстановите секрет из общих
+```python
+recovered_secret = scheme.reconstruct_secret(shares[:threshold])
+print(f"Original secret: {secret}, Recovered secret: {recovered_secret}")
+```
+
+## Installation
+
+Install the package from PyPI using pip:
+
+```bash
+pip install feldman-shamir-secret-sharing
+```
+
+### 5. Подробное руководство
+```markdown
+
+### Генерация параметров
+
+Для использования в рабочей среде вам следует предварительно сгенерировать и безопасно распространять прайм и генератор:
+
+```python
+from feldman_shamir import generate_prime, find_generator
+```
+
+#  Сгенерировать 2048-битное простое число (рекомендуется для создания)
+p = generate_prime(2048)
+
+# Найти генератор для мультипликативной группы
+g = find_generator(p)
+
+# Эти параметры следует заранее сообщить всем участникам
+
+Подтверждение доли
+Каждый участник может подтвердить свою долю, используя обязательства:
+
+# Участник получает:
+# - their share (x, y)
+# - commitments [g^a0, g^a1, ..., g^at]
+```python
+my_share = shares[2]  # (x, y) tuple
+
+if scheme.verify_share(my_share, commitments):
+    print("Share is valid!")
+else:
+    print("Invalid share detected!")
+Error Handling
+The library raises specific exceptions for error cases:
+```
+
+```python
+from feldman_shamir import SecretSharingError
+
+try:
+    # Attempt reconstruction with insufficient shares
+    scheme.reconstruct_secret(shares[:threshold-1])
+except SecretSharingError as e:
+    print(f"Error: {e}")
+```
+
+### 6. Теория и безопасность
+```markdown
+
+### Математическая основа
+
+Схема основана на полиномиальной интерполяции по конечным полям:
+
+1. **Совместное использование**: Генерируется случайный многочлен степени (t-1):
+f(x) = a0 + a1*x + a2*x² + ... + a(t-1)*x^(t-1)
+
+где a0 - это секрет.
+2. **Проверка**: Использование гомоморфных свойств:
+g^y ≡? product(g^(a_j)^(x^j) mod p for j=0..t-1
+
+### Замечания по безопасности
+
+- Для обеспечения безопасности в рабочей среде используйте как минимум 2048-битные простые числа
+- Секретность должна быть меньше модуля простого числа
+- Общие данные и параметры должны передаваться надежно
+- Эта реализация предназначена для образовательных целей - проконсультируйтесь с экспертами по криптографии для использования в рабочей среде
+
