@@ -1,0 +1,31 @@
+[project]
+name = "captive-portal-detector"
+version = "1.1.0"
+description = "Detects captive portals and TLS Man-in-the-Middle attacks."
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+authors = [
+    {name = "Emilio DiTrocchio", email = "editrocchio@gmail.com"}
+]
+dependencies = [
+    "requests",
+    "certifi",
+    "cryptography>=45.0.3",
+    "dnspython>=2.0",
+    "hstspreload>=2025.1.1",
+    "scapy>=2.6.1"
+]
+
+[project.scripts]
+capdet = "capdet.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
