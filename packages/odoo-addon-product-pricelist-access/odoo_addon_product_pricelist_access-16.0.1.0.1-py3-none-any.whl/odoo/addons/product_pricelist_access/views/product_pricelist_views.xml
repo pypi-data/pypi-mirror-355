@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 Manuel Regidor <manuel.regidor@sygel.es>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="product_pricelist_access_product_pricelist_view" model="ir.ui.view">
+        <field name="name">product.pricelist.access.product.pricelist.view</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view" />
+        <field name="arch" type="xml">
+            <page name="pricelist_config" position="inside">
+                <group name="access_users" string="Users">
+                    <field
+                        name="access_user_ids"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                    />
+                    <field
+                        name="access_group_ids"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                    />
+                </group>
+            </page>
+        </field>
+    </record>
+</odoo>

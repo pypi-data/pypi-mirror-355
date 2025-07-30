@@ -1,0 +1,3 @@
+- Manuel Regidor \<manuel.regidor@sygel.es\>
+- Valentín Vinagre \<valentin.vinagre@sygel.es\>
+- Juan Alberto Raja \<juan.raja@sygel.es\>
