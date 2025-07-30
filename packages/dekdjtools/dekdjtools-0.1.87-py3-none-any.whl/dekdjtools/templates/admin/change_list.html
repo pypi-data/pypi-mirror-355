@@ -1,0 +1,203 @@
+{% extends "admin/change_list.html" %}
+{% block extrahead %}
+{{ block.super }}
+<style type="text/css">
+    .dhp-frame {
+        position: fixed;
+        z-index: 9999999999;
+        border: 1px #b0ccea solid;
+        border-radius: 4px;
+        background: #d0dbe6;
+    }
+
+    .dhp-list {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .dhp-item {
+        cursor: pointer;
+        margin: 10px 5px;
+    }
+
+    .dhp-item-color {
+        color: #47bac1;
+    }
+
+    .dhp-item:hover {
+        color: #47bac1;
+        text-decoration: underline;
+    }
+
+    .dhp-item-disable {
+        cursor: auto !important;
+        color: #aeaeae !important;
+        margin: 10px 5px;
+    }
+</style>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script type="text/javascript" charset="utf-8">
+    function doToastify(text, type) {
+        var colors = {
+            error: "red",
+            warning: "gray",
+            info: "linear-gradient(to right, #00b09b, #96c93d)",
+        }
+        Toastify({
+            text,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "bottom", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: colors[type],
+            },
+        }).showToast();
+    }
+
+    function dhpItemClick(url) {
+        // window.open(url, '_blank');
+        fetch(url).then(function (rsp) {
+            rsp.json().then(function (data) {
+                if (data && data.type) {
+                    doToastify(data.msg, data.type);
+                    var params = new URLSearchParams(url.split('?', 2).at(-1));
+                    updateUI(params.get('id'), params.get('name'));
+                }
+            });
+        })
+    }
+
+    function getContextMenuPosition(event, contextMenu) {
+        var mousePosition = {};
+        var menuPosition = {};
+        var menuDimension = {};
+
+        menuDimension.x = contextMenu.clientWidth;
+        menuDimension.y = contextMenu.clientHeight;
+        mousePosition.x = event.clientX;
+        mousePosition.y = event.clientY;
+
+        if (mousePosition.x + menuDimension.x > window.innerWidth) {
+            menuPosition.x = mousePosition.x - menuDimension.x;
+        } else {
+            menuPosition.x = mousePosition.x;
+        }
+
+        if (mousePosition.y + menuDimension.y > window.innerHeight) {
+            menuPosition.y = mousePosition.y - menuDimension.y;
+        } else {
+            menuPosition.y = mousePosition.y;
+        }
+
+        return menuPosition;
+    }
+
+    function updateUI(id, name) {
+        document.querySelectorAll(`[data-dhp-id="${id}"]`).forEach(function (elItem) {
+            var text = elItem.dataset.dhp;
+            if (text) {
+                var dataList = JSON.parse(text);
+                dataList.forEach(function (dataMap) {
+                    if (dataMap[name])
+                        dataMap[name] = null;
+                })
+                elItem.dataset.dhp = JSON.stringify(dataList);
+            }
+            if (elItem.dataset.dhpName === name) {
+                elItem.outerHTML = `<div class="dhp-item-disable">${elItem.innerText}</div>`;
+            }
+        })
+    }
+
+    function getDhpHtml(elItem, attrs) {
+        var text = elItem.dataset.dhp
+        if (text) {
+            var divList = []
+            JSON.parse(text).forEach(function (dataMap) {
+                var dataItems = Object.keys(dataMap)
+                divList.push(`<div ${attrs || ""}>` + dataItems.map(function (item) {
+                    var url = dataMap[item]
+                    if (url) {
+                        var params = new URLSearchParams(url.split('?', 2).at(-1));
+                        var dataset = `data-dhp-id="${params.get('id')}" data-dhp-name="${params.get('name')}"`;
+                        return `<div ${dataset} class="dhp-item" onclick="dhpItemClick('${url}')">${item}</div>`
+                    } else
+                        return `<div class="dhp-item-disable">${item}</div>`
+                }).join("") + `</div>`)
+            })
+            return divList.join("");
+        }
+        return ""
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var timeFrame = null
+        var timeFrame2 = null
+        var elFrame = document.querySelector('.dhp-frame')
+        elFrame.style.display = 'none'
+        document.querySelectorAll("[data-dhp]").forEach(function (elItem) {
+            if (elItem.dataset.dhpFold) {
+                elItem.outerHTML = `<div>` + getDhpHtml(elItem, 'class="dhp-item-color"') + `<div>`
+            } else {
+                function getPanelHtml() {
+                    return getDhpHtml(elItem, 'class="dhp-list"');
+                }
+
+                if (getPanelHtml()) {
+                    elItem.addEventListener('mouseenter', function (e) {
+                        if (!elFrame.style.display)
+                            return
+                        elFrame.innerHTML = getPanelHtml()
+                        elFrame.style.display = ''
+                        var pos = getContextMenuPosition(e, elFrame)
+                        elFrame.style.left = pos.x + 'px'
+                        elFrame.style.top = pos.y + 'px'
+                    })
+                    elItem.addEventListener('mouseleave', function () {
+                        if (timeFrame) {
+                            clearTimeout(timeFrame)
+                            timeFrame = null
+                        }
+                        timeFrame = setTimeout(function () {
+                            elFrame.style.display = 'none'
+                            timeFrame = null
+                        }, 200)
+                    })
+                    elItem.addEventListener('mousemove', function () {
+                        if (timeFrame2) {
+                            clearTimeout(timeFrame2)
+                            timeFrame2 = null
+                        }
+                    })
+                }
+            }
+        });
+        elFrame.addEventListener('mouseenter', function () {
+            if (timeFrame) {
+                clearTimeout(timeFrame)
+                timeFrame = null
+            }
+        })
+        elFrame.addEventListener('mouseleave', function () {
+            if (timeFrame) {
+                clearTimeout(timeFrame)
+                timeFrame = null
+            }
+            if (timeFrame2) {
+                clearTimeout(timeFrame2)
+                timeFrame2 = null
+            }
+            timeFrame2 = setTimeout(function () {
+                elFrame.style.display = 'none'
+            }, 100)
+        });
+    });
+</script>
+<div class="dhp-frame"></div>
+{% endblock %}
