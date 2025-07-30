@@ -1,0 +1,12 @@
+# @meta {desc: 'app context config', date: '2024-04-30'}
+
+
+## Alsum
+#
+alsum_reduced_graph_stash:
+  class_name: zensols.alsum.graph.ReducedGraphStash
+  factory: ${calamr_resource:flow_results_stash}
+  graph_attrib_context: 'instance: calamr_graph_attrib_context'
+  renderer: 'instance: calamr_graph_render_${calamr_default:renderer}'
+  child_graph_name: reversed_source
+  prune: ${alsum_default:flow_graph_prune}
