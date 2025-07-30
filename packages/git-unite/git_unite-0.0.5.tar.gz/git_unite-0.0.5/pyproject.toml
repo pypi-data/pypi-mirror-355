@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "git-unite"
+dynamic = ["version"]
+license = "MIT"
+dependencies = [
+    "GitPython",
+    "click",
+    "pyyaml"
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/0tanay/git"
+Repository = "https://gitlab.com/0tanay/git.git"
+Issues = "https://gitlab.com/0tanay/git/-/issues"
+
+[project.scripts]
+Git = "Git:__main__.main"
+
+[tool.hatch.version]
+path = "Git/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/Git",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["Git"]
