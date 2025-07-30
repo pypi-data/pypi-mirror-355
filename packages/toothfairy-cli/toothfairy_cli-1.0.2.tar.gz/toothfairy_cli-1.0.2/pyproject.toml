@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "toothfairy-cli"
+dynamic = ["version"]
+description = "Command-line interface for ToothFairy AI API"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "ToothFairy AI", email = "support@toothfairyai.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Communications :: Chat",
+]
+keywords = ["toothfairy", "ai", "cli", "api", "chatbot", "agent"]
+requires-python = ">=3.7"
+dependencies = [
+    "requests>=2.25.0",
+    "click>=8.0.0",
+    "python-dotenv>=0.19.0",
+    "rich>=12.0.0",
+    "pyyaml>=6.0",
+    "httpx>=0.24.0",
+    "httpx-sse>=0.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "flake8>=5.0.0",
+    "isort>=5.10.0",
+    "build>=0.8.0",
+    "twine>=4.0.0",
+    "bump2version>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://gitea.toothfairyai.com/ToothFairyAI/tooth-fairy-website/toothfairy-cli"
+Repository = "https://gitea.toothfairyai.com/ToothFairyAI/tooth-fairy-website/toothfairy-cli"
+Documentation = "https://gitea.toothfairyai.com/ToothFairyAI/tooth-fairy-website/toothfairy-cli#readme"
+Issues = "https://gitea.toothfairyai.com/ToothFairyAI/tooth-fairy-website/toothfairy-cli/issues"
+Releases = "https://gitea.toothfairyai.com/ToothFairyAI/tooth-fairy-website/toothfairy-cli/releases"
+
+[project.scripts]
+toothfairy = "toothfairy_cli.cli:main"
+tf = "toothfairy_cli.cli:main"
+
+[tool.setuptools]
+packages = ["toothfairy_cli"]
+
+[tool.setuptools.dynamic]
+version = {attr = "toothfairy_cli.__version__"}
+
+[tool.black]
+line-length = 100
+target-version = ['py37']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=toothfairy_cli --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["toothfairy_cli"]
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
