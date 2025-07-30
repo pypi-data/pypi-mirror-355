@@ -1,0 +1,37 @@
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imantodes"
+version = "0.0.1"
+dependencies = [
+  "cffi>=1.16",  # vecmat.py, app.py
+  "frozendict>=2.4", # app.py
+  "pyside6>=6.8", # event.py
+]
+requires-python = ">=3.12"
+authors = [
+    { name = "Gordon Kindlmann", email = "glk@uchicago.edu" }
+]
+description = "Lightweight code to help build Python SciVis apps"
+readme = "README.md"
+license = "LGPL-3.0-only"
+license-files = ["LICENSE"]
+keywords = ["interactive", "visualization", "scivis"]
+# https://pypi.org/classifiers/
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Visualization",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/gkindlmann-group/imantodes"
