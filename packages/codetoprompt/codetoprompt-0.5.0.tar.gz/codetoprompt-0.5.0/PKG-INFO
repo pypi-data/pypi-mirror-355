@@ -1,0 +1,241 @@
+Metadata-Version: 2.4
+Name: codetoprompt
+Version: 0.5.0
+Summary: Convert your codebase into a single LLM prompt
+Author-email: Yash Bhaskar <yash9439@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/yash9439/codetoprompt
+Project-URL: Documentation, https://github.com/yash9439/codetoprompt#readme
+Project-URL: Repository, https://github.com/yash9439/codetoprompt
+Project-URL: Issues, https://github.com/yash9439/codetoprompt/issues
+Project-URL: Changelog, https://github.com/yash9439/codetoprompt/blob/main/CHANGELOG.md
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Version Control :: Git
+Classifier: Topic :: Text Processing :: General
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pygit2>=1.12.0
+Requires-Dist: tiktoken>=0.5.0
+Requires-Dist: pyperclip>=1.8.2
+Requires-Dist: pathspec>=0.11.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: toml>=0.10.2
+Requires-Dist: tree-sitter-language-pack>=0.8.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: pre-commit>=3.0.0; extra == "dev"
+Dynamic: license-file
+
+# CodeToPrompt
+
+[![PyPI version](https://badge.fury.io/py/codetoprompt.svg)](https://badge.fury.io/py/codetoprompt)
+
+Convert your entire codebase into a single, context-rich prompt for Large Language Models (LLMs), perfectly formatted for direct use.
+
+## Features
+
+- **Comprehensive Project Context**: Automatically includes Git repository information and a visual project structure tree.
+- **In-Depth Codebase Analysis**: Run `codetoprompt analyse` to get a detailed statistical report on your project's composition, including token counts by file type and largest files.
+- **Persistent Configuration**: Run a one-time interactive setup (`codetoprompt config`) to set your personal defaults for all options.
+- **Smart File Filtering**: Respects `.gitignore` rules by default and offers powerful include/exclude glob patterns to precisely select the files you need.
+- **Token-Aware**: Counts tokens to help you stay within your LLM's context window and provides an informative summary with token-based insights.
+- **Developer-Friendly**: Copies the final prompt directly to your clipboard for immediate use, with a rich and informative CLI.
+- **Robust and Safe**: Safely reads files with fallback encodings and automatically skips binary files.
+- **Dual Interface**: Use it as a simple command-line tool or import it as a Python library.
+
+## Installation
+
+```bash
+pip install codetoprompt
+```
+
+For clipboard support on Linux, you may need to install a system dependency:
+```bash
+# For Debian/Ubuntu
+sudo apt-get install xclip
+
+# For Fedora
+sudo dnf install xclip
+
+# For Arch Linux
+sudo pacman -S xclip
+```
+*(Supports `wl-clipboard` on Wayland as well)*
+
+## Usage
+
+`codetoprompt` is designed to be intuitive and has three main commands: `codetoprompt <path>` for prompt generation, `codetoprompt analyse <path>` for analysis, and `codetoprompt config` for settings.
+
+### Generating a Prompt
+
+This is the primary function. Simply point `codetoprompt` at a directory.
+
+```shell
+codetoprompt .
+```
+
+This will process the current directory, copy the result to your clipboard, and show you a detailed summary.
+
+#### Sample Prompt Generation Output
+
+```text
+╭───────────────── CodeToPrompt ──────────────────╮
+│ Configuration for this run:                     │
+│ Root Directory: .                               │
+│ Include Patterns: ['*.py', '*.md']              │
+│ Exclude Patterns: ['tests/*']                   │
+│ Respect .gitignore: True                        │
+│ Show Line Numbers: False                        │
+│ Count Tokens: True                              │
+│ Max Tokens: 16,000                              │
+│ Tree Depth: 3                                   │
+╰─────────────────────────────────────────────────╯
+✓ Processing files... ━━━━━━━━━━━━━━━━━━━━━━━━ 100%
+╭──────────────── Processing Complete ───────────────╮
+│ Summary:                                           │
+│ Files Processed: 42                                │
+│ Total Tokens: 11,258                               │
+│ Output Destination: Clipboard                      │
+│ Copied to Clipboard: Yes                           │
+│                                                    │
+│ Top 3 Files by Tokens:                             │
+│   - codetoprompt/core.py (2,845 tokens)            │
+│   - codetoprompt/cli.py (2,101 tokens)             │
+│   - README.md (988 tokens)                         │
+│                                                    │
+│ Top 5 Extensions by Tokens:                        │
+│   - .py (8,432 tokens)                             │
+│   - .md (2,130 tokens)                             │
+│   - .yml (451 tokens)                              │
+│   - .toml (180 tokens)                             │
+│   - .gitignore (65 tokens)                         │
+╰────────────────────────────────────────────────────╯
+```
+
+### Analyzing a Codebase
+
+To get insights into your project's structure without generating a prompt, use the `analyse` command.
+
+```shell
+codetoprompt analyse .
+```
+
+This provides a clean, statistical report on file counts, lines of code, and token distribution.
+
+#### Sample Analysis Output
+
+```text
+╭────────────────── Codebase Analysis ─────────────────╮
+│ Configuration for this run:                          │
+│ Root Directory: .                                    │
+│ Include Patterns: ['*']                              │
+│ Exclude Patterns: []                                 │
+│ Respect .gitignore: True                             │
+╰──────────────────────────────────────────────────────╯
+✓ Processing files... ━━━━━━━━━━━━━━━━━━━━━━━━ 100%
+╭── Overall Project Summary ───╮
+│ Total Files:  42             │
+│ Total Lines:  1,890          │
+│ Total Tokens: 11,258         │
+╰──────────────────────────────╯
+╭─────────── Analysis by File Type (Top 10) ──────────────╮
+│ Extension   │ Files │ Tokens │  Lines │ Avg Tokens/File │
+├─────────────┼───────┼────────┼────────┼─────────────────┤
+│ .py         │    12 │  8,432 │  1,200 │             702 │
+│ .md         │     3 │  2,130 │    450 │             710 │
+│ .yml        │     1 │    451 │     80 │             451 │
+│ .toml       │     2 │    180 │     60 │              90 │
+│ .gitignore  │     1 │     65 │     30 │              65 │
+──────────────────────────────────────────────────────────╯
+╭─── Largest Files by Tokens (Top 10) ────╮
+│ File Path              │ Tokens │ Lines │
+├────────────────────────┼────────┼───────┤
+│ codetoprompt/core.py   │  2,845 │   400 │
+│ codetoprompt/cli.py    │  2,101 │   350 │
+│ README.md              │    988 │   200 │
+│ CHANGELOG.md           │    850 │   180 │
+│ pyproject.toml         │    110 │    40 │
+╰─────────────────────────────────────────╯
+```
+
+### Configuration Management
+
+`codetoprompt` remembers your preferences so you don't have to type them every time. The `config` command is your entrypoint for all settings management.
+
+#### Interactive Setup (`codetoprompt config`)
+
+Run the interactive wizard to set your personal defaults. This is a one-time setup.
+
+```shell
+codetoprompt config
+```
+
+#### Viewing Your Defaults (`codetoprompt config --show`)
+
+To see what your current saved settings are, use the `--show` flag.
+
+```shell
+codetoprompt config --show
+```
+
+#### Resetting Your Defaults (`codetoprompt config --reset`)
+
+If you want to clear your custom settings and return to the original defaults, use the `--reset` flag.
+
+```shell
+codetoprompt config --reset
+```
+
+### Python API
+
+You can also use `codetoprompt` as a library in your Python projects for more programmatic control.
+
+```python
+from codetoprompt import CodeToPrompt
+
+# Initialize the processor with detailed options
+processor = CodeToPrompt(
+    root_dir="/path/to/your/codebase",
+    include_patterns=["*.py", "*.js"],
+    exclude_patterns=["*.pyc", "__pycache__", "node_modules/*"],
+    respect_gitignore=True,
+    show_line_numbers=True,
+    max_tokens=8000,
+    tree_depth=3
+)
+
+# 1. Generate the complete prompt string
+prompt = processor.generate_prompt()
+print("Generated prompt!")
+
+# 2. Save the prompt to a file
+processor.save_to_file("prompt.txt")
+print("Saved prompt to prompt.txt")
+
+# 3. Get statistics about the generated prompt
+stats = processor.get_stats()
+print(f"\n--- Stats ---")
+print(f"Total files processed: {stats['files_processed']}")
+print(f"Total lines: {stats['total_lines']}")
+print(f"Total tokens: {stats['total_tokens']}")
+```
+
+## License
+
+MIT License - see LICENSE file for details
