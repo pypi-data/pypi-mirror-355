@@ -1,0 +1,235 @@
+Metadata-Version: 2.1
+Name: OERPredict
+Version: 1.0
+Summary: A machine learning library for predicting OER catalysis performance
+Home-page: https://github.com/liyihang1024/OERPredict
+Author: liyihang
+Author-email: liyihang@shu.edu.cn
+Project-URL: Documentation, https://yourprojectdocs.com
+Project-URL: Source, https://github.com/liyihang1024/OERPredict
+Project-URL: Tracker, https://github.com/liyihang1024/OERPredict/issues
+Project-URL: Homepage, https://github.com/liyihang1024/OERPredict
+Keywords: OER,machine learning,catalysis,prediction
+Platform: any
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.18.0
+Requires-Dist: pandas>=1.0.0
+Requires-Dist: scikit-learn>=0.22.0
+Requires-Dist: matplotlib>=3.0.0
+Requires-Dist: tensorflow>=2.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=5.0; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: sphinx_rtd_theme; extra == "docs"
+Requires-Dist: numpydoc; extra == "docs"
+
+# OERPredict
+
+**OERPredict** is a Python library for predicting Oxygen Evolution Reaction (OER) catalysis performance using machine learning models. This library provides regression and classification models for OER catalyst performance prediction, allowing researchers and scientists to efficiently analyze and predict the efficiency of various catalysts for energy conversion processes.
+
+## Features
+
+- **Machine Learning Models**: Implements regression and classification models based on `scikit-learn` for predicting OER catalyst performance.
+- **Data Preprocessing**: Includes utilities for data cleaning, normalization, and splitting for model training and evaluation.
+- **Model Evaluation**: Provides functions for evaluating model performance using common metrics like MSE, R², accuracy, and confusion matrix.
+- **Customization**: Users can easily modify the models to experiment with different machine learning algorithms or feature engineering techniques.
+
+## Installation
+
+To install the library, you can use `pip` from PyPI:
+
+```bash
+pip install OERPredict
+````
+
+Alternatively, if you want to install the library from the source code, you can clone the repository and use the following commands:
+
+```bash
+git clone https://github.com/liyihang1024/OERPredict.git
+cd OERPredict
+pip install .
+```
+
+### Dependencies
+
+The library requires the following Python packages:
+
+* `numpy>=1.18.0`
+* `pandas>=1.0.0`
+* `scikit-learn>=0.22.0`
+* `matplotlib>=3.0.0`
+* `tensorflow>=2.0.0` (if using deep learning models)
+
+These dependencies are automatically installed when you use `pip install OERPredict`.
+
+### Optional Development Dependencies
+
+To set up a development environment, you can install additional dependencies using:
+
+```bash
+pip install OERPredict[dev]
+```
+
+This will install tools for testing and code formatting, including:
+
+* `pytest`
+* `black`
+* `flake8`
+
+## Usage
+
+Once installed, you can start using `OERPredict` to build models and predict the OER performance of various catalysts.
+
+### Example: Regression Model
+
+The regression model predicts continuous values, such as OER catalyst performance efficiency.
+
+```python
+from OERPredict.regression import OERRegressor
+import pandas as pd
+
+# Load dataset
+data = pd.read_csv('data/dataset.csv')
+
+# Initialize and train the model
+regressor = OERRegressor(data)
+regressor.train()
+
+# Make predictions
+new_data = pd.DataFrame({'feature1': [1.0], 'feature2': [2.0], 'feature3': [0.6]})
+predictions = regressor.predict(new_data)
+print(predictions)
+```
+
+### Example: Classification Model
+
+The classification model predicts discrete categories, such as "High", "Medium", or "Low" catalyst efficiency.
+
+```python
+from OERPredict.classification import OERClassifier
+import pandas as pd
+
+# Load dataset
+data = pd.read_csv('data/dataset.csv')
+
+# Initialize and train the model
+classifier = OERClassifier(data)
+classifier.train()
+
+# Make predictions
+new_data = pd.DataFrame({'feature1': [1.0], 'feature2': [2.0], 'feature3': [0.6]})
+predictions = classifier.predict(new_data)
+print(predictions)
+```
+
+## Data Format
+
+The library expects datasets in CSV format with at least the following columns:
+
+1. **Features**: Numeric values representing the properties of the OER catalyst.
+2. **Target (Regression)**: For regression tasks, the target column should contain continuous values representing OER performance.
+3. **Target (Classification)**: For classification tasks, the target column should contain categorical values (e.g., "High", "Medium", "Low").
+
+### Example Dataset (Regression)
+
+```csv
+feature1, feature2, feature3, OER_performance
+1.2, 3.4, 0.5, 0.85
+2.1, 4.2, 0.8, 0.90
+1.5, 3.1, 0.6, 0.80
+```
+
+### Example Dataset (Classification)
+
+```csv
+feature1, feature2, feature3, OER_class
+1.2, 3.4, 0.5, High
+2.1, 4.2, 0.8, High
+1.5, 3.1, 0.6, Low
+```
+
+## Model Evaluation
+
+The library includes built-in evaluation functions for assessing model performance.
+
+### For Regression Models:
+
+* **Mean Squared Error (MSE)**
+* **R² Score**
+
+### For Classification Models:
+
+* **Accuracy**
+* **Confusion Matrix**
+* **Classification Report** (Precision, Recall, F1-Score)
+
+Example:
+
+```python
+from OERPredict.evaluation import evaluate_regression_model, evaluate_classification_model
+
+# Evaluate regression model
+evaluate_regression_model(y_true, y_pred)
+
+# Evaluate classification model
+evaluate_classification_model(y_true, y_pred)
+```
+
+## Changelog
+
+### \[0.5] - 2024-06-15
+
+* **Added**: Full support for regression and classification models.
+* **Improved**: Model training performance and optimization.
+* **Fixed**: Data preprocessing bug when handling missing values.
+* **Updated**: Documentation for data format and usage examples.
+
+### \[0.4] - 2024-05-10
+
+* **Added**: Initial implementation of the classification model for OER catalysis.
+* **Fixed**: Bug in model evaluation where metrics were not computed for classification tasks.
+* **Improved**: Increased compatibility with newer versions of `scikit-learn` and `pandas`.
+
+### \[0.3] - 2024-03-25
+
+* **Initial Release**: First version released with regression model for predicting OER performance based on input features.
+
+## Contributing
+
+We welcome contributions to improve the `OERPredict` library. To contribute:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and ensure all tests pass.
+4. Submit a pull request with a description of your changes.
+
+## License
+
+`OERPredict` is released under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Acknowledgments
+
+We would like to thank the contributors and the scientific community for their support in developing machine learning models for catalysis research.
+
+## Contact
+
+For any questions or suggestions, please feel free to reach out to the author at:
+
+* **Author**: liyihang
+* **Email**: [liyihang@shu.edu.cn](mailto:liyihang@shu.edu.cn)
+* **GitHub**: [https://github.com/liyihang1024/OERPredict](https://github.com/liyihang1024/OERPredict)
