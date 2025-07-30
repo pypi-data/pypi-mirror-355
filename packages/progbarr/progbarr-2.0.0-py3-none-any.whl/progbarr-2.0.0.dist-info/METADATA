@@ -1,0 +1,148 @@
+Metadata-Version: 2.4
+Name: progbarr
+Version: 2.0.0
+Summary: Progbarr is a Python library for creating highly performant and customizable progress bars in the console.
+Author-email: "Haripo Wesley T." <haripowesleyt@proton.me>
+Maintainer-email: "Haripo Wesley T." <haripowesleyt@proton.me>
+License: MIT License
+        
+        Copyright (c) 2025 Haripo Wesley T.
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/haripowesleyt/progbarr
+Project-URL: Issues, https://github.com/haripowesleyt/progbarr/issues
+Project-URL: Repository, https://github.com/haripowesleyt/progbarr
+Keywords: progress,progress bar
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# Progbarr
+
+[![PyPI - Version](https://img.shields.io/pypi/v/progbarr)](https://pypi.org/project/progbarr/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/progbarr)](https://pypi.org/project/progbarr/)
+[![License](https://img.shields.io/pypi/l/progbarr)](https://github.com/haripowesleyt/progbarr/blob/main/LICENSE)
+[![Python Versions](https://img.shields.io/pypi/pyversions/progbarr)](https://pypi.org/project/progbarr/)
+
+Progbarr is a Python library for creating highly performant and customizable progress bars in the console.
+
+## Features
+
+- Supports filling with **any UNICODE character**
+- Supports setting foreground & background **colors**
+    - by [**name**](https://htmlcolorcodes.com/color-names/) (e.g., `green`),
+    - by **HEX** (e.g., `#ff00ff`), or
+    - by **RGB** (e.g., `128,0,128`)
+- Minimal performance overhead
+
+## Installation
+
+```bash
+pip install progbarr
+```
+
+## Usage
+
+### Syntax
+
+```python
+from progbarr import ProgressBar
+
+with ProgressBar(message, tasks, length, chars, color, bgcolor) as pb:
+    for _ in range(tasks):
+      # Perform some task
+      pb.advance()
+```
+
+The table below explains the constructor parameters:
+
+| Parameter | Type           | Description         | Tip                                   |
+|-----------|----------------|---------------------|---------------------------------------|
+| `message` | `str`          | What is being done? | Use present participle form           |
+| `tasks`   | `int`          | Number of tasks     | Must equal loop iterations            |
+| `length`  | `int`          | Bar length          | Must be a factor of `tasks`           |
+| `chars`   | `str`          | Bar characters      | border + fill + head + empty + border |
+| `color`   | `str` / `None` | Foreground color    | Use `None` for terminal default       |
+| `bgcolor` | `str` / `None` | Background color    | Use `None` for terminal default       |
+
+### Example (Classic)
+
+```python
+from time import sleep
+from progbarr import ProgressBar
+
+with ProgressBar("Sleeping", 20, 20, "[## ]", None, None) as pb:
+    for _ in range(20):
+        sleep(0.35)
+        pb.advance()
+```
+
+![example-classic](https://raw.githubusercontent.com/haripowesleyt/progbarr/main/assets/images/example-classic.gif)
+
+### More Examples
+
+**NB:** The following example progress bars simulate the same tasks as the classic example above.
+
+#### 1. Block
+
+```python
+with ProgressBar("Sleeping", 20, 20, "│   │", None, "orange") as pb: ...
+```
+
+![example-block](https://raw.githubusercontent.com/haripowesleyt/progbarr/main/assets/images/example-block.gif)
+
+#### 2. Circles
+
+```python
+with ProgressBar("Sleeping", 20, 20, " ●●○ ", "crimson", None) as pb: ...
+```
+![example-circles](https://raw.githubusercontent.com/haripowesleyt/progbarr/main/assets/images/example-circles.gif)
+
+#### 3. Squares
+
+```python
+with ProgressBar("Sleeping", 20, 20, " ◼◼◻ ", "teal", None) as pb: ...
+```
+
+![example-square](https://raw.githubusercontent.com/haripowesleyt/progbarr/main/assets/images/example-squares.gif)
+
+#### 4. Track
+
+```python
+with ProgressBar("Sleeping", 20, 20, " ―⚈― ", "darkgrey", None) as pb: ...
+```
+
+![example-track](https://raw.githubusercontent.com/haripowesleyt/progbarr/main/assets/images/example-track.gif)
+
+## License
+
+This project is licensed under the **MIT License** – see the [LICENSE](https://raw.githubusercontent.com/haripowesleyt/progbarr/main/LICENSE) file for details.
