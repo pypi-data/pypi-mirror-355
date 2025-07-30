@@ -1,0 +1,71 @@
+Metadata-Version: 2.4
+Name: mbls
+Version: 0.0.11
+Summary: Model-Based Local Search algorithm designer built on Routix
+Project-URL: Repository, https://github.com/junetech/mbls.git
+Author-email: JuneTech <junetech0@gmail.com>
+License-Expression: MIT
+Requires-Python: ==3.11.*
+Requires-Dist: matplotlib>=3.10.3
+Requires-Dist: routix>=0.0.11
+Description-Content-Type: text/markdown
+
+# mbls
+
+A Python toolkit for **Model-Based Local Search** (MBLS) algorithm design, built on top of [Routix](https://pypi.org/project/routix/). This library provides a modular framework for orchestrating subroutines, managing experimental runs, and integrating mathematical models into heuristic search routines, with a focus on CP-SAT (OR-Tools) integration.
+
+## Features
+
+- **Modular Architecture**: Compose and extend LNS-style or hybrid metaheuristics using reusable subroutine components.
+- **CP-SAT Integration**: Includes ready-to-use classes for fixed and optional interval scheduling, custom CP models, and solution progress logging.
+- **Experiment Management**: Leverage Routix for structured routine execution, logging, timers, and experiment summarization.
+- **Extensible Modeling Layer**: Easily add custom models, constraints, or solvers for new problem domains.
+- **Objective Tracking**: Built-in utilities for tracking objective values and bounds over time.
+- **Visualization Tools**: Added painter module for objective value and time series plotting.
+
+## Installation
+
+```sh
+pip install mbls
+```
+
+- Requires Python 3.11
+- Core dependency: `routix`
+- For CP-SAT features: `ortools`
+
+## Quick Example
+
+```python
+from mbls.cpsat import CustomCpModel
+
+# Initialize model
+model = CustomCpModel()
+
+# Define variables, constraints, and objective
+# ...
+
+# Configure and solve
+model.init_solver(computational_time=10.0, num_workers=4)
+status, elapsed, ub, lb = model.solve_and_get_status(10.0, 4)
+
+print(f"Status: {status}, UB: {ub}, LB: {lb}")
+```
+
+## Extending mbls
+
+`mbls` is designed for research and experimentation. You can:
+
+- Subclass `CpSubroutineController` to define custom LNS or hybrid metaheuristics
+- Extend `CustomCpModel` or use `CpModelWithFixedInterval` / `CpModelWithOptionalFixedInterval` for new scheduling domains
+- Compose repeatable flows with structured routine names and modular inputs
+
+## Project Structure
+
+- `src/mbls/` — Core framework and Routix integration
+- `src/mbls/cpsat/` — CP-SAT models, controllers, and utilities
+- `src/mbls/painter/` — Visualization tools for plotting objective values and time series
+- `tests/` — Unit tests for models and controllers
+
+## License
+
+MIT License
