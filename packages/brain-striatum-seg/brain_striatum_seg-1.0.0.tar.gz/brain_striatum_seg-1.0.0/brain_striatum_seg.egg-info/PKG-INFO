@@ -1,0 +1,113 @@
+Metadata-Version: 2.4
+Name: brain-striatum-seg
+Version: 1.0.0
+Summary: Automated brain and striatum segmentation from PET images using cascaded nnUNet models
+Author: Bong-il Song,Yeaeun Song
+Author-email: nuclesong@gmail.com, itscarolinesong@gmail.com
+License: Apache 2.0
+Project-URL: Bug Reports, https://github.com/itscarolinesong/brain-striatum-seg/issues
+Project-URL: Models, https://zenodo.org/records/15662802
+Project-URL: Documentation, https://pypi.org/project/brain-striatum-seg/
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Requires-Python: >=3.8,<3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: nnunetv2<2.6,>=2.2
+Requires-Dist: acvl-utils>=0.2
+Requires-Dist: blosc2>=2.0.0
+Requires-Dist: connected-components-3d
+Requires-Dist: batchgenerators>=0.25
+Requires-Dist: nibabel>=3.2.0
+Requires-Dist: SimpleITK<=2.3.1,>=2.1.0
+Requires-Dist: scikit-image>=0.19.0
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: scipy>=1.7.0
+Requires-Dist: pandas>=1.3.0
+Requires-Dist: tqdm>=4.62.0
+Requires-Dist: requests>=2.25.0
+Requires-Dist: packaging>=20.0
+Requires-Dist: psutil>=5.8.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Brain-Striatum Segmentation
+
+[![PyPI version](https://badge.fury.io/py/brain-striatum-seg.svg)](https://badge.fury.io/py/brain-striatum-seg)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
+Automated brain and striatum segmentation from PET images using cascaded nnUNet models.
+
+## 🧠 Overview
+
+This package implements a two-stage segmentation pipeline:
+
+1. **Brain Extraction**: Segments the brain region from PET images
+2. **Brain Cropping**: Applies the brain mask to focus on brain tissue  
+3. **Striatum Segmentation**: Segments the striatum from brain-cropped images
+
+## 📦 Installation
+
+```bash
+pip install brain-striatum-seg
+```
+
+## 🚀 Quick Start
+
+### Command Line Interface
+```bash
+# Process single file
+brain-striatum-seg -i input.nii.gz -o output_dir/
+
+# Process multiple files
+brain-striatum-seg -i input_directory/ -o output_directory/
+```
+
+### Python API
+```python
+from brain_striatum_seg import brain_striatum_segmentation
+
+# Process and save to file
+brain_striatum_segmentation("input.nii.gz", "output_dir/")
+
+# Return nibabel image
+result_img = brain_striatum_segmentation("input.nii.gz")
+```
+
+## 📚 Documentation
+
+- **Input**: PET images in NIfTI format (`.nii.gz`)
+- **Output**: Binary segmentation masks (`.nii.gz`)
+
+## 📄 Citation
+
+If you use this tool in your research, please cite our paper: [Your Citation Here]
+
+Please also cite nnUNet: https://github.com/MIC-DKFZ/nnUNet
+
+## 📜 License
+
+Apache License 2.0
+
+## 🤝 Contributing
+
+Contributions welcome! Please open an issue or submit a pull request.
