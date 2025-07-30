@@ -1,0 +1,147 @@
+Metadata-Version: 2.4
+Name: lazylabel-gui
+Version: 1.0.8
+Summary: An image segmentation GUI for generating mask tensors.
+Author-email: "Deniz N. Cakan" <deniz.n.cakan@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2025 Deniz N. Cakan
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/dnzckn/lazylabel
+Project-URL: Bug Tracker, https://github.com/dnzckn/lazylabel/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Environment :: X11 Applications :: Qt
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PyQt6>=6.9.0
+Requires-Dist: pyqtdarktheme==2.1.0
+Requires-Dist: torch>=2.7.1
+Requires-Dist: torchvision>=0.22.1
+Requires-Dist: segment-anything==1.0
+Requires-Dist: numpy>=2.1.2
+Requires-Dist: opencv-python>=4.11.0.86
+Requires-Dist: scipy>=1.15.3
+Requires-Dist: requests>=2.32.4
+Requires-Dist: tqdm>=4.67.1
+Dynamic: license-file
+
+# <img src="https://raw.githubusercontent.com/dnzckn/LazyLabel/main/src/lazylabel/demo_pictures/logo2.png" alt="LazyLabel Logo" style="height:60px; vertical-align:middle;" /> <img src="https://raw.githubusercontent.com/dnzckn/LazyLabel/main/src/lazylabel/demo_pictures/logo_black.png" alt="LazyLabel Cursive" style="height:60px; vertical-align:middle;" />
+LazyLabel is an intuitive, AI-assisted image segmentation tool. It uses Meta's Segment Anything Model (SAM) for quick, precise mask generation, alongside advanced polygon editing for fine-tuned control. Outputs are saved in a clean, one-hot encoded `.npz` format for easy machine learning integration and in YOLO `.txt` format.
+
+Inspired by [LabelMe](https://github.com/wkentaro/labelme?tab=readme-ov-file#installation) and [Segment-Anything-UI](https://github.com/branislavhesko/segment-anything-ui/tree/main).
+
+![LazyLabel Screenshot](https://raw.githubusercontent.com/dnzckn/LazyLabel/main/src/lazylabel/demo_pictures/gui.PNG)
+
+---
+
+## ✨ Core Features
+
+* **AI-Powered Segmentation**: Generate masks with simple left-click (positive) and right-click (negative) interactions.
+* **Vector Polygon Tool**: Full control to draw, edit, and reshape polygons. Drag vertices or move entire shapes.
+* **Advanced Class Management**: Assign multiple segments to a single class ID for organized labeling.
+* **Intuitive Editing & Refinement**: Select, merge, and re-order segments.
+* **Interactive UI**: Color-coded segments, sortable lists, and hover highlighting.
+* **Smart I/O**: Loads existing `.npz` masks; saves work as clean, one-hot encoded outputs.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+**Python 3.10**
+
+### Installation
+
+#### For Users [via PyPI](https://pypi.org/project/lazylabel-gui/)
+1.  Install LazyLabel directly:
+    ```bash
+    pip install lazylabel-gui
+    ```
+2.  Run the application:
+    ```bash
+    lazylabel-gui
+    ```
+
+#### For Developers (from Source)
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/dnzckn/LazyLabel.git
+    cd LazyLabel
+    ```
+2.  Install in editable mode, which links the installed package to your source directory:
+    ```bash
+    pip install -e .
+    ```
+3.  Run the application:
+    ```bash
+    lazylabel-gui
+    ```
+
+**Note**: On the first run, the application will automatically download the SAM model checkpoint (~2.5 GB) from Meta's repository to a local cache. This is a one-time download.
+
+---
+
+## ⌨️ Controls & Keybinds
+
+### Modes
+| Key | Action |
+|---|---|
+| `1` | Enter **Point Mode** (for AI segmentation). |
+| `2` | Enter **Polygon Drawing Mode**. |
+| `E` | Toggle **Selection Mode** to select existing segments. |
+| `R` | Enter **Edit Mode** for selected polygons (drag shape or vertices). |
+| `Q` | Toggle **Pan Mode** (click and drag the image). |
+
+### Actions
+| Key(s) | Action |
+|---|---|
+| `L-Click` | Add positive point (Point Mode) or polygon vertex. |
+| `R-Click` | Add negative point (Point Mode). |
+| `Ctrl + Z` | Undo last point. |
+| `Spacebar` | Finalize and save current AI segment. |
+| `Enter` | **Save final mask for the current image to a `.npz` file.** |
+| `M` | **Merge** selected segments into a single class. |
+| `V` / `Delete` / `Backspace`| **Delete** selected segments. |
+| `C` | Clear temporary points/vertices. |
+| `W/A/S/D` | Pan image. |
+| `Scroll Wheel` | Zoom-in or -out. |
+
+---
+
+## 📦 Output Format
+
+LazyLabel saves your work as a compressed NumPy array (`.npz`) with the same name as your image file.
+
+The file contains a single data key, `'mask'`, holding a **one-hot encoded tensor** with the shape `(H, W, C)`:
+* `H`: Image height.
+* `W`: Image width.
+* `C`: Total unique classes.
+
+Each channel is a binary mask for a class, combining all assigned segments into a clean, ML-ready output.
+
+---
+
+## ☕ Support LazyLabel
+[If you found LazyLabel helpful, consider supporting the project!](https://buymeacoffee.com/dnzckn)
