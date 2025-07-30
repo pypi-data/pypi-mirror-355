@@ -1,0 +1,54 @@
+
+#ifdef ECL_DYNAMIC_VV
+static cl_object *VV;
+#else
+static cl_object VV[VM];
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+static cl_object L789_cdfmat_minrowindex__i_1_(cl_object , cl_object );
+static cl_object L790_cdfmat_mincolindex__i_2_(cl_object , cl_object );
+static cl_object L791_cdfmat_nrows__nni_3_(cl_object , cl_object );
+static cl_object L792_cdfmat_ncols__nni_4_(cl_object , cl_object );
+static cl_object L793_cdfmat_maxrowindex__i_5_(cl_object , cl_object );
+static cl_object L794_cdfmat_maxcolindex__i_6_(cl_object , cl_object );
+static cl_object L795_cdfmat_qelt__2ic_7_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L796_cdfmat_elt__2ic_8_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L797_cdfmat_qsetelt___2i2c_9_(cl_object , cl_object , cl_object , cl_object , cl_object );
+static cl_object L798_cdfmat_setelt___2i2c_10_(cl_object , cl_object , cl_object , cl_object , cl_object );
+static cl_object L799_cdfmat_empty___11_(cl_object );
+static cl_object L800_cdfmat_qnew_2nni__12_(cl_object , cl_object , cl_object );
+static cl_object L801_cdfmat_new_2nnic__13_(cl_object , cl_object , cl_object , cl_object );
+static cl_object L802_complexdoublefloatmatrix__();
+static cl_object L803_complexdoublefloatmatrix_();
+static cl_object Cblock;
+#define VM 67
+#define VMtemp 45
+#define ECL_DEFINE_SETF_FUNCTIONS 
+#ifdef __cplusplus
+}
+#endif
+/*
+ * Exported Lisp functions
+ */
+#define compiler_cfuns_size 15
+static const struct ecl_cfunfixed compiler_cfuns[] = {
+ /*t,m,narg,padding,name=function-location,block=name-location,entry,entry_fixed,file,file_position*/
+{0,0,2,0,ecl_make_fixnum(41),ecl_make_fixnum(0),(cl_objectfn)L789_cdfmat_minrowindex__i_1_,NULL,ECL_NIL,ecl_make_fixnum(64)},
+{0,0,2,0,ecl_make_fixnum(42),ecl_make_fixnum(2),(cl_objectfn)L790_cdfmat_mincolindex__i_2_,NULL,ECL_NIL,ecl_make_fixnum(197)},
+{0,0,2,0,ecl_make_fixnum(43),ecl_make_fixnum(3),(cl_objectfn)L791_cdfmat_nrows__nni_3_,NULL,ECL_NIL,ecl_make_fixnum(320)},
+{0,0,2,0,ecl_make_fixnum(44),ecl_make_fixnum(5),(cl_objectfn)L792_cdfmat_ncols__nni_4_,NULL,ECL_NIL,ecl_make_fixnum(471)},
+{0,0,2,0,ecl_make_fixnum(45),ecl_make_fixnum(7),(cl_objectfn)L793_cdfmat_maxrowindex__i_5_,NULL,ECL_NIL,ecl_make_fixnum(566)},
+{0,0,2,0,ecl_make_fixnum(46),ecl_make_fixnum(8),(cl_objectfn)L794_cdfmat_maxcolindex__i_6_,NULL,ECL_NIL,ecl_make_fixnum(660)},
+{0,0,4,0,ecl_make_fixnum(47),ecl_make_fixnum(9),(cl_objectfn)L795_cdfmat_qelt__2ic_7_,NULL,ECL_NIL,ecl_make_fixnum(808)},
+{0,0,4,0,ecl_make_fixnum(48),ecl_make_fixnum(11),(cl_objectfn)L796_cdfmat_elt__2ic_8_,NULL,ECL_NIL,ecl_make_fixnum(1015)},
+{0,0,5,0,ecl_make_fixnum(49),ecl_make_fixnum(12),(cl_objectfn)L797_cdfmat_qsetelt___2i2c_9_,NULL,ECL_NIL,ecl_make_fixnum(1230)},
+{0,0,5,0,ecl_make_fixnum(50),ecl_make_fixnum(14),(cl_objectfn)L798_cdfmat_setelt___2i2c_10_,NULL,ECL_NIL,ecl_make_fixnum(1471)},
+{0,0,1,0,ecl_make_fixnum(51),ecl_make_fixnum(15),(cl_objectfn)L799_cdfmat_empty___11_,NULL,ECL_NIL,ecl_make_fixnum(1732)},
+{0,0,3,0,ecl_make_fixnum(52),ecl_make_fixnum(16),(cl_objectfn)L800_cdfmat_qnew_2nni__12_,NULL,ECL_NIL,ecl_make_fixnum(1867)},
+{0,0,4,0,ecl_make_fixnum(53),ecl_make_fixnum(18),(cl_objectfn)L801_cdfmat_new_2nnic__13_,NULL,ECL_NIL,ecl_make_fixnum(2011)},
+{0,0,0,0,ecl_make_fixnum(54),ecl_make_fixnum(19),(cl_objectfn)L802_complexdoublefloatmatrix__,NULL,ECL_NIL,ecl_make_fixnum(2947)},
+{0,0,0,0,ecl_make_fixnum(63),ecl_make_fixnum(36),(cl_objectfn)L803_complexdoublefloatmatrix_,NULL,ECL_NIL,ecl_make_fixnum(9063)},
+};
