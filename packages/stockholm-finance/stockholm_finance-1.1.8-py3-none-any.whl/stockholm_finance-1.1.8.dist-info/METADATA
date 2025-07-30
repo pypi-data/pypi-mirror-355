@@ -1,0 +1,783 @@
+Metadata-Version: 2.1
+Name: stockholm-finance
+Version: 1.1.8
+Summary: Advanced financial sentiment analysis tool with policy impact assessment
+Home-page: https://github.com/aykaym/stockholm
+Author: Andrew Farney
+Author-email: Andrew <contact@andrewfarney.net>
+Maintainer-email: Andrew <contact@andrewfarney.net>
+License: MIT License
+        
+        Copyright (c) 2025 Andrew Farney
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/aykaym/stockholm
+Project-URL: Documentation, https://github.com/aykaym/stockholm/blob/main/README.md
+Project-URL: Repository, https://github.com/aykaym/stockholm
+Project-URL: Bug Tracker, https://github.com/aykaym/stockholm/issues
+Project-URL: Changelog, https://github.com/aykaym/stockholm/blob/main/CHANGELOG.md
+Keywords: finance,sentiment-analysis,nlp,market-analysis,policy-analysis,trading,investment
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: textblob>=0.17.1
+Requires-Dist: yfinance>=0.2.18
+Requires-Dist: requests>=2.31.0
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: feedparser>=6.0.10
+Requires-Dist: textual>=0.41.0
+Requires-Dist: rich>=13.5.0
+Requires-Dist: textual-plotext>=0.2.0
+Requires-Dist: python-dateutil>=2.8.2
+Requires-Dist: pytz>=2023.3
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: pytest-xdist>=3.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: bandit>=1.7.0; extra == "dev"
+Requires-Dist: safety>=2.3.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=6.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.2.0; extra == "docs"
+Requires-Dist: myst-parser>=1.0.0; extra == "docs"
+Provides-Extra: performance
+Requires-Dist: pytest-benchmark>=4.0.0; extra == "performance"
+Requires-Dist: memory-profiler>=0.60.0; extra == "performance"
+Requires-Dist: psutil>=5.9.0; extra == "performance"
+
+# 📊 Stockholm Finance
+
+[![CI/CD Pipeline](https://github.com/aykaym/stockholm/actions/workflows/ci.yml/badge.svg)](https://github.com/aykaym/stockholm/actions/workflows/ci.yml)
+[![PyPI version](https://badge.fury.io/py/stockholm-finance.svg)](https://badge.fury.io/py/stockholm-finance)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](https://github.com/aykaym/stockholm/pkgs/container/stockholm)
+
+**Advanced financial sentiment analysis with interactive terminal dashboard, intelligent caching, and real-time market data integration.**
+
+## 🚀 Quick Start
+
+```bash
+# Install
+pip install stockholm-finance
+
+# Run
+stockholm-finance
+```
+
+## ✨ Features
+
+- **🎯 Sentiment Analysis**: NLP-powered market sentiment from financial news
+- **📊 Interactive Dashboard**: Professional terminal UI with real-time data  
+- **💾 Smart Caching**: TTL-based caching for optimal performance
+- **🏛️ Policy Analysis**: Government policy impact assessment
+- **📈 Live Charts**: Interactive price history and trend visualization
+- **🔄 Real-time Updates**: Live market data integration
+
+## 📖 Usage
+
+### Command Line
+```bash
+stockholm-finance                    # Launch interactive dashboard
+stockholm-finance --quick            # Quick startup mode (fewer tickers)
+stockholm-finance --verbose          # Debug information
+stockholm-finance --warm-cache       # Pre-warm cache for faster startup
+stockholm-finance --quick --warm-cache  # Quick mode with cache warming
+```
+
+### Performance Optimization
+Stockholm includes several performance optimizations for faster startup:
+
+- **🔥 Hot Loading**: Dashboard appears immediately while data loads progressively in background
+- **📦 Intelligent Caching**: Reduces API calls by 80-90% with smart TTL-based caching
+- **⚡ Background Data Fetching**: Continuous cache warming while dashboard is running
+- **🚀 Cache Pre-warming**: Use `--warm-cache` to populate cache before startup
+
+```bash
+# For fastest startup experience:
+stockholm-finance --quick --warm-cache
+
+# Benchmark performance improvements:
+python scripts/benchmark_startup.py
+```
+
+### Python API
+```python
+from src.core.financial_analyzer import main
+main()  # Launch dashboard programmatically
+```
+
+## 🏗️ Development
+
+### Setup
+```bash
+git clone https://github.com/aykaym/stockholm.git
+cd stockholm
+pip install -e ".[dev]"
+```
+
+### Testing
+```bash
+pytest tests/ -v                    # Run tests
+pytest tests/ --cov=src            # With coverage
+```
+
+### Code Quality
+```bash
+trunk check --all                  # Lint all files
+trunk fmt                          # Format code
+```
+
+## 🚀 Releases
+
+Releases are automated via GitHub Actions:
+
+```bash
+git tag v1.0.x                     # Create version tag
+git push origin v1.0.x             # Trigger release pipeline
+```
+
+The pipeline automatically:
+- ✅ Runs tests and quality checks
+- ✅ Builds clean distribution packages  
+- ✅ Publishes to PyPI as `stockholm-finance`
+- ✅ Creates GitHub release with artifacts
+- ✅ Builds and pushes Docker image
+
+## 🤖 AI Assistant Context
+
+> **For AI assistants working with this codebase:**
+
+### Code Style & Quality
+- **Linter**: Uses [Trunk](https://trunk.io) for code quality (Black + Ruff)
+- **Pre-commit hooks**: Automatically run `trunk check --fix` before commits
+- **Style**: Follow Black formatting, 88-character line limit
+- **Imports**: Use isort for import organization
+
+### Project Structure
+```
+src/
+├── core/                     # Financial analysis engines
+│   ├── financial_analyzer.py # Main entry point & orchestration
+│   ├── sentiment_analyzer.py # NLP-based market sentiment analysis
+│   ├── policy_analyzer.py    # Government policy impact analysis
+│   └── earnings_fetcher.py   # Quarterly earnings data fetching
+├── data/                     # Data fetching and caching
+│   ├── data_fetcher.py       # Multi-source data aggregation
+│   ├── cached_data_fetcher.py# Cached API wrappers
+│   └── cache_manager.py      # Smart TTL cache management
+├── ui/                       # Textual dashboard interface
+│   ├── textual_dashboard.py  # Interactive TUI dashboard
+│   └── display_utils.py      # Terminal output utilities
+└── config/                   # Configuration management
+    └── config.py             # Application configuration
+```
+
+### Key Technologies
+- **UI Framework**: [Textual](https://textual.textualize.io/) for terminal interface
+- **Charts**: `textual_plotext` for interactive terminal plots
+- **Data**: `yfinance` for market data, `feedparser` for news
+- **NLP**: `textblob` for sentiment analysis
+- **Caching**: Custom TTL-based file caching system
+
+### Core Systems
+
+#### **Performance Optimization System**
+Stockholm includes advanced performance optimizations for instant startup and responsive user experience.
+
+**🔥 Hot Loading Architecture:**
+```python
+# Progressive data loading phases
+LOADING_PHASES = {
+    'critical': ['prices', 'basic_market_data'],     # Load first (2-3s)
+    'secondary': ['news', 'government_data'],        # Load second (5-8s)
+    'analysis': ['sentiment', 'policy_analysis'],    # Complete analysis (10-15s)
+}
+
+# Background data fetching
+class BackgroundDataFetcher:
+    def start_background_fetching(self):
+        # Continuous cache warming while dashboard runs
+        # Updates UI components as fresh data arrives
+        # Reduces perceived startup time by 70%
+```
+
+**⚡ Startup Performance Comparison:**
+- **Cold Start** (empty cache): ~25-30 seconds
+- **Warm Start** (pre-warmed cache): ~8-12 seconds
+- **Hot Loading** (progressive): ~2-3 seconds to UI, data loads in background
+
+**🚀 Performance Features:**
+1. **Immediate UI Display**: Dashboard appears in 2-3 seconds
+2. **Progressive Data Loading**: Critical data first, analysis second
+3. **Background Cache Warming**: Continuous data ingestion while running
+4. **Smart Cache Pre-warming**: `--warm-cache` flag for fastest startup
+
+#### **Intelligent Caching System**
+The caching system is the performance backbone of Stockholm, achieving **85% API call reduction**.
+
+**Architecture:**
+```python
+# TTL Configuration (in minutes)
+CACHE_TTL = {
+    'news': 15,           # Financial news updates
+    'prices': 5,          # Real-time stock prices
+    'company_names': 1440, # Company metadata (24 hours)
+    'market_data': 10,    # Market indices
+    'policy_news': 30,    # Government announcements
+    'analyst_data': 60,   # Analyst recommendations
+    'earnings': 1440,     # Quarterly earnings data
+}
+```
+
+**Cache Key Generation:**
+- Uses MD5 hashes of request parameters
+- Format: `{data_type}_{hash}.cache`
+- Example: `prices_a1b2c3d4.cache` for AAPL price data
+
+**Performance Metrics:**
+- **Cold cache**: ~81 API calls for full dashboard
+- **Warm cache**: ~40 API calls (51% reduction)
+- **Hot cache**: ~25 API calls (69% reduction)
+- **Cache hit rate**: 70%+ on subsequent runs
+
+**Cache Management:**
+```bash
+# Monitor cache performance
+python tools/cache_monitor.py --stats
+
+# Clear specific cache types
+python tools/cache_monitor.py --clear news
+
+# Emergency cache clear
+python tools/clear_all_cache.py
+```
+
+**Implementation Details:**
+- File-based storage in `cache/` directory
+- Atomic writes to prevent corruption
+- Request tracking in `request_log.json`
+- Automatic cleanup of expired entries
+- Thread-safe operations for concurrent access
+
+#### **Sentiment Analysis Engine**
+Advanced NLP system for market sentiment analysis with multi-ticker support.
+
+**Core Algorithm:**
+```python
+def analyze_sentiment_around_ticker(text, ticker):
+    """Context-aware sentiment analysis around ticker mentions."""
+    # 1. Find ticker positions in text
+    # 2. Extract surrounding context (±50 words)
+    # 3. Apply TextBlob sentiment analysis
+    # 4. Weight by proximity to ticker mention
+    # 5. Return sentiment score (-1 to +1)
+```
+
+**Multi-Ticker Detection:**
+- Regex patterns for ticker identification: `r'\b[A-Z]{1,5}\b'`
+- Context validation against known ticker list
+- Handles edge cases: `$AAPL`, `AAPL:`, `(AAPL)`
+- Filters false positives (common words like "IT", "US")
+
+**Batch Processing:**
+- Processes 100+ articles in parallel
+- Memory-efficient streaming for large datasets
+- Error handling for malformed articles
+- Progress tracking for long operations
+
+**Sector Classification:**
+```python
+SECTOR_MAPPING = {
+    'AAPL': 'Technology',
+    'MSFT': 'Technology',
+    'JPM': 'Financial Services',
+    'JNJ': 'Healthcare',
+    # ... 130+ tickers mapped
+}
+```
+
+**Conflict Detection:**
+- Identifies articles mentioning competing stocks
+- Calculates sentiment divergence between tickers
+- Flags potential market-moving conflicts
+- Used for risk assessment and correlation analysis
+
+#### **Policy Analysis System**
+Government policy impact assessment with weighted sentiment analysis.
+
+**Data Sources:**
+- Federal Reserve RSS feeds (5 different categories)
+- Treasury Department announcements
+- SEC regulatory updates
+- Congressional financial committee news
+
+**Impact Classification Algorithm:**
+```python
+POLICY_KEYWORDS = {
+    'high_impact': [
+        'interest rate', 'federal funds rate', 'monetary policy',
+        'quantitative easing', 'inflation target', 'recession',
+        'fomc', 'rate hike', 'rate cut', 'dovish', 'hawkish'
+    ],
+    'medium_impact': [
+        'banking regulation', 'stress test', 'capital requirements',
+        'liquidity', 'financial stability', 'systemic risk'
+    ],
+    'sector_specific': [
+        'energy policy', 'healthcare reform', 'tax policy',
+        'trade policy', 'infrastructure', 'climate policy'
+    ]
+}
+
+def calculate_policy_impact(article):
+    """Calculate policy impact score (0-5 scale)."""
+    # 1. Keyword matching with weights
+    # 2. Source credibility scoring
+    # 3. Recency factor (newer = higher impact)
+    # 4. Article length consideration
+    # 5. Return weighted impact score
+```
+
+**Combined Analysis Formula:**
+```python
+final_sentiment = (market_sentiment * 0.7) + (policy_sentiment * 0.3)
+```
+
+**Policy Categories:**
+- **Monetary Policy**: Fed decisions, interest rates, QE
+- **Regulatory**: Banking rules, compliance, oversight
+- **Enforcement**: Penalties, investigations, sanctions
+- **Economic**: GDP, employment, inflation data
+
+#### **Interactive Dashboard**
+Professional terminal UI built with Textual framework.
+
+**Tab Architecture:**
+1. **Overview Tab**: Market summary, top performers, sector analysis
+2. **Tickers Tab**: Interactive table with 130+ stocks, real-time data
+3. **News Tab**: Categorized news tree with sentiment visualization
+4. **Policy Tab**: Government policy analysis and impact assessment
+
+**Real-time Update System:**
+```python
+class DashboardApp(App):
+    def __init__(self):
+        self.refresh_timer = self.set_interval(300, self.refresh_data)  # 5 min
+
+    async def refresh_data(self):
+        """Background data refresh without blocking UI."""
+        # 1. Check cache validity
+        # 2. Fetch only expired data
+        # 3. Update UI components
+        # 4. Show progress indicators
+```
+
+**Interactive Elements:**
+- **Sortable Tables**: Click column headers to sort by any metric
+- **Modal Dialogs**: Detailed ticker information with charts
+- **Filter Controls**: Dropdown menus for sector/sentiment filtering
+- **Progress Bars**: Real-time feedback during data operations
+- **Status Bar**: Connection status, last update time, cache stats
+
+**Keyboard Navigation:**
+```python
+BINDINGS = [
+    ("q", "quit", "Quit"),
+    ("r", "refresh", "Refresh Data"),
+    ("f", "toggle_filter", "Toggle Filters"),
+    ("1", "show_tab('overview')", "Overview Tab"),
+    ("2", "show_tab('tickers')", "Tickers Tab"),
+    ("3", "show_tab('news')", "News Tab"),
+    ("4", "show_tab('policy')", "Policy Tab"),
+    ("ctrl+e", "export_data", "Export Data"),
+]
+```
+
+**Color Coding System:**
+- **Green**: Positive sentiment (>0.1), price increases (>1%)
+- **Red**: Negative sentiment (<-0.1), price decreases (<-1%)
+- **Yellow**: Neutral sentiment (-0.1 to 0.1), minimal price change
+- **Blue**: Policy-related content, high-impact news
+- **Gray**: No data, loading states, disabled elements
+
+**Performance Optimizations:**
+- Lazy loading for large datasets
+- Virtual scrolling for ticker tables
+- Debounced user input handling
+- Efficient re-rendering with dirty checking
+- Background data fetching to prevent UI blocking
+
+### Data Flow Architecture
+
+#### **Request Processing Pipeline**
+```mermaid
+graph TD
+    A[User Request] --> B[Cache Check]
+    B -->|Hit| C[Return Cached Data]
+    B -->|Miss| D[API Request Queue]
+    D --> E[Rate Limiting]
+    E --> F[External API Call]
+    F --> G[Data Validation]
+    G --> H[Cache Storage]
+    H --> I[Return Fresh Data]
+    C --> J[UI Update]
+    I --> J
+```
+
+#### **API Integration Layer**
+**Primary Data Sources:**
+```python
+DATA_SOURCES = {
+    'yfinance': {
+        'endpoints': ['info', 'history', 'news', 'recommendations'],
+        'rate_limit': '2000/hour',
+        'reliability': '95%',
+        'cache_strategy': 'aggressive'
+    },
+    'feedparser': {
+        'feeds': ['fed_press', 'fed_monetary', 'fed_speeches', 'fed_banking'],
+        'rate_limit': 'unlimited',
+        'reliability': '99%',
+        'cache_strategy': 'moderate'
+    },
+    'textblob': {
+        'type': 'local_processing',
+        'rate_limit': 'unlimited',
+        'cache_strategy': 'none'
+    }
+}
+```
+
+**Error Handling Strategy:**
+```python
+def robust_api_call(func, *args, **kwargs):
+    """Robust API calling with exponential backoff."""
+    for attempt in range(3):
+        try:
+            return func(*args, **kwargs)
+        except (ConnectionError, Timeout) as e:
+            wait_time = 2 ** attempt  # Exponential backoff
+            time.sleep(wait_time)
+        except RateLimitError:
+            time.sleep(60)  # Wait 1 minute for rate limit reset
+        except Exception as e:
+            log_error(f"API call failed: {e}")
+            return None
+    return None  # All retries failed
+```
+
+**Data Validation Pipeline:**
+1. **Schema Validation**: Ensure required fields exist
+2. **Type Checking**: Validate data types (float for prices, etc.)
+3. **Range Validation**: Check for reasonable values (prices > 0)
+4. **Completeness Check**: Verify minimum data requirements
+5. **Sanitization**: Clean text data, remove HTML tags
+
+#### **Concurrent Processing System**
+```python
+async def fetch_multiple_tickers(tickers):
+    """Concurrent data fetching with controlled parallelism."""
+    semaphore = asyncio.Semaphore(10)  # Max 10 concurrent requests
+
+    async def fetch_single(ticker):
+        async with semaphore:
+            return await cached_data_fetcher.get_ticker_data(ticker)
+
+    tasks = [fetch_single(ticker) for ticker in tickers]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    return process_results(results)
+```
+
+**Memory Management:**
+- Streaming processing for large datasets
+- Garbage collection after batch operations
+- Memory-mapped files for large cache entries
+- Lazy loading of non-critical data
+
+### Development Workflow
+
+#### **CI/CD Pipeline Architecture**
+**Trigger Mechanisms:**
+```yaml
+# Automatic triggers
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*.*.*']
+  pull_request:
+    branches: [main]
+
+# Manual triggers
+workflow_dispatch:
+  inputs:
+    test_type: [quick, full, build-only, lint-only]
+    python_version: [3.8, 3.9, 3.10, 3.11, 3.12]
+    create_artifacts: boolean
+```
+
+**Pipeline Stages:**
+1. **Code Quality**: Trunk linting (Black + Ruff), pre-commit hooks
+2. **Testing**: pytest with coverage, matrix testing across Python versions
+3. **Security**: Dependency vulnerability scanning
+4. **Build**: Clean package building, content verification
+5. **Release**: PyPI publishing, Docker image, GitHub release
+
+**Release Process:**
+```bash
+# Version bump
+git tag v1.0.x -m "Release message"
+git push origin v1.0.x
+
+# Triggers automated pipeline:
+# 1. Run full test suite
+# 2. Build clean packages (excludes tests/, tools/, debug/)
+# 3. Publish to PyPI as 'stockholm-finance'
+# 4. Build multi-platform Docker image
+# 5. Create GitHub release with artifacts
+# 6. Send notifications
+```
+
+#### **Testing Framework Architecture**
+**Test Organization:**
+```
+tests/
+├── conftest.py              # Shared fixtures and configuration
+├── test_runner.py           # Custom test runner with coverage
+├── unit/
+│   ├── test_sentiment_analyzer.py    # 12 tests, core NLP functionality
+│   ├── test_cache_simple.py          # 12 tests, caching system
+│   └── test_policy_analyzer.py       # 13 tests, policy analysis
+├── integration/
+│   ├── test_data_pipeline.py         # End-to-end data flow
+│   └── test_dashboard_integration.py # UI component integration
+└── performance/
+    ├── test_cache_performance.py     # Cache hit rates, response times
+    └── test_batch_processing.py      # Large dataset handling
+```
+
+**Test Coverage Strategy:**
+- **Unit Tests**: 80%+ coverage for core components
+- **Integration Tests**: Critical data flow paths
+- **Performance Tests**: Cache efficiency, memory usage
+- **Regression Tests**: Previous bug scenarios
+
+**Mock Strategy:**
+```python
+# External API mocking
+@patch('yfinance.Ticker')
+def test_with_mocked_yfinance(mock_ticker):
+    mock_ticker.return_value.info = {'symbol': 'AAPL', 'price': 150.0}
+
+# Cache mocking for isolated testing
+@patch('src.data.cache_manager.CacheManager')
+def test_without_cache(mock_cache):
+    mock_cache.get.return_value = None  # Force cache miss
+```
+
+#### **Dependency Management**
+**Package Configuration:**
+- **requirements.txt**: Production dependencies only
+- **pyproject.toml**: Complete package metadata and dev dependencies
+- **setup.py**: Fallback configuration for older pip versions
+
+**Dependency Categories:**
+```python
+DEPENDENCIES = {
+    'core': ['textblob', 'yfinance', 'requests', 'numpy'],
+    'ui': ['textual', 'rich', 'textual_plotext'],
+    'data': ['feedparser', 'python-dateutil', 'pytz'],
+    'dev': ['pytest', 'pytest-cov', 'black', 'ruff'],
+    'build': ['build', 'twine', 'wheel']
+}
+```
+
+**Version Pinning Strategy:**
+- **Major versions pinned**: Prevent breaking changes
+- **Minor versions flexible**: Allow bug fixes and features
+- **Security updates**: Automated dependency updates via Dependabot
+
+### Package Details
+- **PyPI Name**: `stockholm-finance` (not `stockholm` - name conflict)
+- **Entry Point**: Single command `stockholm-finance` (removed `stockholm-dashboard`)
+- **Python Support**: 3.8+ with matrix testing
+- **Docker**: Multi-platform builds pushed to GitHub Container Registry
+
+### Testing Framework
+- **37 tests total**: All passing with zero failures
+- **Test modules**: `test_sentiment_analyzer.py`, `test_cache_simple.py`, `test_policy_analyzer.py`
+- **Coverage**: Cache manager (80%), Sentiment analyzer (39%)
+- **Test runner**: `tests/test_runner.py` with coverage reporting
+- **Fixtures**: Shared test data in `conftest.py`
+
+### Debugging and Troubleshooting
+
+#### **Common Issues and Solutions**
+
+**Cache-Related Issues:**
+```bash
+# Problem: Stale data showing in dashboard
+# Solution: Clear specific cache type
+python tools/cache_monitor.py --clear news
+
+# Problem: High API usage despite caching
+# Solution: Check cache hit rates
+python tools/cache_monitor.py --stats
+
+# Problem: Cache corruption errors
+# Solution: Emergency cache clear
+python tools/clear_all_cache.py
+```
+
+**API Integration Issues:**
+```bash
+# Problem: yfinance connection errors
+# Debug: Test specific ticker
+python tools/debug/debug_yfinance.py AAPL
+
+# Problem: Rate limiting errors
+# Debug: Check request patterns
+python tools/cache_monitor.py --estimate
+
+# Problem: Data validation failures
+# Debug: Inspect raw API responses
+python tools/debug/debug_time.py
+```
+
+**Dashboard Issues:**
+```bash
+# Problem: UI rendering problems
+# Solution: Check terminal compatibility
+python -c "import textual; print('Textual OK')"
+
+# Problem: Slow dashboard performance
+# Debug: Profile data loading
+python main.py --verbose
+
+# Problem: Keyboard shortcuts not working
+# Solution: Check terminal focus and key bindings
+```
+
+#### **Debug Tools and Scripts**
+**Cache Monitoring:**
+```bash
+tools/cache_monitor.py --stats      # Performance statistics
+tools/cache_monitor.py --estimate   # API savings estimation
+tools/cache_monitor.py --clear      # Interactive cache clearing
+```
+
+**API Debugging:**
+```bash
+tools/debug/debug_yfinance.py       # Deep yfinance API testing
+tools/debug/debug_time.py           # Time-related debugging
+tools/debug/investigate_dominion_loss.py  # Specific ticker investigation
+```
+
+**Performance Analysis:**
+```bash
+tools/debug/explain_earnings_trends.py    # Earnings data analysis
+python main.py --verbose                  # Detailed execution logging
+python -m cProfile main.py               # Performance profiling
+```
+
+#### **Logging and Monitoring**
+**Log Levels:**
+```python
+LOGGING_CONFIG = {
+    'DEBUG': 'Detailed execution flow, cache operations',
+    'INFO': 'Normal operations, API calls, user actions',
+    'WARNING': 'Recoverable errors, rate limiting, stale data',
+    'ERROR': 'API failures, data corruption, critical errors',
+    'CRITICAL': 'System failures, unrecoverable errors'
+}
+```
+
+**Performance Metrics:**
+- **API Call Tracking**: Request counts, response times, error rates
+- **Cache Performance**: Hit/miss ratios, storage usage, cleanup frequency
+- **Memory Usage**: Peak memory, garbage collection frequency
+- **UI Responsiveness**: Render times, user interaction latency
+
+#### **Error Recovery Strategies**
+**Graceful Degradation:**
+```python
+def fetch_with_fallback(ticker):
+    """Fetch data with multiple fallback strategies."""
+    try:
+        return primary_data_source(ticker)
+    except APIError:
+        try:
+            return cached_data_source(ticker)
+        except CacheError:
+            return minimal_data_fallback(ticker)
+```
+
+**Data Consistency Checks:**
+```python
+def validate_ticker_data(data):
+    """Comprehensive data validation."""
+    checks = [
+        ('price', lambda x: x > 0, 'Price must be positive'),
+        ('volume', lambda x: x >= 0, 'Volume cannot be negative'),
+        ('timestamp', lambda x: x < time.time(), 'Timestamp cannot be future'),
+    ]
+
+    for field, validator, message in checks:
+        if not validator(data.get(field)):
+            raise ValidationError(f"{field}: {message}")
+```
+
+### Important Notes
+- **Always use package managers** (pip, not manual edits) for dependencies
+- **Pre-commit hooks** will auto-fix most linting issues
+- **Release workflow** only publishes to PyPI for non-draft, non-prerelease versions
+- **Dashboard is primary interface** - no separate CLI analyzer
+- **Cache system is critical** - don't bypass it, use cached_data_fetcher.py
+- **All external API calls** should go through cached_data_fetcher.py
+- **UI components** use Textual framework - follow their patterns
+- **Error handling** should be graceful with fallback strategies
+- **Performance monitoring** is built-in - use the debug tools
+- **Data validation** is mandatory for all external data sources
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+**Built with ❤️ for financial analysis**
