@@ -1,0 +1,172 @@
+from pydantic_ai import Agent, RunContext, models
+from pydantic import BaseModel, Field
+from typing import Type, Any, Optional, List # Keep Optional and List for AI-generated models/tools
+from pathlib import Path
+import yaml
+
+# Specific model and provider imports - AI might add more if needed for other providers
+from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.providers.openai import OpenAIProvider
+from pydantic_ai.models.test import TestModel
+
+# Attempt to import settings from .config
+try:
+    from .config import settings
+    print(f"INFO: Successfully imported settings from .config for agent '{{ agent_name }}'")
+except ImportError:
+    print(f"WARNING: Could not import settings from .config for agent '{{ agent_name }}'. Using fallback settings.")
+    class FallbackAgentSettings:
+        LLM_CONFIG_NAME: str = "{{ llm_config_name }}" # Default from generate command context
+        LLM_MODEL_IDENTIFIER_FALLBACK: str = "{{ llm_model_identifier_fallback }}"
+        AGENT_RETRIES: int = {{ agent_retries | default(1) }}
+        PROJECT_ROOT_PATH: Path = Path(__file__).resolve().parent.parent.parent
+    settings = FallbackAgentSettings()
+    print(f"INFO: Using fallback settings. LLM_CONFIG_NAME='{settings.LLM_CONFIG_NAME}', FallbackModel='{settings.LLM_MODEL_IDENTIFIER_FALLBACK}'")
+
+print(f"--- AGENT '{{agent_name}}' DEFINITION EXECUTION START ---")
+
+# --- LLM Configuration ---
+configured_model = None
+llm_config_name_to_load = settings.LLM_CONFIG_NAME
+project_root = getattr(settings, 'PROJECT_ROOT_PATH', Path(__file__).resolve().parent.parent.parent)
+alo_config_path = project_root / "alo_config.yaml"
+
+print(f"INFO: Attempting to load LLM configuration '{llm_config_name_to_load}' from '{alo_config_path}'")
+
+try:
+    with open(alo_config_path, 'r') as f:
+        full_config = yaml.safe_load(f)
+    
+    if full_config and 'llms' in full_config and llm_config_name_to_load in full_config['llms']:
+        llm_conf = full_config['llms'][llm_config_name_to_load]
+        print(f"INFO: Found LLM config for '{llm_config_name_to_load}': {llm_conf}")
+        
+        provider_name = llm_conf.get('provider', '').lower()
+        api_key = llm_conf.get('api_key')
+        model_name_from_config = llm_conf.get('model_name') # Renamed to avoid clash
+        base_url = llm_conf.get('base_url')
+
+        if not provider_name:
+            print(f"ERROR: Provider not specified in LLM config '{llm_config_name_to_load}'.")
+        elif provider_name == 'openai':
+            if not api_key:
+                print(f"ERROR: API key not found for OpenAI provider in '{llm_config_name_to_load}'.")
+            else:
+                provider_args = {"api_key": api_key}
+                if base_url:
+                    provider_args["base_url"] = base_url
+                openai_provider = OpenAIProvider(**provider_args)
+                # Use model_name_from_config or a default like 'gpt-4o'
+                final_model_name = model_name_from_config or "gpt-4o"
+                configured_model = OpenAIModel(model_name=final_model_name, provider=openai_provider)
+                print(f"INFO: Successfully configured OpenAIModel: {final_model_name}")
+        # AI or user can add more 'elif provider_name == ...' blocks here for other providers
+        # Example:
+        # elif provider_name == 'anthropic':
+        #     # ... (logic for anthropic) ...
+        #     print(f"INFO: Successfully configured AnthropicModel: ...")
+        else:
+            print(f"WARNING: Direct loader for provider '{provider_name}' is not implemented in this template. Will attempt fallback.")
+            
+    else:
+        print(f"WARNING: LLM configuration '{llm_config_name_to_load}' not found or 'llms' key missing in {alo_config_path}.")
+
+except FileNotFoundError:
+    print(f"ERROR: alo_config.yaml not found at {alo_config_path}")
+except yaml.YAMLError as e:
+    print(f"ERROR: Error parsing alo_config.yaml: {e}")
+except Exception as e:
+    print(f"ERROR: Unexpected error during direct LLM config loading: {e}")
+
+if not configured_model:
+    print(f"INFO: Direct LLM loading failed or provider not handled. Falling back to infer_model with: {settings.LLM_MODEL_IDENTIFIER_FALLBACK}")
+    try:
+        configured_model = models.infer_model(settings.LLM_MODEL_IDENTIFIER_FALLBACK)
+        if configured_model: # Check if infer_model returned a model
+            print(f"INFO: Successfully fell back to LLM via infer_model: {settings.LLM_MODEL_IDENTIFIER_FALLBACK}")
+        else:
+            print(f"WARNING: Fallback models.infer_model returned None for {settings.LLM_MODEL_IDENTIFIER_FALLBACK}, which is unexpected.")
+    except Exception as fallback_e:
+        print(f"ERROR: Error during fallback model inference via infer_model: {fallback_e}")
+
+if not configured_model:
+    print(f"CRITICAL: All LLM configuration attempts failed for agent '{{ agent_name }}'. Initializing with TestModel.")
+    configured_model = TestModel()
+    print(f"INFO: Agent '{{ agent_name }}' initialized with TestModel.")
+
+# --- AI-Generated Output Model Definition ---
+{{ ai_generated_output_model_definition | default('') }}
+
+# --- AI-Generated Dependencies Model Definition ---
+{{ ai_generated_deps_model_definition | default('') }}
+
+# --- Define Agent Output and Dependencies Types ---
+# AI-generated code (if any) should define and assign custom classes to these variables.
+# Otherwise, they default to str and Any.
+{{ ai_generated_output_type_assignment | default('_output_type_actual: Type[Any] = str') }}
+{{ ai_generated_deps_type_assignment | default('_deps_type_actual: Type[Any] = Any') }}
+
+print(f"INFO: Agent '{{ agent_name }}' output type set to: {_output_type_actual}")
+print(f"INFO: Agent '{{ agent_name }}' dependencies type set to: {_deps_type_actual}")
+
+# --- Load MCP Servers ---
+mcp_servers_list: List[models.MCPServer] = [] # Corrected type hint
+print(f"INFO: Attempting to load MCP servers from project root: {project_root}")
+try:
+    from alo_pyai_sdk.core.llm_loader import load_mcp_servers_from_project_config
+    mcp_servers_list = load_mcp_servers_from_project_config(project_root)
+    if mcp_servers_list:
+        print(f"INFO: Agent '{{ agent_name }}' loaded {len(mcp_servers_list)} MCP server(s).")
+    else:
+        print(f"INFO: No MCP servers configured or loaded for agent '{{ agent_name }}'.")
+except ImportError:
+    print("WARNING: Could not import load_mcp_servers_from_project_config. MCP servers will not be loaded.")
+except Exception as e:
+    print(f"WARNING: Could not load MCP servers for agent '{{ agent_name }}': {e}")
+
+# --- AI-Generated Tool Definitions and List ---
+{{ ai_generated_tools_definitions | default('') }}
+{{ ai_generated_tools_list_assignment | default('agent_tools_list = []') }}
+
+# --- System Prompt ---
+final_system_prompt = """
+You are '{{ agent_name }}', an AI assistant.
+{{- agent_system_prompt_instructions -}}
+""".strip()
+print(f"INFO: Agent '{{ agent_name }}' system prompt (first 100 chars): \"{final_system_prompt[:100].replace('\n', ' ')}...\"")
+
+# --- Create Agent Instance ---
+print(f"INFO: Creating Pydantic-AI Agent '{{ agent_name }}' instance...")
+agent = Agent(
+    model=configured_model,
+    output_type=_output_type_actual,
+    deps_type=_deps_type_actual,
+    system_prompt=final_system_prompt,
+    tools=agent_tools_list,
+    retries=settings.AGENT_RETRIES,
+)
+print(f"INFO: Pydantic-AI Agent '{{ agent_name }}' instance created successfully.")
+
+# --- Main Agent Accessor ---
+def get_agent() -> Agent:
+    """Returns the configured Pydantic-AI agent instance."""
+    return agent
+
+if __name__ == "__main__":
+    print(f"--- Running '{{ agent_name }}' agent_definition.py directly (__main__) ---")
+    print(f"Settings LLM Config Name: {settings.LLM_CONFIG_NAME}")
+    if configured_model:
+        model_details = getattr(configured_model, 'model_name', str(type(configured_model)))
+        print(f"Final Configured Model: {model_details}")
+    else:
+        print("Final Configured Model: ERROR - NOT SET")
+    print(f"Agent Output Type: {_output_type_actual}")
+    print(f"Agent Dependencies Type: {_deps_type_actual}")
+    print(f"Agent Retries: {agent.retries}")
+    tool_names = [t.name for t in agent.tools] if agent.tools else "None"
+    print(f"Agent Tools: {tool_names}")
+    mcp_server_details = [getattr(s, 'url', getattr(s, 'command', str(s))) for s in agent.mcp_servers] if agent.mcp_servers else "None"
+    print(f"Agent MCP Servers: {mcp_server_details}")
+    pass
+
+print(f"--- AGENT '{{agent_name}}' DEFINITION EXECUTION END ---")
