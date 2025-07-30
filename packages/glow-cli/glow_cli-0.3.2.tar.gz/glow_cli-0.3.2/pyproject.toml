@@ -1,0 +1,37 @@
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools", "wheel"]
+
+[project]
+authors = [
+  {name = "Xiaochen Zhang (Ray)", email = "ray@fireworkhq.com"},
+]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = ["python-dotenv", "pyyaml", "fire", "requests"]
+description = "Smart CLI tool for shell template"
+keywords = ["smart cli", "shell template"]
+name = "glow-cli"
+readme = "README.md"
+version = "0.3.2"
+
+[project.urls]
+homepage = "https://github.com/loopsocial/glow"
+repository = "https://github.com/loopsocial/glow"
+
+[project.scripts]
+g = "glow.bin.glow:main"
+glow = "glow.bin.glow:main"
+# If you have any entry points, specify them here
+
