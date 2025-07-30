@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "automate-docs"
+version = "0.0.1"
+description = "A tool to automate readme generation"
+readme = "README.md"
+requires-python = ">=3.6"
+authors = [
+  { name = "Natalio Gomes", email = "natalio.gomes@libertymutual.com" }
+]
+license = { text = "MIT" }
+keywords = ["readme", "automation", "readme", "git"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Documentation"
+]
+dependencies = [
+  # Example dependencies, update as needed:
+  # "requests>=2.20",
+]
+
+[project.urls]
+Homepage = "https://github.com/lmigtech/automate-docs"
+Repository = "https://github.com/lmigtech/automate-docs"
+BugTracker = "https://github.com/lmigtech/automate-docs/issues"
+
+
+
+[tool.setuptools]
+# If your package source code is under src/ folder, otherwise remove the above block
+
+# Optional: Define entry points if you have CLI scripts
+[project.scripts]
+automate-docs = "automate_docs.cli:main"
