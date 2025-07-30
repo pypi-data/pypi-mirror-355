@@ -1,0 +1,115 @@
+# 杂鱼♡～本喵设计的回调接口定义喵～
+from abc import ABC, abstractmethod
+from typing import Any, List, Optional, Dict
+
+class CallbackInterface(ABC):
+    """杂鱼♡～抽象的回调接口，所有处理器都要继承这个喵～"""
+    
+    @abstractmethod
+    def handle(self, data: Any, source_info: Optional[Dict[str, Any]] = None) -> None:
+        """
+        杂鱼♡～处理剪贴板数据的抽象方法喵～
+        
+        Args:
+            data: 剪贴板数据，类型根据具体处理器而定
+            source_info: 源应用程序信息，包含进程路径、窗口标题等
+        """
+        pass
+    
+    @abstractmethod
+    def is_valid(self, data: Any) -> bool:
+        """
+        杂鱼♡～检查数据是否有效的抽象方法喵～
+        
+        Args:
+            data: 需要验证的数据
+            
+        Returns:
+            bool: 数据是否有效
+        """
+        pass
+
+class BaseClipboardHandler(CallbackInterface):
+    """杂鱼♡～基础剪贴板处理器，提供通用功能喵～"""
+    
+    def __init__(self, callback: Optional[callable] = None):
+        """
+        杂鱼♡～初始化处理器喵～
+        
+        Args:
+            callback: 可选的回调函数，现在接收(data, source_info)两个参数
+        """
+        self._callback = callback
+        self._enabled = True
+        self._filters = []
+        self._include_source_info = True  # 杂鱼♡～默认包含源信息喵～
+    
+    def set_callback(self, callback: callable) -> None:
+        """杂鱼♡～设置回调函数喵～"""
+        self._callback = callback
+    
+    def enable_source_info(self) -> None:
+        """杂鱼♡～启用源应用信息喵～"""
+        self._include_source_info = True
+    
+    def disable_source_info(self) -> None:
+        """杂鱼♡～禁用源应用信息喵～"""
+        self._include_source_info = False
+    
+    def enable(self) -> None:
+        """杂鱼♡～启用处理器喵～"""
+        self._enabled = True
+    
+    def disable(self) -> None:
+        """杂鱼♡～禁用处理器喵～"""
+        self._enabled = False
+    
+    def is_enabled(self) -> bool:
+        """杂鱼♡～检查处理器是否启用喵～"""
+        return self._enabled
+    
+    def add_filter(self, filter_func: callable) -> None:
+        """杂鱼♡～添加过滤器函数喵～"""
+        self._filters.append(filter_func)
+    
+    def remove_filter(self, filter_func: callable) -> None:
+        """杂鱼♡～移除过滤器函数喵～"""
+        if filter_func in self._filters:
+            self._filters.remove(filter_func)
+    
+    def _apply_filters(self, data: Any) -> bool:
+        """杂鱼♡～应用所有过滤器喵～"""
+        for filter_func in self._filters:
+            if not filter_func(data):
+                return False
+        return True
+    
+    def handle(self, data: Any, source_info: Optional[Dict[str, Any]] = None) -> None:
+        """杂鱼♡～处理数据的通用方法喵～"""
+        if not self._enabled:
+            return
+            
+        if not self.is_valid(data):
+            return
+            
+        if not self._apply_filters(data):
+            return
+            
+        if self._callback:
+            # 杂鱼♡～检查回调函数是否支持源信息参数喵～
+            import inspect
+            sig = inspect.signature(self._callback)
+            if len(sig.parameters) >= 2:
+                # 杂鱼♡～新格式回调：(data, source_info)喵～
+                self._callback(data, source_info if self._include_source_info else None)
+            else:
+                # 杂鱼♡～旧格式回调：只有data参数喵～
+                self._callback(data)
+        else:
+            self._default_handle(data, source_info)
+    
+    def _default_handle(self, data: Any, source_info: Optional[Dict[str, Any]] = None) -> None:
+        """杂鱼♡～默认处理方法，子类可以重写喵～"""
+        print(f"杂鱼♡～处理数据：{data}")
+        if source_info and self._include_source_info:
+            print(f"杂鱼♡～源应用程序：{source_info.get('process_name', 'Unknown')} ({source_info.get('process_path', 'Unknown path')})") 
