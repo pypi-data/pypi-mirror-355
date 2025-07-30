@@ -1,0 +1,113 @@
+site_name: PUM documentation
+
+repo_name: opengisch/pum
+repo_url: https://github.com/opengisch/pum
+edit_uri: https://github.com/opengisch/pum/tree/master/docs/docs/
+
+theme:
+  name: "material"
+  logo: assets/images/pum.png
+  favicon: assets/images/favicon.ico
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - navigation.tracking
+    - pymdownx.highlight:
+        anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_signature: true
+            show_signature_annotations: true
+            separate_signature: true
+
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - attr_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+nav:
+  - About: index.md
+  - Getting Started: getting_started.md
+  - Configuration:
+      - Overview: configuration/configuration.md
+      - ConfigModel: configuration/config_model.md
+      - DependencyModel: configuration/dependency_model.md
+      - HookModel: configuration/hook_model.md
+      - MigrationHooksModel: configuration/migration_hooks_model.md
+      - ParameterDefinitionModel: configuration/parameter_definition_model.md
+      - PermissionModel: configuration/permission_model.md
+      - PumModel: configuration/pum_model.md
+      - RoleModel: configuration/role_model.md
+
+  - Hooks: hooks.md
+  - Roles: roles.md
+  - CLI:
+      - Overview: cli.md
+      - info: cli/info.md
+      - install: cli/install.md
+      - check: cli/check.md
+      - dump: cli/dump.md
+      - restore: cli/restore.md
+      - baseline: cli/baseline.md
+      - upgrade: cli/upgrade.md
+      - role: cli/role.md
+  - API:
+      - Changelog: api/changelog.md
+      - Dumper: api/dumper.md
+      - DumpFormat: api/dump_format.md
+      - HookBase: api/hook_base.md
+      - HookHandler: api/hook_handler.md
+      - ParameterDefinition: api/parameter_definition.md
+      - ParameterType: api/parameter_type.md
+      - Permission: api/permission.md
+      - PermissionType: api/permission_type.md
+      - PumConfig: api/pum_config.md
+      - Role: api/role.md
+      - RoleManager: api/role_manager.md
+      - SchemaMigrations: api/schema_migrations.md
+      - SqlContent: api/sql_content.md
+      - Upgrader: api/upgrader.md
+      - Exceptions: api/exceptions.md
+
+extra:
+  # Remove "Made with Material for MkDocs" from footer
+  generator: false
