@@ -1,0 +1,21 @@
+[project]
+name = "service-lookup"
+version = "0.2.5"
+description = "Update host:port in YAML service URLs by service name and Kubernetes cluster"
+authors = [
+  { name="Pavlos Smith", email="paulsmith4561@proton.me" },
+]
+readme = "README.md"
+requires-python = ">=3.12"
+license = "GPL-3.0"
+dependencies = [
+    "keyboard>=0.13.5",
+    "ruamel-yaml>=0.18.14",
+]
+
+[project.urls]
+homepage = "https://github.com/iByteABit256/service-lookup"
+repository = "https://pypi.org/project/service-lookup/"
+
+[project.scripts]
+service-lookup = "service_lookup.main:main"
