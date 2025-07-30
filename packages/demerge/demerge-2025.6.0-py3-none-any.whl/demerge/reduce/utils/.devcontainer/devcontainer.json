@@ -1,0 +1,36 @@
+{
+    "name": "kidanalysis-delft",
+    "image": "python:3.11",
+    "features": {
+        "ghcr.io/devcontainers-contrib/features/poetry:2": {
+            "version": "1.8.3"
+        }
+    },
+    "containerEnv": {
+        "POETRY_VIRTUALENVS_CREATE": "false"
+    },
+    "runArgs": [
+        "--name=kidanalysis-delft"
+    ],
+    "postCreateCommand": "poetry install",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "github.vscode-pull-request-github",
+                "mhutchie.git-graph",
+                "ms-python.python",
+                "streetsidesoftware.code-spell-checker",
+                "tamasfe.even-better-toml"
+            ],
+            "settings": {
+                "files.insertFinalNewline": true,
+                "files.trimTrailingWhitespace": true,
+                "[python]": {
+                    "editor.insertSpaces": true,
+                    "editor.tabSize": 4,
+                    "python.languageServer": "Pylance"
+                }
+            }
+        }
+    }
+}
