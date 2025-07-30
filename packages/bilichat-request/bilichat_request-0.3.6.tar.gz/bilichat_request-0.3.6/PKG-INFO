@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: bilichat-request
+Version: 0.3.6
+Summary: Default template for PDM package
+Author-Email: Well404 <well_404@outlook.com>
+License: None
+Requires-Python: <4.0,>=3.10
+Requires-Dist: playwright>=1.48.0
+Requires-Dist: httpx>=0.27.2
+Requires-Dist: jinja2>=3.1.4
+Requires-Dist: fastapi>=0.115.5
+Requires-Dist: loguru>=0.7.2
+Requires-Dist: sentry-sdk[fastapi]>=2.20.0
+Requires-Dist: pypng>=0.20220715.0
+Requires-Dist: uvicorn>=0.32.1
+Requires-Dist: pytz>=2024.2
+Requires-Dist: python-jose[cryptography]>=3.3.0
+Requires-Dist: python-multipart>=0.0.19
+Requires-Dist: pydantic>=2.10.3
+Requires-Dist: bcrypt>=4.2.1
+Requires-Dist: slowapi>=0.1.9
+Requires-Dist: pycryptodomex>=3.21.0
+Requires-Dist: qrcode>=8.0
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: apscheduler>=3.11.0
+Requires-Dist: cachetools>=5.5.1
+Provides-Extra: dev
+Requires-Dist: nonebot-plugin-htmlrender>=0.4.0; extra == "dev"
+Requires-Dist: nonebot2[fastapi]>=2.4.0; extra == "dev"
+Description-Content-Type: text/markdown
+
+# bilichat-request
+
+> api docs: https://apifox.com/apidoc/shared-4c1ba1cb-aa98-4a24-9986-193ab8f1519e/246937366e0
+
+> cookiecloud: https://github.com/easychen/CookieCloud/blob/master/README_cn.md
+
+## 安装并运行
+
+直接使用 pip 或 pipx 安装即可，推荐使用 pipx 或类似的工具，以避免污染系统环境。
+
+```shell
+pip install pipx
+pipx install bilichat-request
+```
+
+安装完成后，可以直接使用 `bilirq` 命令启动。
+
+```shell
+bilirq
+```
+
+## 调整配置
+
+在工作路径下创建 `config.yaml` 文件，并向其中添加所需要调整的内容即可，例如：
+
+```yaml
+cookie_clouds:
+  - url: https://example.com
+    uuid: ********
+    password: ********
+```
+
+具体的配置项及默认值可以参考 [config.py](https://github.com/Well2333/bilichat-request/blob/main/src/bilichat_request/config.py)。
