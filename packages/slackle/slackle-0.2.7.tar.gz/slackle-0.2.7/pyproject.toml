@@ -1,0 +1,66 @@
+[project]
+name = "slackle"
+version = "0.2.7"
+description = "A lightweight Slack bot framework for building modular and maintainable Slack bots."
+
+authors = [
+    { name="Hosung Lee", email="hlee24@snu.ac.kr" }
+]
+
+requires-python = ">=3.10"
+
+license = "MIT"
+readme = "README.md"
+
+dependencies = [
+    "fastapi>=0.115.12",
+    "pydantic>=2.11.2",
+    "slack_sdk>=3.35.0",
+    "starlette>=0.46.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "flake8",
+    "pytest",
+    "pytest-cov",
+    "python-multipart",
+    "aiohttp",
+    "pre-commit",
+    "commitizen"
+]
+
+[project.urls]
+Homepage = "https://slackle.dev"
+Repository = "https://github.com/hlee-ai/slackle"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.2.7"
+tag_format = "v$version"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+skip-string-normalization = false
+
+[tool.isort]
+profile = "black"
+line_length = 100
