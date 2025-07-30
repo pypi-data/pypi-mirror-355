@@ -1,0 +1,29 @@
+Metadata-Version: 2.4
+Name: shmedis
+Version: 0.1.0
+Summary: A redis-like cache based on POSIX shared memory.
+Author-email: NightmareRevisited <cnythevile@gmail.com>
+License: Apache-2.0
+Project-URL: Homepage, https://github.com/NightmareRevisited/Shmedis
+Project-URL: Repository, https://github.com/NightmareRevisited/Shmedis
+Project-URL: Issues, https://github.com/NightmareRevisited/Shmedis/issues
+Platform: darwin
+Platform: linux
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: xxhash
+Provides-Extra: legacy
+Requires-Dist: shared-memory38; python_version < "3.8" and extra == "legacy"
