@@ -1,0 +1,53 @@
+[build-system]
+# Defined by PEP 518:
+requires = [
+    # for version management
+    "setuptools>=45", "setuptools_scm[toml]>=6.2"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chipstream"
+authors = [
+    # In alphabetical order.
+    {name = "Paul Müller"},
+]
+maintainers = [
+    {name = "Paul Müller", email="dev@craban.de"},
+]
+description = "GUI and CLI for DC data postprocessing"
+readme = "README.rst"
+requires-python = ">=3.10, <4"
+keywords = ["RT-DC", "deformability", "cytometry"]
+classifiers = [
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3',
+    'Topic :: Scientific/Engineering :: Visualization',
+    'Intended Audience :: Science/Research',
+]
+license = "GPL-3.0-or-later"
+dependencies = [
+    "dcnum>=0.25.10",
+    "h5py>=3.0.0, <4",
+    "numpy>=1.21, <3",  # CVE-2021-33430
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+cli = ["click>=8.2"]
+gui = ["pyqt6"]
+torch = ["torch>=2.2"]
+
+[project.scripts]
+chipstream-cli = "chipstream.cli:main"
+chipstream-gui = "chipstream.gui:main"
+
+[project.urls]
+source = "https://github.com/DC-Analysis/ChipStream"
+tracker = "https://github.com/DC-Analysis/ChipStream/issues"
+documentation = "https://chipstream.readthedocs.io/en/stable/"
+changelog = "https://chipstream.readthedocs.io/en/stable/sec_changelog.html"
+
+[tool.setuptools_scm]
+write_to = "chipstream/_version.py"
+version_scheme = "post-release"
