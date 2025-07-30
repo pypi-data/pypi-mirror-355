@@ -1,0 +1,72 @@
+{
+  "$id": "immerschema/schemas/taxonomy/software.taxonomy.json",
+  "title": "Software taxonomy (UI helper)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "3-D DCC": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Houdini", "Blender", "Cinema4D"]
+      },
+      "minItems": 1
+    },
+    "Engines / Realtime": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Unreal", "Notch", "TouchDesigner"]
+      },
+      "minItems": 1
+    },
+    "Compositing": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["AfterEffects"]
+      },
+      "minItems": 1
+    },
+    "Renderers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Redshift", "Octane"]
+      },
+      "minItems": 1
+    },
+    "AI / Gen": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Midjourney", "RunwayGen2", "Veo", "ElevenLabs"]
+      },
+      "minItems": 1
+    },
+    "Audio DAW": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Ableton", "VCV"]
+      },
+      "minItems": 1
+    },
+    "Pipeline / Tracking": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["git"]
+      },
+      "minItems": 1
+    },
+    "Other": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["other"]
+      },
+      "minItems": 1
+    }
+  }
+} 

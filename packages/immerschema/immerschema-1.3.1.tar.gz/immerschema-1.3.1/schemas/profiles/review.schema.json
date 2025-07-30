@@ -1,0 +1,29 @@
+{
+  "$id": "immerschema/schemas/profiles/review.schema.json",
+  "title": "Profile – Review (creative + timing)",
+  "type": "object",
+  "additionalProperties": true,
+
+  "required": [
+    "timing",
+    "technique",
+    "voice",
+    "assets",
+    "description"
+  ],
+
+  "allOf": [
+    { "$ref": "./draft.schema.json" },
+    { "$ref": "../slices/meta-scene.slice.schema.json" },
+    { "$ref": "../slices/screen.slice.schema.json" },
+    { "$ref": "../slices/assets.prop.slice.json" },
+
+
+    {
+      "anyOf": [
+        { "properties": { "screen": { "required": ["screenZone"] } } },
+        { "properties": { "screen": { "required": ["cameraMotion"] } } }
+      ]
+    }
+  ]
+}

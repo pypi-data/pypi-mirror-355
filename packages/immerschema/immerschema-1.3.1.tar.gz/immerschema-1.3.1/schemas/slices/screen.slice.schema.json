@@ -1,0 +1,39 @@
+{
+  "$id": "immerschema/schemas/slices/screen.slice.schema.json",
+  "title": "Screen zone & motion slice",
+  "type": "object",
+  "properties": {
+    "screen": {
+      "type": "object",
+      "properties": {
+        "screenZone": { 
+          "$ref": "../enum/screenzone.enum.json",
+          "description": "Defines the screen zone where the content will be displayed"
+        },
+        "cameraMotion": {
+          "type": "string",
+          "description": "Camera motion description during the scene"
+        },
+        "transitionIn": {
+          "type": "string",
+          "description": "Transition effects to be applied when entering the scene"
+        },
+        "action": { 
+          "type": "string",
+          "description": "Specifies the action or interaction to be performed in this scene"
+        },
+        "transitionOut": {
+          "type": "string",
+          "description": "Transition effects to be applied when exiting the scene"
+        },
+        "immersiveCue": { 
+          "type": "string",
+          "description": "Audio or visual cue to enhance the immersive experience"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["screen"],
+  "additionalProperties": true
+} 

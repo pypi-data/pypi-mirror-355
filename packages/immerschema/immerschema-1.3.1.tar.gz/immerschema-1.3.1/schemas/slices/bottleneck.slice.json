@@ -1,0 +1,41 @@
+{
+  "$id": "immerschema/schemas/slices/bottleneck.slice.json",
+  "title": "Pipeline bottlenecks",
+  "description": "Schema for defining pipeline bottlenecks and their associated metadata",
+  "type": "object",
+  "properties": {
+    "bottlenecks": {
+      "type": "array",
+      "description": "List of identified bottlenecks in the pipeline",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "kpiTrigger"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the bottleneck"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the bottleneck and its impact"
+          },
+          "cause": {
+            "type": "string",
+            "description": "Root cause analysis of why the bottleneck exists"
+          },
+          "kpiTrigger": {
+            "type": "string",
+            "description": "Key Performance Indicator that triggered the bottleneck identification"
+          },
+          "assignedTo": {
+            "type": "string",
+            "description": "Person or team responsible for addressing the bottleneck"
+          }
+        },
+        "additionalProperties": false
+      },
+      "default": []
+    }
+  },
+  "additionalProperties": true
+} 

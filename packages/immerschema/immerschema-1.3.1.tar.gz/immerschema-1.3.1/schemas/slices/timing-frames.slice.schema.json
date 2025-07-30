@@ -1,0 +1,22 @@
+{
+  "$id": "immerschema/schemas/slices/timing-frames.slice.schema.json",
+  "title": "Timing slice – frames",
+  "type": "object",
+  "properties": {
+    "timing": {
+      "type": "object",
+      "properties": {
+        "durationFrames": { "type": "integer", "minimum": 1 },
+        "fps": { "type": "number", "minimum": 1, "default": 30 }
+      },
+      "required": ["durationFrames"],
+      "allOf": [
+        {
+          "if": { "required": ["durationFrames"] },
+          "then": { "properties": { "durationFrames": { "minimum": 1 } } }
+        }
+      ]
+    }
+  },
+  "additionalProperties": true
+} 

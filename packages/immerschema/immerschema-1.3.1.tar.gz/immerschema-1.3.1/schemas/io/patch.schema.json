@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "immerschema/schemas/io/patch.schema.json",
+
+  "title": "Single Scene Patch (RFC-6902 wrapper)",
+  "type": "object",
+  "required": ["id", "baseRev", "patch"],
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Target scene ID (matches `core.schema.json` /id)."
+    },
+    "baseRev": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optimistic-lock revision number the patch was generated from."
+    },
+    "patch": {
+      "type": "array",
+      "description": "Standard JSON-Patch operations list.",
+      "items": {
+        "type": "object",
+        "required": ["op", "path"],
+        "additionalProperties": false,
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "RFC-6902 verb.",
+            "enum": ["add", "remove", "replace", "move", "copy", "test"]
+          },
+          "path": { "type": "string" },
+          "from": { "type": "string" },
+          "value": {}
+        }
+      }
+    }
+  },
+
+  "additionalProperties": false
+}
