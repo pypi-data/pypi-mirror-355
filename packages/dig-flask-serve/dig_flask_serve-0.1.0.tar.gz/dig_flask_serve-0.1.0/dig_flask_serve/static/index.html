@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>模型接口测试工具</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f0f2f5;
+      padding: 40px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 { color: #333; margin-bottom: 20px; }
+    label { font-weight: bold; display: block; margin-top: 20px; }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      margin-top: 20px;
+      transition: background 0.3s;
+    }
+    button:hover { background-color: #0056b3; }
+    pre {
+      background: #1e1e1e;
+      color: #dcdcdc;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+    .note { font-size: 14px; color: gray; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>通用模型接口测试工具</h2>
+
+    <label for="baseurl">基础地址:</label>
+    <input type="text" id="baseurl">
+    <div class="note">自动填充当前地址，可手动修改</div>
+
+    <label for="endpoint">接口路径（如：/predict/classifier_v1）:</label>
+    <input type="text" id="endpoint" value="/predict/classifier_v1">
+
+    
+    <label>请求头设置（可自定义多个）:</label>
+    <div id="headers">
+      <div class="header-pair" style="display: flex; gap: 10px; margin-top: 10px;">
+        <input type="text" class="header-key" style="flex: 1;" placeholder="Header Key" style="width: 48%; display: inline-block;">
+        <input type="text" class="header-value" style="flex: 1;" placeholder="Header Value" style="width: 48%; display: inline-block; float: right;">
+      </div>
+    </div>
+    <button onclick="addHeader()">➕ 添加Header</button>
+    <label for="method">请求方式:</label>
+    <select id="method">
+      <option value="POST">POST</option>
+      <option value="GET">GET</option>
+    </select>
+
+    <label for="body">请求参数 (JSON):</label>
+    <textarea id="body" rows="6" placeholder='{"feature1": 1.0, "feature2": 2.0}'></textarea>
+    <button onclick="formatJson()">格式化JSON</button>
+    <button onclick="sendRequest()">发送请求</button>
+
+    <label>响应状态码:</label>
+    <pre id="status">--</pre>
+
+    <label>响应耗时:</label>
+    <pre id="duration">--</pre>
+
+    <label>响应结果:</label>
+    <pre><code id="response" class="json">等待请求...</code></pre>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js">
+    function addHeader() {
+      const div = document.createElement("div");
+      div.className = "header-pair";
+      div.innerHTML = '<input type="text" class="header-key" style="flex: 1;" placeholder="Header Key" style="width: 48%; display: inline-block;">' +
+                      '<input type="text" class="header-value" style="flex: 1;" placeholder="Header Value" style="width: 48%; display: inline-block; float: right;">';
+      document.getElementById("headers").appendChild(div);
+    }
+    </script>
+        
+  <script>
+    // 自动填充当前 base URL
+    document.getElementById("baseurl").value = window.location.origin;
+
+    function formatJson() {
+      try {
+        const body = document.getElementById("body").value;
+        const parsed = JSON.parse(body);
+        const formatted = JSON.stringify(parsed, null, 2);
+        document.getElementById("body").value = formatted;
+      } catch (e) {
+        alert("JSON 格式错误，请检查后再试。");
+      }
+    }
+
+    async function sendRequest() {
+      const baseurl = document.getElementById("baseurl").value;
+      const endpoint = document.getElementById("endpoint").value;
+      const method = document.getElementById("method").value;
+      const bodyText = document.getElementById("body").value;
+
+      const responseBox = document.getElementById("response");
+      const statusBox = document.getElementById("status");
+      const durationBox = document.getElementById("duration");
+
+      const url = baseurl + endpoint;
+
+      try {
+        let options = { method };
+        
+        // 构建 headers 对象
+        const headers = {};
+        document.querySelectorAll(".header-pair").forEach(pair => {
+          const key = pair.querySelector(".header-key").value.trim();
+          const value = pair.querySelector(".header-value").value.trim();
+          if (key && value) {
+            headers[key] = value;
+          }
+        });
+    
+        if (method === "POST") {
+          headers["Content-Type"] = "application/json";
+          options.headers = headers;
+          options.body = bodyText;
+        }
+
+        const start = performance.now();
+        const res = await fetch(url, options);
+        const end = performance.now();
+
+        statusBox.textContent = res.status + " " + res.statusText;
+        durationBox.textContent = (end - start).toFixed(2) + " ms";
+
+        const text = await res.text();
+        try {
+          const json = JSON.parse(text);
+          const highlighted = JSON.stringify(json, null, 2);
+          responseBox.textContent = highlighted;
+        } catch {
+          responseBox.textContent = text;
+        }
+        hljs.highlightElement(responseBox);
+      } catch (err) {
+        responseBox.textContent = "请求失败: " + err;
+        statusBox.textContent = "--";
+        durationBox.textContent = "--";
+      }
+    }
+  
+    function addHeader() {
+      const div = document.createElement("div");
+      div.className = "header-pair";
+      div.innerHTML = '<input type="text" class="header-key" style="flex: 1;" placeholder="Header Key" style="width: 48%; display: inline-block;">' +
+                      '<input type="text" class="header-value" style="flex: 1;" placeholder="Header Value" style="width: 48%; display: inline-block; float: right;">';
+      document.getElementById("headers").appendChild(div);
+    }
+    </script>
+        
+
+</body>
+</html>
