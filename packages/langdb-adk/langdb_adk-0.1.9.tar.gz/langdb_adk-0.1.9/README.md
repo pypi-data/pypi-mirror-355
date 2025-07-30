@@ -1,0 +1,108 @@
+# LangDB LLM for Google ADK
+
+A Google ADK (Agent Development Kit) model implementation for LangDB's LLM API. This package provides seamless integration of LangDB's LLM capabilities into the Google ADK framework.
+
+## Features
+
+- Native integration with Google ADK's `BaseLlm` interface
+- Support for both streaming and non-streaming completions
+- Built-in function calling support
+- Integration with MCP (Model Control Protocol) servers
+- Asynchronous API compatible with ADK's execution model
+- Automatic handling of tool execution and responses
+
+## Installation
+
+```bash
+pip install -e .
+```
+
+## Usage with Google ADK
+
+### Basic Usage
+
+```python
+import os
+import asyncio
+from google.adk import Agent
+from langdb_adk import LangDBLlm
+from google.adk.runners import InMemoryRunner
+
+async def main():
+    # Initialize the LangDB LLM with your credentials
+    llm = LangDBLlm(
+        model="anthropic/claude-sonnet-4",
+        api_key=os.getenv("LANGDB_API_KEY"),
+        project_id=os.getenv("LANGDB_PROJECT_ID")
+    )
+    
+    # Create an ADK agent with the LangDB LLM
+    agent = Agent(llm=llm)
+    
+    # Create a runner to execute the agent
+    runner = InMemoryRunner()
+    
+    # Run the agent with a prompt
+    response = await runner.run(agent, "Hello, how are you?")
+    print(response.text)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## With MCP Servers
+
+```python
+# Configure MCP servers for LangDB
+mcp_servers = [
+    {
+        "server_url": "server_url",
+        "type": "sse",
+        "name": "search",
+        "description": "Web search capabilities via DuckDuckGo"
+    }
+]
+
+async def main():
+    # Initialize the LangDB LLM with MCP servers
+    llm = LangDBLlm(
+        model="anthropic/claude-sonnet-4",
+        api_key=os.getenv("LANGDB_API_KEY"),
+        project_id=os.getenv("LANGDB_PROJECT_ID"),
+        mcp_servers=mcp_servers
+    )
+    
+    # Create an ADK agent with the LangDB LLM
+    agent = Agent(llm=llm)
+    
+    # Create a runner to execute the agent
+    runner = InMemoryRunner()
+    
+    # Run the agent with a prompt that can use MCP tools
+    response = await runner.run(agent, "Search for the latest news about AI")
+    print(response.text)
+```
+
+## Configuration
+
+### Environment Variables
+
+- `LANGDB_API_KEY`: Your LangDB API key (required)
+- `LANGDB_PROJECT_ID`: Your LangDB project ID (required)
+
+### LangDBLlm Parameters
+
+- `model`: The name of the model to use (e.g., "anthropic/claude-sonnet-4")
+- `api_key`: Your LangDB API key
+- `project_id`: Your LangDB project ID
+- `extra_headers`: Additional headers to include in requests
+- `mcp_servers`: List of MCP server configurations for extended capabilities
+
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+- Google ADK Team for the Agent Development Kit
