@@ -1,0 +1,75 @@
+[project]
+name = "cods"
+version = "0.2" # <--- IMPORTANT: Update this manually or via a script for new releases
+description = "Conformal Object Detection & Segmentation"
+authors = [
+    { name = "Léo Andéol", email = "leo@andeol.eu" },
+    { name = "Luca Mossina" },
+]
+urls = { Repository = "https://github.com/leoandeol/cods/" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Assuming MIT, replace if different
+    "Operating System :: OS Independent",
+]
+# No 'dependencies' or 'optional-dependencies' here, as they are in requirements.txt
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["cods*"]
+
+[tool.ruff]
+target-version = "py38"
+line-length = 79
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+extend-include = ["*.ipynb"]
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = []
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+
+[tool.mypy]
+python_version = "3.8"
+strict = true
+ignore_missing_imports = true
