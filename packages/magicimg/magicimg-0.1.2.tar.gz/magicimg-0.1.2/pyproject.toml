@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "magicimg"
+version = "0.1.2"
+authors = [
+    {name = "Tác giả", email = "shumi2011@gmail.com"},
+]
+description = "Package xử lý và tiền xử lý ảnh để chuẩn bị cho OCR và các hệ thống thị giác máy tính"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+keywords = ["image processing", "ocr", "preprocessing", "computer vision", "opencv", "tesseract"]
+dependencies = [
+    "opencv-python>=4.5.0",
+    "numpy>=1.19.0",
+    "matplotlib>=3.3.0",
+    "pytesseract>=0.3.8",
+    "Pillow>=8.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=21.0",
+    "flake8>=3.8",
+    "twine>=3.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/tacgia/image-preprocess"
+"Bug Reports" = "https://github.com/tacgia/image-preprocess/issues"
+"Source" = "https://github.com/tacgia/image-preprocess/"
+"Documentation" = "https://github.com/tacgia/image-preprocess/blob/main/README.md"
+
+[project.scripts]
+image-preprocess = "image_preprocess.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["image_preprocess*"]
+exclude = ["tests*"] 
